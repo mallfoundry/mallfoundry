@@ -41,9 +41,9 @@ public class ProductTests {
     private ProductRepository productRepository;
 
     @Test
-    public void testGetProduct() throws Exception {
+    public void testGetProduct() {
 
-        Product product = productRepository.find(10000000000010L);
+        Product product = productRepository.findById(10000000000010L);
 
         System.out.println(product);
         String productJsonString = JsonUtils.stringify(product);
