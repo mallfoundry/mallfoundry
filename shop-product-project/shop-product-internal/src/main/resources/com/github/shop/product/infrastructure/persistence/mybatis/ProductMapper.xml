@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.shop.product.infrastructure.persistence.mybatis.ProductMapper">
+    <resultMap id="productResultMap" type="com.github.shop.product.Product">
+        <id property="id" column="id_"/>
+        <result property="shortName" column="short_name_"/>
+        <result property="title" column="title_"/>
+        <result property="freeShipping" column="free_shipping_"/>
+        <result property="shippingMoney" column="shipping_money_"/>
+        <result property="description" column="description_"/>
+        <result property="attributes" column="attributes_"
+                typeHandler="com.github.shop.product.infrastructure.persistence.mybatis.ProductAttributesTypeHandler"/>
+        <result property="specs" column="specs_"
+                typeHandler="com.github.shop.product.infrastructure.persistence.mybatis.ProductSpecificationsTypeHandler"/>
+        <collection property="items" ofType="com.github.shop.product.ProductItem">
+            <id property="id" column="item_id_"/>
+            <result property="retailPrice" column="item_retail_price_"/>
+            <result property="productId" column="id_"/>
+            <result property="marketPrice" column="item_market_price_"/>
+            <result property="stockQuantity" column="item_stock_quantity_"/>
+            <result property="specs" column="item_specs_"
+                    typeHandler="com.github.shop.mybatis.type.IntListTypeHandler"/>
+            <result property="images" column="item_images_"
+                    typeHandler="com.github.shop.product.infrastructure.persistence.mybatis.ProductImagesTypeHandler"/>
+            <result property="videos" column="item_videos_"
+                    typeHandler="com.github.shop.product.infrastructure.persistence.mybatis.ProductVideosTypeHandler"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectProductById" resultMap="productResultMap">
+        SELECT
+            pd.id_,
+            pd.short_name_,
+            pd.title_,
+            pd.free_shipping_,
+            pd.shipping_money_,
+            pd.attributes_,
+            pd.specs_,
+            pd.description_,
+            pdi.id_ AS item_id_,
+            pdi.retail_price_ AS item_retail_price_,
+            pdi.market_price_ AS item_market_price_,
+            pdi.stock_quantity_ AS item_stock_quantity_,
+            pdi.specs_ AS item_specs_,
+            pdi.images_ AS item_images_,
+            pdi.videos_ AS item_videos_
+        FROM
+            product pd
+            LEFT JOIN product_item pdi ON pd.id_ = pdi.product_id_
+        WHERE
+            pd.id_ = #{id}
+    </select>
+
+    <insert id="insertProduct">
+        INSERT INTO
+            product (id_, short_name_, title_, free_shipping_, shipping_money_, description_, attributes_, specs_)
+        VALUES(
+            #{id},
+	        #{shortName},
+	        #{title},
+	        #{freeShipping},
+	        #{shippingMoney},
+	        #{description},
+	        #{attributes, typeHandler=com.github.shop.product.infrastructure.persistence.mybatis.ProductAttributesTypeHandler},
+	        #{specs, typeHandler=com.github.shop.product.infrastructure.persistence.mybatis.ProductSpecificationsTypeHandler}
+	        )
+    </insert>
+
+    <insert id="insertProductItems">
+        INSERT INTO product_item (
+        id_, product_id_, retail_price_, market_price_,
+        stock_quantity_, specs_, images_, videos_, sort_order_)
+        VALUES
+        <foreach collection="items" separator="," item="item">
+            (
+            #{item.id},
+            #{id},
+            #{item.retailPrice},
+            #{item.marketPrice},
+            #{item.stockQuantity},
+            #{item.specs},
+            #{item.images, typeHandler=com.github.shop.product.infrastructure.persistence.mybatis.ProductImagesTypeHandler},
+            #{item.videos, typeHandler=com.github.shop.product.infrastructure.persistence.mybatis.ProductVideosTypeHandler},
+            #{item.sortOrder}
+            )
+        </foreach>
+    </insert>
+</mapper>
