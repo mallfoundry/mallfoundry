@@ -9,13 +9,13 @@
         <relativePath>../shop-project</relativePath>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>shop-product-project</artifactId>
+    <artifactId>shop-catalog-project</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>shop-product-model</module>
-        <module>shop-product-api</module>
-        <module>shop-product-internal</module>
-        <module>shop-product-spring-boot</module>
-        <module>shop-product-rest</module>
+        <module>shop-catalog-model</module>
+        <module>shop-catalog-api</module>
+        <module>shop-catalog-internal</module>
+        <module>shop-catalog-spring-boot</module>
+        <module>shop-catalog-rest</module>
     </modules>
 </project>

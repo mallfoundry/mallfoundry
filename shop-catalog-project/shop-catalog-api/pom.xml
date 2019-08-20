@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.shop</groupId>
-        <artifactId>shop-product-project</artifactId>
+        <artifactId>shop-catalog-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>shop-product-api</artifactId>
+    <artifactId>shop-catalog-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.github.shop</groupId>
-            <artifactId>shop-product-model</artifactId>
+            <artifactId>shop-catalog-model</artifactId>
         </dependency>
     </dependencies>
 </project>

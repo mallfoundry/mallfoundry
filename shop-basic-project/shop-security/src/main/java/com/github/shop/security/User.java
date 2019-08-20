@@ -18,4 +18,15 @@ package com.github.shop.security;
 
 public class User {
 
+    private String uid;
+
+    private String nickname;
+
+    private String username;
+
+    private String email;
+
+    private String password;
+
+    private boolean enabled;
 }

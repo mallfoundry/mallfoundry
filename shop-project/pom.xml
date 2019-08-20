@@ -19,7 +19,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <mybatis.spring-boot.version>2.1.0</mybatis.spring-boot.version>
-        <mall.version>${project.version}</mall.version>
+        <shop.version>${project.version}</shop.version>
     </properties>
 
 
@@ -73,47 +73,47 @@
                 <version>${scala.version}</version>
             </dependency>
 
-            <!-- mall projects -->
+            <!-- shop projects -->
             <dependency>
                 <groupId>com.github.shop</groupId>
                 <artifactId>shop-common</artifactId>
-                <version>${mall.version}</version>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
                 <artifactId>shop-autoconfigure</artifactId>
-                <version>${mall.version}</version>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
                 <artifactId>shop-shared-mybatis</artifactId>
-                <version>${mall.version}</version>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
-                <artifactId>shop-product-model</artifactId>
-                <version>${mall.version}</version>
+                <artifactId>shop-catalog-model</artifactId>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
-                <artifactId>shop-product-api</artifactId>
-                <version>${mall.version}</version>
+                <artifactId>shop-catalog-api</artifactId>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
-                <artifactId>shop-product-internal</artifactId>
-                <version>${mall.version}</version>
+                <artifactId>shop-catalog-internal</artifactId>
+                <version>${shop.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.shop</groupId>
-                <artifactId>shop-product-rest</artifactId>
-                <version>${mall.version}</version>
+                <artifactId>shop-catalog-rest</artifactId>
+                <version>${shop.version}</version>
             </dependency>
 
         </dependencies>

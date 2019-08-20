@@ -18,6 +18,9 @@ package com.github.shop.product;
 
 import java.util.List;
 
+/**
+ *
+ */
 public interface ProductService {
 
     void createProductCategory(ProductCategory category);

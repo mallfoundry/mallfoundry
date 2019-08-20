@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.shop</groupId>
-        <artifactId>shop-product-project</artifactId>
+        <artifactId>shop-catalog-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>shop-product-spring-boot</artifactId>
+    <artifactId>shop-catalog-spring-boot</artifactId>
 
     <dependencies>
 
@@ -24,7 +24,7 @@
 
         <dependency>
             <groupId>com.github.shop</groupId>
-            <artifactId>shop-product-rest</artifactId>
+            <artifactId>shop-catalog-rest</artifactId>
         </dependency>
 
         <dependency>

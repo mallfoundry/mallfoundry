@@ -11,7 +11,7 @@
         <module>shop-project</module>
         <module>shop-common-project</module>
         <module>shop-basic-project</module>
-        <module>shop-product-project</module>
+        <module>shop-catalog-project</module>
         <module>shop-order-project</module>
     </modules>
     <packaging>pom</packaging>
