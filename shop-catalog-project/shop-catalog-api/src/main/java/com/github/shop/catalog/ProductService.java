@@ -19,12 +19,25 @@ package com.github.shop.catalog;
 import java.util.List;
 
 /**
+ * Product Service.
  *
+ * @author Zhi Tang
+ * @since 1.0
  */
 public interface ProductService {
 
+    /**
+     * Create product category.
+     *
+     * @param category category
+     */
     void createProductCategory(ProductCategory category);
 
+    /**
+     * Create product categories.
+     *
+     * @param categories categories
+     */
     void createProductCategories(List<ProductCategory> categories);
 
     List<ProductCategory> getTopProductCategories();
