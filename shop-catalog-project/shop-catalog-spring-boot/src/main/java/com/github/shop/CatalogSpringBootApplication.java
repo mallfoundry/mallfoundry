@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-public class MallProductSpringBootApplication {
+public class CatalogSpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallProductSpringBootApplication.class, args);
+        SpringApplication.run(CatalogSpringBootApplication.class, args);
     }
 }
