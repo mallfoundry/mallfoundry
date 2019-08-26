@@ -20,6 +20,8 @@ import java.util.List;
 
 public interface ProductCategoryRepository {
 
+    ProductCategory findById(long id);
+
     List<ProductCategory> findTopList();
 
     void create(ProductCategory category);

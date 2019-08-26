@@ -16,9 +16,9 @@
 
 package com.github.shop.catalog.infrastructure.persistence.mybatis;
 
-import com.github.shop.keygen.PrimaryKeyGenerator;
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductCategoryRepository;
+import com.github.shop.keygen.PrimaryKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +36,11 @@ public class ProductCategoryRepositoryMybatis implements ProductCategoryReposito
                                             PrimaryKeyGenerator<Long> primaryKeyGenerator) {
         this.productCategoryMapper = productCategoryMapper;
         this.primaryKeyGenerator = primaryKeyGenerator;
+    }
+
+    @Override
+    public ProductCategory findById(long id) {
+        return this.productCategoryMapper.selectById(id);
     }
 
     @Override

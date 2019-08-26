@@ -27,6 +27,8 @@ import java.util.List;
 @Mapper
 public interface ProductCategoryMapper {
 
+    ProductCategory selectById(@Param("id") long id);
+
     List<ProductCategory> selectListByLevel(@Param("level") byte level);
 
     void insertCategory(ProductCategory category);

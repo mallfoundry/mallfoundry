@@ -29,7 +29,7 @@
         <result property="createTime" column="create_time_"/>
     </resultMap>
 
-    <select id="selectListByLevel" resultMap="productCategoryResultMap">
+    <sql id="selectFromProductCategory">
         SELECT
             id_,
             parent_id_,
@@ -41,11 +41,21 @@
             create_time_
         FROM
             product_category
+    </sql>
+
+    <select id="selectById" resultMap="productCategoryResultMap">
+        <include refid="selectFromProductCategory"/>
         WHERE
-            level_ = #{level}
+        id_ = #{id}
+    </select>
+
+    <select id="selectListByLevel" resultMap="productCategoryResultMap">
+        <include refid="selectFromProductCategory"/>
+        WHERE
+        level_ = #{level}
         ORDER BY
-            sort_order_ ASC,
-            create_time_ DESC
+        sort_order_ ASC,
+        create_time_ DESC
     </select>
 
     <insert id="insertCategory">

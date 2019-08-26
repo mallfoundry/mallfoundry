@@ -20,6 +20,7 @@ package com.github.shop.catalog.rest;
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,5 +39,10 @@ public class ProductCategoryResourceV1 {
     @GetMapping("/categories")
     public List<ProductCategory> getTopCategories() {
         return this.productService.getTopProductCategories();
+    }
+
+    @GetMapping("/categories/{id}")
+    public ProductCategory getCategory(@PathVariable("id") long id) {
+        return this.productService.getProductCategory(id);
     }
 }
