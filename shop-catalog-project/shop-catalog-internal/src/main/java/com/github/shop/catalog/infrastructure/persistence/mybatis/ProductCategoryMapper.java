@@ -33,7 +33,9 @@ public interface ProductCategoryMapper {
 
     List<ProductCategory> selectListByParentId(@Param("parentId") long parentId);
 
-    void updateCategory(ProductCategory category);
+    void deleteById(@Param("id") long id);
+
+    void update(ProductCategory category);
 
     void insertCategory(ProductCategory category);
 

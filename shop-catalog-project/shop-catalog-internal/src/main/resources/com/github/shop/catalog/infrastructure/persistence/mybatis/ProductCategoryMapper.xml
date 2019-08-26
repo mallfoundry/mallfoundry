@@ -85,7 +85,15 @@
         </foreach>
     </insert>
 
-    <update id="updateCategory">
+    <delete id="deleteById">
+        DELETE
+        FROM
+            product_category
+        WHERE
+            id_ = #{id}
+    </delete>
+
+    <update id="update">
         UPDATE product_category
         <set>
             <if test="name != null and name != ''">

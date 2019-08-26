@@ -50,6 +50,11 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
+    public void deleteProductCategory(long id) {
+        this.categoryRepository.deleteById(id);
+    }
+
+    @Override
     public void updateProductCategory(ProductCategory category) {
         this.categoryRepository.update(category);
     }

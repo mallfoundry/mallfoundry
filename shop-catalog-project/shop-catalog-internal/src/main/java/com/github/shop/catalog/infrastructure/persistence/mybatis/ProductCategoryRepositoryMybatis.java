@@ -54,8 +54,13 @@ public class ProductCategoryRepositoryMybatis implements ProductCategoryReposito
     }
 
     @Override
+    public void deleteById(long id) {
+        this.productCategoryMapper.deleteById(id);
+    }
+
+    @Override
     public void update(ProductCategory category) {
-        this.productCategoryMapper.updateCategory(category);
+        this.productCategoryMapper.update(category);
     }
 
     @Override
