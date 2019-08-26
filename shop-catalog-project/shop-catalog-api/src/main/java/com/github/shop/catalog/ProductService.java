@@ -40,6 +40,8 @@ public interface ProductService {
      */
     void createProductCategories(List<ProductCategory> categories);
 
+    void updateProductCategory(ProductCategory category);
+
     List<ProductCategory> getTopProductCategories();
 
     List<ProductCategory> getProductCategories(long parentId);
