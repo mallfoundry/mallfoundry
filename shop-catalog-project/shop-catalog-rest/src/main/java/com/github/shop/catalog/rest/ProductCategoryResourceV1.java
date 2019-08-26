@@ -19,8 +19,13 @@ package com.github.shop.catalog.rest;
 
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductService;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +42,19 @@ public class ProductCategoryResourceV1 {
     public ProductCategoryResourceV1(ProductService productService) {
         this.productService = productService;
     }
+
+    @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> createCategory(@RequestBody ProductCategory category) {
+        this.productService.createProductCategory(category);
+        return ResponseEntity.ok("添加成功!");
+    }
+
+    @PutMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> updateCategory(@RequestBody ProductCategory category) {
+        this.productService.updateProductCategory(category);
+        return ResponseEntity.ok("修改成功!");
+    }
+
 
     @GetMapping("/categories")
     public List<ProductCategory> getCategories(@RequestParam(required = false, name = "parent_id") Long parentId) {
