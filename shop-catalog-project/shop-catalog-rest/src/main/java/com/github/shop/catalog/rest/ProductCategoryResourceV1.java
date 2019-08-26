@@ -21,6 +21,7 @@ import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,12 +50,17 @@ public class ProductCategoryResourceV1 {
         return ResponseEntity.ok("添加成功!");
     }
 
+    @DeleteMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteCategory(@PathVariable("id") long id) {
+        this.productService.deleteProductCategory(id);
+        return ResponseEntity.ok("删除成功!");
+    }
+
     @PutMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> updateCategory(@RequestBody ProductCategory category) {
         this.productService.updateProductCategory(category);
         return ResponseEntity.ok("修改成功!");
     }
-
 
     @GetMapping("/categories")
     public List<ProductCategory> getCategories(@RequestParam(required = false, name = "parent_id") Long parentId) {
