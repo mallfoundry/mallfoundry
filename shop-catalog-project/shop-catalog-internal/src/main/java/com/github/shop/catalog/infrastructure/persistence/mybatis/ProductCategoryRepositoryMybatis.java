@@ -54,6 +54,11 @@ public class ProductCategoryRepositoryMybatis implements ProductCategoryReposito
     }
 
     @Override
+    public void update(ProductCategory category) {
+        this.productCategoryMapper.updateCategory(category);
+    }
+
+    @Override
     public void create(ProductCategory category) {
         category.setId(this.nextProductCategoryId());
         this.productCategoryMapper.insertCategory(category);

@@ -33,6 +33,8 @@ public interface ProductCategoryMapper {
 
     List<ProductCategory> selectListByParentId(@Param("parentId") long parentId);
 
+    void updateCategory(ProductCategory category);
+
     void insertCategory(ProductCategory category);
 
     void insertCategories(@Param("categories") List<ProductCategory> categories);
