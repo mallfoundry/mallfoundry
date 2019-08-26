@@ -31,6 +31,8 @@ public interface ProductCategoryMapper {
 
     List<ProductCategory> selectListByLevel(@Param("level") byte level);
 
+    List<ProductCategory> selectListByParentId(@Param("parentId") long parentId);
+
     void insertCategory(ProductCategory category);
 
     void insertCategories(@Param("categories") List<ProductCategory> categories);

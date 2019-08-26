@@ -49,6 +49,11 @@ public class ProductCategoryRepositoryMybatis implements ProductCategoryReposito
     }
 
     @Override
+    public List<ProductCategory> findListByParentId(long parentId) {
+        return this.productCategoryMapper.selectListByParentId(parentId);
+    }
+
+    @Override
     public void create(ProductCategory category) {
         category.setId(this.nextProductCategoryId());
         this.productCategoryMapper.insertCategory(category);

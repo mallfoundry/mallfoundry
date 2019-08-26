@@ -55,6 +55,11 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
+    public List<ProductCategory> getProductCategories(long parentId) {
+        return this.categoryRepository.findListByParentId(parentId);
+    }
+
+    @Override
     public ProductCategory getProductCategory(long id) {
         return this.categoryRepository.findById(id);
     }

@@ -42,6 +42,8 @@ public interface ProductService {
 
     List<ProductCategory> getTopProductCategories();
 
+    List<ProductCategory> getProductCategories(long parentId);
+
     ProductCategory getProductCategory(long id);
 
     Product getProduct(long id);
