@@ -73,6 +73,7 @@
         VALUES
             (#{id}, #{parentId}, #{name}, #{description}, #{level}, #{firstLetter}, #{sortOrder}, #{createTime})
     </insert>
+
     <insert id="insertCategories">
         INSERT INTO
         product_category ( id_, parent_id_, name_, description_, level_, first_letter_, sort_order_, create_time_)
@@ -83,4 +84,18 @@
             #{category.sortOrder}, #{category.createTime})
         </foreach>
     </insert>
+
+    <update id="updateCategory">
+        UPDATE product_category
+        <set>
+            <if test="name != null and name != ''">
+                name_ = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description_ = #{description},
+            </if>
+        </set>
+        WHERE
+        id_ = #{id}
+    </update>
 </mapper>

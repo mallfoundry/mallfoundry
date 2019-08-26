@@ -50,6 +50,11 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
+    public void updateProductCategory(ProductCategory category) {
+        this.categoryRepository.update(category);
+    }
+
+    @Override
     public List<ProductCategory> getTopProductCategories() {
         return this.categoryRepository.findTopList();
     }

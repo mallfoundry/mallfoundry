@@ -26,6 +26,8 @@ public interface ProductCategoryRepository {
 
     List<ProductCategory> findListByParentId(long parentId);
 
+    void update(ProductCategory category);
+
     void create(ProductCategory category);
 
     void create(List<ProductCategory> categories);
