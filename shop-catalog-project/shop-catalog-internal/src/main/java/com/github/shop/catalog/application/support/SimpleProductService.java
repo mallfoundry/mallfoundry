@@ -24,6 +24,7 @@ import com.github.shop.catalog.ProductQuery;
 import com.github.shop.catalog.ProductRepository;
 import com.github.shop.catalog.ProductService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,21 +40,25 @@ public class SimpleProductService implements ProductService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional
     @Override
     public void createProductCategory(ProductCategory category) {
         this.categoryRepository.create(category);
     }
 
+    @Transactional
     @Override
     public void createProductCategories(List<ProductCategory> categories) {
         this.categoryRepository.create(categories);
     }
 
+    @Transactional
     @Override
     public void deleteProductCategory(long id) {
         this.categoryRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void updateProductCategory(ProductCategory category) {
         this.categoryRepository.update(category);
@@ -74,14 +79,15 @@ public class SimpleProductService implements ProductService {
         return this.categoryRepository.findById(id);
     }
 
-    @Override
-    public Product getProduct(long id) {
-        return this.productRepository.findById(id);
-    }
-
+    @Transactional
     @Override
     public void createProduct(Product product) {
         this.productRepository.create(product);
+    }
+
+    @Override
+    public Product getProduct(long id) {
+        return this.productRepository.findById(id);
     }
 
     @Override

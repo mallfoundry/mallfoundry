@@ -50,9 +50,9 @@ public interface ProductService {
 
     ProductCategory getProductCategory(long id);
 
-    Product getProduct(long id);
-
     void createProduct(Product product);
+
+    Product getProduct(long id);
 
     List<FirstProduct> getProducts(ProductQuery query);
 
