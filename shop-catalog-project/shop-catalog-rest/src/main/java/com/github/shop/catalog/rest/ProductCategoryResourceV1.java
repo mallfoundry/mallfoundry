@@ -19,6 +19,7 @@ package com.github.shop.catalog.rest;
 
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The product category restful API.
+ */
 @RestController
 @RequestMapping("/v1")
 public class ProductCategoryResourceV1 {
@@ -44,16 +48,32 @@ public class ProductCategoryResourceV1 {
         this.productService = productService;
     }
 
+    /**
+     * Returns a new object created if the validation passes and the creation succeeds.
+     *
+     * @param category the category a new object.
+     * @return a new object after successful creation.
+     */
     @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> createCategory(@RequestBody ProductCategory category) {
-        this.productService.createProductCategory(category);
-        return ResponseEntity.ok("添加成功!");
+    public ResponseEntity<?> createCategory(@RequestBody ProductCategory category) {
+        try {
+            this.productService.createProductCategory(category);
+            return ResponseEntity.ok(this.productService.getProductCategory(category.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @DeleteMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> deleteCategory(@PathVariable("id") long id) {
-        this.productService.deleteProductCategory(id);
-        return ResponseEntity.ok("删除成功!");
+        try {
+            this.productService.deleteProductCategory(id);
+            return ResponseEntity.ok("删除商品分类成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PutMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
