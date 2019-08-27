@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/mall
+    url: jdbc:postgresql://localhost:5432/shop
   jackson:
     time-zone: GMT+8
   profiles:
