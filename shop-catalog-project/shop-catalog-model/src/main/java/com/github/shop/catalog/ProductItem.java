@@ -35,8 +35,8 @@ public class ProductItem {
         this.marketPrice = marketPrice;
         this.stockQuantity = stockQuantity;
         this.specs = specs;
-        this.images = images;
-        this.videos = videos;
+        this.imageGallery = images;
+        this.videoGallery = videos;
         this.sortOrder = sortOrder;
     }
 
@@ -70,11 +70,11 @@ public class ProductItem {
 
     @Getter
     @Setter
-    private List<ProductImage> images;
+    private List<ProductImage> imageGallery;
 
     @Getter
     @Setter
-    private List<ProductVideo> videos;
+    private List<ProductVideo> videoGallery;
 
     @Getter
     @Setter

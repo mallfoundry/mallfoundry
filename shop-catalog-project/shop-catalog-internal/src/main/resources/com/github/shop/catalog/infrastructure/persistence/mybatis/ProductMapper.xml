@@ -37,9 +37,9 @@
             <result property="stockQuantity" column="item_stock_quantity_"/>
             <result property="specs" column="item_specs_"
                     typeHandler="com.github.shop.mybatis.type.IntListTypeHandler"/>
-            <result property="images" column="item_images_"
+            <result property="imageGallery" column="item_image_gallery_"
                     typeHandler="com.github.shop.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler"/>
-            <result property="videos" column="item_videos_"
+            <result property="videoGallery" column="item_video_gallery_"
                     typeHandler="com.github.shop.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler"/>
         </collection>
     </resultMap>
@@ -59,8 +59,8 @@
             pdi.market_price_ AS item_market_price_,
             pdi.stock_quantity_ AS item_stock_quantity_,
             pdi.specs_ AS item_specs_,
-            pdi.images_ AS item_images_,
-            pdi.videos_ AS item_videos_
+            pdi.image_gallery_ AS item_image_gallery_,
+            pdi.video_gallery_ AS item_video_gallery_
         FROM
             product pd
             LEFT JOIN product_item pdi ON pd.id_ = pdi.product_id_
@@ -86,7 +86,7 @@
     <insert id="insertProductItems">
         INSERT INTO product_item (
         id_, product_id_, retail_price_, market_price_,
-        stock_quantity_, specs_, images_, videos_, sort_order_)
+        stock_quantity_, specs_, image_gallery_, image_gallery_, sort_order_)
         VALUES
         <foreach collection="items" separator="," item="item">
             (
@@ -96,8 +96,8 @@
             #{item.marketPrice},
             #{item.stockQuantity},
             #{item.specs},
-            #{item.images, typeHandler=com.github.shop.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler},
-            #{item.videos, typeHandler=com.github.shop.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler},
+            #{item.imageGallery, typeHandler=com.github.shop.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler},
+            #{item.imageGallery, typeHandler=com.github.shop.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler},
             #{item.sortOrder}
             )
         </foreach>
