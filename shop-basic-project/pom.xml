@@ -31,5 +31,6 @@
     <modules>
         <module>shop-fs</module>
         <module>shop-security</module>
+        <module>shop-basic-spring-boot</module>
     </modules>
 </project>
