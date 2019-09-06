@@ -16,12 +16,6 @@
 
 package com.github.shop.fs;
 
-import com.github.shop.fs.FileResource;
-import com.github.shop.fs.FileStoreType;
-import com.github.shop.fs.FileSystemConfiguration;
-import com.github.shop.fs.JdbcStoreFileRepository;
-import com.github.shop.fs.LocalFileSystem;
-import com.github.shop.fs.StoreFileRepository;
 import com.github.shop.fs.store.DateStrategyFileStorePathGenerator;
 import com.github.shop.fs.store.FileStorePathGenerator;
 import org.junit.jupiter.api.Test;
