@@ -16,11 +16,13 @@
 
 package com.github.shop.fs;
 
-public interface FileRepository {
+import com.github.shop.fs.store.StoreFileInfo;
 
-    void create(FileInfo info);
+public interface StoreFileRepository {
+
+    void save(StoreFileInfo info);
 
     void delete(String fid);
 
-    FileInfo find(String fid);
+    StoreFileInfo find(String fid);
 }
