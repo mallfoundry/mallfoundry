@@ -41,6 +41,13 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
@@ -71,24 +78,6 @@
                 <version>${mybatis.spring-boot.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-library</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-reflect</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-compiler</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
-
             <!-- shop projects -->
             <dependency>
                 <groupId>com.github.shop</groupId>
@@ -105,6 +94,12 @@
             <dependency>
                 <groupId>com.github.shop</groupId>
                 <artifactId>shop-shared-mybatis</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
+                <artifactId>shop-fs</artifactId>
                 <version>${shop.version}</version>
             </dependency>
 
