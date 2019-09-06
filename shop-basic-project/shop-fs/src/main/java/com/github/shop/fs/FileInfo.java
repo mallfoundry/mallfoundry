@@ -16,5 +16,25 @@
 
 package com.github.shop.fs;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.io.FilenameUtils;
+
 public class FileInfo {
+
+    @Setter
+    @Getter
+    private String path;
+
+    @Setter
+    @Getter
+    private String checksum;
+
+    @Setter
+    @Getter
+    private long length;
+
+    public String getName() {
+        return FilenameUtils.getName(this.path);
+    }
 }
