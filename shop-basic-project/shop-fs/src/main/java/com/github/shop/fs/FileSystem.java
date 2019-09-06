@@ -16,13 +16,19 @@
 
 package com.github.shop.fs;
 
-public interface FileManager {
+import java.io.IOException;
 
-    FileInfo create(FileResource resource);
+public interface FileSystem {
+
+    FileInfo store(FileResource resource) throws IOException;
 
     FileInfo get(String filepath);
 
     FileResource open(String filepath);
 
     boolean delete(String filepath);
+
+    long sizeOfDirectory(String filepath);
+
+    FileSystemConfiguration getConfiguration();
 }
