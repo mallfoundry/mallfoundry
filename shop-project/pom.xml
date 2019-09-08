@@ -99,7 +99,7 @@
 
             <dependency>
                 <groupId>com.github.shop</groupId>
-                <artifactId>shop-fs</artifactId>
+                <artifactId>shop-storage</artifactId>
                 <version>${shop.version}</version>
             </dependency>
 
