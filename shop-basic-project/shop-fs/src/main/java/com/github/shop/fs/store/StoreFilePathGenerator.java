@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.shop.fs;
+package com.github.shop.fs.store;
 
-import com.github.shop.fs.store.StoreFileInfo;
+public abstract class StoreFilePathGenerator {
 
-public interface StoreFileRepository {
-
-    void save(StoreFileInfo info);
-
-    void delete(String fid);
-
-    StoreFileInfo find(String fid);
+    public abstract String storePath(String path);
 }

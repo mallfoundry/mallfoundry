@@ -16,19 +16,22 @@
 
 package com.github.shop.fs;
 
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public interface FileSystem {
+public abstract class FilePathUtils {
 
-    FileInfo store(FileResource resource) throws IOException;
+    public static String getParent(String path) {
+        Path parent = Path.of(path).getParent();
+        if (parent == null) {
+            return null;
+        }
+        String parentPath = parent.toString();
+        return parentPath.replaceAll("\\\\", "/");
+    }
 
-    FileInfo get(String filepath);
-
-    FileResource open(String filepath);
-
-    boolean delete(String filepath);
-
-    long sizeOfDirectory(String filepath);
-
-    FileSystemConfiguration getConfiguration();
+    public static String join(String first, String... more) {
+        String path = Paths.get(first, more).toString();
+        return path.replaceAll("\\\\", "/");
+    }
 }

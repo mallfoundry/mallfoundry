@@ -16,9 +16,12 @@
 
 package com.github.shop.fs.store;
 
-import com.github.shop.fs.FileSystem;
+import com.github.shop.fs.FileResource;
 
-public abstract class FileStorePathGenerator {
+import java.io.IOException;
 
-    public abstract String storePath(FileSystem fs, String path);
+public interface StoreFileSystem {
+
+    StoreFile store(FileResource resource) throws IOException;
+
 }

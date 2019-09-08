@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.shop.fs;
+package com.github.shop.fs.store;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.commons.io.FilenameUtils;
+import com.github.shop.fs.FileSystemConfiguration;
 
-public class FileInfo {
+public abstract class AbstractStoreFileSystem implements StoreFileSystem {
 
-    @Setter
-    @Getter
-    private String path;
+    private final FileSystemConfiguration configuration;
 
-    @Setter
-    @Getter
-    private String checksum;
+    public AbstractStoreFileSystem(FileSystemConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
-    @Setter
-    @Getter
-    private long length;
-
-    public String getName() {
-        return FilenameUtils.getName(this.path);
+    public FileSystemConfiguration getConfiguration() {
+        return this.configuration;
     }
 }

@@ -17,30 +17,26 @@
 package com.github.shop.fs;
 
 import lombok.Getter;
-import org.apache.commons.io.IOUtils;
+import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class FileResource implements Closeable {
 
     @Getter
+    @Setter
     private String filename;
 
     @Getter
     private InputStream inputStream;
 
-    public FileResource(String filename, InputStream inputStream) {
-        this.filename = filename;
-        this.inputStream = inputStream;
-    }
-
     public FileResource(File file) throws IOException {
-        this.filename = file.getName();
-        this.inputStream = IOUtils.buffer(new FileInputStream(file));
+        this.inputStream = FileUtils.openInputStream(file);
+        this.setFilename(file.getName());
     }
 
     @Override

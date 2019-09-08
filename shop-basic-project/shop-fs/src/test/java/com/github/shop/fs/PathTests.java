@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.shop.fs.store;
+package com.github.shop.fs;
 
-import com.github.shop.fs.FileInfo;
-import lombok.Getter;
-import lombok.Setter;
+import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 
-public class StoreFileInfo extends FileInfo {
+public class PathTests {
 
-    @Setter
-    @Getter
-    private String storePath;
+    @Test
+    public void testGetParentPath() throws Exception {
+
+        String path = "a/b/c/d";
+        String expectParentPath = "a/b/c";
+        String parentPath = FilePathUtils.getParent(path);
+        System.out.println(parentPath);
+        Assert.isTrue(expectParentPath.equals(parentPath), "error");
+    }
+
+    @Test
+    public void testJoinPath() {
+        String joinFile = FilePathUtils.join("/ab/c/sss", "/ssa", "/ddd");
+        System.out.println(joinFile);
+    }
 }

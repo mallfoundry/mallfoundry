@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * shop.fs.http.baseUrl=http://localhost/static/
  * shop.fs.store.type=LOCAL,FTP
  * shop.fs.store.directory=d:/shop/fs
  * shop.fs.store.ftp.username
@@ -33,6 +34,10 @@ public class FileSystemConfiguration {
     @Setter
     private Store store;
 
+    @Getter
+    @Setter
+    private Http http;
+
     public static class Store {
 
         @Getter
@@ -42,6 +47,13 @@ public class FileSystemConfiguration {
         @Getter
         @Setter
         private FileStoreType type;
+    }
+
+    public static class Http {
+
+        @Getter
+        @Setter
+        private String baseUrl;
     }
 
 }

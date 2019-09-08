@@ -16,24 +16,21 @@
 
 package com.github.shop.fs.store;
 
-import com.github.shop.fs.FileSystem;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+public class StoreFile {
 
-public class DateStrategyFileStorePathGenerator extends FileStorePathGenerator {
+    @Setter
+    @Getter
+    private String url;
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/HH");
+    @Setter
+    @Getter
+    private long length;
 
-    @Override
-    public String storePath(FileSystem fs, String path) {
-        return Paths.get(this.getDatePath(), path).toString();
+    public StoreFile(String url, long length) {
+        this.url = url;
+        this.length = length;
     }
-
-    private String getDatePath() {
-        return dateFormat.format(new Date());
-    }
-
 }
