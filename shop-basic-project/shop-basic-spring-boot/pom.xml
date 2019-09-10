@@ -27,7 +27,6 @@
     <artifactId>shop-basic-spring-boot</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
