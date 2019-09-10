@@ -47,12 +47,12 @@ public class StorageResourceV1 {
         return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
     }
 
-//    @PostMapping("/buckets/{bucket}/images/**")
-//    public StorageObject storeImages(@PathVariable("bucket") String bucket,
-//                                     @RequestParam("file") MultipartFile file,
-//                                     HttpServletRequest request) throws IOException {
-//        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
-//    }
+    @PostMapping("/buckets/{bucket}/images/**")
+    public StorageObject storeImages(@PathVariable("bucket") String bucket,
+                                     @RequestParam("file") MultipartFile file,
+                                     HttpServletRequest request) throws IOException {
+        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+    }
 
     private String getObjectPath(HttpServletRequest request) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
