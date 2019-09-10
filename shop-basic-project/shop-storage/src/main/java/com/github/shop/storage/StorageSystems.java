@@ -16,32 +16,16 @@
 
 package com.github.shop.storage;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Getter;
-import lombok.Setter;
+public abstract class StorageSystems {
 
-@JsonPropertyOrder({"bucket", "path", "url", "contentType", "length"})
-public class StorageObject {
-
-    @Getter
-    @Setter
-    private String bucket;
-
-    @Getter
-    @Setter
-    private String path;
-
-    @Getter
-    @Setter
-    private String url;
-
-    @Getter
-    @Setter
-    private long length;
-
-    @Getter
-    @Setter
-    @JsonProperty("content_type")
-    private String contentType;
+    public static StorageSystem newStorageSystem(StorageConfiguration config) {
+        switch (config.getStore().getType()) {
+            case LOCAL:
+                return new LocalStorageSystem(config);
+            case FTP:
+                return new FtpStorageSystem(config);
+            default:
+                return null;
+        }
+    }
 }

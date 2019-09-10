@@ -16,6 +16,47 @@
 
 package com.github.shop.storage;
 
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+@RequestMapping("/v1/storage")
+@RestController
 public class StorageResourceV1 {
 
+    private final AntPathMatcher objectPathMatcher = new AntPathMatcher();
+
+    private final StorageSystem storageSystem;
+
+    public StorageResourceV1(StorageSystem storageSystem) {
+        this.storageSystem = storageSystem;
+    }
+
+    @PostMapping("/buckets/{bucket}/objects/**")
+    public StorageObject storeObject(@PathVariable("bucket") String bucket,
+                                     @RequestParam("file") MultipartFile file,
+                                     HttpServletRequest request) throws IOException {
+        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+    }
+
+//    @PostMapping("/buckets/{bucket}/images/**")
+//    public StorageObject storeImages(@PathVariable("bucket") String bucket,
+//                                     @RequestParam("file") MultipartFile file,
+//                                     HttpServletRequest request) throws IOException {
+//        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+//    }
+
+    private String getObjectPath(HttpServletRequest request) {
+        String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        return this.objectPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
+    }
 }

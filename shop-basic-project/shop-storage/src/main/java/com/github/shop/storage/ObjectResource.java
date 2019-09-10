@@ -42,6 +42,12 @@ public class ObjectResource implements Closeable {
     public ObjectResource() {
     }
 
+    public ObjectResource(String bucket, String path, InputStream inputStream) {
+        this.bucket = bucket;
+        this.path = path;
+        this.inputStream = inputStream;
+    }
+
     public ObjectResource(String bucket, File file) throws IOException {
         this.bucket = bucket;
         this.path = file.getName();

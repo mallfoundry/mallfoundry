@@ -14,8 +14,25 @@
  * limitations under the License.
  */
 
-package com.github.shop.fs;
+package com.github.shop.storage;
 
-public enum FileStoreType {
-    LOCAL, FTP
+import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
+
+public class EmbeddedStorageSystemTests {
+
+    @Test
+    public void testGetClassPath() throws IOException {
+
+        ClassPathResource resource = new ClassPathResource("/");
+        System.out.println(resource.getPath());
+        System.out.println(resource.getFilename());
+        System.out.println(resource.getURL());
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(System.getProperty("user.dir"));
+    }
 }

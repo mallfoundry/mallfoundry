@@ -16,32 +16,24 @@
 
 package com.github.shop.storage;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.IOException;
 
-@JsonPropertyOrder({"bucket", "path", "url", "contentType", "length"})
-public class StorageObject {
+public class FtpStorageSystem implements StorageSystem {
 
-    @Getter
-    @Setter
-    private String bucket;
+    private final StorageConfiguration configuration;
 
-    @Getter
-    @Setter
-    private String path;
+    public FtpStorageSystem(StorageConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
-    @Getter
-    @Setter
-    private String url;
+    @Override
+    public StorageObject storeObject(ObjectResource resource) throws IOException {
+        System.out.println(configuration);
+        return null;
+    }
 
-    @Getter
-    @Setter
-    private long length;
+    @Override
+    public void deleteObject(String bucket, String path) {
 
-    @Getter
-    @Setter
-    @JsonProperty("content_type")
-    private String contentType;
+    }
 }

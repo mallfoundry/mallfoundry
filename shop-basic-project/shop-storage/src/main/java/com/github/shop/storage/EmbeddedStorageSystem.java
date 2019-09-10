@@ -22,7 +22,6 @@ public class EmbeddedStorageSystem implements StorageSystem {
 
     @Override
     public StorageObject storeObject(ObjectResource resource) throws IOException {
-
         return null;
     }
 

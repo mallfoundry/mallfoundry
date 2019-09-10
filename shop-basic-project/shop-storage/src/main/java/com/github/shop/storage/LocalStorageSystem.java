@@ -16,13 +16,10 @@
 
 package com.github.shop.storage;
 
-import com.github.shop.storage.ObjectResource;
-import com.github.shop.storage.PathUtils;
-import com.github.shop.storage.StorageConfiguration;
-import com.github.shop.storage.StorageObject;
-import com.github.shop.storage.StorageSystem;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,14 +35,19 @@ public class LocalStorageSystem implements StorageSystem {
 
     @Override
     public StorageObject storeObject(ObjectResource resource) throws IOException {
-        File storeFile = new File(PathUtils.join(this.getStoreDirectory(), resource.getBucket(), resource.getPath()));
+        String path = PathUtils.join(resource.getBucket(), resource.getPath());
+        File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
         FileUtils.touch(storeFile);
         try (resource) {
             FileUtils.copyToFile(resource.getInputStream(), storeFile);
         }
         StorageObject storageObject = new StorageObject();
+        storageObject.setBucket(resource.getBucket());
         storageObject.setPath(resource.getPath());
         storageObject.setLength(storeFile.length());
+        storageObject.setUrl(this.getHttpUrl(path));
+        MediaType mediaType = MediaTypeFactory.getMediaType(resource.getPath()).orElse(MediaType.ALL);
+        storageObject.setContentType(mediaType.toString());
         return storageObject;
     }
 
@@ -56,5 +58,10 @@ public class LocalStorageSystem implements StorageSystem {
 
     private String getStoreDirectory() {
         return this.getConfiguration().getStore().getDirectory();
+    }
+
+    private String getHttpUrl(String path) {
+        String baseUrl = this.getConfiguration().getHttp().getBaseUrl();
+        return baseUrl + "/" + path;
     }
 }

@@ -52,6 +52,8 @@ public class StorageConfiguration {
 
     public static class Store {
 
+        @Getter
+        @Setter
         private StoreType type;
 
         @Getter
