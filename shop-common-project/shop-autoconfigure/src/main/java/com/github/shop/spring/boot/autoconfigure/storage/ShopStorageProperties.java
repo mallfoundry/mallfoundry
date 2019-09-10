@@ -14,40 +14,50 @@
  * limitations under the License.
  */
 
-package com.github.shop.fs;
+package com.github.shop.spring.boot.autoconfigure.storage;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * shop.fs.http.baseUrl=http://localhost/static/
- * shop.fs.store.type=LOCAL,FTP
- * shop.fs.store.directory=d:/shop/fs
- * shop.fs.store.ftp.username
- * shop.fs.store.ftp.password
- * shop.fs.store.ftp.port
- * shop.fs.store.ftp.path
- */
-public class FileSystemConfiguration {
+@ConfigurationProperties(prefix = "shop.storage")
+public class ShopStorageProperties {
 
-    @Getter
+    @Setter
+    private Http http;
+
     @Setter
     private Store store;
 
-    @Getter
-    @Setter
-    private Http http;
+    public Store getStore() {
+        if (this.store == null) {
+            this.store = new Store();
+        }
+        return this.store;
+    }
+
+    public Http getHttp() {
+        if (this.http == null) {
+            this.http = new Http();
+        }
+        return this.http;
+    }
+
+    public enum StoreType {
+        LOCAL, FTP, ALI_CLOUD_OOS
+    }
 
     public static class Store {
 
         @Getter
         @Setter
-        private String directory;
+        private StoreType type;
 
         @Getter
         @Setter
-        private FileStoreType type;
+        private String directory;
     }
+
 
     public static class Http {
 
@@ -55,5 +65,4 @@ public class FileSystemConfiguration {
         @Setter
         private String baseUrl;
     }
-
 }
