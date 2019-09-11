@@ -20,13 +20,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 
-@JsonPropertyOrder({"bucket", "path", "url", "contentType", "length"})
+@JsonPropertyOrder({"id", "bucket", "filename", "path", "url", "length", "contentType"})
 public class StorageObject {
 
     @Getter
     @Setter
+    private String id;
+
+    @Getter
+    @Setter
     private String bucket;
+
+    @Getter
+    @Setter
+    private String filename;
 
     @Getter
     @Setter
@@ -40,8 +51,15 @@ public class StorageObject {
     @Setter
     private long length;
 
-    @Getter
     @Setter
     @JsonProperty("content_type")
     private String contentType;
+
+    public String getContentType() {
+        if (StringUtils.isNotEmpty(this.contentType)) {
+            return this.contentType;
+        }
+        MediaType mediaType = MediaTypeFactory.getMediaType(this.getFilename()).orElse(MediaType.ALL);
+        return mediaType.toString();
+    }
 }
