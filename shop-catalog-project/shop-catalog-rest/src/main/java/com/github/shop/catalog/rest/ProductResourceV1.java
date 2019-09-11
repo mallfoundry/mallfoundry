@@ -20,6 +20,7 @@ import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,8 +34,14 @@ public class ProductResourceV1 {
         this.productService = productService;
     }
 
-    @GetMapping("products/{id}")
+    @GetMapping("/products/{id}")
     public Product getProduct(@PathVariable("id") long id) {
         return this.productService.getProduct(id);
+    }
+
+    @PostMapping("/products")
+    public String createProduct(Product product) {
+        this.productService.createProduct(product);
+        return "添加成功";
     }
 }
