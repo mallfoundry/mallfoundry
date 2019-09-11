@@ -18,11 +18,11 @@ package com.github.shop.storage;
 
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
-import org.springframework.http.MediaType;
-import org.springframework.http.MediaTypeFactory;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class LocalStorageSystem implements StorageSystem {
 
@@ -38,16 +38,17 @@ public class LocalStorageSystem implements StorageSystem {
         String path = PathUtils.join(resource.getBucket(), resource.getPath());
         File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
         FileUtils.touch(storeFile);
+        // close resource.
         try (resource) {
             FileUtils.copyToFile(resource.getInputStream(), storeFile);
         }
         StorageObject storageObject = new StorageObject();
+        storageObject.setId(UUID.randomUUID().toString());
         storageObject.setBucket(resource.getBucket());
-        storageObject.setPath(resource.getPath());
+        storageObject.setFilename(FilenameUtils.getName(resource.getPath()));
+        storageObject.setPath(FilenameUtils.getPath(resource.getPath()));
         storageObject.setLength(storeFile.length());
         storageObject.setUrl(this.getHttpUrl(path));
-        MediaType mediaType = MediaTypeFactory.getMediaType(resource.getPath()).orElse(MediaType.ALL);
-        storageObject.setContentType(mediaType.toString());
         return storageObject;
     }
 
