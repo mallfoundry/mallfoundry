@@ -16,13 +16,15 @@
 
 package com.github.shop.catalog;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-@JsonPropertyOrder({"id", "shortName", "title", "freeShipping", "shippingMoney", "description", "items", "attributes", "specs"})
+@JsonPropertyOrder({"id", "shortName", "title", "freeShipping", "shippingMoney",
+        "description", "items", "attributes", "specs", "imageGallery", "videoGallery"})
 public class Product extends ProductInfo {
 
     private static final long serialVersionUID = 1L;
@@ -38,4 +40,15 @@ public class Product extends ProductInfo {
     @Getter
     @Setter
     private List<ProductItem> items;
+
+
+    @Getter
+    @Setter
+    @JsonProperty("image_gallery")
+    private List<ProductImage> imageGallery;
+
+    @Getter
+    @Setter
+    @JsonProperty("video_gallery")
+    private List<ProductVideo> videoGallery;
 }
