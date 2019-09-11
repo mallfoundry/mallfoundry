@@ -16,7 +16,6 @@
 
 package com.github.shop.catalog;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +24,9 @@ public class ProductSpecificationItem {
     public ProductSpecificationItem() {
     }
 
-    public ProductSpecificationItem(int id, String name, ProductImage image) {
+    public ProductSpecificationItem(int id, String name) {
         this.id = id;
         this.name = name;
-        this.thumbImage = image;
     }
 
     @Getter
@@ -38,9 +36,4 @@ public class ProductSpecificationItem {
     @Getter
     @Setter
     private String name;
-
-    @Getter
-    @Setter
-    @JsonProperty("thumb_image")
-    private ProductImage thumbImage;
 }
