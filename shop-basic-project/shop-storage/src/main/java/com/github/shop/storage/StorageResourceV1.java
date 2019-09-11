@@ -44,14 +44,14 @@ public class StorageResourceV1 {
     public StorageObject storeObject(@PathVariable("bucket") String bucket,
                                      @RequestParam("file") MultipartFile file,
                                      HttpServletRequest request) throws IOException {
-        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
     }
 
     @PostMapping("/buckets/{bucket}/images/**")
-    public StorageObject storeImages(@PathVariable("bucket") String bucket,
-                                     @RequestParam("file") MultipartFile file,
-                                     HttpServletRequest request) throws IOException {
-        return storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+    public StorageObject storeImage(@PathVariable("bucket") String bucket,
+                                    @RequestParam("file") MultipartFile file,
+                                    HttpServletRequest request) throws IOException {
+        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
     }
 
     private String getObjectPath(HttpServletRequest request) {
