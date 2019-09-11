@@ -18,9 +18,16 @@ package com.github.shop.storage;
 
 import java.nio.file.Paths;
 
-public class PathUtils {
+class PathUtils {
 
-    public static String join(String first, String... more) {
+    /**
+     * Join path.
+     *
+     * @param first the path string or initial part of the path string
+     * @param more  additional strings to be joined to form the path string
+     * @return join path string.
+     */
+    static String join(String first, String... more) {
         String path = Paths.get(first, more).toString();
         return path.replaceAll("\\\\", "/");
     }
