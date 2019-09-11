@@ -23,16 +23,6 @@ import java.util.List;
 
 public class ProductSpecification {
 
-
-    public ProductSpecification() {
-    }
-
-    public ProductSpecification(short id, String type, List<ProductSpecificationItem> items) {
-        this.id = id;
-        this.type = type;
-        this.items = items;
-    }
-
     @Getter
     @Setter
     private short id;
@@ -45,4 +35,12 @@ public class ProductSpecification {
     @Setter
     private List<ProductSpecificationItem> items;
 
+    public ProductSpecification() {
+    }
+
+    public ProductSpecification(short id, String type, List<ProductSpecificationItem> items) {
+        this.id = id;
+        this.type = type;
+        this.items = items;
+    }
 }

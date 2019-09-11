@@ -21,6 +21,14 @@ import lombok.Setter;
 
 public class ProductSpecificationItem {
 
+    @Getter
+    @Setter
+    private int id;
+
+    @Getter
+    @Setter
+    private String name;
+
     public ProductSpecificationItem() {
     }
 
@@ -29,11 +37,4 @@ public class ProductSpecificationItem {
         this.name = name;
     }
 
-    @Getter
-    @Setter
-    private int id;
-
-    @Getter
-    @Setter
-    private String name;
 }
