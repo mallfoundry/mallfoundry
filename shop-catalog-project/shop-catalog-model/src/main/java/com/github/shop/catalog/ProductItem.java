@@ -70,10 +70,12 @@ public class ProductItem {
 
     @Getter
     @Setter
+    @JsonProperty("image_gallery")
     private List<ProductImage> imageGallery;
 
     @Getter
     @Setter
+    @JsonProperty("video_gallery")
     private List<ProductVideo> videoGallery;
 
     @Getter
