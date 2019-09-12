@@ -40,6 +40,11 @@
 
         <dependency>
             <groupId>com.github.shop</groupId>
+            <artifactId>shop-storage</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.shop</groupId>
             <artifactId>shop-catalog-rest</artifactId>
         </dependency>
 
