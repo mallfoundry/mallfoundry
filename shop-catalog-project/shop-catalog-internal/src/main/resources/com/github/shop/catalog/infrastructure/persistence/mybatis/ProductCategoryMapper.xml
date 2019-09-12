@@ -22,10 +22,11 @@
         <id property="id" column="id_"/>
         <id property="parentId" column="parent_id_"/>
         <result property="name" column="name_"/>
+        <result property="image" column="image_"/>
         <result property="description" column="description_"/>
         <result property="level" column="level_"/>
         <result property="firstLetter" column="first_letter_"/>
-        <result property="sortOrder" column="sort_order_"/>
+        <result property="index" column="index_"/>
         <result property="createTime" column="create_time_"/>
     </resultMap>
 
@@ -34,10 +35,11 @@
             id_,
             parent_id_,
             name_,
+            image_,
             description_,
             level_,
             first_letter_,
-            sort_order_,
+            index_,
             create_time_
         FROM
             product_category
@@ -54,7 +56,7 @@
         WHERE
         level_ = #{level}
         ORDER BY
-        sort_order_ ASC,
+        index_ ASC,
         create_time_ DESC
     </select>
 
@@ -63,25 +65,25 @@
         WHERE
         parent_id_ = #{parentId}
         ORDER BY
-        sort_order_ ASC,
+        index_ ASC,
         create_time_ DESC
     </select>
 
     <insert id="insertCategory">
         INSERT INTO
-            product_category ( id_, parent_id_, name_, description_, level_, first_letter_, sort_order_, create_time_)
+            product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
         VALUES
-            (#{id}, #{parentId}, #{name}, #{description}, #{level}, #{firstLetter}, #{sortOrder}, #{createTime})
+            (#{id}, #{parentId}, #{name}, #{image}, #{description}, #{level}, #{firstLetter}, #{index}, #{createTime})
     </insert>
 
     <insert id="insertCategories">
         INSERT INTO
-        product_category ( id_, parent_id_, name_, description_, level_, first_letter_, sort_order_, create_time_)
+        product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
         VALUES
         <foreach collection="categories" item="category" separator=",">
-            (#{category.id}, #{category.parentId}, #{category.name},
+            (#{category.id}, #{category.parentId}, #{category.name}, #{category.image},
             #{category.description}, #{category.level}, #{category.firstLetter},
-            #{category.sortOrder}, #{category.createTime})
+            #{category.index}, #{category.createTime})
         </foreach>
     </insert>
 
@@ -98,6 +100,9 @@
         <set>
             <if test="name != null and name != ''">
                 name_ = #{name},
+            </if>
+            <if test="image != null and image != ''">
+                image_ = #{image},
             </if>
             <if test="description != null and description != ''">
                 description_ = #{description},
