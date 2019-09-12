@@ -21,11 +21,12 @@ import com.github.shop.catalog.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/catalog")
 public class ProductResourceV1 {
 
     private final ProductService productService;
@@ -40,7 +41,7 @@ public class ProductResourceV1 {
     }
 
     @PostMapping("/products")
-    public String createProduct(Product product) {
+    public String createProduct(@RequestBody Product product) {
         this.productService.createProduct(product);
         return "添加成功";
     }
