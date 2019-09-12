@@ -49,7 +49,7 @@ public class StorageObject {
 
     @Getter
     @Setter
-    private long length;
+    private long size;
 
     @Setter
     @JsonProperty("content_type")

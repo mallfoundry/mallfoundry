@@ -47,7 +47,7 @@ public class LocalStorageSystem implements StorageSystem {
         storageObject.setBucket(resource.getBucket());
         storageObject.setFilename(FilenameUtils.getName(resource.getPath()));
         storageObject.setPath(FilenameUtils.getPathNoEndSeparator(resource.getPath()));
-        storageObject.setLength(storeFile.length());
+        storageObject.setSize(storeFile.length());
         storageObject.setUrl(this.getHttpUrl(path));
         return storageObject;
     }
