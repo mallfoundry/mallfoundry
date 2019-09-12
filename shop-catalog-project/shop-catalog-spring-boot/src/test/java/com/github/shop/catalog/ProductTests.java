@@ -57,7 +57,7 @@ public class ProductTests {
         Product product = new Product();
         product.setFreeShipping(false);
         product.setShippingMoney(BigDecimal.valueOf(10));
-        product.setTitle("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
+        product.setName("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
         product.setShortName("泳衣女");
         product.setDescription("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
 
@@ -67,33 +67,18 @@ public class ProductTests {
                                 new ProductImage("/a.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/b.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/c.png", (short) 100, (short) 200, (short) 1)
-                        ),
-                        List.of(
-                                new ProductVideo("/a.mp4", (short) 200, (short) 1),
-                                new ProductVideo("/b.mp4", (short) 200, (short) 2),
-                                new ProductVideo("/c.mp4", (short) 200, (short) 3)
                         ), (short) 1),
                 new ProductItem(BigDecimal.valueOf(100), BigDecimal.valueOf(180), 99, List.of(2, 6),
                         List.of(
                                 new ProductImage("/a1.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/b1.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/c1.png", (short) 100, (short) 200, (short) 1)
-                        ),
-                        List.of(
-                                new ProductVideo("/a1.mp4", (short) 200, (short) 1),
-                                new ProductVideo("/b1.mp4", (short) 200, (short) 2),
-                                new ProductVideo("/c1.mp4", (short) 200, (short) 3)
                         ), (short) 2),
                 new ProductItem(BigDecimal.valueOf(100), BigDecimal.valueOf(300), 80, List.of(3, 8),
                         List.of(
                                 new ProductImage("/a2.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/b3.png", (short) 100, (short) 200, (short) 1),
                                 new ProductImage("/c4.png", (short) 100, (short) 200, (short) 1)
-                        ),
-                        List.of(
-                                new ProductVideo("/a1.mp4", (short) 200, (short) 1),
-                                new ProductVideo("/b2.mp4", (short) 200, (short) 2),
-                                new ProductVideo("/c3.mp4", (short) 200, (short) 3)
                         ), (short) 3)));
 
         product.setAttributes(List.of(
@@ -102,18 +87,18 @@ public class ProductTests {
                 new ProductAttribute("颜色", "黑", true, (short) 3)));
 
         product.setSpecs(List.of(
-                new ProductSpecification("颜色", "颜色--111", List.of(
-                        new ProductSpecificationItem(1, "黑色", null),
-                        new ProductSpecificationItem(2, "红色", null),
-                        new ProductSpecificationItem(3, "蓝色", null),
-                        new ProductSpecificationItem(4, "褐色", null)
-                ), (short) 1),
-                new ProductSpecification("型号", "型号--111", List.of(
-                        new ProductSpecificationItem(5, "32G", null),
-                        new ProductSpecificationItem(6, "64G", null),
-                        new ProductSpecificationItem(7, "128G", null),
-                        new ProductSpecificationItem(8, "256G", null)
-                ), (short) 1)
+                new ProductSpecification((short) 1, "颜色--111", List.of(
+                        new ProductSpecificationItem(1, "黑色"),
+                        new ProductSpecificationItem(2, "红色"),
+                        new ProductSpecificationItem(3, "蓝色"),
+                        new ProductSpecificationItem(4, "褐色")
+                )),
+                new ProductSpecification((short) 1, "型号", List.of(
+                        new ProductSpecificationItem(5, "32G"),
+                        new ProductSpecificationItem(6, "64G"),
+                        new ProductSpecificationItem(7, "128G"),
+                        new ProductSpecificationItem(8, "256G")
+                ))
         ));
         productRepository.create(product);
         System.out.println(product);
