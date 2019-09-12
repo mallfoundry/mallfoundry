@@ -28,9 +28,9 @@ public class ProductVideo extends ProductExhibit {
     public ProductVideo() {
     }
 
-    public ProductVideo(String url, short length, short sortOrder) {
+    public ProductVideo(String url, short length, short index) {
         this.setUrl(url);
         this.length = length;
-        this.setSortOrder(sortOrder);
+        this.setIndex(index);
     }
 }

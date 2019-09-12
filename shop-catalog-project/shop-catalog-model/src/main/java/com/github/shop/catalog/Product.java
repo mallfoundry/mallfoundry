@@ -24,7 +24,7 @@ import lombok.Setter;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "shortName", "title", "freeShipping", "shippingMoney",
-        "description", "items", "attributes", "specs", "imageGallery", "videoGallery"})
+        "description", "items", "attributes", "specs", "images", "videos"})
 public class Product extends ProductInfo {
 
     private static final long serialVersionUID = 1L;
@@ -41,14 +41,13 @@ public class Product extends ProductInfo {
     @Setter
     private List<ProductItem> items;
 
+    @Getter
+    @Setter
+    @JsonProperty("images")
+    private List<ProductImage> images;
 
     @Getter
     @Setter
-    @JsonProperty("image_gallery")
-    private List<ProductImage> imageGallery;
-
-    @Getter
-    @Setter
-    @JsonProperty("video_gallery")
-    private List<ProductVideo> videoGallery;
+    @JsonProperty("videos")
+    private List<ProductVideo> videos;
 }

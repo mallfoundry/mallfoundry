@@ -38,7 +38,7 @@ public class ProductInfo implements Serializable {
 
     @Getter
     @Setter
-    private String title;
+    private String name;
 
     @Getter
     @Setter

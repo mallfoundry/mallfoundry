@@ -32,10 +32,10 @@ public class ProductExhibit {
 
     @Getter
     @Setter
-    private boolean first;
+    private int size;
 
     @Getter
     @Setter
-    @JsonProperty("sort_order")
-    private short sortOrder;
+    @JsonProperty("index")
+    private short index;
 }

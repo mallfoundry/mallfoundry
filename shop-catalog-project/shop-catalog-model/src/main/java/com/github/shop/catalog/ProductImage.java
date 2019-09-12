@@ -29,17 +29,14 @@ public class ProductImage extends ProductExhibit {
     @Setter
     private short height;
 
-    @Getter
-    @Setter
-    private int size;
 
     public ProductImage() {
     }
 
-    public ProductImage(String url, short width, short height, short sortOrder) {
+    public ProductImage(String url, short width, short height, short index) {
         this.setUrl(url);
         this.width = width;
         this.height = height;
-        this.setSortOrder(sortOrder);
+        this.setIndex(index);
     }
 }

@@ -25,21 +25,6 @@ import java.util.List;
 
 public class ProductItem {
 
-    public ProductItem() {
-
-    }
-
-    public ProductItem(BigDecimal retailPrice, BigDecimal marketPrice, int stockQuantity,
-                       List<Integer> specs, List<ProductImage> images, List<ProductVideo> videos, short sortOrder) {
-        this.retailPrice = retailPrice;
-        this.marketPrice = marketPrice;
-        this.stockQuantity = stockQuantity;
-        this.specs = specs;
-        this.imageGallery = images;
-        this.videoGallery = videos;
-        this.sortOrder = sortOrder;
-    }
-
     @Getter
     @Setter
     private Long id;
@@ -70,16 +55,24 @@ public class ProductItem {
 
     @Getter
     @Setter
-    @JsonProperty("image_gallery")
-    private List<ProductImage> imageGallery;
+    private List<ProductImage> images;
 
     @Getter
     @Setter
-    @JsonProperty("video_gallery")
-    private List<ProductVideo> videoGallery;
+    @JsonProperty("index")
+    private short index;
 
-    @Getter
-    @Setter
-    @JsonProperty("sort_order")
-    private short sortOrder;
+    public ProductItem() {
+
+    }
+
+    public ProductItem(BigDecimal retailPrice, BigDecimal marketPrice, int stockQuantity,
+                       List<Integer> specs, List<ProductImage> images, short index) {
+        this.retailPrice = retailPrice;
+        this.marketPrice = marketPrice;
+        this.stockQuantity = stockQuantity;
+        this.specs = specs;
+        this.images = images;
+        this.index = index;
+    }
 }
