@@ -89,9 +89,4 @@ public class SimpleProductService implements ProductService {
     public Product getProduct(long id) {
         return this.productRepository.findById(id);
     }
-
-    @Override
-    public List<FirstProduct> getProducts(ProductQuery query) {
-        return null;
-    }
 }
