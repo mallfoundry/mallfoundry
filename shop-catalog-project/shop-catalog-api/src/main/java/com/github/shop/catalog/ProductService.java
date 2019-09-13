@@ -54,6 +54,4 @@ public interface ProductService {
 
     Product getProduct(long id);
 
-    List<FirstProduct> getProducts(ProductQuery query);
-
 }
