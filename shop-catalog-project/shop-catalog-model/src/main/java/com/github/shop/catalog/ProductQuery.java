@@ -16,5 +16,16 @@
 
 package com.github.shop.catalog;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ProductQuery {
+
+    @Setter
+    @Getter
+    private int pageNumber;
+
+    @Setter
+    @Getter
+    private int pageSize;
 }
