@@ -14,30 +14,38 @@
  * limitations under the License.
  */
 
-package com.github.shop.catalog.application.support;
+package com.github.shop.catalog.application;
 
-import com.github.shop.catalog.FirstProduct;
+import com.github.shop.catalog.CreatedProductEvent;
 import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductCategoryRepository;
-import com.github.shop.catalog.ProductQuery;
 import com.github.shop.catalog.ProductRepository;
 import com.github.shop.catalog.ProductService;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class SimpleProductService implements ProductService {
+public class SimpleProductService implements ProductService, ApplicationEventPublisherAware {
 
     private final ProductRepository productRepository;
 
     private final ProductCategoryRepository categoryRepository;
 
+    private ApplicationEventPublisher eventPublisher;
+
     public SimpleProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -83,6 +91,8 @@ public class SimpleProductService implements ProductService {
     @Override
     public void createProduct(Product product) {
         this.productRepository.create(product);
+        // Publish create product event.
+        this.eventPublisher.publishEvent(new CreatedProductEvent(product.getId()));
     }
 
     @Override
