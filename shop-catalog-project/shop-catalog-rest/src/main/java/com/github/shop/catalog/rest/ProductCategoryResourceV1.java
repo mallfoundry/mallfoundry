@@ -39,7 +39,7 @@ import java.util.Objects;
  * The product category restful API.
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/catalog")
 public class ProductCategoryResourceV1 {
 
     private final ProductService productService;
