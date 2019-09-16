@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.shop.catalog;
+package com.github.shop.catalog.search;
+
+import com.github.shop.catalog.FirstProduct;
+import com.github.shop.catalog.ProductSearch;
 
 import java.util.List;
 
-public interface ListMatchingProductProvider {
+public interface ProductSearchService {
 
-    List<FirstProduct> list();
+    void create(FirstProduct product);
+
+    List<FirstProduct> search(ProductSearch query);
 }
