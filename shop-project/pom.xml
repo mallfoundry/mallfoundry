@@ -37,7 +37,7 @@
         <mybatis.spring-boot.version>2.1.0</mybatis.spring-boot.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <!--        <jackson.version>2.9.9</jackson.version>-->
+        <lucene.version>8.2.0</lucene.version>
         <shop.version>${project.version}</shop.version>
     </properties>
 
@@ -58,6 +58,24 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
@@ -71,12 +89,6 @@
                 <version>5.5.1</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring-boot.version}</version>
             </dependency>
 
             <!-- shop projects -->
