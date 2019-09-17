@@ -16,14 +16,14 @@
 
 package com.github.shop.catalog.search;
 
-import com.github.shop.catalog.FirstProduct;
+import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductSearch;
 
 import java.util.List;
 
 public interface ProductSearchService {
 
-    void create(FirstProduct product);
+    void add(Product product);
 
-    List<FirstProduct> search(ProductSearch query);
+    List<Product> search(ProductSearch query);
 }
