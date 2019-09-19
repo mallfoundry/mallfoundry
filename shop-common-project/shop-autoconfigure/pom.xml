@@ -40,6 +40,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.shop</groupId>
+            <artifactId>shop-catalog-internal</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
