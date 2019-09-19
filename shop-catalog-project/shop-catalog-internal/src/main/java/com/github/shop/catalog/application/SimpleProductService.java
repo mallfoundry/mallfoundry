@@ -92,7 +92,7 @@ public class SimpleProductService implements ProductService, ApplicationEventPub
     public void createProduct(Product product) {
         this.productRepository.create(product);
         // Publish create product event.
-        this.eventPublisher.publishEvent(new CreatedProductEvent(product.getId()));
+        this.eventPublisher.publishEvent(new CreatedProductEvent(product));
     }
 
     @Override
