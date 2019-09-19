@@ -15,3 +15,15 @@ mybatis:
   type-handlers-package: com.github.mall.mybatis.type
 server:
   port: 8077
+shop:
+  storage:
+    store:
+      type: local
+      directory: D:/shop/data/storage
+    http:
+      base-url: http://localhost:${server.port}/static
+  product:
+    search:
+      type: lucene
+      lucene:
+        directory: D:/shop/data/indexes
