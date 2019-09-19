@@ -54,12 +54,12 @@ public class ProductCategoryTests {
         category1.setLevel(ProductCategory.TOP_LEVEL);
         category1.setName("男装");
         category1.setFirstLetter("N");
-        category1.setSortOrder((short) 1);
+        category1.setIndex((short) 1);
         ProductCategory category2 = new ProductCategory();
         category2.setLevel(ProductCategory.TOP_LEVEL);
         category2.setName("女装");
         category2.setFirstLetter("N");
-        category2.setSortOrder((short) 2);
+        category2.setIndex((short) 2);
         productCategoryRepository.create(List.of(category1, category2));
     }
 

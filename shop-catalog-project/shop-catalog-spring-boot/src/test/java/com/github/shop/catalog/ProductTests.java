@@ -38,12 +38,12 @@ public class ProductTests {
 
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Test
     public void testGetProduct() {
 
-        Product product = productRepository.findById(10000000000010L);
+        Product product = productService.getProduct(10000000000010L);
 
         System.out.println(product);
         String productJsonString = JsonUtils.stringify(product);
@@ -61,46 +61,43 @@ public class ProductTests {
         product.setShortName("泳衣女");
         product.setDescription("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
 
-        product.setItems(List.of(
-                new ProductItem(BigDecimal.valueOf(100), BigDecimal.valueOf(200), 100, List.of(1, 5),
-                        List.of(
-                                new ProductImage("/a.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/b.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/c.png", (short) 100, (short) 200, (short) 1)
-                        ), (short) 1),
-                new ProductItem(BigDecimal.valueOf(100), BigDecimal.valueOf(180), 99, List.of(2, 6),
-                        List.of(
-                                new ProductImage("/a1.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/b1.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/c1.png", (short) 100, (short) 200, (short) 1)
-                        ), (short) 2),
-                new ProductItem(BigDecimal.valueOf(100), BigDecimal.valueOf(300), 80, List.of(3, 8),
-                        List.of(
-                                new ProductImage("/a2.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/b3.png", (short) 100, (short) 200, (short) 1),
-                                new ProductImage("/c4.png", (short) 100, (short) 200, (short) 1)
-                        ), (short) 3)));
+        product.setSkus(List.of(
+                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(200), 100, List.of(1, 5), (short) 1),
+                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(180), 99, List.of(2, 6), (short) 2),
+                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(300), 80, List.of(3, 8), (short) 3)));
 
         product.setAttributes(List.of(
-                new ProductAttribute("产地", "中国", true, (short) 1),
-                new ProductAttribute("生成时间", "2018-10-11", true, (short) 2),
-                new ProductAttribute("颜色", "黑", true, (short) 3)));
+                new ProductAttribute("产地", "中国", (short) 1),
+                new ProductAttribute("生成时间", "2018-10-11", (short) 2),
+                new ProductAttribute("颜色", "黑", (short) 3)));
 
         product.setSpecs(List.of(
-                new ProductSpecification((short) 1, "颜色--111", List.of(
-                        new ProductSpecificationItem(1, "黑色"),
-                        new ProductSpecificationItem(2, "红色"),
-                        new ProductSpecificationItem(3, "蓝色"),
-                        new ProductSpecificationItem(4, "褐色")
+                new ProductSpecification((short) 1, "颜色", List.of(
+                        new ProductSpecItem(1, "黑色",
+                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
+                                        new ProductImage("http://localhost/b.png", (short) 2),
+                                        new ProductImage("http://localhost/c.png", (short) 3))),
+                        new ProductSpecItem(2, "红色",
+                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
+                                        new ProductImage("http://localhost/b.png", (short) 2),
+                                        new ProductImage("http://localhost/c.png", (short) 3))),
+                        new ProductSpecItem(3, "蓝色",
+                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
+                                        new ProductImage("http://localhost/b.png", (short) 2),
+                                        new ProductImage("http://localhost/c.png", (short) 3))),
+                        new ProductSpecItem(4, "褐色",
+                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
+                                        new ProductImage("http://localhost/b.png", (short) 2),
+                                        new ProductImage("http://localhost/c.png", (short) 3)))
                 )),
                 new ProductSpecification((short) 1, "型号", List.of(
-                        new ProductSpecificationItem(5, "32G"),
-                        new ProductSpecificationItem(6, "64G"),
-                        new ProductSpecificationItem(7, "128G"),
-                        new ProductSpecificationItem(8, "256G")
+                        new ProductSpecItem(5, "32G"),
+                        new ProductSpecItem(6, "64G"),
+                        new ProductSpecItem(7, "128G"),
+                        new ProductSpecItem(8, "256G")
                 ))
         ));
-        productRepository.create(product);
+        productService.createProduct(product);
         System.out.println(product);
     }
 }
