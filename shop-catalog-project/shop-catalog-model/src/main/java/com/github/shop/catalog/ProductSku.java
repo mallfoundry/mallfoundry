@@ -20,10 +20,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductSKU {
+public class ProductSku implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Getter
     @Setter
@@ -58,15 +61,46 @@ public class ProductSKU {
     @JsonProperty("index")
     private short index;
 
-    public ProductSKU() {
+    public static class Builder {
 
-    }
+        private ProductSku productSku;
 
-    public ProductSKU(BigDecimal retailPrice, BigDecimal marketPrice, int stockQuantity, List<Integer> specs, short index) {
-        this.retailPrice = retailPrice;
-        this.marketPrice = marketPrice;
-        this.stockQuantity = stockQuantity;
-        this.specs = specs;
-        this.index = index;
+        public Builder() {
+            productSku = new ProductSku();
+        }
+
+        public Builder retailPrice(double retailPrice) {
+            this.productSku.setRetailPrice(BigDecimal.valueOf(retailPrice));
+            return this;
+        }
+
+        public Builder marketPrice(double marketPrice) {
+            this.productSku.setMarketPrice(BigDecimal.valueOf(marketPrice));
+            return this;
+        }
+
+        public Builder stockQuantity(int stockQuantity) {
+            this.productSku.setStockQuantity(stockQuantity);
+            return this;
+        }
+
+        public Builder specs(List<Integer> specs) {
+            this.productSku.setSpecs(specs);
+            return this;
+        }
+
+        public Builder index(short index) {
+            this.productSku.setIndex(index);
+            return this;
+        }
+
+        public Builder index(int index) {
+            this.productSku.setIndex((short) index);
+            return this;
+        }
+
+        public ProductSku build() {
+            return this.productSku;
+        }
     }
 }
