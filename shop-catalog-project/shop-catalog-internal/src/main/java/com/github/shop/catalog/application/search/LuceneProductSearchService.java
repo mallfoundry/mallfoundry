@@ -16,7 +16,7 @@
 
 package com.github.shop.catalog.application.search;
 
-import com.github.shop.catalog.FirstProduct;
+import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductSearch;
 import com.github.shop.catalog.search.ProductSearchService;
 import com.github.shop.util.JsonUtils;
@@ -38,20 +38,24 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class LuceneProductSearchService implements ProductSearchService {
 
+    private final String directoryPath;
+
+    public LuceneProductSearchService(String directoryPath) {
+        this.directoryPath = directoryPath;
+    }
+
     @Override
-    public void create(FirstProduct product) {
+    public void add(Product product) {
         try {
-            Directory directory = FSDirectory.open(Path.of("D:/shop/data/indexes"));
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
             IndexWriter indexWriter = new IndexWriter(directory, config);
@@ -68,9 +72,9 @@ public class LuceneProductSearchService implements ProductSearchService {
     }
 
     @Override
-    public List<FirstProduct> search(ProductSearch search) {
+    public List<Product> search(ProductSearch search) {
         try {
-            Directory directory = FSDirectory.open(Path.of("D:/shop/data/indexes"));
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -80,14 +84,14 @@ public class LuceneProductSearchService implements ProductSearchService {
 
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
 
-            List<FirstProduct> firstProducts = new ArrayList<>();
+            List<Product> products = new ArrayList<>();
             for (ScoreDoc scoreDoc : scoreDocs) {
                 int docId = scoreDoc.doc;
                 Document doc = reader.document(docId);
                 String product = doc.get("product");
-                firstProducts.add(JsonUtils.parse(product, FirstProduct.class));
+                products.add(JsonUtils.parse(product, Product.class));
             }
-            return firstProducts;
+            return products;
         } catch (Exception e) {
             e.printStackTrace();
         }
