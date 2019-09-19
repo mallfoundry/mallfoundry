@@ -23,7 +23,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductItem {
+public class ProductSKU {
 
     @Getter
     @Setter
@@ -55,24 +55,18 @@ public class ProductItem {
 
     @Getter
     @Setter
-    private List<ProductImage> images;
-
-    @Getter
-    @Setter
     @JsonProperty("index")
     private short index;
 
-    public ProductItem() {
+    public ProductSKU() {
 
     }
 
-    public ProductItem(BigDecimal retailPrice, BigDecimal marketPrice, int stockQuantity,
-                       List<Integer> specs, List<ProductImage> images, short index) {
+    public ProductSKU(BigDecimal retailPrice, BigDecimal marketPrice, int stockQuantity, List<Integer> specs, short index) {
         this.retailPrice = retailPrice;
         this.marketPrice = marketPrice;
         this.stockQuantity = stockQuantity;
         this.specs = specs;
-        this.images = images;
         this.index = index;
     }
 }
