@@ -16,10 +16,14 @@
 
 package com.github.shop.catalog;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductSpecificationItem {
+import java.util.List;
+
+@JsonPropertyOrder({"id", "name", "images"})
+public class ProductSpecItem {
 
     @Getter
     @Setter
@@ -29,12 +33,21 @@ public class ProductSpecificationItem {
     @Setter
     private String name;
 
-    public ProductSpecificationItem() {
+    @Getter
+    @Setter
+    private List<ProductImage> images;
+
+    public ProductSpecItem() {
     }
 
-    public ProductSpecificationItem(int id, String name) {
+    public ProductSpecItem(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    public ProductSpecItem(int id, String name, List<ProductImage> images) {
+        this.id = id;
+        this.name = name;
+        this.images = images;
+    }
 }
