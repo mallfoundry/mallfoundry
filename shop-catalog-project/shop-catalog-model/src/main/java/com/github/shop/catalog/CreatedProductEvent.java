@@ -21,9 +21,9 @@ import lombok.Getter;
 public class CreatedProductEvent {
 
     @Getter
-    private Long productId;
+    private Product product;
 
-    public CreatedProductEvent(Long productId) {
-        this.productId = productId;
+    public CreatedProductEvent(Product product) {
+        this.product = product;
     }
 }
