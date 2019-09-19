@@ -16,27 +16,13 @@
 
 package com.github.shop.catalog;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class ProductImage extends ProductExhibit {
-
-    @Getter
-    @Setter
-    private short width;
-
-    @Getter
-    @Setter
-    private short height;
-
 
     public ProductImage() {
     }
 
-    public ProductImage(String url, short width, short height, short index) {
+    public ProductImage(String url, short index) {
         this.setUrl(url);
-        this.width = width;
-        this.height = height;
         this.setIndex(index);
     }
 }
