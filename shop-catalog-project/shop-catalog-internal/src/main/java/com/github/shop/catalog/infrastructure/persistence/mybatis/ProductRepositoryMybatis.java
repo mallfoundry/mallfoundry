@@ -16,9 +16,9 @@
 
 package com.github.shop.catalog.infrastructure.persistence.mybatis;
 
-import com.github.shop.keygen.PrimaryKeyGenerator;
 import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductRepository;
+import com.github.shop.keygen.PrimaryKeyGenerator;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -43,15 +43,19 @@ public class ProductRepositoryMybatis implements ProductRepository {
         // set new id
         product.setId(this.nextProductId());
         productMapper.insertProduct(product);
-        product.getItems().
-                forEach(item -> {
-                    item.setId(nextProductId());
-                    item.setProductId(product.getId());
+        product.getSkus().
+                forEach(sku -> {
+                    sku.setId(nextProductSKUId());
+                    sku.setProductId(product.getId());
                 });
-        productMapper.insertProductItems(product);
+        productMapper.insertProductSkus(product);
     }
 
     private Long nextProductId() {
         return 10000000000000L + primaryKeyGenerator.nextVal("product.id");
+    }
+
+    private Long nextProductSKUId() {
+        return 10000000000000L + primaryKeyGenerator.nextVal("product.sku.id");
     }
 }

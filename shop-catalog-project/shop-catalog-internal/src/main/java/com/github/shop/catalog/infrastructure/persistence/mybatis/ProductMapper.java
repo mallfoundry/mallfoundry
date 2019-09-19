@@ -28,6 +28,6 @@ public interface ProductMapper {
 
     void insertProduct(Product product);
 
-    void insertProductItems(Product product);
+    void insertProductSkus(Product product);
 
 }
