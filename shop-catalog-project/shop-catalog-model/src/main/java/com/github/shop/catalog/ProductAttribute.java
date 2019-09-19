@@ -22,16 +22,6 @@ import lombok.Setter;
 
 public class ProductAttribute {
 
-    public ProductAttribute() {
-    }
-
-    public ProductAttribute(String name, String value, boolean required, short sortOrder) {
-        this.name = name;
-        this.value = value;
-        this.required = required;
-        this.sortOrder = sortOrder;
-    }
-
     @Getter
     @Setter
     private String name;
@@ -42,10 +32,14 @@ public class ProductAttribute {
 
     @Getter
     @Setter
-    private boolean required;
+    private short index;
 
-    @Getter
-    @Setter
-    @JsonProperty("sort_order")
-    private short sortOrder;
+    public ProductAttribute() {
+    }
+
+    public ProductAttribute(String name, String value, short index) {
+        this.name = name;
+        this.value = value;
+        this.index = index;
+    }
 }
