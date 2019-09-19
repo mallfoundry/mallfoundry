@@ -19,13 +19,17 @@ package com.github.shop.catalog;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductQuery {
+public class ProductSearch {
 
     @Setter
     @Getter
-    private int pageNumber;
+    private int offset;
 
     @Setter
     @Getter
-    private int pageSize;
+    private int limit;
+
+    @Setter
+    @Getter
+    private String name;
 }
