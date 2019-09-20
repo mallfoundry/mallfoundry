@@ -31,7 +31,6 @@
         <module>shop-catalog-model</module>
         <module>shop-catalog-api</module>
         <module>shop-catalog-internal</module>
-        <module>shop-catalog-spring-boot</module>
         <module>shop-catalog-rest</module>
     </modules>
 </project>

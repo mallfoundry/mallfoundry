@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-public class CatalogSpringBootApplication {
+public class ShopSpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CatalogSpringBootApplication.class, args);
+        SpringApplication.run(ShopSpringBootApplication.class, args);
     }
 }

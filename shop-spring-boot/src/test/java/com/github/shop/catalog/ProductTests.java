@@ -62,9 +62,9 @@ public class ProductTests {
         product.setDescription("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
 
         product.setSkus(List.of(
-                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(200), 100, List.of(1, 5), (short) 1),
-                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(180), 99, List.of(2, 6), (short) 2),
-                new ProductSKU(BigDecimal.valueOf(100), BigDecimal.valueOf(300), 80, List.of(3, 8), (short) 3)));
+                new ProductSku.Builder().marketPrice(100).retailPrice(100).stockQuantity(100).specs(List.of(1, 5)).index(1).build(),
+                new ProductSku.Builder().marketPrice(200).retailPrice(200).stockQuantity(100).specs(List.of(2, 5)).index(2).build(),
+                new ProductSku.Builder().marketPrice(300).retailPrice(300).stockQuantity(100).specs(List.of(3, 5)).index(3).build()));
 
         product.setAttributes(List.of(
                 new ProductAttribute("产地", "中国", (short) 1),
