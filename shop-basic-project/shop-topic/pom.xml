@@ -27,6 +27,22 @@
     <artifactId>shop-topic</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.github.shop</groupId>
+            <artifactId>shop-shared-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
