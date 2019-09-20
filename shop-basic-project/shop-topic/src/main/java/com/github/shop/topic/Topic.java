@@ -21,6 +21,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * Discuss a topic.
+ */
 public class Topic {
 
     @Getter
@@ -39,4 +42,24 @@ public class Topic {
     @Setter
     private Date createTime;
 
+    /**
+     * Increments the number of comments for the current topic.
+     */
+    public void incrementComments() {
+        this.comments++;
+    }
+
+    /**
+     * Create a new topic object, set name and comments properties.
+     *
+     * @param name     topic name
+     * @param comments topic comments
+     * @return a new topic object
+     */
+    public static Topic ofNameAndComments(String name, int comments) {
+        Topic topic1 = new Topic();
+        topic1.setName(name);
+        topic1.setComments(comments);
+        return topic1;
+    }
 }
