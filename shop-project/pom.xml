@@ -118,6 +118,12 @@
 
             <dependency>
                 <groupId>com.github.shop</groupId>
+                <artifactId>shop-topic</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
                 <artifactId>shop-catalog-model</artifactId>
                 <version>${shop.version}</version>
             </dependency>
