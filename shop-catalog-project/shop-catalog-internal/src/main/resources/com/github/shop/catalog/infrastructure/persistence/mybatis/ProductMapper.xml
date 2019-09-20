@@ -33,7 +33,7 @@
                 typeHandler="com.github.shop.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler"/>
         <result property="videos" column="videos_"
                 typeHandler="com.github.shop.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler"/>
-        <collection property="skus" ofType="com.github.shop.catalog.ProductSKU">
+        <collection property="skus" ofType="com.github.shop.catalog.ProductSku">
             <id property="id" column="sku_id_"/>
             <result property="retailPrice" column="sku_retail_price_"/>
             <result property="productId" column="id_"/>
