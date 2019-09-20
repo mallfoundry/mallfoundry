@@ -18,6 +18,8 @@ package com.github.shop.topic;
 
 public interface TopicRepository {
 
+    Topic findByName(String topicName);
+
     void save(Topic topic);
 
     void updateComments(Topic topic);
