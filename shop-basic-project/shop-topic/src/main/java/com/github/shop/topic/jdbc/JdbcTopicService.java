@@ -17,19 +17,24 @@
 package com.github.shop.topic.jdbc;
 
 import com.github.shop.topic.Comment;
+import com.github.shop.topic.CommentRepository;
 import com.github.shop.topic.ReplyComment;
 import com.github.shop.topic.Topic;
 import com.github.shop.topic.TopicRepository;
 import com.github.shop.topic.TopicService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class JdbcTopicService implements TopicService {
 
     private final TopicRepository topicRepository;
 
-    public JdbcTopicService(TopicRepository topicRepository) {
+    private final CommentRepository commentRepository;
+
+    public JdbcTopicService(TopicRepository topicRepository, CommentRepository commentRepository) {
         this.topicRepository = topicRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -47,9 +52,13 @@ public class JdbcTopicService implements TopicService {
 
     }
 
+    @Transactional
     @Override
     public void addComment(Comment comment) {
-
+        Topic topic = this.topicRepository.findByName(comment.getTopicName());
+        topic.incrementComments();
+        this.topicRepository.updateComments(topic);
+        this.commentRepository.save(comment);
     }
 
     @Override
