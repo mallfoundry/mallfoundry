@@ -29,6 +29,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.shop</groupId>
             <artifactId>shop-shared-mybatis</artifactId>
         </dependency>
