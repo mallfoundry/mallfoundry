@@ -16,9 +16,11 @@
 
 package com.github.shop.topic.jdbc;
 
+import com.github.shop.data.PagedList;
 import com.github.shop.topic.Comment;
 import com.github.shop.topic.CommentRepository;
 import com.github.shop.topic.ReplyComment;
+import com.github.shop.topic.ReplyCommentRepository;
 import com.github.shop.topic.Topic;
 import com.github.shop.topic.TopicRepository;
 import com.github.shop.topic.TopicService;
@@ -32,24 +34,32 @@ public class JdbcTopicService implements TopicService {
 
     private final CommentRepository commentRepository;
 
-    public JdbcTopicService(TopicRepository topicRepository, CommentRepository commentRepository) {
+    private final ReplyCommentRepository replyCommentRepository;
+
+    public JdbcTopicService(TopicRepository topicRepository,
+                            CommentRepository commentRepository,
+                            ReplyCommentRepository replyCommentRepository) {
         this.topicRepository = topicRepository;
         this.commentRepository = commentRepository;
+        this.replyCommentRepository = replyCommentRepository;
     }
 
     @Override
-    public void getTopic(String topicName) {
-
+    public Topic getTopic(String topicName) {
+        return this.topicRepository.findByName(topicName);
     }
 
+    @Transactional
     @Override
     public void createTopic(Topic topic) {
         this.topicRepository.save(topic);
     }
 
+    @Transactional
     @Override
-    public void deleteTopic(Topic topic) {
-
+    public void deleteTopic(String topicName) {
+        this.topicRepository.delete(topicName);
+        this.commentRepository.deleteByTopicName(topicName);
     }
 
     @Transactional
@@ -62,17 +72,22 @@ public class JdbcTopicService implements TopicService {
     }
 
     @Override
-    public void addReply(ReplyComment reply) {
-
+    public void deleteComment(Comment comment) {
+        this.commentRepository.delete(comment.getId());
     }
 
     @Override
-    public void deleteComment(Comment comment) {
+    public PagedList<Comment> getComments(String topicName, int offset, int limit) {
+        return this.commentRepository.findListByTopicName(topicName, offset, limit);
+    }
 
+    @Override
+    public void addReply(ReplyComment reply) {
+        this.replyCommentRepository.save(reply);
     }
 
     @Override
     public void deleteReply(ReplyComment reply) {
-
+        this.replyCommentRepository.delete(reply.getReplyId());
     }
 }
