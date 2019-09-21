@@ -16,6 +16,8 @@
 
 package com.github.shop.keygen;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -76,10 +78,25 @@ public class JdbcSequencePrimaryKeyGenerator extends AbstractSequencePrimaryKeyG
 
 
     public static class NextValue {
+
+        @Getter
+        @Setter
         String keyName;
+
+        @Getter
+        @Setter
         long currentValue;
+
+        @Getter
+        @Setter
         long minValue;
+
+        @Getter
+        @Setter
         long maxValue;
+
+        @Getter
+        @Setter
         short incrementValue;
 
         public NextValue() {
@@ -91,46 +108,6 @@ public class JdbcSequencePrimaryKeyGenerator extends AbstractSequencePrimaryKeyG
             this.currentValue = this.minValue;
             this.maxValue = 999999999999L;
             this.incrementValue = 1;
-        }
-
-        public String getKeyName() {
-            return keyName;
-        }
-
-        public void setKeyName(String keyName) {
-            this.keyName = keyName;
-        }
-
-        public long getCurrentValue() {
-            return currentValue;
-        }
-
-        public void setCurrentValue(long currentValue) {
-            this.currentValue = currentValue;
-        }
-
-        public long getMinValue() {
-            return minValue;
-        }
-
-        public void setMinValue(long minValue) {
-            this.minValue = minValue;
-        }
-
-        public long getMaxValue() {
-            return maxValue;
-        }
-
-        public void setMaxValue(long maxValue) {
-            this.maxValue = maxValue;
-        }
-
-        public short getIncrementValue() {
-            return incrementValue;
-        }
-
-        public void setIncrementValue(short incrementValue) {
-            this.incrementValue = incrementValue;
         }
     }
 }
