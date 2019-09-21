@@ -16,19 +16,28 @@
 
 package com.github.shop.topic;
 
+import com.github.shop.data.PagedList;
+
+/**
+ * Topic service.
+ *
+ * @author tang zhi
+ */
 public interface TopicService {
 
-    void getTopic(String topicName);
+    Topic getTopic(String topicName);
 
     void createTopic(Topic topic);
 
-    void deleteTopic(Topic topic);
+    void deleteTopic(String topicName);
 
     void addComment(Comment comment);
 
+    void deleteComment(Comment commentId);
+
+    PagedList<Comment> getComments(String topicName, int offset, int limit);
+
     void addReply(ReplyComment reply);
 
-    void deleteComment(Comment comment);
-
-    void deleteReply(ReplyComment reply);
+    void deleteReply(ReplyComment replyId);
 }
