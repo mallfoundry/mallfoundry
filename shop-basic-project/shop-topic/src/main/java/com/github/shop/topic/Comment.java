@@ -16,15 +16,21 @@
 
 package com.github.shop.topic;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
+@JsonPropertyOrder({"topicName", "id", "uid", "nickname", "message", "likes", "createTime"})
 public class Comment {
 
     @Getter
     @Setter
+    @JsonProperty("topic_name")
     private String topicName;
 
     @Getter
@@ -49,5 +55,19 @@ public class Comment {
 
     @Getter
     @Setter
+    private List<ReplyComment> replies;
+
+    @Getter
+    @Setter
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("create_time")
     private Date createTime;
+
+
+    public static Comment of(String topicName, String commentId) {
+        Comment comment = new Comment();
+        comment.setTopicName(topicName);
+        comment.setId(commentId);
+        return comment;
+    }
 }
