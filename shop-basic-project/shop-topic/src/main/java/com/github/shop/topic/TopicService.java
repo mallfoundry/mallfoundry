@@ -21,7 +21,7 @@ import com.github.shop.data.PagedList;
 /**
  * Topic service.
  *
- * @author tang zhi
+ * @author Zhi Tang
  */
 public interface TopicService {
 
