@@ -16,9 +16,15 @@
 
 package com.github.shop.topic;
 
+import com.github.shop.data.PagedList;
+
 public interface CommentRepository {
 
     void save(Comment comment);
 
     void delete(String commentId);
+
+    void deleteByTopicName(String topicName);
+
+    PagedList<Comment> findListByTopicName(String topicName, int offset, int limit);
 }
