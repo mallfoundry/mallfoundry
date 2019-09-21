@@ -16,6 +16,8 @@
 
 package com.github.shop.topic;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,6 +42,8 @@ public class Topic {
 
     @Getter
     @Setter
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("create_time")
     private Date createTime;
 
     /**
