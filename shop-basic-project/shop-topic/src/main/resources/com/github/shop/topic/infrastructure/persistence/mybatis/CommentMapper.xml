@@ -19,32 +19,57 @@
 
 <mapper namespace="com.github.shop.topic.infrastructure.persistence.mybatis.CommentMapper">
     <resultMap id="commentResultMap" type="com.github.shop.topic.Comment">
-        <id property="name" column="name_"/>
-        <result property="type" column="type_"/>
-        <result property="comments" column="comments_"/>
+        <id property="id" column="id_"/>
+        <result property="topicName" column="topic_name_"/>
+        <result property="uid" column="uid_"/>
+        <result property="nickname" column="nickname_"/>
+        <result property="message" column="message_"/>
+        <result property="likes" column="likes_"/>
         <result property="createTime" column="create_time_"/>
     </resultMap>
 
-    <select id="selectTopicByName" resultMap="commentResultMap">
-        SELECT
-            name_, type_, comments_, create_time_
-        FROM
-            topic
-        WHERE
-            name_ = #{name}
-    </select>
-
     <insert id="insertComment">
-        INSERT
+        INSERT INTO
             basic_comment ( id_, topic_name_, uid_, nickname_, message_, likes_, create_time_ )
         VALUES
-            (#{id}, #{topicName}, #{uid}, #{nikename}, #{message}, #{likes}, #{createTime})
+            (#{id}, #{topicName}, #{uid}, #{nickname}, #{message}, #{likes}, #{createTime})
     </insert>
 
-    <update id="updateTopic">
-        UPDATE topic
-        SET comments_ = #{comments}
+    <delete id="deleteComment">
+         DELETE
+        FROM
+            basic_comment
         WHERE
-            name_ = #{name}
-    </update>
+            id_ = #{id}
+    </delete>
+
+    <delete id="deleteCommentsByTopicName">
+         DELETE
+        FROM
+            basic_comment
+        WHERE
+            topic_name_ = #{topicName}
+    </delete>
+
+    <select id="selectCommentsByTopicName" resultMap="commentResultMap">
+        SELECT
+            id_,
+            topic_name_,
+            uid_,
+            nickname_,
+            message_,
+            likes_,
+            create_time_
+        FROM
+            basic_comment
+        WHERE
+            topic_name_ = #{topicName}
+        ORDER BY
+            create_time_ DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="totalCount" resultType="Long">
+        SELECT count(*) FROM basic_comment
+    </select>
 </mapper>

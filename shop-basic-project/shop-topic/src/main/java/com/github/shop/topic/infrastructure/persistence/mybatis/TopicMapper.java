@@ -30,4 +30,6 @@ public interface TopicMapper {
     void insertTopic(Topic topic);
 
     void updateTopic(Topic topic);
+
+    void deleteTopicByName(@Param("name") String name);
 }

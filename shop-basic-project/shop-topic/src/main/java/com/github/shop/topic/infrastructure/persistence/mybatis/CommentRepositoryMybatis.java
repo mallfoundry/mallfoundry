@@ -16,26 +16,66 @@
 
 package com.github.shop.topic.infrastructure.persistence.mybatis;
 
+import com.github.shop.data.OffsetPagedList;
+import com.github.shop.data.PagedList;
 import com.github.shop.topic.Comment;
 import com.github.shop.topic.CommentRepository;
+import com.github.shop.topic.TopicIdentifier;
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class CommentRepositoryMybatis implements CommentRepository {
 
     private final CommentMapper commentMapper;
 
-    public CommentRepositoryMybatis(CommentMapper commentMapper) {
+    private final ReplyCommentMapper replyCommentMapper;
+
+    public CommentRepositoryMybatis(CommentMapper commentMapper,
+                                    ReplyCommentMapper replyCommentMapper) {
         this.commentMapper = commentMapper;
+        this.replyCommentMapper = replyCommentMapper;
     }
 
     @Override
     public void save(Comment comment) {
+        // Set comment id.
+        if (StringUtils.isEmpty(comment.getId())) {
+            comment.setId(TopicIdentifier.newCommentId());
+        }
         this.commentMapper.insertComment(comment);
     }
 
     @Override
     public void delete(String commentId) {
+        this.commentMapper.deleteComment(commentId);
+    }
 
+    @Override
+    public void deleteByTopicName(String topicName) {
+        this.commentMapper.deleteCommentsByTopicName(topicName);
+    }
+
+    @Override
+    public PagedList<Comment> findListByTopicName(String topicName, int offset, int limit) {
+        long total = this.commentMapper.totalCount();
+        if (total == 0) {
+            return PagedList.empty();
+        }
+        List<Comment> comments = this.commentMapper.selectCommentsByTopicName(topicName, offset, limit);
+        Set<String> commentIdSet = comments.stream().map(Comment::getId).collect(Collectors.toSet());
+        List<GroupedReplies> replies = replyCommentMapper.selectListByCommentIds(commentIdSet);
+        comments.forEach(comment -> {
+            GroupedReplies groupedReplies = IterableUtils.find(replies, gr -> StringUtils.equals(gr.getCommentId(), comment.getId()));
+            comment.setReplies(Objects.nonNull(groupedReplies) ? groupedReplies.getReplies() : Collections.emptyList());
+        });
+        return OffsetPagedList.of(comments, offset, limit, total);
     }
 }

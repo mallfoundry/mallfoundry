@@ -30,13 +30,17 @@ public class TopicRepositoryMybatis implements TopicRepository {
     }
 
     @Override
+    public Topic findByName(String topicName) {
+        return this.topicMapper.selectTopicByName(topicName);
+    }
+
+    @Override
     public void save(Topic topic) {
         this.topicMapper.insertTopic(topic);
     }
 
     @Override
     public void updateComments(Topic topic) {
-        topic.incrementComments();
         this.update(Topic.ofNameAndComments(topic.getName(), topic.getComments()));
     }
 
@@ -47,6 +51,6 @@ public class TopicRepositoryMybatis implements TopicRepository {
 
     @Override
     public void delete(String topicName) {
-
+        this.topicMapper.deleteTopicByName(topicName);
     }
 }

@@ -46,4 +46,12 @@
         WHERE
             name_ = #{name}
     </update>
+
+    <delete id="deleteTopicByName">
+        DELETE
+        FROM
+            basic_topic
+        WHERE
+            name_ = #{name}
+    </delete>
 </mapper>

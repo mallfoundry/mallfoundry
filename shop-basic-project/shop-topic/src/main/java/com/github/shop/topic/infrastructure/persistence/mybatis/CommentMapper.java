@@ -18,11 +18,24 @@ package com.github.shop.topic.infrastructure.persistence.mybatis;
 
 import com.github.shop.topic.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
 public interface CommentMapper {
 
     void insertComment(Comment comment);
+
+    void deleteComment(@Param("id") String id);
+
+    void deleteCommentsByTopicName(@Param("topicName") String topicName);
+
+    long totalCount();
+
+    List<Comment> selectCommentsByTopicName(@Param("topicName") String topicName,
+                                            @Param("offset") int offset,
+                                            @Param("limit") int limit);
 }
