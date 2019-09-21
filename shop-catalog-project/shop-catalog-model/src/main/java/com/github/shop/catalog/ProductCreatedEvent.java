@@ -18,12 +18,12 @@ package com.github.shop.catalog;
 
 import lombok.Getter;
 
-public class CreatedProductEvent {
+public class ProductCreatedEvent {
 
     @Getter
     private Product product;
 
-    public CreatedProductEvent(Product product) {
+    public ProductCreatedEvent(Product product) {
         this.product = product;
     }
 }

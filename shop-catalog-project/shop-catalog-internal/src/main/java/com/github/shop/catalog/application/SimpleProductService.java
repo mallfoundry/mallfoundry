@@ -16,7 +16,7 @@
 
 package com.github.shop.catalog.application;
 
-import com.github.shop.catalog.CreatedProductEvent;
+import com.github.shop.catalog.ProductCreatedEvent;
 import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductCategory;
 import com.github.shop.catalog.ProductCategoryRepository;
@@ -91,8 +91,8 @@ public class SimpleProductService implements ProductService, ApplicationEventPub
     @Override
     public void createProduct(Product product) {
         this.productRepository.create(product);
-        // Publish create product event.
-        this.eventPublisher.publishEvent(new CreatedProductEvent(product));
+        // Publish product created event.
+        this.eventPublisher.publishEvent(new ProductCreatedEvent(product));
     }
 
     @Override

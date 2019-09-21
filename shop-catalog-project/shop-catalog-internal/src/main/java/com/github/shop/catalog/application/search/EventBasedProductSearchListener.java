@@ -16,7 +16,7 @@
 
 package com.github.shop.catalog.application.search;
 
-import com.github.shop.catalog.CreatedProductEvent;
+import com.github.shop.catalog.ProductCreatedEvent;
 import com.github.shop.catalog.search.ProductSearchService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,8 @@ public class EventBasedProductSearchListener {
         this.productSearchService = productSearchService;
     }
 
-    @EventListener(CreatedProductEvent.class)
-    public void onCreatedProduct(CreatedProductEvent event) {
+    @EventListener(ProductCreatedEvent.class)
+    public void onCreatedProduct(ProductCreatedEvent event) {
         this.productSearchService.add(event.getProduct());
     }
 }

@@ -39,7 +39,7 @@ public class Product extends ProductInfo {
 
     @Getter
     @Setter
-    private List<ProductSKU> skus;
+    private List<ProductSku> skus;
 
     @Getter
     @Setter
