@@ -17,19 +17,16 @@
 package com.github.shop.catalog;
 
 import com.github.shop.util.JsonUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class ProductCategoryTests {
@@ -46,9 +43,9 @@ public class ProductCategoryTests {
         System.out.println(productJsonString);
     }
 
-    @Transactional
-    @Rollback(false)
     @Test
+    @Rollback(false)
+    @Transactional
     public void testCreate() throws Exception {
         ProductCategory category1 = new ProductCategory();
         category1.setLevel(ProductCategory.TOP_LEVEL);
