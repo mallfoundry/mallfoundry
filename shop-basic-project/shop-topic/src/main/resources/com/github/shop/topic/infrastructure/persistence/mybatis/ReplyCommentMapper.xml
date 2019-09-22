@@ -68,8 +68,11 @@
             create_time_
         FROM
             basic_reply_comment
+        WHERE
         <if test="commentIds != null and !commentIds.isEmpty()">
-            <foreach collection="commentIds"></foreach>
+            <foreach collection="commentIds" item="commentId" open="comment_id_ in (" close=")" separator=",">
+                #{commentId}
+            </foreach>
         </if>
         ORDER BY
             create_time_ DESC
