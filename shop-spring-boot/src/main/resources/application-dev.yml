@@ -1,3 +1,4 @@
 logging:
   level:
-    com.github.mall: debug
+    com.github.shop: debug
+    org.apache.ibatis: debug
