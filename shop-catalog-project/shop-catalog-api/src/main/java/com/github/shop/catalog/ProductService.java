@@ -19,7 +19,7 @@ package com.github.shop.catalog;
 import java.util.List;
 
 /**
- * Product Service.
+ * Product service.
  *
  * @author Zhi Tang
  * @since 1.0
