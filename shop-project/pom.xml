@@ -112,6 +112,12 @@
 
             <dependency>
                 <groupId>com.github.shop</groupId>
+                <artifactId>shop-identity</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
                 <artifactId>shop-storage</artifactId>
                 <version>${shop.version}</version>
             </dependency>
@@ -148,7 +154,6 @@
 
         </dependencies>
     </dependencyManagement>
-
     <build>
         <pluginManagement>
             <plugins>
