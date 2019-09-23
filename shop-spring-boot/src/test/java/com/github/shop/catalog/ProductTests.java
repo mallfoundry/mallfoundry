@@ -51,17 +51,51 @@ public class ProductTests {
     @Rollback(false)
     @Transactional
     public void testSaveProduct() {
+        Product product1 = this.newProduct(
+                "华为 HUAWEI P30 Pro 超感光徕卡四摄10倍混合变焦麒麟980芯片屏内指纹 8GB+128GB极光色全网通版双4G手机",
+                4988,
+                "http://192.168.0.102:8077/static/images/800_800_1555464685019mp.png");
+        productService.createProduct(product1);
+
+        Product product2 = this.newProduct(
+                "小米9 4800万超广角三摄 6GB+128GB全息幻彩蓝 骁龙855 全网通4G 双卡双待 水滴全面屏拍照智能游戏手机",
+                2599,
+                "http://192.168.0.102:8077/static/images/10001477_1568011758561_750x750.jpg");
+        productService.createProduct(product2);
+
+        Product product3 = this.newProduct(
+                "OPPO Reno2 4800万变焦四摄 视频防抖 6.5英寸阳光护眼全面屏 8GB+128GB 薄雾粉 拍照游戏智能手机",
+                2999,
+                "http://192.168.0.102:8077/static/images/201908300308085d68d044c3bcc.png");
+        productService.createProduct(product3);
+
+        Product product4 = this.newProduct(
+                "vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机 深空流光 8GB 256GB",
+                5698,
+                "http://192.168.0.102:8077/static/images/10001477_1568011758562_750x750.png");
+        productService.createProduct(product4);
+
+        Product product5 = this.newProduct(
+                "一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄 8GB+256GB 星雾蓝 全面屏拍照游戏手机",
+                4299,
+                "http://192.168.0.102:8077/static/images/eb48f0aa21853fe648a29523231b736d_840_840.png");
+        productService.createProduct(product5);
+    }
+
+    private Product newProduct(String name, double retailPrice, String imageUrl) {
         Product product = new Product();
         product.setFreeShipping(false);
         product.setShippingMoney(BigDecimal.valueOf(10));
-        product.setName("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
+        product.setName(name);
         product.setShortName("泳衣女");
-        product.setDescription("泳衣女遮肚显瘦保守连体裙性感2019新款爆款大码胖mm学生少女仙女");
-
+        product.setDescription(name);
+        product.setImages(List.of(new ProductImage(imageUrl, (short) 0),
+                new ProductImage(imageUrl, (short) 1),
+                new ProductImage(imageUrl, (short) 2)));
         product.setSkus(List.of(
-                new ProductSku.Builder().marketPrice(100).retailPrice(100).stockQuantity(100).specs(List.of(1, 5)).index(1).build(),
-                new ProductSku.Builder().marketPrice(200).retailPrice(200).stockQuantity(100).specs(List.of(2, 5)).index(2).build(),
-                new ProductSku.Builder().marketPrice(300).retailPrice(300).stockQuantity(100).specs(List.of(3, 5)).index(3).build()));
+                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(1, 5)).index(0).build(),
+                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(2, 5)).index(1).build(),
+                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(3, 5)).index(2).build()));
 
         product.setAttributes(List.of(
                 new ProductAttribute("产地", "中国", (short) 1),
@@ -69,32 +103,32 @@ public class ProductTests {
                 new ProductAttribute("颜色", "黑", (short) 3)));
 
         product.setSpecs(List.of(
-                new ProductSpecification((short) 1, "颜色", List.of(
-                        new ProductSpecItem(1, "黑色",
-                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
-                                        new ProductImage("http://localhost/b.png", (short) 2),
-                                        new ProductImage("http://localhost/c.png", (short) 3))),
-                        new ProductSpecItem(2, "红色",
-                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
-                                        new ProductImage("http://localhost/b.png", (short) 2),
-                                        new ProductImage("http://localhost/c.png", (short) 3))),
-                        new ProductSpecItem(3, "蓝色",
-                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
-                                        new ProductImage("http://localhost/b.png", (short) 2),
-                                        new ProductImage("http://localhost/c.png", (short) 3))),
-                        new ProductSpecItem(4, "褐色",
-                                List.of(new ProductImage("http://localhost/a.png", (short) 1),
-                                        new ProductImage("http://localhost/b.png", (short) 2),
-                                        new ProductImage("http://localhost/c.png", (short) 3)))
+                new ProductSpecification((short) 0, "颜色", List.of(
+                        new ProductSpecItem(0, "黑色",
+                                List.of(new ProductImage(imageUrl, (short) 0),
+                                        new ProductImage(imageUrl, (short) 1),
+                                        new ProductImage(imageUrl, (short) 2))),
+                        new ProductSpecItem(1, "红色",
+                                List.of(new ProductImage(imageUrl, (short) 0),
+                                        new ProductImage(imageUrl, (short) 1),
+                                        new ProductImage(imageUrl, (short) 2))),
+                        new ProductSpecItem(2, "蓝色",
+                                List.of(new ProductImage(imageUrl, (short) 0),
+                                        new ProductImage(imageUrl, (short) 1),
+                                        new ProductImage(imageUrl, (short) 2))),
+                        new ProductSpecItem(3, "褐色",
+                                List.of(new ProductImage(imageUrl, (short) 0),
+                                        new ProductImage(imageUrl, (short) 1),
+                                        new ProductImage(imageUrl, (short) 2)))
                 )),
                 new ProductSpecification((short) 1, "型号", List.of(
-                        new ProductSpecItem(5, "32G"),
-                        new ProductSpecItem(6, "64G"),
-                        new ProductSpecItem(7, "128G"),
-                        new ProductSpecItem(8, "256G")
+                        new ProductSpecItem(4, "32G"),
+                        new ProductSpecItem(5, "64G"),
+                        new ProductSpecItem(6, "128G"),
+                        new ProductSpecItem(7, "256G")
                 ))
         ));
-        productService.createProduct(product);
-        System.out.println(product);
+
+        return product;
     }
 }
