@@ -29,7 +29,7 @@
     <packaging>pom</packaging>
 
     <modules>
-	    <module>shop-identity</module>
+        <module>shop-identity</module>
         <module>shop-storage</module>
         <module>shop-security</module>
         <module>shop-topic</module>
