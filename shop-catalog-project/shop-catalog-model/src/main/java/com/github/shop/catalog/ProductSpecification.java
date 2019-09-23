@@ -18,27 +18,22 @@ package com.github.shop.catalog;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @JsonPropertyOrder({"id", "type", "items"})
 public class ProductSpecification {
 
-    @Getter
-    @Setter
     private short id;
 
-    @Getter
-    @Setter
     private String type;
 
-    @Getter
-    @Setter
     private List<ProductSpecItem> items;
-
-    public ProductSpecification() {
-    }
 
     public ProductSpecification(short id, String type, List<ProductSpecItem> items) {
         this.id = id;

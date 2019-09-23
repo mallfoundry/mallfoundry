@@ -23,35 +23,24 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 public class ProductInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     @JsonProperty("short_name")
     private String shortName;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     @JsonProperty("free_shipping")
     private boolean freeShipping;
 
-    @Getter
-    @Setter
     @JsonProperty("shipping_money")
     private BigDecimal shippingMoney;
 
-    @Getter
-    @Setter
     private String description;
-
 }

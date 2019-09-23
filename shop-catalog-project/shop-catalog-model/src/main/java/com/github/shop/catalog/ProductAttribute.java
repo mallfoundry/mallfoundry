@@ -16,22 +16,17 @@
 
 package com.github.shop.catalog;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class ProductAttribute {
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     private String value;
 
-    @Getter
-    @Setter
     private short index;
 
     public ProductAttribute() {

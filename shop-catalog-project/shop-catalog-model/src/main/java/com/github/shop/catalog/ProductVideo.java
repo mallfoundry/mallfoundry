@@ -17,16 +17,15 @@
 package com.github.shop.catalog;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Setter
+@Getter
+@NoArgsConstructor
 public class ProductVideo extends ProductExhibit {
 
-    @Setter
-    @Getter
     private short length;
-
-    public ProductVideo() {
-    }
 
     public ProductVideo(String url, short length, short index) {
         this.setUrl(url);

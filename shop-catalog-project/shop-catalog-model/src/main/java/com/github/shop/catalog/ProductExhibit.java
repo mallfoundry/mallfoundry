@@ -16,26 +16,18 @@
 
 package com.github.shop.catalog;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class ProductExhibit {
 
-    @Getter
-    @Setter
     private String url;
 
-    @Getter
-    @Setter
     private String title;
 
-    @Getter
-    @Setter
     private int size;
 
-    @Getter
-    @Setter
-    @JsonProperty("index")
     private short index;
 }

@@ -23,6 +23,8 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 public class ProductCategory {
 
     public static final byte TOP_LEVEL = 1;
@@ -31,46 +33,24 @@ public class ProductCategory {
 
     public static final byte THREE_LEVEL = 3;
 
-    public ProductCategory() {
-        this.setCreateTime(new Date());
-    }
-
-    @Getter
-    @Setter
     private int id;
 
-    @Getter
-    @Setter
     @JsonProperty("parent_id")
     private int parentId;
 
-    @Getter
-    @Setter
     @JsonProperty("first_letter")
     private String firstLetter;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     private String image;
 
-    @Getter
-    @Setter
     private String description;
 
-    @Getter
-    @Setter
     private byte level;
 
-    @Getter
-    @Setter
     private short index;
 
-    @Getter
-    @Setter
     @JsonProperty("create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

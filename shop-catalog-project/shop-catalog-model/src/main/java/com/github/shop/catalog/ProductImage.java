@@ -16,10 +16,10 @@
 
 package com.github.shop.catalog;
 
-public class ProductImage extends ProductExhibit {
+import lombok.NoArgsConstructor;
 
-    public ProductImage() {
-    }
+@NoArgsConstructor
+public class ProductImage extends ProductExhibit {
 
     public ProductImage(String url, short index) {
         this.setUrl(url);
