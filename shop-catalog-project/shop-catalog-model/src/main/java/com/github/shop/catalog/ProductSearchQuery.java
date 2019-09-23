@@ -19,17 +19,13 @@ package com.github.shop.catalog;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductSearch {
+@Getter
+@Setter
+public class ProductSearchQuery {
 
-    @Setter
-    @Getter
     private int offset;
 
-    @Setter
-    @Getter
     private int limit;
 
-    @Setter
-    @Getter
     private String name;
 }
