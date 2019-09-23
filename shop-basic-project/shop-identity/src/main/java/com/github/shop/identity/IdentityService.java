@@ -1,6 +1,8 @@
 package com.github.shop.identity;
 
 /**
+ * A identity service.
+ *
  * @author Zhi Tang
  */
 public interface IdentityService {
