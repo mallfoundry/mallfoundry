@@ -24,49 +24,36 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductSku implements Serializable {
+@Getter
+@Setter
+public class ProductSKU implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     @JsonProperty("product_id")
     private Long productId;
 
-    @Getter
-    @Setter
     @JsonProperty("retail_price")
     private BigDecimal retailPrice;
 
-    @Getter
-    @Setter
     @JsonProperty("market_price")
     private BigDecimal marketPrice;
 
-    @Getter
-    @Setter
     @JsonProperty("stock_quantity")
     private int stockQuantity;
 
-    @Getter
-    @Setter
     private List<Integer> specs;
 
-    @Getter
-    @Setter
-    @JsonProperty("index")
     private short index;
 
     public static class Builder {
 
-        private ProductSku productSku;
+        private ProductSKU productSku;
 
         public Builder() {
-            productSku = new ProductSku();
+            productSku = new ProductSKU();
         }
 
         public Builder retailPrice(double retailPrice) {
@@ -99,7 +86,7 @@ public class ProductSku implements Serializable {
             return this;
         }
 
-        public ProductSku build() {
+        public ProductSKU build() {
             return this.productSku;
         }
     }
