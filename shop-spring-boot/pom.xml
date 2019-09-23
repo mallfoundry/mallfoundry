@@ -22,11 +22,10 @@
     <parent>
         <groupId>com.github.shop</groupId>
         <artifactId>shop-project</artifactId>
+        <relativePath>../shop-project</relativePath>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>shop-spring-boot</artifactId>
-    <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
