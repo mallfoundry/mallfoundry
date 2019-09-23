@@ -12,14 +12,14 @@ mybatis:
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
-  type-handlers-package: com.github.mall.mybatis.type
+  type-handlers-package: com.github.shop.mybatis.type
 server:
   port: 8077
 shop:
   storage:
     store:
       type: local
-      directory: D:/shop/data/storage
+      directory: D:/shop/data/storage/
     http:
       base-url: http://localhost:${server.port}/static
   product:
