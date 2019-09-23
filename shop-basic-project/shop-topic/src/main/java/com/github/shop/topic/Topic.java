@@ -26,22 +26,16 @@ import java.util.Date;
 /**
  * Discuss a topic.
  */
+@Getter
+@Setter
 public class Topic {
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     private String type;
 
-    @Getter
-    @Setter
     private int comments;
 
-    @Getter
-    @Setter
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("create_time")
     private Date createTime;

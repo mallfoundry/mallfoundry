@@ -24,59 +24,39 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @JsonPropertyOrder({
         "topicName", "commentId", "id", "uid", "nickname",
         "replyId", "replyUid", "replyNickname",
         "message", "likes", "createTime"})
 public class ReplyComment {
 
-    @Getter
-    @Setter
     private String id;
 
-    @Getter
-    @Setter
     @JsonProperty("topic_name")
     private String topicName;
 
-    @Getter
-    @Setter
     @JsonProperty("comment_id")
     private String commentId;
 
-    @Getter
-    @Setter
     private String uid;
 
-    @Getter
-    @Setter
     private String nickname;
 
-    @Getter
-    @Setter
     @JsonProperty("reply_id")
     private String replyId;
 
-    @Getter
-    @Setter
     @JsonProperty("reply_uid")
     private String replyUid;
 
-    @Getter
-    @Setter
     @JsonProperty("reply_nickname")
     private String replyNickname;
 
-    @Getter
-    @Setter
     private String message;
 
-    @Getter
-    @Setter
     private int likes;
 
-    @Getter
-    @Setter
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("create_time")
     private Date createTime;

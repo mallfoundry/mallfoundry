@@ -25,44 +25,29 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
 @JsonPropertyOrder({"topicName", "id", "uid", "nickname", "message", "likes", "createTime"})
 public class Comment {
 
-    @Getter
-    @Setter
     @JsonProperty("topic_name")
     private String topicName;
 
-    @Getter
-    @Setter
     private String id;
 
-    @Getter
-    @Setter
     private String uid;
 
-    @Getter
-    @Setter
     private String nickname;
 
-    @Getter
-    @Setter
     private String message;
 
-    @Getter
-    @Setter
     private int likes;
 
-    @Getter
-    @Setter
     private List<ReplyComment> replies;
 
-    @Getter
-    @Setter
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("create_time")
     private Date createTime;
-
 
     public static Comment of(String topicName, String commentId) {
         Comment comment = new Comment();
