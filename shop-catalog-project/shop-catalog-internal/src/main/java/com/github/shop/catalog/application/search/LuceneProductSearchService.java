@@ -17,7 +17,7 @@
 package com.github.shop.catalog.application.search;
 
 import com.github.shop.catalog.Product;
-import com.github.shop.catalog.ProductSearch;
+import com.github.shop.catalog.ProductSearchQuery;
 import com.github.shop.catalog.search.ProductSearchService;
 import com.github.shop.util.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -72,7 +72,7 @@ public class LuceneProductSearchService implements ProductSearchService {
     }
 
     @Override
-    public List<Product> search(ProductSearch search) {
+    public List<Product> search(ProductSearchQuery search) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();

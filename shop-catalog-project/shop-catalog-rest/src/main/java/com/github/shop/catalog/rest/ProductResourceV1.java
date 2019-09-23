@@ -17,7 +17,7 @@
 package com.github.shop.catalog.rest;
 
 import com.github.shop.catalog.Product;
-import com.github.shop.catalog.ProductSearch;
+import com.github.shop.catalog.ProductSearchQuery;
 import com.github.shop.catalog.ProductService;
 import com.github.shop.catalog.search.ProductSearchService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +47,7 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products/search")
-    public List<Product> search(ProductSearch search) {
+    public List<Product> search(ProductSearchQuery search) {
         return this.productSearchService.search(search);
     }
 

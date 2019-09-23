@@ -17,7 +17,7 @@
 package com.github.shop.catalog.search;
 
 import com.github.shop.catalog.Product;
-import com.github.shop.catalog.ProductSearch;
+import com.github.shop.catalog.ProductSearchQuery;
 
 import java.util.List;
 
@@ -25,5 +25,5 @@ public interface ProductSearchService {
 
     void add(Product product);
 
-    List<Product> search(ProductSearch query);
+    List<Product> search(ProductSearchQuery query);
 }

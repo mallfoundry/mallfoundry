@@ -18,7 +18,7 @@ package com.github.shop.catalog.search;
 
 
 import com.github.shop.catalog.Product;
-import com.github.shop.catalog.ProductSearch;
+import com.github.shop.catalog.ProductSearchQuery;
 import com.github.shop.catalog.application.search.LuceneProductSearchService;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +37,7 @@ public class LuceneProductSearchServiceTests {
 
     @Test
     public void testList() {
-        ProductSearch search = new ProductSearch();
+        ProductSearchQuery search = new ProductSearchQuery();
         search.setName("abc");
         searchService.search(search);
     }

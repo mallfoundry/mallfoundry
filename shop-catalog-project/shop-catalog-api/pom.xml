@@ -28,9 +28,21 @@
     <artifactId>shop-catalog-api</artifactId>
 
     <dependencies>
+
         <dependency>
-            <groupId>com.github.shop</groupId>
-            <artifactId>shop-catalog-model</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

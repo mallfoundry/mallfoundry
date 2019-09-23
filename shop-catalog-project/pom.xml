@@ -28,7 +28,6 @@
     <artifactId>shop-catalog-project</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>shop-catalog-model</module>
         <module>shop-catalog-api</module>
         <module>shop-catalog-internal</module>
         <module>shop-catalog-rest</module>
