@@ -16,7 +16,7 @@
 
 package com.github.shop.spring.boot.autoconfigure.catalog;
 
-import com.github.shop.catalog.application.search.LuceneProductSearchService;
+import com.github.shop.catalog.search.LuceneProductSearchService;
 import com.github.shop.catalog.search.ProductSearchService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
