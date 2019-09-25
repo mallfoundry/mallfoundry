@@ -152,6 +152,29 @@
                 <version>${shop.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.github.shop</groupId>
+                <artifactId>shop-order-api</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
+                <artifactId>shop-buyer-api</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
+                <artifactId>shop-buyer-internal</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.shop</groupId>
+                <artifactId>shop-buyer-rest</artifactId>
+                <version>${shop.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
