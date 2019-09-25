@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.shop.catalog.application.search;
+package com.github.shop.catalog.search;
 
 import com.github.shop.catalog.ProductCreatedEvent;
-import com.github.shop.catalog.search.ProductSearchService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 

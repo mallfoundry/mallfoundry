@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.shop.catalog.application.search;
+package com.github.shop.catalog.search;
 
 import com.github.shop.catalog.Product;
 import com.github.shop.catalog.ProductSearchQuery;
-import com.github.shop.catalog.search.ProductSearchService;
 import com.github.shop.util.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

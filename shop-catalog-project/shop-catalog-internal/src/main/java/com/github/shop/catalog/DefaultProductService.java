@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.shop.catalog.application;
+package com.github.shop.catalog;
 
-import com.github.shop.catalog.ProductCreatedEvent;
-import com.github.shop.catalog.Product;
-import com.github.shop.catalog.ProductCategory;
-import com.github.shop.catalog.ProductCategoryRepository;
-import com.github.shop.catalog.ProductRepository;
-import com.github.shop.catalog.ProductService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
@@ -30,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class SimpleProductService implements ProductService, ApplicationEventPublisherAware {
+public class DefaultProductService implements ProductService, ApplicationEventPublisherAware {
 
     private final ProductRepository productRepository;
 
@@ -38,7 +32,7 @@ public class SimpleProductService implements ProductService, ApplicationEventPub
 
     private ApplicationEventPublisher eventPublisher;
 
-    public SimpleProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
+    public DefaultProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
     }
