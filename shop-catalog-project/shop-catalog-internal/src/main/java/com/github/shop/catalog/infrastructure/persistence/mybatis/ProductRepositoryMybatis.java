@@ -51,11 +51,13 @@ public class ProductRepositoryMybatis implements ProductRepository {
         productMapper.insertProductSkus(product);
     }
 
-    private Long nextProductId() {
-        return 10000000000000L + primaryKeyGenerator.nextVal("product.id");
+    private String nextProductId() {
+        long nextProductId = 10000000000000L + primaryKeyGenerator.nextVal("product.id");
+        return String.valueOf(nextProductId);
     }
 
-    private Long nextProductSKUId() {
-        return 10000000000000L + primaryKeyGenerator.nextVal("product.sku.id");
+    private String nextProductSKUId() {
+        long nextSKUId = 10000000000000L + primaryKeyGenerator.nextVal("product.sku.id");
+        return String.valueOf(nextSKUId);
     }
 }

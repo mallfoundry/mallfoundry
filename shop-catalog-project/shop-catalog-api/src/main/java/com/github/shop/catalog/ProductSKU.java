@@ -30,10 +30,10 @@ public class ProductSKU implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
 
     @JsonProperty("product_id")
-    private Long productId;
+    private String productId;
 
     @JsonProperty("retail_price")
     private BigDecimal retailPrice;

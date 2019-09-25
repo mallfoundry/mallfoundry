@@ -29,7 +29,7 @@ public class ProductInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
 
     @JsonProperty("short_name")
     private String shortName;
