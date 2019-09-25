@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.shop.buyer.infrastructure.persistence.mybatis.PurchaseOrderMapper">
+
+    <resultMap id="purchaseOrderResultMap" type="com.github.shop.buyer.PurchaseOrder">
+        <id property="id" column="id_"/>
+        <result property="productId" column="product_id_"/>
+        <result property="cart" column="cart_"/>
+        <result property="quantity" column="quantity_"/>
+        <result property="specs" column="specs_"
+                typeHandler="com.github.shop.mybatis.type.IntListTypeHandler"/>
+        <result property="createTime" column="create_time_"/>
+    </resultMap>
+
+    <insert id="insertOrder">
+        INSERT INTO buyer_purchase_order ( id_, product_id_, cart_, quantity_, specs_, create_time_ )
+        VALUES
+            (
+            #{id}, #{productId}, #{cart}, #{quantity},
+            #{specs, typeHandler=com.github.shop.mybatis.type.IntListTypeHandler},
+            #{createTime})
+    </insert>
+
+    <update id="updateOrder">
+        UPDATE
+        buyer_purchase_order
+        <set>
+            <if test="quantity != 0">
+                quantity_ = #{quantity},
+            </if>
+            <if test="specs != null and specs.size() > 0">
+                specs_ = #{specs},
+            </if>
+        </set>
+        WHERE
+        id_ = #{id}
+    </update>
+
+    <delete id="deleteOrderById">
+        DELETE
+        FROM
+            buyer_purchase_order
+        WHERE
+            id_ = #{id}
+    </delete>
+
+    <select id="selectListByCart" resultMap="purchaseOrderResultMap">
+        SELECT
+            id_,
+            product_id_,
+            cart_,
+            quantity_,
+            specs_,
+            create_time_
+        FROM
+            buyer_purchase_order
+        WHERE
+            cart_ = #{cart}
+    </select>
+</mapper>
