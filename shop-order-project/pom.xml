@@ -27,4 +27,8 @@
     </parent>
     <artifactId>shop-order-project</artifactId>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>shop-order-api</module>
+    </modules>
 </project>
