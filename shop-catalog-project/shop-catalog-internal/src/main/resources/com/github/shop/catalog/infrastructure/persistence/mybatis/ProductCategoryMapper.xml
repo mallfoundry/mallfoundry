@@ -42,7 +42,7 @@
             index_,
             create_time_
         FROM
-            product_category
+            catalog_product_category
     </sql>
 
     <select id="selectById" resultMap="productCategoryResultMap">
@@ -71,14 +71,14 @@
 
     <insert id="insertCategory">
         INSERT INTO
-            product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
+            catalog_product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
         VALUES
             (#{id}, #{parentId}, #{name}, #{image}, #{description}, #{level}, #{firstLetter}, #{index}, #{createTime})
     </insert>
 
     <insert id="insertCategories">
         INSERT INTO
-        product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
+        catalog_product_category ( id_, parent_id_, name_, image_, description_, level_, first_letter_, index_, create_time_)
         VALUES
         <foreach collection="categories" item="category" separator=",">
             (#{category.id}, #{category.parentId}, #{category.name}, #{category.image},
@@ -90,13 +90,13 @@
     <delete id="deleteById">
         DELETE
         FROM
-            product_category
+            catalog_product_category
         WHERE
             id_ = #{id}
     </delete>
 
     <update id="update">
-        UPDATE product_category
+        UPDATE catalog_product_category
         <set>
             <if test="name != null and name != ''">
                 name_ = #{name},

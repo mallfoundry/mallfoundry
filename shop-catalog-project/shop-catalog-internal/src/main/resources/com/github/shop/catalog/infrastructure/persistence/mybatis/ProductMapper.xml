@@ -64,8 +64,8 @@
             pds.specs_ AS sku_specs_,
             pds.index_ AS sku_index_
         FROM
-            product pd
-            LEFT JOIN product_sku pds ON pd.id_ = pds.product_id_
+            catalog_product pd
+            LEFT JOIN catalog_product_sku pds ON pd.id_ = pds.product_id_
         WHERE
             pd.id_ = #{id}
         ORDER BY
@@ -74,7 +74,7 @@
 
     <insert id="insertProduct">
         INSERT INTO
-            product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, specs_, images_, videos_)
+            catalog_product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, specs_, images_, videos_)
         VALUES(
             #{id},
 	        #{shortName},
@@ -90,7 +90,7 @@
     </insert>
 
     <insert id="insertProductSkus">
-        INSERT INTO product_sku (
+        INSERT INTO catalog_product_sku (
         id_, product_id_, retail_price_, market_price_, stock_quantity_, specs_, index_)
         VALUES
         <foreach collection="skus" separator="," item="sku">
