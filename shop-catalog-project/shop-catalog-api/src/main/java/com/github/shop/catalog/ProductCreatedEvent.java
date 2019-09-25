@@ -17,13 +17,15 @@
 package com.github.shop.catalog;
 
 import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-public class ProductCreatedEvent {
+public class ProductCreatedEvent extends ApplicationEvent {
 
     @Getter
-    private Product product;
+    private final Product product;
 
     public ProductCreatedEvent(Product product) {
+        super(product);
         this.product = product;
     }
 }
