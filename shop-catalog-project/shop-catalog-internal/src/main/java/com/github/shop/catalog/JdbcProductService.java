@@ -90,7 +90,7 @@ public class JdbcProductService implements ProductService, ApplicationEventPubli
     }
 
     @Override
-    public Product getProduct(long id) {
+    public Product getProduct(String id) {
         return this.productRepository.findById(id);
     }
 }

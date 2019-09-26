@@ -18,7 +18,7 @@ package com.github.shop.catalog;
 
 public interface ProductRepository {
 
-    Product findById(long id);
+    Product findById(String id);
 
     void create(Product product);
 }

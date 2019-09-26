@@ -42,7 +42,7 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products/{id}")
-    public Product getProduct(@PathVariable("id") long id) {
+    public Product getProduct(@PathVariable("id") String id) {
         return this.productService.getProduct(id);
     }
 

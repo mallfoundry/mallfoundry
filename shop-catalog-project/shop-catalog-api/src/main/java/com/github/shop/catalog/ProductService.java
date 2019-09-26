@@ -52,6 +52,6 @@ public interface ProductService {
 
     void createProduct(Product product);
 
-    Product getProduct(long id);
+    Product getProduct(String id);
 
 }

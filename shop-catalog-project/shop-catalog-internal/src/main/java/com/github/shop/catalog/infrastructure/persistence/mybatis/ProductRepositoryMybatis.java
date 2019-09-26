@@ -31,7 +31,7 @@ public class ProductRepositoryMybatis implements ProductRepository {
     }
 
     @Override
-    public Product findById(long id) {
+    public Product findById(String id) {
         return productMapper.selectProductById(id);
     }
 

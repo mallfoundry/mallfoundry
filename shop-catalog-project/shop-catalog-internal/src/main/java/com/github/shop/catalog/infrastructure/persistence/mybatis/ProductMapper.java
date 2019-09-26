@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface ProductMapper {
 
-    Product selectProductById(Long id);
+    Product selectProductById(String id);
 
     void insertProduct(Product product);
 
