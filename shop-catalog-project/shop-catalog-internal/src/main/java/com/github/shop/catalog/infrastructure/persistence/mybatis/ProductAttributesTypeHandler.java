@@ -42,19 +42,20 @@ public class ProductAttributesTypeHandler extends BaseTypeHandler<List<ProductAt
 
     @Override
     public List<ProductAttribute> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String value = rs.getString(columnName);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductAttribute.class);
+        return this.getNullableResult(rs.getString(columnName));
     }
 
     @Override
     public List<ProductAttribute> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String value = rs.getString(columnIndex);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductAttribute.class);
+        return this.getNullableResult(rs.getString(columnIndex));
     }
 
     @Override
     public List<ProductAttribute> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String value = cs.getString(columnIndex);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductAttribute.class);
+        return this.getNullableResult(cs.getString(columnIndex));
+    }
+
+    private List<ProductAttribute> getNullableResult(String value) {
+        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parse(value, List.class, ProductAttribute.class);
     }
 }

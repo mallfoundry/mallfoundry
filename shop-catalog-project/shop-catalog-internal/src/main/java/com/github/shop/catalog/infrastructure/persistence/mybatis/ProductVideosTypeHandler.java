@@ -42,19 +42,20 @@ public class ProductVideosTypeHandler extends BaseTypeHandler<List<ProductVideo>
 
     @Override
     public List<ProductVideo> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String value = rs.getString(columnName);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductVideo.class);
+        return this.getNullableResult(rs.getString(columnName));
     }
 
     @Override
     public List<ProductVideo> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String value = rs.getString(columnIndex);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductVideo.class);
+        return this.getNullableResult(rs.getString(columnIndex));
     }
 
     @Override
     public List<ProductVideo> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String value = cs.getString(columnIndex);
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parseList(value, ProductVideo.class);
+        return this.getNullableResult(cs.getString(columnIndex));
+    }
+
+    private List<ProductVideo> getNullableResult(String value) {
+        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parse(value, List.class, ProductVideo.class);
     }
 }
