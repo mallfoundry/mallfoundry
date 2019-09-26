@@ -16,44 +16,39 @@
 
 package com.github.shop.util;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.List;
 
 public abstract class JsonUtils {
 
-    private static final ThreadLocal<ObjectMapper> currentObjectMapper = new ThreadLocal<>();
+    private static ObjectMapper objectMapper;
 
     private static ObjectMapper getObjectMapper() {
-
-        ObjectMapper instance = currentObjectMapper.get();
-
-        if (instance == null) {
-            instance = new ObjectMapper();
-            currentObjectMapper.set(instance);
+        if (objectMapper == null) {
+            objectMapper = new ObjectMapper();
         }
-        return instance;
+        return objectMapper;
     }
 
-    public static <T> T parse(String src, Class<T> clazz) {
+    public static <T> T parse(String content, Class<T> valueType) {
         try {
-            return getObjectMapper().readValue(src, clazz);
+            return getObjectMapper().readValue(content, valueType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> List<T> parseList(String src, Class<T> clazz) {
+    public static <T> T parse(String content, Class<?> parametrized, Class<?>... parameterClasses) {
         try {
             ObjectMapper objectMapper = getObjectMapper();
-            return objectMapper.readValue(src, objectMapper.getTypeFactory().constructParametricType(List.class, clazz));
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(parametrized, parameterClasses);
+            return objectMapper.readValue(content, javaType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public static String stringify(Object object) {
-
         try {
             return getObjectMapper().writeValueAsString(object);
         } catch (Exception e) {
