@@ -40,7 +40,7 @@ public class ProductTests {
     @Test
     public void testGetProduct() {
 
-        Product product = productService.getProduct(10000000000010L);
+        Product product = productService.getProduct("10000000000010");
 
         System.out.println(product);
         String productJsonString = JsonUtils.stringify(product);
