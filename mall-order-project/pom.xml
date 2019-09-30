@@ -20,21 +20,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <groupId>com.mallfoundry</groupId>
+        <artifactId>mall-project</artifactId>
+        <relativePath>../mall-project</relativePath>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>com.mallfoundry</groupId>
-    <artifactId>mall</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>mall-order-project</artifactId>
     <packaging>pom</packaging>
+
     <modules>
-        <module>mall-project</module>
-        <module>mall-common-project</module>
-        <module>mall-basic-project</module>
-        <module>mall-catalog-project</module>
-        <module>mall-order-project</module>
-        <module>mall-buyer-project</module>
-        <module>mall-spring-boot</module>
+        <module>mall-order-api</module>
     </modules>
 </project>
