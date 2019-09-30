@@ -1,5 +1,6 @@
 package com.github.shop.buyer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +28,7 @@ public class PurchaseOrder {
     /**
      * Purchased product identification.
      */
+    @JsonProperty("product_id")
     private String productId;
 
     /**
