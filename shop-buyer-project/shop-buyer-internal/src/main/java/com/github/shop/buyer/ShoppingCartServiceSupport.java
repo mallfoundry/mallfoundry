@@ -1,19 +1,16 @@
-package com.github.shop.buyer.jdbc;
+package com.github.shop.buyer;
 
-import com.github.shop.buyer.PurchaseOrder;
-import com.github.shop.buyer.PurchaseOrderRepository;
-import com.github.shop.buyer.ShoppingCartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class JdbcShoppingCartService implements ShoppingCartService {
+public class ShoppingCartServiceSupport implements ShoppingCartService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-    public JdbcShoppingCartService(PurchaseOrderRepository purchaseOrderRepository) {
+    public ShoppingCartServiceSupport(PurchaseOrderRepository purchaseOrderRepository) {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
