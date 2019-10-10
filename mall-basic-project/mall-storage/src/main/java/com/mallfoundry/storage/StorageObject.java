@@ -24,34 +24,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 
+@Getter
+@Setter
 @JsonPropertyOrder({"id", "bucket", "filename", "path", "url", "length", "contentType"})
 public class StorageObject {
 
-    @Getter
-    @Setter
     private String id;
 
-    @Getter
-    @Setter
     private String bucket;
 
-    @Getter
-    @Setter
     private String filename;
 
-    @Getter
-    @Setter
     private String path;
 
-    @Getter
-    @Setter
     private String url;
 
-    @Getter
-    @Setter
     private long size;
 
-    @Setter
     @JsonProperty("content_type")
     private String contentType;
 
