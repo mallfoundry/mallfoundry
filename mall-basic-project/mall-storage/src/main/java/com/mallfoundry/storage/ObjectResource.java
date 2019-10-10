@@ -25,6 +25,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -52,8 +53,8 @@ public class ObjectResource implements Closeable {
 
     @Override
     public void close() throws IOException {
-        if (inputStream != null) {
-            inputStream.close();
+        if (Objects.nonNull(this.inputStream)) {
+            this.inputStream.close();
         }
     }
 }
