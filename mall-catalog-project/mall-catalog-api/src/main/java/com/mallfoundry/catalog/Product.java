@@ -39,6 +39,9 @@ public class Product extends ProductInfo {
 
     private List<ProductVariant> variants;
 
+    /**
+     * Contains images of product and product variants.
+     */
     private List<ProductImage> images;
 
     private List<ProductVideo> videos;

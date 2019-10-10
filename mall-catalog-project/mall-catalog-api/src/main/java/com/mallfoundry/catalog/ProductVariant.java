@@ -24,6 +24,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Each product can have multiple variations.
+ * The product variant is a combination of option values.
+ *
+ * @author Zhi Tang
+ */
 @Getter
 @Setter
 public class ProductVariant implements Serializable {
@@ -46,6 +52,9 @@ public class ProductVariant implements Serializable {
 
     private List<String> options;
 
+    /**
+     * The ids for images.
+     */
     private List<String> images;
 
     private short index;
