@@ -61,6 +61,7 @@ public class ProductOption {
             for (String value : values) {
                 optionValues.add(new ProductOptionValue(value, (short) optionValues.size()));
             }
+            this.option.setValues(optionValues);
             return this;
         }
 
