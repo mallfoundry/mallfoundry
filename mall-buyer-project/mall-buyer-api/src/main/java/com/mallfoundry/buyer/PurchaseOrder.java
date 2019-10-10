@@ -16,7 +16,7 @@ import java.util.Objects;
 public class PurchaseOrder {
 
     /**
-     * Id of of purchase order.
+     * Id of purchase order.
      */
     private String id;
 
