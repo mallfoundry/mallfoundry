@@ -126,8 +126,8 @@ public class ProductTests {
                 new ProductAttribute("颜色", "黑", (short) 3)));
 
         product.setOptions(List.of(
-                new ProductOption.Builder().name("颜色").simpleValues(List.of("黑色", "白色", "蓝色")).index(1).build(),
-                new ProductOption.Builder().name("大小").simpleValues("41", "43", "42").index(2).build()));
+                new ProductOption.Builder().name("颜色").simpleValues(List.of("黑色", "白色", "蓝色")).index(0).build(),
+                new ProductOption.Builder().name("大小").simpleValues("41", "43", "42").index(1).build()));
         return product;
     }
 }
