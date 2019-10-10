@@ -6,11 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class ShoppingCartServiceSupport implements ShoppingCartService {
+public class DefaultShoppingCartService implements ShoppingCartService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-    public ShoppingCartServiceSupport(PurchaseOrderRepository purchaseOrderRepository) {
+    public DefaultShoppingCartService(PurchaseOrderRepository purchaseOrderRepository) {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
