@@ -16,28 +16,29 @@
 
 package com.mallfoundry.catalog;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "type", "items"})
-public class ProductSpecification {
+public class ProductOptionValue {
 
-    private short id;
+    private String value;
 
-    private String type;
+    private String image;
 
-    private List<ProductSpecItem> items;
+    private short index;
 
-    public ProductSpecification(short id, String type, List<ProductSpecItem> items) {
-        this.id = id;
-        this.type = type;
-        this.items = items;
+    public ProductOptionValue(String value, short index) {
+        this.value = value;
+        this.index = index;
+    }
+
+    public ProductOptionValue(String value, String image, short index) {
+        this.value = value;
+        this.image = image;
+        this.index = index;
     }
 }

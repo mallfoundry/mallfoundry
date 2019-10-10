@@ -26,7 +26,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductSKU implements Serializable {
+public class ProductVariant implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,50 +44,57 @@ public class ProductSKU implements Serializable {
     @JsonProperty("stock_quantity")
     private int stockQuantity;
 
-    private List<Integer> specs;
+    private List<String> options;
+
+    private List<String> images;
 
     private short index;
 
     public static class Builder {
 
-        private ProductSKU productSku;
+        private ProductVariant variant;
 
         public Builder() {
-            productSku = new ProductSKU();
+            variant = new ProductVariant();
         }
 
         public Builder retailPrice(double retailPrice) {
-            this.productSku.setRetailPrice(BigDecimal.valueOf(retailPrice));
+            this.variant.setRetailPrice(BigDecimal.valueOf(retailPrice));
             return this;
         }
 
         public Builder marketPrice(double marketPrice) {
-            this.productSku.setMarketPrice(BigDecimal.valueOf(marketPrice));
+            this.variant.setMarketPrice(BigDecimal.valueOf(marketPrice));
             return this;
         }
 
         public Builder stockQuantity(int stockQuantity) {
-            this.productSku.setStockQuantity(stockQuantity);
+            this.variant.setStockQuantity(stockQuantity);
             return this;
         }
 
-        public Builder specs(List<Integer> specs) {
-            this.productSku.setSpecs(specs);
+        public Builder options(List<String> options) {
+            this.variant.setOptions(options);
+            return this;
+        }
+
+        public Builder images(List<String> images) {
+            this.variant.setImages(images);
             return this;
         }
 
         public Builder index(short index) {
-            this.productSku.setIndex(index);
+            this.variant.setIndex(index);
             return this;
         }
 
         public Builder index(int index) {
-            this.productSku.setIndex((short) index);
+            this.variant.setIndex((short) index);
             return this;
         }
 
-        public ProductSKU build() {
-            return this.productSku;
+        public ProductVariant build() {
+            return this.variant;
         }
     }
 }

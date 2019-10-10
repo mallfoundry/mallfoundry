@@ -19,24 +19,38 @@ package com.mallfoundry.catalog;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @JsonPropertyOrder({"id", "shortName", "name", "freeShipping", "shippingMoney",
-        "description", "skus", "attributes", "specs", "images", "videos"})
+        "description", "variants", "attributes", "options", "images", "videos"})
 public class Product extends ProductInfo {
 
     private static final long serialVersionUID = 1L;
 
     private List<ProductAttribute> attributes;
 
-    private List<ProductSpecification> specs;
+    private List<ProductOption> options;
 
-    private List<ProductSKU> skus;
+    private List<ProductVariant> variants;
 
     private List<ProductImage> images;
 
     private List<ProductVideo> videos;
+
+    /**
+     * Find the variant's images in the product's images.
+     *
+     * @param variant variant
+     * @return variant's images
+     */
+    public List<ProductImage> findVariantImages(ProductVariant variant) {
+        Collection<String> images = CollectionUtils.emptyIfNull(variant.getImages());
+        return this.images.stream().filter(image -> images.contains(image.getId())).collect(Collectors.toList());
+    }
 }

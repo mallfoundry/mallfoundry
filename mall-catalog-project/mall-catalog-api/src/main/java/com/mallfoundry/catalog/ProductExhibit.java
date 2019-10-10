@@ -23,11 +23,11 @@ import lombok.Setter;
 @Setter
 public class ProductExhibit {
 
+    private String id;
+
     private String url;
 
     private String title;
-
-    private int size;
 
     private short index;
 }
