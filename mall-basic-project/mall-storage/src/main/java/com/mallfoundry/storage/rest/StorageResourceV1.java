@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storage;
+package com.mallfoundry.storage.rest;
 
+import com.mallfoundry.storage.ObjectResource;
+import com.mallfoundry.storage.StorageObject;
+import com.mallfoundry.storage.StorageSystem;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
