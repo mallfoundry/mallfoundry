@@ -40,7 +40,7 @@ public class ProductTests {
     @Test
     public void testGetProduct() {
 
-        Product product = productService.getProduct("10000000000010");
+        Product product = productService.getProduct("10000000000108");
 
         System.out.println(product);
         String productJsonString = JsonUtils.stringify(product);
@@ -48,9 +48,27 @@ public class ProductTests {
     }
 
     @Test
+    public void testGetProductVariantImages() {
+        Product product = productService.getProduct("10000000000108");
+        List<ProductImage> images = product.findVariantImages(product.getVariants().get(0));
+        System.out.println(images);
+    }
+
+    @Test
     @Rollback(false)
     @Transactional
     public void testSaveProduct() {
+        Product product1 = this.newProduct(
+                "华为 HUAWEI P30 Pro 超感光徕卡四摄10倍混合变焦麒麟980芯片屏内指纹 8GB+128GB极光色全网通版双4G手机",
+                4988,
+                "http://192.168.0.102:8077/static/images/800_800_1555464685019mp.png");
+        productService.createProduct(product1);
+    }
+
+    @Test
+    @Rollback(false)
+    @Transactional
+    public void testSaveProducts() {
         Product product1 = this.newProduct(
                 "华为 HUAWEI P30 Pro 超感光徕卡四摄10倍混合变焦麒麟980芯片屏内指纹 8GB+128GB极光色全网通版双4G手机",
                 4988,
@@ -89,46 +107,27 @@ public class ProductTests {
         product.setName(name);
         product.setShortName("泳衣女");
         product.setDescription(name);
-        product.setImages(List.of(new ProductImage(imageUrl, (short) 0),
-                new ProductImage(imageUrl, (short) 1),
-                new ProductImage(imageUrl, (short) 2)));
-        product.setSkus(List.of(
-                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(1, 5)).index(0).build(),
-                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(2, 5)).index(1).build(),
-                new ProductSKU.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100).specs(List.of(3, 5)).index(2).build()));
+        product.setImages(List.of(
+                new ProductImage("1", imageUrl, (short) 0),
+                new ProductImage("2", imageUrl, (short) 1),
+                new ProductImage("3", imageUrl, (short) 2),
+                new ProductImage("4", imageUrl, (short) 3)));
 
+        product.setVariants(List.of(
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                        .images(List.of("1", "2")).options(List.of("黑色", "41")).index(0).build(),
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                        .images(List.of("2", "3")).options(List.of("白色", "42")).index(1).build(),
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                        .images(List.of("2", "4")).options(List.of("蓝色", "43")).index(2).build()));
         product.setAttributes(List.of(
                 new ProductAttribute("产地", "中国", (short) 1),
                 new ProductAttribute("生成时间", "2018-10-11", (short) 2),
                 new ProductAttribute("颜色", "黑", (short) 3)));
 
-        product.setSpecs(List.of(
-                new ProductSpecification((short) 0, "颜色", List.of(
-                        new ProductSpecItem(0, "黑色",
-                                List.of(new ProductImage(imageUrl, (short) 0),
-                                        new ProductImage(imageUrl, (short) 1),
-                                        new ProductImage(imageUrl, (short) 2))),
-                        new ProductSpecItem(1, "红色",
-                                List.of(new ProductImage(imageUrl, (short) 0),
-                                        new ProductImage(imageUrl, (short) 1),
-                                        new ProductImage(imageUrl, (short) 2))),
-                        new ProductSpecItem(2, "蓝色",
-                                List.of(new ProductImage(imageUrl, (short) 0),
-                                        new ProductImage(imageUrl, (short) 1),
-                                        new ProductImage(imageUrl, (short) 2))),
-                        new ProductSpecItem(3, "褐色",
-                                List.of(new ProductImage(imageUrl, (short) 0),
-                                        new ProductImage(imageUrl, (short) 1),
-                                        new ProductImage(imageUrl, (short) 2)))
-                )),
-                new ProductSpecification((short) 1, "型号", List.of(
-                        new ProductSpecItem(4, "32G"),
-                        new ProductSpecItem(5, "64G"),
-                        new ProductSpecItem(6, "128G"),
-                        new ProductSpecItem(7, "256G")
-                ))
-        ));
-
+        product.setOptions(List.of(
+                new ProductOption.Builder().name("颜色").simpleValues(List.of("黑色", "白色", "蓝色")).index(1).build(),
+                new ProductOption.Builder().name("大小").simpleValues("41", "43", "42").index(2).build()));
         return product;
     }
 }
