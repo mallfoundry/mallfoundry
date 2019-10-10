@@ -17,6 +17,7 @@
 package com.mallfoundry.storage;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 
@@ -25,22 +26,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ObjectResource implements Closeable {
 
-    @Getter
-    @Setter
     private String bucket;
 
-    @Getter
-    @Setter
     private String path;
 
-    @Getter
-    @Setter
     private InputStream inputStream;
-
-    public ObjectResource() {
-    }
 
     public ObjectResource(String bucket, String path, InputStream inputStream) {
         this.bucket = bucket;
