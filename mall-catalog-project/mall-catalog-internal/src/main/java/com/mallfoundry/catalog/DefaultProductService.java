@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class JdbcProductService implements ProductService, ApplicationEventPublisherAware {
+public class DefaultProductService implements ProductService, ApplicationEventPublisherAware {
 
     private final ProductRepository productRepository;
 
@@ -32,7 +32,7 @@ public class JdbcProductService implements ProductService, ApplicationEventPubli
 
     private ApplicationEventPublisher eventPublisher;
 
-    public JdbcProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
+    public DefaultProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
     }
