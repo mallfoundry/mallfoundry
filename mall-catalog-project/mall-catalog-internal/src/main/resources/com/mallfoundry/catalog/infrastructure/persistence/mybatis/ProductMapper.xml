@@ -27,21 +27,23 @@
         <result property="description" column="description_"/>
         <result property="attributes" column="attributes_"
                 typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductAttributesTypeHandler"/>
-        <result property="specs" column="specs_"
-                typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductSpecificationsTypeHandler"/>
+        <result property="options" column="options_"
+                typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductOptionsTypeHandler"/>
         <result property="images" column="images_"
                 typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler"/>
         <result property="videos" column="videos_"
                 typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler"/>
-        <collection property="skus" ofType="com.mallfoundry.catalog.ProductSKU">
-            <id property="id" column="sku_id_"/>
-            <result property="retailPrice" column="sku_retail_price_"/>
+        <collection property="variants" ofType="com.mallfoundry.catalog.ProductVariant">
+            <id property="id" column="variant_id_"/>
+            <result property="retailPrice" column="variant_retail_price_"/>
             <result property="productId" column="id_"/>
-            <result property="marketPrice" column="sku_market_price_"/>
-            <result property="stockQuantity" column="sku_stock_quantity_"/>
-            <result property="index" column="sku_index_"/>
-            <result property="specs" column="sku_specs_"
-                    typeHandler="com.mallfoundry.mybatis.type.IntListTypeHandler"/>
+            <result property="marketPrice" column="variant_market_price_"/>
+            <result property="stockQuantity" column="variant_stock_quantity_"/>
+            <result property="options" column="variant_options_"
+                    typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
+            <result property="images" column="variant_images_"
+                    typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
+            <result property="index" column="variant_index_"/>
         </collection>
     </resultMap>
 
@@ -53,28 +55,29 @@
             pd.free_shipping_,
             pd.shipping_money_,
             pd.attributes_,
-            pd.specs_,
+            pd.options_,
             pd.description_,
             pd.images_,
             pd.videos_,
-            pds.id_ AS sku_id_,
-            pds.retail_price_ AS sku_retail_price_,
-            pds.market_price_ AS sku_market_price_,
-            pds.stock_quantity_ AS sku_stock_quantity_,
-            pds.specs_ AS sku_specs_,
-            pds.index_ AS sku_index_
+            pdv.id_ AS variant_id_,
+            pdv.retail_price_ AS variant_retail_price_,
+            pdv.market_price_ AS variant_market_price_,
+            pdv.stock_quantity_ AS variant_stock_quantity_,
+            pdv.options_ AS variant_options_,
+            pdv.images_ AS variant_images_,
+            pdv.index_ AS variant_index_
         FROM
             catalog_product pd
-            LEFT JOIN catalog_product_sku pds ON pd.id_ = pds.product_id_
+            LEFT JOIN catalog_product_variant pdv ON pd.id_ = pdv.product_id_
         WHERE
             pd.id_ = #{id}
         ORDER BY
-	        pds.index_
+	        pdv.index_
     </select>
 
     <insert id="insertProduct">
         INSERT INTO
-            catalog_product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, specs_, images_, videos_)
+            catalog_product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, options_, images_, videos_)
         VALUES(
             #{id},
 	        #{shortName},
@@ -83,25 +86,26 @@
 	        #{shippingMoney},
 	        #{description},
 	        #{attributes, typeHandler=com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductAttributesTypeHandler},
-	        #{specs, typeHandler=com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductSpecificationsTypeHandler},
+	        #{options, typeHandler=com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductOptionsTypeHandler},
 	        #{images, typeHandler=com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductImagesTypeHandler},
             #{videos, typeHandler=com.mallfoundry.catalog.infrastructure.persistence.mybatis.ProductVideosTypeHandler}
 	        )
     </insert>
 
-    <insert id="insertProductSkus">
-        INSERT INTO catalog_product_sku (
-        id_, product_id_, retail_price_, market_price_, stock_quantity_, specs_, index_)
+    <insert id="insertProductVariants">
+        INSERT INTO catalog_product_variant (
+        id_, product_id_, retail_price_, market_price_, stock_quantity_, options_, images_, index_)
         VALUES
-        <foreach collection="skus" separator="," item="sku">
+        <foreach collection="variants" item="variant" separator=",">
             (
-            #{sku.id},
+            #{variant.id},
             #{id},
-            #{sku.retailPrice},
-            #{sku.marketPrice},
-            #{sku.stockQuantity},
-            #{sku.specs, typeHandler=com.mallfoundry.mybatis.type.IntListTypeHandler},
-            #{sku.index}
+            #{variant.retailPrice},
+            #{variant.marketPrice},
+            #{variant.stockQuantity},
+            #{variant.options, typeHandler=com.mallfoundry.mybatis.type.StringListTypeHandler},
+            #{variant.images, typeHandler=com.mallfoundry.mybatis.type.StringListTypeHandler},
+            #{variant.index}
             )
         </foreach>
     </insert>

@@ -40,12 +40,12 @@ public class ProductRepositoryMybatis implements ProductRepository {
         // set new id
         product.setId(this.nextProductId());
         productMapper.insertProduct(product);
-        product.getSkus().
-                forEach(sku -> {
-                    sku.setId(nextProductSKUId());
-                    sku.setProductId(product.getId());
+        product.getVariants().
+                forEach(variant -> {
+                    variant.setId(nextProductVariantId());
+                    variant.setProductId(product.getId());
                 });
-        productMapper.insertProductSkus(product);
+        productMapper.insertProductVariants(product);
     }
 
     private String nextProductId() {
@@ -53,8 +53,8 @@ public class ProductRepositoryMybatis implements ProductRepository {
         return String.valueOf(10000000000000L + nextProductId);
     }
 
-    private String nextProductSKUId() {
-        long nextSKUId = PrimaryKeyHolder.sequence().nextVal("product.sku.id");
+    private String nextProductVariantId() {
+        long nextSKUId = PrimaryKeyHolder.sequence().nextVal("product.variant.id");
         return String.valueOf(10000000000000L + nextSKUId);
     }
 }

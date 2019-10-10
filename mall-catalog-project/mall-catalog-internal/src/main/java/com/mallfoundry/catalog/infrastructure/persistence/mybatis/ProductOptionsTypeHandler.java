@@ -16,7 +16,7 @@
 
 package com.mallfoundry.catalog.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.catalog.ProductSpecification;
+import com.mallfoundry.catalog.ProductOption;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -33,29 +33,29 @@ import java.util.Objects;
 
 @MappedJdbcTypes(JdbcType.VARCHAR)
 @MappedTypes(List.class)
-public class ProductSpecificationsTypeHandler extends BaseTypeHandler<List<ProductSpecification>> {
+public class ProductOptionsTypeHandler extends BaseTypeHandler<List<ProductOption>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<ProductSpecification> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, List<ProductOption> parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, JsonUtils.stringify(parameter));
     }
 
     @Override
-    public List<ProductSpecification> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public List<ProductOption> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return this.getNullableResult(rs.getString(columnName));
     }
 
     @Override
-    public List<ProductSpecification> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public List<ProductOption> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         return this.getNullableResult(rs.getString(columnIndex));
     }
 
     @Override
-    public List<ProductSpecification> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public List<ProductOption> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return this.getNullableResult(cs.getString(columnIndex));
     }
 
-    private List<ProductSpecification> getNullableResult(String value) {
-        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parse(value, List.class, ProductSpecification.class);
+    private List<ProductOption> getNullableResult(String value) {
+        return Objects.isNull(value) ? Collections.emptyList() : JsonUtils.parse(value, List.class, ProductOption.class);
     }
 }
