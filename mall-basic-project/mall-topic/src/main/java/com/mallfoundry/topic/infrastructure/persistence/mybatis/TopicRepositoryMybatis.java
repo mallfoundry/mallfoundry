@@ -16,8 +16,8 @@
 
 package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.topic.Topic;
-import com.mallfoundry.topic.TopicRepository;
+import com.mallfoundry.topic.domain.Topic;
+import com.mallfoundry.topic.domain.TopicRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

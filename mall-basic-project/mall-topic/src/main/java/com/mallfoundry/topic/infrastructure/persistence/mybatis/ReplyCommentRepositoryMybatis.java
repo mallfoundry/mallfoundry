@@ -1,8 +1,8 @@
 package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.topic.ReplyComment;
-import com.mallfoundry.topic.ReplyCommentRepository;
-import com.mallfoundry.topic.TopicIdentifier;
+import com.mallfoundry.topic.domain.ReplyComment;
+import com.mallfoundry.topic.domain.ReplyCommentRepository;
+import com.mallfoundry.topic.domain.TopicIdentifier;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 

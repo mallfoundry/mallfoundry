@@ -16,7 +16,7 @@
 
 package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.topic.Topic;
+import com.mallfoundry.topic.domain.Topic;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

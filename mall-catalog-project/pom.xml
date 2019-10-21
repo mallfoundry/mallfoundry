@@ -29,8 +29,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mall-catalog-api</module>
-        <module>mall-catalog-internal</module>
+        <module>mall-catalog-application</module>
+        <module>mall-catalog-domain</module>
         <module>mall-catalog-rest</module>
     </modules>
 </project>

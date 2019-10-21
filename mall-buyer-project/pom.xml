@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mall-buyer-api</module>
-        <module>mall-buyer-internal</module>
+        <module>mall-buyer-application</module>
+        <module>mall-buyer-domain</module>
         <module>mall-buyer-rest</module>
     </modules>
 </project>

@@ -1,7 +1,7 @@
 package com.mallfoundry.identity.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.identity.User;
-import com.mallfoundry.identity.UserRepository;
+import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.identity.domain.UserRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

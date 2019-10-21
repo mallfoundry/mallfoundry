@@ -1,6 +1,6 @@
 package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.topic.ReplyComment;
+import com.mallfoundry.topic.domain.ReplyComment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

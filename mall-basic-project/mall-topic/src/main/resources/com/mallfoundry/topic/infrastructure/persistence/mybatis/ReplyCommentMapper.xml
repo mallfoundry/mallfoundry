@@ -21,7 +21,7 @@
     <resultMap id="groupedRepliesResultMap"
                type="com.mallfoundry.topic.infrastructure.persistence.mybatis.GroupedReplies">
         <result property="commentId" column="comment_id_"/>
-        <collection property="replies" ofType="com.mallfoundry.topic.ReplyComment">
+        <collection property="replies" ofType="com.mallfoundry.topic.domain.ReplyComment">
             <id property="id" column="id_"/>
             <result property="topicName" column="topic_name_"/>
             <result property="commentId" column="comment_id_"/>

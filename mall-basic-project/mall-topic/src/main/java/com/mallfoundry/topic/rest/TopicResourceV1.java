@@ -17,10 +17,10 @@
 package com.mallfoundry.topic.rest;
 
 import com.mallfoundry.data.PagedList;
-import com.mallfoundry.topic.Comment;
-import com.mallfoundry.topic.ReplyComment;
-import com.mallfoundry.topic.Topic;
-import com.mallfoundry.topic.TopicService;
+import com.mallfoundry.topic.domain.Comment;
+import com.mallfoundry.topic.domain.ReplyComment;
+import com.mallfoundry.topic.domain.Topic;
+import com.mallfoundry.topic.application.TopicService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

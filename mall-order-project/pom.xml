@@ -29,6 +29,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mall-order-api</module>
+        <module>mall-order-domain</module>
     </modules>
 </project>

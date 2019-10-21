@@ -18,9 +18,9 @@ package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
 import com.mallfoundry.data.OffsetPagedList;
 import com.mallfoundry.data.PagedList;
-import com.mallfoundry.topic.Comment;
-import com.mallfoundry.topic.CommentRepository;
-import com.mallfoundry.topic.TopicIdentifier;
+import com.mallfoundry.topic.domain.Comment;
+import com.mallfoundry.topic.domain.CommentRepository;
+import com.mallfoundry.topic.domain.TopicIdentifier;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;

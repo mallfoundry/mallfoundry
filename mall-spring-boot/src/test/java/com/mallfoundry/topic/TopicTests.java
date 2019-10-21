@@ -17,6 +17,9 @@
 package com.mallfoundry.topic;
 
 import com.mallfoundry.data.PagedList;
+import com.mallfoundry.topic.domain.Comment;
+import com.mallfoundry.topic.domain.Topic;
+import com.mallfoundry.topic.application.TopicService;
 import com.mallfoundry.util.JsonUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

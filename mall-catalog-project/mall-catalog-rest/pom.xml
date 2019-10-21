@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-catalog-internal</artifactId>
+            <artifactId>mall-catalog-application</artifactId>
         </dependency>
 
         <dependency>

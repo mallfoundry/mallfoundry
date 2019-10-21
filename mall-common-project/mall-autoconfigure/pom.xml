@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-catalog-internal</artifactId>
+            <artifactId>mall-catalog-domain</artifactId>
             <scope>provided</scope>
         </dependency>
 

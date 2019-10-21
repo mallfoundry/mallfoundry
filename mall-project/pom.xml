@@ -128,19 +128,13 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-catalog-model</artifactId>
+                <artifactId>mall-catalog-domain</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-catalog-api</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-catalog-internal</artifactId>
+                <artifactId>mall-catalog-application</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -152,19 +146,19 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-order-api</artifactId>
+                <artifactId>mall-order-domain</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-buyer-api</artifactId>
+                <artifactId>mall-buyer-domain</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-buyer-internal</artifactId>
+                <artifactId>mall-buyer-application</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
