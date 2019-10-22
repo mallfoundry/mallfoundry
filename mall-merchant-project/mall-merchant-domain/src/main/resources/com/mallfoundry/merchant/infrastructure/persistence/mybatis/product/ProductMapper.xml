@@ -43,7 +43,7 @@
                     typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
             <result property="images" column="variant_images_"
                     typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
-            <result property="index" column="variant_index_"/>
+            <result property="position" column="variant_position_"/>
         </collection>
     </resultMap>
 
@@ -65,14 +65,14 @@
             pdv.stock_quantity_ AS variant_stock_quantity_,
             pdv.options_ AS variant_options_,
             pdv.images_ AS variant_images_,
-            pdv.index_ AS variant_index_
+            pdv.position_ AS variant_position_
         FROM
             merchant_product pd
             LEFT JOIN merchant_product_variant pdv ON pd.id_ = pdv.product_id_
         WHERE
             pd.id_ = #{id}
         ORDER BY
-	        pdv.index_
+	        pdv.position_
     </select>
 
     <insert id="insertProduct">
@@ -94,7 +94,7 @@
 
     <insert id="insertProductVariants">
         INSERT INTO merchant_product_variant (
-        id_, product_id_, retail_price_, market_price_, stock_quantity_, options_, images_, index_)
+        id_, product_id_, retail_price_, market_price_, stock_quantity_, options_, images_, position_)
         VALUES
         <foreach collection="variants" item="variant" separator=",">
             (
@@ -105,7 +105,7 @@
             #{variant.stockQuantity},
             #{variant.options, typeHandler=com.mallfoundry.mybatis.type.StringListTypeHandler},
             #{variant.images, typeHandler=com.mallfoundry.mybatis.type.StringListTypeHandler},
-            #{variant.index}
+            #{variant.position}
             )
         </foreach>
     </insert>

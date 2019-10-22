@@ -57,7 +57,7 @@ public class ProductVariant implements Serializable {
      */
     private List<String> images;
 
-    private short index;
+    private short position;
 
     public static class Builder {
 
@@ -92,13 +92,13 @@ public class ProductVariant implements Serializable {
             return this;
         }
 
-        public Builder index(short index) {
-            this.variant.setIndex(index);
+        public Builder position(short position) {
+            this.variant.setPosition(position);
             return this;
         }
 
-        public Builder index(int index) {
-            this.variant.setIndex((short) index);
+        public Builder position(int position) {
+            this.variant.setPosition((short) position);
             return this;
         }
 
