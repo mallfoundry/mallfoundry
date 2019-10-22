@@ -17,7 +17,6 @@
 package com.mallfoundry.catalog.domain.search;
 
 import com.mallfoundry.catalog.domain.product.Product;
-import com.mallfoundry.catalog.domain.product.ProductSearchService;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

@@ -17,7 +17,6 @@
 package com.mallfoundry.catalog.domain.search;
 
 import com.mallfoundry.catalog.domain.product.ProductCreatedEvent;
-import com.mallfoundry.catalog.domain.product.ProductSearchService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 

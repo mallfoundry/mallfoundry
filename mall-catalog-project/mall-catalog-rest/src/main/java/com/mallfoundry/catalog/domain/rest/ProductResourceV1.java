@@ -19,7 +19,7 @@ package com.mallfoundry.catalog.domain.rest;
 import com.mallfoundry.catalog.application.product.ProductService;
 import com.mallfoundry.catalog.domain.product.Product;
 import com.mallfoundry.catalog.domain.search.ProductSearchQuery;
-import com.mallfoundry.catalog.domain.product.ProductSearchService;
+import com.mallfoundry.catalog.domain.search.ProductSearchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.product;
+package com.mallfoundry.catalog.domain.search;
 
+import com.mallfoundry.catalog.domain.product.Product;
 import com.mallfoundry.catalog.domain.search.ProductSearchQuery;
 
 import java.util.List;
