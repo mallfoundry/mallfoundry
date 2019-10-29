@@ -34,7 +34,7 @@
         <module>mall-basic-project</module>
         <module>mall-catalog-project</module>
         <module>mall-order-project</module>
-        <module>mall-buyer-project</module>
+        <module>mall-customer-project</module>
         <module>mall-merchant-project</module>
         <module>mall-spring-boot</module>
     </modules>
