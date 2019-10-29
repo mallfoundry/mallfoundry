@@ -49,7 +49,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-buyer-rest</artifactId>
+            <artifactId>mall-customer-rest</artifactId>
         </dependency>
 
         <dependency>

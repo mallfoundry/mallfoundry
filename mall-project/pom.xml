@@ -152,19 +152,19 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-buyer-domain</artifactId>
+                <artifactId>mall-customer-domain</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-buyer-application</artifactId>
+                <artifactId>mall-customer-application</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-buyer-rest</artifactId>
+                <artifactId>mall-customer-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
