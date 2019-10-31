@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.domain;
+package com.mallfoundry.customer.domain.favorite;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
 
-@Component
-public class UserService {
+public interface FavoriteRepository {
 
-    private UserRepository userRepository;
+    List<FavoriteProduct> listByCustomerId(String customerId);
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public void addUser(User user) {
-        this.userRepository.add(user);
-    }
 }
