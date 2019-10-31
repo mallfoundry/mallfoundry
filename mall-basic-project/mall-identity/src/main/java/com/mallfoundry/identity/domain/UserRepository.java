@@ -18,7 +18,7 @@ package com.mallfoundry.identity.domain;
 
 public interface UserRepository {
 
-    void save(User user);
+    void add(User user);
 
     void update(User user);
 

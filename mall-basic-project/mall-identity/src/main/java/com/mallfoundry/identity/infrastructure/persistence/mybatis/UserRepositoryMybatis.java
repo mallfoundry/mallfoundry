@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 public class UserRepositoryMybatis implements UserRepository {
 
     @Override
-    public void save(User user) {
+    public void add(User user) {
 
     }
 
