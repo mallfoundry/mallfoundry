@@ -19,11 +19,11 @@ mall:
   storage:
     store:
       type: local
-      directory: D:/shop/data/storage/
+      directory: D:/mall/data/storage/
     http:
       base-url: http://localhost:${server.port}/static
   product:
     search:
       type: lucene
       lucene:
-        directory: D:/shop/data/indexes
+        directory: D:/mall/data/indexes
