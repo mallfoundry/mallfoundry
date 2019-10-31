@@ -31,5 +31,6 @@
     <modules>
         <module>mall-storefront-domain</module>
         <module>mall-storefront-application</module>
+        <module>mall-storefront-rest</module>
     </modules>
 </project>
