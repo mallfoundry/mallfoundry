@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.application.product;
+package com.mallfoundry.storefront.product.product;
 
-import com.mallfoundry.catalog.domain.product.Product;
-import com.mallfoundry.catalog.domain.product.ProductRepository;
+import com.mallfoundry.storefront.domain.product.Product;
+import com.mallfoundry.storefront.domain.product.ProductAdded;
+import com.mallfoundry.storefront.domain.product.ProductRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +28,12 @@ public class ProductService {
 
     private ProductRepository productRepository;
 
-    private com.mallfoundry.catalog.domain.product.ProductService productService;
+    private ApplicationEventPublisher eventPublisher;
 
     public ProductService(ProductRepository productRepository,
-                          com.mallfoundry.catalog.domain.product.ProductService productService) {
+                          ApplicationEventPublisher eventPublisher) {
         this.productRepository = productRepository;
-        this.productService = productService;
+        this.eventPublisher = eventPublisher;
     }
 
     public Product getProduct(String id) {
@@ -40,6 +42,8 @@ public class ProductService {
 
     @Transactional
     public void addProduct(Product product) {
-        this.productService.add(product);
+        this.productRepository.add(product);
+        // Publish product added event.
+        this.eventPublisher.publishEvent(new ProductAdded(product));
     }
 }
