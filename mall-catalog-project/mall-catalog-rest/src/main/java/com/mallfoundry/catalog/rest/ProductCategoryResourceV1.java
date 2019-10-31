@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.rest;
+package com.mallfoundry.catalog.rest;
 
 
 import com.mallfoundry.catalog.application.category.ProductCategoryService;
 import com.mallfoundry.catalog.domain.category.ProductCategory;
-import com.mallfoundry.catalog.domain.product.ProductService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +53,7 @@ public class ProductCategoryResourceV1 {
      * @param category the category a new object.
      * @return a new object after successful creation.
      */
-    @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/categories")
     public ResponseEntity<?> createCategory(@RequestBody ProductCategory category) {
         try {
             this.productCategoryService.addProductCategory(category);
@@ -66,7 +64,7 @@ public class ProductCategoryResourceV1 {
         }
     }
 
-    @DeleteMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/categories/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable("id") long id) {
         try {
             this.productCategoryService.deleteProductCategory(id);
@@ -77,7 +75,7 @@ public class ProductCategoryResourceV1 {
         }
     }
 
-    @PutMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/categories")
     public ResponseEntity<String> updateCategory(@RequestBody ProductCategory category) {
         this.productCategoryService.updateProductCategory(category);
         return ResponseEntity.ok("修改成功!");
