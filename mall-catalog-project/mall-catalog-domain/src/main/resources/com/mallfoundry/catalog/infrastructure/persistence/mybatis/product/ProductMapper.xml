@@ -18,7 +18,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mallfoundry.catalog.infrastructure.persistence.mybatis.product.ProductMapper">
-    <resultMap id="productResultMap" type="com.mallfoundry.catalog.domain.product.Product">
+    <resultMap id="productResultMap" type="com.mallfoundry.catalog.category.product.Product">
         <id property="id" column="id_"/>
         <result property="shortName" column="short_name_"/>
         <result property="name" column="name_"/>
@@ -33,7 +33,7 @@
                 typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.product.ProductImagesTypeHandler"/>
         <result property="videos" column="videos_"
                 typeHandler="com.mallfoundry.catalog.infrastructure.persistence.mybatis.product.ProductVideosTypeHandler"/>
-        <collection property="variants" ofType="com.mallfoundry.catalog.domain.product.ProductVariant">
+        <collection property="variants" ofType="com.mallfoundry.catalog.category.product.ProductVariant">
             <id property="id" column="variant_id_"/>
             <result property="retailPrice" column="variant_retail_price_"/>
             <result property="productId" column="id_"/>
