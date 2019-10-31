@@ -16,8 +16,8 @@
 
 package com.mallfoundry.spring.boot.autoconfigure.catalog;
 
-import com.mallfoundry.catalog.domain.search.LuceneProductSearchService;
-import com.mallfoundry.catalog.domain.search.ProductSearchService;
+import com.mallfoundry.catalog.domain.product.LuceneProductSearchRepository;
+import com.mallfoundry.catalog.domain.product.ProductSearchRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +28,11 @@ import org.springframework.context.annotation.Configuration;
 public class MallProductAutoConfiguration {
 
     @Bean
-    @ConditionalOnClass(ProductSearchService.class)
-    public ProductSearchService productSearchService(MallProductProperties properties) {
+    @ConditionalOnClass(ProductSearchRepository.class)
+    public ProductSearchRepository productSearchService(MallProductProperties properties) {
         MallProductProperties.Search search = properties.getSearch();
         if (search.getType() == MallProductProperties.SearchType.LUCENE) {
-            return new LuceneProductSearchService(search.getLucene().getDirectory());
+            return new LuceneProductSearchRepository(search.getLucene().getDirectory());
         }
         return null;
     }
