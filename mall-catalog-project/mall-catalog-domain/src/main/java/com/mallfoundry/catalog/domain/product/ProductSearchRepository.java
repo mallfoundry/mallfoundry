@@ -16,16 +16,13 @@
 
 package com.mallfoundry.catalog.domain.product;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import com.mallfoundry.storefront.domain.product.Product;
 
-public class ProductCreatedEvent extends ApplicationEvent {
+import java.util.List;
 
-    @Getter
-    private final Product product;
+public interface ProductSearchRepository {
 
-    public ProductCreatedEvent(Product product) {
-        super(product);
-        this.product = product;
-    }
+    void add(Product product);
+
+    List<Product> search(ProductSearchQuery query);
 }

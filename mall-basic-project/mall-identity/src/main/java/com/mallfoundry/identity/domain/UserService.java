@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.search;
+package com.mallfoundry.identity.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-@Getter
-@Setter
-public class ProductSearchQuery {
+@Component
+public class UserService {
 
-    private int offset;
+    private UserRepository userRepository;
 
-    private int limit;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    private String name;
+    public void addUser(User user) {
+        this.userRepository.add(user);
+    }
 }

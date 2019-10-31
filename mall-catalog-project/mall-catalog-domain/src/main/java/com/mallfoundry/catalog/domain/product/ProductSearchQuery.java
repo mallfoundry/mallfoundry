@@ -16,9 +16,16 @@
 
 package com.mallfoundry.catalog.domain.product;
 
-public interface ProductRepository {
+import lombok.Getter;
+import lombok.Setter;
 
-    Product findById(String id);
+@Getter
+@Setter
+public class ProductSearchQuery {
 
-    void add(Product product);
+    private int offset;
+
+    private int limit;
+
+    private String name;
 }

@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.search;
+package com.mallfoundry.customer.domain.favorite;
 
-import com.mallfoundry.catalog.domain.product.Product;
-import com.mallfoundry.catalog.domain.search.ProductSearchQuery;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
-public interface ProductSearchService {
-
-    void add(Product product);
-
-    List<Product> search(ProductSearchQuery query);
+@Getter
+@Setter
+public class FavoriteStore {
 }

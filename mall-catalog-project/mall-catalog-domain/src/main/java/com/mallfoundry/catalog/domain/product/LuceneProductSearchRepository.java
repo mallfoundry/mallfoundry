@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.search;
+package com.mallfoundry.catalog.domain.product;
 
-import com.mallfoundry.catalog.domain.product.Product;
+import com.mallfoundry.storefront.domain.product.Product;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -42,11 +42,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LuceneProductSearchService implements ProductSearchService {
+public class LuceneProductSearchRepository implements ProductSearchRepository {
 
     private final String directoryPath;
 
-    public LuceneProductSearchService(String directoryPath) {
+    public LuceneProductSearchRepository(String directoryPath) {
         this.directoryPath = directoryPath;
     }
 

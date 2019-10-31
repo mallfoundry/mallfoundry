@@ -16,14 +16,22 @@
 
 package com.mallfoundry.catalog.domain.product;
 
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-public class ProductImage extends ProductExhibit {
+import com.mallfoundry.storefront.domain.product.ProductAdded;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
 
-    public ProductImage(String id, String url, short index) {
-        this.setId(id);
-        this.setUrl(url);
-        this.setIndex(index);
+@Service
+public class EventBasedProductSearchListener {
+
+    private final ProductSearchRepository productSearchService;
+
+    public EventBasedProductSearchListener(ProductSearchRepository productSearchService) {
+        this.productSearchService = productSearchService;
+    }
+
+    @EventListener(ProductAdded.class)
+    public void onCreatedProduct(ProductAdded event) {
+        this.productSearchService.add(event.getProduct());
     }
 }

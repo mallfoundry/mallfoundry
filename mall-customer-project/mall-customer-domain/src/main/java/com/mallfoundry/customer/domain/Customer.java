@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.product;
+package com.mallfoundry.customer.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+public class Customer {
 
-@Getter
-@Setter
-public class ProductExhibit {
-
-    private String id;
-
-    private String url;
-
-    private String title;
-
-    private short index;
 }
