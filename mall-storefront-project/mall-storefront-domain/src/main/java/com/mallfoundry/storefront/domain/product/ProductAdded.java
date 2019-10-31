@@ -19,12 +19,12 @@ package com.mallfoundry.storefront.domain.product;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-public class ProductCreatedEvent extends ApplicationEvent {
+public class ProductAdded extends ApplicationEvent {
 
     @Getter
     private final Product product;
 
-    public ProductCreatedEvent(Product product) {
+    public ProductAdded(Product product) {
         super(product);
         this.product = product;
     }
