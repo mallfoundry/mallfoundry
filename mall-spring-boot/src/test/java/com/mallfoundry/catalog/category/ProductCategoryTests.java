@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain;
+package com.mallfoundry.catalog.category;
 
 import com.mallfoundry.catalog.domain.category.ProductCategory;
 import com.mallfoundry.catalog.domain.category.ProductCategoryRepository;
@@ -59,7 +59,7 @@ public class ProductCategoryTests {
         category2.setName("女装");
         category2.setFirstLetter("N");
         category2.setIndex((short) 2);
-        productCategoryRepository.create(List.of(category1, category2));
+        productCategoryRepository.add(List.of(category1, category2));
     }
 
 

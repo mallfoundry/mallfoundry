@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.domain;
+package com.mallfoundry.customer;
 
 import com.mallfoundry.customer.application.ShoppingCartService;
+import com.mallfoundry.customer.domain.PurchaseOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
