@@ -30,7 +30,7 @@
     </resultMap>
 
     <insert id="insertOrder">
-        INSERT INTO buyer_purchase_order ( id_, product_id_, cart_, quantity_, specs_, create_time_ )
+        INSERT INTO customer_purchase_order ( id_, product_id_, cart_, quantity_, specs_, create_time_ )
         VALUES
             (
             #{id}, #{productId}, #{cart}, #{quantity},
@@ -40,7 +40,7 @@
 
     <update id="updateOrder">
         UPDATE
-        buyer_purchase_order
+        customer_purchase_order
         <set>
             <if test="quantity != 0">
                 quantity_ = #{quantity},
@@ -56,7 +56,7 @@
     <delete id="deleteOrderById">
         DELETE
         FROM
-            buyer_purchase_order
+            customer_purchase_order
         WHERE
             id_ = #{id}
     </delete>
@@ -70,7 +70,7 @@
             specs_,
             create_time_
         FROM
-            buyer_purchase_order
+            customer_purchase_order
         WHERE
             cart_ = #{cart}
     </select>

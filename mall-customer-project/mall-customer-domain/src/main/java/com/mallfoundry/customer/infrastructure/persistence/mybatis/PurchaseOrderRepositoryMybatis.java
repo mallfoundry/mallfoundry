@@ -58,7 +58,7 @@ public class PurchaseOrderRepositoryMybatis implements PurchaseOrderRepository {
     }
 
     private String nextOrderId() {
-        long nextOrderId = PrimaryKeyHolder.sequence().nextVal("buyer.purchase.order.id");
+        long nextOrderId = PrimaryKeyHolder.sequence().nextVal("customer.purchase.order.id");
         return String.valueOf(10000000000000L + nextOrderId);
     }
 }
