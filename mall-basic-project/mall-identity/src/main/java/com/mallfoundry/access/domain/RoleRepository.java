@@ -14,32 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.domain;
+package com.mallfoundry.access.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
-/**
- * A security role.
- *
- * @author Zhi Tang
- */
-@Getter
-@Setter
-public class Role {
-
-    /**
-     * Name of this role.
-     */
-    private String name;
-
-    /**
-     * Label of this role.
-     */
-    private String label;
-
-    /**
-     * Description of this role.
-     */
-    private String description;
+public interface RoleRepository {
 }
