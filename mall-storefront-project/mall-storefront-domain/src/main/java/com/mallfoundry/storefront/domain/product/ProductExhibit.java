@@ -29,5 +29,5 @@ public class ProductExhibit {
 
     private String title;
 
-    private short index;
+    private short position;
 }

@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImage extends ProductExhibit {
 
-    public ProductImage(String id, String url, short index) {
+    public ProductImage(String id, String url, short position) {
         this.setId(id);
         this.setUrl(url);
-        this.setIndex(index);
+        this.setPosition(position);
     }
 }

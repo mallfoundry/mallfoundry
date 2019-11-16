@@ -16,8 +16,8 @@
 
 package com.mallfoundry.customer;
 
-import com.mallfoundry.customer.application.ShoppingCartService;
-import com.mallfoundry.customer.domain.PurchaseOrder;
+import com.mallfoundry.customer.application.CartService;
+import com.mallfoundry.customer.domain.cart.CartItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,39 +31,39 @@ import java.util.List;
 public class ShoppingCartTests {
 
     @Autowired
-    private ShoppingCartService shoppingCartService;
+    private CartService cartService;
 
     @Test
-    public void testAddOrder() {
-        PurchaseOrder order = new PurchaseOrder();
-        order.setCart("buyer_1");
-        order.setProductId("product_1");
-        order.setSpecs(List.of(1, 2, 3));
-        order.setQuantity(20);
-        shoppingCartService.addOrder(order);
+    public void testAddItem() {
+        CartItem item = new CartItem();
+        item.setCart("buyer_1");
+        item.setProductId("product_1");
+        item.setOptions(List.of(1, 2, 3));
+        item.setQuantity(20);
+        cartService.addItem(item);
     }
 
     @Test
-    public void testUpdateOrder() {
-        PurchaseOrder order = new PurchaseOrder();
-        order.setId("10000000000002");
-        order.setCart("buyer_1");
-        order.setProductId("product_1");
-        order.setSpecs(List.of(2, 4, 5));
-        order.setQuantity(30);
-        shoppingCartService.updateOrder(order);
+    public void testUpdateItem() {
+        CartItem item = new CartItem();
+        item.setId("10000000000002");
+        item.setCart("buyer_1");
+        item.setProductId("product_1");
+        item.setOptions(List.of(2, 4, 5));
+        item.setQuantity(30);
+        cartService.updateItem(item);
     }
 
     @Test
-    public void testRemoveOrder() {
-        PurchaseOrder order = new PurchaseOrder();
-        order.setId("1");
-        shoppingCartService.removeOrder(order);
+    public void testRemoveItem() {
+        CartItem item = new CartItem();
+        item.setId("1");
+        cartService.removeItem(item);
     }
 
     @Test
-    public void testGetOrders() {
-        List<PurchaseOrder> orders = this.shoppingCartService.getOrders("buyer_1");
-        System.out.println(orders);
+    public void testGetItems() {
+        List<CartItem> items = this.cartService.getItems("buyer_1");
+        System.out.println(items);
     }
 }

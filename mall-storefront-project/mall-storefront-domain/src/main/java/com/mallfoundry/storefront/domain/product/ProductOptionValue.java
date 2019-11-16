@@ -29,16 +29,16 @@ public class ProductOptionValue {
 
     private String image;
 
-    private short index;
+    private short position;
 
-    public ProductOptionValue(String value, short index) {
+    public ProductOptionValue(String value, short position) {
         this.value = value;
-        this.index = index;
+        this.position = position;
     }
 
-    public ProductOptionValue(String value, String image, short index) {
+    public ProductOptionValue(String value, String image, short position) {
         this.value = value;
         this.image = image;
-        this.index = index;
+        this.position = position;
     }
 }

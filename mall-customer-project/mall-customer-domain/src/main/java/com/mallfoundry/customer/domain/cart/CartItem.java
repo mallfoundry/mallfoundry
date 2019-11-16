@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.domain;
+package com.mallfoundry.customer.domain.cart;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,12 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A buyer's purchase order class.
- */
 @Getter
 @Setter
-public class PurchaseOrder {
+public class CartItem {
 
     /**
      * Id of purchase order.
@@ -37,9 +35,12 @@ public class PurchaseOrder {
     private String id;
 
     /**
-     * Buyer's shopping cart
+     * Customer's shopping cart
      */
     private String cart;
+
+    @JsonProperty("store_id")
+    private String storeId;
 
     /**
      * Purchased product identification.
@@ -48,20 +49,30 @@ public class PurchaseOrder {
     private String productId;
 
     /**
-     * Purchased product specifications.
+     * Purchased product options.
      */
-    private List<Integer> specs;
+    private List<Integer> options;
 
     /**
      * Purchase quantity of purchase order.
      */
     private int quantity;
 
+    @JsonProperty("create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     public void setCreateTimeIfNull() {
         if (Objects.isNull(this.getCreateTime())) {
             this.setCreateTime(new Date());
         }
+    }
+
+    public CartItem() {
+    }
+
+    public CartItem(String id, String cart) {
+        this.id = id;
+        this.cart = cart;
     }
 }

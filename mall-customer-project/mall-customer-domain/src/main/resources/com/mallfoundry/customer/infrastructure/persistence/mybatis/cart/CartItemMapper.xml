@@ -17,60 +17,62 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mallfoundry.customer.infrastructure.persistence.mybatis.PurchaseOrderMapper">
+<mapper namespace="com.mallfoundry.customer.infrastructure.persistence.mybatis.cart.CartItemMapper">
 
-    <resultMap id="purchaseOrderResultMap" type="com.mallfoundry.customer.domain.PurchaseOrder">
+    <resultMap id="cartItemResultMap" type="com.mallfoundry.customer.domain.cart.CartItem">
         <id property="id" column="id_"/>
+        <result property="storeId" column="store_id_"/>
         <result property="productId" column="product_id_"/>
         <result property="cart" column="cart_"/>
         <result property="quantity" column="quantity_"/>
-        <result property="specs" column="specs_"
+        <result property="options" column="options_"
                 typeHandler="com.mallfoundry.mybatis.type.IntListTypeHandler"/>
         <result property="createTime" column="create_time_"/>
     </resultMap>
 
-    <insert id="insertOrder">
-        INSERT INTO customer_purchase_order ( id_, product_id_, cart_, quantity_, specs_, create_time_ )
+    <insert id="insert">
+        INSERT INTO customer_cart_item ( id_,store_id_, product_id_, cart_, quantity_, options_, create_time_ )
         VALUES
             (
-            #{id}, #{productId}, #{cart}, #{quantity},
-            #{specs, typeHandler=com.mallfoundry.mybatis.type.IntListTypeHandler},
+            #{id}, #{storeId}, #{productId}, #{cart}, #{quantity},
+            #{options, typeHandler=com.mallfoundry.mybatis.type.StringListTypeHandler},
             #{createTime})
     </insert>
 
-    <update id="updateOrder">
+    <update id="update">
         UPDATE
-        customer_purchase_order
+        customer_cart_item
         <set>
             <if test="quantity != 0">
                 quantity_ = #{quantity},
             </if>
-            <if test="specs != null and specs.size() > 0">
-                specs_ = #{specs},
+            <if test="options != null and options.size() > 0">
+                options_ = #{options},
             </if>
         </set>
         WHERE
         id_ = #{id}
     </update>
 
-    <delete id="deleteOrderById">
+    <delete id="deleteById">
         DELETE
         FROM
-            customer_purchase_order
+            customer_cart_item
         WHERE
             id_ = #{id}
     </delete>
 
-    <select id="selectListByCart" resultMap="purchaseOrderResultMap">
+    <select id="selectListByCart" resultMap="cartItemResultMap">
         SELECT
             id_,
+            store_id_,
             product_id_,
             cart_,
             quantity_,
-            specs_,
+            options_,
             create_time_
         FROM
-            customer_purchase_order
+            customer_cart_item
         WHERE
             cart_ = #{cart}
     </select>

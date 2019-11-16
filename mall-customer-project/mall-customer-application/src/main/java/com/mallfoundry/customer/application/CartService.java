@@ -16,36 +16,36 @@
 
 package com.mallfoundry.customer.application;
 
-import com.mallfoundry.customer.domain.PurchaseOrder;
-import com.mallfoundry.customer.domain.PurchaseOrderRepository;
+import com.mallfoundry.customer.domain.cart.CartItem;
+import com.mallfoundry.customer.domain.cart.CartItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class ShoppingCartService {
+public class CartService {
 
-    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final CartItemRepository cartItemRepository;
 
-    public ShoppingCartService(PurchaseOrderRepository purchaseOrderRepository) {
-        this.purchaseOrderRepository = purchaseOrderRepository;
+    public CartService(CartItemRepository purchaseOrderRepository) {
+        this.cartItemRepository = purchaseOrderRepository;
     }
 
     @Transactional
-    public void addOrder(PurchaseOrder order) {
-        this.purchaseOrderRepository.save(order);
+    public void addItem(CartItem order) {
+        this.cartItemRepository.add(order);
     }
 
-    public void removeOrder(PurchaseOrder order) {
-        this.purchaseOrderRepository.delete(order.getId());
+    public void removeItem(CartItem order) {
+        this.cartItemRepository.delete(order.getId());
     }
 
-    public void updateOrder(PurchaseOrder order) {
-        this.purchaseOrderRepository.update(order);
+    public void updateItem(CartItem order) {
+        this.cartItemRepository.update(order);
     }
 
-    public List<PurchaseOrder> getOrders(String cart) {
-        return this.purchaseOrderRepository.findListByCart(cart);
+    public List<CartItem> getItems(String cart) {
+        return this.cartItemRepository.findListByCart(cart);
     }
 }

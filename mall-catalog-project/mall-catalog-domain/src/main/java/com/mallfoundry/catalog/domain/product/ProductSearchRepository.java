@@ -25,4 +25,6 @@ public interface ProductSearchRepository {
     void add(Product product);
 
     List<Product> search(ProductSearchQuery query);
+
+    Product getProduct(String id);
 }

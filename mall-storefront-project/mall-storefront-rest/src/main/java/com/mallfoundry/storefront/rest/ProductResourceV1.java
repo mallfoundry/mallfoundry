@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storefront.domain.product;
+package com.mallfoundry.storefront.rest;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.stereotype.Controller;
 
-@Setter
-@Getter
-@NoArgsConstructor
-public class ProductVideo extends ProductExhibit {
-
-    private short length;
-
-    public ProductVideo(String url, short length, short position) {
-        this.setUrl(url);
-        this.length = length;
-        this.setPosition(position);
-    }
+@Controller
+public class ProductResourceV1 {
 }

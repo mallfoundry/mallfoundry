@@ -20,6 +20,7 @@ import com.mallfoundry.catalog.domain.product.ProductSearchQuery;
 import com.mallfoundry.catalog.domain.product.ProductSearchRepository;
 import com.mallfoundry.storefront.domain.product.Product;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,5 +39,10 @@ public class ProductSearchResourceV1 {
     @GetMapping("/products/search")
     public List<Product> search(ProductSearchQuery search) {
         return this.productSearchService.search(search);
+    }
+
+    @GetMapping("/products/{id}")
+    public Product getProduct(@PathVariable("id") String id) {
+        return this.productSearchService.getProduct(id);
     }
 }

@@ -29,10 +29,12 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -93,6 +95,29 @@ public class LuceneProductSearchRepository implements ProductSearchRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public Product getProduct(String id) {
+        try {
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+            IndexReader reader = DirectoryReader.open(directory);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            Query query = new TermQuery(new Term("id", id));
+            TopDocs topDocs = searcher.search(query, 10);
+            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+            for (ScoreDoc scoreDoc : scoreDocs) {
+                int docId = scoreDoc.doc;
+                Document doc = reader.document(docId);
+                String product = doc.get("product");
+                return JsonUtils.parse(product, Product.class);
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

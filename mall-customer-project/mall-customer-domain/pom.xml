@@ -28,6 +28,14 @@
     <artifactId>mall-customer-domain</artifactId>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.flowable/flowable-engine -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-engine</artifactId>
+            <version>6.4.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

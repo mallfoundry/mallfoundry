@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.infrastructure.persistence.mybatis;
-
-import com.mallfoundry.customer.domain.PurchaseOrder;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+package com.mallfoundry.customer.domain.cart;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface PurchaseOrderMapper {
+/**
+ * This is a purchase order repository for storing administrative orders.
+ *
+ * @author Zhi Tang
+ */
+public interface CartItemRepository {
 
-    void insertOrder(PurchaseOrder order);
+    void add(CartItem item);
 
-    void updateOrder(PurchaseOrder order);
+    void update(CartItem item);
 
-    void deleteOrderById(@Param("id") String id);
+    void delete(String id);
 
-    List<PurchaseOrder> selectListByCart(@Param("cart") String cart);
+    List<CartItem> findListByCart(String cart);
 }

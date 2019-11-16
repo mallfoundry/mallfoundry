@@ -18,11 +18,11 @@ package com.mallfoundry.storefront.infrastructure.persistence.mybatis.product;
 
 import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.storefront.domain.product.Product;
-import com.mallfoundry.storefront.domain.product.ProductRepository;
+import com.mallfoundry.storefront.domain.product.ProductRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductRepositoryMybatis implements ProductRepository {
+public class ProductRepositoryMybatis extends ProductRepositorySupport {
 
     private final ProductMapper productMapper;
 
@@ -31,12 +31,12 @@ public class ProductRepositoryMybatis implements ProductRepository {
     }
 
     @Override
-    public Product findById(String id) {
+    public Product doFindById(String id) {
         return productMapper.selectProductById(id);
     }
 
     @Override
-    public void add(Product product) {
+    public void doAdd(Product product) {
         // set new id
         product.setId(this.nextProductId());
         productMapper.insertProduct(product);

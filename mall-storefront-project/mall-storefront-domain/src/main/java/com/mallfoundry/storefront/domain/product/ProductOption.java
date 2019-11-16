@@ -31,7 +31,7 @@ public class ProductOption {
 
     private List<ProductOptionValue> values;
 
-    private short index;
+    private short position;
 
     public static class Builder {
 
@@ -46,13 +46,13 @@ public class ProductOption {
             return this;
         }
 
-        public Builder index(short index) {
-            this.option.setIndex(index);
+        public Builder position(short position) {
+            this.option.setPosition(position);
             return this;
         }
 
-        public Builder index(int index) {
-            this.option.setIndex((short) index);
+        public Builder position(int position) {
+            this.option.setPosition((short) position);
             return this;
         }
 

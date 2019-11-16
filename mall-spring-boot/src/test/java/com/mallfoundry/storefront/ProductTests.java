@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storefront.product;
+package com.mallfoundry.storefront;
 
 
+import com.mallfoundry.storefront.application.ProductService;
 import com.mallfoundry.storefront.domain.product.Product;
 import com.mallfoundry.storefront.domain.product.ProductAttribute;
 import com.mallfoundry.storefront.domain.product.ProductImage;
 import com.mallfoundry.storefront.domain.product.ProductOption;
 import com.mallfoundry.storefront.domain.product.ProductVariant;
-import com.mallfoundry.storefront.product.product.ProductService;
 import com.mallfoundry.util.JsonUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -132,8 +132,8 @@ public class ProductTests {
                 new ProductAttribute("颜色", "黑", (short) 3)));
 
         product.setOptions(List.of(
-                new ProductOption.Builder().name("颜色").simpleValues(List.of("黑色", "白色", "蓝色")).index(0).build(),
-                new ProductOption.Builder().name("大小").simpleValues("41", "43", "42").index(1).build()));
+                new ProductOption.Builder().name("颜色").simpleValues(List.of("黑色", "白色", "蓝色")).position(0).build(),
+                new ProductOption.Builder().name("大小").simpleValues("41", "43", "42").position(1).build()));
         return product;
     }
 }

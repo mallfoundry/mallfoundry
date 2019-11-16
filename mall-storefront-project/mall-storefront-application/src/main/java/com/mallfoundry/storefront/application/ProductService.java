@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storefront.product.product;
+package com.mallfoundry.storefront.application;
 
 import com.mallfoundry.storefront.domain.product.Product;
 import com.mallfoundry.storefront.domain.product.ProductAdded;
@@ -28,12 +28,9 @@ public class ProductService {
 
     private ProductRepository productRepository;
 
-    private ApplicationEventPublisher eventPublisher;
-
     public ProductService(ProductRepository productRepository,
                           ApplicationEventPublisher eventPublisher) {
         this.productRepository = productRepository;
-        this.eventPublisher = eventPublisher;
     }
 
     public Product getProduct(String id) {
@@ -43,7 +40,5 @@ public class ProductService {
     @Transactional
     public void addProduct(Product product) {
         this.productRepository.add(product);
-        // Publish product added event.
-        this.eventPublisher.publishEvent(new ProductAdded(product));
     }
 }
