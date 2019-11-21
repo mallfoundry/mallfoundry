@@ -31,6 +31,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -42,13 +44,14 @@ import org.apache.lucene.store.FSDirectory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class LuceneProductSearchRepository implements ProductSearchRepository {
+public class LuceneProductRepository implements ProductRepository {
 
     private final String directoryPath;
 
-    public LuceneProductSearchRepository(String directoryPath) {
+    public LuceneProductRepository(String directoryPath) {
         this.directoryPath = directoryPath;
     }
 
@@ -72,7 +75,7 @@ public class LuceneProductSearchRepository implements ProductSearchRepository {
     }
 
     @Override
-    public List<Product> search(ProductSearchQuery search) {
+    public List<Product> search(ProductQuery search) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -114,6 +117,36 @@ public class LuceneProductSearchRepository implements ProductSearchRepository {
                 return JsonUtils.parse(product, Product.class);
             }
             return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Product> getProducts(List<String> ids) {
+        try {
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+            IndexReader reader = DirectoryReader.open(directory);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            BooleanQuery.Builder builder = new BooleanQuery.Builder();
+
+            for (String id : ids) {
+                builder.add(new TermQuery(new Term("id", id)), BooleanClause.Occur.SHOULD);
+            }
+            BooleanQuery query = builder.build();
+            int count = searcher.count(query);
+            if (count == 0) {
+                return Collections.emptyList();
+            }
+            TopDocs topDocs = searcher.search(query, count);
+            List<Product> products = new ArrayList<>();
+            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+            for (ScoreDoc scoreDoc : scoreDocs) {
+                products.add(JsonUtils.parse(reader.document(scoreDoc.doc).get("product"), Product.class));
+            }
+            return products;
         } catch (Exception e) {
             e.printStackTrace();
         }

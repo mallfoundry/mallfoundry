@@ -16,16 +16,22 @@
 
 package com.mallfoundry.catalog.domain.product;
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class ProductSearchQuery {
+import com.mallfoundry.storefront.domain.product.ProductAdded;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
 
-    private int offset;
+@Service
+public class EventBasedProductListener {
 
-    private int limit;
+    private final ProductRepository productSearchService;
 
-    private String name;
+    public EventBasedProductListener(ProductRepository productSearchService) {
+        this.productSearchService = productSearchService;
+    }
+
+    @EventListener(ProductAdded.class)
+    public void onCreatedProduct(ProductAdded event) {
+        this.productSearchService.add(event.getProduct());
+    }
 }

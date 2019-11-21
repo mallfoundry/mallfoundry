@@ -16,33 +16,39 @@
 
 package com.mallfoundry.catalog.rest.product;
 
-import com.mallfoundry.catalog.domain.product.ProductSearchQuery;
-import com.mallfoundry.catalog.domain.product.ProductSearchRepository;
+import com.mallfoundry.catalog.application.ProductService;
+import com.mallfoundry.catalog.domain.product.ProductQuery;
 import com.mallfoundry.storefront.domain.product.Product;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("catalogProductResourceV1")
 @RequestMapping("/v1/catalog")
-public class ProductSearchResourceV1 {
+public class ProductResourceV1 {
 
-    private final ProductSearchRepository productSearchService;
+    private final ProductService productService;
 
-    public ProductSearchResourceV1(ProductSearchRepository productSearchService) {
-        this.productSearchService = productSearchService;
+    public ProductResourceV1(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/products/search")
-    public List<Product> search(ProductSearchQuery search) {
-        return this.productSearchService.search(search);
+    public List<Product> search(ProductQuery search) {
+        return this.productService.search(search);
     }
 
     @GetMapping("/products/{id}")
     public Product getProduct(@PathVariable("id") String id) {
-        return this.productSearchService.getProduct(id);
+        return this.productService.getProduct(id);
+    }
+
+    @GetMapping("/products")
+    public List<Product> getProducts(@RequestParam(value = "ids") List<String> ids) {
+        return this.productService.getProducts(ids);
     }
 }
