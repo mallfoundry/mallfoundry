@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.domain.favorite;
+package com.mallfoundry.customer.domain.follow;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class FavoriteProduct {
-    private String id;
+@NoArgsConstructor
+public class FollowProduct {
+
     private String customerId;
+
     private String productId;
+
+    public FollowProduct(String customerId, String productId) {
+        this.customerId = customerId;
+        this.productId = productId;
+    }
 }

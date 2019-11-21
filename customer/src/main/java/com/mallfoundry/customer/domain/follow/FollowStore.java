@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.domain.product;
+package com.mallfoundry.customer.domain.follow;
 
-import com.mallfoundry.storefront.domain.product.Product;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
+@Getter
+@Setter
+public class FollowStore {
 
-public interface ProductSearchRepository {
-
-    void add(Product product);
-
-    List<Product> search(ProductSearchQuery query);
-
-    Product getProduct(String id);
+    private String customerId;
+    private String storeId;
 }

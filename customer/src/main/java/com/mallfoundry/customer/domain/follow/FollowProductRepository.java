@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storefront.domain.product;
+package com.mallfoundry.customer.domain.follow;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
-@Setter
-@Getter
-@NoArgsConstructor
-public class ProductVideo extends ProductExhibit {
+public interface FollowProductRepository {
 
-    private short length;
+    void add(FollowProduct followProduct);
 
-    public ProductVideo(String url, short length, short position) {
-        this.setUrl(url);
-        this.length = length;
-        this.setPosition(position);
-    }
+    void delete(FollowProduct followProduct);
+
+    boolean exist(FollowProduct followProduct);
+
+    List<FollowProduct> findListByCustomerId(String customerId);
 }
