@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.CustomCollectionMapper">
+
+    <resultMap id="customCollectionResultMap" type="com.mallfoundry.storefront.domain.product.CustomCollection">
+        <id property="id" column="id_"/>
+        <result property="parentId" column="parent_id_"/>
+        <result property="storeId" column="store_id_"/>
+        <result property="name" column="name_"/>
+        <result property="enabled" column="enabled_"/>
+        <result property="position" column="position_"/>
+    </resultMap>
+
+    <sql id="selectFrom">
+        SELECT
+            id_,
+            parent_id_,
+            store_id_,
+            name_,
+            enabled_,
+            position_
+        FROM
+            storefront_custom_collection
+    </sql>
+
+    <select id="selectById" resultMap="customCollectionResultMap">
+        <include refid="selectFrom"/>
+        WHERE id_ = #{id}
+    </select>
+
+    <select id="selectListByParentId" resultMap="customCollectionResultMap">
+        <include refid="selectFrom"/>
+        <where>
+            parent_id_ = #{parentId}
+            <if test="storeId != null">
+                AND store_id_ = #{storeId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO
+            storefront_custom_collection (id_, parent_id_, store_id_, name_, enabled_, position_ )
+        VALUES(
+            #{id},
+            #{parentId},
+            #{storeId},
+	        #{name},
+	        #{enabled},
+	        #{position}
+	        )
+    </insert>
+</mapper>

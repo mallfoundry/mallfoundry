@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductMapper">
+    <resultMap id="productResultMap" type="com.mallfoundry.storefront.domain.product.Product">
+        <id property="id" column="id_"/>
+        <result property="shortName" column="short_name_"/>
+        <result property="name" column="name_"/>
+        <result property="freeShipping" column="free_shipping_"/>
+        <result property="shippingMoney" column="shipping_money_"/>
+        <result property="description" column="description_"/>
+        <result property="attributes" column="attributes_"
+                typeHandler="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductAttributesTypeHandler"/>
+        <result property="options" column="options_"
+                typeHandler="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductOptionsTypeHandler"/>
+        <result property="images" column="images_"
+                typeHandler="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductImagesTypeHandler"/>
+        <result property="videos" column="videos_"
+                typeHandler="com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductVideosTypeHandler"/>
+        <collection property="variants" ofType="com.mallfoundry.storefront.domain.product.ProductVariant">
+            <id property="id" column="variant_id_"/>
+            <result property="retailPrice" column="variant_retail_price_"/>
+            <result property="productId" column="id_"/>
+            <result property="marketPrice" column="variant_market_price_"/>
+            <result property="stockQuantity" column="variant_stock_quantity_"/>
+            <result property="options" column="variant_options_"
+                    typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
+            <result property="images" column="variant_images_"
+                    typeHandler="com.mallfoundry.mybatis.type.StringListTypeHandler"/>
+            <result property="position" column="variant_position_"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="productResultMap">
+        SELECT
+            pd.id_,
+            pd.short_name_,
+            pd.name_,
+            pd.free_shipping_,
+            pd.shipping_money_,
+            pd.attributes_,
+            pd.options_,
+            pd.description_,
+            pd.images_,
+            pd.videos_,
+            pdv.id_ AS variant_id_,
+            pdv.retail_price_ AS variant_retail_price_,
+            pdv.market_price_ AS variant_market_price_,
+            pdv.stock_quantity_ AS variant_stock_quantity_,
+            pdv.options_ AS variant_options_,
+            pdv.images_ AS variant_images_,
+            pdv.position_ AS variant_position_
+        FROM
+            storefront_product pd
+            LEFT JOIN storefront_product_variant pdv ON pd.id_ = pdv.product_id_
+        WHERE
+            pd.id_ = #{id}
+        ORDER BY
+	        pdv.position_
+    </select>
+
+    <insert id="insert">
+        INSERT INTO
+            storefront_product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, options_, images_, videos_)
+        VALUES(
+            #{id},
+	        #{shortName},
+	        #{name},
+	        #{freeShipping},
+	        #{shippingMoney},
+	        #{description},
+	        #{attributes, typeHandler=com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductAttributesTypeHandler},
+	        #{options, typeHandler=com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductOptionsTypeHandler},
+	        #{images, typeHandler=com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductImagesTypeHandler},
+            #{videos, typeHandler=com.mallfoundry.storefront.infrastructure.persistence.mybatis.product.ProductVideosTypeHandler}
+	        )
+    </insert>
+</mapper>
