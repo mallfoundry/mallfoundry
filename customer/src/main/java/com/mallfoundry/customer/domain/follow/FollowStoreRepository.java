@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storefront.infrastructure.persistence.mybatis.product;
+package com.mallfoundry.customer.domain.follow;
 
-import com.mallfoundry.storefront.domain.product.Product;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-@Mapper
-public interface ProductMapper {
+public interface FollowStoreRepository {
 
-    Product selectProductById(String id);
+    void add(FollowStore followStore);
 
-    void insertProduct(Product product);
+    void delete(FollowStore followStore);
 
-    void insertProductVariants(Product product);
+    boolean exist(FollowStore followStore);
 
+    List<FollowStore> findListByCustomerId(String customerId);
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mallfoundry.customer.infrastructure.persistence.mybatis.follow.FollowStoreMapper">
+
+    <resultMap id="followStoreResultMap" type="com.mallfoundry.customer.domain.follow.FollowStore">
+        <id property="customerId" column="customer_id_"/>
+        <id property="storeId" column="store_id_"/>
+    </resultMap>
+
+    <insert id="insert">
+        INSERT INTO customer_follow_store ( customer_id_, store_id_ )
+        VALUES (#{customerId}, #{storeId})
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM
+            customer_follow_store
+        WHERE
+            customer_id_ = #{customerId} AND store_id_ = #{storeId}
+    </delete>
+
+    <select id="count" resultType="int">
+        SELECT
+           COUNT(*)
+        FROM
+            customer_follow_store
+        WHERE
+            customer_id_ = #{customerId} AND store_id_ = #{storeId}
+    </select>
+
+    <select id="selectListByCustomerId" resultMap="followStoreResultMap">
+        SELECT
+           customer_id_,
+           store_id_
+        FROM
+            customer_follow_store
+        WHERE
+            customer_id_ = #{customerId}
+    </select>
+</mapper>

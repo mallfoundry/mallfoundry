@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.domain.favorite;
+package com.mallfoundry.customer.infrastructure.persistence.mybatis.follow;
+
+import com.mallfoundry.customer.domain.follow.FollowStore;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface FavoriteRepository {
+@Mapper
+@Repository
+public interface FollowStoreMapper {
 
-    List<FavoriteProduct> listByCustomerId(String customerId);
+    void insert(FollowStore followStore);
 
+    void delete(FollowStore followStore);
+
+    int count(FollowStore followStore);
+
+    List<FollowStore> selectListByCustomerId(@Param("customerId") String customerId);
 }

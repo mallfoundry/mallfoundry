@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.infrastructure.persistence.mybatis.cart;
+package com.mallfoundry.customer.infrastructure.persistence.mybatis.follow;
 
-import com.mallfoundry.customer.domain.cart.CartItem;
+import com.mallfoundry.customer.domain.follow.FollowProduct;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 @Mapper
-public interface CartItemMapper {
+@Repository
+public interface FollowProductMapper {
 
-    void insert(CartItem order);
+    void insert(FollowProduct followProduct);
 
-    void update(CartItem order);
+    void delete(FollowProduct followProduct);
 
-    void deleteById(@Param("id") String id);
+    int count(FollowProduct followProduct);
 
-    List<CartItem> selectListByCart(@Param("cart") String cart);
+    List<FollowProduct> selectListByCustomerId(@Param("customerId") String customerId);
 }
