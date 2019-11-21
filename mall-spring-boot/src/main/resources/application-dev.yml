@@ -1,4 +1,0 @@
-logging:
-  level:
-    com.github.shop: debug
-    org.apache.ibatis: debug

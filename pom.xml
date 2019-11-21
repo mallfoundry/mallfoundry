@@ -22,20 +22,145 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>2.2.1.RELEASE</version>
     </parent>
     <groupId>com.mallfoundry</groupId>
     <artifactId>mall</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+        <mybatis.spring-boot.version>2.1.1</mybatis.spring-boot.version>
+        <commons-io.version>2.6</commons-io.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <lucene.version>8.2.0</lucene.version>
+        <mall.version>${project.version}</mall.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- mall projects -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-common</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-autoconfigure</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-shared-mybatis</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-identity</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-storage</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-topic</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-catalog</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-customer</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-storefront</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <modules>
-        <module>mall-project</module>
-        <module>mall-common-project</module>
-        <module>mall-basic-project</module>
-        <module>mall-catalog-project</module>
-        <module>mall-order-project</module>
-        <module>mall-customer-project</module>
-        <module>mall-storefront-project</module>
-        <module>mall-spring-boot</module>
+        <module>common</module>
+        <module>autoconfigure</module>
+        <module>identity</module>
+        <module>security</module>
+        <module>storage</module>
+        <module>topic</module>
+        <module>storefront</module>
+        <module>catalog</module>
+        <module>customer</module>
+        <module>spring-boot</module>
     </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
