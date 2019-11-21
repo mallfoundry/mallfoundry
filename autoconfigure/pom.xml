@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.mallfoundry</groupId>
-        <artifactId>mall-common-project</artifactId>
+        <artifactId>mall</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-catalog-domain</artifactId>
+            <artifactId>mall-catalog</artifactId>
             <scope>provided</scope>
         </dependency>
 
