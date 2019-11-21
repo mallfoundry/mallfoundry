@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.mallfoundry: debug
+    org.apache.ibatis: debug

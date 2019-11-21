@@ -36,29 +36,25 @@ public class ShoppingCartTests {
     @Test
     public void testAddItem() {
         CartItem item = new CartItem();
-        item.setCart("buyer_1");
         item.setProductId("product_1");
-        item.setOptions(List.of(1, 2, 3));
+        item.setOptions(List.of("1", "2"));
         item.setQuantity(20);
-        cartService.addItem(item);
+        cartService.addItem("buyer_1", item);
     }
 
     @Test
     public void testUpdateItem() {
         CartItem item = new CartItem();
         item.setId("10000000000002");
-        item.setCart("buyer_1");
         item.setProductId("product_1");
-        item.setOptions(List.of(2, 4, 5));
+        item.setOptions(List.of("1", "2"));
         item.setQuantity(30);
-        cartService.updateItem(item);
+        cartService.updateItem("buyer_1", item);
     }
 
     @Test
     public void testRemoveItem() {
-        CartItem item = new CartItem();
-        item.setId("1");
-        cartService.removeItem(item);
+        cartService.removeItem("buyer_1", "1");
     }
 
     @Test

@@ -20,9 +20,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>mall</artifactId>
         <groupId>com.mallfoundry</groupId>
-        <artifactId>mall-project</artifactId>
-        <relativePath>../mall-project</relativePath>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>mall-spring-boot</artifactId>
@@ -44,17 +43,17 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-catalog-rest</artifactId>
+            <artifactId>mall-catalog</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-customer-rest</artifactId>
+            <artifactId>mall-customer</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-storefront-rest</artifactId>
+            <artifactId>mall-storefront</artifactId>
         </dependency>
 
         <dependency>
