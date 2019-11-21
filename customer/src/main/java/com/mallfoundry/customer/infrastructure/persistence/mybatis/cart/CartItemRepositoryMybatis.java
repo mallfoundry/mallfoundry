@@ -19,6 +19,7 @@ package com.mallfoundry.customer.infrastructure.persistence.mybatis.cart;
 import com.mallfoundry.customer.domain.cart.CartItem;
 import com.mallfoundry.customer.domain.cart.CartItemRepository;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
+import com.mallfoundry.storefront.application.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
@@ -29,8 +30,12 @@ public class CartItemRepositoryMybatis implements CartItemRepository {
 
     private final CartItemMapper cartMapper;
 
-    public CartItemRepositoryMybatis(CartItemMapper cartMapper) {
+    private final ProductService productService;
+
+    public CartItemRepositoryMybatis(CartItemMapper cartMapper,
+                                     ProductService productService) {
         this.cartMapper = cartMapper;
+        this.productService = productService;
     }
 
     @Override
@@ -48,12 +53,28 @@ public class CartItemRepositoryMybatis implements CartItemRepository {
     }
 
     @Override
-    public void delete(String orderId) {
-        this.cartMapper.deleteById(orderId);
+    public void delete(String cart, String itemId) {
+        this.cartMapper.deleteById(itemId);
     }
 
     @Override
-    public List<CartItem> findListByCart(String cart) {
+    public List<CartItem> findAllByCart(String cart) {
+//        List<CartItem> items = this.cartMapper.selectListByCart(cart);
+//        if (CollectionUtils.isEmpty(items)) {
+//            return Collections.emptyList();
+//        }
+//
+//        List<String> productIds = items.stream().map(CartItem::getProductId).collect(Collectors.toList());
+//        List<Product> products = this.productService.getProducts(productIds);
+//        if (CollectionUtils.isNotEmpty(products)) {
+//            Map<String, Product> keyedProducts = products.stream().collect(Collectors.toMap(Product::getId, product -> product));
+//            items.forEach(item -> {
+//                item.setProduct(keyedProducts.get(item.getProductId()));
+//            });
+//        }
+//
+//        return items;
+
         return this.cartMapper.selectListByCart(cart);
     }
 

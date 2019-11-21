@@ -33,19 +33,21 @@ public class CartService {
     }
 
     @Transactional
-    public void addItem(CartItem order) {
-        this.cartItemRepository.add(order);
+    public void addItem(String cart, CartItem item) {
+        item.setCart(cart);
+        this.cartItemRepository.add(item);
     }
 
-    public void removeItem(CartItem order) {
-        this.cartItemRepository.delete(order.getId());
+    public void removeItem(String cart, String itemId) {
+        this.cartItemRepository.delete(cart, itemId);
     }
 
-    public void updateItem(CartItem order) {
-        this.cartItemRepository.update(order);
+    public void updateItem(String cart, CartItem item) {
+        item.setCart(cart);
+        this.cartItemRepository.update(item);
     }
 
     public List<CartItem> getItems(String cart) {
-        return this.cartItemRepository.findListByCart(cart);
+        return this.cartItemRepository.findAllByCart(cart);
     }
 }

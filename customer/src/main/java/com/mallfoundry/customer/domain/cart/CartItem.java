@@ -51,7 +51,7 @@ public class CartItem {
     /**
      * Purchased product options.
      */
-    private List<Integer> options;
+    private List<String> options;
 
     /**
      * Purchase quantity of purchase order.
@@ -69,10 +69,5 @@ public class CartItem {
     }
 
     public CartItem() {
-    }
-
-    public CartItem(String id, String cart) {
-        this.id = id;
-        this.cart = cart;
     }
 }

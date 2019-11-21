@@ -29,7 +29,7 @@ public interface CartItemRepository {
 
     void update(CartItem item);
 
-    void delete(String id);
+    void delete(String cart, String itemId);
 
-    List<CartItem> findListByCart(String cart);
+    List<CartItem> findAllByCart(String cart);
 }

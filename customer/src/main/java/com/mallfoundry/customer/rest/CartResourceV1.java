@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.domain.rest;
+package com.mallfoundry.customer.rest;
 
 import com.mallfoundry.customer.application.CartService;
 import com.mallfoundry.customer.domain.cart.CartItem;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/customer")
+@RequestMapping("/v1")
 public class CartResourceV1 {
 
     private final CartService cartService;
@@ -42,21 +42,19 @@ public class CartResourceV1 {
     @PostMapping("/carts/{cart}/items")
     public void addCartItem(@PathVariable("cart") String cart,
                             @RequestBody CartItem item) {
-        item.setCart(cart);
-        this.cartService.addItem(item);
+        this.cartService.addItem(cart, item);
     }
 
     @DeleteMapping("/carts/{cart}/items/{id}")
     public void removeCartItem(@PathVariable("cart") String cart,
                                @PathVariable("id") String id) {
-        this.cartService.removeItem(new CartItem(id, cart));
+        this.cartService.removeItem(cart, id);
     }
 
     @PatchMapping("/carts/{cart}/items")
     public void updateCartItem(@PathVariable("cart") String cart,
-                               @RequestBody CartItem order) {
-        order.setCart(cart);
-        this.cartService.updateItem(order);
+                               @RequestBody CartItem item) {
+        this.cartService.updateItem(cart, item);
     }
 
     @GetMapping("/carts/{cart}/items")
