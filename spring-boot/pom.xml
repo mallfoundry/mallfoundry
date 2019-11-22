@@ -53,7 +53,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-storefront</artifactId>
+            <artifactId>mall-store</artifactId>
         </dependency>
 
         <dependency>

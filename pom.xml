@@ -134,7 +134,7 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-storefront</artifactId>
+                <artifactId>mall-store</artifactId>
                 <version>${mall.version}</version>
             </dependency>
         </dependencies>
@@ -146,7 +146,7 @@
         <module>security</module>
         <module>storage</module>
         <module>topic</module>
-        <module>storefront</module>
+        <module>store</module>
         <module>catalog</module>
         <module>customer</module>
         <module>spring-boot</module>

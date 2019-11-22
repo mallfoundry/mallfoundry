@@ -8,11 +8,13 @@ spring:
     time-zone: GMT+8
   profiles:
     active: dev
+  application:
+    name: Mall-Fundory-APP
 mybatis:
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
-  type-handlers-package: com.github.shop.mybatis.type
+  type-handlers-package: com.mallfoundry.mybatis.type
 server:
   port: 8077
 mall:
@@ -22,8 +24,9 @@ mall:
       directory: D:/mall/data/storage/
     http:
       base-url: http://localhost:${server.port}/static
-  product:
-    search:
-      type: lucene
-      lucene:
-        directory: D:/mall/data/indexes
+  store:
+    product:
+      search:
+        type: lucene
+        lucene:
+          directory: D:/mall/data/indexes

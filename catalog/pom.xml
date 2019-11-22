@@ -28,16 +28,6 @@
     <artifactId>mall-catalog</artifactId>
     <dependencies>
         <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-queryparser</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -50,11 +40,6 @@
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-storefront</artifactId>
         </dependency>
 
         <dependency>
