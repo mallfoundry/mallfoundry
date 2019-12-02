@@ -16,28 +16,40 @@
 
 package com.mallfoundry.data;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
-public class PagedList<T> implements Iterable<T> {
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonPropertyOrder({"offset", "limit", "size", "total", "elements"})
+public class OffsetList<T> implements Iterable<T> {
 
-    @Getter
-    @Setter
-    private long total;
+    private long offset;
 
-    @Getter
-    @Setter
+    private long limit;
+
     private long size;
 
-    @Setter
+    private long total;
+
     private List<T> elements;
 
-    public List<T> getElements() {
-        return this.elements == null ? Collections.emptyList() : this.elements;
+    private OffsetList(List<T> elements, long offset, long limit, long total) {
+        List<T> list = Objects.nonNull(elements) ? Collections.unmodifiableList(elements) : Collections.emptyList();
+        OffsetList<T> page = new OffsetList<>();
+        page.setTotal(total);
+        page.setSize(list.size());
+        page.setElements(list);
+        page.setOffset(offset);
+        page.setLimit(limit);
     }
 
     @Override
@@ -45,23 +57,25 @@ public class PagedList<T> implements Iterable<T> {
         return this.getElements().iterator();
     }
 
-    public static <T> PagedList<T> of(List<T> list, long total) {
+    public static <T> OffsetList<T> of(List<T> list, long total) {
         // unmodifiable list
         List<T> uList = Collections.unmodifiableList(list);
-        PagedList<T> page = new PagedList<>();
+        OffsetList<T> page = new OffsetList<>();
         page.setTotal(total);
         page.setSize(uList.size());
         page.setElements(uList);
         return page;
     }
 
-    public static <T> PagedList<T> empty() {
-        PagedList<T> page = new PagedList<>();
+    public static <T> OffsetList<T> empty() {
+        OffsetList<T> page = new OffsetList<>();
         page.setTotal(0);
         page.setSize(0);
         page.setElements(Collections.emptyList());
         return page;
     }
 
-
+    public static <T> OffsetList<T> of(List<T> elements, long offset, long limit, long total) {
+        return new OffsetList<>(elements, offset, limit, total);
+    }
 }

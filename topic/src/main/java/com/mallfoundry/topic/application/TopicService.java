@@ -16,7 +16,7 @@
 
 package com.mallfoundry.topic.application;
 
-import com.mallfoundry.data.PagedList;
+import com.mallfoundry.data.OffsetList;
 import com.mallfoundry.topic.domain.Comment;
 import com.mallfoundry.topic.domain.CommentRepository;
 import com.mallfoundry.topic.domain.ReplyComment;
@@ -70,7 +70,7 @@ public class TopicService {
         this.commentRepository.delete(comment.getId());
     }
 
-    public PagedList<Comment> getComments(String topicName, int offset, int limit) {
+    public OffsetList<Comment> getComments(String topicName, int offset, int limit) {
         return this.commentRepository.findListByTopicName(topicName, offset, limit);
     }
 

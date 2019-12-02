@@ -16,7 +16,7 @@
 
 package com.mallfoundry.topic.domain;
 
-import com.mallfoundry.data.PagedList;
+import com.mallfoundry.data.OffsetList;
 
 public interface CommentRepository {
 
@@ -26,5 +26,5 @@ public interface CommentRepository {
 
     void deleteByTopicName(String topicName);
 
-    PagedList<Comment> findListByTopicName(String topicName, int offset, int limit);
+    OffsetList<Comment> findListByTopicName(String topicName, int offset, int limit);
 }

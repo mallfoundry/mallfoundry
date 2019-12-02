@@ -16,7 +16,7 @@
 
 package com.mallfoundry.topic;
 
-import com.mallfoundry.data.PagedList;
+import com.mallfoundry.data.OffsetList;
 import com.mallfoundry.topic.domain.Comment;
 import com.mallfoundry.topic.domain.Topic;
 import com.mallfoundry.topic.application.TopicService;
@@ -97,7 +97,7 @@ public class TopicTests {
 
     @Test
     public void testGetComments() {
-        PagedList<Comment> comments = this.topicService.getComments("topic_1", 0, 10);
+        OffsetList<Comment> comments = this.topicService.getComments("topic_1", 0, 10);
         System.out.println(JsonUtils.stringify(comments));
     }
 }

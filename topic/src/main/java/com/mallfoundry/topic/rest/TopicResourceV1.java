@@ -16,7 +16,7 @@
 
 package com.mallfoundry.topic.rest;
 
-import com.mallfoundry.data.PagedList;
+import com.mallfoundry.data.OffsetList;
 import com.mallfoundry.topic.domain.Comment;
 import com.mallfoundry.topic.domain.ReplyComment;
 import com.mallfoundry.topic.domain.Topic;
@@ -69,9 +69,9 @@ public class TopicResourceV1 {
     }
 
     @GetMapping("/topics/{topic_name}/comments")
-    public PagedList<Comment> getComments(@PathVariable("topic_name") String topicName,
-                                          @RequestParam(defaultValue = "0") int offset,
-                                          @RequestParam(defaultValue = "10") int limit) {
+    public OffsetList<Comment> getComments(@PathVariable("topic_name") String topicName,
+                                           @RequestParam(defaultValue = "0") int offset,
+                                           @RequestParam(defaultValue = "10") int limit) {
         return this.topicService.getComments(topicName, offset, limit);
     }
 
