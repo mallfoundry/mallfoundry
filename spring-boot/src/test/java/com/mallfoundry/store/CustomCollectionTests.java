@@ -17,7 +17,7 @@
 package com.mallfoundry.store;
 
 import com.mallfoundry.store.application.CustomCollectionService;
-import com.mallfoundry.store.domain.product.CustomCollection;
+import com.mallfoundry.store.domain.CustomCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
