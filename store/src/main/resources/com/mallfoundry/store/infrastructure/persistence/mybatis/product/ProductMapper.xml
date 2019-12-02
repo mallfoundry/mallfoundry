@@ -91,4 +91,12 @@
             #{videos, typeHandler=com.mallfoundry.store.infrastructure.persistence.mybatis.product.ProductVideosTypeHandler}
 	        )
     </insert>
+
+    <delete id="deleteById">
+        DELETE
+        FROM
+            store_product
+        WHERE
+            id_ = #{id}
+    </delete>
 </mapper>

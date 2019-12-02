@@ -16,16 +16,5 @@
 
 package com.mallfoundry.store.domain.product;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-public class ProductAdded extends ApplicationEvent {
-
-    @Getter
-    private final Product product;
-
-    public ProductAdded(Product product) {
-        super(product);
-        this.product = product;
-    }
+public class ProductUpdatedEvent {
 }

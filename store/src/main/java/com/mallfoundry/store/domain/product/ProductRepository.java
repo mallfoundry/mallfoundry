@@ -18,7 +18,11 @@ package com.mallfoundry.store.domain.product;
 
 public interface ProductRepository {
 
-    Product findById(String id);
-
     void add(Product product);
+
+    void delete(String id);
+
+    void update(Product product);
+
+    Product findById(String id);
 }

@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.infrastructure.persistence.mybatis.product;
+package com.mallfoundry.store.domain;
 
-import com.mallfoundry.store.domain.product.ProductVariant;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+public class CustomCollect {
 
-import java.util.List;
+    private String collectionId;
 
-@Mapper
-@Repository
-public interface ProductVariantMapper {
+    private String productId;
 
-    void insertList(@Param("variants") List<ProductVariant> variants);
-
-    void deleteByProductId(@Param("productId") String productId);
+    private short position;
 }

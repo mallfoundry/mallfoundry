@@ -27,7 +27,6 @@
     <artifactId>mall-store</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>

@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.domain.product;
+package com.mallfoundry.store.infrastructure.persistence.mybatis;
+
+import com.mallfoundry.store.domain.CustomCollection;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface CustomCollectionRepository {
+@Repository
+@Mapper
+public interface CustomCollectionMapper {
 
-    void add(CustomCollection collection);
+    void insert(CustomCollection collection);
 
-    void delete(String id);
+    void deleteByIds(List<String> ids);
 
     void update(CustomCollection collection);
 
-    List<CustomCollection> findTopList(String storeId);
+    List<String> selectIdsByParentIds(List<String> parentIds);
 
-    List<CustomCollection> findListByParentId(String parentId);
+    CustomCollection selectById(@Param("id") String id);
 
-    CustomCollection findById(String id);
-
+    List<CustomCollection> selectListByParentId(@Param("storeId") String storeId,
+                                                @Param("parentId") String parentId);
 }

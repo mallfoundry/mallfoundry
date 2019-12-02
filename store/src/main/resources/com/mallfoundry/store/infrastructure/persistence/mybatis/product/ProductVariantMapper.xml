@@ -18,14 +18,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.product.ProductVariantMapper">
-    <insert id="insertAll">
+
+    <insert id="insertList">
         INSERT INTO store_product_variant (
         id_, product_id_, retail_price_, market_price_, stock_quantity_, options_, images_, position_)
         VALUES
         <foreach collection="variants" item="variant" separator=",">
             (
             #{variant.id},
-            #{id},
+            #{variant.productId},
             #{variant.retailPrice},
             #{variant.marketPrice},
             #{variant.stockQuantity},
@@ -35,4 +36,12 @@
             )
         </foreach>
     </insert>
+
+    <delete id="deleteByProductId">
+        DELETE
+        FROM
+            store_product_variant
+        WHERE
+            product_id_ = #{productId}
+    </delete>
 </mapper>

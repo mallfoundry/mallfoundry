@@ -18,13 +18,16 @@ package com.mallfoundry.store.infrastructure.persistence.mybatis.product;
 
 import com.mallfoundry.store.domain.product.Product;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Mapper
 public interface ProductMapper {
 
-    Product selectById(String id);
+    Product selectById(@Param("id") String id);
 
     void insert(Product product);
+
+    void deleteById(@Param("id") String id);
 }

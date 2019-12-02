@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.infrastructure.persistence.mybatis.product;
+package com.mallfoundry.store.domain.product;
 
-import com.mallfoundry.store.domain.product.ProductVariant;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-import java.util.List;
+public class ProductAddedEvent extends ApplicationEvent {
 
-@Mapper
-@Repository
-public interface ProductVariantMapper {
+    @Getter
+    private final Product product;
 
-    void insertList(@Param("variants") List<ProductVariant> variants);
-
-    void deleteByProductId(@Param("productId") String productId);
+    public ProductAddedEvent(Product product) {
+        super(product);
+        this.product = product;
+    }
 }

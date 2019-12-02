@@ -17,8 +17,14 @@
 package com.mallfoundry.store.rest;
 
 import com.mallfoundry.store.application.ProductService;
+import com.mallfoundry.store.domain.product.Product;
+import com.mallfoundry.store.domain.product.search.ProductQuery;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -28,5 +34,15 @@ public class ProductResourceV1 {
 
     public ProductResourceV1(ProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping("/products")
+    public List<Product> searchProduct(ProductQuery query) {
+        return this.productService.search(query);
+    }
+
+    @GetMapping("/products/{id}")
+    public Product getProduct(@PathVariable("id") String id) {
+        return this.productService.getProduct(id);
     }
 }

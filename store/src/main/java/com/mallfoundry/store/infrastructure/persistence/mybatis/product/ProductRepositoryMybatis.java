@@ -38,11 +38,6 @@ public class ProductRepositoryMybatis extends ProductRepositorySupport {
     }
 
     @Override
-    public Product doFindById(String id) {
-        return this.productMapper.selectById(id);
-    }
-
-    @Override
     public void doAdd(Product product) {
         // set new id
         product.setId(this.nextProductId());
@@ -53,16 +48,32 @@ public class ProductRepositoryMybatis extends ProductRepositorySupport {
             variant.setProductId(product.getId());
         });
 
-        this.productVariantMapper.insertAll(variants);
+        this.productVariantMapper.insertList(variants);
+    }
+
+    @Override
+    protected void doDelete(String id) {
+        this.productMapper.deleteById(id);
+        this.productVariantMapper.deleteByProductId(id);
+    }
+
+    @Override
+    protected void doUpdate(Product product) {
+
+    }
+
+    @Override
+    public Product doFindById(String id) {
+        return this.productMapper.selectById(id);
     }
 
     private String nextProductId() {
-        long nextProductId = PrimaryKeyHolder.sequence().nextVal("storefront.product.id");
+        long nextProductId = PrimaryKeyHolder.sequence().nextVal("store.product.id");
         return String.valueOf(10000000000000L + nextProductId);
     }
 
     private String nextProductVariantId() {
-        long nextVariantId = PrimaryKeyHolder.sequence().nextVal("storefront.product.variant.id");
+        long nextVariantId = PrimaryKeyHolder.sequence().nextVal("store.product.variant.id");
         return String.valueOf(10000000000000L + nextVariantId);
     }
 }

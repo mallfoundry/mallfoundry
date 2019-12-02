@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.domain.product;
+package com.mallfoundry.store.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

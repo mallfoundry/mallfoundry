@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.infrastructure.persistence.mybatis.product;
+package com.mallfoundry.store.infrastructure.persistence.mybatis;
 
 import com.mallfoundry.keygen.PrimaryKeyHolder;
-import com.mallfoundry.store.domain.product.CustomCollection;
-import com.mallfoundry.store.domain.product.CustomCollectionRepositorySupport;
+import com.mallfoundry.store.domain.CustomCollection;
+import com.mallfoundry.store.domain.CustomCollectionRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

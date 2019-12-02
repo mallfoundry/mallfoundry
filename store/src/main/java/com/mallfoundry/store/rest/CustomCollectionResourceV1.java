@@ -18,7 +18,7 @@ package com.mallfoundry.store.rest;
 
 
 import com.mallfoundry.store.application.CustomCollectionService;
-import com.mallfoundry.store.domain.product.CustomCollection;
+import com.mallfoundry.store.domain.CustomCollection;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

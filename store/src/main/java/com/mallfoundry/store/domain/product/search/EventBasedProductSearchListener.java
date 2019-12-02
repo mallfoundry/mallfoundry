@@ -17,7 +17,7 @@
 package com.mallfoundry.store.domain.product.search;
 
 
-import com.mallfoundry.store.domain.product.ProductAdded;
+import com.mallfoundry.store.domain.product.ProductAddedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +30,8 @@ public class EventBasedProductSearchListener {
         this.productSearchProvider = productSearchProvider;
     }
 
-    @EventListener(ProductAdded.class)
-    public void onAddProduct(ProductAdded event) {
+    @EventListener(ProductAddedEvent.class)
+    public void onAddProduct(ProductAddedEvent event) {
         this.productSearchProvider.add(event.getProduct());
     }
 }

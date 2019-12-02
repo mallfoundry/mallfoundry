@@ -33,4 +33,25 @@ public class ProductQuery {
 
     private String productId;
 
+
+    public static ProductQueryBuilder builder() {
+        return new ProductQueryBuilder();
+    }
+
+    public static class ProductQueryBuilder {
+
+        private final ProductQuery query;
+
+        public ProductQueryBuilder() {
+            this.query = new ProductQuery();
+        }
+
+        public ProductQueryBuilder(ProductQuery query) {
+            this.query = query;
+        }
+
+        public ProductQuery build() {
+            return this.query;
+        }
+    }
 }

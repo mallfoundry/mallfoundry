@@ -17,24 +17,23 @@
 package com.mallfoundry.store.domain.product;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductAttribute {
 
     private String name;
 
     private String value;
 
-    private short index;
+    private short position;
 
-    public ProductAttribute() {
-    }
-
-    public ProductAttribute(String name, String value, short index) {
+    public ProductAttribute(String name, String value, short position) {
         this.name = name;
         this.value = value;
-        this.index = index;
+        this.position = position;
     }
 }

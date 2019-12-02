@@ -16,11 +16,16 @@
 
 package com.mallfoundry.store.domain.product;
 
-public class CustomCollect {
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-    private String collectionId;
+public class ProductDeletedEvent extends ApplicationEvent {
 
-    private String productId;
+    @Getter
+    private final Product product;
 
-    private short position;
+    public ProductDeletedEvent(Product product) {
+        super(product);
+        this.product = product;
+    }
 }

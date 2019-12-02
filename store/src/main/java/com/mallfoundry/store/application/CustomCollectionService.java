@@ -16,8 +16,8 @@
 
 package com.mallfoundry.store.application;
 
-import com.mallfoundry.store.domain.product.CustomCollection;
-import com.mallfoundry.store.domain.product.CustomCollectionRepository;
+import com.mallfoundry.store.domain.CustomCollection;
+import com.mallfoundry.store.domain.CustomCollectionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

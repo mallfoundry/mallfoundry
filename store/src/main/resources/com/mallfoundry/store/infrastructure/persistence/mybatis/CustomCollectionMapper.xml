@@ -17,9 +17,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.product.CustomCollectionMapper">
+<mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.CustomCollectionMapper">
 
-    <resultMap id="customCollectionResultMap" type="com.mallfoundry.store.domain.product.CustomCollection">
+    <resultMap id="customCollectionResultMap" type="com.mallfoundry.store.domain.CustomCollection">
         <id property="id" column="id_"/>
         <result property="parentId" column="parent_id_"/>
         <result property="storeId" column="store_id_"/>
