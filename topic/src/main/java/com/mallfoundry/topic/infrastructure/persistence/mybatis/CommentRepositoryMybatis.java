@@ -16,8 +16,7 @@
 
 package com.mallfoundry.topic.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.data.OffsetPagedList;
-import com.mallfoundry.data.PagedList;
+import com.mallfoundry.data.OffsetList;
 import com.mallfoundry.topic.domain.Comment;
 import com.mallfoundry.topic.domain.CommentRepository;
 import com.mallfoundry.topic.domain.TopicIdentifier;
@@ -64,10 +63,10 @@ public class CommentRepositoryMybatis implements CommentRepository {
     }
 
     @Override
-    public PagedList<Comment> findListByTopicName(String topicName, int offset, int limit) {
+    public OffsetList<Comment> findListByTopicName(String topicName, int offset, int limit) {
         long total = this.commentMapper.totalCount();
         if (total == 0) {
-            return PagedList.empty();
+            return OffsetList.empty();
         }
         List<Comment> comments = this.commentMapper.selectCommentsByTopicName(topicName, offset, limit);
         Set<String> commentIdSet = comments.stream().map(Comment::getId).collect(Collectors.toSet());
@@ -76,6 +75,6 @@ public class CommentRepositoryMybatis implements CommentRepository {
             GroupedReplies groupedReplies = IterableUtils.find(replies, gr -> StringUtils.equals(gr.getCommentId(), comment.getId()));
             comment.setReplies(Objects.nonNull(groupedReplies) ? groupedReplies.getReplies() : Collections.emptyList());
         });
-        return OffsetPagedList.of(comments, offset, limit, total);
+        return OffsetList.of(comments, offset, limit, total);
     }
 }
