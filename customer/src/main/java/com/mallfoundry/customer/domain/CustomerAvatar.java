@@ -14,32 +14,23 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.domain;
+package com.mallfoundry.customer.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * A security role.
- *
- * @author Zhi Tang
- */
 @Getter
 @Setter
-public class Role {
+@NoArgsConstructor
+public class CustomerAvatar {
 
-    /**
-     * Name of this role.
-     */
-    private String name;
+    private String customerId;
 
-    /**
-     * Label of this role.
-     */
-    private String label;
+    private String avatar;
 
-    /**
-     * Description of this role.
-     */
-    private String description;
+    public CustomerAvatar(String customerId, String avatar) {
+        this.customerId = customerId;
+        this.avatar = avatar;
+    }
 }

@@ -14,7 +14,25 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.domain;
+package com.mallfoundry.customer.infrastructure.persistence.mybatis;
 
-public interface RoleRepository {
+import com.mallfoundry.customer.domain.Customer;
+import com.mallfoundry.customer.domain.CustomerAvatar;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+@Mapper
+@Repository
+public interface CustomerMapper {
+
+    void insert(Customer customer);
+
+    void deleteById(@Param("id") String id);
+
+    void update(Customer customer);
+
+    void updateAvatar(CustomerAvatar avatar);
+
+    Customer selectById(@Param("id") String id);
 }
