@@ -18,6 +18,7 @@ package com.mallfoundry.access.application.token;
 
 import com.mallfoundry.access.domain.token.AccessToken;
 import com.mallfoundry.access.domain.token.AccessTokenRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,27 @@ public class AccessTokenService {
         this.accessTokenRepository = accessTokenRepository;
     }
 
-    public void addToken(AccessToken token) {
+    public AccessToken createToken(String username) {
+        return AccessToken.newToken(username, extractTokenValue(username));
+    }
+
+    public void storeAccessToken(AccessToken token) {
         this.accessTokenRepository.add(token);
+    }
+
+    public void deleteAccessToken(String tokenValue) {
+        this.accessTokenRepository.deleteByToken(tokenValue);
+    }
+
+    public AccessToken readAccessToken(String tokenValue) {
+        return this.accessTokenRepository.findByToken(tokenValue);
+    }
+
+    public AccessToken getAccessToken(String username) {
+        return this.accessTokenRepository.findByUsername(username);
+    }
+
+    private String extractTokenValue(String value) {
+        return DigestUtils.md5Hex(value);
     }
 }
