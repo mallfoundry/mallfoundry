@@ -28,6 +28,8 @@ public abstract class FollowStoreRepositorySupport implements FollowStoreReposit
 
     protected abstract List<FollowStore> doFindListByCustomerId(String customerId);
 
+    protected abstract int doCountByCustomerId(String customerId);
+
     @Override
     public void add(FollowStore followStore) {
         if (!this.exist(followStore)) {
@@ -48,5 +50,10 @@ public abstract class FollowStoreRepositorySupport implements FollowStoreReposit
     @Override
     public List<FollowStore> findListByCustomerId(String customerId) {
         return this.doFindListByCustomerId(customerId);
+    }
+
+    @Override
+    public int countByCustomerId(String customerId) {
+        return this.doCountByCustomerId(customerId);
     }
 }

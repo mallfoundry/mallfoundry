@@ -28,6 +28,8 @@ public abstract class FollowProductRepositorySupport implements FollowProductRep
 
     protected abstract List<FollowProduct> doFindListByCustomerId(String customerId);
 
+    protected abstract int doCountByCustomerId(String customerId);
+
     @Override
     public void add(FollowProduct followProduct) {
         if (!this.exist(followProduct)) {
@@ -48,5 +50,10 @@ public abstract class FollowProductRepositorySupport implements FollowProductRep
     @Override
     public List<FollowProduct> findListByCustomerId(String customerId) {
         return this.doFindListByCustomerId(customerId);
+    }
+
+    @Override
+    public int countByCustomerId(String customerId) {
+        return this.doCountByCustomerId(customerId);
     }
 }

@@ -27,4 +27,6 @@ public interface FollowProductRepository {
     boolean exist(FollowProduct followProduct);
 
     List<FollowProduct> findListByCustomerId(String customerId);
+
+    int countByCustomerId(String customerId);
 }

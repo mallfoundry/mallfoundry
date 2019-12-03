@@ -31,7 +31,9 @@ public interface FollowStoreMapper {
 
     void delete(FollowStore followStore);
 
+    List<FollowStore> selectListByCustomerId(@Param("customerId") String customerId);
+
     int count(FollowStore followStore);
 
-    List<FollowStore> selectListByCustomerId(@Param("customerId") String customerId);
+    int countByCustomerId(@Param("customerId") String customerId);
 }

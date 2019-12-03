@@ -17,12 +17,20 @@
 package com.mallfoundry.customer.domain.follow;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class FollowStore {
 
     private String customerId;
+
     private String storeId;
+
+    public FollowStore(String customerId, String storeId) {
+        this.customerId = customerId;
+        this.storeId = storeId;
+    }
 }

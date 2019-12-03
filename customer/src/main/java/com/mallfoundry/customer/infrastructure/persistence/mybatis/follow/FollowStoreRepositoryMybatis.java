@@ -51,4 +51,9 @@ public class FollowStoreRepositoryMybatis extends FollowStoreRepositorySupport {
     protected List<FollowStore> doFindListByCustomerId(String customerId) {
         return this.followStoreMapper.selectListByCustomerId(customerId);
     }
+
+    @Override
+    protected int doCountByCustomerId(String customerId) {
+        return this.followStoreMapper.countByCustomerId(customerId);
+    }
 }

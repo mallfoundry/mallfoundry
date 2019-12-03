@@ -37,6 +37,16 @@
             customer_id_ = #{customerId} AND store_id_ = #{storeId}
     </delete>
 
+    <select id="selectListByCustomerId" resultMap="followStoreResultMap">
+        SELECT
+           customer_id_,
+           store_id_
+        FROM
+            customer_follow_store
+        WHERE
+            customer_id_ = #{customerId}
+    </select>
+
     <select id="count" resultType="int">
         SELECT
            COUNT(*)
@@ -46,10 +56,9 @@
             customer_id_ = #{customerId} AND store_id_ = #{storeId}
     </select>
 
-    <select id="selectListByCustomerId" resultMap="followStoreResultMap">
+    <select id="countByCustomerId" resultType="int">
         SELECT
-           customer_id_,
-           store_id_
+           COUNT(*)
         FROM
             customer_follow_store
         WHERE

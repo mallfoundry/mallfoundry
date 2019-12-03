@@ -31,7 +31,9 @@ public interface FollowProductMapper {
 
     void delete(FollowProduct followProduct);
 
+    List<FollowProduct> selectListByCustomerId(@Param("customerId") String customerId);
+
     int count(FollowProduct followProduct);
 
-    List<FollowProduct> selectListByCustomerId(@Param("customerId") String customerId);
+    int countByCustomerId(@Param("customerId") String customerId);
 }

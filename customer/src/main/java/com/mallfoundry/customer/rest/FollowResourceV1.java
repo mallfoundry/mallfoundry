@@ -18,6 +18,7 @@ package com.mallfoundry.customer.rest;
 
 import com.mallfoundry.customer.application.FollowService;
 import com.mallfoundry.customer.domain.follow.FollowProduct;
+import com.mallfoundry.customer.domain.follow.FollowStore;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,17 +38,6 @@ public class FollowResourceV1 {
         this.followService = followService;
     }
 
-    @GetMapping("/customers/{customer_id}/follow_products/{product_id}")
-    public boolean followingProduct(@PathVariable("customer_id") String customerId,
-                                    @PathVariable("product_id") String productId) {
-        return this.followService.followingProduct(new FollowProduct(customerId, productId));
-    }
-
-    @GetMapping("/customers/{customer_id}/follow_products")
-    public List<String> getFollowProducts(@PathVariable("customer_id") String customerId) {
-        return this.followService.getFollowProducts(customerId);
-    }
-
     @PostMapping("/customers/{customer_id}/follow_products/{product_id}")
     public void followProduct(@PathVariable("customer_id") String customerId,
                               @PathVariable("product_id") String productId) {
@@ -58,5 +48,49 @@ public class FollowResourceV1 {
     public void unfollowProduct(@PathVariable("customer_id") String customerId,
                                 @PathVariable("product_id") String productId) {
         this.followService.unfollowProduct(new FollowProduct(customerId, productId));
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_products/{product_id}")
+    public boolean isFollowingProduct(@PathVariable("customer_id") String customerId,
+                                      @PathVariable("product_id") String productId) {
+        return this.followService.isFollowingProduct(new FollowProduct(customerId, productId));
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_products")
+    public List<String> getFollowProducts(@PathVariable("customer_id") String customerId) {
+        return this.followService.getFollowingProducts(customerId);
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_products/count")
+    public int getFollowingProductCount(@PathVariable("customer_id") String customerId) {
+        return this.followService.getFollowingProductCount(customerId);
+    }
+
+    @PostMapping("/customers/{customer_id}/follow_stores/{store_id}")
+    public void followStore(@PathVariable("customer_id") String customerId,
+                            @PathVariable("store_id") String storeId) {
+        this.followService.followStore(new FollowStore(customerId, storeId));
+    }
+
+    @DeleteMapping("/customers/{customer_id}/follow_stores/{store_id}")
+    public void unfollowStore(@PathVariable("customer_id") String customerId,
+                              @PathVariable("store_id") String storeId) {
+        this.followService.unfollowStore(new FollowStore(customerId, storeId));
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_stores/{store_id}")
+    public boolean isFollowingStore(@PathVariable("customer_id") String customerId,
+                                    @PathVariable("store_id") String storeId) {
+        return this.followService.isFollowingStore(new FollowStore(customerId, storeId));
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_stores")
+    public List<String> getFollowStores(@PathVariable("customer_id") String customerId) {
+        return this.followService.getFollowStores(customerId);
+    }
+
+    @GetMapping("/customers/{customer_id}/follow_stores/count")
+    public int getFollowingStoreCount(@PathVariable("customer_id") String customerId) {
+        return this.followService.getFollowingStoreCount(customerId);
     }
 }

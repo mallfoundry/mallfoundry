@@ -39,7 +39,21 @@ public class FollowService {
         this.followStoreRepository = followStoreRepository;
     }
 
-    public List<String> getFollowProducts(String customerId) {
+    @Transactional
+    public void followProduct(FollowProduct followProduct) {
+        this.followProductRepository.add(followProduct);
+    }
+
+    @Transactional
+    public void unfollowProduct(FollowProduct followProduct) {
+        this.followProductRepository.delete(followProduct);
+    }
+
+    public boolean isFollowingProduct(FollowProduct followProduct) {
+        return this.followProductRepository.exist(followProduct);
+    }
+
+    public List<String> getFollowingProducts(String customerId) {
         return this.followProductRepository
                 .findListByCustomerId(customerId)
                 .stream()
@@ -47,26 +61,8 @@ public class FollowService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public void followProduct(FollowProduct favoriteProduct) {
-        this.followProductRepository.add(favoriteProduct);
-    }
-
-    @Transactional
-    public void unfollowProduct(FollowProduct favoriteProduct) {
-        this.followProductRepository.delete(favoriteProduct);
-    }
-
-    public boolean followingProduct(FollowProduct favoriteProduct) {
-        return this.followProductRepository.exist(favoriteProduct);
-    }
-
-    public List<String> getFollowStores(String customerId) {
-        return this.followStoreRepository
-                .findListByCustomerId(customerId)
-                .stream()
-                .map(FollowStore::getStoreId)
-                .collect(Collectors.toList());
+    public int getFollowingProductCount(String customerId) {
+        return this.followProductRepository.countByCustomerId(customerId);
     }
 
     @Transactional
@@ -79,8 +75,21 @@ public class FollowService {
         this.followStoreRepository.delete(followStore);
     }
 
-    public boolean followingStore(FollowStore followStore) {
+    public boolean isFollowingStore(FollowStore followStore) {
         return this.followStoreRepository.exist(followStore);
+    }
+
+
+    public List<String> getFollowStores(String customerId) {
+        return this.followStoreRepository
+                .findListByCustomerId(customerId)
+                .stream()
+                .map(FollowStore::getStoreId)
+                .collect(Collectors.toList());
+    }
+
+    public int getFollowingStoreCount(String customerId) {
+        return this.followStoreRepository.countByCustomerId(customerId);
     }
 
 }
