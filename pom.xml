@@ -44,6 +44,19 @@
         <mall.version>${project.version}</mall.version>
     </properties>
 
+    <modules>
+        <module>common</module>
+        <module>autoconfigure</module>
+        <module>identity</module>
+        <module>security</module>
+        <module>storage</module>
+        <module>topic</module>
+        <module>store</module>
+        <module>catalog</module>
+        <module>customer</module>
+        <module>spring-boot</module>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -105,13 +118,13 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-shared-mybatis</artifactId>
+                <artifactId>mall-identity</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-identity</artifactId>
+                <artifactId>mall-security</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -146,18 +159,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <modules>
-        <module>common</module>
-        <module>autoconfigure</module>
-        <module>identity</module>
-        <module>security</module>
-        <module>storage</module>
-        <module>topic</module>
-        <module>store</module>
-        <module>catalog</module>
-        <module>customer</module>
-        <module>spring-boot</module>
-    </modules>
 
     <build>
         <pluginManagement>
