@@ -16,20 +16,16 @@
 
 package com.mallfoundry.identity.infrastructure.persistence.mybatis;
 
-import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.identity.domain.Authority;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
-public interface UserMapper {
+public interface AuthorityMapper {
 
-    void insert(User user);
-
-    void deleteByUsername(@Param("username") String username);
-
-    void update(User user);
-
-    User selectByUsername(@Param("username") String username);
+    List<Authority> selectListByUserId(@Param("userId") String userId);
 }

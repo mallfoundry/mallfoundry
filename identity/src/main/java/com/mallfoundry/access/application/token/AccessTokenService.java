@@ -14,37 +14,22 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.application;
+package com.mallfoundry.access.application.token;
 
-import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.access.domain.token.AccessToken;
+import com.mallfoundry.access.domain.token.AccessTokenRepository;
+import org.springframework.stereotype.Service;
 
-/**
- * A identity service.
- *
- * @author Zhi Tang
- */
-public interface IdentityService {
+@Service
+public class AccessTokenService {
 
-    /**
-     * Create a user.
-     *
-     * @param user a user
-     */
-    void createUser(User user);
+    private final AccessTokenRepository accessTokenRepository;
 
-    /**
-     * Delete the user based on the username.
-     *
-     * @param username username
-     */
-    void deleteUser(String username);
+    public AccessTokenService(AccessTokenRepository accessTokenRepository) {
+        this.accessTokenRepository = accessTokenRepository;
+    }
 
-    /**
-     * Update user information based on username
-     *
-     * @param user a user
-     */
-    void updateUser(User user);
-
-    User getUser(String username);
+    public void addToken(AccessToken token) {
+        this.accessTokenRepository.add(token);
+    }
 }

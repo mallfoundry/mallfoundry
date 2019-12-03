@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.infrastructure.persistence.mybatis;
+package com.mallfoundry.identity.domain;
 
-import com.mallfoundry.identity.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-@Mapper
-@Repository
-public interface UserMapper {
+@Getter
+@Setter
+public class Authority {
 
-    void insert(User user);
+    @JsonProperty("user_id")
+    private String userId;
 
-    void deleteByUsername(@Param("username") String username);
-
-    void update(User user);
-
-    User selectByUsername(@Param("username") String username);
+    private String authority;
 }

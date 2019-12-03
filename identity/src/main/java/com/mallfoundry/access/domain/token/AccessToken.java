@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.infrastructure.persistence.mybatis;
+package com.mallfoundry.access.domain.token;
 
-import com.mallfoundry.identity.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-@Mapper
-@Repository
-public interface UserMapper {
+@Getter
+@Setter
+public class AccessToken {
 
-    void insert(User user);
+    private String username;
 
-    void deleteByUsername(@Param("username") String username);
+    @JsonProperty("access_token")
+    private String token;
 
-    void update(User user);
+    @JsonProperty("token_type")
+    private String type;
 
-    User selectByUsername(@Param("username") String username);
+    public static AccessToken newToken(String username, String tokenValue) {
+        AccessToken token = new AccessToken();
+        token.setToken(tokenValue);
+        token.setType("Bearer");
+        token.setUsername(username);
+        return token;
+    }
 }

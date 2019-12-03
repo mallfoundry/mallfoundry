@@ -20,9 +20,9 @@ public interface UserRepository {
 
     void add(User user);
 
-    void update(User user);
-
     void delete(String username);
+
+    void update(User user);
 
     User findByUsername(String username);
 }

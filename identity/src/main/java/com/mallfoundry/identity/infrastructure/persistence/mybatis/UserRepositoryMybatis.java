@@ -17,29 +17,35 @@
 package com.mallfoundry.identity.infrastructure.persistence.mybatis;
 
 import com.mallfoundry.identity.domain.User;
-import com.mallfoundry.identity.domain.UserRepository;
+import com.mallfoundry.identity.domain.UserRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepositoryMybatis implements UserRepository {
+public class UserRepositoryMybatis extends UserRepositorySupport {
 
-    @Override
-    public void add(User user) {
+    private final UserMapper userMapper;
 
+    public UserRepositoryMybatis(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     @Override
-    public void update(User user) {
-
+    protected void doAdd(User user) {
+        this.userMapper.insert(user);
     }
 
     @Override
-    public void delete(String username) {
+    protected void doDelete(String username) {
+        this.userMapper.deleteByUsername(username);
+    }
 
+    @Override
+    protected void doUpdate(User user) {
+        this.userMapper.update(user);
     }
 
     @Override
     public User findByUsername(String username) {
-        return null;
+        return this.userMapper.selectByUsername(username);
     }
 }

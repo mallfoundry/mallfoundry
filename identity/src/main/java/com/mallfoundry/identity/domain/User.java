@@ -23,14 +23,11 @@ import lombok.Setter;
 @Setter
 public class User {
 
-    private long uid;
+    private String id;
+
+    private String username;
 
     private String nickname;
-
-    /**
-     * Username of this user.
-     */
-    private String username;
 
     private String password;
 

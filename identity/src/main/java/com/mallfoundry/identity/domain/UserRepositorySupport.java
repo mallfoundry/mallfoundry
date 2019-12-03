@@ -14,22 +14,28 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.infrastructure.persistence.mybatis;
+package com.mallfoundry.identity.domain;
 
-import com.mallfoundry.identity.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+public abstract class UserRepositorySupport implements UserRepository {
 
-@Mapper
-@Repository
-public interface UserMapper {
+    protected abstract void doAdd(User user);
 
-    void insert(User user);
+    protected abstract void doDelete(String username);
 
-    void deleteByUsername(@Param("username") String username);
+    protected abstract void doUpdate(User user);
 
-    void update(User user);
+    @Override
+    public void add(User user) {
+        this.doAdd(user);
+    }
 
-    User selectByUsername(@Param("username") String username);
+    @Override
+    public void delete(String username) {
+        this.doDelete(username);
+    }
+
+    @Override
+    public void update(User user) {
+        this.doUpdate(user);
+    }
 }
