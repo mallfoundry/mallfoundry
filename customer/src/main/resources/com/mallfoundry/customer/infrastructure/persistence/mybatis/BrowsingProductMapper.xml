@@ -21,7 +21,7 @@
     <resultMap id="browsingProductResultMap" type="com.mallfoundry.customer.domain.BrowsingProduct">
         <id property="customerId" column="customer_id_"/>
         <id property="productId" column="product_id_"/>
-        <id property="browsingTime" column="browsing_time_"/>
+        <result property="browsingTime" column="browsing_time_"/>
     </resultMap>
 
     <insert id="insert">
