@@ -68,14 +68,14 @@ public class Cart implements Serializable {
         this.getItems().removeAll(items);
     }
 
-    public Optional<CartItem> getItem(String variantId) {
+    public Optional<CartItem> getItem(Long variantId) {
         return this.getItems()
                 .stream()
                 .filter(item -> Objects.equals(item.getVariantId(), variantId))
                 .findAny();
     }
 
-    public List<CartItem> getItems(List<String> variantIds) {
+    public List<CartItem> getItems(List<Long> variantIds) {
         return this.getItems()
                 .stream()
                 .filter(item -> variantIds.contains(item.getVariantId()))

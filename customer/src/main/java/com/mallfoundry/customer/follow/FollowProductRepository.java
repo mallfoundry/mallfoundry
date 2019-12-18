@@ -19,12 +19,15 @@ package com.mallfoundry.customer.follow;
 import org.springframework.data.domain.Example;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FollowProductRepository {
 
     FollowProduct save(FollowProduct followProduct);
 
     void delete(FollowProduct followProduct);
+
+    <S extends FollowProduct> Optional<S> findOne(Example<S> example);
 
     <S extends FollowProduct> List<S> findAll(Example<S> example);
 

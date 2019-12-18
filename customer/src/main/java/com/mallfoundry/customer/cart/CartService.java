@@ -49,13 +49,13 @@ public class CartService {
     }
 
     @Transactional
-    public void removeCartItem(String cartId, String variantId) {
+    public void removeCartItem(String cartId, Long variantId) {
         Cart cart = this.getCart(cartId);
         cart.getItem(variantId).ifPresent(cart::removeItem);
     }
 
     @Transactional
-    public void removeCartItems(String cartId, List<String> variantIds) {
+    public void removeCartItems(String cartId, List<Long> variantIds) {
         Cart cart = this.getCart(cartId);
         cart.removeItems(cart.getItems(variantIds));
     }

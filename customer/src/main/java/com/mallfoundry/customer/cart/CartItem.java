@@ -57,11 +57,11 @@ public class CartItem implements Serializable {
 
     @Column(name = "product_id_")
     @JsonProperty("product_id")
-    private String productId;
+    private Long productId;
 
     @Column(name = "variant_id_")
     @JsonProperty("variant_id")
-    private String variantId;
+    private Long variantId;
 
     @Column(name = "quantity_")
     private Integer quantity;
@@ -75,7 +75,7 @@ public class CartItem implements Serializable {
         this.setAddedItem(new Date());
     }
 
-    public CartItem(String storeId, String productId, String variantId, Integer quantity) {
+    public CartItem(String storeId, Long productId, Long variantId, Integer quantity) {
         this();
         this.setStoreId(storeId);
         this.setProductId(productId);

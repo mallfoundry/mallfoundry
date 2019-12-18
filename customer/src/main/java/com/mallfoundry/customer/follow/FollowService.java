@@ -43,7 +43,8 @@ public class FollowService {
 
     @Transactional
     public void unfollowProduct(FollowProduct followProduct) {
-        this.followProductRepository.delete(followProduct);
+        this.followProductRepository.findOne(Example.of(followProduct))
+                .ifPresent(this.followProductRepository::delete);
     }
 
     public boolean isFollowingProduct(FollowProduct followProduct) {
@@ -69,7 +70,8 @@ public class FollowService {
 
     @Transactional
     public void unfollowStore(FollowStore followStore) {
-        this.followStoreRepository.delete(followStore);
+        this.followStoreRepository.findOne(Example.of(followStore))
+                .ifPresent(this.followStoreRepository::delete);
     }
 
     public boolean isFollowingStore(FollowStore followStore) {

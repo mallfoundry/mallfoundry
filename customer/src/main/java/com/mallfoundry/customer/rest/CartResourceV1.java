@@ -47,14 +47,14 @@ public class CartResourceV1 {
 
     @DeleteMapping("/carts/{cart}/items/{id}")
     public void removeCartItem(@PathVariable("cart") String cart,
-                               @PathVariable("id") String id) {
+                               @PathVariable("id") Long id) {
         this.cartService.removeCartItem(cart, id);
     }
 
     @DeleteMapping("/carts/{cart}/items/batch")
     public void removeCartItem(
             @PathVariable("cart") String cart,
-            @RequestBody List<String> variantIds) {
+            @RequestBody List<Long> variantIds) {
         this.cartService.removeCartItems(cart, variantIds);
     }
 
