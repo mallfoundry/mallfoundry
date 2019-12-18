@@ -18,7 +18,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.StoreMapper">
-    <resultMap id="storeInfoResultMap" type="com.mallfoundry.store.domain.StoreInfo">
+    <resultMap id="storeInfoResultMap" type="com.mallfoundry.store.Store">
         <id property="id" column="id_"/>
         <result property="name" column="name_"/>
         <result property="logoUrl" column="logo_url_"/>

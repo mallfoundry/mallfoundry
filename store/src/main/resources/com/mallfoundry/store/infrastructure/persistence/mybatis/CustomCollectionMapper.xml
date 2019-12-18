@@ -18,14 +18,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.CustomCollectionMapper">
-
-    <resultMap id="customCollectionResultMap" type="com.mallfoundry.store.domain.CustomCollection">
+<!--    <cache/>-->
+    <resultMap id="customCollectionResultMap" type="com.mallfoundry.store.CustomCollection">
         <id property="id" column="id_"/>
-        <result property="parentId" column="parent_id_"/>
         <result property="storeId" column="store_id_"/>
         <result property="name" column="name_"/>
         <result property="enabled" column="enabled_"/>
         <result property="position" column="position_"/>
+        <association property="parent"
+                     column="parent_id_"
+                     fetchType="eager"
+                     select="selectById"/>
+        <collection property="children"
+                    column="id_"
+                    fetchType="eager"
+                    ofType="com.mallfoundry.store.CustomCollection"
+                    select="selectListByParentId"/>
     </resultMap>
 
     <sql id="selectFrom">
@@ -48,23 +56,53 @@
     <select id="selectListByParentId" resultMap="customCollectionResultMap">
         <include refid="selectFrom"/>
         <where>
-            parent_id_ = #{parentId}
+            <choose>
+                <when test="parentId != null">
+                    parent_id_ = #{parentId}
+                </when>
+                <otherwise>
+                    parent_id_ IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="selectListByStoreIdAndParentId"
+            resultMap="customCollectionResultMap">
+        <include refid="selectFrom"/>
+        <where>
+            <choose>
+                <when test="parentId != null">
+                    parent_id_ = #{parentId}
+                </when>
+                <otherwise>
+                    parent_id_ IS NULL
+                </otherwise>
+            </choose>
             <if test="storeId != null">
                 AND store_id_ = #{storeId}
             </if>
         </where>
     </select>
 
-    <insert id="insert">
+    <insert id="insertList">
         INSERT INTO
-            store_custom_collection (id_, parent_id_, store_id_, name_, enabled_, position_ )
-        VALUES(
-            #{id},
-            #{parentId},
-            #{storeId},
-	        #{name},
-	        #{enabled},
-	        #{position}
-	        )
+        store_custom_collection (id_, parent_id_, store_id_, name_, enabled_, position_ )
+        <foreach open="VALUES" collection="collections" item="collection" separator=",">
+            (#{collection.id},
+            <choose>
+                <when test="collection.parent != null">
+                    #{collection.parent.id}
+                </when>
+                <otherwise>
+                    NULL
+                </otherwise>
+            </choose>
+            ,
+            #{collection.storeId},
+            #{collection.name},
+            #{collection.enabled},
+            #{collection.position})
+        </foreach>
     </insert>
 </mapper>

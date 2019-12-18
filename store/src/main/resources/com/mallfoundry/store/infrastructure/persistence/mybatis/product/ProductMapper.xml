@@ -18,8 +18,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mallfoundry.store.infrastructure.persistence.mybatis.product.ProductMapper">
-    <resultMap id="productResultMap" type="com.mallfoundry.store.domain.product.Product">
+    <resultMap id="productResultMap" type="com.mallfoundry.store.product.Product">
         <id property="id" column="id_"/>
+        <result property="storeId" column="store_id_"/>
         <result property="shortName" column="short_name_"/>
         <result property="name" column="name_"/>
         <result property="freeShipping" column="free_shipping_"/>
@@ -33,7 +34,7 @@
                 typeHandler="com.mallfoundry.store.infrastructure.persistence.mybatis.product.ProductImagesTypeHandler"/>
         <result property="videos" column="videos_"
                 typeHandler="com.mallfoundry.store.infrastructure.persistence.mybatis.product.ProductVideosTypeHandler"/>
-        <collection property="variants" ofType="com.mallfoundry.store.domain.product.ProductVariant">
+        <collection property="variants" ofType="com.mallfoundry.store.product.ProductVariant">
             <id property="id" column="variant_id_"/>
             <result property="retailPrice" column="variant_retail_price_"/>
             <result property="productId" column="id_"/>
@@ -50,6 +51,7 @@
     <select id="selectById" resultMap="productResultMap">
         SELECT
             pd.id_,
+            pd.store_id_,
             pd.short_name_,
             pd.name_,
             pd.free_shipping_,
@@ -77,9 +79,10 @@
 
     <insert id="insert">
         INSERT INTO
-            store_product (id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, options_, images_, videos_)
+            store_product (id_, store_id_, short_name_, name_, free_shipping_, shipping_money_, description_, attributes_, options_, images_, videos_)
         VALUES(
             #{id},
+            #{storeId},
 	        #{shortName},
 	        #{name},
 	        #{freeShipping},
