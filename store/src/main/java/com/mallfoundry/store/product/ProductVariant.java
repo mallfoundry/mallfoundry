@@ -49,7 +49,7 @@ public class ProductVariant implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id_")
-    private Integer id;
+    private Long id;
 
     @Column(name = "retail_price_")
     @JsonProperty("retail_price")

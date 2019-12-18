@@ -22,5 +22,5 @@ public interface ProductRepository {
 
     Product save(Product product);
 
-    Optional<Product> findById(Integer id);
+    Optional<Product> findById(Long id);
 }

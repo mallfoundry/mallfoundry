@@ -18,6 +18,7 @@ package com.mallfoundry.store;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -27,6 +28,7 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "store")
 public class Store {
@@ -41,4 +43,10 @@ public class Store {
     @Column(name = "logo_url_")
     @JsonProperty("logo_url")
     private String logoUrl;
+
+    public Store(String id, String name, String logoUrl) {
+        this.setId(id);
+        this.setName(name);
+        this.setLogoUrl(logoUrl);
+    }
 }

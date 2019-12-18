@@ -23,5 +23,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaProductRepository
-        extends ProductRepository, JpaRepository<Product, Integer> {
+        extends ProductRepository, JpaRepository<Product, Long> {
 }

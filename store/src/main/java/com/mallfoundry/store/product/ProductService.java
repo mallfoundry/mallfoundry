@@ -52,7 +52,7 @@ public class ProductService {
         return this.productRepository.save(new Product());
     }
 
-    public Optional<Product> getProduct(Integer id) {
+    public Optional<Product> getProduct(Long id) {
         return this.productRepository.findById(id);
     }
 
