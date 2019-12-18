@@ -16,11 +16,11 @@
 
 package com.mallfoundry.customer.rest;
 
-import com.mallfoundry.customer.application.CartService;
-import com.mallfoundry.customer.domain.cart.CartItem;
+import com.mallfoundry.customer.cart.CartService;
+import com.mallfoundry.customer.cart.Cart;
+import com.mallfoundry.customer.cart.CartItem;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,23 +42,24 @@ public class CartResourceV1 {
     @PostMapping("/carts/{cart}/items")
     public void addCartItem(@PathVariable("cart") String cart,
                             @RequestBody CartItem item) {
-        this.cartService.addItem(cart, item);
+        this.cartService.addCartItem(cart, item);
     }
 
     @DeleteMapping("/carts/{cart}/items/{id}")
     public void removeCartItem(@PathVariable("cart") String cart,
                                @PathVariable("id") String id) {
-        this.cartService.removeItem(cart, id);
+        this.cartService.removeCartItem(cart, id);
     }
 
-    @PatchMapping("/carts/{cart}/items")
-    public void updateCartItem(@PathVariable("cart") String cart,
-                               @RequestBody CartItem item) {
-        this.cartService.updateItem(cart, item);
+    @DeleteMapping("/carts/{cart}/items/batch")
+    public void removeCartItem(
+            @PathVariable("cart") String cart,
+            @RequestBody List<String> variantIds) {
+        this.cartService.removeCartItems(cart, variantIds);
     }
 
-    @GetMapping("/carts/{cart}/items")
-    public List<CartItem> getCartItems(@PathVariable("cart") String cart) {
-        return this.cartService.getItems(cart);
+    @GetMapping("/carts/{cart}")
+    public Cart getCart(@PathVariable("cart") String cart) {
+        return this.cartService.getCart(cart);
     }
 }

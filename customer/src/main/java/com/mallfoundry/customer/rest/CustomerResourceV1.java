@@ -16,14 +16,16 @@
 
 package com.mallfoundry.customer.rest;
 
-import com.mallfoundry.customer.application.CustomerService;
-import com.mallfoundry.customer.domain.Customer;
+import com.mallfoundry.customer.Customer;
+import com.mallfoundry.customer.CustomerService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RequestMapping("/v1")
 @RestController
@@ -36,7 +38,7 @@ public class CustomerResourceV1 {
     }
 
     @GetMapping("/customers/{customer_id}")
-    public Customer getCustomer(@PathVariable("customer_id") String id) {
+    public Optional<Customer> getCustomer(@PathVariable("customer_id") String id) {
         return this.customerService.getCustomer(id);
     }
 

@@ -16,10 +16,8 @@
 
 package com.mallfoundry.customer.rest;
 
-import com.mallfoundry.customer.application.BrowsingProductService;
-import com.mallfoundry.customer.domain.BrowsingProduct;
-import com.mallfoundry.customer.domain.BrowsingProductQuery;
-import com.mallfoundry.data.OffsetList;
+import com.mallfoundry.customer.BrowsingProduct;
+import com.mallfoundry.customer.BrowsingProductService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -66,25 +62,25 @@ public class BrowsingProductResourceV1 {
         this.browsingProductService.deleteBrowsingProducts(BrowsingProduct.of(customerId, productIds));
     }
 
-    @GetMapping("/customers/{customer_id}/browsing_products")
-    public OffsetList<BrowsingProduct> getBrowsingProducts(
-            @PathVariable("customer_id") String customerId,
-            @RequestParam(required = false, name = "browsing_time") Date browsingTime,
-            @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "20") int limit) {
-        return this.browsingProductService
-                .getBrowsingProducts(
-                        BrowsingProductQuery
-                                .builder()
-                                .customerId(customerId)
-                                .browsingTime(browsingTime)
-                                .offset(offset)
-                                .limit(limit)
-                                .build());
-    }
+//    @GetMapping("/customers/{customer_id}/browsing_products")
+//    public OffsetList<BrowsingProduct> getBrowsingProducts(
+//            @PathVariable("customer_id") String customerId,
+//            @RequestParam(required = false, name = "browsing_time") Date browsingTime,
+//            @RequestParam(defaultValue = "0") int offset,
+//            @RequestParam(defaultValue = "20") int limit) {
+//        return this.browsingProductService
+//                .getBrowsingProducts(
+//                        BrowsingProductQuery
+//                                .builder()
+//                                .customerId(customerId)
+//                                .browsingTime(browsingTime)
+//                                .offset(offset)
+//                                .limit(limit)
+//                                .build());
+//    }
 
     @GetMapping("/customers/{customer_id}/browsing_products/count")
-    public int getBrowsingProductCount(@PathVariable("customer_id") String customerId) {
+    public long getBrowsingProductCount(@PathVariable("customer_id") String customerId) {
         return this.browsingProductService.getBrowsingProductCount(customerId);
     }
 

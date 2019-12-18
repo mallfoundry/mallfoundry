@@ -16,9 +16,9 @@
 
 package com.mallfoundry.customer.rest;
 
-import com.mallfoundry.customer.application.FollowService;
-import com.mallfoundry.customer.domain.follow.FollowProduct;
-import com.mallfoundry.customer.domain.follow.FollowStore;
+import com.mallfoundry.customer.follow.FollowProduct;
+import com.mallfoundry.customer.follow.FollowService;
+import com.mallfoundry.customer.follow.FollowStore;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +62,7 @@ public class FollowResourceV1 {
     }
 
     @GetMapping("/customers/{customer_id}/follow_products/count")
-    public int getFollowingProductCount(@PathVariable("customer_id") String customerId) {
+    public long getFollowingProductCount(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingProductCount(customerId);
     }
 
@@ -90,7 +90,7 @@ public class FollowResourceV1 {
     }
 
     @GetMapping("/customers/{customer_id}/follow_stores/count")
-    public int getFollowingStoreCount(@PathVariable("customer_id") String customerId) {
+    public long getFollowingStoreCount(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingStoreCount(customerId);
     }
 }
