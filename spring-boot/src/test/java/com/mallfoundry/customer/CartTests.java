@@ -16,50 +16,46 @@
 
 package com.mallfoundry.customer;
 
-import com.mallfoundry.customer.application.CartService;
-import com.mallfoundry.customer.domain.cart.CartItem;
+import com.mallfoundry.customer.cart.Cart;
+import com.mallfoundry.customer.cart.CartItem;
+import com.mallfoundry.customer.cart.CartService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class ShoppingCartTests {
+public class CartTests {
 
     @Autowired
     private CartService cartService;
 
+    @Transactional
+    @Rollback(false)
     @Test
-    public void testAddItem() {
-        CartItem item = new CartItem();
-        item.setProductId("product_1");
-        item.setOptions(List.of("1", "2"));
-        item.setQuantity(20);
-        cartService.addItem("buyer_1", item);
+    public void testAddCartItem() {
+        CartItem cartItem = new CartItem("mi", 1000000013L, 1000000037L, 1);
+        this.cartService.addCartItem("buyer_1", cartItem);
     }
 
+    @Transactional
+    @Rollback(false)
     @Test
-    public void testUpdateItem() {
-        CartItem item = new CartItem();
-        item.setId("10000000000002");
-        item.setProductId("product_1");
-        item.setOptions(List.of("1", "2"));
-        item.setQuantity(30);
-        cartService.updateItem("buyer_1", item);
+    public void testUpdateCartId() {
+        Cart cart = this.cartService.getCart("cart_1");
+        cart.setId("buyer_1");
     }
 
+    @Transactional
+    @Rollback(false)
     @Test
-    public void testRemoveItem() {
-        cartService.removeItem("buyer_1", "1");
+    public void testDeleteCartItem() {
+        Cart cart = this.cartService.getCart("buyer_1");
+        cart.getItem(1000000030L).ifPresent(cart::removeItem);
     }
 
-    @Test
-    public void testGetItems() {
-        List<CartItem> items = this.cartService.getItems("buyer_1");
-        System.out.println(items);
-    }
 }
