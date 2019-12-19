@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.domain;
+package com.mallfoundry.district;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.stereotype.Service;
 
-@Getter
-@Setter
-public class Authority {
+import java.util.Optional;
 
-    @JsonProperty("user_id")
-    private String userId;
+@Service
+public class DistrictService {
 
-    private String authority;
+    private final ProvinceRepository provinceRepository;
+
+    public DistrictService(ProvinceRepository provinceRepository) {
+        this.provinceRepository = provinceRepository;
+    }
+
+    public Optional<Province> getProvince(String code) {
+        return this.provinceRepository.findByCode(code);
+    }
 }

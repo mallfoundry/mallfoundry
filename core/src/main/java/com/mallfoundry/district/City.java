@@ -14,11 +14,30 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.domain;
+package com.mallfoundry.district;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface AuthorityRepository {
+@Getter
+@Setter
+@Entity
+@DiscriminatorValue("city")
+public class City extends District {
 
-    List<Authority> findListByUserId(String userId);
+    @ManyToOne
+    @JoinColumn(name = "province_code_")
+    private Province province;
+
+    @OneToMany
+    @JoinColumn(name = "city_code_")
+    private List<County> counties = new ArrayList<>();
 }
