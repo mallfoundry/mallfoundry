@@ -16,16 +16,15 @@
 
 package com.mallfoundry.security;
 
-import com.mallfoundry.identity.application.UserService;
-import com.mallfoundry.identity.domain.Authority;
-import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.identity.User;
+import com.mallfoundry.identity.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Load security user service.
@@ -40,13 +39,10 @@ public class SecurityUserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userService.getUser(username);
-
-        if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException(String.format("Username %s not found", username));
-        }
-        List<Authority> authorities = this.userService.getAuthorities(user.getId());
-        return new SecurityUser(user, authorities);
+        Optional<User> userOptional = this.userService.getUser(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
+        return new SecurityUser(user);
     }
 }

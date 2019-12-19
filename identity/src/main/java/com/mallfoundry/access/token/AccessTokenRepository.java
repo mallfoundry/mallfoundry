@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.domain.token;
+package com.mallfoundry.access.token;
+
+import java.util.Optional;
 
 public interface AccessTokenRepository {
 
-    void add(AccessToken token);
+    AccessToken save(AccessToken token);
 
     void deleteByUsername(String username);
 
     void deleteByToken(String tokenValue);
 
-    AccessToken findByToken(String tokenValue);
+    Optional<AccessToken> findByToken(String tokenValue);
 
-    AccessToken findByUsername(String username);
+    Optional<AccessToken> findByUsername(String username);
 }

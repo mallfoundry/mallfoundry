@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.application.token;
+package com.mallfoundry.access.token;
 
-import com.mallfoundry.access.domain.token.AccessToken;
-import com.mallfoundry.access.domain.token.AccessTokenRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AccessTokenService {
@@ -34,19 +34,19 @@ public class AccessTokenService {
         return AccessToken.newToken(username, extractTokenValue(username));
     }
 
-    public void storeAccessToken(AccessToken token) {
-        this.accessTokenRepository.add(token);
+    public AccessToken storeAccessToken(AccessToken token) {
+        return this.accessTokenRepository.save(token);
     }
 
     public void deleteAccessToken(String tokenValue) {
         this.accessTokenRepository.deleteByToken(tokenValue);
     }
 
-    public AccessToken readAccessToken(String tokenValue) {
+    public Optional<AccessToken> readAccessToken(String tokenValue) {
         return this.accessTokenRepository.findByToken(tokenValue);
     }
 
-    public AccessToken getAccessToken(String username) {
+    public Optional<AccessToken> getAccessToken(String username) {
         return this.accessTokenRepository.findByUsername(username);
     }
 

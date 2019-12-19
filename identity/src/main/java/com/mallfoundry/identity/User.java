@@ -14,24 +14,48 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.domain;
+package com.mallfoundry.identity;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
+@Entity
+@Table(name = "identity_user")
 public class User {
 
+    @Id
+    @Column(name = "id_")
     private String id;
 
+    @Column(name = "username_", unique = true)
     private String username;
 
+    @Column(name = "nickname_")
     private String nickname;
 
+    @Column(name = "password_")
     private String password;
 
+    @Column(name = "email_")
     private String email;
 
+    @Column(name = "enabled_")
     private boolean enabled;
+
+    @ElementCollection
+    @CollectionTable(name = "identity_authority", joinColumns = @JoinColumn(name = "user_id_"))
+    @Column(name = "authority_")
+    private List<String> authorities = new ArrayList<>();
 }

@@ -16,8 +16,7 @@
 
 package com.mallfoundry.security;
 
-import com.mallfoundry.identity.domain.Authority;
-import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.identity.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -35,11 +34,11 @@ public class SecurityUser implements UserDetails {
 
     private final List<GrantedAuthority> authorities;
 
-    public SecurityUser(User user, List<Authority> authorities) {
+    public SecurityUser(User user) {
         this.user = user;
-        this.authorities = CollectionUtils.isEmpty(authorities) ?
+        this.authorities = CollectionUtils.isEmpty(user.getAuthorities()) ?
                 AuthorityUtils.NO_AUTHORITIES :
-                AuthorityUtils.createAuthorityList(authorities.stream().map(Authority::getAuthority).toArray(String[]::new));
+                AuthorityUtils.createAuthorityList(user.getAuthorities().toArray(new String[0]));
     }
 
     @Override

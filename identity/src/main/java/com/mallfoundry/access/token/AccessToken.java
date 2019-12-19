@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.domain.token;
+package com.mallfoundry.access.token;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Getter
 @Setter
+@Entity
+@Table(name = "access_token")
 public class AccessToken {
 
+    @Id
+    @Column(name = "username_")
     private String username;
 
+    @Column(name = "token_")
     @JsonProperty("access_token")
     private String token;
 
+    @Column(name = "type_")
     @JsonProperty("token_type")
     private String type;
 

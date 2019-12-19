@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.infrastructure.persistence.mybatis;
+package com.mallfoundry.identity;
 
-import com.mallfoundry.identity.domain.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Mapper
-@Repository
-public interface UserMapper {
+public interface UserRepository {
 
-    void insert(User user);
+    User save(User user);
 
-    void deleteByUsername(@Param("username") String username);
+    void deleteByUsername(String username);
 
-    void update(User user);
-
-    User selectByUsername(@Param("username") String username);
+    Optional<User> findByUsername(String username);
 }

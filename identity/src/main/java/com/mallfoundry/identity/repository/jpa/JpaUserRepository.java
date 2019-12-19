@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.identity.infrastructure.persistence.mybatis;
+package com.mallfoundry.identity.repository.jpa;
 
-import com.mallfoundry.identity.domain.Authority;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.mallfoundry.identity.User;
+import com.mallfoundry.identity.UserRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-@Mapper
 @Repository
-public interface AuthorityMapper {
+public interface JpaUserRepository
+        extends UserRepository, JpaRepository<User, String> {
 
-    List<Authority> selectListByUserId(@Param("userId") String userId);
+    @Override
+    default void deleteByUsername(String username) {
+        this.deleteById(username);
+    }
+
+    @Override
+    default Optional<User> findByUsername(String username) {
+        return this.findById(username);
+    }
 }

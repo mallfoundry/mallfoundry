@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.infrastructure.persistence.mybatis.token;
+package com.mallfoundry.identity;
 
-import com.mallfoundry.access.domain.token.AccessToken;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Mapper
-@Repository
-public interface AccessTokenMapper {
+import java.util.Optional;
 
-    void insert(AccessToken token);
+@Service
+public class UserService {
 
-    void deleteByUsername(@Param("username") String username);
+    private final UserRepository userRepository;
 
-    void deleteByToken(@Param("token") String token);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    AccessToken selectByToken(@Param("token") String token);
-
-    AccessToken selectByUsername(@Param("username") String username);
+    public Optional<User> getUser(String username) {
+        return this.userRepository.findByUsername(username);
+    }
 }
