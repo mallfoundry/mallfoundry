@@ -47,6 +47,7 @@
     <modules>
         <module>common</module>
         <module>autoconfigure</module>
+        <module>core</module>
         <module>identity</module>
         <module>security</module>
         <module>storage</module>
@@ -104,6 +105,12 @@
             </dependency>
 
             <!-- mall projects -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-core</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-common</artifactId>

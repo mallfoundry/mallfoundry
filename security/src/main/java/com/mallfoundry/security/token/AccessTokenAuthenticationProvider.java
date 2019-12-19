@@ -16,11 +16,10 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.application.token.AccessTokenService;
-import com.mallfoundry.access.domain.token.AccessToken;
-import com.mallfoundry.identity.application.UserService;
-import com.mallfoundry.identity.domain.Authority;
-import com.mallfoundry.identity.domain.User;
+import com.mallfoundry.access.token.AccessToken;
+import com.mallfoundry.access.token.AccessTokenService;
+import com.mallfoundry.identity.User;
+import com.mallfoundry.identity.UserService;
 import com.mallfoundry.security.SecurityUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,8 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class AccessTokenAuthenticationProvider implements AuthenticationProvider {
@@ -48,17 +46,15 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         AccessTokenAuthentication tokenAuthentication = (AccessTokenAuthentication) authentication;
-        AccessToken token = tokenService.readAccessToken(tokenAuthentication.getName());
+        Optional<AccessToken> tokenOptional = tokenService.readAccessToken(tokenAuthentication.getName());
 
-        if (Objects.isNull(token)) {
+        if (tokenOptional.isEmpty()) {
             throw new BadCredentialsException("Bad credentials");
         }
-
+        AccessToken token = tokenOptional.get();
         String username = token.getUsername();
-        User user = this.userService.getUser(username);
-        List<Authority> authorities = this.userService.getAuthorities(username);
-        SecurityUser securityUser = new SecurityUser(user, authorities);
-
+        Optional<User> userOptional = this.userService.getUser(username);
+        SecurityUser securityUser = new SecurityUser(userOptional.orElseThrow());
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }
 

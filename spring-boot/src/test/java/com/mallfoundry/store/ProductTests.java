@@ -145,14 +145,14 @@ public class ProductTests {
                         .images(List.of("mi_1", "mi_2")).options(List.of("梦之白", "8GB 128GB")).position(0).build());
         product.addVariant(
                 new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
-                        .images(List.of("mi_1", "mi_2")).options(List.of("梦之白", "12GB 256GB")).position(0).build());
+                        .images(List.of("mi_1", "mi_2")).options(List.of("梦之白", "12GB 256GB")).position(1).build());
 
         product.addVariant(
                 new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
-                        .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "8GB 128GB")).position(1).build());
+                        .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "8GB 128GB")).position(2).build());
         product.addVariant(
                 new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
-                        .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "12GB 256GB")).position(1).build());
+                        .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "12GB 256GB")).position(3).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));
         product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));

@@ -16,15 +16,13 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.application.token.AccessTokenService;
-import com.mallfoundry.access.domain.token.AccessToken;
+import com.mallfoundry.access.token.AccessTokenService;
+import com.mallfoundry.access.token.AccessToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class AccessTokenAuthenticationManager {
@@ -41,14 +39,9 @@ public class AccessTokenAuthenticationManager {
     public AccessToken authenticate(String username, String password) throws AuthenticationException {
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
         this.authenticationManager.authenticate(authentication);
-
-        AccessToken accessToken = tokenService.getAccessToken(username);
-        if (Objects.isNull(accessToken)) {
-            accessToken = this.tokenService.createToken(username);
-            this.tokenService.storeAccessToken(accessToken);
-        }
-
-        return accessToken;
+        return tokenService
+                .getAccessToken(username)
+                .orElseGet(() -> this.tokenService.storeAccessToken(this.tokenService.createToken(username)));
     }
 
 }

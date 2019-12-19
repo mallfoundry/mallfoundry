@@ -16,8 +16,8 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.application.token.AccessTokenService;
-import com.mallfoundry.access.domain.token.AccessToken;
+import com.mallfoundry.access.token.AccessTokenService;
+import com.mallfoundry.access.token.AccessToken;
 import com.mallfoundry.http.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

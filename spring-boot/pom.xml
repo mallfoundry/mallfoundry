@@ -33,6 +33,11 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
 
@@ -41,10 +46,10 @@
             <artifactId>mall-storage</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-topic</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
