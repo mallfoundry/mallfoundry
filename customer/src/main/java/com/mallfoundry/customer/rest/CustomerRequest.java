@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer;
+package com.mallfoundry.customer.rest;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-
-@Embeddable
-public class CustomerAvatar {
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "avatar_")
-    private String avatar;
+public class CustomerRequest {
 
 }

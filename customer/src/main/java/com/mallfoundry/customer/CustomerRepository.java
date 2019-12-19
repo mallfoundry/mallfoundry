@@ -22,8 +22,8 @@ public interface CustomerRepository {
 
     Customer save(Customer customer);
 
-    void deleteById(String customerId);
+    void deleteById(CustomerId customerId);
 
-    Optional<Customer> findById(String customerId);
+    Optional<Customer> findById(CustomerId customerId);
 
 }

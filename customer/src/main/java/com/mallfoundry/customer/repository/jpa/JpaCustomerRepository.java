@@ -17,11 +17,12 @@
 package com.mallfoundry.customer.repository.jpa;
 
 import com.mallfoundry.customer.Customer;
+import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.customer.CustomerRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaCustomerRepository
-        extends CustomerRepository, JpaRepository<Customer, String> {
+        extends CustomerRepository, JpaRepository<Customer, CustomerId> {
 }

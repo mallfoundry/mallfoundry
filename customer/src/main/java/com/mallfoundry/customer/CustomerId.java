@@ -16,26 +16,28 @@
 
 package com.mallfoundry.customer;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Optional;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-@Service
-public class CustomerService {
+@Getter
+@Setter
+@NoArgsConstructor
+@Embeddable
+public class CustomerId implements Serializable {
 
-    private final CustomerRepository customerRepository;
+    @JsonValue
+    @Column(name = "customer_id_")
+    private String id;
 
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
-    public Optional<Customer> getCustomer(String id) {
-        return this.customerRepository.findById(new CustomerId(id));
-    }
-
-    @Transactional
-    public Customer saveCustomer(Customer customer) {
-        return this.customerRepository.save(customer);
+    @JsonCreator
+    public CustomerId(String id) {
+        this.id = id;
     }
 }

@@ -16,28 +16,134 @@
 
 package com.mallfoundry.customer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "customer_delivery_address")
 public class DeliveryAddress {
 
-    private String customerId;
+    @Id
+    @GeneratedValue
+    @Column(name = "id_")
+    private Long id;
 
-    private String phone;
+    @Column(name = "consignee_")
+    private String consignee;
 
+    @Column(name = "mobile_")
+    private String mobile;
+
+    @JsonProperty("postal_code")
+    @Column(name = "postal_code_")
     private String postalCode;
 
+    @Column(name = "country_")
+    private String country;
+
+    @Column(name = "location_")
+    private String location;
+
+    @Column(name = "address_")
     private String address;
 
-    private boolean defaultAddress;
+    @Column(name = "defaulted_")
+    private boolean defaulted;
 
-    public boolean isDefault() {
-        return defaultAddress;
+    @JsonProperty("added_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "added_time_")
+    private Date addedTime;
+
+    public void nowAddedTime() {
+        this.setAddedTime(new Date());
     }
 
-    public void setDefault(boolean defaultAddress) {
-        this.defaultAddress = defaultAddress;
+    public void defaulted() {
+        this.setDefaulted(true);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeliveryAddress that = (DeliveryAddress) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public static class Builder {
+
+        private final DeliveryAddress address;
+
+        public Builder() {
+            this(new DeliveryAddress());
+        }
+
+        public Builder(DeliveryAddress address) {
+            this.address = address;
+        }
+
+        public Builder consignee(String consignee) {
+            this.address.setConsignee(consignee);
+            return this;
+        }
+
+        public Builder mobile(String mobile) {
+            this.address.setMobile(mobile);
+            return this;
+        }
+
+        public Builder postalCode(String postalCode) {
+            this.address.setPostalCode(postalCode);
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.address.setCountry(country);
+            return this;
+        }
+
+        public Builder location(String location) {
+            this.address.setLocation(location);
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address.setAddress(address);
+            return this;
+        }
+
+        public Builder defaulted() {
+            this.address.defaulted();
+            return this;
+        }
+
+        public DeliveryAddress build() {
+            this.address.nowAddedTime();
+            return this.address;
+        }
     }
 }
