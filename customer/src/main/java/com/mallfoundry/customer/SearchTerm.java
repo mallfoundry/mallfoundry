@@ -16,42 +16,48 @@
 
 package com.mallfoundry.customer;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Embeddable
-public class CustomerId implements Serializable {
+public class SearchTerm {
 
-    @JsonValue
-    @Column(name = "customer_id_")
-    private String id;
+    @Column(name = "text_")
+    private String text;
 
-    @JsonCreator
-    public CustomerId(String id) {
-        this.id = id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "time_")
+    private Date time;
+
+    public SearchTerm(String text) {
+        this.setText(text);
+        this.nowTime();
+    }
+
+    public void nowTime() {
+        this.setTime(new Date());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CustomerId that = (CustomerId) o;
-        return Objects.equals(id, that.id);
+        SearchTerm that = (SearchTerm) o;
+        return Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(text);
     }
 }

@@ -20,14 +20,17 @@ import com.mallfoundry.customer.Customer;
 import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.customer.CustomerService;
 import com.mallfoundry.customer.DeliveryAddress;
+import com.mallfoundry.customer.SearchTerm;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,17 +49,59 @@ public class CustomerResourceV1 {
         return this.customerService.getCustomer(id);
     }
 
-    @GetMapping("/customers/{customer_id}/delivery_addresses")
-    public List<DeliveryAddress> getCustomerDeliveryAddresses(@PathVariable("customer_id") String id) {
-        Optional<Customer> customerOptional = this.customerService.getCustomer(id);
-        return customerOptional.isPresent() ? customerOptional.get().getDeliveryAddresses() : Collections.emptyList();
-    }
-
     @PatchMapping("/customers/{customer_id}")
     public Customer updateCustomer(@PathVariable("customer_id") String id,
                                    @RequestBody Customer customer) {
         customer.setId(new CustomerId(id));
         return this.customerService.saveCustomer(customer);
+    }
+
+    @PostMapping("/customers/{customer_id}/delivery_addresses")
+    public void addDeliveryAddress(@PathVariable("customer_id") String id,
+                                   @RequestBody DeliveryAddress deliveryAddress) {
+        this.customerService.addDeliveryAddress(id, deliveryAddress);
+    }
+
+    @PutMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
+    public void addDeliveryAddress(@PathVariable("customer_id") String customerId,
+                                   @PathVariable("delivery_address_id") Long deliveryAddressId,
+                                   @RequestBody DeliveryAddress deliveryAddress) {
+        deliveryAddress.setId(deliveryAddressId);
+        this.customerService.addDeliveryAddress(customerId, deliveryAddress);
+    }
+
+    @DeleteMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
+    public void removeDeliveryAddress(@PathVariable("customer_id") String id,
+                                      @PathVariable("delivery_address_id") Long deliveryAddressId) {
+        this.customerService.removeDeliveryAddress(id, deliveryAddressId);
+    }
+
+    @GetMapping("/customers/{customer_id}/delivery_addresses")
+    public List<DeliveryAddress> getDeliveryAddresses(@PathVariable("customer_id") String id) {
+        return this.customerService.getDeliveryAddresses(id);
+    }
+
+    @GetMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
+    public Optional<DeliveryAddress> getDeliveryAddress(
+            @PathVariable("customer_id") String customerId,
+            @PathVariable("delivery_address_id") Long deliveryAddressId) {
+        return this.customerService.getDeliveryAddress(customerId, deliveryAddressId);
+    }
+
+    @PostMapping("/customers/{customer_id}/search_terms")
+    public void addSearchTerm(@PathVariable("customer_id") String customerId,
+                              @RequestBody SearchTermRequest request) {
+        this.customerService.addSearchTerm(customerId, request.getText());
+    }
+
+    @DeleteMapping("/customers/{customer_id}/search_terms")
+    public void clearSearchTerms(@PathVariable("customer_id") String customerId) {
+        this.customerService.clearSearchTerms(customerId);
+    }
+
+    @GetMapping("/customers/{customer_id}/search_terms")
+    public List<SearchTerm> getSearchTerms(@PathVariable("customer_id") String customerId) {
+        return this.customerService.getSearchTerms(customerId);
     }
 
 }

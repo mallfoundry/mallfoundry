@@ -21,10 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -54,9 +57,6 @@ public class Customer {
     @Column(name = "nickname_")
     private String nickname;
 
-//    @Embedded
-//    private CustomerAvatar avatar;
-
     @Column(name = "gender_")
     private Gender gender;
 
@@ -71,23 +71,56 @@ public class Customer {
     private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
 
     @JsonIgnore
-    private Optional<DeliveryAddress> getDefaultDeliveryAddress() {
+    @ElementCollection
+    @CollectionTable(name = "customer_search_term", joinColumns = @JoinColumn(name = "customer_id_"))
+    @OrderBy("time DESC")
+    private List<SearchTerm> searchTerms = new ArrayList<>();
+
+    @JsonIgnore
+    public Optional<DeliveryAddress> getDefaultDeliveryAddress() {
         return this.getDeliveryAddresses().stream().filter(DeliveryAddress::isDefaulted).findFirst();
     }
 
-    public void addDeliveryAddress(DeliveryAddress address) {
-        this.getDeliveryAddresses().remove(address);
-        this.getDefaultDeliveryAddress()
-                .ifPresent(defaultAddress -> {
-                    if (Objects.equals(defaultAddress, address)) {
-                        defaultAddress.setDefaulted(false);
-                    }
-                });
-        address.nowAddedTime();
-        this.getDeliveryAddresses().add(address);
+    public Optional<DeliveryAddress> getDeliveryAddress(Long id) {
+        return this.getDeliveryAddresses().stream().filter(address -> Objects.equals(address.getId(), id)).findFirst();
+    }
+
+    public void addDeliveryAddress(final DeliveryAddress address) {
+        address.nowAddedTimeIfNull();
+        this.getDeliveryAddress(address.getId())
+                .ifPresentOrElse(
+                        oldAddress -> BeanUtils.copyProperties(address, oldAddress, "id", "addedTime"),
+                        () -> this.getDeliveryAddresses().add(address));
+        // defaulted
+        if (address.isDefaulted()) {
+            this.getDefaultDeliveryAddress()
+                    .ifPresent(defaultAddress -> {
+                        if (!Objects.equals(defaultAddress, address)) {
+                            defaultAddress.setDefaulted(false);
+                        }
+                    });
+        }
     }
 
     public void removeDeliveryAddress(DeliveryAddress address) {
         this.getDeliveryAddresses().remove(address);
     }
+
+    public void addSearchTerm(String text) {
+        this.searchTerms
+                .stream()
+                .filter(term -> Objects.equals(term.getText(), text))
+                .findFirst()
+                .ifPresentOrElse(SearchTerm::nowTime,
+                        () -> this.searchTerms.add(new SearchTerm(text)));
+    }
+
+    public void removeSearchTerm(String text) {
+        this.searchTerms.remove(new SearchTerm(text));
+    }
+
+    public void clearSearchTerms() {
+        this.searchTerms.clear();
+    }
+
 }

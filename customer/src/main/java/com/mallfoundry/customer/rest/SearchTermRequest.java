@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.customer.rest;
 
-public abstract class ObjectModifier {
+import lombok.Getter;
+import lombok.Setter;
 
-    public static <T> boolean isModified(T old, T current) {
+@Getter
+@Setter
+public class SearchTermRequest {
 
-        return false;
-    }
-
-    public static <T> void findModified(T old, T current, T object) {
-
-    }
+    private String text;
 }

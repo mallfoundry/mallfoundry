@@ -45,15 +45,16 @@ public class DeliveryAddress {
     @Column(name = "consignee_")
     private String consignee;
 
+    @JsonProperty("country_code")
+    @Column(name = "country_code_")
+    private String countryCode;
+
     @Column(name = "mobile_")
     private String mobile;
 
     @JsonProperty("postal_code")
     @Column(name = "postal_code_")
     private String postalCode;
-
-    @Column(name = "country_")
-    private String country;
 
     @Column(name = "location_")
     private String location;
@@ -69,8 +70,10 @@ public class DeliveryAddress {
     @Column(name = "added_time_")
     private Date addedTime;
 
-    public void nowAddedTime() {
-        this.setAddedTime(new Date());
+    public void nowAddedTimeIfNull() {
+        if (Objects.isNull(this.getAddedTime())) {
+            this.setAddedTime(new Date());
+        }
     }
 
     public void defaulted() {
@@ -111,6 +114,11 @@ public class DeliveryAddress {
             return this;
         }
 
+        public Builder countryCode(String countryCode) {
+            this.address.setCountryCode(countryCode);
+            return this;
+        }
+
         public Builder mobile(String mobile) {
             this.address.setMobile(mobile);
             return this;
@@ -118,11 +126,6 @@ public class DeliveryAddress {
 
         public Builder postalCode(String postalCode) {
             this.address.setPostalCode(postalCode);
-            return this;
-        }
-
-        public Builder country(String country) {
-            this.address.setCountry(country);
             return this;
         }
 
@@ -142,7 +145,7 @@ public class DeliveryAddress {
         }
 
         public DeliveryAddress build() {
-            this.address.nowAddedTime();
+            this.address.nowAddedTimeIfNull();
             return this.address;
         }
     }
