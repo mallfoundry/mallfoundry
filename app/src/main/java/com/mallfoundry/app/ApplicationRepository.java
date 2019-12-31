@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.topic.infrastructure.persistence.mybatis;
+package com.mallfoundry.app;
 
-import com.mallfoundry.topic.domain.ReplyComment;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Optional;
 
-import java.util.List;
+public interface ApplicationRepository {
 
-public class GroupedReplies {
-
-    @Getter
-    @Setter
-    private String commentId;
-
-    @Setter
-    @Getter
-    private List<ReplyComment> replies;
+    Optional<Application> findById(String id);
 }
