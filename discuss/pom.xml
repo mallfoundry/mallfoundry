@@ -23,7 +23,7 @@
         <artifactId>mall</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>mall-topic</artifactId>
+    <artifactId>mall-discuss</artifactId>
 
     <dependencies>
         <dependency>

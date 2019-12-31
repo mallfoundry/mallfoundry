@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.topic.domain;
+package com.mallfoundry.product.discuss;
 
 public interface TopicRepository {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.topic.domain;
+package com.mallfoundry.product.discuss;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,49 +23,36 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
-@JsonPropertyOrder({
-        "topicName", "commentId", "id", "uid", "nickname",
-        "replyId", "replyUid", "replyNickname",
-        "message", "likes", "createTime"})
-public class ReplyComment {
-
-    private String id;
+@JsonPropertyOrder({"topicName", "id", "uid", "nickname", "message", "likes", "createTime"})
+public class Comment {
 
     @JsonProperty("topic_name")
     private String topicName;
 
-    @JsonProperty("comment_id")
-    private String commentId;
+    private String id;
 
     private String uid;
 
     private String nickname;
 
-    @JsonProperty("reply_id")
-    private String replyId;
-
-    @JsonProperty("reply_uid")
-    private String replyUid;
-
-    @JsonProperty("reply_nickname")
-    private String replyNickname;
-
     private String message;
 
     private int likes;
+
+    private List<ReplyComment> replies;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("create_time")
     private Date createTime;
 
-    public static ReplyComment of(String topicName, String commentId, String replyId) {
-        ReplyComment reply = new ReplyComment();
-        reply.setTopicName(topicName);
-        reply.setCommentId(commentId);
-        reply.setId(replyId);
-        return reply;
+    public static Comment of(String topicName, String commentId) {
+        Comment comment = new Comment();
+        comment.setTopicName(topicName);
+        comment.setId(commentId);
+        return comment;
     }
 }

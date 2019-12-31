@@ -50,7 +50,7 @@
         <module>identity</module>
         <module>security</module>
         <module>storage</module>
-        <module>topic</module>
+        <module>discuss</module>
         <module>store</module>
         <module>catalog</module>
         <module>customer</module>
@@ -140,7 +140,7 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-topic</artifactId>
+                <artifactId>mall-discuss</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
