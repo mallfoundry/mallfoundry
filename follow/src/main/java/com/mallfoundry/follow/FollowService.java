@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.follow;
+package com.mallfoundry.follow;
 
+import com.mallfoundry.customer.CustomerId;
+import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.product.ProductId;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,57 +40,71 @@ public class FollowService {
     }
 
     @Transactional
-    public void followProduct(FollowProduct followProduct) {
-        this.followProductRepository.save(followProduct);
+    public void followProduct(CustomerId customerId, ProductId productId) {
+        if (this.isFollowingProduct(customerId, productId)) {
+            throw new FollowException("The customer has followed to this product.");
+        }
+        this.followProductRepository.save(new FollowProduct(customerId, productId));
     }
 
     @Transactional
-    public void unfollowProduct(FollowProduct followProduct) {
-        this.followProductRepository.findOne(Example.of(followProduct))
+    public void unfollowProduct(CustomerId customerId, ProductId productId) {
+        this.followProductRepository.findOne(Example.of(new FollowProduct(customerId, productId)))
                 .ifPresent(this.followProductRepository::delete);
     }
 
-    public boolean isFollowingProduct(FollowProduct followProduct) {
-        return this.followProductRepository.count(Example.of(followProduct)) > 0;
+    public boolean isFollowingProduct(CustomerId customerId, ProductId productId) {
+        return this.followProductRepository.count(Example.of(new FollowProduct(customerId, productId))) > 0;
     }
 
-    public List<String> getFollowingProducts(String customerId) {
+    public List<Long> getFollowingProducts(CustomerId customerId) {
         return this.followProductRepository
                 .findAll(Example.of(new FollowProduct(customerId)))
                 .stream()
                 .map(FollowProduct::getProductId)
+                .map(ProductId::identity)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
-    public long getFollowingProductCount(String customerId) {
+    public long getFollowingProductCount(CustomerId customerId) {
         return this.followProductRepository.count(Example.of(new FollowProduct(customerId)));
     }
 
-    @Transactional
-    public void followStore(FollowStore followStore) {
-        this.followStoreRepository.save(followStore);
+    public long getProductFollowerCount(ProductId productId) {
+        return this.followProductRepository.count(Example.of(new FollowProduct(productId)));
     }
 
     @Transactional
-    public void unfollowStore(FollowStore followStore) {
-        this.followStoreRepository.findOne(Example.of(followStore))
+    public void followStore(CustomerId customerId, StoreId storeId) {
+        this.followStoreRepository.save(new FollowStore(customerId, storeId));
+    }
+
+    @Transactional
+    public void unfollowStore(CustomerId customerId, StoreId storeId) {
+        this.followStoreRepository.findOne(Example.of(new FollowStore(customerId, storeId)))
                 .ifPresent(this.followStoreRepository::delete);
     }
 
-    public boolean isFollowingStore(FollowStore followStore) {
-        return this.followStoreRepository.count(Example.of(followStore)) > 0;
+    public boolean isFollowingStore(CustomerId customerId, StoreId storeId) {
+        return this.followStoreRepository.count(Example.of(new FollowStore(customerId, storeId))) > 0;
     }
 
-    public List<String> getFollowStores(String customerId) {
+    public List<String> getFollowStores(CustomerId customerId) {
         return this.followStoreRepository
                 .findAll(Example.of(new FollowStore(customerId)))
                 .stream()
                 .map(FollowStore::getStoreId)
+                .map(StoreId::toString)
                 .collect(Collectors.toList());
     }
 
-    public long getFollowingStoreCount(String customerId) {
+    public long getFollowingStoreCount(CustomerId customerId) {
         return this.followStoreRepository.count(Example.of(new FollowStore(customerId)));
+    }
+
+    public long getStoreFollowerCount(StoreId storeId) {
+        return this.followStoreRepository.count(Example.of(new FollowStore(storeId)));
     }
 
 }

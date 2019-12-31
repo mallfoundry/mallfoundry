@@ -36,7 +36,6 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
-        <mybatis.spring-boot.version>2.1.1</mybatis.spring-boot.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-codec.version>1.13</commons-codec.version>
@@ -56,6 +55,10 @@
         <module>catalog</module>
         <module>customer</module>
         <module>spring-boot</module>
+        <module>order</module>
+        <module>search</module>
+        <module>app</module>
+        <module>follow</module>
     </modules>
 
     <dependencyManagement>
@@ -88,12 +91,6 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
                 <version>${lucene.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring-boot.version}</version>
             </dependency>
 
             <dependency>
@@ -162,6 +159,18 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-store</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-follow</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-app</artifactId>
                 <version>${mall.version}</version>
             </dependency>
         </dependencies>

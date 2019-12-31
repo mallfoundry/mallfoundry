@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.follow;
+package com.mallfoundry.follow;
 
+import com.mallfoundry.customer.CustomerId;
+import com.mallfoundry.store.StoreId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,8 +33,8 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_follow_product")
-public class FollowProduct {
+@Table(name = "follow_store")
+public class FollowStore {
 
     @Id
     @GeneratedValue
@@ -40,31 +42,35 @@ public class FollowProduct {
     private Integer id;
 
     @Column(name = "customer_id_")
-    private String customerId;
+    private CustomerId customerId;
 
-    @Column(name = "product_id_")
-    private String productId;
+    @Column(name = "store_id_")
+    private StoreId storeId;
 
-    public FollowProduct(String customerId) {
+    public FollowStore(CustomerId customerId) {
         this.setCustomerId(customerId);
     }
 
-    public FollowProduct(String customerId, String productId) {
-        this.setCustomerId(customerId);
-        this.setProductId(productId);
+    public FollowStore(StoreId storeId) {
+        this.storeId = storeId;
+    }
+
+    public FollowStore(CustomerId customerId, StoreId storeId) {
+        this.customerId = customerId;
+        this.storeId = storeId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FollowProduct that = (FollowProduct) o;
+        FollowStore that = (FollowStore) o;
         return Objects.equals(customerId, that.customerId) &&
-                Objects.equals(productId, that.productId);
+                Objects.equals(storeId, that.storeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, productId);
+        return Objects.hash(customerId, storeId);
     }
 }

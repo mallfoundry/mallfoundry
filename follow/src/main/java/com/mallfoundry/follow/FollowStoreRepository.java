@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.follow.repository.jpa;
+package com.mallfoundry.follow;
 
-import com.mallfoundry.customer.follow.FollowStore;
-import com.mallfoundry.customer.follow.FollowStoreRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Example;
 
-@Repository
-public interface JpaFollowStoreRepository extends
-        FollowStoreRepository, JpaRepository<FollowStore, Integer> {
+import java.util.List;
+import java.util.Optional;
+
+public interface FollowStoreRepository {
+
+    FollowStore save(FollowStore followStore);
+
+    void delete(FollowStore followStore);
+
+    <S extends FollowStore> Optional<S> findOne(Example<S> example);
+
+    <S extends FollowStore> List<S> findAll(Example<S> example);
+
+    <S extends FollowStore> long count(Example<S> example);
 }

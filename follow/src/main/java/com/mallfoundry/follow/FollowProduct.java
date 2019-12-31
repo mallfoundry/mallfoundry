@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.follow;
+package com.mallfoundry.follow;
 
+import com.mallfoundry.customer.CustomerId;
+import com.mallfoundry.store.product.ProductId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,40 +34,44 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_follow_store")
-public class FollowStore {
+@Table(name = "follow_product")
+public class FollowProduct {
 
     @Id
     @GeneratedValue
     @Column(name = "id_")
     private Integer id;
 
-    @Column(name = "customer_id_")
-    private String customerId;
+    @Embedded
+    private CustomerId customerId;
 
-    @Column(name = "store_id_")
-    private String storeId;
+    @Embedded
+    private ProductId productId;
 
-    public FollowStore(String customerId) {
-        this.customerId = customerId;
+    public FollowProduct(CustomerId customerId) {
+        this.setCustomerId(customerId);
     }
 
-    public FollowStore(String customerId, String storeId) {
-        this.customerId = customerId;
-        this.storeId = storeId;
+    public FollowProduct(ProductId productId) {
+        this.setProductId(productId);
+    }
+
+    public FollowProduct(CustomerId customerId, ProductId productId) {
+        this.setCustomerId(customerId);
+        this.setProductId(productId);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FollowStore that = (FollowStore) o;
+        FollowProduct that = (FollowProduct) o;
         return Objects.equals(customerId, that.customerId) &&
-                Objects.equals(storeId, that.storeId);
+                Objects.equals(productId, that.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, storeId);
+        return Objects.hash(customerId, productId);
     }
 }
