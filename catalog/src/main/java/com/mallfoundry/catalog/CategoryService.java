@@ -1,5 +1,6 @@
 package com.mallfoundry.catalog;
 
+import com.mallfoundry.util.Positions;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,12 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+
     @Transactional
     public TopCategory createTopCategory(String name) {
         TopCategory category = this.categoryRepository.save(new TopCategory(name));
         List<TopCategory> categories = this.getTopCategories();
-        CategoryPositions.sort(categories);
+        Positions.sort(categories);
         return category;
     }
 

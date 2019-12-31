@@ -1,5 +1,8 @@
 package com.mallfoundry.catalog;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.mallfoundry.util.Position;
+import com.mallfoundry.util.Positions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,7 +30,7 @@ import java.util.Objects;
 @Table(name = "catalog_category")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type_")
-public class Category implements Comparable<Category> {
+public class Category implements Position {
 
     @Id
     @GeneratedValue
@@ -35,6 +39,13 @@ public class Category implements Comparable<Category> {
 
     @Column(name = "name_")
     private String name;
+
+    @Column(name = "keywords_")
+    private String keywords;
+
+    @JsonUnwrapped
+    @Embedded
+    private CategoryIcon icon;
 
     @Column(name = "position_")
     private Integer position;
@@ -47,6 +58,11 @@ public class Category implements Comparable<Category> {
         this.name = name;
     }
 
+    public Category(String name, CategoryIcon icon) {
+        this.setName(name);
+        this.setIcon(icon);
+    }
+
     public ChildCategory createChildCategory(String name) {
         return new ChildCategory(this, name);
     }
@@ -55,7 +71,7 @@ public class Category implements Comparable<Category> {
         childCategory.setPosition(Integer.MAX_VALUE);
         childCategory.setParent(this);
         this.getChildren().add(childCategory);
-        CategoryPositions.sort(this.getChildren());
+        Positions.sort(this.getChildren());
     }
 
     public void removeChildCategory(ChildCategory childCategory) {
@@ -77,12 +93,5 @@ public class Category implements Comparable<Category> {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public int compareTo(Category o) {
-        int selfPosition = Objects.isNull(this.getPosition()) ? Integer.MAX_VALUE : this.getPosition();
-        int otherPosition = Objects.isNull(o.getPosition()) ? Integer.MAX_VALUE : o.getPosition();
-        return Integer.compare(selfPosition, otherPosition);
     }
 }

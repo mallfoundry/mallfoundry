@@ -19,7 +19,11 @@ public class TopCategory extends Category {
     }
 
     public TopCategory(String name) {
-        super(name);
+        this(name, null);
+    }
+
+    public TopCategory(String name, CategoryIcon icon) {
+        super(name, icon);
         this.setPosition(Integer.MAX_VALUE);
     }
 }
