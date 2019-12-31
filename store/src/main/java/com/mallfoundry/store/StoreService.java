@@ -30,12 +30,12 @@ public class StoreService {
         this.storeRepository = storeRepository;
     }
 
-    public Optional<Store> getStore(String id) {
+    public Optional<StoreInfo> getStore(String id) {
         return this.storeRepository.findById(id);
     }
 
     @Transactional
-    public void createStore(Store store) {
+    public void createStore(StoreInfo store) {
         this.storeRepository.save(store);
     }
 }

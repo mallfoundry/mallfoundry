@@ -22,8 +22,5 @@ import java.util.List;
 
 public interface ProductSearcher {
 
-    Product find(String id);
-
     List<Product> search(ProductQuery query);
-
 }

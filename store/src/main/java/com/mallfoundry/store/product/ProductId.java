@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -27,14 +27,14 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Embeddable
-public class StoreId implements UniqueIdentifier<String> {
+public class ProductId implements UniqueIdentifier<Long> {
 
     @JsonValue
-    @Column(name = "store_id_")
-    private String id;
+    @Column(name = "product_id_")
+    private Long id;
 
     @JsonCreator
-    public StoreId(final String id) {
+    public ProductId(final Long id) {
         this.id = id;
     }
 
@@ -42,7 +42,7 @@ public class StoreId implements UniqueIdentifier<String> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StoreId storeId = (StoreId) o;
+        ProductId storeId = (ProductId) o;
         return Objects.equals(id, storeId.id);
     }
 
@@ -52,12 +52,12 @@ public class StoreId implements UniqueIdentifier<String> {
     }
 
     @Override
-    public String identity() {
+    public Long identity() {
         return this.id;
     }
 
     @Override
     public String toString() {
-        return this.id;
+        return this.id.toString();
     }
 }

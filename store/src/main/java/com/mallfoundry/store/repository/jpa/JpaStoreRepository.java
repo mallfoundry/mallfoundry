@@ -16,10 +16,10 @@
 
 package com.mallfoundry.store.repository.jpa;
 
-import com.mallfoundry.store.Store;
+import com.mallfoundry.store.StoreInfo;
 import com.mallfoundry.store.StoreRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaStoreRepository
-        extends StoreRepository, JpaRepository<Store, String> {
+        extends StoreRepository, JpaRepository<StoreInfo, String> {
 }

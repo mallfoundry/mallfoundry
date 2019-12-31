@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public interface StoreRepository {
 
-    Store save(Store store);
+    StoreInfo save(StoreInfo store);
 
-    Optional<Store> findById(String id);
+    Optional<StoreInfo> findById(String id);
 }

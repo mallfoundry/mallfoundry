@@ -17,7 +17,7 @@
 package com.mallfoundry.store.rest;
 
 import com.mallfoundry.store.StoreService;
-import com.mallfoundry.store.Store;
+import com.mallfoundry.store.StoreInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +37,12 @@ public class StoreResourceV1 {
     }
 
     @GetMapping("/stores/{id}")
-    public Optional<Store> getStoreInfo(@PathVariable("id") String id) {
+    public Optional<StoreInfo> getStoreInfo(@PathVariable("id") String id) {
         return this.storeService.getStore(id);
     }
 
     @PostMapping("/stores")
-    public void createStore(Store store) {
+    public void createStore(StoreInfo store) {
         this.storeService.createStore(store);
     }
 

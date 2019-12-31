@@ -65,13 +65,12 @@ public class ProductVariant implements Serializable {
 
     @ElementCollection
     @CollectionTable(name = "store_product_variant_option")
+    @Column(name = "option_")
     private List<String> options = new ArrayList<>();
 
-    /**
-     * The ids for images.
-     */
     @ElementCollection
     @CollectionTable(name = "store_product_variant_image")
+    @Column(name = "image_")
     private List<String> images;
 
     @Column(name = "position_")

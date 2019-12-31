@@ -33,7 +33,6 @@ public class ProductQuery {
 
     private String productId;
 
-
     public static ProductQueryBuilder builder() {
         return new ProductQueryBuilder();
     }

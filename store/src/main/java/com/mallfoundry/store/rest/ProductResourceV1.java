@@ -22,9 +22,11 @@ import com.mallfoundry.store.product.search.ProductQuery;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -38,7 +40,14 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products")
-    public List<Product> searchProduct(ProductQuery query) {
+    public List<Product> searchProduct(
+            ProductQuery query,
+            @RequestParam(name = "store_id", required = false) String storeId) {
+
+        if (Objects.nonNull(storeId)) {
+            query.setStoreId(storeId);
+        }
+
         return this.productService.search(query);
     }
 
