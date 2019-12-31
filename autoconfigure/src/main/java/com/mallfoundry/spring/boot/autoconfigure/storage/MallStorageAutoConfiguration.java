@@ -19,7 +19,6 @@ package com.mallfoundry.spring.boot.autoconfigure.storage;
 import com.mallfoundry.storage.StorageConfiguration;
 import com.mallfoundry.storage.StorageSystem;
 import com.mallfoundry.storage.StorageSystems;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.EncodedResourceResolver;
 
 
 @Configuration
@@ -65,12 +65,19 @@ public class MallStorageAutoConfiguration implements WebMvcConfigurer {
     @ConditionalOnProperty(prefix = "mall.storage.store", name = "type", havingValue = "local")
     public static class ResourceHandlerConfiguration implements WebMvcConfigurer {
 
-        @Autowired
-        private MallStorageProperties properties;
+        private final MallStorageProperties properties;
+
+        public ResourceHandlerConfiguration(MallStorageProperties properties) {
+            this.properties = properties;
+        }
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/static/**").addResourceLocations("file:" + properties.getStore().getDirectory());
+            registry.addResourceHandler("/static/**")
+                    .addResourceLocations("file:" + properties.getStore().getDirectory())
+                    .setCachePeriod(3000)
+                    .resourceChain(true)
+                    .addResolver(new EncodedResourceResolver());
         }
     }
 }
