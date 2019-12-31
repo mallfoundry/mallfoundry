@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.topic.infrastructure.persistence.mybatis;
+package com.mallfoundry.util;
 
-import com.mallfoundry.topic.domain.Topic;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
 
-@Repository
-@Mapper
-public interface TopicMapper {
+public interface UniqueIdentifier<T extends Serializable> extends Serializable {
 
-    Topic selectTopicByName(@Param("name") String name);
-
-    void insertTopic(Topic topic);
-
-    void updateTopic(Topic topic);
-
-    void deleteTopicByName(@Param("name") String name);
+    T identity();
 }
