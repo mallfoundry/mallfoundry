@@ -44,9 +44,9 @@ public class CustomerTests {
         customer.addDeliveryAddress(
                 DeliveryAddress.builder()
                         .consignee("唐治")
-                        .mobile("+86 1888888888")
+                        .mobile("1888888888")
                         .postalCode("2500000")
-                        .country("CN")
+                        .countryCode("86")
                         .location("001,220,3222,333")
                         .address("山东省济南市历城区023号")
                         .defaulted()
