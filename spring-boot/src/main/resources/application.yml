@@ -10,13 +10,11 @@ spring:
     active: dev
   application:
     name: Mall-Fundory-APP
-mybatis:
-  configuration:
-    lazy-loading-enabled: true
-    aggressive-lazy-loading: false
-  type-handlers-package: com.mallfoundry.mybatis.type
 server:
   port: 8077
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 20
 mall:
   storage:
     store:

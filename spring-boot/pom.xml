@@ -67,6 +67,16 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-follow</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-app</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>

@@ -1,7 +1,7 @@
 logging:
   level:
     com.mallfoundry: debug
-    org.apache.ibatis: debug
+    org.springframework.web: debug
 spring:
   jpa:
     hibernate:
