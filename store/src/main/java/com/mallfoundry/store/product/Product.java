@@ -39,6 +39,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -115,6 +117,13 @@ public class Product implements Serializable {
 
     public void addVariant(ProductVariant variant) {
         this.getVariants().add(variant);
+    }
+
+    public Optional<ProductVariant> getVariant(Long id) {
+        return this.getVariants()
+                .stream()
+                .filter(variant -> Objects.equals(variant.getId(), id))
+                .findFirst();
     }
 
     public ProductOption createOption(String name) {

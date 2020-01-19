@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Each product can have multiple variations.
@@ -59,9 +60,9 @@ public class ProductVariant implements Serializable {
     @JsonProperty("market_price")
     private BigDecimal marketPrice;
 
-    @Column(name = "stock_quantity_")
-    @JsonProperty("stock_quantity")
-    private int stockQuantity;
+    @Column(name = "inventory_quantity_")
+    @JsonProperty("inventory_quantity")
+    private int inventoryQuantity;
 
     @ElementCollection
     @CollectionTable(name = "store_product_variant_option")
@@ -75,6 +76,26 @@ public class ProductVariant implements Serializable {
 
     @Column(name = "position_")
     private Integer position;
+
+    public void decrementInventoryQuantity(int quantity) throws InventoryException {
+        if (quantity > this.getInventoryQuantity()) {
+            throw new InventoryException("The stock quantity is insufficient");
+        }
+        this.setInventoryQuantity(this.getInventoryQuantity() - quantity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductVariant that = (ProductVariant) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public static class Builder {
 
@@ -94,8 +115,8 @@ public class ProductVariant implements Serializable {
             return this;
         }
 
-        public Builder stockQuantity(int stockQuantity) {
-            this.variant.setStockQuantity(stockQuantity);
+        public Builder inventoryQuantity(int inventoryQuantity) {
+            this.variant.setInventoryQuantity(inventoryQuantity);
             return this;
         }
 
