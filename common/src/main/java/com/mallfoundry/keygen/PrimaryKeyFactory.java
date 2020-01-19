@@ -30,6 +30,10 @@ public class PrimaryKeyFactory implements ApplicationContextAware {
         return context.getBean(AbstractSequencePrimaryKeyGenerator.class);
     }
 
+    public PrimaryKeyGenerator<String> uuid() {
+        return context.getBean(UUIDPrimaryKeyGenerator.class);
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
