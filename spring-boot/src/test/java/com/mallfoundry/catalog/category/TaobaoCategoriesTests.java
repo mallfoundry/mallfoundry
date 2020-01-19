@@ -173,6 +173,8 @@ public class TaobaoCategoriesTests {
                         }
                         childCategory.addChildCategory(itemCategory);
                     });
+
+                    Positions.sort(childCategory.getChildren());
                 });
 
             }

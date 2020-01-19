@@ -17,6 +17,7 @@
 package com.mallfoundry.store;
 
 
+import com.mallfoundry.StaticServer;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductAttribute;
 import com.mallfoundry.store.product.ProductImage;
@@ -79,7 +80,7 @@ public class ProductTests {
     }
 
     private String getImageUrl(String id) {
-        return "http://192.168.0.102:8077/static/images/" + id;
+        return StaticServer.BASE_URL + "/images/" + id;
     }
 
     private Product newProduct1() {
@@ -102,17 +103,17 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("huawei_1", "huawei_2")).options(List.of("翡冷翠", "8GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("huawei_1", "huawei_2")).options(List.of("翡冷翠", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("huawei_3", "huawei_4")).options(List.of("丹霞橙", "8GB 128GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("huawei_3", "huawei_4")).options(List.of("丹霞橙", "12GB 256GB")).position(1).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));
@@ -141,17 +142,17 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("mi_1", "mi_2")).options(List.of("梦之白", "8GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("mi_1", "mi_2")).options(List.of("梦之白", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "8GB 128GB")).position(2).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("mi_3", "mi_4")).options(List.of("钛银黑", "12GB 256GB")).position(3).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));
@@ -182,23 +183,23 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_1", "oppo_2")).options(List.of("雾月白", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_1", "oppo_2")).options(List.of("雾月白", "12GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_3", "oppo_4")).options(List.of("日出印象", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_3", "oppo_4")).options(List.of("日出印象", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_7", "oppo_8")).options(List.of("蓝色星夜", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("oppo_7", "oppo_8")).options(List.of("蓝色星夜", "12GB 256GB")).position(1).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));
@@ -227,16 +228,16 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("vivo_1", "vivo_2")).options(List.of("深空流光", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("vivo_1", "vivo_2")).options(List.of("深空流光", "12GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("vivo_3", "vivo_4")).options(List.of("液态天河", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("vivo_3", "vivo_4")).options(List.of("液态天河", "12GB 256GB")).position(1).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));
@@ -267,33 +268,33 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("6GB 128GB", "8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_1", "one_plus_2")).options(List.of("曜岩灰", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_1", "one_plus_2")).options(List.of("曜岩灰", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_1", "one_plus_2")).options(List.of("曜岩灰", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_3", "one_plus_4")).options(List.of("星雾蓝", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_3", "one_plus_4")).options(List.of("星雾蓝", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_3", "one_plus_4")).options(List.of("星雾蓝", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_5", "one_plus_6")).options(List.of("皓月金", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_5", "one_plus_6")).options(List.of("皓月金", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).stockQuantity(100)
+                new ProductVariant.Builder().marketPrice(retailPrice).retailPrice(retailPrice).inventoryQuantity(100)
                         .images(List.of("one_plus_5", "one_plus_6")).options(List.of("皓月金", "12GB 256GB")).position(0).build());
 
         product.addAttribute(new ProductAttribute("产地", "中国", 1));

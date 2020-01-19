@@ -20,24 +20,6 @@
   {
     "nav_bgcolor": "",
     "industry_image": "",
-    "name": "女装女鞋",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "201",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "人群偏爱",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "999",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
     "name": "鞋靴",
     "theme_bgimage": "",
     "industry_image_active": "",
@@ -74,15 +56,6 @@
   {
     "nav_bgcolor": "",
     "industry_image": "",
-    "name": "男装男鞋",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "203",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
     "name": "家电",
     "theme_bgimage": "",
     "industry_image_active": "",
@@ -105,33 +78,6 @@
     "theme_bgimage": "",
     "industry_image_active": "",
     "id": "22",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "内衣配饰",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "19",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "家具家装",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "213",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "小家电",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "211",
     "theme_bgcolor": ""
   },
   {
@@ -209,15 +155,6 @@
   {
     "nav_bgcolor": "",
     "industry_image": "",
-    "name": "内衣配饰",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "219",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
     "name": "珠宝配饰",
     "theme_bgimage": "",
     "industry_image_active": "",
@@ -236,15 +173,6 @@
   {
     "nav_bgcolor": "",
     "industry_image": "",
-    "name": "大家电",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "210",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
     "name": "图书乐器",
     "theme_bgimage": "",
     "industry_image_active": "",
@@ -254,46 +182,10 @@
   {
     "nav_bgcolor": "",
     "industry_image": "",
-    "name": "数码",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "205",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "美妆洗护",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "212",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "运动户外",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "209",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
     "name": "现代农业",
     "theme_bgimage": "",
     "industry_image_active": "",
     "id": "26",
-    "theme_bgcolor": ""
-  },
-  {
-    "nav_bgcolor": "",
-    "industry_image": "",
-    "name": "母婴",
-    "theme_bgimage": "",
-    "industry_image_active": "",
-    "id": "206",
     "theme_bgcolor": ""
   },
   {

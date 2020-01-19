@@ -17,6 +17,7 @@
 package com.mallfoundry.store;
 
 
+import com.mallfoundry.StaticServer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +43,6 @@ public class StoreTests {
     }
 
     private String getLogoUrl(String name) {
-        return "http://102.mallfoundry.com:8077/static/images/" + name + ".jpg";
+        return StaticServer.BASE_URL + "/images/" + name + ".jpg";
     }
 }

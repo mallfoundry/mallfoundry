@@ -16,6 +16,7 @@
 
 package com.mallfoundry.app;
 
+import com.mallfoundry.StaticServer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +30,7 @@ public class ApplicationTests {
     private ApplicationService applicationService;
 
     public void createMenu(String title, String icon) {
-        String iconUrl = String.format("http://192.168.0.102:8077/static/menus/%s", icon);
+        String iconUrl = String.format("%s/menus/%s", StaticServer.BASE_URL, icon);
         this.applicationService.createMenu("mall-h5", new Menu(title, new MenuIcon(iconUrl)));
     }
 
