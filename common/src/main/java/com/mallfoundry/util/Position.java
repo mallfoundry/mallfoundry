@@ -16,9 +16,10 @@
 
 package com.mallfoundry.util;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public interface Position extends Comparable<Position> {
+public interface Position extends Comparable<Position>, Serializable {
 
     void setPosition(Integer position);
 
