@@ -44,7 +44,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer")
+@Table(name = "customer_info")
 public class Customer {
 
     @EmbeddedId
