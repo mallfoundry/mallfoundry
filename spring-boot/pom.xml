@@ -46,11 +46,6 @@
             <artifactId>mall-storage</artifactId>
         </dependency>
 
-        <!--<dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-topic</artifactId>
-        </dependency>-->
-
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-catalog</artifactId>
@@ -74,6 +69,11 @@
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-app</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-order</artifactId>
         </dependency>
 
         <dependency>
