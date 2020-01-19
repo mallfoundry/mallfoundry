@@ -21,25 +21,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "order_item")
+@Embeddable
 public class OrderItem {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id_")
-    private Long id;
 
     @Column(name = "product_id_")
     private Long productId;
@@ -61,18 +51,5 @@ public class OrderItem {
         this.setVariantId(variantId);
         this.setQuantity(quantity);
         this.setPrice(price);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return Objects.equals(id, orderItem.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

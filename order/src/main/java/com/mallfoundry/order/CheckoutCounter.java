@@ -16,29 +16,30 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.store.product.InventoryException;
-import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
-import com.mallfoundry.store.product.ProductVariant;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class Inventory {
+public class CheckoutCounter {
 
     private final ProductService productService;
 
-    public Inventory(ProductService productService) {
+    public CheckoutCounter(ProductService productService) {
         this.productService = productService;
     }
 
-    public void decrement(Order order) throws InventoryException {
-        List<OrderItem> items = order.getItems();
-        for (OrderItem item : items) {
-            Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
-            ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
-            variant.decrementInventoryQuantity(item.getQuantity());
+    public void checkout(Order order) throws CheckoutException {
+        try {
+            List<OrderItem> items = order.getItems();
+            for (OrderItem item : items) {
+                com.mallfoundry.store.product.Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
+                com.mallfoundry.store.product.ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
+                variant.decrementInventoryQuantity(item.getQuantity());
+            }
+        } catch (Exception e) {
+            throw new CheckoutException(e);
         }
     }
 }

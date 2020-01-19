@@ -16,6 +16,7 @@
 
 package com.mallfoundry.order.rest;
 
+import com.mallfoundry.order.CustomerValidException;
 import com.mallfoundry.order.Order;
 import com.mallfoundry.order.OrderService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +40,8 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders")
-    public Order createOrder(Order order) {
-        return this.orderService.createOrder(order);
+    public Order submitOrder(Order order) throws CustomerValidException {
+        return this.orderService.submitOrder(order);
     }
 
     @PatchMapping("/orders/{order_id}/awaiting_payment")
@@ -50,9 +51,8 @@ public class OrderResourceV1 {
 
     @PatchMapping("/orders/{order_id}/awaiting_fulfillment")
     public void awaitingFulfillment(
-            @PathVariable("order_id") Long orderId,
-            @RequestBody AwaitingFulfillmentRequest request) {
-        this.orderService.awaitingFulfillment(orderId, request.getTradeId());
+            @PathVariable("order_id") Long orderId) {
+        this.orderService.awaitingFulfillment(orderId);
     }
 
     @PatchMapping("/orders/{order_id}/awaiting_shipment")

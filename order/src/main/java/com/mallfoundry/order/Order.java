@@ -22,7 +22,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,6 +35,7 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
@@ -43,12 +46,12 @@ import static com.mallfoundry.order.OrderStatus.COMPLETED;
 import static com.mallfoundry.order.OrderStatus.DECLINED;
 import static com.mallfoundry.order.OrderStatus.DISPUTED;
 import static com.mallfoundry.order.OrderStatus.INCOMPLETE;
-import static com.mallfoundry.order.OrderStatus.MANUAL_VERIFICATION_REQUIRED;
 import static com.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static com.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static com.mallfoundry.order.OrderStatus.PENDING;
 import static com.mallfoundry.order.OrderStatus.REFUNDED;
 import static com.mallfoundry.order.OrderStatus.SHIPPED;
+import static com.mallfoundry.order.OrderStatus.VERIFICATION_REQUIRED;
 
 @Getter
 @Setter
@@ -67,7 +70,7 @@ public class Order {
     private OrderStatus status;
 
     @Column(name = "customer_id_")
-    private String customerId;
+    private Long customerId;
 
     @Column(name = "trade_id_")
     private String tradeId;
@@ -77,26 +80,26 @@ public class Order {
     @JoinColumn(name = "shipping_address_id_")
     private ShippingAddress shippingAddress;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_id_")
+    @ElementCollection
+    @CollectionTable(name = "order_item", joinColumns = @JoinColumn(name = "order_id_"))
     private List<OrderItem> items = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id_")
     private List<OrderShipment> shipments = new ArrayList<>();
 
-    public Order(String customerId, ShippingAddress shippingAddress) {
+    public Order(Long customerId, ShippingAddress shippingAddress, List<OrderItem> items) {
         this.setStatus(INCOMPLETE);
         this.setCustomerId(customerId);
         this.setShippingAddress(shippingAddress);
+        this.setItems(items);
     }
 
-    public void addItem(OrderItem item) {
-        this.getItems().add(item);
-    }
-
-    public void removeItem(OrderItem item) {
-        this.getItems().remove(item);
+    public Optional<OrderShipment> getShipment(Long id) {
+        return this.getShipments()
+                .stream()
+                .filter(shipment -> Objects.equals(shipment.getId(), id))
+                .findFirst();
     }
 
     public void addShipment(OrderShipment shipment) {
@@ -154,8 +157,8 @@ public class Order {
         this.setStatus(COMPLETED);
     }
 
-    public void manualVerificationRequired() {
-        this.setStatus(MANUAL_VERIFICATION_REQUIRED);
+    public void verificationRequired() {
+        this.setStatus(VERIFICATION_REQUIRED);
     }
 
     public void disputed() {

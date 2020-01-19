@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order.rest;
+package com.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+public class CheckoutException extends RuntimeException {
 
-@Getter
-@Setter
-public class AwaitingFulfillmentRequest {
-
-    @JsonProperty("trade_id")
-    private String tradeId;
+    public CheckoutException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -17,7 +17,6 @@
 package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.keygen.PrimaryKeyHolder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,8 +35,9 @@ import java.util.Objects;
 public class OrderShipment {
 
     @Id
+    @Getter
     @Column(name = "id_")
-    private String id;
+    private Long id;
 
     @JsonProperty("shipping_provider")
     @Column(name = "shipping_provider_")
@@ -47,11 +47,10 @@ public class OrderShipment {
     @Column(name = "tracking_number_")
     private String trackingNumber;
 
-    @Column(name = "description_")
-    private String description;
+    @Column(name = "note_")
+    private String note;
 
     public OrderShipment(String shippingProvider, String trackingNumber) {
-        this.id = PrimaryKeyHolder.uuid();
         this.shippingProvider = shippingProvider;
         this.trackingNumber = trackingNumber;
     }

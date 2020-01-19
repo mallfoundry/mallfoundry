@@ -28,17 +28,22 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final Inventory inventory;
+    private final CustomerValidator customerValidator;
+
+    private final CheckoutCounter checkoutCounter;
 
     public OrderService(OrderRepository orderRepository,
-                        Inventory inventory) {
+                        CustomerValidator customerValidator,
+                        CheckoutCounter checkoutCounter) {
         this.orderRepository = orderRepository;
-        this.inventory = inventory;
+        this.customerValidator = customerValidator;
+        this.checkoutCounter = checkoutCounter;
     }
 
     @Transactional
-    public Order createOrder(Order order) throws OrderException, InventoryException {
-//        inventory.decrement(order);
+    public Order submitOrder(Order order) throws CustomerValidException {
+        this.customerValidator.validate(order.getCustomerId());
+        checkoutCounter.checkout(order);
         order.pending();
         return this.orderRepository.save(order);
     }
@@ -49,10 +54,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void awaitingFulfillment(Long orderId, String tradeId) throws OrderException, InventoryException {
+    public void awaitingFulfillment(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId)
-                .ifPresent(order -> order.awaitingFulfillment(tradeId));
+                .ifPresent(order -> order.awaitingFulfillment(null));
     }
 
     @Transactional
