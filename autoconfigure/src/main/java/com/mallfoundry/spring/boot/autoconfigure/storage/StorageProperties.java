@@ -21,7 +21,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "mall.storage")
-public class MallStorageProperties {
+public class StorageProperties {
 
     @Setter
     private Http http;

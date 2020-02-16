@@ -30,16 +30,16 @@ import org.springframework.web.servlet.resource.EncodedResourceResolver;
 
 
 @Configuration
-@EnableConfigurationProperties(MallStorageProperties.class)
-public class MallStorageAutoConfiguration implements WebMvcConfigurer {
+@EnableConfigurationProperties(StorageProperties.class)
+public class StorageAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnClass(StorageSystem.class)
-    public StorageSystem storageSystem(MallStorageProperties properties) {
+    public StorageSystem storageSystem(StorageProperties properties) {
         return StorageSystems.newStorageSystem(this.getConfiguration(properties));
     }
 
-    private StorageConfiguration getConfiguration(MallStorageProperties properties) {
+    private StorageConfiguration getConfiguration(StorageProperties properties) {
         StorageConfiguration config = new StorageConfiguration();
         config.getHttp().setBaseUrl(properties.getHttp().getBaseUrl());
         config.getStore().setDirectory(properties.getStore().getDirectory());
@@ -47,7 +47,7 @@ public class MallStorageAutoConfiguration implements WebMvcConfigurer {
         return config;
     }
 
-    private StorageConfiguration.StoreType toStoreType(MallStorageProperties.StoreType storeType) {
+    private StorageConfiguration.StoreType toStoreType(StorageProperties.StoreType storeType) {
         switch (storeType) {
             case LOCAL:
                 return StorageConfiguration.StoreType.LOCAL;
@@ -65,9 +65,9 @@ public class MallStorageAutoConfiguration implements WebMvcConfigurer {
     @ConditionalOnProperty(prefix = "mall.storage.store", name = "type", havingValue = "local")
     public static class ResourceHandlerConfiguration implements WebMvcConfigurer {
 
-        private final MallStorageProperties properties;
+        private final StorageProperties properties;
 
-        public ResourceHandlerConfiguration(MallStorageProperties properties) {
+        public ResourceHandlerConfiguration(StorageProperties properties) {
             this.properties = properties;
         }
 
