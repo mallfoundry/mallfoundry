@@ -41,5 +41,6 @@ public class CheckoutCounter {
         } catch (Exception e) {
             throw new CheckoutException(e);
         }
+        order.pending();
     }
 }

@@ -16,10 +16,15 @@
 
 package com.mallfoundry.order;
 
+import com.mallfoundry.payment.PaymentException;
+import com.mallfoundry.payment.PaymentOrder;
+import com.mallfoundry.payment.PaymentProvider;
+import com.mallfoundry.payment.PaymentService;
 import com.mallfoundry.store.product.InventoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,25 +37,35 @@ public class OrderService {
 
     private final CheckoutCounter checkoutCounter;
 
+    private final PaymentService paymentService;
+
     public OrderService(OrderRepository orderRepository,
                         CustomerValidator customerValidator,
-                        CheckoutCounter checkoutCounter) {
+                        CheckoutCounter checkoutCounter,
+                        PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
         this.checkoutCounter = checkoutCounter;
+        this.paymentService = paymentService;
     }
 
     @Transactional
-    public Order submitOrder(Order order) throws CustomerValidException {
+    public Order createOrder(Order order) throws CustomerValidException {
         this.customerValidator.validate(order.getCustomerId());
         checkoutCounter.checkout(order);
-        order.pending();
         return this.orderRepository.save(order);
     }
 
     @Transactional
-    public void awaitingPayment(Long orderId) throws OrderException, InventoryException {
-        this.orderRepository.findById(orderId).ifPresent(Order::awaitingPayment);
+    public String captureOrder(Long orderId) throws OrderException, InventoryException, PaymentException {
+        Order order = this.orderRepository.findById(orderId).orElseThrow();
+        order.awaitingPayment();
+        return this.paymentService
+                .capturePayment(
+                        new PaymentOrder(String.valueOf(orderId),
+                                "hello world",
+                                BigDecimal.valueOf(0.01),
+                                PaymentProvider.ALIPAY));
     }
 
     @Transactional
@@ -86,13 +101,13 @@ public class OrderService {
     }
 
     @Transactional
-    public void completed(Long orderId) throws OrderException {
+    public void complete(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId).ifPresent(Order::completed);
     }
 
     @Transactional
-    public void disputed(Long orderId) throws OrderException {
+    public void dispute(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId).ifPresent(Order::disputed);
     }
@@ -104,19 +119,19 @@ public class OrderService {
     }
 
     @Transactional
-    public void refunded(Long orderId) throws OrderException {
+    public void refund(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId).ifPresent(Order::refunded);
     }
 
     @Transactional
-    public void cancelled(Long orderId) throws OrderException {
+    public void cancel(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId).ifPresent(Order::cancelled);
     }
 
     @Transactional
-    public void declined(Long orderId) throws OrderException {
+    public void decline(Long orderId) throws OrderException {
         this.orderRepository
                 .findById(orderId).ifPresent(Order::declined);
     }

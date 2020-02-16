@@ -19,6 +19,7 @@ package com.mallfoundry.order.rest;
 import com.mallfoundry.order.CustomerValidException;
 import com.mallfoundry.order.Order;
 import com.mallfoundry.order.OrderService;
+import com.mallfoundry.payment.PaymentException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,18 +41,17 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders")
-    public Order submitOrder(Order order) throws CustomerValidException {
-        return this.orderService.submitOrder(order);
+    public Order createOrder(Order order) throws CustomerValidException {
+        return this.orderService.createOrder(order);
     }
 
-    @PatchMapping("/orders/{order_id}/awaiting_payment")
-    public void awaitingPayment(@PathVariable("order_id") Long orderId) {
-        this.orderService.awaitingPayment(orderId);
+    @PatchMapping("/orders/{order_id}/capture")
+    public String captureOrder(@PathVariable("order_id") Long orderId) throws PaymentException {
+        return this.orderService.captureOrder(orderId);
     }
 
     @PatchMapping("/orders/{order_id}/awaiting_fulfillment")
-    public void awaitingFulfillment(
-            @PathVariable("order_id") Long orderId) {
+    public void awaitingFulfillment(@PathVariable("order_id") Long orderId) {
         this.orderService.awaitingFulfillment(orderId);
     }
 
@@ -77,29 +77,29 @@ public class OrderResourceV1 {
         this.orderService.awaitingPickup(orderId);
     }
 
-    @PatchMapping("/orders/{order_id}/completed")
+    @PatchMapping("/orders/{order_id}/complete")
     public void completed(@PathVariable("order_id") Long orderId) {
-        this.orderService.completed(orderId);
+        this.orderService.complete(orderId);
     }
 
-    @PatchMapping("/orders/{order_id}/disputed")
-    public void disputed(@PathVariable("order_id") Long orderId) {
-        this.orderService.disputed(orderId);
+    @PatchMapping("/orders/{order_id}/dispute")
+    public void dispute(@PathVariable("order_id") Long orderId) {
+        this.orderService.dispute(orderId);
     }
 
-    @PatchMapping("/orders/{order_id}/refunded")
-    public void refunded(@PathVariable("order_id") Long orderId) {
-        this.orderService.refunded(orderId);
+    @PatchMapping("/orders/{order_id}/refund")
+    public void refund(@PathVariable("order_id") Long orderId) {
+        this.orderService.refund(orderId);
     }
 
-    @PatchMapping("/orders/{order_id}/cancelled")
-    public void cancelled(@PathVariable("order_id") Long orderId) {
-        this.orderService.cancelled(orderId);
+    @PatchMapping("/orders/{order_id}/cancel")
+    public void cancel(@PathVariable("order_id") Long orderId) {
+        this.orderService.cancel(orderId);
     }
 
-    @PatchMapping("/orders/{order_id}/declined")
-    public void declined(@PathVariable("order_id") Long orderId) {
-        this.orderService.declined(orderId);
+    @PatchMapping("/orders/{order_id}/decline")
+    public void decline(@PathVariable("order_id") Long orderId) {
+        this.orderService.decline(orderId);
     }
 
     @GetMapping("/orders/{order_id}")
