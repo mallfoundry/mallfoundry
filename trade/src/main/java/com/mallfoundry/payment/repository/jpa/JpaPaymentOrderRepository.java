@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.payment.repository.jpa;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import com.mallfoundry.payment.PaymentOrder;
+import com.mallfoundry.payment.PaymentOrderRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class PaidEvent extends ApplicationEvent {
+@Repository
+public interface JpaPaymentOrderRepository
+        extends PaymentOrderRepository, JpaRepository<PaymentOrder, String> {
 
-    @Getter
-    private final PaymentOrder order;
-
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+    @Override
+    <S extends PaymentOrder> S save(S entity);
 }

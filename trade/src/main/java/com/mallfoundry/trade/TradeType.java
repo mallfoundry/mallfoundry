@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.trade;
 
-public enum PaymentMethod {
-    ALIPAY,
-    WXPAY
+public enum TradeType {
+    TRANSFER,
+    WITHDRAW_CASH
 }

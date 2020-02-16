@@ -16,16 +16,13 @@
 
 package com.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.util.Map;
 
-public class PaidEvent extends ApplicationEvent {
+public interface PaymentClient {
 
-    @Getter
-    private final PaymentOrder order;
+    boolean supportsPayment(PaymentProvider provider);
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+    String capturePayment(PaymentOrder order) throws PaymentException;
+
+    PaymentConfirmation confirmPayment(Map<String, String> params) throws PaymentException;
 }

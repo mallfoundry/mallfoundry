@@ -16,16 +16,11 @@
 
 package com.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.util.Optional;
 
-public class PaidEvent extends ApplicationEvent {
+public interface PaymentOrderRepository {
 
-    @Getter
-    private final PaymentOrder order;
+    <S extends PaymentOrder> S save(S entity);
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+    Optional<PaymentOrder> findById(String s);
 }

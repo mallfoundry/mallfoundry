@@ -17,15 +17,19 @@
 package com.mallfoundry.payment;
 
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
 
-public class PaidEvent extends ApplicationEvent {
+@Getter
+public class PaymentConfirmation {
 
-    @Getter
-    private final PaymentOrder order;
+    private String orderId;
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
+    private String transactionId;
+
+    private String body;
+
+    public PaymentConfirmation(String orderId, String transactionId, String body) {
+        this.orderId = orderId;
+        this.transactionId = transactionId;
+        this.body = body;
     }
 }

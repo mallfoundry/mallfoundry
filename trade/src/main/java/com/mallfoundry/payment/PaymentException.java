@@ -16,16 +16,9 @@
 
 package com.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+public class PaymentException extends Exception {
 
-public class PaidEvent extends ApplicationEvent {
-
-    @Getter
-    private final PaymentOrder order;
-
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
+    public PaymentException(String message) {
+        super(message);
     }
 }

@@ -16,16 +16,8 @@
 
 package com.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-public class PaidEvent extends ApplicationEvent {
-
-    @Getter
-    private final PaymentOrder order;
-
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+public enum PaymentStatus {
+    PENDING,
+    SUCCESS,
+    ERROR,
 }

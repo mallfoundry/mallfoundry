@@ -16,16 +16,20 @@
 
 package com.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.util.Collections;
+import java.util.List;
 
-public class PaidEvent extends ApplicationEvent {
+public class PaymentClientFactory {
 
-    @Getter
-    private final PaymentOrder order;
+    private final List<PaymentClient> clients;
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
+    public PaymentClientFactory(List<PaymentClient> clients) {
+        this.clients = Collections.unmodifiableList(clients);
+    }
+
+    public PaymentClient getClient(PaymentProvider provider) throws PaymentException {
+        return clients.stream()
+                .filter(client -> client.supportsPayment(provider)).findFirst()
+                .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", provider)));
     }
 }

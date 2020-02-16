@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.trade;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.math.BigDecimal;
+import java.util.Date;
 
-public class PaidEvent extends ApplicationEvent {
+public class TradeBill {
 
-    @Getter
-    private final PaymentOrder order;
+    private BigDecimal amount;
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+    private Date tradeTime;
 }

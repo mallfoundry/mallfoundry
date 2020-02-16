@@ -14,18 +14,30 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.payment.alipay;
 
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import lombok.Setter;
 
-public class PaidEvent extends ApplicationEvent {
+@Getter
+@Setter
+public class AliPaymentProperties {
 
-    @Getter
-    private final PaymentOrder order;
+    private String serverUrl;
 
-    public PaidEvent(PaymentOrder source) {
-        super(source);
-        this.order = source;
-    }
+    private String appId;
+
+    private String alipayPublicKey;
+
+    private String appPrivateKey;
+
+    private String charset = "UTF-8";
+
+    private String format = "json";
+
+    private String signType = "RSA2";
+
+    private String returnUrl;
+
+    private String notifyUrl;
 }
