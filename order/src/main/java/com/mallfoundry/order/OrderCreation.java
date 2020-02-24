@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.trade;
+package com.mallfoundry.order;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class TradeInfo {
+@Getter
+public class OrderCreation {
 
-    private TradeId id;
+    private final List<Long> orders;
 
-    private List<String> orders;
+    @JsonProperty("total_amount")
+    private final BigDecimal totalAmount;
 
-    private BigDecimal totalAmount;
+    public OrderCreation(List<Long> orders, BigDecimal totalAmount) {
+        this.orders = orders;
+        this.totalAmount = totalAmount;
+    }
 }

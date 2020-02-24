@@ -26,13 +26,13 @@ public enum OrderStatus {
     AWAITING_PAYMENT(3) /* 等待付款 */,
     AWAITING_FULFILLMENT(4) /* 等待打包 */,
     AWAITING_SHIPMENT(7) /* 等待揽收 */,
-    PARTIALLY_SHIPPED(5) /* 部分发货 */,
+    PARTIALLY_SHIPPED(5) /* 部分已发货 */,
     SHIPPED(6) /* 已发货 */,
     AWAITING_PICKUP(8) /* 等待收货 */,
     COMPLETED(9) /* 完成 */,
     VERIFICATION_REQUIRED(10) /* 需要人工验证 */,
     DISPUTED(11) /* 有争议的 */,
-    PARTIALLY_REFUNDED(12) /* 部分退款 */,
+    PARTIALLY_REFUNDED(12) /* 部分已退款 */,
     REFUNDED(13) /* 已退款 */,
     CANCELLED(14) /* 已取消 */,
     DECLINED(15) /* 已拒绝 */;
@@ -47,5 +47,10 @@ public enum OrderStatus {
     @JsonValue
     private String lowercase() {
         return this.name().toLowerCase();
+    }
+
+    @Override
+    public String toString() {
+        return this.lowercase();
     }
 }

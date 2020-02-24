@@ -18,7 +18,6 @@ package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -27,26 +26,27 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 @Embeddable
-public class ShippingAddress {
+public class BillingAddress {
 
-    @Column(name = "shipping_address_consignee_")
+
+    @Column(name = "billing_address_consignee_")
     private String consignee;
 
     @JsonProperty("country_code")
-    @Column(name = "shipping_address_country_code_")
+    @Column(name = "billing_address_country_code_")
     private String countryCode;
 
-    @Column(name = "shipping_address_mobile_")
+    @Column(name = "billing_address_mobile_")
     private String mobile;
 
     @JsonProperty("postal_code")
-    @Column(name = "shipping_address_postal_code_")
+    @Column(name = "billing_address_postal_code_")
     private String postalCode;
 
-    @Column(name = "shipping_address_address_")
+    @Column(name = "billing_address_address_")
     private String address;
 
-    @Column(name = "shipping_address_location_")
+    @Column(name = "billing_address_location_")
     private String location;
 
     public static Builder builder() {
@@ -54,10 +54,10 @@ public class ShippingAddress {
     }
 
     static class Builder {
-        private ShippingAddress address;
+        private BillingAddress address;
 
         public Builder() {
-            this.address = new ShippingAddress();
+            this.address = new BillingAddress();
         }
 
         public Builder consignee(String consignee) {
@@ -90,7 +90,7 @@ public class ShippingAddress {
             return this;
         }
 
-        public ShippingAddress build() {
+        public BillingAddress build() {
             return this.address;
         }
     }

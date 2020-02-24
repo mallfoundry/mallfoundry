@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order.repository.jpa;
+package com.mallfoundry.order;
 
-import com.mallfoundry.order.Order;
-import com.mallfoundry.order.OrderRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
-public interface JpaOrderRepository
-        extends OrderRepository,
-        JpaRepository<Order, Long> {
+// mall.order.store-split-policy.enable=true
+public interface OrderSplitPolicy {
 
-    @Override
-    <S extends Order> List<S> saveAll(Iterable<S> iterable);
+    List<Order> splitting(List<Order> orders);
 
-    @Override
-    List<Order> findAllById(Iterable<Long> iterable);
+    default Order assign(Order order, Order source) {
+        BeanUtils.copyProperties(source, order, "items");
+        return order;
+    }
+
 }

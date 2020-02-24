@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-trade</artifactId>
+            <artifactId>mall-payment</artifactId>
         </dependency>
 
         <dependency>

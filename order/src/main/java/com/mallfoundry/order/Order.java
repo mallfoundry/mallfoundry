@@ -16,22 +16,25 @@
 
 package com.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -65,35 +68,34 @@ public class Order {
     @Column(name = "id_")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "status_")
-    private OrderStatus status;
+    private OrderStatus status = INCOMPLETE;
 
+    @JsonProperty("customer_id")
     @Column(name = "customer_id_")
-    private Long customerId;
+    private String customerId;
 
-    @Column(name = "trade_id_")
-    private String tradeId;
+    @JsonProperty("billing_address")
+    @Embedded
+    private BillingAddress billingAddress;
 
     @JsonProperty("shipping_address")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "shipping_address_id_")
+    @Embedded
     private ShippingAddress shippingAddress;
 
-    @ElementCollection
-    @CollectionTable(name = "order_item", joinColumns = @JoinColumn(name = "order_id_"))
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id_")
     private List<OrderItem> items = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id_")
     private List<OrderShipment> shipments = new ArrayList<>();
 
-    public Order(Long customerId, ShippingAddress shippingAddress, List<OrderItem> items) {
-        this.setStatus(INCOMPLETE);
-        this.setCustomerId(customerId);
-        this.setShippingAddress(shippingAddress);
-        this.setItems(items);
-    }
+    @JsonProperty("payment_details")
+    @Embedded
+    private PaymentDetails paymentDetails;
 
     public Optional<OrderShipment> getShipment(Long id) {
         return this.getShipments()
@@ -110,25 +112,38 @@ public class Order {
         this.getShipments().remove(shipment);
     }
 
+    @JsonIgnore
+    public boolean isAwaitingPayment() {
+        return this.getStatus() == PENDING || this.getStatus() == AWAITING_PAYMENT;
+    }
+
+    @JsonProperty("total_amount")
+    public BigDecimal getTotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public void pending() throws OrderException {
-        if (!Objects.equals(INCOMPLETE, this.status)) {
+        if (this.status != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }
         this.setStatus(OrderStatus.PENDING);
     }
 
-    public void awaitingPayment() throws OrderException {
-        if (!Objects.equals(PENDING, this.status)) {
-            throw new OrderException("The current state of the order is not pending");
+    public void awaitingPayment(PaymentDetails details) throws OrderException {
+        if (!this.isAwaitingPayment()) {
+            throw new OrderException(
+                    String.format("The order(%s) status is '%s', Payment process cannot be started.",
+                            this.getId(), this.getStatus()));
         }
+
         this.setStatus(AWAITING_PAYMENT);
+        this.setPaymentDetails(details);
     }
 
-    public void awaitingFulfillment(String tradeId) throws OrderException {
-        if (!Objects.equals(AWAITING_PAYMENT, this.status)) {
-            throw new OrderException("The current state of the order is not awaiting_payment");
-        }
-        this.setTradeId(tradeId);
+    public void paid() {
+        this.getPaymentDetails().setStatus(PaymentStatus.SUCCESS);
         this.setStatus(AWAITING_FULFILLMENT);
     }
 
@@ -180,4 +195,26 @@ public class Order {
     public void declined() {
         this.setStatus(DECLINED);
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Order order;
+
+        public Builder() {
+            this.order = new Order();
+        }
+
+        public Builder items(List<OrderItem> items) {
+            this.order.setItems(items);
+            return this;
+        }
+
+        public Order build() {
+            return this.order;
+        }
+    }
+
 }

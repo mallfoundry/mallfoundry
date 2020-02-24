@@ -16,26 +16,55 @@
 
 package com.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.store.StoreId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
+@Entity
+@Table(name = "order_item")
 public class OrderItem {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id_")
+    private Long id;
+
+    @JsonProperty("store_id")
+    @Embedded
+    private StoreId storeId;
+
+    @JsonProperty("product_id")
     @Column(name = "product_id_")
     private Long productId;
 
+    @JsonProperty("variant_id")
     @Column(name = "variant_id_")
     private Long variantId;
+
+    @Column(name = "title_")
+    private String title;
+
+    @Column(name = "options_")
+    private String options;
+
+    @JsonProperty("image_url")
+    @Column(name = "image_url_")
+    private String imageUrl;
 
     @Column(name = "quantity_")
     private int quantity;
@@ -43,13 +72,57 @@ public class OrderItem {
     @Column(name = "price_")
     private BigDecimal price;
 
+    @JsonIgnore
     @Transient
-    private BigDecimal amount;
-
-    public OrderItem(Long productId, Long variantId, int quantity, BigDecimal price) {
-        this.setProductId(productId);
-        this.setVariantId(variantId);
-        this.setQuantity(quantity);
-        this.setPrice(price);
+    public BigDecimal getTotalAmount() {
+        return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    static class Builder {
+
+        private OrderItem item;
+
+        public Builder() {
+            item = new OrderItem();
+        }
+
+        public Builder storeId(StoreId storeId) {
+            this.item.setStoreId(storeId);
+            return this;
+        }
+
+        public Builder productId(Long productId) {
+            this.item.setProductId(productId);
+            return this;
+        }
+
+        public Builder variantId(Long variantId) {
+            this.item.setVariantId(variantId);
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.item.setTitle(title);
+            return this;
+        }
+
+        public Builder quantity(int quantity) {
+            this.item.setQuantity(quantity);
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            this.item.setPrice(price);
+            return this;
+        }
+
+        public OrderItem build() {
+            return this.item;
+        }
+    }
+
 }

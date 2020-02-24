@@ -16,17 +16,19 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.payment.PaymentException;
+import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
-import com.mallfoundry.payment.PaymentProvider;
 import com.mallfoundry.payment.PaymentService;
-import com.mallfoundry.store.product.InventoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -37,42 +39,81 @@ public class OrderService {
 
     private final CheckoutCounter checkoutCounter;
 
+    private final OrderSplitter orderSplitter;
+
     private final PaymentService paymentService;
 
     public OrderService(OrderRepository orderRepository,
                         CustomerValidator customerValidator,
                         CheckoutCounter checkoutCounter,
+                        OrderSplitter orderSplitter,
                         PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
         this.checkoutCounter = checkoutCounter;
+        this.orderSplitter = orderSplitter;
         this.paymentService = paymentService;
     }
 
     @Transactional
-    public Order createOrder(Order order) throws CustomerValidException {
-        this.customerValidator.validate(order.getCustomerId());
-        checkoutCounter.checkout(order);
-        return this.orderRepository.save(order);
+    public OrderCreation createOrders(List<Order> orders) throws CustomerValidException {
+        customerValidator.validate(orders);
+        checkoutCounter.checkout(orders);
+        return new OrderCreation(
+                this.orderRepository
+                        .saveAll(this.orderSplitter.splitting(orders))
+                        .stream().map(Order::getId).collect(Collectors.toList()),
+                this.totalAmount(orders));
     }
 
     @Transactional
-    public String captureOrder(Long orderId) throws OrderException, InventoryException, PaymentException {
-        Order order = this.orderRepository.findById(orderId).orElseThrow();
-        order.awaitingPayment();
-        return this.paymentService
-                .capturePayment(
-                        new PaymentOrder(String.valueOf(orderId),
-                                "hello world",
-                                BigDecimal.valueOf(0.01),
-                                PaymentProvider.ALIPAY));
+    public OrderCreation createOrder(Order order) throws CustomerValidException {
+        return this.createOrders(List.of(order));
+    }
+
+    public BigDecimal totalAmount(PaymentOrder payOrder) {
+        List<Order> orders = this.orderRepository.findAllById(payOrder.getOrders());
+        return this.totalAmount(orders);
+    }
+
+    private BigDecimal totalAmount(List<Order> orders) {
+        return orders.stream()
+                .map(Order::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Transactional
-    public void awaitingFulfillment(Long orderId) throws OrderException {
-        this.orderRepository
-                .findById(orderId)
-                .ifPresent(order -> order.awaitingFulfillment(null));
+    public PaymentLink createPaymentOrder(PaymentOrder payOrder) {
+        List<Order> orders = this.orderRepository.findAllById(payOrder.getOrders());
+        orders = Objects.isNull(orders) ? Collections.emptyList() : orders;
+        Map<Long, Order> orderMap = orders.stream().collect(Collectors.toMap(Order::getId, order -> order));
+        for (Long orderId : payOrder.getOrders()) {
+            Order order = orderMap.get(orderId);
+            if (Objects.isNull(order)) {
+                throw new OrderException(String.format("The order(%s)  does not exist.", orderId));
+            }
+        }
+
+        payOrder.setTotalAmount(this.totalAmount(orders));
+        PaymentLink link = this.paymentService.createOrder(payOrder);
+
+        // Set order payment details.
+        for (Order order : orders) {
+            order.awaitingPayment(new PaymentDetails(link.getId(), payOrder.getProvider(), payOrder.getStatus()));
+        }
+        return link;
+    }
+
+    @Transactional
+    public void confirmPayment(PaymentOrder paymentOrder) {
+        paymentOrder.getOrders().forEach(orderId -> {
+            if (paymentOrder.isSuccess()) {
+                this.orderRepository
+                        .findById(orderId).
+                        ifPresent(Order::paid);
+            }
+        });
+
     }
 
     @Transactional

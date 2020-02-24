@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.order;
 
-public enum PaymentStatus {
-    PENDING,
-    SUCCESS,
-    ERROR,
+public enum OrderType {
+
 }

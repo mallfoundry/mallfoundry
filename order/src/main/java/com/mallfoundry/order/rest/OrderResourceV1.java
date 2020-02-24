@@ -18,8 +18,11 @@ package com.mallfoundry.order.rest;
 
 import com.mallfoundry.order.CustomerValidException;
 import com.mallfoundry.order.Order;
+import com.mallfoundry.order.OrderCreation;
 import com.mallfoundry.order.OrderService;
 import com.mallfoundry.payment.PaymentException;
+import com.mallfoundry.payment.PaymentLink;
+import com.mallfoundry.payment.PaymentOrder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,19 +45,24 @@ public class OrderResourceV1 {
         this.orderService = orderService;
     }
 
+    @PostMapping("/orders/batch")
+    public OrderCreation createOrders(@RequestBody List<Order> orders) throws CustomerValidException {
+        return this.orderService.createOrders(orders);
+    }
+
     @PostMapping("/orders")
-    public Order createOrder(Order order) throws CustomerValidException {
+    public OrderCreation createOrder(Order order) throws CustomerValidException {
         return this.orderService.createOrder(order);
     }
 
-    @PatchMapping("/orders/{order_id}/capture")
-    public String captureOrder(@PathVariable("order_id") Long orderId) throws PaymentException {
-        return this.orderService.captureOrder(orderId);
+    @PostMapping("/orders/total_amount")
+    public BigDecimal getTotalAmount(@RequestBody PaymentOrder order) {
+        return this.orderService.totalAmount(order);
     }
 
-    @PatchMapping("/orders/{order_id}/awaiting_fulfillment")
-    public void awaitingFulfillment(@PathVariable("order_id") Long orderId) {
-        this.orderService.awaitingFulfillment(orderId);
+    @PostMapping("/payment_orders")
+    public PaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
+        return this.orderService.createPaymentOrder(order);
     }
 
     @PatchMapping("/orders/{order_id}/awaiting_shipment")
@@ -103,7 +113,7 @@ public class OrderResourceV1 {
     }
 
     @GetMapping("/orders/{order_id}")
-    public Optional<Order> createOrder(@PathVariable("order_id") Long orderId) {
+    public Optional<Order> getOrder(@PathVariable("order_id") Long orderId) {
         return this.orderService.getOrder(orderId);
     }
 }

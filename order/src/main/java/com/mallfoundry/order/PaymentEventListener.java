@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.trade;
+package com.mallfoundry.order;
 
-import java.util.Optional;
+import com.mallfoundry.payment.PaidEvent;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 
-public class TradeService {
+@Configuration
+public class PaymentEventListener {
 
+    private final OrderService orderService;
 
-    public Optional<TradeInfo> queryTradeInfo(String tradeId) {
+    public PaymentEventListener(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
-        return Optional.empty();
+    @EventListener
+    public void paid(PaidEvent event) {
+        this.orderService.confirmPayment(event.getOrder());
     }
 }

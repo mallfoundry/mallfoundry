@@ -16,7 +16,9 @@
 
 package com.mallfoundry.order;
 
+import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.store.product.ProductVariant;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,13 +36,20 @@ public class CheckoutCounter {
         try {
             List<OrderItem> items = order.getItems();
             for (OrderItem item : items) {
-                com.mallfoundry.store.product.Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
-                com.mallfoundry.store.product.ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
+                Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
+                ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
                 variant.decrementInventoryQuantity(item.getQuantity());
+                item.setStoreId(product.getStoreId());
             }
         } catch (Exception e) {
             throw new CheckoutException(e);
         }
         order.pending();
+    }
+
+    public void checkout(List<Order> orders) throws CheckoutException {
+        for (Order order : orders) {
+            this.checkout(order);
+        }
     }
 }
