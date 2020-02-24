@@ -30,16 +30,27 @@ import java.io.Serializable;
 @Embeddable
 public class ProductAttribute implements Serializable {
 
+    @Column(name = "namespace_")
+    private String namespace;
+
     @Column(name = "name_")
     private String name;
 
     @Column(name = "value_")
     private String value;
 
+
     @Column(name = "position_")
     private Integer position;
 
     public ProductAttribute(String name, String value, Integer position) {
+        this.name = name;
+        this.value = value;
+        this.position = position;
+    }
+
+    public ProductAttribute(String namespace, String name, String value, Integer position) {
+        this.namespace = namespace;
         this.name = name;
         this.value = value;
         this.position = position;
