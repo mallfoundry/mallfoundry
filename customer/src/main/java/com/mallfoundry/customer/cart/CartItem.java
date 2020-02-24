@@ -69,10 +69,10 @@ public class CartItem implements Serializable {
     @Column(name = "added_time_")
     @JsonProperty("added_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date addedItem;
+    private Date addedTime;
 
     public CartItem() {
-        this.setAddedItem(new Date());
+        this.setAddedTime(new Date());
     }
 
     public CartItem(String storeId, Long productId, Long variantId, Integer quantity) {
