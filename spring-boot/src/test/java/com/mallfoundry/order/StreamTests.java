@@ -14,9 +14,24 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.trade;
+package com.mallfoundry.order;
 
-public enum TradeType {
-    TRANSFER,
-    WITHDRAW_CASH
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamTests {
+
+    public static void main(String[] args) {
+        try {
+            List<Integer> ints = List.of(1, 2, 3, 4, 5).stream().peek(i -> {
+                if (i == 1) {
+                    throw new RuntimeException("错误");
+                }
+            }).collect(Collectors.toList());
+
+            System.out.println(ints);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

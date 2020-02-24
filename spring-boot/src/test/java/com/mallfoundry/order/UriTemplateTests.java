@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry;
+package com.mallfoundry.order;
 
-public class StaticServer {
+import org.springframework.web.util.UriComponentsBuilder;
 
-    public static final String BASE_URL = "http://192.168.2.143:8077/static";
+import java.util.Map;
+
+public class UriTemplateTests {
+
+    public static void main(String[] args) {
+
+        String uri = UriComponentsBuilder.fromHttpUrl("http://29nr517912.zicp.vip/v1/payment_orders/{id}/confirm_payment")
+                .build(Map.of("id", "111")).toString();
+        System.out.println(uri);
+    }
 }

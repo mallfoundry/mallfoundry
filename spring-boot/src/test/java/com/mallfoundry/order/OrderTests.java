@@ -16,13 +16,13 @@
 
 package com.mallfoundry.order;
 
+import com.mallfoundry.store.StoreId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,18 +32,22 @@ public class OrderTests {
     @Autowired
     private OrderService orderService;
 
-
     @Test
     @Transactional
     @Rollback(false)
     public void testSubmitOrder() throws CustomerValidException {
         List<OrderItem> items = new ArrayList<>();
-        items.add(new OrderItem(1L, 1L, 1, BigDecimal.valueOf(1)));
+        items.add(OrderItem.builder()
+                .storeId(new StoreId("mi"))
+//                .storeId("mi")
+                .productId(1L)
+                .variantId(1L)
+                .quantity(1).build());
         ShippingAddress shippingAddress =
                 ShippingAddress.builder().consignee("唐治")
                         .postalCode("260000").countryCode("86").mobile("1560000000")
                         .address("山东省济南市").location("064栋").build();
-        Order order = new Order(123L, shippingAddress, items);
-        this.orderService.submitOrder(order);
+//        Order order = new Order(123L, shippingAddress, items);
+//        this.orderService.createOrder(order);
     }
 }

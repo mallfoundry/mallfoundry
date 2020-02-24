@@ -9,22 +9,9 @@ spring:
   profiles:
     active: dev
   application:
-    name: Mall-Fundory-APP
+    name: Mall-Foundry-APP
 server:
   port: 8077
   tomcat:
     max-threads: 200
     min-spare-threads: 20
-mall:
-  storage:
-    store:
-      type: local
-      directory: D:/mall/data/storage/
-    http:
-      base-url: http://localhost:${server.port}/static
-  store:
-    product:
-      search:
-        type: lucene
-        lucene:
-          directory: D:/mall/data/indexes
