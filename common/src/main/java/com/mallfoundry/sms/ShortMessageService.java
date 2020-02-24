@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.trade;
+package com.mallfoundry.sms;
 
-public class TradeId {
+public interface ShortMessageService {
 }
