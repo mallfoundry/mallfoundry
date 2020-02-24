@@ -16,7 +16,15 @@
 
 package com.mallfoundry.payment;
 
-public enum PaymentProvider {
-    ALIPAY,
-    WXPAY
+import org.springframework.core.Ordered;
+
+import java.util.Map;
+
+public interface PaymentClient extends Ordered {
+
+    boolean supportsPayment(PaymentProviderType provider);
+
+    String createOrder(PaymentOrder order) throws PaymentException;
+
+    PaymentConfirmation confirmPayment(Map<String, String> params);
 }

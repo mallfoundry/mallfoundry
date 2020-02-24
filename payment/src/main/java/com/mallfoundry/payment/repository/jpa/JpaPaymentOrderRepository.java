@@ -23,8 +23,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaPaymentOrderRepository
-        extends PaymentOrderRepository, JpaRepository<PaymentOrder, String> {
+        extends PaymentOrderRepository, JpaRepository<PaymentOrder, Long> {
 
     @Override
-    <S extends PaymentOrder> S save(S entity);
+    default <S extends PaymentOrder> S save(S entity) {
+        return this.saveAndFlush(entity);
+    }
+
+//    @Override
+//   default void deleteByPayerId(String payerId) {
+//
+//        this.delete();
+//        this.flush();
+//    }
 }

@@ -16,11 +16,6 @@
 
 package com.mallfoundry.payment;
 
-import java.util.Optional;
+public class PendingEvent {
 
-public interface PaymentOrderRepository {
-
-    <S extends PaymentOrder> S save(S entity);
-
-    Optional<PaymentOrder> findById(String s);
 }

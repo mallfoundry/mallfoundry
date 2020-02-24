@@ -16,6 +16,13 @@
 
 package com.mallfoundry.payment;
 
-public class WxPaymentClient /*implements PaymentClient*/ {
+import java.util.Optional;
 
+public interface PaymentOrderRepository {
+
+    <S extends PaymentOrder> S save(S entity);
+
+    Optional<PaymentOrder> findById(Long s);
+
+    void deleteByPayerId(String payerId);
 }

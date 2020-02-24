@@ -16,20 +16,23 @@
 
 package com.mallfoundry.payment;
 
-import java.util.Collections;
-import java.util.List;
+import com.mallfoundry.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
-public class PaymentClientFactory {
+@Getter
+@Setter
+public class PaymentProvider implements Position {
 
-    private final List<PaymentClient> clients;
+    private String name;
 
-    public PaymentClientFactory(List<PaymentClient> clients) {
-        this.clients = Collections.unmodifiableList(clients);
-    }
+    private PaymentProviderType type;
 
-    public PaymentClient getClient(PaymentProvider provider) throws PaymentException {
-        return clients.stream()
-                .filter(client -> client.supportsPayment(provider)).findFirst()
-                .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", provider)));
+    private Integer position;
+
+    public PaymentProvider(PaymentProviderType type, String name, Integer position) {
+        this.name = name;
+        this.type = type;
+        this.position = position;
     }
 }

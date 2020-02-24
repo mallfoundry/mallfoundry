@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.payment.wxpay;
 
-import lombok.Getter;
+public class WxPaymentClient /*implements PaymentClient*/ {
 
-@Getter
-public class PaymentConfirmation {
-
-    private String orderId;
-
-    private String transactionId;
-
-    private String body;
-
-    public PaymentConfirmation(String orderId, String transactionId, String body) {
-        this.orderId = orderId;
-        this.transactionId = transactionId;
-        this.body = body;
-    }
 }

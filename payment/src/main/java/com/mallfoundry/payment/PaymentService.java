@@ -16,10 +16,12 @@
 
 package com.mallfoundry.payment;
 
+import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,36 +42,31 @@ public class PaymentService {
         this.paymentOrderRepository = paymentOrderRepository;
     }
 
-    @Transactional(rollbackFor = PaymentException.class)
-    public String capturePayment(PaymentOrder newOrder) throws PaymentException {
-        PaymentOrder savedOrder = this.paymentOrderRepository.findById(newOrder.getOrderId()).orElse(null);
-
-        if (Objects.nonNull(savedOrder)) {
-            if (!savedOrder.isPending()) {
-                throw new PaymentException("The order cannot be captured.");
-            }
-
-            if (!Objects.equals(newOrder.getTotalAmount(), savedOrder.getTotalAmount())) {
-                throw new PaymentException("The total amount is not consistent.");
-            }
-        }
-
-        String paymentUrl = this.clientFactory.getClient(newOrder.getProvider()).capturePayment(newOrder);
-        if (Objects.isNull(savedOrder)) {
-            this.paymentOrderRepository.save(newOrder);
-        }
-        return paymentUrl;
+    public List<PaymentProvider> getPaymentProviders() {
+        return this.clientFactory.getPaymentProviders();
     }
 
     @Transactional(rollbackFor = PaymentException.class)
-    public PaymentConfirmation confirmPayment(PaymentProvider provider,
-                                              Map<String, String> params) throws PaymentException {
-        PaymentConfirmation confirmation =
-                this.clientFactory.getClient(provider).confirmPayment(params);
+    public PaymentLink createOrder(PaymentOrder newOrder) throws PaymentException {
+        newOrder.setPayerId(SecurityUserHolder.getUserId());
+        newOrder.pending();
+        this.paymentOrderRepository.save(newOrder);
+        String url = this.clientFactory.getClient(newOrder.getProvider()).createOrder(newOrder);
+        return new PaymentLink(newOrder.getId(), url);
+    }
 
-        PaymentOrder order = this.paymentOrderRepository.findById(confirmation.getOrderId()).orElseThrow();
-        order.success();
-        this.eventPublisher.publishEvent(new PaidEvent(order));
+    @Transactional
+    public PaymentConfirmation confirmPayment(Long orderId, Map<String, String> params) {
+        PaymentOrder order = this.paymentOrderRepository.findById(orderId)
+                .orElseThrow(() -> new PaymentException(String.format("The payment order(%s) does not exist.", orderId)));
+        PaymentConfirmation confirmation = this.clientFactory.getClient(order.getProvider()).confirmPayment(params);
+        if (Objects.nonNull(confirmation.getOrderId())) {
+            order.setStatus(confirmation.getStatus());
+            order.setTransactionId(confirmation.getTransactionId());
+            if (order.isSuccess()) {
+                this.eventPublisher.publishEvent(new PaidEvent(order));
+            }
+        }
         return confirmation;
     }
 

@@ -16,13 +16,19 @@
 
 package com.mallfoundry.payment;
 
-import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface PaymentClient {
+@Getter
+@Setter
+public class PaymentConfirmation {
 
-    boolean supportsPayment(PaymentProvider provider);
+    private String orderId;
 
-    String capturePayment(PaymentOrder order) throws PaymentException;
+    private String transactionId;
 
-    PaymentConfirmation confirmPayment(Map<String, String> params) throws PaymentException;
+    private PaymentStatus status;
+
+    private String body;
+
 }
