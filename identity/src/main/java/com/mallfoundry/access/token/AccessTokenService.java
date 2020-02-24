@@ -17,6 +17,8 @@
 package com.mallfoundry.access.token;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,14 +36,17 @@ public class AccessTokenService {
         return AccessToken.newToken(username, extractTokenValue(username));
     }
 
+    @CacheEvict(value = "AccessTokens", key = "#token.token")
     public AccessToken storeAccessToken(AccessToken token) {
         return this.accessTokenRepository.save(token);
     }
 
+    @CacheEvict(value = "AccessTokens", key = "#tokenValue")
     public void deleteAccessToken(String tokenValue) {
         this.accessTokenRepository.deleteByToken(tokenValue);
     }
 
+    @Cacheable(value = "AccessTokens", key = "#tokenValue")
     public Optional<AccessToken> readAccessToken(String tokenValue) {
         return this.accessTokenRepository.findByToken(tokenValue);
     }

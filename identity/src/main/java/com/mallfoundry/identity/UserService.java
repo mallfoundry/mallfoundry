@@ -16,7 +16,9 @@
 
 package com.mallfoundry.identity;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -29,6 +31,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(value = "Users", key = "#username")
+    @Transactional
     public Optional<User> getUser(String username) {
         return this.userRepository.findByUsername(username);
     }

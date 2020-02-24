@@ -28,12 +28,8 @@ public interface JpaUserRepository
         extends UserRepository, JpaRepository<User, String> {
 
     @Override
-    default void deleteByUsername(String username) {
-        this.deleteById(username);
-    }
+    void deleteByUsername(String username);
 
     @Override
-    default Optional<User> findByUsername(String username) {
-        return this.findById(username);
-    }
+    Optional<User> findByUsername(String username);
 }

@@ -16,15 +16,14 @@
 
 package com.mallfoundry.identity;
 
+import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +53,7 @@ public class User {
     @Column(name = "enabled_")
     private boolean enabled;
 
-    @ElementCollection
-    @CollectionTable(name = "identity_authority", joinColumns = @JoinColumn(name = "user_id_"))
-    @Column(name = "authority_")
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "authorities_")
     private List<String> authorities = new ArrayList<>();
 }
