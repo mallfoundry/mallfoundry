@@ -16,7 +16,6 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.token.AccessToken;
 import com.mallfoundry.access.token.AccessTokenService;
 import com.mallfoundry.identity.User;
 import com.mallfoundry.identity.UserService;
@@ -27,6 +26,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -44,15 +44,14 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
     }
 
     @Override
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         AccessTokenAuthentication tokenAuthentication = (AccessTokenAuthentication) authentication;
-        Optional<AccessToken> tokenOptional = tokenService.readAccessToken(tokenAuthentication.getName());
-
-        if (tokenOptional.isEmpty()) {
-            throw new BadCredentialsException("Bad credentials");
-        }
-        AccessToken token = tokenOptional.get();
-        String username = token.getUsername();
+        String username =
+                this.tokenService
+                        .readAccessToken(tokenAuthentication.getName())
+                        .orElseThrow(() -> new BadCredentialsException("Bad credentials"))
+                        .getUsername();
         Optional<User> userOptional = this.userService.getUser(username);
         SecurityUser securityUser = new SecurityUser(userOptional.orElseThrow());
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());

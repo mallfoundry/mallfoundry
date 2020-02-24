@@ -44,8 +44,7 @@ public class AccessTokenEndpointV1 {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> token(String username,
-                                   String password) {
+    public ResponseEntity<?> token(String username, String password) {
         try {
             AccessToken token = this.tokenAuthenticationManager.authenticate(username, password);
             return ResponseEntity.ok(token);
