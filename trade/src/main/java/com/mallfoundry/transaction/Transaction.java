@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.trade;
+package com.mallfoundry.transaction;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TradeBill {
+public class Transaction {
 
     private BigDecimal amount;
-
-    private Date tradeTime;
 }

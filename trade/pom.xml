@@ -28,9 +28,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>4.9.13.ALL</version>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-common</artifactId>
         </dependency>
 
         <dependency>
@@ -39,15 +38,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-common</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>
