@@ -88,6 +88,11 @@ public class CustomerResourceV1 {
         return this.customerService.getDeliveryAddress(customerId, deliveryAddressId);
     }
 
+    @GetMapping("/customers/{customer_id}/delivery_addresses/default")
+    public Optional<DeliveryAddress> getDefaultDeliveryAddress(@PathVariable("customer_id") String id) {
+        return this.customerService.getDefaultDeliveryAddress(id);
+    }
+
     @PostMapping("/customers/{customer_id}/search_terms")
     public void addSearchTerm(@PathVariable("customer_id") String customerId,
                               @RequestBody SearchTermRequest request) {

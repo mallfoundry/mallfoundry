@@ -62,6 +62,11 @@ public class CustomerService {
     }
 
     @Transactional
+    public Optional<DeliveryAddress> getDefaultDeliveryAddress(String customerId) {
+        return this.getCustomer(customerId).orElseThrow().getDefaultDeliveryAddress();
+    }
+
+    @Transactional
     public void addSearchTerm(String customerId, String searchText) {
         this.getCustomer(customerId).orElseThrow().addSearchTerm(searchText);
     }
