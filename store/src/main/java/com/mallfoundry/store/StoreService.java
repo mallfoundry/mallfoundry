@@ -16,6 +16,7 @@
 
 package com.mallfoundry.store;
 
+import com.mallfoundry.data.SliceList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +31,18 @@ public class StoreService {
         this.storeRepository = storeRepository;
     }
 
-    public Optional<StoreInfo> getStore(String id) {
+    public Optional<Store> getStore(String id) {
         return this.storeRepository.findById(id);
     }
 
+    public SliceList<Store> getStores(StoreQuery query) {
+        return this.storeRepository.findAll(query);
+    }
+
     @Transactional
-    public void createStore(StoreInfo store) {
+    public void createStore(Store store) {
+
+
         this.storeRepository.save(store);
     }
 }

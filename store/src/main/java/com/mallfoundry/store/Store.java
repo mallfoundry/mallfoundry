@@ -31,7 +31,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "store_info")
-public class StoreInfo {
+public class Store {
 
     @Id
     @Column(name = "id_")
@@ -41,10 +41,13 @@ public class StoreInfo {
     private String name;
 
     @Column(name = "logo_url_")
-    @JsonProperty("logo_url")
     private String logoUrl;
 
-    public StoreInfo(String id, String name, String logoUrl) {
+    @JsonProperty("storekeeper_id")
+    @Column(name = "storekeeper_id_")
+    private String storekeeperId;
+
+    public Store(String id, String name, String logoUrl) {
         this.setId(id);
         this.setName(name);
         this.setLogoUrl(logoUrl);

@@ -16,9 +16,9 @@
 
 package com.mallfoundry.customer.rest;
 
-import com.mallfoundry.customer.cart.CartService;
 import com.mallfoundry.customer.cart.Cart;
 import com.mallfoundry.customer.cart.CartItem;
+import com.mallfoundry.customer.cart.CartService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
@@ -58,8 +59,13 @@ public class CartResourceV1 {
         this.cartService.removeCartItems(cart, variantIds);
     }
 
+    @GetMapping("/carts/default")
+    public Optional<Cart> getDefaultCart() {
+        return this.cartService.getDefaultCart();
+    }
+
     @GetMapping("/carts/{cart}")
-    public Cart getCart(@PathVariable("cart") String cart) {
+    public Optional<Cart> getCart(@PathVariable("cart") String cart) {
         return this.cartService.getCart(cart);
     }
 }

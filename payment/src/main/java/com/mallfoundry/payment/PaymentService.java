@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -40,6 +41,10 @@ public class PaymentService {
         this.clientFactory = clientFactory;
         this.eventPublisher = eventPublisher;
         this.paymentOrderRepository = paymentOrderRepository;
+    }
+
+    public Optional<PaymentOrder> getOrder(Long id) {
+        return this.paymentOrderRepository.findById(id);
     }
 
     public List<PaymentProvider> getPaymentProviders() {

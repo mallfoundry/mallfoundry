@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -32,31 +33,43 @@ public class CartService {
     }
 
     @Transactional
-    public Cart getCart(String cartId) {
+    public Optional<Cart> getDefaultCart() {
+        String id = "1";
         return this.cartRepository
-                .findById(cartId).orElseGet(() -> this.cartRepository.save(new Cart(cartId)));
+                .findById(id).or(() -> Optional.of(this.cartRepository.save(new Cart(id))));
+    }
+
+    @Transactional
+    public Optional<Cart> getCart(String cartId) {
+        return this.cartRepository
+                .findById(cartId).or(() -> Optional.of(this.cartRepository.save(new Cart(cartId))));
     }
 
     @Transactional
     public void addCartItem(String cartId, CartItem item) {
-        Cart cart = this.getCart(cartId);
-        Optional<CartItem> itemOptional = cart.getItem(item.getVariantId());
-        if (itemOptional.isPresent()) {
-            itemOptional.get().addQuantity(item.getQuantity());
-        } else {
-            cart.addItem(item);
-        }
+        this.getCart(cartId)
+                .ifPresent(cart -> cart.getItem(item.getVariantId())
+                        .ifPresentOrElse(itemOp -> itemOp.addQuantity(itemOp.getQuantity()), () -> cart.addItem(item)));
     }
 
     @Transactional
     public void removeCartItem(String cartId, Long variantId) {
-        Cart cart = this.getCart(cartId);
-        cart.getItem(variantId).ifPresent(cart::removeItem);
+        this.getCart(cartId).ifPresent(cart -> cart.getItem(variantId).ifPresent(cart::removeItem));
     }
 
     @Transactional
     public void removeCartItems(String cartId, List<Long> variantIds) {
-        Cart cart = this.getCart(cartId);
-        cart.removeItems(cart.getItems(variantIds));
+        this.getCart(cartId).ifPresent(cart -> cart.removeItems(cart.getItems(variantIds)));
+    }
+
+    @Transactional
+    public List<CartItem> checkout(String chartId, List<Long> itemIds) {
+        return this.getCart(chartId)
+                .stream()
+                .flatMap(cart -> {
+                    List<CartItem> items = cart.getItems(itemIds);
+                    cart.removeItems(items);
+                    return items.stream();
+                }).collect(Collectors.toList());
     }
 }

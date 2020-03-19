@@ -12,6 +12,7 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: true
+
 mall:
   payment:
     alipay:

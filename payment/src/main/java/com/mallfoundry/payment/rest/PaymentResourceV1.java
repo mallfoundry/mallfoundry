@@ -17,8 +17,10 @@
 package com.mallfoundry.payment.rest;
 
 import com.mallfoundry.payment.PaymentConfirmation;
+import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentProvider;
 import com.mallfoundry.payment.PaymentService;
+import com.mallfoundry.payment.PaymentStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
@@ -44,6 +47,16 @@ public class PaymentResourceV1 {
     @GetMapping("/payment_providers")
     public List<PaymentProvider> getPaymentProviders() {
         return this.paymentService.getPaymentProviders();
+    }
+
+    @GetMapping("/payment_orders/{order_id}/status")
+    public Optional<PaymentStatus> getOrderStatus(@PathVariable("order_id") Long id) {
+        return this.paymentService.getOrder(id).map(PaymentOrder::getStatus);
+    }
+
+    @GetMapping("/payment_orders/{order_id}")
+    public Optional<PaymentOrder> getOrder(@PathVariable("order_id") Long id) {
+        return this.paymentService.getOrder(id);
     }
 
     @PostMapping("/payment_orders/{order_id}/confirm_payment")

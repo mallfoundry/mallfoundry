@@ -16,11 +16,15 @@
 
 package com.mallfoundry.store;
 
+import com.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface StoreRepository {
 
-    StoreInfo save(StoreInfo store);
+    Store save(Store store);
 
-    Optional<StoreInfo> findById(String id);
+    Optional<Store> findById(String id);
+
+    SliceList<Store> findAll(StoreQuery query);
 }

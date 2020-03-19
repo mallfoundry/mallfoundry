@@ -27,7 +27,7 @@ public class ProductQuery {
 
     private int limit;
 
-    private String name;
+    private String title;
 
     private String storeId;
 

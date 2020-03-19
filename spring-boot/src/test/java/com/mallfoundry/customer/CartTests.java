@@ -16,7 +16,6 @@
 
 package com.mallfoundry.customer;
 
-import com.mallfoundry.customer.cart.Cart;
 import com.mallfoundry.customer.cart.CartItem;
 import com.mallfoundry.customer.cart.CartService;
 import org.junit.jupiter.api.Test;
@@ -46,16 +45,16 @@ public class CartTests {
     @Rollback(false)
     @Test
     public void testUpdateCartId() {
-        Cart cart = this.cartService.getCart("cart_1");
-        cart.setId("buyer_1");
+        this.cartService.getCart("cart_1").ifPresent(cart -> cart.setId("buyer_1"));
     }
 
     @Transactional
     @Rollback(false)
     @Test
     public void testDeleteCartItem() {
-        Cart cart = this.cartService.getCart("buyer_1");
-        cart.getItem(1000000030L).ifPresent(cart::removeItem);
+        this.cartService.getCart("buyer_1").ifPresent(cart -> {
+            cart.getItem(1000000030L).ifPresent(cart::removeItem);
+        });
     }
 
 }

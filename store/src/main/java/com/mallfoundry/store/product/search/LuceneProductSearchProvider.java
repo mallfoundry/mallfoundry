@@ -53,7 +53,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private static final String PRODUCT_ID_FIELD_NAME = "product_id";
 
-    private static final String PRODUCT_NAME_FIELD_NAME = "product_name";
+    private static final String PRODUCT_TITLE_FIELD_NAME = "product_title";
 
     private final String directoryPath;
 
@@ -71,7 +71,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             Document document = new Document();
             document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
             document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
-            document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
+            document.add(new TextField(PRODUCT_TITLE_FIELD_NAME, product.getTitle(), Field.Store.YES));
             document.add(new StoredField("product", JsonUtils.stringify(product)));
             indexWriter.addDocument(document);
             indexWriter.commit();
@@ -98,8 +98,8 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             Analyzer analyzer = new StandardAnalyzer();
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
-            QueryParser parser = new QueryParser(PRODUCT_NAME_FIELD_NAME, analyzer);
-            Query queryName = parser.parse(search.getName());
+            QueryParser parser = new QueryParser(PRODUCT_TITLE_FIELD_NAME, analyzer);
+            Query queryName = parser.parse(search.getTitle());
 
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
             queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);

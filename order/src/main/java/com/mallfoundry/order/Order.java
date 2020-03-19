@@ -16,6 +16,7 @@
 
 package com.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.payment.PaymentStatus;
@@ -34,8 +35,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -97,6 +100,23 @@ public class Order {
     @Embedded
     private PaymentDetails paymentDetails;
 
+    @Column(name = "store_id")
+    @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
+    private String storeId;
+
+    @JsonProperty("total_amount")
+    @Transient
+    public BigDecimal getTotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "created_time_")
+    private Date createdTime;
+
     public Optional<OrderShipment> getShipment(Long id) {
         return this.getShipments()
                 .stream()
@@ -117,18 +137,12 @@ public class Order {
         return this.getStatus() == PENDING || this.getStatus() == AWAITING_PAYMENT;
     }
 
-    @JsonProperty("total_amount")
-    public BigDecimal getTotalAmount() {
-        return this.getItems().stream()
-                .map(OrderItem::getTotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
     public void pending() throws OrderException {
         if (this.status != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }
         this.setStatus(OrderStatus.PENDING);
+        this.setCreatedTime(new Date());
     }
 
     public void awaitingPayment(PaymentDetails details) throws OrderException {

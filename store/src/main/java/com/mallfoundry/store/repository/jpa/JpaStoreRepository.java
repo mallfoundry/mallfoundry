@@ -16,10 +16,41 @@
 
 package com.mallfoundry.store.repository.jpa;
 
-import com.mallfoundry.store.StoreInfo;
+import com.mallfoundry.data.PageList;
+import com.mallfoundry.data.SliceList;
+import com.mallfoundry.store.Store;
+import com.mallfoundry.store.StoreQuery;
 import com.mallfoundry.store.StoreRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
 public interface JpaStoreRepository
-        extends StoreRepository, JpaRepository<StoreInfo, String> {
+        extends StoreRepository,
+        JpaRepository<Store, String>,
+        JpaSpecificationExecutor<Store> {
+
+
+    @Override
+    default SliceList<Store> findAll(StoreQuery storeQuery) {
+        Page<Store> page = this.findAll((Specification<Store>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+
+            if (Objects.nonNull(storeQuery.getStorekeeperId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storekeeperId"), storeQuery.getStorekeeperId()));
+            }
+
+            return predicate;
+        }, PageRequest.of(storeQuery.getPage() - 1, storeQuery.getLimit()));
+
+        return PageList.of(page.getContent())
+                .page(page.getNumber())
+                .limit(storeQuery.getLimit())
+                .totalSize(page.getTotalElements());
+    }
 }

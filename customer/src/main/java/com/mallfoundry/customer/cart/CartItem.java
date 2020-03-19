@@ -36,7 +36,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"storeId", "productId", "variantId", "quantity", "addedItem"})
+@JsonPropertyOrder({"storeId", "productId", "variantId", "quantity", "addedTime"})
 @Entity
 @Table(name = "customer_cart_item")
 public class CartItem implements Serializable {
@@ -86,7 +86,6 @@ public class CartItem implements Serializable {
     public void addQuantity(Integer quantity) {
         this.setQuantity(this.getQuantity() + quantity);
     }
-
 
     @Override
     public boolean equals(Object o) {

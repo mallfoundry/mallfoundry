@@ -31,6 +31,7 @@ public class StoreSplitPolicy implements OrderSplitPolicy {
     public List<Order> splitting(List<Order> orders) {
         return orders.stream()
                 .flatMap(order -> order.getItems().stream()
+                        // group by store id
                         .collect(Collectors.groupingBy(OrderItem::getStoreId))
                         .values().stream()
                         .map(items -> this.assign(Order.builder().items(items).build(), order))

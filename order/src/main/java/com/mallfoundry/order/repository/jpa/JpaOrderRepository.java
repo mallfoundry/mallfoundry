@@ -16,19 +16,58 @@
 
 package com.mallfoundry.order.repository.jpa;
 
+import com.mallfoundry.data.PageList;
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.order.Order;
+import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderRepository;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public interface JpaOrderRepository
         extends OrderRepository,
-        JpaRepository<Order, Long> {
+        JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
 
     @Override
     <S extends Order> List<S> saveAll(Iterable<S> iterable);
 
     @Override
     List<Order> findAllById(Iterable<Long> iterable);
+
+    @Override
+    default SliceList<Order> findAll(OrderQuery orderQuery) {
+
+        Page<Order> page = this.findAll((Specification<Order>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (Objects.nonNull(orderQuery.getCustomerId())) {
+                predicates.add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
+            }
+
+            if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
+                predicates.add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
+            }
+
+            if (Objects.nonNull(orderQuery.getStoreId())) {
+                predicates.add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
+            }
+
+            query.where(predicates.toArray(Predicate[]::new));
+            return null;
+        }, PageRequest.of(orderQuery.getPage(), orderQuery.getLimit()));
+
+        return PageList.of(page.getContent())
+                .page(page.getNumber())
+                .limit(orderQuery.getLimit())
+                .totalSize(page.getTotalElements());
+    }
 }

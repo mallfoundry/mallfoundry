@@ -39,7 +39,6 @@ public class ProductAttribute implements Serializable {
     @Column(name = "value_")
     private String value;
 
-
     @Column(name = "position_")
     private Integer position;
 

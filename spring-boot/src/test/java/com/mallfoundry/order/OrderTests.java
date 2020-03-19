@@ -38,7 +38,7 @@ public class OrderTests {
     public void testSubmitOrder() throws CustomerValidException {
         List<OrderItem> items = new ArrayList<>();
         items.add(OrderItem.builder()
-                .storeId(new StoreId("mi"))
+                .storeId("mi")
 //                .storeId("mi")
                 .productId(1L)
                 .variantId(1L)

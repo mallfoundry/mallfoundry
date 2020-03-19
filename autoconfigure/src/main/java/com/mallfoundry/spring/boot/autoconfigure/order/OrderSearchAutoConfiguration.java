@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package com.mallfoundry.spring.boot.autoconfigure.order;
 
-import com.mallfoundry.data.SliceList;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-public interface OrderRepository {
+@Configuration
+@EnableConfigurationProperties(OrderSearchProperties.class)
+public class OrderSearchAutoConfiguration {
 
-    Order save(Order order);
-
-    <S extends Order> List<S> saveAll(Iterable<S> iterable);
-
-    Optional<Order> findById(Long id);
-
-    List<Order> findAllById(Iterable<Long> iterable);
-
-    SliceList<Order> findAll(OrderQuery query);
 }

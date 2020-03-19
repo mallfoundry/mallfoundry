@@ -18,13 +18,11 @@ package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.store.StoreId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -45,8 +43,8 @@ public class OrderItem {
     private Long id;
 
     @JsonProperty("store_id")
-    @Embedded
-    private StoreId storeId;
+    @Column(name = "store_id_")
+    private String storeId;
 
     @JsonProperty("product_id")
     @Column(name = "product_id_")
@@ -90,7 +88,7 @@ public class OrderItem {
             item = new OrderItem();
         }
 
-        public Builder storeId(StoreId storeId) {
+        public Builder storeId(String storeId) {
             this.item.setStoreId(storeId);
             return this;
         }

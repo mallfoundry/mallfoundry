@@ -17,11 +17,13 @@
 package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,14 +66,12 @@ public class ProductVariant implements Serializable {
     @JsonProperty("inventory_quantity")
     private int inventoryQuantity;
 
-    @ElementCollection
-    @CollectionTable(name = "store_product_variant_option")
-    @Column(name = "option_")
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "options_")
     private List<String> options = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "store_product_variant_image")
-    @Column(name = "image_")
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "images_")
     private List<String> images;
 
     @Column(name = "position_")

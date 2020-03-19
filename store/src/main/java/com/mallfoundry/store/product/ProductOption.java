@@ -16,17 +16,16 @@
 
 package com.mallfoundry.store.product;
 
+import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionValueConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,8 +47,8 @@ public class ProductOption implements Serializable {
     @Column(name = "name_")
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name = "store_product_option_value", joinColumns = @JoinColumn(name = "id_"))
+    @Column(name = "values_")
+    @Convert(converter = ProductOptionValueConverter.class)
     private List<ProductOptionValue> values = new ArrayList<>();
 
     @Column(name = "position_")

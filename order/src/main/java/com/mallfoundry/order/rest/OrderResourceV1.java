@@ -16,24 +16,31 @@
 
 package com.mallfoundry.order.rest;
 
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.order.CustomerValidException;
 import com.mallfoundry.order.Order;
 import com.mallfoundry.order.OrderCreation;
+import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderService;
+import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.payment.PaymentException;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/v1")
@@ -115,5 +122,22 @@ public class OrderResourceV1 {
     @GetMapping("/orders/{order_id}")
     public Optional<Order> getOrder(@PathVariable("order_id") Long orderId) {
         return this.orderService.getOrder(orderId);
+    }
+
+    @GetMapping("/orders")
+    public SliceList<Order> getOrders(
+            @RequestParam(name = "customer_id", required = false) String customerId,
+            @RequestParam(name = "status", required = false) List<String> statuses,
+            @RequestParam(name = "store_id", required = false) String storeId) {
+        return this.orderService.getOrders(OrderQuery.builder()
+                .customerId(customerId)
+                // flat map -> filter is not empty -> upper case -> enum value of -> to list
+                .statuses(() -> Stream.ofNullable(statuses)
+                        .flatMap(List::stream)
+                        .filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase)
+                        .map(OrderStatus::valueOf)
+                        .collect(Collectors.toList()))
+                .storeId(storeId).build());
     }
 }

@@ -20,7 +20,6 @@ public class ChildCategory extends Category {
     @ManyToOne
     private Category parent;
 
-
     public ChildCategory(String name) {
         super(name);
     }

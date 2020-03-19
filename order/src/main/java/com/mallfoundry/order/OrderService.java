@@ -16,6 +16,7 @@
 
 package com.mallfoundry.order;
 
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentService;
@@ -179,5 +180,9 @@ public class OrderService {
 
     public Optional<Order> getOrder(Long orderId) {
         return this.orderRepository.findById(orderId);
+    }
+
+    public SliceList<Order> getOrders(OrderQuery query) {
+        return this.orderRepository.findAll(query);
     }
 }

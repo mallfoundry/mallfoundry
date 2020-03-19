@@ -18,16 +18,14 @@ package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.data.jpa.convert.StringListConverter;
+import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -35,13 +33,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -58,62 +53,35 @@ public class Product implements Serializable {
     @Column(name = "id_")
     private Long id;
 
-    @Embedded
+    @Column(name = "store_id_")
     @JsonProperty("store_id")
-    private StoreId storeId;
+    private String storeId;
 
-    @Column(name = "short_name_")
-    @JsonProperty("short_name")
-    private String shortName;
-
-    @Column(name = "name_")
-    private String name;
-
-    @Column(name = "free_shipping_")
-    @JsonProperty("free_shipping")
-    private boolean freeShipping;
-
-    @Column(name = "shipping_money_")
-    @JsonProperty("shipping_money")
-    private BigDecimal shippingMoney;
+    @Column(name = "title_")
+    private String title;
 
     @Column(name = "description_")
     private String description;
-
-    @ElementCollection
-    @CollectionTable(name = "store_product_attribute",
-            joinColumns = @JoinColumn(name = "product_id_"))
-    private List<ProductAttribute> attributes = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
     private List<ProductOption> options = new ArrayList<>();
 
+    @Column(name = "attributes_")
+    @Convert(converter = ProductAttributeConverter.class)
+    private List<ProductAttribute> attributes = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
-    /**
-     * Contains images of product and product variants.
-     */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ProductImage.class)
-    @JoinColumn(name = "product_id_")
-    private List<ProductImage> images = new ArrayList<>();
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "images_")
+    private List<String> images = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ProductVideo.class)
-    @JoinColumn(name = "product_id_")
-    private List<ProductVideo> videos = new ArrayList<>();
-
-    /**
-     * Find the variant's images in the product's images.
-     *
-     * @param variant variant
-     * @return variant's images
-     */
-    public List<ProductImage> findVariantImages(ProductVariant variant) {
-        Collection<String> images = CollectionUtils.emptyIfNull(variant.getImages());
-        return this.images.stream().filter(image -> images.contains(image.getId())).collect(Collectors.toList());
-    }
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "videos_")
+    private List<String> videos = new ArrayList<>();
 
     public void addVariant(ProductVariant variant) {
         this.getVariants().add(variant);
@@ -133,19 +101,53 @@ public class Product implements Serializable {
         return option;
     }
 
-    public void addVideo(ProductVideo video) {
-        this.getVideos().add(video);
-    }
-
-    public void removeVideo(ProductVideo video) {
-        this.getVideos().remove(video);
-    }
-
-    public void addImage(ProductImage image) {
+    public void addImage(String image) {
         this.getImages().add(image);
+    }
+
+    public void addVideo(String video) {
+        this.getVideos().add(video);
     }
 
     public void addAttribute(ProductAttribute attribute) {
         this.getAttributes().add(attribute);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private Product product;
+
+        public Builder() {
+            this.product = new Product();
+        }
+
+        public Builder storeId(String storeId) {
+            this.product.setStoreId(storeId);
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.product.setTitle(title);
+            return this;
+        }
+
+        public Builder addImage(String image) {
+            this.product.addImage(image);
+            return this;
+        }
+
+        public Builder addVideo(String video) {
+            this.product.addVideo(video);
+            return this;
+        }
+
+        public Product build() {
+            return this.product;
+        }
+
     }
 }

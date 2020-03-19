@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package com.mallfoundry.spring.boot.autoconfigure.order;
 
-import com.mallfoundry.data.SliceList;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-public interface OrderRepository {
 
-    Order save(Order order);
+@Getter
+@Setter
+@ConfigurationProperties(prefix = "mall.order.search")
+public class OrderSearchProperties {
 
-    <S extends Order> List<S> saveAll(Iterable<S> iterable);
+    private SearchType type;
 
-    Optional<Order> findById(Long id);
+    private Lucene lucene;
 
-    List<Order> findAllById(Iterable<Long> iterable);
+    enum SearchType {
+        LUCENE, SOLR, ELASTICSEARCH
+    }
 
-    SliceList<Order> findAll(OrderQuery query);
+    @Getter
+    @Setter
+    static class Lucene {
+
+        private String directory;
+    }
 }
