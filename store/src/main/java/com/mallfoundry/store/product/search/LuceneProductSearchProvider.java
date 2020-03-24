@@ -16,6 +16,8 @@
 
 package com.mallfoundry.store.product.search;
 
+import com.mallfoundry.data.PageList;
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -61,8 +63,29 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         this.directoryPath = directoryPath;
     }
 
-    @Override
-    public void add(Product product) {
+    private Product getProduct(Long productId) {
+        try {
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+            IndexReader reader = DirectoryReader.open(directory);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+            queryBuilder.add(new TermQuery(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(productId))), BooleanClause.Occur.MUST);
+            TopDocs topDocs = searcher.search(queryBuilder.build(), 1);
+            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+            for (ScoreDoc scoreDoc : scoreDocs) {
+                int docId = scoreDoc.doc;
+                Document doc = reader.document(docId);
+                String product = doc.get("product");
+                return JsonUtils.parse(product, Product.class);
+            }
+
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addProduct(Product product) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -74,16 +97,41 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             document.add(new TextField(PRODUCT_TITLE_FIELD_NAME, product.getTitle(), Field.Store.YES));
             document.add(new StoredField("product", JsonUtils.stringify(product)));
             indexWriter.addDocument(document);
+
             indexWriter.commit();
             indexWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void updateProduct(Product product) {
+        try {
+            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+            Analyzer analyzer = new StandardAnalyzer();
+            IndexWriterConfig config = new IndexWriterConfig(analyzer);
+            IndexWriter indexWriter = new IndexWriter(directory, config);
+            Document document = new Document();
+            document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
+            document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
+            document.add(new TextField(PRODUCT_TITLE_FIELD_NAME, product.getTitle(), Field.Store.YES));
+            document.add(new StoredField("product", JsonUtils.stringify(product)));
+            indexWriter.updateDocument(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId())), document);
+            indexWriter.commit();
+            indexWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void update(Product product) {
-
+    public void save(Product product) {
+        if (Objects.isNull(getProduct(product.getId()))) {
+            this.addProduct(product);
+        } else {
+            this.updateProduct(product);
+        }
     }
 
     @Override
@@ -92,22 +140,25 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     @Override
-    public List<Product> search(ProductQuery search) {
+    public SliceList<Product> search(ProductQuery search) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
-            QueryParser parser = new QueryParser(PRODUCT_TITLE_FIELD_NAME, analyzer);
-            Query queryName = parser.parse(search.getTitle());
-
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-            queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);
+
+            if (Objects.nonNull(search.getTitle())) {
+                QueryParser parser = new QueryParser(PRODUCT_TITLE_FIELD_NAME, analyzer);
+                Query queryName = parser.parse(search.getTitle());
+                queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);
+            }
 
             if (Objects.nonNull(search.getStoreId())) {
                 queryBuilder.add(new TermQuery(new Term(STORE_ID_FIELD_NAME, search.getStoreId())), BooleanClause.Occur.MUST);
             }
 
+            int totalSize = searcher.count(queryBuilder.build());
             TopDocs topDocs = searcher.search(queryBuilder.build(), 10);
 
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
@@ -119,10 +170,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 String product = doc.get("product");
                 products.add(JsonUtils.parse(product, Product.class));
             }
-            return products;
+            return PageList.of(products).page(search.getPage()).limit(search.getLimit()).totalSize(totalSize);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }

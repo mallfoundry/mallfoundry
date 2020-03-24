@@ -16,24 +16,25 @@
 
 package com.mallfoundry.store.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductOptionValue implements Serializable {
 
-    @Column(name = "value_")
+    @JsonProperty("image_url")
+    private String imageUrl;
+
     private String value;
 
-    @Column(name = "position_")
     private Integer position;
 
     public ProductOptionValue(String value, Integer position) {

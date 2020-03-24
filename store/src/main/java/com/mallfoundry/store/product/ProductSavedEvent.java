@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package com.mallfoundry.store.product;
 
-import com.mallfoundry.store.product.ProductVideo;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-import javax.persistence.EntityManager;
+public class ProductSavedEvent extends ApplicationEvent {
 
-@SpringBootTest
-public class ProductVideoTests {
+    @Getter
+    private final Product product;
 
-    @Autowired
-    private EntityManager entityManager;
-
-
-    @Test
-    @Transactional
-    public void testGetVideo() {
-        ProductVideo video = this.entityManager.find(ProductVideo.class, 157);
-        System.out.println(video);
+    public ProductSavedEvent(Product product) {
+        super(product);
+        this.product = product;
     }
 }

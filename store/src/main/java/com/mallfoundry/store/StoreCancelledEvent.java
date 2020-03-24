@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.product;
+package com.mallfoundry.store;
 
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.context.ApplicationEvent;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+public class StoreCancelledEvent extends ApplicationEvent {
 
-@Getter
-@Setter
-@MappedSuperclass
-public class ProductPositionExhibit extends ProductExhibit {
+    @Getter
+    private final Store store;
 
-    @Column(name = "position_")
-    private Integer position;
+    public StoreCancelledEvent(Store source) {
+        super(source);
+        this.store = source;
+    }
 }

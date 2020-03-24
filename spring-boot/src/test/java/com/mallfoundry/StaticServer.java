@@ -18,5 +18,5 @@ package com.mallfoundry;
 
 public class StaticServer {
 
-    public static final String BASE_URL = "http://192.168.2.143:8077/static";
+    public static final String BASE_URL = "http://192.168.0.102:8077/static";
 }

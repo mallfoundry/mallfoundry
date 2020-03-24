@@ -24,6 +24,8 @@ public interface StoreRepository {
 
     Store save(Store store);
 
+    void delete(Store store);
+
     Optional<Store> findById(String id);
 
     SliceList<Store> findAll(StoreQuery query);

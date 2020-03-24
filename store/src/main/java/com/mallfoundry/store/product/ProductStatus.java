@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,9 @@
 
 package com.mallfoundry.store.product;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-public class ProductAddedEvent extends ApplicationEvent {
-
-    @Getter
-    private final Product product;
-
-    public ProductAddedEvent(Product product) {
-        super(product);
-        this.product = product;
-    }
+public enum ProductStatus {
+    ACTIVE, // 销售中
+    ARCHIVED, // 仓库中
+    PENDING, // 等待批准
+    DISAPPROVED, // 未批准
 }

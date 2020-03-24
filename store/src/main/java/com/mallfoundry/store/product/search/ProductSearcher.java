@@ -16,11 +16,10 @@
 
 package com.mallfoundry.store.product.search;
 
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;
-
-import java.util.List;
 
 public interface ProductSearcher {
 
-    List<Product> search(ProductQuery query);
+    SliceList<Product> search(ProductQuery query);
 }

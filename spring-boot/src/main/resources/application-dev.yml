@@ -26,8 +26,10 @@ mall:
     store:
       type: local
       directory: D:/mall/data/storage/
-  #    http:
-  #      base-url: http://102.mallfoundry.com:${server.port}/static
+      #      http:
+      #        base-url: http://102.mallfoundry.com:${server.port}/static
+    http:
+      base-url: http://localhost:${server.port}/static
   store:
     product:
       search:

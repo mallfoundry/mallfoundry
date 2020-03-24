@@ -25,6 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -47,9 +48,18 @@ public class Store {
     @Column(name = "storekeeper_id_")
     private String storekeeperId;
 
+    @JsonProperty("created_time")
+    @Column(name = "created_time_")
+    private Date createdTime;
+
     public Store(String id, String name, String logoUrl) {
         this.setId(id);
         this.setName(name);
         this.setLogoUrl(logoUrl);
+    }
+
+
+    public void initialize() {
+        this.setCreatedTime(new Date());
     }
 }

@@ -54,7 +54,7 @@ public class PageList<T> implements SliceList<T> {
     }
 
     public PageList<T> page(int page) {
-        this.page = Math.max(page, PageLimit.DEFAULT_LIMIT);
+        this.page = Math.max(page, PageLimit.DEFAULT_PAGE);
         return this;
     }
 

@@ -21,13 +21,12 @@ import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -54,9 +53,8 @@ public class ProductVariant implements Serializable {
     @Column(name = "id_")
     private Long id;
 
-    @Column(name = "retail_price_")
-    @JsonProperty("retail_price")
-    private BigDecimal retailPrice;
+    @Column(name = "price_")
+    private BigDecimal price;
 
     @Column(name = "market_price_")
     @JsonProperty("market_price")
@@ -66,13 +64,16 @@ public class ProductVariant implements Serializable {
     @JsonProperty("inventory_quantity")
     private int inventoryQuantity;
 
+    @JsonProperty("option_values")
+    @Column(name = "option_values_")
     @Convert(converter = StringListConverter.class)
-    @Column(name = "options_")
-    private List<String> options = new ArrayList<>();
+    private List<String> optionValues = new ArrayList<>();
 
+    @JsonProperty("image_urls")
+    @Lob
     @Convert(converter = StringListConverter.class)
-    @Column(name = "images_")
-    private List<String> images;
+    @Column(name = "image_urls_")
+    private List<String> imageUrls;
 
     @Column(name = "position_")
     private Integer position;
@@ -105,8 +106,8 @@ public class ProductVariant implements Serializable {
             variant = new ProductVariant();
         }
 
-        public Builder retailPrice(double retailPrice) {
-            this.variant.setRetailPrice(BigDecimal.valueOf(retailPrice));
+        public Builder price(double price) {
+            this.variant.setPrice(BigDecimal.valueOf(price));
             return this;
         }
 
@@ -125,13 +126,13 @@ public class ProductVariant implements Serializable {
             return this;
         }
 
-        public Builder options(List<String> options) {
-            this.variant.setOptions(new ArrayList<>(options));
+        public Builder optionValues(List<String> optionValues) {
+            this.variant.setOptionValues(optionValues);
             return this;
         }
 
-        public Builder images(List<String> images) {
-            this.variant.setImages(new ArrayList<>(images));
+        public Builder imageUrls(List<String> imageUrls) {
+            this.variant.setImageUrls(imageUrls);
             return this;
         }
 

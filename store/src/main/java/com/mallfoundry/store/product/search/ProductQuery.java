@@ -16,16 +16,13 @@
 
 package com.mallfoundry.store.product.search;
 
+import com.mallfoundry.data.PageLimit;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductQuery {
-
-    private int offset;
-
-    private int limit;
+public class ProductQuery extends PageLimit {
 
     private String title;
 
@@ -33,20 +30,41 @@ public class ProductQuery {
 
     private String productId;
 
-    public static ProductQueryBuilder builder() {
-        return new ProductQueryBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static class ProductQueryBuilder {
+    public static class Builder {
 
         private final ProductQuery query;
 
-        public ProductQueryBuilder() {
+        public Builder() {
             this.query = new ProductQuery();
         }
 
-        public ProductQueryBuilder(ProductQuery query) {
-            this.query = query;
+        public Builder page(Integer page) {
+            this.query.setPage(page);
+            return this;
+        }
+
+        public Builder limit(Integer limit) {
+            this.query.setLimit(limit);
+            return this;
+        }
+
+        public Builder productId(String productId) {
+            this.query.setProductId(productId);
+            return this;
+        }
+
+        public Builder storeId(String storeId) {
+            this.query.setStoreId(storeId);
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.query.setTitle(title);
+            return this;
         }
 
         public ProductQuery build() {

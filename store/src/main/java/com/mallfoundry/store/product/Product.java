@@ -16,30 +16,39 @@
 
 package com.mallfoundry.store.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
-import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeConverter;
+import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
+import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "shortName", "name", "freeShipping", "shippingMoney",
         "description", "variants", "attributes", "options", "images", "videos"})
 @Entity
@@ -53,8 +62,8 @@ public class Product implements Serializable {
     @Column(name = "id_")
     private Long id;
 
-    @Column(name = "store_id_")
     @JsonProperty("store_id")
+    @Column(name = "store_id_")
     private String storeId;
 
     @Column(name = "title_")
@@ -63,25 +72,60 @@ public class Product implements Serializable {
     @Column(name = "description_")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "product_id_")
+    @Column(name = "price_")
+    private BigDecimal price;
+
+    @Column(name = "market_price_")
+    @JsonProperty("market_price")
+    private BigDecimal marketPrice;
+
+    @Lob
+    @Column(name = "options_")
+    @Convert(converter = ProductOptionListConverter.class)
     private List<ProductOption> options = new ArrayList<>();
 
+    @Lob
     @Column(name = "attributes_")
-    @Convert(converter = ProductAttributeConverter.class)
+    @Convert(converter = ProductAttributeListConverter.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
+    @JsonProperty("image_urls")
+    @Lob
+    @Column(name = "image_urls_")
     @Convert(converter = StringListConverter.class)
-    @Column(name = "images_")
-    private List<String> images = new ArrayList<>();
+    private List<String> imageUrls = new ArrayList<>();
 
+    @JsonProperty("video_urls")
+    @Lob
+    @Column(name = "video_urls_")
     @Convert(converter = StringListConverter.class)
-    @Column(name = "videos_")
-    private List<String> videos = new ArrayList<>();
+    private List<String> videoUrls = new ArrayList<>();
+
+    @JsonProperty("created_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_time_")
+    private Date createdTime;
+
+    public BigDecimal getPrice() {
+        return CollectionUtils.isEmpty(this.getVariants()) ? this.price :
+                this.getVariants().stream()
+                        .map(ProductVariant::getPrice)
+                        .max(BigDecimal::compareTo)
+                        .orElse(BigDecimal.ZERO);
+    }
+
+    @JsonProperty(value = "inventory_quantity", access = JsonProperty.Access.READ_ONLY)
+    public Integer getInventoryQuantity() {
+        return CollectionUtils.isEmpty(this.getVariants()) ? 0 :
+                this.getVariants()
+                        .stream()
+                        .mapToInt(ProductVariant::getInventoryQuantity)
+                        .sum();
+    }
 
     public void addVariant(ProductVariant variant) {
         this.getVariants().add(variant);
@@ -101,16 +145,20 @@ public class Product implements Serializable {
         return option;
     }
 
-    public void addImage(String image) {
-        this.getImages().add(image);
+    public void addImageUrl(String imageUrl) {
+        this.getImageUrls().add(imageUrl);
     }
 
-    public void addVideo(String video) {
-        this.getVideos().add(video);
+    public void addVideoUrl(String video) {
+        this.getVideoUrls().add(video);
     }
 
     public void addAttribute(ProductAttribute attribute) {
         this.getAttributes().add(attribute);
+    }
+
+    public void create() {
+        this.setCreatedTime(new Date());
     }
 
     public static Builder builder() {
@@ -135,13 +183,13 @@ public class Product implements Serializable {
             return this;
         }
 
-        public Builder addImage(String image) {
-            this.product.addImage(image);
+        public Builder addImageUrl(String image) {
+            this.product.addImageUrl(image);
             return this;
         }
 
-        public Builder addVideo(String video) {
-            this.product.addVideo(video);
+        public Builder addVideoUrl(String video) {
+            this.product.addVideoUrl(video);
             return this;
         }
 

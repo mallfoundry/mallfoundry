@@ -20,26 +20,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
 public class ProductAttribute implements Serializable {
 
-    @Column(name = "namespace_")
     private String namespace;
 
-    @Column(name = "name_")
     private String name;
 
-    @Column(name = "value_")
     private String value;
 
-    @Column(name = "position_")
     private Integer position;
 
     public ProductAttribute(String name, String value, Integer position) {

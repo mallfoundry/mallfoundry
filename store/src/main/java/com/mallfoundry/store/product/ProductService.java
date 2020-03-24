@@ -16,13 +16,15 @@
 
 package com.mallfoundry.store.product;
 
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.search.ProductQuery;
 import com.mallfoundry.store.product.search.ProductSearcher;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,21 +44,33 @@ public class ProductService {
         this.eventPublisher = eventPublisher;
     }
 
-    @Transactional
-    public void addProduct(Product product) {
-        this.eventPublisher.publishEvent(new ProductAddedEvent(this.productRepository.save(product)));
+    public Product newProduct() {
+        return new Product();
     }
 
     @Transactional
-    public Product createProduct() {
-        return this.productRepository.save(new Product());
+    public Product saveProduct(Product newProduct) {
+        Product savedProduct;
+        if (Objects.isNull(newProduct.getId())) {
+            newProduct.create();
+            savedProduct = this.productRepository.save(newProduct);
+        } else {
+            Product oldProduct = this.getProduct(newProduct.getId()).orElseThrow();
+            BeanUtils.copyProperties(newProduct, oldProduct, "variants");
+            oldProduct.getVariants().clear();
+            oldProduct.getVariants().addAll(newProduct.getVariants());
+            savedProduct = this.productRepository.save(oldProduct);
+        }
+        this.eventPublisher.publishEvent(new ProductSavedEvent(savedProduct));
+        return savedProduct;
     }
 
+    @Transactional
     public Optional<Product> getProduct(Long id) {
         return this.productRepository.findById(id);
     }
 
-    public List<Product> search(ProductQuery query) {
+    public SliceList<Product> getProducts(ProductQuery query) {
         return this.productSearcher.search(query);
     }
 }

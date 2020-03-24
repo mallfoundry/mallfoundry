@@ -35,7 +35,6 @@ public interface JpaStoreRepository
         JpaRepository<Store, String>,
         JpaSpecificationExecutor<Store> {
 
-
     @Override
     default SliceList<Store> findAll(StoreQuery storeQuery) {
         Page<Store> page = this.findAll((Specification<Store>) (root, query, criteriaBuilder) -> {

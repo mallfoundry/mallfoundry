@@ -20,9 +20,7 @@ import com.mallfoundry.store.product.Product;
 
 public interface ProductSearchProvider extends ProductSearcher {
 
-    void add(Product product);
-
-    void update(Product product);
+    void save(Product product);
 
     void delete(Product product);
 

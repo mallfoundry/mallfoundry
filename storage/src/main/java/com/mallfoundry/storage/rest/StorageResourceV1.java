@@ -19,6 +19,7 @@ package com.mallfoundry.storage.rest;
 import com.mallfoundry.storage.ObjectResource;
 import com.mallfoundry.storage.StorageObject;
 import com.mallfoundry.storage.StorageSystem;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,19 +48,25 @@ public class StorageResourceV1 {
     public StorageObject storeObject(@PathVariable("bucket") String bucket,
                                      @RequestParam("file") MultipartFile file,
                                      HttpServletRequest request) throws IOException {
-        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
     }
 
     @PostMapping("/buckets/{bucket}/images/**")
     public StorageObject storeImage(@PathVariable("bucket") String bucket,
                                     @RequestParam("file") MultipartFile file,
                                     HttpServletRequest request) throws IOException {
-        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request), file.getInputStream()));
+        System.out.println(file.getOriginalFilename());
+        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
     }
 
-    private String getObjectPath(HttpServletRequest request) {
+    private String getObjectPath(HttpServletRequest request, MultipartFile file) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
-        return this.objectPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
+        String objectPath = this.objectPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
+        if (StringUtils.isNotEmpty(objectPath)) {
+            return objectPath;
+        } else {
+            return file.getOriginalFilename();
+        }
     }
 }

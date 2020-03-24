@@ -17,6 +17,7 @@
 package com.mallfoundry.store;
 
 import com.mallfoundry.data.SliceList;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,12 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
-    public StoreService(StoreRepository storeRepository) {
+    private final ApplicationEventPublisher eventPublisher;
+
+    public StoreService(StoreRepository storeRepository,
+                        ApplicationEventPublisher eventPublisher) {
         this.storeRepository = storeRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public Optional<Store> getStore(String id) {
@@ -41,8 +46,14 @@ public class StoreService {
 
     @Transactional
     public void createStore(Store store) {
-
-
+        store.initialize();
         this.storeRepository.save(store);
+    }
+
+    @Transactional
+    public void cancelStore(String storeId) {
+        Store store = this.storeRepository.findById(storeId).orElseThrow();
+        this.eventPublisher.publishEvent(new StoreCancelledEvent(store));
+        this.storeRepository.delete(store);
     }
 }
