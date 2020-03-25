@@ -16,47 +16,45 @@
 
 package com.mallfoundry.store;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CustomCollectionService {
+public class CollectionService {
 
     private final CustomCollectionRepository customCollectionRepository;
 
-    public CustomCollectionService(CustomCollectionRepository customCollectionRepository) {
+    public CollectionService(CustomCollectionRepository customCollectionRepository) {
         this.customCollectionRepository = customCollectionRepository;
     }
 
-    @Transactional
-    public TopCustomCollection createTopCollection(StoreId storeId, String name) {
-        TopCustomCollection collection =
-                this.customCollectionRepository.save(new TopCustomCollection(storeId, name));
-        CustomCollectionPositions.sort(this.customCollectionRepository.findAllByStoreId(storeId));
+    public CustomCollection createCollection(StoreId storeId, String name) {
+        CustomCollection collection = new CustomCollection(storeId, name);
+        collection.create();
         return collection;
     }
 
     @Transactional
-    public ChildCustomCollection addChildCollection(Integer parentId, String name) {
-        CustomCollection collection = this.getCollection(parentId);
-        ChildCustomCollection childCollection = new ChildCustomCollection(name);
-        collection.addChildCollection(childCollection);
-        return childCollection;
+    public CustomCollection saveCollection(CustomCollection collection) {
+        List<CustomCollection> collections = this.getCollections(collection.getStoreId());
+        collection.setPosition(CollectionUtils.size(collections));
+        return this.customCollectionRepository.save(collection);
     }
 
     @Transactional
-    public void deleteCollection(Integer id) {
+    public void deleteCollection(Long id) {
         this.customCollectionRepository.deleteById(id);
     }
 
-    @SuppressWarnings("unchecked")
-    public <S extends CustomCollection> S getCollection(Integer id) {
-        return (S) customCollectionRepository.findById(id);
+    public Optional<CustomCollection> getCollection(Long id) {
+        return this.customCollectionRepository.findById(id);
     }
 
-    public List<TopCustomCollection> getAllCollections(StoreId storeId) {
+    public List<CustomCollection> getCollections(StoreId storeId) {
         return this.customCollectionRepository.findAllByStoreId(storeId);
     }
 

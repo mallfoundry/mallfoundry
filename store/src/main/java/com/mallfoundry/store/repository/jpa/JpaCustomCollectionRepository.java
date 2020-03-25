@@ -19,9 +19,7 @@ package com.mallfoundry.store.repository.jpa;
 import com.mallfoundry.store.CustomCollection;
 import com.mallfoundry.store.CustomCollectionRepository;
 import com.mallfoundry.store.StoreId;
-import com.mallfoundry.store.TopCustomCollection;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,7 +28,6 @@ import java.util.List;
 public interface JpaCustomCollectionRepository
         extends CustomCollectionRepository, JpaRepository<CustomCollection, String> {
 
-    @Query(" from TopCustomCollection where storeId = ?1")
     @Override
-    List<TopCustomCollection> findAllByStoreId(StoreId storeId);
+    List<CustomCollection> findAllByStoreId(StoreId storeId);
 }

@@ -17,14 +17,15 @@
 package com.mallfoundry.store;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomCollectionRepository {
 
-    <S extends CustomCollection> S save(S collection);
+    CustomCollection save(CustomCollection collection);
 
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
-    CustomCollection findById(Integer id);
+    Optional<CustomCollection> findById(Long id);
 
-    List<TopCustomCollection> findAllByStoreId(StoreId storeId);
+    List<CustomCollection> findAllByStoreId(StoreId storeId);
 }

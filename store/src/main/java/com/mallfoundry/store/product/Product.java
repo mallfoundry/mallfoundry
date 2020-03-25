@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.mallfoundry.data.jpa.convert.LongListConverter;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
@@ -71,6 +72,11 @@ public class Product implements Serializable {
 
     @Column(name = "description_")
     private String description;
+
+    @JsonProperty("collection_ids")
+    @Column(name = "collection_ids_")
+    @Convert(converter = LongListConverter.class)
+    private List<Long> collectionIds = new ArrayList<>();
 
     @Column(name = "price_")
     private BigDecimal price;

@@ -38,6 +38,10 @@ public class StoreId implements UniqueIdentifier<String> {
         this.id = id;
     }
 
+    public static StoreId of(String idString) {
+        return new StoreId(idString);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

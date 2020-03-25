@@ -16,36 +16,29 @@
 
 package com.mallfoundry.store;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "name", "position", "children"})
+@JsonPropertyOrder({"id", "name", "position", "createdTime"})
 @Entity
 @Table(name = "store_custom_collection")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type_")
 public class CustomCollection implements Comparable<CustomCollection> {
 
     @JsonIgnore
@@ -54,21 +47,22 @@ public class CustomCollection implements Comparable<CustomCollection> {
     @Id
     @GeneratedValue
     @Column(name = "id_")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name_")
     private String name;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "products_")
+    private int products;
+
     @Column(name = "position_")
     private Integer position;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "parent_id_")
-    private List<ChildCustomCollection> children = new ArrayList<>();
-
-    public CustomCollection(String name) {
-        this.setName(name);
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("created_time")
+    @Column(name = "created_time_")
+    private Date createdTime;
 
     public CustomCollection(StoreId storeId, String name) {
         this.setStoreId(storeId);
@@ -80,23 +74,8 @@ public class CustomCollection implements Comparable<CustomCollection> {
         return storeId;
     }
 
-    public ChildCustomCollection createChildCollection(String name) {
-        return new ChildCustomCollection(this, name);
-    }
-
-    public void addChildCollection(ChildCustomCollection collection) {
-        collection.setPosition(Integer.MAX_VALUE);
-        collection.setParent(this);
-        this.getChildren().add(collection);
-        CustomCollectionPositions.sort(this.getChildren());
-    }
-
-    public void removeChildCollection(ChildCustomCollection collection) {
-        this.getChildren().remove(collection);
-    }
-
-    public void clearChildCollections() {
-        this.getChildren().clear();
+    public void create() {
+        this.setCreatedTime(new Date());
     }
 
     @Override
