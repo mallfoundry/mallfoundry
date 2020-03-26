@@ -46,10 +46,11 @@ public class ProductResourceV1 {
     public SliceList<Product> searchProduct(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+            @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "store_id", required = false) String storeId,
             @RequestParam(name = "product_id", required = false) String productId) {
         return this.productService.getProducts(ProductQuery.builder()
-                .page(page).limit(limit)
+                .page(page).limit(limit).title(title)
                 .productId(productId).storeId(storeId).build());
     }
 
