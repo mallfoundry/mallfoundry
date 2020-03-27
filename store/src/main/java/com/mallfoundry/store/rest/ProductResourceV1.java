@@ -43,7 +43,7 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products")
-    public SliceList<Product> searchProduct(
+    public SliceList<Product> getProducts(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "title", required = false) String title,

@@ -76,6 +76,9 @@ public class Order {
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
+    @Column(name = "note_")
+    private String note;
+
     @JsonProperty("customer_id")
     @Column(name = "customer_id_")
     private String customerId;
@@ -100,7 +103,7 @@ public class Order {
     @Embedded
     private PaymentDetails paymentDetails;
 
-    @Column(name = "store_id")
+    @Column(name = "store_id_")
     @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
     private String storeId;
 

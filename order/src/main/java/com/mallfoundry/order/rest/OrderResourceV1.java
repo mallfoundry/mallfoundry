@@ -126,10 +126,13 @@ public class OrderResourceV1 {
 
     @GetMapping("/orders")
     public SliceList<Order> getOrders(
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "customer_id", required = false) String customerId,
             @RequestParam(name = "status", required = false) List<String> statuses,
             @RequestParam(name = "store_id", required = false) String storeId) {
         return this.orderService.getOrders(OrderQuery.builder()
+                .page(page).limit(limit)
                 .customerId(customerId)
                 // flat map -> filter is not empty -> upper case -> enum value of -> to list
                 .statuses(() -> Stream.ofNullable(statuses)

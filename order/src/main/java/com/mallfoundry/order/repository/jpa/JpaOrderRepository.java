@@ -29,7 +29,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,23 +46,22 @@ public interface JpaOrderRepository
     default SliceList<Order> findAll(OrderQuery orderQuery) {
 
         Page<Order> page = this.findAll((Specification<Order>) (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
+            Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(orderQuery.getCustomerId())) {
-                predicates.add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
             }
 
             if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
-                predicates.add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
             }
 
             if (Objects.nonNull(orderQuery.getStoreId())) {
-                predicates.add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
             }
 
-            query.where(predicates.toArray(Predicate[]::new));
-            return null;
-        }, PageRequest.of(orderQuery.getPage(), orderQuery.getLimit()));
+            return predicate;
+        }, PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit()));
 
         return PageList.of(page.getContent())
                 .page(page.getNumber())

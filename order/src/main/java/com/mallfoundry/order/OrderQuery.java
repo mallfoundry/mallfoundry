@@ -47,6 +47,16 @@ public class OrderQuery extends PageLimit {
             this.query = new OrderQuery();
         }
 
+        public Builder page(int page) {
+            this.query.setPage(page);
+            return this;
+        }
+
+        public Builder limit(int limit) {
+            this.query.setLimit(limit);
+            return this;
+        }
+
         public Builder customerId(String customerId) {
             this.query.setCustomerId(customerId);
             return this;
