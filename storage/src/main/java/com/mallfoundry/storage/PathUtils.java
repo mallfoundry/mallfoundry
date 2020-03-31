@@ -16,9 +16,23 @@
 
 package com.mallfoundry.storage;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.nio.file.Paths;
 
 class PathUtils {
+
+    public static final String PATH_SEPARATOR = "/";
+
+    public static final String ROOT_PATH = PATH_SEPARATOR;
+
+    public static String fullPath(String path) {
+        return path.endsWith(PATH_SEPARATOR) ? FilenameUtils.getFullPathNoEndSeparator(path) : path;
+    }
+
+    static String getParentPath(String path) {
+        return FilenameUtils.getFullPathNoEndSeparator(path);
+    }
 
     /**
      * Join path.

@@ -19,13 +19,9 @@ package com.mallfoundry.storage;
 public abstract class StorageSystems {
 
     public static StorageSystem newStorageSystem(StorageConfiguration config) {
-        switch (config.getStore().getType()) {
-            case LOCAL:
-                return new LocalStorageSystem(config);
-            case FTP:
-                return new FtpStorageSystem(config);
-            default:
-                return null;
+        if (config.getStore().getType() == StorageConfiguration.StoreType.LOCAL) {
+            return new LocalStorageSystem(config);
         }
+        return null;
     }
 }

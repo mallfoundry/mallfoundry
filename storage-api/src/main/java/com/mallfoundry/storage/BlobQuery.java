@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package com.mallfoundry.storage;
 
-import com.mallfoundry.data.PageLimitSupport;
-import lombok.Getter;
-import lombok.Setter;
+import com.mallfoundry.data.PageLimit;
 
-@Getter
-@Setter
-public class StoreQuery extends PageLimitSupport {
+public interface BlobQuery extends PageLimit {
 
-    private String ownerId;
+    BlobType getType();
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    void setType(BlobType type);
 
-    public static class Builder {
-        private StoreQuery query;
+    String getBucket();
 
-        public Builder() {
-            this.query = new StoreQuery();
+    void setBucket(String bucket);
+
+    String getPath();
+
+    void setPath(String path);
+
+    Builder toBuilder();
+
+    class Builder {
+        private BlobQuery query;
+
+        public Builder(BlobQuery query) {
+            this.query = query;
         }
 
         public Builder page(int page) {
@@ -47,12 +51,27 @@ public class StoreQuery extends PageLimitSupport {
             return this;
         }
 
-        public Builder ownerId(String ownerId) {
-            this.query.setOwnerId(ownerId);
+        public Builder file() {
+            this.query.setType(BlobType.FILE);
             return this;
         }
 
-        public StoreQuery build() {
+        public Builder directory() {
+            this.query.setType(BlobType.DIRECTORY);
+            return this;
+        }
+
+        public Builder bucket(String bucket) {
+            this.query.setBucket(bucket);
+            return this;
+        }
+
+        public Builder path(String path) {
+            this.query.setPath(path);
+            return this;
+        }
+
+        public BlobQuery build() {
             return this.query;
         }
     }

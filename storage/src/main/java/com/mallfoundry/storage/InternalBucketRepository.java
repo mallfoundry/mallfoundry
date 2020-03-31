@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+import java.util.Optional;
 
-    int DEFAULT_LIMIT = 20;
+public interface InternalBucketRepository {
 
-    int MIN_LIMIT = 1;
+    Optional<InternalBucket> findById(String s);
 
-    int MAX_LIMIT = 100;
+    boolean existsById(String name);
 
-    Integer getPage();
+    InternalBucket save(InternalBucket bucket);
 
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+    void deleteById(String name);
 }

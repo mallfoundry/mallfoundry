@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+public class BucketCapacity {
+    /**
+     * The default size is 2Gb.
+     */
+    public static final long default_size = 1024 * 1024 * 2;
 
-    int DEFAULT_LIMIT = 20;
-
-    int MIN_LIMIT = 1;
-
-    int MAX_LIMIT = 100;
-
-    Integer getPage();
-
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+    private long size;
+    private long used;
+    private long available;
 }

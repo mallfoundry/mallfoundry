@@ -17,6 +17,7 @@
 package com.mallfoundry.store;
 
 import com.mallfoundry.data.SliceList;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,12 @@ public class StoreService {
 
     public Optional<Store> getStore(String id) {
         return this.storeRepository.findById(id);
+    }
+
+    @Transactional
+    public void saveStore(Store store) {
+        this.getStore(store.getId())
+                .ifPresent(savedStore -> BeanUtils.copyProperties(store, savedStore));
     }
 
     public SliceList<Store> getStores(StoreQuery query) {

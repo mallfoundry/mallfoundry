@@ -40,8 +40,8 @@ public interface JpaStoreRepository
         Page<Store> page = this.findAll((Specification<Store>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
-            if (Objects.nonNull(storeQuery.getStorekeeperId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storekeeperId"), storeQuery.getStorekeeperId()));
+            if (Objects.nonNull(storeQuery.getOwnerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("ownerId"), storeQuery.getOwnerId()));
             }
 
             return predicate;

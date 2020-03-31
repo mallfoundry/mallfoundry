@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,13 +45,20 @@ public class StoreResourceV1 {
 
     @PostMapping("/stores")
     public void createStore(@RequestBody Store store) {
-        store.setStorekeeperId(SecurityUserHolder.getUserId());
+        store.setOwnerId(SecurityUserHolder.getUserId());
         this.storeService.createStore(store);
     }
 
     @DeleteMapping("/stores/{store_id}")
     public void cancelStore(@PathVariable("store_id") String storeId) {
         this.storeService.cancelStore(storeId);
+    }
+
+    @PutMapping("/stores/{store_id}")
+    public void saveStore(@PathVariable("store_id") String storeId,
+                          @RequestBody Store store) {
+        store.setId(storeId);
+        this.storeService.saveStore(store);
     }
 
     @GetMapping("/stores/{id}")
@@ -62,8 +70,8 @@ public class StoreResourceV1 {
     public SliceList<Store> getStores(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-            @RequestParam(name = "storekeeper_id") String storekeeperId) {
-        return this.storeService.getStores(StoreQuery.builder().page(page).limit(limit).storekeeperId(storekeeperId).build());
+            @RequestParam(name = "owner_id") String ownerId) {
+        return this.storeService.getStores(StoreQuery.builder().page(page).limit(limit).ownerId(ownerId).build());
     }
 
 }

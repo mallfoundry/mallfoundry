@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+public class StorageException extends RuntimeException {
 
-    int DEFAULT_LIMIT = 20;
+    public StorageException(String message) {
+        super(message);
+    }
 
-    int MIN_LIMIT = 1;
+    public StorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    int MAX_LIMIT = 100;
-
-    Integer getPage();
-
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+    public StorageException(Throwable cause) {
+        super(cause);
+    }
 }

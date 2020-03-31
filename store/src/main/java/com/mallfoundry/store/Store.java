@@ -41,14 +41,15 @@ public class Store {
     @Column(name = "name_")
     private String name;
 
+    @JsonProperty("logo_url")
     @Column(name = "logo_url_")
     private String logoUrl;
 
-    @JsonProperty("storekeeper_id")
-    @Column(name = "storekeeper_id_")
-    private String storekeeperId;
+    @JsonProperty("owner_id")
+    @Column(name = "owner_id_")
+    private String ownerId;
 
-    @JsonProperty("created_time")
+    @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "created_time_")
     private Date createdTime;
 
@@ -57,7 +58,6 @@ public class Store {
         this.setName(name);
         this.setLogoUrl(logoUrl);
     }
-
 
     public void initialize() {
         this.setCreatedTime(new Date());

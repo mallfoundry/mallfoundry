@@ -44,6 +44,7 @@
     </properties>
 
     <modules>
+        <module>storage-api</module>
         <module>common</module>
         <module>autoconfigure</module>
         <module>core</module>
@@ -67,6 +68,13 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- mall api libraries -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-storage-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
 
             <!-- mall libraries -->
             <dependency>

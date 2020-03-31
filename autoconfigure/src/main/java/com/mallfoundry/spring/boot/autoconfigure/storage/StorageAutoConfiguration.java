@@ -53,8 +53,8 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
                 return StorageConfiguration.StoreType.LOCAL;
             case FTP:
                 return StorageConfiguration.StoreType.FTP;
-            case ALI_CLOUD_OOS:
-                return StorageConfiguration.StoreType.ALI_CLOUD_OOS;
+            case ALI_CLOUD_OSS:
+                return StorageConfiguration.StoreType.ALI_CLOUD_OSS;
             default:
                 return null;
         }

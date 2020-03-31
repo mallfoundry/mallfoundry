@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.data.PageLimit;
+import com.mallfoundry.data.PageLimitSupport;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class OrderQuery extends PageLimit {
+public class OrderQuery extends PageLimitSupport {
 
     private String title;
 

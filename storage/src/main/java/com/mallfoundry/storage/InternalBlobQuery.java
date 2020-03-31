@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+import com.mallfoundry.data.PageLimitSupport;
+import lombok.Getter;
+import lombok.Setter;
 
-    int DEFAULT_LIMIT = 20;
+@Getter
+@Setter
+public class InternalBlobQuery extends PageLimitSupport implements BlobQuery {
 
-    int MIN_LIMIT = 1;
+    private String bucket;
 
-    int MAX_LIMIT = 100;
+    private String path;
 
-    Integer getPage();
+    private BlobType type;
 
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+    @Override
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
 }

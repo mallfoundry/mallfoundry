@@ -20,8 +20,11 @@ import java.io.IOException;
 
 public interface StorageSystem {
 
+//    void createBucket(Bucket bucket);
+
     StorageObject storeObject(ObjectResource resource) throws IOException;
 
     void deleteObject(String bucket, String path);
+
 
 }

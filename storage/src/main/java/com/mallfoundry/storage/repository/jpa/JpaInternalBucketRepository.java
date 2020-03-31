@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage.repository.jpa;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+import com.mallfoundry.storage.InternalBucketRepository;
+import com.mallfoundry.storage.InternalBucket;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    int DEFAULT_LIMIT = 20;
-
-    int MIN_LIMIT = 1;
-
-    int MAX_LIMIT = 100;
-
-    Integer getPage();
-
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+@Repository
+public interface JpaInternalBucketRepository
+        extends InternalBucketRepository, JpaRepository<InternalBucket, String> {
 }

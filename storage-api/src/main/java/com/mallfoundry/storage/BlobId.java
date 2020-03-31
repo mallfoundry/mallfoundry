@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.storage;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
+import java.io.Serializable;
 
-    int DEFAULT_LIMIT = 20;
+public interface BlobId extends Serializable {
 
-    int MIN_LIMIT = 1;
+    String getBucket();
 
-    int MAX_LIMIT = 100;
+    String getPath();
 
-    Integer getPage();
-
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
 }

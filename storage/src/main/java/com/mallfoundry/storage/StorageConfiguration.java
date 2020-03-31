@@ -47,7 +47,7 @@ public class StorageConfiguration {
     }
 
     public enum StoreType {
-        LOCAL, FTP, ALI_CLOUD_OOS
+        LOCAL, FTP, ALI_CLOUD_OSS
     }
 
     public static class Store {

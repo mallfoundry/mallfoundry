@@ -14,22 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.store.inventory;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
-
-    int DEFAULT_LIMIT = 20;
-
-    int MIN_LIMIT = 1;
-
-    int MAX_LIMIT = 100;
-
-    Integer getPage();
-
-    void setPage(Integer page);
-
-    Integer getLimit();
-
-    void setLimit(Integer limit);
+public class Test {
 }

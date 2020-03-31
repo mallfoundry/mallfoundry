@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.rest;
+package com.mallfoundry.store.product.rest;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;

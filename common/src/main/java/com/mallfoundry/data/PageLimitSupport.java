@@ -16,20 +16,27 @@
 
 package com.mallfoundry.data;
 
-public interface PageLimit {
-    int DEFAULT_PAGE = 1;
 
-    int DEFAULT_LIMIT = 20;
+import lombok.Getter;
 
-    int MIN_LIMIT = 1;
+import java.util.Objects;
 
-    int MAX_LIMIT = 100;
+@Getter
+public abstract class PageLimitSupport implements PageLimit {
 
-    Integer getPage();
+    private Integer page = DEFAULT_PAGE;
 
-    void setPage(Integer page);
+    private Integer limit = DEFAULT_LIMIT;
 
-    Integer getLimit();
+    public void setPage(Integer page) {
+        if (Objects.nonNull(page)) {
+            this.page = Math.max(DEFAULT_PAGE, page);
+        }
+    }
 
-    void setLimit(Integer limit);
+    public void setLimit(Integer limit) {
+        if (Objects.nonNull(limit)) {
+            this.limit = Math.min(Math.max(MIN_LIMIT, limit), MAX_LIMIT);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,20 @@
 
 package com.mallfoundry.storage;
 
-import java.io.IOException;
+import com.mallfoundry.data.SliceList;
 
-public class FtpStorageSystem implements StorageSystem {
+import java.util.Optional;
 
-    private final StorageConfiguration configuration;
+public interface InternalBlobRepository {
 
-    public FtpStorageSystem(StorageConfiguration configuration) {
-        this.configuration = configuration;
-    }
+    Optional<InternalBlob> findById(InternalBlobId blobId);
 
-    @Override
-    public StorageObject storeObject(ObjectResource resource) throws IOException {
-        System.out.println(configuration);
-        return null;
-    }
+    boolean existsById(InternalBlobId blobId);
 
-    @Override
-    public void deleteObject(String bucket, String path) {
+    InternalBlob save(InternalBlob blob);
 
-    }
+    void deleteById(InternalBlobId blobId);
+
+    SliceList<Blob> findAll(BlobQuery blobQuery);
+
 }
