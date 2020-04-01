@@ -19,6 +19,7 @@ package com.mallfoundry.storage;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.storage.acl.Owner;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface StorageService {
@@ -35,7 +36,7 @@ public interface StorageService {
 
     void deleteBucket(String bucketName);
 
-    Blob storeBlob(Blob blob) throws StorageException;
+    Blob storeBlob(Blob blob) throws StorageException, IOException;
 
     void deleteBlob(String bucketName, String path);
 

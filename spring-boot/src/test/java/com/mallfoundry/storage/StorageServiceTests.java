@@ -71,8 +71,8 @@ public class StorageServiceTests {
     @Test
     public void testStoreBlob() throws IOException {
         Bucket bucket = this.storageService.getBucket("test").orElseThrow();
-        Blob blob = bucket.createBlob("/abc/test2.txt", FileUtils.openInputStream(new File("D:\\adb.txt")));
-        this.storageService.storeBlob(blob);
+        this.storageService.storeBlob(bucket.createBlob("/abc/test2.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
+        this.storageService.storeBlob(bucket.createBlob("/abc/test3.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
     }
 
     @Test

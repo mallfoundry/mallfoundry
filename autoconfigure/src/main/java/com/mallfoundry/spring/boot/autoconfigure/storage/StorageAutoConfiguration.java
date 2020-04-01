@@ -16,9 +16,10 @@
 
 package com.mallfoundry.spring.boot.autoconfigure.storage;
 
+import com.mallfoundry.storage.LocalStorageSystem;
+import com.mallfoundry.storage.SharedBlobRepository;
 import com.mallfoundry.storage.StorageConfiguration;
 import com.mallfoundry.storage.StorageSystem;
-import com.mallfoundry.storage.StorageSystems;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,9 +35,10 @@ import org.springframework.web.servlet.resource.EncodedResourceResolver;
 public class StorageAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
-    @ConditionalOnClass(StorageSystem.class)
-    public StorageSystem storageSystem(StorageProperties properties) {
-        return StorageSystems.newStorageSystem(this.getConfiguration(properties));
+    @ConditionalOnClass(LocalStorageSystem.class)
+    @ConditionalOnProperty(prefix = "mall.storage.store", name = "type", havingValue = "local")
+    public StorageSystem storageSystem(SharedBlobRepository sharedBlobRepository, StorageProperties properties) {
+        return new LocalStorageSystem(sharedBlobRepository, this.getConfiguration(properties));
     }
 
     private StorageConfiguration getConfiguration(StorageProperties properties) {

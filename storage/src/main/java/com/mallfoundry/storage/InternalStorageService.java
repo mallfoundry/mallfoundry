@@ -92,7 +92,7 @@ public class InternalStorageService implements StorageService {
         return this.blobRepository.findAll(query);
     }
 
-    private void makeDirectories(InternalBlob blob) {
+    private void makeDirectories(InternalBlob blob) throws IOException {
         Blob parentBlob = BlobDirectories.getParent(blob);
         if (Objects.nonNull(parentBlob)) {
             if (!this.blobRepository.existsById(InternalBlobId.of(parentBlob.getBlobId()))) {
@@ -104,15 +104,10 @@ public class InternalStorageService implements StorageService {
 
     @Transactional
     @Override
-    public Blob storeBlob(Blob blob) throws StorageException {
+    public Blob storeBlob(Blob blob) throws StorageException, IOException {
         InternalBlob internalBlob = InternalBlob.of(blob);
         makeDirectories(internalBlob);
-
-        try {
-            storageSystem.storeBlob(internalBlob);
-        } catch (IOException e) {
-            throw new StorageException(e);
-        }
+        this.storageSystem.storeBlob(internalBlob);
         return this.blobRepository.save(internalBlob);
     }
 

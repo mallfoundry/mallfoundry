@@ -16,34 +16,48 @@
 
 package com.mallfoundry.storage;
 
-import com.mallfoundry.storage.internal.PathUtils;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class LocalStorageSystem implements StorageSystem {
 
-    @Getter
-    private StorageConfiguration configuration;
+    private final SharedBlobRepository sharedBlobRepository;
 
-    public LocalStorageSystem(StorageConfiguration configuration) {
+    @Getter
+    private final StorageConfiguration configuration;
+
+    public LocalStorageSystem(SharedBlobRepository sharedBlobRepository,
+                              StorageConfiguration configuration) {
+        this.sharedBlobRepository = sharedBlobRepository;
         this.configuration = configuration;
     }
 
     @Override
     public void storeBlob(Blob blob) throws IOException {
         String path = PathUtils.join(blob.getBucket(), blob.getPath());
-        File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
         if (blob.isFile()) {
-            FileUtils.touch(storeFile);
-            // close resource.
-            try (blob) {
-                FileUtils.copyToFile(blob.getInputStream(), storeFile);
+            try (var sharedBlob = SharedBlob.of(blob)) {
+                var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
+                if (Objects.isNull(existsSharedBlob)) {
+                    File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
+                    FileUtils.touch(storeFile);
+                    FileUtils.copyFile(sharedBlob.getFile(), storeFile);
+                    sharedBlob.setUrl(this.getHttpUrl(path));
+                    this.sharedBlobRepository.save(sharedBlob);
+                    blob.setUrl(sharedBlob.getUrl());
+                    blob.setSize(sharedBlob.getSize());
+                } else {
+                    sharedBlob.setUrl(existsSharedBlob.getUrl());
+                    sharedBlob.setPath(existsSharedBlob.getPath());
+                }
+
+                blob.setUrl(sharedBlob.getUrl());
+                blob.setSize(sharedBlob.getSize());
             }
-            blob.setSize(FileUtils.sizeOf(storeFile));
-            blob.setUrl(this.getHttpUrl(path));
         }
     }
 

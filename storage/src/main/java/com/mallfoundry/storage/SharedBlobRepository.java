@@ -16,13 +16,9 @@
 
 package com.mallfoundry.storage;
 
-import lombok.Getter;
-import lombok.Setter;
+public interface SharedBlobRepository {
 
-@Getter
-@Setter
-public class BlobFile {
-    private String path;
-    private String url;
-    private String md5;
+    SharedBlob findByBlob(SharedBlob blob);
+
+    SharedBlob save(SharedBlob blob);
 }

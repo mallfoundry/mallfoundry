@@ -20,9 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * shop.storage.store.type=ali_cloud_oos
- * shop.storage.store.directory=/data_dir
- * shop.storage.store.ali-cloud-oss.username=sss
+ * mall.storage.store.type=ali_cloud_oos
+ * mall.storage.store.directory=/data_dir
+ * mall.storage.store.ali-cloud-oss.username=sss
  */
 public class StorageConfiguration {
 

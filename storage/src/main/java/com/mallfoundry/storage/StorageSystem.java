@@ -24,5 +24,4 @@ public interface StorageSystem {
 
     void deleteObject(String bucket, String path);
 
-
 }
