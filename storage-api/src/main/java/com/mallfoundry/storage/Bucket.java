@@ -18,6 +18,7 @@ package com.mallfoundry.storage;
 
 import com.mallfoundry.storage.acl.Owner;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,6 +31,8 @@ public interface Bucket {
     String getName();
 
     void setName(String name);
+
+    Blob createBlob(String path, File file) throws IOException;
 
     Blob createBlob(String path, InputStream inputStream) throws IOException;
 

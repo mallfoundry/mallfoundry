@@ -18,17 +18,20 @@ package com.mallfoundry.storage;
 
 import com.mallfoundry.data.SliceList;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface InternalBlobRepository {
 
     Optional<InternalBlob> findById(InternalBlobId blobId);
 
+    List<InternalBlob> findAllByBucketAndIndexes(String bucket, List<String> indexes);
+
     boolean existsById(InternalBlobId blobId);
 
     InternalBlob save(InternalBlob blob);
 
-    void deleteById(InternalBlobId blobId);
+    void deleteAll(Iterable<? extends InternalBlob> entities);
 
     SliceList<Blob> findAll(BlobQuery blobQuery);
 

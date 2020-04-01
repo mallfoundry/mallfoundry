@@ -16,13 +16,12 @@
 
 package com.mallfoundry.storage;
 
+import com.mallfoundry.storage.internal.PathUtils;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 public class LocalStorageSystem implements StorageSystem {
 
@@ -34,22 +33,18 @@ public class LocalStorageSystem implements StorageSystem {
     }
 
     @Override
-    public StorageObject storeObject(ObjectResource resource) throws IOException {
-        String path = PathUtils.join(resource.getBucket(), resource.getPath());
+    public void storeBlob(Blob blob) throws IOException {
+        String path = PathUtils.join(blob.getBucket(), blob.getPath());
         File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
-        FileUtils.touch(storeFile);
-        // close resource.
-        try (resource) {
-            FileUtils.copyToFile(resource.getInputStream(), storeFile);
+        if (blob.isFile()) {
+            FileUtils.touch(storeFile);
+            // close resource.
+            try (blob) {
+                FileUtils.copyToFile(blob.getInputStream(), storeFile);
+            }
+            blob.setSize(FileUtils.sizeOf(storeFile));
+            blob.setUrl(this.getHttpUrl(path));
         }
-        StorageObject storageObject = new StorageObject();
-        storageObject.setId(UUID.randomUUID().toString());
-        storageObject.setBucket(resource.getBucket());
-        storageObject.setFilename(FilenameUtils.getName(resource.getPath()));
-        storageObject.setPath(FilenameUtils.getPathNoEndSeparator(resource.getPath()));
-        storageObject.setSize(storeFile.length());
-        storageObject.setUrl(this.getHttpUrl(path));
-        return storageObject;
     }
 
     @Override

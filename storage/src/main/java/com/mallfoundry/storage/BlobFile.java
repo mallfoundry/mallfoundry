@@ -16,18 +16,13 @@
 
 package com.mallfoundry.storage;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.Setter;
 
-public enum BlobType {
-    DIRECTORY, FILE;
-
-    @JsonValue
-    private String lowercase() {
-        return this.name().toLowerCase();
-    }
-
-    @Override
-    public String toString() {
-        return this.lowercase();
-    }
+@Getter
+@Setter
+public class BlobFile {
+    private String path;
+    private String url;
+    private String md5;
 }

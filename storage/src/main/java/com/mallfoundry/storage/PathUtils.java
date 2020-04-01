@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,31 @@ package com.mallfoundry.storage;
 import org.apache.commons.io.FilenameUtils;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 class PathUtils {
 
     public static final String PATH_SEPARATOR = "/";
 
     public static final String ROOT_PATH = PATH_SEPARATOR;
+
+    public static boolean isRootPath(String path) {
+        return ROOT_PATH.equals(path) || Objects.isNull(path);
+    }
+
+    public static List<String> resolveIndexes(String path) {
+        List<String> indexes = new ArrayList<>();
+        String parentPath = path;
+        while (!isRootPath(parentPath)) {
+            parentPath = getParentPath(parentPath);
+            indexes.add(parentPath);
+        }
+
+        return indexes;
+    }
 
     public static String fullPath(String path) {
         return path.endsWith(PATH_SEPARATOR) ? FilenameUtils.getFullPathNoEndSeparator(path) : path;
@@ -34,13 +53,6 @@ class PathUtils {
         return FilenameUtils.getFullPathNoEndSeparator(path);
     }
 
-    /**
-     * Join path.
-     *
-     * @param first the path string or initial part of the path string
-     * @param more  additional strings to be joined to form the path string
-     * @return join path string.
-     */
     static String join(String first, String... more) {
         String path = Paths.get(first, more).toString();
         return path.replaceAll("\\\\", "/");

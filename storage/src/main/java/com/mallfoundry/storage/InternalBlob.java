@@ -17,27 +17,45 @@
 package com.mallfoundry.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringStringMapConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaTypeFactory;
+import org.springframework.util.MimeType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -58,17 +76,27 @@ public class InternalBlob implements Blob {
     @Column(name = "name_")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_")
-    private BlobType type = BlobType.FILE;
+    private BlobType type;
 
     @Column(name = "url_")
     private String url;
 
     @Column(name = "size_")
-    private int size;
+    private long size;
 
+    @JsonProperty("content_type")
     @Column(name = "content_type_")
     private String contentType;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumns({
+            @JoinColumn(name = "path_", referencedColumnName = "path_"),
+            @JoinColumn(name = "bucket_", referencedColumnName = "bucket_")
+    })
+    private List<InternalBlobIndex> indexes = new ArrayList<>();
 
     @Lob
     @Column(name = "metadata_")
@@ -85,11 +113,17 @@ public class InternalBlob implements Blob {
 
     public InternalBlob(BlobId blobId) {
         this.setBlobId(InternalBlobId.of(blobId));
+        this.createDirectory();
+    }
+
+    public InternalBlob(BlobId blobId, File file) throws IOException {
+        this(blobId, FileUtils.openInputStream(file));
     }
 
     public InternalBlob(BlobId blobId, InputStream inputStream) {
         this.setBlobId(InternalBlobId.of(blobId));
         this.setInputStream(inputStream);
+        this.createFile();
     }
 
     public static InternalBlob of(Blob blob) {
@@ -98,6 +132,7 @@ public class InternalBlob implements Blob {
         return internalBlob;
     }
 
+    @JsonIgnore
     @Override
     public BlobId getBlobId() {
         return new InternalBlobId(this.bucket, this.path);
@@ -109,18 +144,25 @@ public class InternalBlob implements Blob {
         this.setPath(blobId.getPath());
     }
 
+    public void setPath(String path) {
+        this.path = path;
+        this.resolveIndexes();
+    }
+
     @Override
     public String getName() {
         return StringUtils.isEmpty(this.name) ?
                 FilenameUtils.getName(this.getPath()) : this.name;
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isDirectory() {
         return BlobType.DIRECTORY == this.type;
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isFile() {
@@ -133,8 +175,43 @@ public class InternalBlob implements Blob {
     }
 
     @Override
-    public InputStream getInputStream() {
-        return this.inputStream;
+    public InputStream getInputStream() throws StorageException {
+        if (Objects.nonNull(this.inputStream)) {
+            return this.inputStream;
+        }
+
+        if (Objects.nonNull(this.url)) {
+            try {
+                return new UrlResource(this.url).getInputStream();
+            } catch (Exception e) {
+                throw new StorageException(e);
+            }
+        }
+
+        return null;
+    }
+
+    private void resolveIndexes() {
+        this.indexes =
+                PathUtils.resolveIndexes(this.getPath())
+                        .stream().map(index -> new InternalBlobIndex(this.getBucket(), this.getPath(), index))
+                        .collect(Collectors.toList());
+    }
+
+    public String getContentType() {
+        if (StringUtils.isNotEmpty(this.contentType)) {
+            return this.contentType;
+        }
+
+        return Optional.ofNullable(this.getName())
+                .flatMap(MediaTypeFactory::getMediaType)
+                .map(MimeType::toString)
+                .orElse(null);
+    }
+
+    @Override
+    public void createFile() {
+        this.setType(BlobType.FILE);
     }
 
     @Override
@@ -150,5 +227,12 @@ public class InternalBlob implements Blob {
     @Override
     public Builder toBuilder() {
         return new Builder(this);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (Objects.nonNull(this.inputStream)) {
+            this.inputStream.close();
+        }
     }
 }

@@ -16,13 +16,13 @@
 
 package com.mallfoundry.storage.rest;
 
-import com.mallfoundry.storage.ObjectResource;
-import com.mallfoundry.storage.StorageObject;
-import com.mallfoundry.storage.StorageSystem;
+import com.mallfoundry.data.SliceList;
+import com.mallfoundry.storage.Blob;
+import com.mallfoundry.storage.StorageService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @RequestMapping("/v1/storage")
 @RestController
@@ -38,26 +37,32 @@ public class StorageResourceV1 {
 
     private final AntPathMatcher objectPathMatcher = new AntPathMatcher();
 
-    private final StorageSystem storageSystem;
+    private final StorageService storageService;
 
-    public StorageResourceV1(StorageSystem storageSystem) {
-        this.storageSystem = storageSystem;
+    public StorageResourceV1(StorageService storageService) {
+        this.storageService = storageService;
     }
 
-    @PostMapping("/buckets/{bucket}/objects/**")
-    public StorageObject storeObject(@PathVariable("bucket") String bucket,
-                                     @RequestParam("file") MultipartFile file,
-                                     HttpServletRequest request) throws IOException {
-        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
+    @GetMapping("/buckets/{bucket}/blobs")
+    public SliceList<Blob> storeObject(@PathVariable("bucket") String bucket,
+                                       @RequestParam(required = false) String path) {
+        return this.storageService.getBlobs(this.storageService.createBlobQuery().toBuilder().bucket(bucket).path(path).build());
     }
 
-    @PostMapping("/buckets/{bucket}/images/**")
-    public StorageObject storeImage(@PathVariable("bucket") String bucket,
-                                    @RequestParam("file") MultipartFile file,
-                                    HttpServletRequest request) throws IOException {
-        System.out.println(file.getOriginalFilename());
-        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
-    }
+//    @PostMapping("/buckets/{bucket}/objects/**")
+//    public StorageObject storeObject(@PathVariable("bucket") String bucket,
+//                                     @RequestParam("file") MultipartFile file,
+//                                     HttpServletRequest request) throws IOException {
+//        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
+//    }
+//
+//    @PostMapping("/buckets/{bucket}/images/**")
+//    public StorageObject storeImage(@PathVariable("bucket") String bucket,
+//                                    @RequestParam("file") MultipartFile file,
+//                                    HttpServletRequest request) throws IOException {
+//        System.out.println(file.getOriginalFilename());
+//        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
+//    }
 
     private String getObjectPath(HttpServletRequest request, MultipartFile file) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();

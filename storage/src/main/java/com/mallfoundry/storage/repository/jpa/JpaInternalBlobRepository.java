@@ -28,10 +28,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -39,6 +41,10 @@ public interface JpaInternalBlobRepository
         extends InternalBlobRepository,
         JpaRepository<InternalBlob, InternalBlobId>,
         JpaSpecificationExecutor<InternalBlob> {
+
+    @Query("from InternalBlob where bucket=?1 and path in (select path from InternalBlobIndex where bucket = ?1 and index in (?2) )")
+    @Override
+    List<InternalBlob> findAllByBucketAndIndexes(String bucket, List<String> indexes);
 
     @Override
     default SliceList<Blob> findAll(BlobQuery blobQuery) {

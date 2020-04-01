@@ -16,11 +16,12 @@
 
 package com.mallfoundry.storage;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
 
-public interface Blob extends Serializable {
+public interface Blob extends Serializable, Closeable {
 
     BlobId getBlobId();
 
@@ -30,13 +31,13 @@ public interface Blob extends Serializable {
 
     void setBucket(String bucket);
 
-    BlobType getType();
-
-    String getName();
-
     String getPath();
 
     void setPath(String path);
+
+    BlobType getType();
+
+    String getName();
 
     boolean isDirectory();
 
@@ -44,21 +45,25 @@ public interface Blob extends Serializable {
 
     String getUrl();
 
+    void setUrl(String url);
+
     Blob getParent();
 
-    int getSize();
+    long getSize();
 
-    void setSize(int size);
+    void setSize(long size);
 
     String getContentType();
 
     void setContentType(String contentType);
 
-    InputStream getInputStream();
+    InputStream getInputStream() throws StorageException;
 
     Map<String, String> getMetadata();
 
     void setMetadata(Map<String, String> metadata);
+
+    void createFile();
 
     void createDirectory();
 

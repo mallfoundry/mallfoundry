@@ -22,18 +22,24 @@ import com.mallfoundry.storage.acl.Owner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class InternalStorageService implements StorageService {
 
+    private final StorageSystem storageSystem;
+
     private final InternalBucketRepository bucketRepository;
 
     private final InternalBlobRepository blobRepository;
 
-    public InternalStorageService(InternalBucketRepository bucketRepository,
+    public InternalStorageService(StorageSystem storageSystem,
+                                  InternalBucketRepository bucketRepository,
                                   InternalBlobRepository blobRepository) {
+        this.storageSystem = storageSystem;
         this.bucketRepository = bucketRepository;
         this.blobRepository = blobRepository;
     }
@@ -86,17 +92,26 @@ public class InternalStorageService implements StorageService {
         return this.blobRepository.findAll(query);
     }
 
-    @Transactional
-    @Override
-    public Blob storeBlob(Blob blob) throws StorageException {
-        InternalBlob internalBlob = InternalBlob.of(blob);
+    private void makeDirectories(InternalBlob blob) {
         Blob parentBlob = BlobDirectories.getParent(blob);
-
         if (Objects.nonNull(parentBlob)) {
             if (!this.blobRepository.existsById(InternalBlobId.of(parentBlob.getBlobId()))) {
                 storeBlob(parentBlob);
             }
-            internalBlob.setParent(InternalBlob.of(parentBlob));
+            blob.setParent(InternalBlob.of(parentBlob));
+        }
+    }
+
+    @Transactional
+    @Override
+    public Blob storeBlob(Blob blob) throws StorageException {
+        InternalBlob internalBlob = InternalBlob.of(blob);
+        makeDirectories(internalBlob);
+
+        try {
+            storageSystem.storeBlob(internalBlob);
+        } catch (IOException e) {
+            throw new StorageException(e);
         }
         return this.blobRepository.save(internalBlob);
     }
@@ -104,6 +119,11 @@ public class InternalStorageService implements StorageService {
     @Transactional
     @Override
     public void deleteBlob(String bucketName, String path) {
-        this.blobRepository.deleteById(new InternalBlobId(bucketName, path));
+        this.blobRepository.findById(new InternalBlobId(bucketName, path))
+                .ifPresent(blob -> {
+                    List<InternalBlob> blobs = this.blobRepository.findAllByBucketAndIndexes(bucketName, List.of(path));
+                    blobs.add(blob);
+                    this.blobRepository.deleteAll(blobs);
+                });
     }
 }

@@ -27,6 +27,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 @Getter
@@ -45,6 +47,11 @@ public class InternalBucket implements Bucket {
     @Override
     public void setOwner(Owner owner) {
         this.owner = InternalOwner.of(owner);
+    }
+
+    @Override
+    public Blob createBlob(String path, File file) throws IOException {
+        return new InternalBlob(new InternalBlobId(this.getName(), path), file);
     }
 
     public static InternalBucket of(Bucket bucket) {

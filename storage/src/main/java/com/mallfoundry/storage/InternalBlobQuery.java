@@ -17,6 +17,8 @@
 package com.mallfoundry.storage;
 
 import com.mallfoundry.data.PageLimitSupport;
+import com.mallfoundry.storage.BlobQuery;
+import com.mallfoundry.storage.BlobType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -20,6 +20,7 @@ import com.mallfoundry.data.SliceList;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +60,7 @@ public class StorageServiceTests {
     @Test
     @Transactional
     public void testGetBlob() throws IOException {
-        this.storageService.getBlob("test", "/abc/test.txt")
+        this.storageService.getBlob("test", "/abc3/test2/c.txt")
                 .ifPresent(blob -> {
                     System.out.println(blob);
                     Blob parent = blob.getParent();
@@ -70,14 +71,14 @@ public class StorageServiceTests {
     @Test
     public void testStoreBlob() throws IOException {
         Bucket bucket = this.storageService.getBucket("test").orElseThrow();
-        Blob blob = bucket.createBlob("/abc/test.txt", FileUtils.openInputStream(new File("D:\\adb.txt")));
+        Blob blob = bucket.createBlob("/abc/test2.txt", FileUtils.openInputStream(new File("D:\\adb.txt")));
         this.storageService.storeBlob(blob);
     }
 
     @Test
     public void testStoreBlob2() throws IOException {
         Bucket bucket = this.storageService.getBucket("test").orElseThrow();
-        Blob blob = bucket.createBlob("/abc2/test2.txt", null);
+        Blob blob = bucket.createBlob("/abc2/test_dir3");
         Blob storeBlob = this.storageService.storeBlob(blob);
         System.out.println(storeBlob);
     }
@@ -121,6 +122,6 @@ public class StorageServiceTests {
     @Rollback(false)
     @Transactional
     public void testDeleteBlob() {
-        this.storageService.deleteBlob("test", "/abc3/test2");
+        this.storageService.deleteBlob("test", "/abc3");
     }
 }
