@@ -25,14 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class StoreService {
+public class InternalStoreService implements StoreService {
 
     private final StoreRepository storeRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public StoreService(StoreRepository storeRepository,
-                        ApplicationEventPublisher eventPublisher) {
+    public InternalStoreService(StoreRepository storeRepository,
+                                ApplicationEventPublisher eventPublisher) {
         this.storeRepository = storeRepository;
         this.eventPublisher = eventPublisher;
     }
@@ -62,5 +62,10 @@ public class StoreService {
         Store store = this.storeRepository.findById(storeId).orElseThrow();
         this.eventPublisher.publishEvent(new StoreCancelledEvent(store));
         this.storeRepository.delete(store);
+    }
+
+    @Override
+    public StoreId createStoreId(String id) {
+        return new InternalStoreId(id);
     }
 }

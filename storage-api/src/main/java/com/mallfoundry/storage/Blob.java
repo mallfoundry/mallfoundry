@@ -33,8 +33,6 @@ public interface Blob extends Serializable, Closeable {
 
     String getPath();
 
-    void setPath(String path);
-
     BlobType getType();
 
     String getName();

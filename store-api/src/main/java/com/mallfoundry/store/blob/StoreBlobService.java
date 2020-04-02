@@ -16,5 +16,25 @@
 
 package com.mallfoundry.store.blob;
 
+import com.mallfoundry.data.SliceList;
+import com.mallfoundry.storage.Blob;
+import com.mallfoundry.storage.BlobQuery;
+import com.mallfoundry.storage.Bucket;
+import com.mallfoundry.store.StoreId;
+
+import java.io.IOException;
+import java.util.Optional;
+
 public interface StoreBlobService {
+
+    BlobQuery createBlobQuery();
+
+    String getBucketName(StoreId storeId);
+
+    Optional<Bucket> getBucket(StoreId storeId);
+
+    Blob storeBlob(Blob blob) throws IOException, StoreBlobException;
+
+    SliceList<Blob> getBlobs(BlobQuery query);
+
 }

@@ -28,10 +28,9 @@
     <artifactId>mall-storage-api</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-commons</artifactId>
+            <artifactId>mall-commons-api</artifactId>
         </dependency>
 
         <dependency>
@@ -39,7 +38,6 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
 </project>

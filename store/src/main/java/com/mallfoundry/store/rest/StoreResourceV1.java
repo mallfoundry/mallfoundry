@@ -20,7 +20,7 @@ import com.mallfoundry.data.SliceList;
 import com.mallfoundry.security.SecurityUserHolder;
 import com.mallfoundry.store.Store;
 import com.mallfoundry.store.StoreQuery;
-import com.mallfoundry.store.StoreService;
+import com.mallfoundry.store.InternalStoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,9 +37,9 @@ import java.util.Optional;
 @RequestMapping("/v1")
 public class StoreResourceV1 {
 
-    private final StoreService storeService;
+    private final InternalStoreService storeService;
 
-    public StoreResourceV1(StoreService storeService) {
+    public StoreResourceV1(InternalStoreService storeService) {
         this.storeService = storeService;
     }
 

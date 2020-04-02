@@ -18,7 +18,6 @@ package com.mallfoundry.store;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.mallfoundry.util.UniqueIdentifier;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -27,7 +26,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Embeddable
-public class InternalStoreId implements StoreId, UniqueIdentifier<String> {
+public class InternalStoreId implements StoreId {
 
     @JsonValue
     @Column(name = "store_id_")

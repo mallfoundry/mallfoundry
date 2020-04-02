@@ -16,5 +16,8 @@
 
 package com.mallfoundry.store;
 
-public interface StoreId {
+import com.mallfoundry.util.UniqueIdentifier;
+
+public interface StoreId extends UniqueIdentifier<String> {
+
 }

@@ -18,13 +18,11 @@ package com.mallfoundry.storage;
 
 import org.apache.commons.io.FilenameUtils;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
-class PathUtils {
+abstract class PathUtils extends com.mallfoundry.util.PathUtils {
 
     public static final String PATH_SEPARATOR = "/";
 
@@ -36,12 +34,11 @@ class PathUtils {
 
     public static List<String> resolveIndexes(String path) {
         List<String> indexes = new ArrayList<>();
-        String parentPath = path;
+        String parentPath = normalize(path);
         while (!isRootPath(parentPath)) {
             parentPath = getParentPath(parentPath);
             indexes.add(parentPath);
         }
-
         return indexes;
     }
 
@@ -51,10 +48,5 @@ class PathUtils {
 
     static String getParentPath(String path) {
         return FilenameUtils.getFullPathNoEndSeparator(path);
-    }
-
-    static String join(String first, String... more) {
-        String path = Paths.get(first, more).toString();
-        return path.replaceAll("\\\\", "/");
     }
 }

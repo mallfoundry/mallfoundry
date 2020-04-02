@@ -69,6 +69,7 @@ public class InternalBlob implements Blob {
     @Column(name = "bucket_")
     private String bucket;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "path_")
     private String path;
@@ -145,7 +146,7 @@ public class InternalBlob implements Blob {
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.path = PathUtils.normalize(path);
         this.resolveIndexes();
     }
 

@@ -17,6 +17,7 @@
 package com.mallfoundry.data;
 
 public interface PageLimit {
+
     int DEFAULT_PAGE = 1;
 
     int DEFAULT_LIMIT = 20;

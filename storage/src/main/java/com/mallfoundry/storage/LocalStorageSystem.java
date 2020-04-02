@@ -18,6 +18,7 @@ package com.mallfoundry.storage;
 
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,18 +39,16 @@ public class LocalStorageSystem implements StorageSystem {
 
     @Override
     public void storeBlob(Blob blob) throws IOException {
-        String path = PathUtils.join(blob.getBucket(), blob.getPath());
+        String path = PathUtils.concat(blob.getBucket(), blob.getPath());
         if (blob.isFile()) {
             try (var sharedBlob = SharedBlob.of(blob)) {
                 var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
                 if (Objects.isNull(existsSharedBlob)) {
-                    File storeFile = new File(PathUtils.join(this.getStoreDirectory(), path));
+                    File storeFile = new File(PathUtils.concat(this.getStoreDirectory(), path));
                     FileUtils.touch(storeFile);
                     FileUtils.copyFile(sharedBlob.getFile(), storeFile);
                     sharedBlob.setUrl(this.getHttpUrl(path));
                     this.sharedBlobRepository.save(sharedBlob);
-                    blob.setUrl(sharedBlob.getUrl());
-                    blob.setSize(sharedBlob.getSize());
                 } else {
                     sharedBlob.setUrl(existsSharedBlob.getUrl());
                     sharedBlob.setPath(existsSharedBlob.getPath());
@@ -63,7 +62,7 @@ public class LocalStorageSystem implements StorageSystem {
 
     @Override
     public void deleteObject(String bucket, String path) {
-        FileUtils.deleteQuietly(new File(PathUtils.join(this.getStoreDirectory(), bucket, path)));
+        FileUtils.deleteQuietly(new File(PathUtils.concat(this.getStoreDirectory(), bucket, path)));
     }
 
     private String getStoreDirectory() {
@@ -72,6 +71,6 @@ public class LocalStorageSystem implements StorageSystem {
 
     private String getHttpUrl(String path) {
         String baseUrl = this.getConfiguration().getHttp().getBaseUrl();
-        return baseUrl + "/" + path;
+        return baseUrl + path;
     }
 }

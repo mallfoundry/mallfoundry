@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreTests {
 
     @Autowired
-    private StoreService storeService;
+    private InternalStoreService storeService;
 
 
     @Rollback(false)
