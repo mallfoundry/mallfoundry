@@ -28,7 +28,7 @@
     <dependencies>
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-common</artifactId>
+            <artifactId>mall-commons</artifactId>
         </dependency>
 
         <dependency>

@@ -2,7 +2,7 @@ package com.mallfoundry.store.rest;
 
 import com.mallfoundry.store.CollectionService;
 import com.mallfoundry.store.CustomCollection;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.InternalStoreId;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class CollectionResourceV1 {
     public CustomCollection saveCollection(@PathVariable("store_id") String storeId,
                                            @RequestBody CustomCollection collection) {
         CustomCollection newCollection =
-                this.collectionService.createCollection(StoreId.of(storeId), collection.getName());
+                this.collectionService.createCollection(InternalStoreId.of(storeId), collection.getName());
         return this.collectionService.saveCollection(newCollection);
     }
 
@@ -57,7 +57,7 @@ public class CollectionResourceV1 {
 
     @GetMapping("/stores/{store_id}/custom-collections")
     public List<CustomCollection> getCollections(@PathVariable("store_id") String storeId) {
-        return this.collectionService.getCollections(StoreId.of(storeId));
+        return this.collectionService.getCollections(InternalStoreId.of(storeId));
     }
 
 }

@@ -18,7 +18,7 @@ package com.mallfoundry.follow.rest;
 
 import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.follow.FollowService;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.InternalStoreId;
 import com.mallfoundry.store.product.ProductId;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,19 +75,19 @@ public class FollowResourceV1 {
     @PostMapping("/customers/{customer_id}/following_stores/{store_id}")
     public void followStore(@PathVariable("customer_id") String customerId,
                             @PathVariable("store_id") String storeId) {
-        this.followService.followStore(new CustomerId(customerId), new StoreId(storeId));
+        this.followService.followStore(new CustomerId(customerId), new InternalStoreId(storeId));
     }
 
     @DeleteMapping("/customers/{customer_id}/following_stores/{store_id}")
     public void unfollowStore(@PathVariable("customer_id") String customerId,
                               @PathVariable("store_id") String storeId) {
-        this.followService.unfollowStore(new CustomerId(customerId), new StoreId(storeId));
+        this.followService.unfollowStore(new CustomerId(customerId), new InternalStoreId(storeId));
     }
 
     @GetMapping("/customers/{customer_id}/following_stores/{store_id}")
     public boolean isFollowingStore(@PathVariable("customer_id") String customerId,
                                     @PathVariable("store_id") String storeId) {
-        return this.followService.isFollowingStore(new CustomerId(customerId), new StoreId(storeId));
+        return this.followService.isFollowingStore(new CustomerId(customerId), new InternalStoreId(storeId));
     }
 
     @GetMapping("/customers/{customer_id}/following_stores")
@@ -102,6 +102,6 @@ public class FollowResourceV1 {
 
     @GetMapping("/stores/{store_id}/followers/count")
     public long getStoreFollowerCount(@PathVariable("store_id") String storeId) {
-        return this.followService.getStoreFollowerCount(new StoreId(storeId));
+        return this.followService.getStoreFollowerCount(new InternalStoreId(storeId));
     }
 }

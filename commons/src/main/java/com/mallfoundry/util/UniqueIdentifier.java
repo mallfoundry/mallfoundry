@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package com.mallfoundry.util;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.Serializable;
 
-public interface CustomCollectionRepository {
+public interface UniqueIdentifier<T extends Serializable> extends Serializable {
 
-    CustomCollection save(CustomCollection collection);
-
-    void deleteById(Long id);
-
-    Optional<CustomCollection> findById(Long id);
-
-    List<CustomCollection> findAllByStoreId(InternalStoreId storeId);
+    T identity();
 }

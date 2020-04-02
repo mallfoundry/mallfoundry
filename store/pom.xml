@@ -54,7 +54,17 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-common</artifactId>
+            <artifactId>mall-storage-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-store-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-commons</artifactId>
         </dependency>
 
         <dependency>

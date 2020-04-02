@@ -44,8 +44,10 @@
     </properties>
 
     <modules>
+        <module>commons-api</module>
         <module>storage-api</module>
-        <module>common</module>
+        <module>store-api</module>
+        <module>commons</module>
         <module>autoconfigure</module>
         <module>core</module>
         <module>identity</module>
@@ -72,7 +74,19 @@
             <!-- mall api libraries -->
             <dependency>
                 <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-commons-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-storage-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-store-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -85,7 +99,7 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-common</artifactId>
+                <artifactId>mall-commons</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

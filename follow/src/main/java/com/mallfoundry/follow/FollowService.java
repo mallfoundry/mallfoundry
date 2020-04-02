@@ -17,7 +17,7 @@
 package com.mallfoundry.follow;
 
 import com.mallfoundry.customer.CustomerId;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.InternalStoreId;
 import com.mallfoundry.store.product.ProductId;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -76,17 +76,17 @@ public class FollowService {
     }
 
     @Transactional
-    public void followStore(CustomerId customerId, StoreId storeId) {
+    public void followStore(CustomerId customerId, InternalStoreId storeId) {
         this.followStoreRepository.save(new FollowStore(customerId, storeId));
     }
 
     @Transactional
-    public void unfollowStore(CustomerId customerId, StoreId storeId) {
+    public void unfollowStore(CustomerId customerId, InternalStoreId storeId) {
         this.followStoreRepository.findOne(Example.of(new FollowStore(customerId, storeId)))
                 .ifPresent(this.followStoreRepository::delete);
     }
 
-    public boolean isFollowingStore(CustomerId customerId, StoreId storeId) {
+    public boolean isFollowingStore(CustomerId customerId, InternalStoreId storeId) {
         return this.followStoreRepository.count(Example.of(new FollowStore(customerId, storeId))) > 0;
     }
 
@@ -95,7 +95,7 @@ public class FollowService {
                 .findAll(Example.of(new FollowStore(customerId)))
                 .stream()
                 .map(FollowStore::getStoreId)
-                .map(StoreId::toString)
+                .map(InternalStoreId::toString)
                 .collect(Collectors.toList());
     }
 
@@ -103,7 +103,7 @@ public class FollowService {
         return this.followStoreRepository.count(Example.of(new FollowStore(customerId)));
     }
 
-    public long getStoreFollowerCount(StoreId storeId) {
+    public long getStoreFollowerCount(InternalStoreId storeId) {
         return this.followStoreRepository.count(Example.of(new FollowStore(storeId)));
     }
 

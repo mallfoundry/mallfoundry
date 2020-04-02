@@ -32,7 +32,7 @@ public class CollectionService {
         this.customCollectionRepository = customCollectionRepository;
     }
 
-    public CustomCollection createCollection(StoreId storeId, String name) {
+    public CustomCollection createCollection(InternalStoreId storeId, String name) {
         CustomCollection collection = new CustomCollection(storeId, name);
         collection.create();
         return collection;
@@ -54,7 +54,7 @@ public class CollectionService {
         return this.customCollectionRepository.findById(id);
     }
 
-    public List<CustomCollection> getCollections(StoreId storeId) {
+    public List<CustomCollection> getCollections(InternalStoreId storeId) {
         return this.customCollectionRepository.findAllByStoreId(storeId);
     }
 

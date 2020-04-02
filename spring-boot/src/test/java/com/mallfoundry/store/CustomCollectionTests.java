@@ -35,7 +35,7 @@ public class CustomCollectionTests {
     @Rollback(false)
     @Test
     public void testAdd() {
-        StoreId storeId = new StoreId("mi");
+        InternalStoreId storeId = new InternalStoreId("mi");
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "手机"));
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "电视/盒子"));
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "笔记本/路由"));

@@ -27,26 +27,26 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Embeddable
-public class StoreId implements UniqueIdentifier<String> {
+public class InternalStoreId implements StoreId, UniqueIdentifier<String> {
 
     @JsonValue
     @Column(name = "store_id_")
     private String id;
 
     @JsonCreator
-    public StoreId(final String id) {
+    public InternalStoreId(final String id) {
         this.id = id;
     }
 
-    public static StoreId of(String idString) {
-        return new StoreId(idString);
+    public static InternalStoreId of(String idString) {
+        return new InternalStoreId(idString);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StoreId storeId = (StoreId) o;
+        InternalStoreId storeId = (InternalStoreId) o;
         return Objects.equals(id, storeId.id);
     }
 

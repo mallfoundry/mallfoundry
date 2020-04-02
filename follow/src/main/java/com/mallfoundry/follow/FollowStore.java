@@ -17,7 +17,7 @@
 package com.mallfoundry.follow;
 
 import com.mallfoundry.customer.CustomerId;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.InternalStoreId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,17 +45,17 @@ public class FollowStore {
     private CustomerId customerId;
 
     @Column(name = "store_id_")
-    private StoreId storeId;
+    private InternalStoreId storeId;
 
     public FollowStore(CustomerId customerId) {
         this.setCustomerId(customerId);
     }
 
-    public FollowStore(StoreId storeId) {
+    public FollowStore(InternalStoreId storeId) {
         this.storeId = storeId;
     }
 
-    public FollowStore(CustomerId customerId, StoreId storeId) {
+    public FollowStore(CustomerId customerId, InternalStoreId storeId) {
         this.customerId = customerId;
         this.storeId = storeId;
     }

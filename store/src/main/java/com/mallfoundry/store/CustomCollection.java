@@ -42,7 +42,7 @@ import java.util.Objects;
 public class CustomCollection implements Comparable<CustomCollection> {
 
     @JsonIgnore
-    private StoreId storeId;
+    private InternalStoreId storeId;
 
     @Id
     @GeneratedValue
@@ -64,13 +64,13 @@ public class CustomCollection implements Comparable<CustomCollection> {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public CustomCollection(StoreId storeId, String name) {
+    public CustomCollection(InternalStoreId storeId, String name) {
         this.setStoreId(storeId);
         this.setName(name);
     }
 
     @Embedded
-    public StoreId getStoreId() {
+    public InternalStoreId getStoreId() {
         return storeId;
     }
 

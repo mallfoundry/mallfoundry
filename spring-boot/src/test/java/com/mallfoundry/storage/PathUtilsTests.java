@@ -17,17 +17,24 @@
 package com.mallfoundry.storage;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.util.Base64Utils;
+
+import java.util.UUID;
 
 public class PathUtilsTests {
 
     public static void main(String[] args) {
-        String filename = "/a/b/c/d/";
-        System.out.println(FilenameUtils.getPath(filename));
-        System.out.println(FilenameUtils.getPathNoEndSeparator(filename));
-        System.out.println(FilenameUtils.getFullPath(filename));
-        System.out.println(FilenameUtils.getFullPathNoEndSeparator(filename));
-        System.out.println(FilenameUtils.normalize(filename, true));
+//        String filename = "/a/b/c/d/";
+//        System.out.println(FilenameUtils.getPath(filename));
+//        System.out.println(FilenameUtils.getPathNoEndSeparator(filename));
+//        System.out.println(FilenameUtils.getFullPath(filename));
+//        System.out.println(FilenameUtils.getFullPathNoEndSeparator(filename));
+//        System.out.println(FilenameUtils.normalize(filename, true));
 
 //        FilenameUtils.normalizeNoEndSeparator()
+
+
+
+        System.out.println(Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes()));
     }
 }

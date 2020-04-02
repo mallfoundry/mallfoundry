@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package com.mallfoundry.store.blob;
 
-import java.util.List;
-import java.util.Optional;
+import com.mallfoundry.store.StoreId;
 
-public interface CustomCollectionRepository {
+public interface StoreBlob {
 
-    CustomCollection save(CustomCollection collection);
+    StoreId getStoreId();
 
-    void deleteById(Long id);
+    String getName();
 
-    Optional<CustomCollection> findById(Long id);
+    String getPath();
 
-    List<CustomCollection> findAllByStoreId(InternalStoreId storeId);
+    String getUrl();
+
 }

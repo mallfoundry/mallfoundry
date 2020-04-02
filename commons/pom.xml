@@ -25,7 +25,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall-common</artifactId>
+    <artifactId>mall-commons</artifactId>
 
     <dependencies>
 
