@@ -30,7 +30,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.util.MimeType;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -39,23 +38,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -91,13 +84,13 @@ public class InternalBlob implements Blob {
     @Column(name = "content_type_")
     private String contentType;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumns({
-            @JoinColumn(name = "path_", referencedColumnName = "path_"),
-            @JoinColumn(name = "bucket_", referencedColumnName = "bucket_")
-    })
-    private List<InternalBlobIndex> indexes = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumns({
+//            @JoinColumn(name = "path_", referencedColumnName = "path_"),
+//            @JoinColumn(name = "bucket_", referencedColumnName = "bucket_")
+//    })
+//    private List<InternalIndexBlob> indexes = new ArrayList<>();
 
     @Lob
     @Column(name = "metadata_")
@@ -147,7 +140,7 @@ public class InternalBlob implements Blob {
 
     public void setPath(String path) {
         this.path = PathUtils.normalize(path);
-        this.resolveIndexes();
+//        this.resolveIndexes();
     }
 
     @Override
@@ -192,12 +185,12 @@ public class InternalBlob implements Blob {
         return null;
     }
 
-    private void resolveIndexes() {
-        this.indexes =
-                PathUtils.resolveIndexes(this.getPath())
-                        .stream().map(index -> new InternalBlobIndex(this.getBucket(), this.getPath(), index))
-                        .collect(Collectors.toList());
-    }
+//    private void resolveIndexes() {
+//        this.indexes =
+//                PathUtils.resolveIndexes(this.getPath())
+//                        .stream().map(path -> new InternalIndexBlob(this.getBucket(), this.getPath(), path))
+//                        .collect(Collectors.toList());
+//    }
 
     public String getContentType() {
         if (StringUtils.isNotEmpty(this.contentType)) {

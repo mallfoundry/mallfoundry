@@ -122,6 +122,6 @@ public class StorageServiceTests {
     @Rollback(false)
     @Transactional
     public void testDeleteBlob() {
-        this.storageService.deleteBlob("test", "/abc3");
+        this.storageService.deleteBlob("store-mi", "/images");
     }
 }

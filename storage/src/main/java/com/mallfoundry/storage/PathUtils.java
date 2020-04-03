@@ -18,8 +18,6 @@ package com.mallfoundry.storage;
 
 import org.apache.commons.io.FilenameUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 abstract class PathUtils extends com.mallfoundry.util.PathUtils {
@@ -30,16 +28,6 @@ abstract class PathUtils extends com.mallfoundry.util.PathUtils {
 
     public static boolean isRootPath(String path) {
         return ROOT_PATH.equals(path) || Objects.isNull(path);
-    }
-
-    public static List<String> resolveIndexes(String path) {
-        List<String> indexes = new ArrayList<>();
-        String parentPath = normalize(path);
-        while (!isRootPath(parentPath)) {
-            parentPath = getParentPath(parentPath);
-            indexes.add(parentPath);
-        }
-        return indexes;
     }
 
     public static String fullPath(String path) {

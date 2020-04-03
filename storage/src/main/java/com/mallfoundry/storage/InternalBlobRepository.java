@@ -25,13 +25,11 @@ public interface InternalBlobRepository {
 
     Optional<InternalBlob> findById(InternalBlobId blobId);
 
-    List<InternalBlob> findAllByBucketAndIndexes(String bucket, List<String> indexes);
-
     boolean existsById(InternalBlobId blobId);
 
     InternalBlob save(InternalBlob blob);
 
-    void deleteAll(Iterable<? extends InternalBlob> entities);
+    void deleteByBucketAndPaths(String bucket, List<String> paths);
 
     SliceList<Blob> findAll(BlobQuery blobQuery);
 

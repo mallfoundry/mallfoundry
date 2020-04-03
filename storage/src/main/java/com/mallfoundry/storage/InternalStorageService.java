@@ -36,12 +36,16 @@ public class InternalStorageService implements StorageService {
 
     private final InternalBlobRepository blobRepository;
 
+    private final IndexBlobService indexBlobService;
+
     public InternalStorageService(StorageSystem storageSystem,
                                   InternalBucketRepository bucketRepository,
-                                  InternalBlobRepository blobRepository) {
+                                  InternalBlobRepository blobRepository,
+                                  IndexBlobService indexBlobService) {
         this.storageSystem = storageSystem;
         this.bucketRepository = bucketRepository;
         this.blobRepository = blobRepository;
+        this.indexBlobService = indexBlobService;
     }
 
     @Override
@@ -108,17 +112,16 @@ public class InternalStorageService implements StorageService {
         InternalBlob internalBlob = InternalBlob.of(blob);
         makeDirectories(internalBlob);
         this.storageSystem.storeBlob(internalBlob);
+        this.indexBlobService.buildIndexes(blob.getBucket(), blob.getPath());
         return this.blobRepository.save(internalBlob);
     }
 
     @Transactional
     @Override
     public void deleteBlob(String bucketName, String path) {
-        this.blobRepository.findById(new InternalBlobId(bucketName, path))
-                .ifPresent(blob -> {
-                    List<InternalBlob> blobs = this.blobRepository.findAllByBucketAndIndexes(bucketName, List.of(path));
-                    blobs.add(blob);
-                    this.blobRepository.deleteAll(blobs);
-                });
+        List<String> paths = this.indexBlobService.getIndexes(bucketName, path);
+        this.blobRepository.deleteByBucketAndPaths(bucketName, paths);
+        this.indexBlobService.deleteIndexes(bucketName, path);
     }
+
 }
