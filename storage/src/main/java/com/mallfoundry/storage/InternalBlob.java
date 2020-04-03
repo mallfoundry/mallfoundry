@@ -19,6 +19,7 @@ package com.mallfoundry.storage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringStringMapConverter;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,8 +59,10 @@ import java.util.Optional;
 @IdClass(InternalBlobId.class)
 public class InternalBlob implements Blob {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "bucket_")
+    @Setter(AccessLevel.PRIVATE)
     private String bucket;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -83,14 +86,6 @@ public class InternalBlob implements Blob {
     @JsonProperty("content_type")
     @Column(name = "content_type_")
     private String contentType;
-
-//    @JsonIgnore
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumns({
-//            @JoinColumn(name = "path_", referencedColumnName = "path_"),
-//            @JoinColumn(name = "bucket_", referencedColumnName = "bucket_")
-//    })
-//    private List<InternalIndexBlob> indexes = new ArrayList<>();
 
     @Lob
     @Column(name = "metadata_")
@@ -138,9 +133,8 @@ public class InternalBlob implements Blob {
         this.setPath(blobId.getPath());
     }
 
-    public void setPath(String path) {
+    private void setPath(String path) {
         this.path = PathUtils.normalize(path);
-//        this.resolveIndexes();
     }
 
     @Override
@@ -169,34 +163,25 @@ public class InternalBlob implements Blob {
     }
 
     @Override
-    public InputStream getInputStream() throws StorageException {
+    public InputStream getInputStream() throws StorageException, IOException {
+        if (this.isDirectory()) {
+            throw new StorageException("The blob is a directory");
+        }
+
         if (Objects.nonNull(this.inputStream)) {
             return this.inputStream;
         }
 
         if (Objects.nonNull(this.url)) {
-            try {
-                return new UrlResource(this.url).getInputStream();
-            } catch (Exception e) {
-                throw new StorageException(e);
-            }
+            return new UrlResource(this.url).getInputStream();
         }
-
-        return null;
+        throw new StorageException("The blob has no stream. ");
     }
-
-//    private void resolveIndexes() {
-//        this.indexes =
-//                PathUtils.resolveIndexes(this.getPath())
-//                        .stream().map(path -> new InternalIndexBlob(this.getBucket(), this.getPath(), path))
-//                        .collect(Collectors.toList());
-//    }
 
     public String getContentType() {
         if (StringUtils.isNotEmpty(this.contentType)) {
             return this.contentType;
         }
-
         return Optional.ofNullable(this.getName())
                 .flatMap(MediaTypeFactory::getMediaType)
                 .map(MimeType::toString)

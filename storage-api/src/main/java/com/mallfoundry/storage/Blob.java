@@ -17,6 +17,7 @@
 package com.mallfoundry.storage;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
@@ -28,8 +29,6 @@ public interface Blob extends Serializable, Closeable {
     void setBlobId(BlobId blobId);
 
     String getBucket();
-
-    void setBucket(String bucket);
 
     String getPath();
 
@@ -55,7 +54,7 @@ public interface Blob extends Serializable, Closeable {
 
     void setContentType(String contentType);
 
-    InputStream getInputStream() throws StorageException;
+    InputStream getInputStream() throws StorageException, IOException;
 
     Map<String, String> getMetadata();
 
