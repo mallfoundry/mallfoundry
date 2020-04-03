@@ -16,13 +16,13 @@
 
 package com.mallfoundry.storage;
 
-public class BucketCapacity {
-    /**
-     * The default size is 2Gb.
-     */
-    public static final long default_size = 1024 * 1024 * 2;
-
-    private long size;
-    private long used;
-    private long available;
+public interface BucketCapacity {
+//    /**
+//     * The default size is 2Gb.
+//     */
+//    public static final long default_size = 1024 * 1024 * 2;
+//
+//    private long size;
+//    private long used;
+//    private long available;
 }
