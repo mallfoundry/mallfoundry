@@ -18,6 +18,7 @@ package com.mallfoundry.store.blob.rest;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.storage.Blob;
+import com.mallfoundry.storage.BlobType;
 import com.mallfoundry.store.StoreService;
 import com.mallfoundry.store.blob.StoreBlobService;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 @RequestMapping("/v1/stores")
 @RestController
@@ -53,12 +55,21 @@ public class StoreBlobResourceV1 {
     public Blob storeBlob(
             @PathVariable("store_id") String storeIdString,
             @RequestParam(required = false) String name,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam(name = "file", required = false) MultipartFile file,
             HttpServletRequest request) throws IOException {
         var storeId = this.storeService.createStoreId(storeIdString);
         var bucket = this.storeBlobService.getBucket(storeId).orElseThrow();
-        var storeBlob = bucket.createBlob(extractBlobPath(request, file), file.getInputStream());
-        storeBlob.rename(StringUtils.isEmpty(name) ? file.getOriginalFilename() : name);
+
+        Blob storeBlob;
+        if (Objects.nonNull(file)) {
+            storeBlob = bucket.createBlob(extractBlobPath(request, file.getOriginalFilename()), file.getInputStream());
+            storeBlob.rename(StringUtils.isEmpty(name) ? file.getOriginalFilename() : name);
+        } else {
+            storeBlob = bucket.createBlob(extractBlobPath(request, name));
+            if (StringUtils.isNotBlank(name)) {
+                storeBlob.rename(name);
+            }
+        }
         return this.storeBlobService.storeBlob(storeBlob);
     }
 
@@ -67,17 +78,20 @@ public class StoreBlobResourceV1 {
             @PathVariable("store_id") String storeId,
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-            String path) {
+            String type, String path) {
+        var typeUpper = StringUtils.upperCase(type);
         var bucketName = this.storeBlobService.getBucketName(this.storeService.createStoreId(storeId));
         return this.storeBlobService.getBlobs(this.storeBlobService.createBlobQuery().toBuilder()
                 .page(page).limit(limit)
-                .bucket(bucketName).path(path).build());
+                .bucket(bucketName)
+                .type(StringUtils.isEmpty(typeUpper) ? null : BlobType.valueOf(typeUpper))
+                .path(path).build());
     }
 
-    private String extractBlobPath(HttpServletRequest request, MultipartFile file) {
+    private String extractBlobPath(HttpServletRequest request, String defaultPath) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
         String blobPath = this.blobPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
-        return StringUtils.isNotEmpty(blobPath) ? blobPath : file.getOriginalFilename();
+        return StringUtils.isNotEmpty(blobPath) ? blobPath : defaultPath;
     }
 }

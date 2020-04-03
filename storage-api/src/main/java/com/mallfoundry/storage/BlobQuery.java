@@ -61,6 +61,11 @@ public interface BlobQuery extends PageLimit {
             return this;
         }
 
+        public Builder type(BlobType type) {
+            this.query.setType(type);
+            return this;
+        }
+
         public Builder bucket(String bucket) {
             this.query.setBucket(bucket);
             return this;
