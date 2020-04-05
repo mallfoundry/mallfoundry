@@ -73,7 +73,7 @@ public interface JpaInternalBlobRepository
         }, PageRequest.of(blobQuery.getPage() - 1, blobQuery.getLimit()));
 
         return PageList.of(new ArrayList<Blob>(page.getContent()))
-                .page(page.getNumber())
+                .page(page.getNumber() + 1)
                 .limit(blobQuery.getLimit())
                 .totalSize(page.getTotalElements());
     }

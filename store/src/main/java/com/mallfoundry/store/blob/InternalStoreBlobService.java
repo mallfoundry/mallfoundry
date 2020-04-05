@@ -22,13 +22,16 @@ import com.mallfoundry.storage.BlobQuery;
 import com.mallfoundry.storage.Bucket;
 import com.mallfoundry.storage.StorageService;
 import com.mallfoundry.store.StoreId;
+import com.mallfoundry.util.PathUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InternalStoreBlobService implements StoreBlobService {
@@ -65,6 +68,17 @@ public class InternalStoreBlobService implements StoreBlobService {
             }
             throw new StoreBlobException("An unrecognized file extension");
         }
+    }
+
+    @Override
+    public void deleteBlob(StoreId storeId, String path) {
+        this.storageService.deleteBlob(getBucketName(storeId), PathUtils.normalize(path));
+    }
+
+    @Override
+    public void deleteBlobs(StoreId storeId, List<String> paths) {
+        this.storageService.deleteBlobs(getBucketName(storeId),
+                paths.stream().map(PathUtils::normalize).collect(Collectors.toList()));
     }
 
     @Override

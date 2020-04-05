@@ -117,7 +117,11 @@ public class InternalBlob implements Blob {
 
     public static InternalBlob of(Blob blob) {
         var internalBlob = new InternalBlob();
-        BeanUtils.copyProperties(blob, internalBlob);
+        if (blob.isDirectory()) {
+            BeanUtils.copyProperties(blob, internalBlob, "inputStream");
+        } else {
+            BeanUtils.copyProperties(blob, internalBlob);
+        }
         return internalBlob;
     }
 

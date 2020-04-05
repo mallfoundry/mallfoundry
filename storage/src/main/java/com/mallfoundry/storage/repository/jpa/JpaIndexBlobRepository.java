@@ -16,6 +16,10 @@ public interface JpaIndexBlobRepository
     @Override
     List<IndexBlob> findAllByBucketAndPath(String bucket, String path);
 
+    @Query("from IndexBlob where id.bucket = ?1 and (id.path in (?2) or id.value in (?2))")
+    @Override
+    List<IndexBlob> findAllByBucketAndPaths(String bucket, List<String> path);
+
     @Modifying
     @Query("delete from IndexBlob where id.bucket = ?1 and id.path in (?2)")
     @Override

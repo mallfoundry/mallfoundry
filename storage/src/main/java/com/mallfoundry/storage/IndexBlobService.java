@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class IndexBlobService {
@@ -20,7 +19,15 @@ public class IndexBlobService {
                 .findAllByBucketAndPath(bucket, path)
                 .stream()
                 .map(IndexBlob::getPath)
-//                .flatMap(index -> Stream.of(index.getPath(), index.getValue()))
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getIndexes(String bucket, List<String> paths) {
+        return this.indexBlobRepository
+                .findAllByBucketAndPaths(bucket, paths)
+                .stream()
+                .map(IndexBlob::getPath)
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -31,5 +38,9 @@ public class IndexBlobService {
 
     public void deleteIndexes(String bucket, String path) {
         this.indexBlobRepository.deleteAllByBucketAndPaths(bucket, this.getIndexes(bucket, path));
+    }
+
+    public void deleteIndexes(String bucket, List<String> paths) {
+        this.indexBlobRepository.deleteAllByBucketAndPaths(bucket, this.getIndexes(bucket, paths));
     }
 }

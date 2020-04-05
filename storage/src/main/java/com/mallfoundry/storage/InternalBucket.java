@@ -20,6 +20,7 @@ import com.mallfoundry.storage.acl.InternalOwner;
 import com.mallfoundry.storage.acl.Owner;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 

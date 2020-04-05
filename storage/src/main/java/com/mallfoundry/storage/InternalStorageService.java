@@ -19,6 +19,7 @@ package com.mallfoundry.storage;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.storage.acl.InternalOwner;
 import com.mallfoundry.storage.acl.Owner;
+import com.mallfoundry.util.PathUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,6 +123,14 @@ public class InternalStorageService implements StorageService {
         List<String> paths = this.indexBlobService.getIndexes(bucketName, path);
         this.blobRepository.deleteByBucketAndPaths(bucketName, paths);
         this.indexBlobService.deleteIndexes(bucketName, path);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBlobs(String bucketName, List<String> paths) {
+        List<String> indexPaths = this.indexBlobService.getIndexes(bucketName, paths);
+        this.blobRepository.deleteByBucketAndPaths(bucketName, indexPaths);
+        this.indexBlobService.deleteIndexes(bucketName, paths);
     }
 
 }

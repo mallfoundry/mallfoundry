@@ -23,9 +23,11 @@ import com.mallfoundry.store.StoreService;
 import com.mallfoundry.store.blob.StoreBlobService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @RequestMapping("/v1/stores")
@@ -62,7 +65,8 @@ public class StoreBlobResourceV1 {
 
         Blob storeBlob;
         if (Objects.nonNull(file)) {
-            storeBlob = bucket.createBlob(extractBlobPath(request, file.getOriginalFilename()), file.getInputStream());
+            String blobPath = extractBlobPath(request, file.getOriginalFilename());
+            storeBlob = bucket.createBlob(blobPath, file.getInputStream());
             storeBlob.rename(StringUtils.isEmpty(name) ? file.getOriginalFilename() : name);
         } else {
             storeBlob = bucket.createBlob(extractBlobPath(request, name));
@@ -71,6 +75,21 @@ public class StoreBlobResourceV1 {
             }
         }
         return this.storeBlobService.storeBlob(storeBlob);
+    }
+
+
+    @DeleteMapping("/{store_id}/blobs/**")
+    public void deleteBlob(@PathVariable("store_id") String storeIdString,
+                           HttpServletRequest request) {
+        var storeId = this.storeService.createStoreId(storeIdString);
+        this.storeBlobService.deleteBlob(storeId, extractBlobPath(request, null));
+    }
+
+    @DeleteMapping("/{store_id}/blobs/batch")
+    public void deleteBlobs(@PathVariable("store_id") String storeIdString,
+                            @RequestBody List<String> paths) {
+        var storeId = this.storeService.createStoreId(storeIdString);
+        this.storeBlobService.deleteBlobs(storeId, paths);
     }
 
     @GetMapping("/{store_id}/blobs")
