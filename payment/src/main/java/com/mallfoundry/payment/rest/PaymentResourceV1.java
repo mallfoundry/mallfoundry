@@ -44,22 +44,22 @@ public class PaymentResourceV1 {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/payment_providers")
+    @GetMapping("/payment-providers")
     public List<PaymentProvider> getPaymentProviders() {
         return this.paymentService.getPaymentProviders();
     }
 
-    @GetMapping("/payment_orders/{order_id}/status")
+    @GetMapping("/payment-orders/{order_id}/status")
     public Optional<PaymentStatus> getOrderStatus(@PathVariable("order_id") Long id) {
         return this.paymentService.getOrder(id).map(PaymentOrder::getStatus);
     }
 
-    @GetMapping("/payment_orders/{order_id}")
+    @GetMapping("/payment-orders/{order_id}")
     public Optional<PaymentOrder> getOrder(@PathVariable("order_id") Long id) {
         return this.paymentService.getOrder(id);
     }
 
-    @PostMapping("/payment_orders/{order_id}/confirm_payment")
+    @PostMapping("/payment-orders/{order_id}/confirm-payment")
     public void confirmPayment(@PathVariable("order_id") Long orderId,
                                @RequestParam Map<String, String> params,
                                HttpServletResponse response) throws IOException {

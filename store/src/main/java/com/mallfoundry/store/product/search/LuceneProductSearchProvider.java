@@ -20,6 +20,7 @@ import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.util.JsonUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -66,6 +67,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     private Product getProduct(Long productId) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+            if (ArrayUtils.isEmpty(directory.listAll())) {
+                return null;
+            }
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();

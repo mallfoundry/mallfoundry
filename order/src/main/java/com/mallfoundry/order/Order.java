@@ -120,6 +120,11 @@ public class Order {
     @Column(name = "created_time_")
     private Date createdTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty(value = "paid_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "paid_time_")
+    private Date paidTime;
+
     public Optional<OrderShipment> getShipment(Long id) {
         return this.getShipments()
                 .stream()
@@ -162,6 +167,7 @@ public class Order {
     public void paid() {
         this.getPaymentDetails().setStatus(PaymentStatus.SUCCESS);
         this.setStatus(AWAITING_FULFILLMENT);
+        this.setPaidTime(new Date());
     }
 
     public void awaitingShipment() throws OrderException {
