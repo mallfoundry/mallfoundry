@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class CustomerValidator {
 
-    public void validate(List<Order> orders) throws CustomerValidException {
+    public void validate(List<InternalOrder> orders) throws CustomerValidException {
         orders.forEach(order -> order.setCustomerId(SecurityUserHolder.getUserId()));
     }
 }

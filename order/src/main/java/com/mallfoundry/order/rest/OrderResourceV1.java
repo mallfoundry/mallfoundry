@@ -18,17 +18,17 @@ package com.mallfoundry.order.rest;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.order.CustomerValidException;
-import com.mallfoundry.order.Order;
+import com.mallfoundry.order.InternalOrder;
+import com.mallfoundry.order.InternalOrderService;
 import com.mallfoundry.order.OrderCreation;
 import com.mallfoundry.order.OrderQuery;
-import com.mallfoundry.order.OrderService;
 import com.mallfoundry.order.OrderStatus;
+import com.mallfoundry.order.Shipment;
 import com.mallfoundry.payment.PaymentException;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,20 +46,30 @@ import java.util.stream.Stream;
 @RequestMapping("/v1")
 public class OrderResourceV1 {
 
-    private final OrderService orderService;
+    private final InternalOrderService orderService;
 
-    public OrderResourceV1(OrderService orderService) {
+    public OrderResourceV1(InternalOrderService orderService) {
         this.orderService = orderService;
     }
 
     @PostMapping("/orders/batch")
-    public OrderCreation createOrders(@RequestBody List<Order> orders) throws CustomerValidException {
+    public OrderCreation createOrders(@RequestBody List<InternalOrder> orders) throws CustomerValidException {
         return this.orderService.createOrders(orders);
     }
 
     @PostMapping("/orders")
-    public OrderCreation createOrder(Order order) throws CustomerValidException {
+    public OrderCreation createOrder(InternalOrder order) throws CustomerValidException {
         return this.orderService.createOrder(order);
+    }
+
+    @PostMapping("/orders/{order_id}/shipments")
+    public Shipment addShipment(@PathVariable("order_id") String orderId,
+                                @RequestBody ShipmentRequest request) {
+        var shipment = this.orderService.createShipment(orderId, request.getItemIds());
+        shipment.setShippingMethod(request.getShippingMethod());
+        shipment.setShippingProvider(request.getShippingProvider());
+        shipment.setTrackingNumber(request.getTrackingNumber());
+        return this.orderService.addShipment(shipment);
     }
 
     @PostMapping("/orders/total_amount")
@@ -72,60 +82,13 @@ public class OrderResourceV1 {
         return this.orderService.createPaymentOrder(order);
     }
 
-    @PatchMapping("/orders/{order_id}/awaiting_shipment")
-    public void awaitingShipment(@PathVariable("order_id") Long orderId) {
-        this.orderService.awaitingShipment(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/partially_shipped")
-    public void partiallyShipped(@PathVariable("order_id") Long orderId,
-                                 @RequestBody ShippedRequest request) {
-        this.orderService.partiallyShipped(orderId, request.getShipments());
-    }
-
-    @PatchMapping("/orders/{order_id}/shipped")
-    public void shipped(@PathVariable("order_id") Long orderId,
-                        @RequestBody ShippedRequest request) {
-        this.orderService.shipped(orderId, request.getShipments());
-    }
-
-    @PatchMapping("/orders/{order_id}/awaiting_pickup")
-    public void awaitingPickup(@PathVariable("order_id") Long orderId) {
-        this.orderService.awaitingPickup(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/complete")
-    public void completed(@PathVariable("order_id") Long orderId) {
-        this.orderService.complete(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/dispute")
-    public void dispute(@PathVariable("order_id") Long orderId) {
-        this.orderService.dispute(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/refund")
-    public void refund(@PathVariable("order_id") Long orderId) {
-        this.orderService.refund(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/cancel")
-    public void cancel(@PathVariable("order_id") Long orderId) {
-        this.orderService.cancel(orderId);
-    }
-
-    @PatchMapping("/orders/{order_id}/decline")
-    public void decline(@PathVariable("order_id") Long orderId) {
-        this.orderService.decline(orderId);
-    }
-
     @GetMapping("/orders/{order_id}")
-    public Optional<Order> getOrder(@PathVariable("order_id") Long orderId) {
+    public Optional<InternalOrder> getOrder(@PathVariable("order_id") String orderId) {
         return this.orderService.getOrder(orderId);
     }
 
     @GetMapping("/orders")
-    public SliceList<Order> getOrders(
+    public SliceList<InternalOrder> getOrders(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "customer_id", required = false) String customerId,

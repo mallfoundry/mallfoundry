@@ -29,14 +29,14 @@ import java.util.List;
 public class OrderTests {
 
     @Autowired
-    private OrderService orderService;
+    private InternalOrderService orderService;
 
     @Test
     @Transactional
     @Rollback(false)
     public void testSubmitOrder() throws CustomerValidException {
-        List<OrderItem> items = new ArrayList<>();
-        items.add(OrderItem.builder()
+        List<InternalOrderItem> items = new ArrayList<>();
+        items.add(InternalOrderItem.builder()
                 .storeId("mi")
 //                .storeId("mi")
                 .productId(1L)

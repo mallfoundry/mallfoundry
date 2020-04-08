@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package com.mallfoundry.order.rest;
 
-public class OrderException extends RuntimeException {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-    public OrderException(String message) {
-        super(message);
-    }
+import java.util.List;
+
+@Getter
+@Setter
+public class ShipmentRequest {
+
+    @JsonProperty("item_ids")
+    private List<String> itemIds;
+
+    @JsonProperty("shipping_provider")
+    private String shippingProvider;
+
+    @JsonProperty("shipping_method")
+    private String shippingMethod;
+
+    @JsonProperty("tracking_number")
+    private String trackingNumber;
 }

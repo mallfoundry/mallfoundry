@@ -23,9 +23,9 @@ import org.springframework.context.event.EventListener;
 @Configuration
 public class PaymentEventListener {
 
-    private final OrderService orderService;
+    private final InternalOrderService orderService;
 
-    public PaymentEventListener(OrderService orderService) {
+    public PaymentEventListener(InternalOrderService orderService) {
         this.orderService = orderService;
     }
 

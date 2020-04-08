@@ -18,7 +18,8 @@ package com.mallfoundry.order.repository.jpa;
 
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.order.Order;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
+import com.mallfoundry.order.InternalOrder;
 import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,23 +30,53 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 public interface JpaOrderRepository
         extends OrderRepository,
-        JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+        JpaRepository<InternalOrder, String>,
+        JpaSpecificationExecutor<InternalOrder> {
+
+    String ORDER_ID_VALUE_NAME = "order.id";
+
+    String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
+
+    String SHIPMENT_VALUE_NAME = "shipment.id";
 
     @Override
-    <S extends Order> List<S> saveAll(Iterable<S> iterable);
+    default <S extends InternalOrder> List<S> saveAll(Collection<S> orders) {
+        orders.forEach(order -> {
+            if (Objects.isNull(order.getId())) {
+                order.setId(PrimaryKeyHolder.value(ORDER_ID_VALUE_NAME));
+            }
+            if (Objects.nonNull(order.getItems())) {
+                order.getItems().forEach(item -> {
+                    if (Objects.isNull(item.getId())) {
+                        item.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
+                    }
+                });
+            }
+
+            if (Objects.nonNull(order.getShipments())) {
+                order.getShipments().forEach(shipment -> {
+                    if (Objects.isNull(shipment.getId())) {
+                        shipment.setId(PrimaryKeyHolder.value(SHIPMENT_VALUE_NAME));
+                    }
+                });
+            }
+        });
+        return this.saveAll((Iterable<S>) orders);
+    }
 
     @Override
-    List<Order> findAllById(Iterable<Long> iterable);
+    List<InternalOrder> findAllById(Iterable<String> iterable);
 
     @Override
-    default SliceList<Order> findAll(OrderQuery orderQuery) {
+    default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
 
-        Page<Order> page = this.findAll((Specification<Order>) (root, query, criteriaBuilder) -> {
+        Page<InternalOrder> page = this.findAll((Specification<InternalOrder>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(orderQuery.getCustomerId())) {

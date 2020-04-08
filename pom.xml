@@ -47,6 +47,7 @@
         <module>commons-api</module>
         <module>storage-api</module>
         <module>store-api</module>
+        <module>order-api</module>
         <module>commons</module>
         <module>autoconfigure</module>
         <module>core</module>
@@ -87,6 +88,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-store-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-order-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

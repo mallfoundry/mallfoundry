@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
@@ -53,7 +54,6 @@ import static com.mallfoundry.order.OrderStatus.DECLINED;
 import static com.mallfoundry.order.OrderStatus.DISPUTED;
 import static com.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static com.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
-import static com.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static com.mallfoundry.order.OrderStatus.PENDING;
 import static com.mallfoundry.order.OrderStatus.REFUNDED;
 import static com.mallfoundry.order.OrderStatus.SHIPPED;
@@ -63,13 +63,12 @@ import static com.mallfoundry.order.OrderStatus.VERIFICATION_REQUIRED;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order_info")
-public class Order {
+@Table(name = "orders")
+public class InternalOrder implements Order {
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -93,11 +92,11 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id_")
-    private List<OrderItem> items = new ArrayList<>();
+    private List<InternalOrderItem> items = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id_")
-    private List<OrderShipment> shipments = new ArrayList<>();
+    private List<InternalShipment> shipments = new ArrayList<>();
 
     @JsonProperty("payment_details")
     @Embedded
@@ -111,7 +110,7 @@ public class Order {
     @Transient
     public BigDecimal getTotalAmount() {
         return this.getItems().stream()
-                .map(OrderItem::getTotalAmount)
+                .map(InternalOrderItem::getTotalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -125,19 +124,33 @@ public class Order {
     @Column(name = "paid_time_")
     private Date paidTime;
 
-    public Optional<OrderShipment> getShipment(Long id) {
+    public List<OrderItem> getItems(List<String> itemIds) {
+        return this.items.stream()
+                .filter(item -> itemIds.contains(item.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Shipment> getShipment(String id) {
         return this.getShipments()
                 .stream()
                 .filter(shipment -> Objects.equals(shipment.getId(), id))
                 .findFirst();
     }
 
-    public void addShipment(OrderShipment shipment) {
-        this.getShipments().add(shipment);
+    public void addShipment(Shipment shipment) {
+        this.getShipments().add(InternalShipment.of(shipment));
     }
 
-    public void removeShipment(OrderShipment shipment) {
+    public void removeShipment(InternalShipment shipment) {
         this.getShipments().remove(shipment);
+    }
+
+    public List<Shipment> getShipments() {
+        return new ArrayList<>(shipments);
+    }
+
+    public void setShipments(List<Shipment> shipments) {
+        this.shipments = shipments.stream().map(InternalShipment::of).collect(Collectors.toList());
     }
 
     @JsonIgnore
@@ -177,12 +190,7 @@ public class Order {
         this.setStatus(AWAITING_SHIPMENT);
     }
 
-    public void partiallyShipped(List<OrderShipment> shipments) {
-        this.setStatus(PARTIALLY_SHIPPED);
-        this.getShipments().addAll(shipments);
-    }
-
-    public void shipped(List<OrderShipment> shipments) {
+    public void shipped(List<InternalShipment> shipments) {
         this.setStatus(SHIPPED);
         this.getShipments().addAll(shipments);
     }
@@ -224,18 +232,18 @@ public class Order {
     }
 
     public static class Builder {
-        private Order order;
+        private InternalOrder order;
 
         public Builder() {
-            this.order = new Order();
+            this.order = new InternalOrder();
         }
 
-        public Builder items(List<OrderItem> items) {
+        public Builder items(List<InternalOrderItem> items) {
             this.order.setItems(items);
             return this;
         }
 
-        public Order build() {
+        public InternalOrder build() {
             return this.order;
         }
     }

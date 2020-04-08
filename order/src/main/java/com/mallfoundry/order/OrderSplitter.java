@@ -33,15 +33,15 @@ public class OrderSplitter {
         this.splitters = Objects.isNull(splitters) ? Collections.emptyList() : splitters;
     }
 
-    public List<Order> splitting(Order order) {
-        List<Order> orders = List.of(order);
+    public List<InternalOrder> splitting(InternalOrder order) {
+        List<InternalOrder> orders = List.of(order);
         for (OrderSplitPolicy splitter : splitters) {
             orders = splitter.splitting(orders);
         }
         return orders;
     }
 
-    public List<Order> splitting(List<Order> orders) {
+    public List<InternalOrder> splitting(List<InternalOrder> orders) {
         for (OrderSplitPolicy splitter : splitters) {
             orders = splitter.splitting(orders);
         }

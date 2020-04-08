@@ -18,18 +18,19 @@ package com.mallfoundry.order;
 
 import com.mallfoundry.data.SliceList;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository {
 
-    Order save(Order order);
+    InternalOrder save(InternalOrder order);
 
-    <S extends Order> List<S> saveAll(Iterable<S> iterable);
+    <S extends InternalOrder> List<S> saveAll(Collection<S> orders);
 
-    Optional<Order> findById(Long id);
+    Optional<InternalOrder> findById(String id);
 
-    List<Order> findAllById(Iterable<Long> iterable);
+    List<InternalOrder> findAllById(Iterable<String> iterable);
 
-    SliceList<Order> findAll(OrderQuery query);
+    SliceList<InternalOrder> findAll(OrderQuery query);
 }

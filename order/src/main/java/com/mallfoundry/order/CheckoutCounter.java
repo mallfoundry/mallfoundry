@@ -33,11 +33,11 @@ public class CheckoutCounter {
         this.productService = productService;
     }
 
-    public void checkout(Order order) throws CheckoutException {
+    public void checkout(InternalOrder order) throws CheckoutException {
         try {
-            List<OrderItem> items = order.getItems();
+            List<InternalOrderItem> items = order.getItems();
             order.setStoreId(null);
-            for (OrderItem item : items) {
+            for (InternalOrderItem item : items) {
                 Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
                 ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
                 variant.decrementInventoryQuantity(item.getQuantity());
@@ -52,8 +52,8 @@ public class CheckoutCounter {
         order.pending();
     }
 
-    public void checkout(List<Order> orders) throws CheckoutException {
-        for (Order order : orders) {
+    public void checkout(List<InternalOrder> orders) throws CheckoutException {
+        for (InternalOrder order : orders) {
             this.checkout(order);
         }
     }

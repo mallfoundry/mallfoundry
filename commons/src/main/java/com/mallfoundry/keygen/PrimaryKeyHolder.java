@@ -25,12 +25,16 @@ public abstract class PrimaryKeyHolder {
 
     private static ApplicationContext context;
 
-    public static Long sequence(String key) {
+    private static Long sequence(String key) {
         return factoryProxy().sequence().nextVal(key);
     }
 
-    public static String uuid() {
+    private static String uuid() {
         return factoryProxy().uuid().nextVal("");
+    }
+
+    public static String value(String name) {
+        return String.valueOf(sequence(name));
     }
 
     private static PrimaryKeyFactory factoryProxy() {

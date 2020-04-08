@@ -18,7 +18,7 @@ package com.mallfoundry.payment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.data.jpa.convert.LongListConverter;
+import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,9 +49,9 @@ public class PaymentOrder {
     @Column(name = "id_")
     private Long id;
 
-    @Convert(converter = LongListConverter.class)
+    @Convert(converter = StringListConverter.class)
     @Column(name = "orders_")
-    private List<Long> orders = new ArrayList<>();
+    private List<String> orders = new ArrayList<>();
 
     @JsonProperty(value = "payer_id", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "payer_id_")
@@ -114,7 +114,7 @@ public class PaymentOrder {
             return this;
         }
 
-        public PaymentOrderBuilder orders(List<Long> orders) {
+        public PaymentOrderBuilder orders(List<String> orders) {
             this.order.setOrders(orders);
             return this;
         }

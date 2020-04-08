@@ -25,12 +25,12 @@ import java.util.List;
 @Getter
 public class OrderCreation {
 
-    private final List<Long> orders;
+    private final List<String> orders;
 
     @JsonProperty("total_amount")
     private final BigDecimal totalAmount;
 
-    public OrderCreation(List<Long> orders, BigDecimal totalAmount) {
+    public OrderCreation(List<String> orders, BigDecimal totalAmount) {
         this.orders = orders;
         this.totalAmount = totalAmount;
     }

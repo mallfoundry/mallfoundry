@@ -21,10 +21,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,13 +34,12 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order_item")
-public class OrderItem {
+@Table(name = "order_items")
+public class InternalOrderItem implements OrderItem {
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
     @JsonProperty("store_id")
     @Column(name = "store_id_")
@@ -57,8 +56,9 @@ public class OrderItem {
     @Column(name = "title_")
     private String title;
 
-    @Column(name = "options_")
-    private String options;
+    @JsonProperty("option_values")
+    @Column(name = "option_values_")
+    private String optionValues;
 
     @JsonProperty("image_url")
     @Column(name = "image_url_")
@@ -76,16 +76,26 @@ public class OrderItem {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
 
+    public static InternalOrderItem of(OrderItem item) {
+        if (item instanceof InternalOrderItem) {
+            return (InternalOrderItem) item;
+        }
+
+        var target = new InternalOrderItem();
+        BeanUtils.copyProperties(item, target);
+        return target;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
 
     static class Builder {
 
-        private OrderItem item;
+        private InternalOrderItem item;
 
         public Builder() {
-            item = new OrderItem();
+            item = new InternalOrderItem();
         }
 
         public Builder storeId(String storeId) {
@@ -118,9 +128,8 @@ public class OrderItem {
             return this;
         }
 
-        public OrderItem build() {
+        public InternalOrderItem build() {
             return this.item;
         }
     }
-
 }

@@ -23,9 +23,9 @@ import java.util.List;
 // mall.order.store-split-policy.enable=true
 public interface OrderSplitPolicy {
 
-    List<Order> splitting(List<Order> orders);
+    List<InternalOrder> splitting(List<InternalOrder> orders);
 
-    default Order assign(Order order, Order source) {
+    default InternalOrder assign(InternalOrder order, InternalOrder source) {
         BeanUtils.copyProperties(source, order, "items");
         return order;
     }
