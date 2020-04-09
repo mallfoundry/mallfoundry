@@ -16,10 +16,12 @@
 
 package com.mallfoundry.store.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -77,6 +79,11 @@ public class ProductVariant implements Serializable {
 
     @Column(name = "position_")
     private Integer position;
+
+    @JsonIgnore
+    public String getFirstImageUrl() {
+        return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
+    }
 
     public void decrementInventoryQuantity(int quantity) throws InventoryException {
         if (quantity > this.getInventoryQuantity()) {

@@ -25,6 +25,7 @@ import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -87,14 +88,19 @@ public class InternalOrder implements Order {
     @Column(name = "shipping_address_")
     private ShippingAddress shippingAddress;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+            targetEntity = InternalOrderItem.class)
     @JoinColumn(name = "order_id_")
-    private List<InternalOrderItem> items = new ArrayList<>();
+    private List<OrderItem> items = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = InternalShipment.class)
     @JoinColumn(name = "order_id_")
     private List<Shipment> shipments = new ArrayList<>();
+
+    @JsonProperty(value = "shipped_items", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "shipped_items_")
+    private int shippedItems;
 
     @JsonProperty("payment_details")
     @Embedded
@@ -108,7 +114,7 @@ public class InternalOrder implements Order {
     @Transient
     public BigDecimal getTotalAmount() {
         return this.getItems().stream()
-                .map(InternalOrderItem::getTotalAmount)
+                .map(OrderItem::getTotalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -127,6 +133,13 @@ public class InternalOrder implements Order {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
+    public InternalOrder(BillingAddress billingAddress, ShippingAddress shippingAddress,
+                         List<OrderItem> items) {
+        this.setBillingAddress(billingAddress);
+        this.setShippingAddress(shippingAddress);
+        this.setItems(items);
+    }
+
     public static InternalOrder of(Order order) {
         if (order instanceof InternalOrder) {
             return (InternalOrder) order;
@@ -143,6 +156,11 @@ public class InternalOrder implements Order {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public int getTotalItems() {
+        return CollectionUtils.size(this.getItems());
+    }
+
     public Optional<Shipment> getShipment(String id) {
         return this.getShipments()
                 .stream()
@@ -152,22 +170,13 @@ public class InternalOrder implements Order {
 
     public void addShipment(Shipment shipment) {
         this.getShipments().add(InternalShipment.of(shipment));
-        var remainingCount = this.getItems().stream().filter(this::notShipped).count();
-        if (remainingCount == 0) {
+        this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
+        if (this.getShippedItems() == this.getTotalItems()) {
             this.setStatus(AWAITING_PICKUP);
         } else {
             this.setStatus(PARTIALLY_SHIPPED);
         }
         this.setShippedTime(new Date());
-    }
-
-    private boolean notShipped(OrderItem item) {
-        for (var shipment : this.getShipments()) {
-            if (shipment.containsItem(item)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void removeShipment(InternalShipment shipment) {
@@ -211,27 +220,4 @@ public class InternalOrder implements Order {
         this.setStatus(AWAITING_FULFILLMENT);
         this.setPaidTime(new Date());
     }
-
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private InternalOrder order;
-
-        public Builder() {
-            this.order = new InternalOrder();
-        }
-
-        public Builder items(List<InternalOrderItem> items) {
-            this.order.setItems(items);
-            return this;
-        }
-
-        public InternalOrder build() {
-            return this.order;
-        }
-    }
-
 }

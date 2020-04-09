@@ -144,6 +144,10 @@ public class Product implements Serializable {
                 .findFirst();
     }
 
+    public Optional<ProductVariant> getVariant(String id) {
+        return this.getVariant(Long.parseLong(id));
+    }
+
     public ProductOption createOption(String name) {
         ProductOption option = new ProductOption(name);
         option.setPosition(this.getOptions().size());

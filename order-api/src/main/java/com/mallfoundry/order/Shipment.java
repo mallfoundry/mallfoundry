@@ -11,7 +11,7 @@ public interface Shipment {
 
     String getOrderId();
 
-    List<? extends OrderItem> getItems();
+    List<OrderItem> getItems();
 
     boolean containsItem(OrderItem item);
 

@@ -25,27 +25,19 @@ import javax.persistence.Embeddable;
 
 @Getter
 @Setter
-@Embeddable
 public class InternalBillingAddress implements BillingAddress {
 
-    @Column(name = "billing_address_consignee_")
-    private String consignee;
-
     @JsonProperty("country_code")
-    @Column(name = "billing_address_country_code_")
     private String countryCode;
 
-    @Column(name = "billing_address_mobile_")
-    private String mobile;
-
     @JsonProperty("postal_code")
-    @Column(name = "billing_address_postal_code_")
     private String postalCode;
 
-    @Column(name = "billing_address_address_")
+    private String consignee;
+
+    private String mobile;
+
     private String address;
 
-    @Column(name = "billing_address_location_")
     private String location;
-
 }

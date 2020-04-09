@@ -18,17 +18,20 @@ package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -48,22 +51,23 @@ public class InternalOrderItem implements OrderItem {
 
     @JsonProperty("product_id")
     @Column(name = "product_id_")
-    private Long productId;
+    private String productId;
 
     @JsonProperty("variant_id")
     @Column(name = "variant_id_")
-    private Long variantId;
+    private String variantId;
+
+    @JsonProperty("image_url")
+    @Column(name = "image_url_")
+    private String imageUrl;
 
     @Column(name = "title_")
     private String title;
 
     @JsonProperty("option_values")
     @Column(name = "option_values_")
-    private String optionValues;
-
-    @JsonProperty("image_url")
-    @Column(name = "image_url_")
-    private String imageUrl;
+    @Convert(converter = StringListConverter.class)
+    private List<String> optionValues;
 
     @Column(name = "quantity_")
     private int quantity;
@@ -73,8 +77,15 @@ public class InternalOrderItem implements OrderItem {
 
     @JsonIgnore
     @Transient
+    @Override
     public BigDecimal getTotalAmount() {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
+    }
+
+    public InternalOrderItem(String productId, String variantId, int quantity) {
+        this.setProductId(productId);
+        this.setVariantId(variantId);
+        this.setQuantity(quantity);
     }
 
     public static InternalOrderItem of(OrderItem item) {
@@ -98,52 +109,5 @@ public class InternalOrderItem implements OrderItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    static class Builder {
-
-        private InternalOrderItem item;
-
-        public Builder() {
-            item = new InternalOrderItem();
-        }
-
-        public Builder storeId(String storeId) {
-            this.item.setStoreId(storeId);
-            return this;
-        }
-
-        public Builder productId(Long productId) {
-            this.item.setProductId(productId);
-            return this;
-        }
-
-        public Builder variantId(Long variantId) {
-            this.item.setVariantId(variantId);
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.item.setTitle(title);
-            return this;
-        }
-
-        public Builder quantity(int quantity) {
-            this.item.setQuantity(quantity);
-            return this;
-        }
-
-        public Builder price(BigDecimal price) {
-            this.item.setPrice(price);
-            return this;
-        }
-
-        public InternalOrderItem build() {
-            return this.item;
-        }
     }
 }

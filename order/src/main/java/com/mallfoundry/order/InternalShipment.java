@@ -88,10 +88,15 @@ public class InternalShipment implements Shipment {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    public InternalShipment(String orderId, List<OrderItem> items) {
+    public InternalShipment(String orderId,
+                            BillingAddress billingAddress,
+                            ShippingAddress shippingAddress,
+                            List<OrderItem> items) {
         this.setOrderId(orderId);
-        this.setShippedTime(new Date());
+        this.setBillingAddress(billingAddress);
+        this.setShippingAddress(shippingAddress);
         this.setItems(items);
+        this.setShippedTime(new Date());
     }
 
     public static InternalShipment of(Shipment shipment) {

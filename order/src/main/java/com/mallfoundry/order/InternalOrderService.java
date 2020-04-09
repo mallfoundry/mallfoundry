@@ -21,6 +21,8 @@ import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentService;
+import com.mallfoundry.security.SecurityUserHolder;
+import com.mallfoundry.store.product.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,16 +53,73 @@ public class InternalOrderService implements OrderService {
 
     private final PaymentService paymentService;
 
+    private final ProductService productService;
+
     public InternalOrderService(OrderRepository orderRepository,
                                 CustomerValidator customerValidator,
                                 CheckoutCounter checkoutCounter,
                                 OrderSplitter orderSplitter,
-                                PaymentService paymentService) {
+                                PaymentService paymentService,
+                                ProductService productService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
         this.checkoutCounter = checkoutCounter;
         this.orderSplitter = orderSplitter;
         this.paymentService = paymentService;
+        this.productService = productService;
+    }
+
+    @Override
+    public BillingAddress createBillingAddress(
+            String countryCode, String postalCode, String consignee, String mobile, String address, String location) {
+        return new InternalBillingAddress().toBuilder().countryCode(countryCode).postalCode(postalCode)
+                .consignee(consignee).mobile(mobile).address(address).location(location).build();
+    }
+
+    @Override
+    public ShippingAddress createShippingAddress(
+            String countryCode, String postalCode, String consignee, String mobile, String address, String location) {
+        return new InternalShippingAddress().toBuilder().countryCode(countryCode).postalCode(postalCode)
+                .consignee(consignee).mobile(mobile).address(address).location(location).build();
+    }
+
+    @Override
+    public Order createOrder(BillingAddress billingAddress, ShippingAddress shippingAddress, List<OrderItem> items) {
+        var order = new InternalOrder(billingAddress, shippingAddress, items);
+        order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME));
+        order.setCustomerId(SecurityUserHolder.getUserId());
+        return order;
+    }
+
+    @Override
+    public OrderItem createOrderItem(String productId, String variantId, int quantity) {
+        var item = new InternalOrderItem(productId, variantId, quantity);
+        item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME));
+        var product = this.productService.getProduct(productId).orElseThrow();
+        var variant = product.getVariant(variantId).orElseThrow();
+        item.setStoreId(product.getStoreId());
+        item.setImageUrl(variant.getFirstImageUrl());
+        item.setPrice(variant.getPrice());
+        item.setOptionValues(List.copyOf(variant.getOptionValues()));
+        item.setTitle(item.getTitle());
+        return item;
+    }
+
+    @Override
+    public Shipment createShipment(String orderId, List<String> itemIds) {
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        var shipment =
+                new InternalShipment(orderId,
+                        order.getBillingAddress(),
+                        order.getShippingAddress(),
+                        order.getItems(itemIds));
+        shipment.setId(PrimaryKeyHolder.next(SHIPMENT_VALUE_NAME));
+        return shipment;
+    }
+
+    @Override
+    public void checkout(Order order) {
+
     }
 
     @Transactional
@@ -130,26 +189,6 @@ public class InternalOrderService implements OrderService {
 
     public SliceList<InternalOrder> getOrders(OrderQuery query) {
         return this.orderRepository.findAll(query);
-    }
-
-    @Override
-    public BillingAddress createBillingAddress() {
-        return new InternalBillingAddress();
-    }
-
-    @Override
-    public ShippingAddress createShippingAddress() {
-        return new InternalShippingAddress();
-    }
-
-    @Override
-    public Shipment createShipment(String orderId, List<String> itemIds) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        var shipment = new InternalShipment(orderId, order.getItems(itemIds));
-        shipment.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
-        shipment.setBillingAddress(order.getBillingAddress());
-        shipment.setShippingAddress(order.getShippingAddress());
-        return shipment;
     }
 
     @Transactional

@@ -70,6 +70,10 @@ public class ProductService {
         return this.productRepository.findById(id);
     }
 
+    public Optional<Product> getProduct(String id) {
+        return this.productRepository.findById(Long.parseLong(id));
+    }
+
     public SliceList<Product> getProducts(ProductQuery query) {
         return this.productSearcher.search(query);
     }

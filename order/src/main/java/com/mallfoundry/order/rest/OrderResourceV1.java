@@ -17,13 +17,16 @@
 package com.mallfoundry.order.rest;
 
 import com.mallfoundry.data.SliceList;
+import com.mallfoundry.order.BillingAddress;
 import com.mallfoundry.order.CustomerValidException;
 import com.mallfoundry.order.InternalOrder;
 import com.mallfoundry.order.InternalOrderService;
 import com.mallfoundry.order.OrderCreation;
+import com.mallfoundry.order.OrderItem;
 import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
+import com.mallfoundry.order.ShippingAddress;
 import com.mallfoundry.payment.PaymentException;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
@@ -53,19 +56,42 @@ public class OrderResourceV1 {
         this.orderService = orderService;
     }
 
+    private BillingAddress createBillingAddress(OrderRequest.AddressRequest request) {
+        return this.orderService.createBillingAddress(request.getCountryCode(), request.getPostalCode(),
+                request.getConsignee(), request.getMobile(), request.getAddress(), request.getLocation());
+    }
+
+    private ShippingAddress createShippingAddress(OrderRequest.AddressRequest request) {
+        return this.orderService.createShippingAddress(request.getCountryCode(), request.getPostalCode(),
+                request.getConsignee(), request.getMobile(), request.getAddress(), request.getLocation());
+    }
+
+    private OrderItem createOrderItem(OrderRequest.OrderItemRequest request) {
+        return this.orderService.createOrderItem(request.getProductId(), request.getVariantId(), request.getQuantity());
+    }
+
+    private List<OrderItem> createOrderItems(List<OrderRequest.OrderItemRequest> requests) {
+        return requests.stream().map(this::createOrderItem).collect(Collectors.toList());
+    }
+
     @PostMapping("/orders/batch")
     public OrderCreation createOrders(@RequestBody List<InternalOrder> orders) throws CustomerValidException {
         return this.orderService.createOrders(orders);
     }
 
     @PostMapping("/orders")
-    public OrderCreation createOrder(InternalOrder order) throws CustomerValidException {
-        return this.orderService.createOrder(order);
+    public void createOrder(OrderRequest request) {
+        var order = this.orderService.createOrder(
+                createBillingAddress(request.getBillingAddress()),
+                createShippingAddress(request.getShippingAddress()),
+                createOrderItems(request.getItems()));
+        this.orderService.checkout(order);
     }
 
     @PostMapping("/orders/{order_id}/shipments")
     public Shipment addShipment(@PathVariable("order_id") String orderId,
                                 @RequestBody ShipmentRequest request) {
+
         var shipment = this.orderService.createShipment(orderId, request.getItemIds());
         shipment.setShippingMethod(request.getShippingMethod());
         shipment.setShippingProvider(request.getShippingProvider());

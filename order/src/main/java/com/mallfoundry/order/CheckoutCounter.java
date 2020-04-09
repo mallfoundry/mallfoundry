@@ -35,15 +35,15 @@ public class CheckoutCounter {
 
     public void checkout(InternalOrder order) throws CheckoutException {
         try {
-            List<InternalOrderItem> items = order.getItems();
+            List<OrderItem> items = order.getItems();
             order.setStoreId(null);
-            for (InternalOrderItem item : items) {
+            for (var item : items) {
                 Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
                 ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
-                variant.decrementInventoryQuantity(item.getQuantity());
+//                variant.decrementInventoryQuantity(item.getQuantity());
 
                 if (Objects.isNull(order.getStoreId())) {
-                    order.setStoreId(product.getStoreId().toString());
+                    order.setStoreId(product.getStoreId());
                 }
             }
         } catch (Exception e) {

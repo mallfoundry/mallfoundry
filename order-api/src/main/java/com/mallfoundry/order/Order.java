@@ -8,8 +8,6 @@ public interface Order {
 
     String getId();
 
-    void setId(String id);
-
     BillingAddress getBillingAddress();
 
     void setBillingAddress(BillingAddress billingAddress);
@@ -18,6 +16,14 @@ public interface Order {
 
     void setShippingAddress(ShippingAddress shippingAddress);
 
+    String getCustomerId();
+
+    void setCustomerId(String customerId);
+
+    List<OrderItem> getItems();
+
+    void setItems(List<OrderItem> items);
+
     List<OrderItem> getItems(List<String> itemIds);
 
     List<Shipment> getShipments();
@@ -25,6 +31,10 @@ public interface Order {
     Optional<Shipment> getShipment(String id);
 
     void addShipment(Shipment shipment);
+
+    int getTotalItems();
+
+    int getShippedItems();
 
     Date getCreatedTime();
 

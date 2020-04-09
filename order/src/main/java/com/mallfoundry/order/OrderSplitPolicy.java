@@ -16,18 +16,10 @@
 
 package com.mallfoundry.order;
 
-import org.springframework.beans.BeanUtils;
-
 import java.util.List;
 
 // mall.order.store-split-policy.enable=true
 public interface OrderSplitPolicy {
 
     List<InternalOrder> splitting(List<InternalOrder> orders);
-
-    default InternalOrder assign(InternalOrder order, InternalOrder source) {
-        BeanUtils.copyProperties(source, order, "items");
-        return order;
-    }
-
 }

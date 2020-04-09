@@ -33,7 +33,7 @@ public abstract class PrimaryKeyHolder {
         return factoryProxy().uuid().nextVal("");
     }
 
-    public static String value(String name) {
+    public static String next(String name) {
         return String.valueOf(sequence(name));
     }
 
