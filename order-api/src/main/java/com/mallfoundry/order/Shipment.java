@@ -9,6 +9,20 @@ public interface Shipment {
 
     void setId(String id);
 
+    String getOrderId();
+
+    List<? extends OrderItem> getItems();
+
+    boolean containsItem(OrderItem item);
+
+    BillingAddress getBillingAddress();
+
+    void setBillingAddress(BillingAddress billingAddress);
+
+    ShippingAddress getShippingAddress();
+
+    void setShippingAddress(ShippingAddress shippingAddress);
+
     String getShippingProvider();
 
     void setShippingProvider(String shippingProvider);
@@ -21,9 +35,9 @@ public interface Shipment {
 
     void setTrackingNumber(String trackingNumber);
 
-    String getOrderId();
-
-    List<? extends OrderItem> getItems();
+//    void setTrackingCarrier(String trackingCarrier);
+//
+//    String getTrackingCarrier();
 
     Date getShippedTime();
 }

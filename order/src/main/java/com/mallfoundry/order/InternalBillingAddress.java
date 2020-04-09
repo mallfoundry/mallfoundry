@@ -26,8 +26,7 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 @Embeddable
-public class BillingAddress {
-
+public class InternalBillingAddress implements BillingAddress {
 
     @Column(name = "billing_address_consignee_")
     private String consignee;
@@ -49,49 +48,4 @@ public class BillingAddress {
     @Column(name = "billing_address_location_")
     private String location;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    static class Builder {
-        private BillingAddress address;
-
-        public Builder() {
-            this.address = new BillingAddress();
-        }
-
-        public Builder consignee(String consignee) {
-            this.address.setConsignee(consignee);
-            return this;
-        }
-
-        public Builder countryCode(String countryCode) {
-            this.address.setCountryCode(countryCode);
-            return this;
-        }
-
-        public Builder mobile(String mobile) {
-            this.address.setMobile(mobile);
-            return this;
-        }
-
-        public Builder postalCode(String postalCode) {
-            this.address.setPostalCode(postalCode);
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.address.setAddress(address);
-            return this;
-        }
-
-        public Builder location(String location) {
-            this.address.setLocation(location);
-            return this;
-        }
-
-        public BillingAddress build() {
-            return this.address;
-        }
-    }
 }

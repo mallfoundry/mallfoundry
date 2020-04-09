@@ -4,6 +4,10 @@ import java.util.List;
 
 public interface OrderService {
 
+    BillingAddress createBillingAddress();
+
+    ShippingAddress createShippingAddress();
+
     Shipment createShipment(String orderId, List<String> itemIds);
 
     Shipment addShipment(Shipment shipment);

@@ -26,7 +26,7 @@ public interface OrderRepository {
 
     InternalOrder save(InternalOrder order);
 
-    <S extends InternalOrder> List<S> saveAll(Collection<S> orders);
+    <S extends InternalOrder> List<S> saveAll(Iterable<S> orders);
 
     Optional<InternalOrder> findById(String id);
 

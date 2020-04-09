@@ -17,6 +17,7 @@
 package com.mallfoundry.order;
 
 import com.mallfoundry.data.SliceList;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentService;
@@ -33,6 +34,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class InternalOrderService implements OrderService {
+
+    String ORDER_ID_VALUE_NAME = "order.id";
+
+    String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
+
+    String SHIPMENT_VALUE_NAME = "shipment.id";
 
     private final OrderRepository orderRepository;
 
@@ -126,16 +133,35 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
+    public BillingAddress createBillingAddress() {
+        return new InternalBillingAddress();
+    }
+
+    @Override
+    public ShippingAddress createShippingAddress() {
+        return new InternalShippingAddress();
+    }
+
+    @Override
     public Shipment createShipment(String orderId, List<String> itemIds) {
-        Order order = this.orderRepository.findById(orderId).orElseThrow();
-        return new InternalShipment(orderId, order.getItems(itemIds));
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        var shipment = new InternalShipment(orderId, order.getItems(itemIds));
+        shipment.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
+        shipment.setBillingAddress(order.getBillingAddress());
+        shipment.setShippingAddress(order.getShippingAddress());
+        return shipment;
     }
 
     @Transactional
     @Override
     public Shipment addShipment(Shipment shipment) {
-        Order order = this.orderRepository.findById(shipment.getOrderId()).orElseThrow();
+        InternalOrder order = this.orderRepository.findById(shipment.getOrderId()).orElseThrow();
         order.addShipment(shipment);
         return shipment;
+    }
+
+    @Transactional
+    public void saveOrder(Order order) {
+        this.orderRepository.save(InternalOrder.of(order));
     }
 }

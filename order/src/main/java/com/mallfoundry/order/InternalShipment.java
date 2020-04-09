@@ -16,13 +16,17 @@
 
 package com.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.order.repository.jpa.convert.BillingAddressConverter;
+import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -47,6 +51,16 @@ public class InternalShipment implements Shipment {
     @Column(name = "id_")
     private String id;
 
+    @JsonProperty("billing_address")
+    @Convert(converter = BillingAddressConverter.class)
+    @Column(name = "billing_address_")
+    private BillingAddress billingAddress;
+
+    @JsonProperty("shipping_address")
+    @Convert(converter = ShippingAddressConverter.class)
+    @Column(name = "shipping_address_")
+    private ShippingAddress shippingAddress;
+
     @JsonProperty("shipping_provider")
     @Column(name = "shipping_provider_")
     private String shippingProvider;
@@ -63,12 +77,13 @@ public class InternalShipment implements Shipment {
     @Column(name = "order_id_")
     private String orderId;
 
-    @OneToMany
+    @OneToMany(targetEntity = InternalOrderItem.class)
     @JoinTable(name = "order_shipments_items",
             joinColumns = @JoinColumn(name = "shipment_id_"),
             inverseJoinColumns = @JoinColumn(name = "order_item_id_"))
-    private List<InternalOrderItem> items = new ArrayList<>();
+    private List<OrderItem> items = new ArrayList<>();
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("shipped_time")
     @Column(name = "shipped_time_")
     private Date shippedTime;
@@ -90,6 +105,11 @@ public class InternalShipment implements Shipment {
 
     public void setItems(List<OrderItem> items) {
         this.items = items.stream().map(InternalOrderItem::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean containsItem(OrderItem item) {
+        return this.getItems().contains(item);
     }
 
     @Override

@@ -19,18 +19,21 @@ package com.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mallfoundry.order.repository.jpa.convert.BillingAddressConverter;
+import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
 import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -47,17 +50,9 @@ import java.util.stream.Collectors;
 import static com.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PICKUP;
-import static com.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
-import static com.mallfoundry.order.OrderStatus.CANCELLED;
-import static com.mallfoundry.order.OrderStatus.COMPLETED;
-import static com.mallfoundry.order.OrderStatus.DECLINED;
-import static com.mallfoundry.order.OrderStatus.DISPUTED;
 import static com.mallfoundry.order.OrderStatus.INCOMPLETE;
-import static com.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
+import static com.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static com.mallfoundry.order.OrderStatus.PENDING;
-import static com.mallfoundry.order.OrderStatus.REFUNDED;
-import static com.mallfoundry.order.OrderStatus.SHIPPED;
-import static com.mallfoundry.order.OrderStatus.VERIFICATION_REQUIRED;
 
 @Getter
 @Setter
@@ -83,27 +78,30 @@ public class InternalOrder implements Order {
     private String customerId;
 
     @JsonProperty("billing_address")
-    @Embedded
+    @Convert(converter = BillingAddressConverter.class)
+    @Column(name = "billing_address_")
     private BillingAddress billingAddress;
 
     @JsonProperty("shipping_address")
-    @Embedded
+    @Convert(converter = ShippingAddressConverter.class)
+    @Column(name = "shipping_address_")
     private ShippingAddress shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id_")
     private List<InternalOrderItem> items = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+            targetEntity = InternalShipment.class)
     @JoinColumn(name = "order_id_")
-    private List<InternalShipment> shipments = new ArrayList<>();
+    private List<Shipment> shipments = new ArrayList<>();
 
     @JsonProperty("payment_details")
     @Embedded
     private PaymentDetails paymentDetails;
 
-    @Column(name = "store_id_")
     @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "store_id_")
     private String storeId;
 
     @JsonProperty("total_amount")
@@ -124,6 +122,21 @@ public class InternalOrder implements Order {
     @Column(name = "paid_time_")
     private Date paidTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty(value = "shipped_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "shipped_time_")
+    private Date shippedTime;
+
+    public static InternalOrder of(Order order) {
+        if (order instanceof InternalOrder) {
+            return (InternalOrder) order;
+        }
+
+        var target = new InternalOrder();
+        BeanUtils.copyProperties(order, target);
+        return target;
+    }
+
     public List<OrderItem> getItems(List<String> itemIds) {
         return this.items.stream()
                 .filter(item -> itemIds.contains(item.getId()))
@@ -139,6 +152,22 @@ public class InternalOrder implements Order {
 
     public void addShipment(Shipment shipment) {
         this.getShipments().add(InternalShipment.of(shipment));
+        var remainingCount = this.getItems().stream().filter(this::notShipped).count();
+        if (remainingCount == 0) {
+            this.setStatus(AWAITING_PICKUP);
+        } else {
+            this.setStatus(PARTIALLY_SHIPPED);
+        }
+        this.setShippedTime(new Date());
+    }
+
+    private boolean notShipped(OrderItem item) {
+        for (var shipment : this.getShipments()) {
+            if (shipment.containsItem(item)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void removeShipment(InternalShipment shipment) {
@@ -146,7 +175,7 @@ public class InternalOrder implements Order {
     }
 
     public List<Shipment> getShipments() {
-        return new ArrayList<>(shipments);
+        return this.shipments;
     }
 
     public void setShipments(List<Shipment> shipments) {
@@ -183,49 +212,6 @@ public class InternalOrder implements Order {
         this.setPaidTime(new Date());
     }
 
-    public void awaitingShipment() throws OrderException {
-        if (!Objects.equals(AWAITING_FULFILLMENT, this.status)) {
-            throw new OrderException("The current state of the order is not awaiting_fulfillment");
-        }
-        this.setStatus(AWAITING_SHIPMENT);
-    }
-
-    public void shipped(List<InternalShipment> shipments) {
-        this.setStatus(SHIPPED);
-        this.getShipments().addAll(shipments);
-    }
-
-    public void awaitingPickup() {
-        this.setStatus(AWAITING_PICKUP);
-    }
-
-    public void completed() {
-        this.setStatus(COMPLETED);
-    }
-
-    public void verificationRequired() {
-        this.setStatus(VERIFICATION_REQUIRED);
-    }
-
-    public void disputed() {
-        this.setStatus(DISPUTED);
-    }
-
-    public void partiallyRefunded() {
-        this.setStatus(PARTIALLY_REFUNDED);
-    }
-
-    public void refunded() {
-        this.setStatus(REFUNDED);
-    }
-
-    public void cancelled() {
-        this.setStatus(CANCELLED);
-    }
-
-    public void declined() {
-        this.setStatus(DECLINED);
-    }
 
     public static Builder builder() {
         return new Builder();

@@ -42,11 +42,19 @@ public class OrderTests {
                 .productId(1L)
                 .variantId(1L)
                 .quantity(1).build());
-        ShippingAddress shippingAddress =
-                ShippingAddress.builder().consignee("唐治")
+        var shippingAddress =
+                this.orderService.createShippingAddress().toBuilder().consignee("唐治")
                         .postalCode("260000").countryCode("86").mobile("1560000000")
                         .address("山东省济南市").location("064栋").build();
 //        Order order = new Order(123L, shippingAddress, items);
 //        this.orderService.createOrder(order);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void testAddShipment() throws CustomerValidException {
+        Order order = new InternalOrder();
+        order.addShipment(new InternalShipment());
     }
 }

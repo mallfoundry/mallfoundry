@@ -18,7 +18,6 @@ package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -27,7 +26,7 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 @Embeddable
-public class ShippingAddress {
+public class InternalShippingAddress implements ShippingAddress {
 
     @Column(name = "shipping_address_consignee_")
     private String consignee;
@@ -48,50 +47,4 @@ public class ShippingAddress {
 
     @Column(name = "shipping_address_location_")
     private String location;
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    static class Builder {
-        private ShippingAddress address;
-
-        public Builder() {
-            this.address = new ShippingAddress();
-        }
-
-        public Builder consignee(String consignee) {
-            this.address.setConsignee(consignee);
-            return this;
-        }
-
-        public Builder countryCode(String countryCode) {
-            this.address.setCountryCode(countryCode);
-            return this;
-        }
-
-        public Builder mobile(String mobile) {
-            this.address.setMobile(mobile);
-            return this;
-        }
-
-        public Builder postalCode(String postalCode) {
-            this.address.setPostalCode(postalCode);
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.address.setAddress(address);
-            return this;
-        }
-
-        public Builder location(String location) {
-            this.address.setLocation(location);
-            return this;
-        }
-
-        public ShippingAddress build() {
-            return this.address;
-        }
-    }
 }

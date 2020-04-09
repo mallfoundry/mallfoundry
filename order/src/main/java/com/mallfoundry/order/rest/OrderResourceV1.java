@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,6 +71,19 @@ public class OrderResourceV1 {
         shipment.setShippingProvider(request.getShippingProvider());
         shipment.setTrackingNumber(request.getTrackingNumber());
         return this.orderService.addShipment(shipment);
+    }
+
+    @PutMapping("/orders/{order_id}/shipments/{shipment_id}")
+    public void updateShipment(
+            @PathVariable("order_id") String orderId,
+            @PathVariable("shipment_id") String shipmentId,
+            @RequestBody ShipmentRequest request) {
+        var order = this.orderService.getOrder(orderId).orElseThrow();
+        var shipment = order.getShipment(shipmentId).orElseThrow();
+        if (StringUtils.isNotEmpty(request.getShippingMethod())) {
+            shipment.setShippingMethod(request.getShippingMethod());
+        }
+        this.orderService.saveOrder(order);
     }
 
     @PostMapping("/orders/total_amount")

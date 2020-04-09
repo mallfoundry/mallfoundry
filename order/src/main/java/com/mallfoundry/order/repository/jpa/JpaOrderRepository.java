@@ -39,36 +39,39 @@ public interface JpaOrderRepository
         JpaRepository<InternalOrder, String>,
         JpaSpecificationExecutor<InternalOrder> {
 
-    String ORDER_ID_VALUE_NAME = "order.id";
+//    default void saveSetIds(InternalOrder order) {
+//        if (Objects.isNull(order.getId())) {
+//            order.setId(PrimaryKeyHolder.value(ORDER_ID_VALUE_NAME));
+//        }
+//        if (Objects.nonNull(order.getItems())) {
+//            order.getItems().forEach(item -> {
+//                if (Objects.isNull(item.getId())) {
+//                    item.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
+//                }
+//            });
+//        }
+//
+//        if (Objects.nonNull(order.getShipments())) {
+//            order.getShipments().forEach(shipment -> {
+//                if (Objects.isNull(shipment.getId())) {
+//                    shipment.setId(PrimaryKeyHolder.value(SHIPMENT_VALUE_NAME));
+//                }
+//            });
+//        }
+//    }
 
-    String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
-
-    String SHIPMENT_VALUE_NAME = "shipment.id";
-
-    @Override
-    default <S extends InternalOrder> List<S> saveAll(Collection<S> orders) {
-        orders.forEach(order -> {
-            if (Objects.isNull(order.getId())) {
-                order.setId(PrimaryKeyHolder.value(ORDER_ID_VALUE_NAME));
-            }
-            if (Objects.nonNull(order.getItems())) {
-                order.getItems().forEach(item -> {
-                    if (Objects.isNull(item.getId())) {
-                        item.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
-                    }
-                });
-            }
-
-            if (Objects.nonNull(order.getShipments())) {
-                order.getShipments().forEach(shipment -> {
-                    if (Objects.isNull(shipment.getId())) {
-                        shipment.setId(PrimaryKeyHolder.value(SHIPMENT_VALUE_NAME));
-                    }
-                });
-            }
-        });
-        return this.saveAll((Iterable<S>) orders);
-    }
+//    @Override
+//    default InternalOrder save(InternalOrder order) {
+//        saveSetIds(order);
+//        return this.saveAndFlush(order);
+//    }
+//
+//
+//    @Override
+//    default <S extends InternalOrder> List<S> saveAll(Collection<S> orders) {
+//        orders.forEach(this::saveSetIds);
+//        return this.saveAll((Iterable<S>) orders);
+//    }
 
     @Override
     List<InternalOrder> findAllById(Iterable<String> iterable);
