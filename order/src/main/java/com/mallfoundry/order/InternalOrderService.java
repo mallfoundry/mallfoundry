@@ -23,6 +23,7 @@ import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentService;
 import com.mallfoundry.security.SecurityUserHolder;
 import com.mallfoundry.store.product.ProductService;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,22 +71,23 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public BillingAddress createBillingAddress(
-            String countryCode, String postalCode, String consignee, String mobile, String address, String location) {
-        return new InternalBillingAddress().toBuilder().countryCode(countryCode).postalCode(postalCode)
-                .consignee(consignee).mobile(mobile).address(address).location(location).build();
+    public BillingAddress createBillingAddress() {
+        return new InternalBillingAddress();
     }
 
     @Override
-    public ShippingAddress createShippingAddress(
-            String countryCode, String postalCode, String consignee, String mobile, String address, String location) {
-        return new InternalShippingAddress().toBuilder().countryCode(countryCode).postalCode(postalCode)
-                .consignee(consignee).mobile(mobile).address(address).location(location).build();
+    public ShippingAddress createShippingAddress() {
+        return new InternalShippingAddress();
     }
 
     @Override
-    public Order createOrder(BillingAddress billingAddress, ShippingAddress shippingAddress, List<OrderItem> items) {
-        var order = new InternalOrder(billingAddress, shippingAddress, items);
+    public OrderQuery createOrderQuery() {
+        return new InternalOrderQuery();
+    }
+
+    @Override
+    public Order createOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
+        var order = new InternalOrder(shippingAddress, items);
         order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME));
         order.setCustomerId(SecurityUserHolder.getUserId());
         return order;
@@ -117,35 +119,30 @@ public class InternalOrderService implements OrderService {
         return shipment;
     }
 
+    @Transactional
     @Override
-    public void checkout(Order order) {
-
+    public List<Order> checkout(Order order) {
+        return this.checkout(List.of(order));
     }
 
     @Transactional
-    public OrderCreation createOrders(List<InternalOrder> orders) throws CustomerValidException {
+    @Override
+    public List<Order> checkout(List<Order> orders) throws CustomerValidException {
         customerValidator.validate(orders);
         checkoutCounter.checkout(orders);
-        return new OrderCreation(
-                this.orderRepository
-                        .saveAll(this.orderSplitter.splitting(orders))
-                        .stream().map(InternalOrder::getId).collect(Collectors.toList()),
-                this.totalAmount(orders));
+        var splitOrders = this.orderSplitter.splitting(orders)
+                .stream().map(InternalOrder::of).collect(Collectors.toList());
+        return CastUtils.cast(this.orderRepository.saveAll(splitOrders));
     }
 
-    @Transactional
-    public OrderCreation createOrder(InternalOrder order) throws CustomerValidException {
-        return this.createOrders(List.of(order));
-    }
-
-    public BigDecimal totalAmount(PaymentOrder payOrder) {
-        List<InternalOrder> orders = this.orderRepository.findAllById(payOrder.getOrders());
-        return this.totalAmount(orders);
-    }
-
+    //    public BigDecimal totalAmount(PaymentOrder payOrder) {
+//        List<Order> orders = this.orderRepository.findAllById(payOrder.getOrders());
+//        return this.totalAmount(orders);
+//    }
+//
     private BigDecimal totalAmount(List<InternalOrder> orders) {
         return orders.stream()
-                .map(InternalOrder::getTotalAmount)
+                .map(Order::getTotalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -153,9 +150,9 @@ public class InternalOrderService implements OrderService {
     public PaymentLink createPaymentOrder(PaymentOrder payOrder) {
         List<InternalOrder> orders = this.orderRepository.findAllById(payOrder.getOrders());
         orders = Objects.isNull(orders) ? Collections.emptyList() : orders;
-        Map<String, InternalOrder> orderMap = orders.stream().collect(Collectors.toMap(InternalOrder::getId, order -> order));
+        Map<String, Order> orderMap = orders.stream().collect(Collectors.toMap(Order::getId, order -> order));
         for (String orderId : payOrder.getOrders()) {
-            InternalOrder order = orderMap.get(orderId);
+            Order order = orderMap.get(orderId);
             if (Objects.isNull(order)) {
                 throw new OrderException(String.format("The order(%s)  does not exist.", orderId));
             }
@@ -165,36 +162,29 @@ public class InternalOrderService implements OrderService {
         PaymentLink link = this.paymentService.createOrder(payOrder);
 
         // Set order payment details.
-        for (InternalOrder order : orders) {
-            order.awaitingPayment(new PaymentDetails(link.getId(), payOrder.getProvider(), payOrder.getStatus()));
+        for (var order : orders) {
+            order.awaitingPayment(new InternalPaymentDetails(link.getId(), payOrder.getProvider(), payOrder.getStatus()));
         }
+
         return link;
     }
 
     @Transactional
     public void confirmPayment(PaymentOrder paymentOrder) {
-        paymentOrder.getOrders().forEach(orderId -> {
-            if (paymentOrder.isSuccess()) {
-                this.orderRepository
-                        .findById(orderId).
-                        ifPresent(InternalOrder::paid);
-            }
-        });
-
-    }
-
-    public Optional<InternalOrder> getOrder(String orderId) {
-        return this.orderRepository.findById(orderId);
-    }
-
-    public SliceList<InternalOrder> getOrders(OrderQuery query) {
-        return this.orderRepository.findAll(query);
+        paymentOrder.getOrders()
+                .forEach(orderId ->
+                        this.orderRepository.findById(orderId).ifPresent(order ->
+                                order.confirmPayment(
+                                        new InternalPaymentDetails(
+                                                paymentOrder.getId(),
+                                                paymentOrder.getProvider(),
+                                                paymentOrder.getStatus()))));
     }
 
     @Transactional
     @Override
     public Shipment addShipment(Shipment shipment) {
-        InternalOrder order = this.orderRepository.findById(shipment.getOrderId()).orElseThrow();
+        var order = this.orderRepository.findById(shipment.getOrderId()).orElseThrow();
         order.addShipment(shipment);
         return shipment;
     }
@@ -202,5 +192,15 @@ public class InternalOrderService implements OrderService {
     @Transactional
     public void saveOrder(Order order) {
         this.orderRepository.save(InternalOrder.of(order));
+    }
+
+    @Override
+    public Optional<Order> getOrder(String orderId) {
+        return CastUtils.cast(this.orderRepository.findById(orderId));
+    }
+
+    @Override
+    public SliceList<Order> getOrders(OrderQuery query) {
+        return CastUtils.cast(this.orderRepository.findAll(query));
     }
 }

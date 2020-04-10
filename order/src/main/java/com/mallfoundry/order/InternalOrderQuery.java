@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.data;
+package com.mallfoundry.order;
 
-
+import com.mallfoundry.data.PageableSupport;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
+import java.util.List;
 
 @Getter
-public abstract class PageLimitSupport implements PageLimit {
+@Setter
+public class InternalOrderQuery extends PageableSupport implements OrderQuery {
 
-    private Integer page = DEFAULT_PAGE;
+    private String title;
 
-    private Integer limit = DEFAULT_LIMIT;
+    private List<OrderStatus> statuses;
 
-    public void setPage(Integer page) {
-        if (Objects.nonNull(page)) {
-            this.page = Math.max(DEFAULT_PAGE, page);
-        }
-    }
+    private String storeId;
 
-    public void setLimit(Integer limit) {
-        if (Objects.nonNull(limit)) {
-            this.limit = Math.min(Math.max(MIN_LIMIT, limit), MAX_LIMIT);
-        }
-    }
+    private String customerId;
 }

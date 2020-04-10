@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderRequest {
-    private AddressRequest billingAddress;
-    private AddressRequest shippingAddress;
+    @JsonProperty("shipping_address")
+    private ShippingAddressRequest shippingAddress;
     private List<OrderItemRequest> items;
 
     @Getter
     @Setter
-    static class AddressRequest {
+    static class ShippingAddressRequest {
         private String consignee;
         @JsonProperty("country_code")
         private String countryCode;

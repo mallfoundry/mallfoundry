@@ -16,9 +16,9 @@
 
 package com.mallfoundry.storage;
 
-import com.mallfoundry.data.PageLimit;
+import com.mallfoundry.data.Pageable;
 
-public interface BlobQuery extends PageLimit {
+public interface BlobQuery extends Pageable {
 
     BlobType getType();
 

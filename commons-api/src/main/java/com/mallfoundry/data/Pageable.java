@@ -16,7 +16,7 @@
 
 package com.mallfoundry.data;
 
-public interface PageLimit {
+public interface Pageable {
 
     int DEFAULT_PAGE = 1;
 

@@ -18,7 +18,6 @@ package com.mallfoundry.order.repository.jpa;
 
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.order.InternalOrder;
 import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderRepository;
@@ -28,50 +27,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@Repository
 public interface JpaOrderRepository
         extends OrderRepository,
         JpaRepository<InternalOrder, String>,
         JpaSpecificationExecutor<InternalOrder> {
-
-//    default void saveSetIds(InternalOrder order) {
-//        if (Objects.isNull(order.getId())) {
-//            order.setId(PrimaryKeyHolder.value(ORDER_ID_VALUE_NAME));
-//        }
-//        if (Objects.nonNull(order.getItems())) {
-//            order.getItems().forEach(item -> {
-//                if (Objects.isNull(item.getId())) {
-//                    item.setId(PrimaryKeyHolder.value(ORDER_ITEM_ID_VALUE_NAME));
-//                }
-//            });
-//        }
-//
-//        if (Objects.nonNull(order.getShipments())) {
-//            order.getShipments().forEach(shipment -> {
-//                if (Objects.isNull(shipment.getId())) {
-//                    shipment.setId(PrimaryKeyHolder.value(SHIPMENT_VALUE_NAME));
-//                }
-//            });
-//        }
-//    }
-
-//    @Override
-//    default InternalOrder save(InternalOrder order) {
-//        saveSetIds(order);
-//        return this.saveAndFlush(order);
-//    }
-//
-//
-//    @Override
-//    default <S extends InternalOrder> List<S> saveAll(Collection<S> orders) {
-//        orders.forEach(this::saveSetIds);
-//        return this.saveAll((Iterable<S>) orders);
-//    }
 
     @Override
     List<InternalOrder> findAllById(Iterable<String> iterable);

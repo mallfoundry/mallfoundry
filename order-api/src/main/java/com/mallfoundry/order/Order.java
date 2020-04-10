@@ -1,5 +1,6 @@
 package com.mallfoundry.order;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,10 @@ public interface Order {
 
     void setCustomerId(String customerId);
 
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
     List<OrderItem> getItems();
 
     void setItems(List<OrderItem> items);
@@ -36,9 +41,19 @@ public interface Order {
 
     int getShippedItems();
 
+    BigDecimal getTotalAmount();
+
+    PaymentDetails getPaymentDetails();
+
     Date getCreatedTime();
 
     Date getPaidTime();
 
     Date getShippedTime();
+
+    void pending();
+
+    void awaitingPayment(PaymentDetails details);
+
+    void confirmPayment(PaymentDetails details);
 }

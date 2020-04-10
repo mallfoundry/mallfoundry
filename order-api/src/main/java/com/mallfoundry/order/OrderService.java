@@ -1,22 +1,31 @@
 package com.mallfoundry.order;
 
+import com.mallfoundry.data.SliceList;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
 
-    BillingAddress createBillingAddress(
-            String countryCode, String postalCode, String consignee, String mobile, String address, String location);
+    BillingAddress createBillingAddress();
 
-    ShippingAddress createShippingAddress(
-            String countryCode, String postalCode, String consignee, String mobile, String address, String location);
+    ShippingAddress createShippingAddress();
 
-    Order createOrder(BillingAddress billingAddress, ShippingAddress shippingAddress, List<OrderItem> items);
+    OrderQuery createOrderQuery();
+
+    Order createOrder(ShippingAddress shippingAddress, List<OrderItem> items);
 
     OrderItem createOrderItem(String productId, String variantId, int quantity);
 
     Shipment createShipment(String orderId, List<String> itemIds);
 
-    void checkout(Order order);
+    List<Order> checkout(Order order);
+
+    List<Order> checkout(List<Order> orders);
 
     Shipment addShipment(Shipment shipment);
+
+    Optional<Order> getOrder(String orderId);
+
+    SliceList<Order> getOrders(OrderQuery query);
 }

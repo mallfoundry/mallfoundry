@@ -21,7 +21,17 @@ import java.util.List;
 
 public interface SliceList<T> extends Iterable<T> {
 
+    int getPage();
+
+    int getLimit();
+
     List<T> getElements();
+
+    int getSize();
+
+    int getTotalPages();
+
+    long getTotalSize();
 
     @Override
     default Iterator<T> iterator() {

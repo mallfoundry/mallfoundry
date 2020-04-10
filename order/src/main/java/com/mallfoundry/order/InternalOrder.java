@@ -50,10 +50,10 @@ import java.util.stream.Collectors;
 
 import static com.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
-import static com.mallfoundry.order.OrderStatus.AWAITING_PICKUP;
 import static com.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static com.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static com.mallfoundry.order.OrderStatus.PENDING;
+import static com.mallfoundry.order.OrderStatus.SHIPPED;
 
 @Getter
 @Setter
@@ -71,12 +71,17 @@ public class InternalOrder implements Order {
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
-    @Column(name = "note_")
-    private String note;
+    @JsonProperty("staff_notes")
+    @Column(name = "staff_notes_")
+    private String staffNotes;
 
     @JsonProperty("customer_id")
     @Column(name = "customer_id_")
     private String customerId;
+
+    @JsonProperty("customer_message")
+    @Column(name = "customer_message_")
+    private String customerMessage;
 
     @JsonProperty("billing_address")
     @Convert(converter = BillingAddressConverter.class)
@@ -104,7 +109,7 @@ public class InternalOrder implements Order {
 
     @JsonProperty("payment_details")
     @Embedded
-    private PaymentDetails paymentDetails;
+    private InternalPaymentDetails paymentDetails;
 
     @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "store_id_")
@@ -112,9 +117,10 @@ public class InternalOrder implements Order {
 
     @JsonProperty("total_amount")
     @Transient
+    @Override
     public BigDecimal getTotalAmount() {
         return this.getItems().stream()
-                .map(OrderItem::getTotalAmount)
+                .map(OrderItem::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -133,8 +139,7 @@ public class InternalOrder implements Order {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    public InternalOrder(BillingAddress billingAddress, ShippingAddress shippingAddress,
-                         List<OrderItem> items) {
+    public InternalOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
         this.setBillingAddress(billingAddress);
         this.setShippingAddress(shippingAddress);
         this.setItems(items);
@@ -169,26 +174,24 @@ public class InternalOrder implements Order {
     }
 
     public void addShipment(Shipment shipment) {
-        this.getShipments().add(InternalShipment.of(shipment));
+        shipment = InternalShipment.of(shipment);
+
+        if (Objects.isNull(shipment.getBillingAddress())) {
+            shipment.setBillingAddress(billingAddress);
+        }
+
+        this.getShipments().add(shipment);
         this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
         if (this.getShippedItems() == this.getTotalItems()) {
-            this.setStatus(AWAITING_PICKUP);
+            this.setStatus(SHIPPED);
         } else {
             this.setStatus(PARTIALLY_SHIPPED);
         }
-        this.setShippedTime(new Date());
-    }
-
-    public void removeShipment(InternalShipment shipment) {
-        this.getShipments().remove(shipment);
+        this.setShippedTime(shipment.getShippedTime());
     }
 
     public List<Shipment> getShipments() {
         return this.shipments;
-    }
-
-    public void setShipments(List<Shipment> shipments) {
-        this.shipments = shipments.stream().map(InternalShipment::of).collect(Collectors.toList());
     }
 
     @JsonIgnore
@@ -196,6 +199,7 @@ public class InternalOrder implements Order {
         return this.getStatus() == PENDING || this.getStatus() == AWAITING_PAYMENT;
     }
 
+    @Override
     public void pending() throws OrderException {
         if (this.status != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
@@ -204,6 +208,7 @@ public class InternalOrder implements Order {
         this.setCreatedTime(new Date());
     }
 
+    @Override
     public void awaitingPayment(PaymentDetails details) throws OrderException {
         if (!this.isAwaitingPayment()) {
             throw new OrderException(
@@ -212,12 +217,14 @@ public class InternalOrder implements Order {
         }
 
         this.setStatus(AWAITING_PAYMENT);
-        this.setPaymentDetails(details);
+        this.setPaymentDetails(InternalPaymentDetails.of(details));
     }
 
-    public void paid() {
-        this.getPaymentDetails().setStatus(PaymentStatus.SUCCESS);
-        this.setStatus(AWAITING_FULFILLMENT);
-        this.setPaidTime(new Date());
+    public void confirmPayment(PaymentDetails details) {
+        this.setPaymentDetails(InternalPaymentDetails.of(details));
+        if (details.getStatus() == PaymentStatus.SUCCESS) {
+            this.setStatus(AWAITING_FULFILLMENT);
+            this.setPaidTime(new Date());
+        }
     }
 }

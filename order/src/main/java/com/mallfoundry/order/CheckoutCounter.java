@@ -19,6 +19,7 @@ package com.mallfoundry.order;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
 import com.mallfoundry.store.product.ProductVariant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class CheckoutCounter {
         this.productService = productService;
     }
 
-    public void checkout(InternalOrder order) throws CheckoutException {
+    public void checkout(Order order) throws CheckoutException {
         try {
             List<OrderItem> items = order.getItems();
             order.setStoreId(null);
@@ -41,6 +42,10 @@ public class CheckoutCounter {
                 Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
                 ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
 //                variant.decrementInventoryQuantity(item.getQuantity());
+
+                if (StringUtils.isEmpty(item.getTitle())) {
+                    item.setTitle(product.getTitle());
+                }
 
                 if (Objects.isNull(order.getStoreId())) {
                     order.setStoreId(product.getStoreId());
@@ -52,8 +57,8 @@ public class CheckoutCounter {
         order.pending();
     }
 
-    public void checkout(List<InternalOrder> orders) throws CheckoutException {
-        for (InternalOrder order : orders) {
+    public void checkout(List<Order> orders) throws CheckoutException {
+        for (var order : orders) {
             this.checkout(order);
         }
     }

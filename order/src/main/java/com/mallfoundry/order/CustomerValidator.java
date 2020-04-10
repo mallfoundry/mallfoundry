@@ -16,7 +16,6 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 @Service
 public class CustomerValidator {
 
-    public void validate(List<InternalOrder> orders) throws CustomerValidException {
-        orders.forEach(order -> order.setCustomerId(SecurityUserHolder.getUserId()));
+    public void validate(List<Order> orders) throws CustomerValidException {
+
     }
 }

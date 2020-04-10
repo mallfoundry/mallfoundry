@@ -18,7 +18,6 @@ package com.mallfoundry.order;
 
 import com.mallfoundry.data.SliceList;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

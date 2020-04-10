@@ -22,9 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootTest
 public class OrderTests {
 
@@ -35,19 +32,7 @@ public class OrderTests {
     @Transactional
     @Rollback(false)
     public void testSubmitOrder() throws CustomerValidException {
-        List<InternalOrderItem> items = new ArrayList<>();
-        items.add(InternalOrderItem.builder()
-                .storeId("mi")
-//                .storeId("mi")
-                .productId(1L)
-                .variantId(1L)
-                .quantity(1).build());
-        var shippingAddress =
-                this.orderService.createShippingAddress().toBuilder().consignee("唐治")
-                        .postalCode("260000").countryCode("86").mobile("1560000000")
-                        .address("山东省济南市").location("064栋").build();
-//        Order order = new Order(123L, shippingAddress, items);
-//        this.orderService.createOrder(order);
+        
     }
 
     @Test

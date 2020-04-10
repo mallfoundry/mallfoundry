@@ -16,13 +16,13 @@
 
 package com.mallfoundry.store.product.search;
 
-import com.mallfoundry.data.PageLimitSupport;
+import com.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductQuery extends PageLimitSupport {
+public class ProductQuery extends PageableSupport {
 
     private String title;
 

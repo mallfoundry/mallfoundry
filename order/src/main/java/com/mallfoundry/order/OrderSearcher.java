@@ -20,5 +20,5 @@ import com.mallfoundry.data.SliceList;
 
 public interface OrderSearcher {
 
-    SliceList<InternalOrder> search(OrderQuery query);
+    SliceList<InternalOrder> search(InternalOrderQuery query);
 }

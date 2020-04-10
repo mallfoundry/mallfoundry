@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-public class CustomerValidException extends Exception {
+public class CustomerValidException extends RuntimeException {
 
     public CustomerValidException(String message) {
         super(message);

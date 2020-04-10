@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storage;
+package com.mallfoundry.payment;
 
-import com.mallfoundry.data.PageableSupport;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@Getter
-@Setter
-public class InternalBlobQuery extends PageableSupport implements BlobQuery {
+public enum PaymentStatus {
+    PENDING,
+    SUCCESS,
+    FAILURE,
+    ERROR;
 
-    private String bucket;
-
-    private String path;
-
-    private BlobType type;
+    @JsonValue
+    private String lowercase() {
+        return this.name().toLowerCase();
+    }
 
     @Override
-    public Builder toBuilder() {
-        return new Builder(this);
+    public String toString() {
+        return this.lowercase();
     }
 }

@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storage;
+package com.mallfoundry.data;
 
-import com.mallfoundry.data.PageableSupport;
+
 import lombok.Getter;
-import lombok.Setter;
+
+import java.util.Objects;
 
 @Getter
-@Setter
-public class InternalBlobQuery extends PageableSupport implements BlobQuery {
+public abstract class PageableSupport implements Pageable {
 
-    private String bucket;
+    private Integer page = DEFAULT_PAGE;
 
-    private String path;
+    private Integer limit = DEFAULT_LIMIT;
 
-    private BlobType type;
+    public void setPage(Integer page) {
+        if (Objects.nonNull(page)) {
+            this.page = Math.max(DEFAULT_PAGE, page);
+        }
+    }
 
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
+    public void setLimit(Integer limit) {
+        if (Objects.nonNull(limit)) {
+            this.limit = Math.min(Math.max(MIN_LIMIT, limit), MAX_LIMIT);
+        }
     }
 }

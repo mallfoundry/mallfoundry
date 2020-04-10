@@ -22,6 +22,7 @@ import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -32,7 +33,7 @@ import javax.persistence.Enumerated;
 @Setter
 @NoArgsConstructor
 @Embeddable
-public class PaymentDetails {
+public class InternalPaymentDetails implements PaymentDetails {
 
     @JsonProperty("order_id")
     @Column(name = "payment_order_id_")
@@ -46,9 +47,18 @@ public class PaymentDetails {
     @Column(name = "payment_status_")
     private PaymentStatus status;
 
-    public PaymentDetails(Long orderId, PaymentProviderType provider, PaymentStatus status) {
+    public InternalPaymentDetails(Long orderId, PaymentProviderType provider, PaymentStatus status) {
         this.orderId = orderId;
         this.provider = provider;
         this.status = status;
+    }
+
+    public static InternalPaymentDetails of(PaymentDetails details) {
+        if (details instanceof InternalPaymentDetails) {
+            return (InternalPaymentDetails) details;
+        }
+        var target = new InternalPaymentDetails();
+        BeanUtils.copyProperties(details, target);
+        return target;
     }
 }

@@ -19,12 +19,9 @@ package com.mallfoundry.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Getter
 public class PageList<T> implements SliceList<T> {
@@ -57,7 +54,7 @@ public class PageList<T> implements SliceList<T> {
     }
 
     public PageList<T> page(int page) {
-        this.page = Math.max(page, PageLimit.DEFAULT_PAGE);
+        this.page = Math.max(page, Pageable.DEFAULT_PAGE);
         return this;
     }
 

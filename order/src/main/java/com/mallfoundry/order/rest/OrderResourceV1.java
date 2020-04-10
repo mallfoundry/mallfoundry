@@ -17,13 +17,10 @@
 package com.mallfoundry.order.rest;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.order.BillingAddress;
 import com.mallfoundry.order.CustomerValidException;
-import com.mallfoundry.order.InternalOrder;
 import com.mallfoundry.order.InternalOrderService;
-import com.mallfoundry.order.OrderCreation;
+import com.mallfoundry.order.Order;
 import com.mallfoundry.order.OrderItem;
-import com.mallfoundry.order.OrderQuery;
 import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
 import com.mallfoundry.order.ShippingAddress;
@@ -40,8 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,14 +53,12 @@ public class OrderResourceV1 {
         this.orderService = orderService;
     }
 
-    private BillingAddress createBillingAddress(OrderRequest.AddressRequest request) {
-        return this.orderService.createBillingAddress(request.getCountryCode(), request.getPostalCode(),
-                request.getConsignee(), request.getMobile(), request.getAddress(), request.getLocation());
-    }
-
-    private ShippingAddress createShippingAddress(OrderRequest.AddressRequest request) {
-        return this.orderService.createShippingAddress(request.getCountryCode(), request.getPostalCode(),
-                request.getConsignee(), request.getMobile(), request.getAddress(), request.getLocation());
+    private ShippingAddress createShippingAddress(OrderRequest.ShippingAddressRequest request) {
+        return Objects.isNull(request) ? null :
+                this.orderService.createShippingAddress().toBuilder()
+                        .countryCode(request.getCountryCode()).postalCode(request.getPostalCode())
+                        .consignee(request.getConsignee()).mobile(request.getMobile())
+                        .address(request.getAddress()).location(request.getLocation()).build();
     }
 
     private OrderItem createOrderItem(OrderRequest.OrderItemRequest request) {
@@ -74,24 +69,29 @@ public class OrderResourceV1 {
         return requests.stream().map(this::createOrderItem).collect(Collectors.toList());
     }
 
+    private Order createOrder(OrderRequest request) {
+        return this.orderService.createOrder(
+                createShippingAddress(request.getShippingAddress()),
+                createOrderItems(request.getItems()));
+    }
+
+    private List<Order> createOrders(List<OrderRequest> requests) {
+        return requests.stream().map(this::createOrder).collect(Collectors.toList());
+    }
+
     @PostMapping("/orders/batch")
-    public OrderCreation createOrders(@RequestBody List<InternalOrder> orders) throws CustomerValidException {
-        return this.orderService.createOrders(orders);
+    public List<Order> checkout(@RequestBody List<OrderRequest> request) throws CustomerValidException {
+        return this.orderService.checkout(this.createOrders(request));
     }
 
     @PostMapping("/orders")
-    public void createOrder(OrderRequest request) {
-        var order = this.orderService.createOrder(
-                createBillingAddress(request.getBillingAddress()),
-                createShippingAddress(request.getShippingAddress()),
-                createOrderItems(request.getItems()));
-        this.orderService.checkout(order);
+    public List<Order> checkout(@RequestBody OrderRequest request) {
+        return this.orderService.checkout(this.createOrder(request));
     }
 
     @PostMapping("/orders/{order_id}/shipments")
     public Shipment addShipment(@PathVariable("order_id") String orderId,
                                 @RequestBody ShipmentRequest request) {
-
         var shipment = this.orderService.createShipment(orderId, request.getItemIds());
         shipment.setShippingMethod(request.getShippingMethod());
         shipment.setShippingProvider(request.getShippingProvider());
@@ -100,10 +100,9 @@ public class OrderResourceV1 {
     }
 
     @PutMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public void updateShipment(
-            @PathVariable("order_id") String orderId,
-            @PathVariable("shipment_id") String shipmentId,
-            @RequestBody ShipmentRequest request) {
+    public void updateShipment(@PathVariable("order_id") String orderId,
+                               @PathVariable("shipment_id") String shipmentId,
+                               @RequestBody ShipmentRequest request) {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         var shipment = order.getShipment(shipmentId).orElseThrow();
         if (StringUtils.isNotEmpty(request.getShippingMethod())) {
@@ -112,29 +111,29 @@ public class OrderResourceV1 {
         this.orderService.saveOrder(order);
     }
 
-    @PostMapping("/orders/total_amount")
-    public BigDecimal getTotalAmount(@RequestBody PaymentOrder order) {
-        return this.orderService.totalAmount(order);
-    }
+//    @PostMapping("/orders/total_amount")
+//    public BigDecimal getTotalAmount(@RequestBody PaymentOrder order) {
+//        return this.orderService.totalAmount(order);
+//    }
 
-    @PostMapping("/payment_orders")
+    @PostMapping("/payment-orders")
     public PaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
         return this.orderService.createPaymentOrder(order);
     }
 
     @GetMapping("/orders/{order_id}")
-    public Optional<InternalOrder> getOrder(@PathVariable("order_id") String orderId) {
+    public Optional<Order> getOrder(@PathVariable("order_id") String orderId) {
         return this.orderService.getOrder(orderId);
     }
 
     @GetMapping("/orders")
-    public SliceList<InternalOrder> getOrders(
+    public SliceList<Order> getOrders(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "customer_id", required = false) String customerId,
             @RequestParam(name = "status", required = false) List<String> statuses,
             @RequestParam(name = "store_id", required = false) String storeId) {
-        return this.orderService.getOrders(OrderQuery.builder()
+        return this.orderService.getOrders(this.orderService.createOrderQuery().toBuilder()
                 .page(page).limit(limit)
                 .customerId(customerId)
                 // flat map -> filter is not empty -> upper case -> enum value of -> to list

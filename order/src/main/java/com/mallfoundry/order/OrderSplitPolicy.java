@@ -21,5 +21,5 @@ import java.util.List;
 // mall.order.store-split-policy.enable=true
 public interface OrderSplitPolicy {
 
-    List<InternalOrder> splitting(List<InternalOrder> orders);
+    List<Order> splitting(List<Order> orders);
 }
