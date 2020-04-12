@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.inventory;
+package com.mallfoundry.store.inventory;
 
 public class InventoryItem {
 }

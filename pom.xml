@@ -49,6 +49,8 @@
         <module>store-api</module>
         <module>order-api</module>
         <module>shipping-api</module>
+        <module>payment-api</module>
+
         <module>commons</module>
         <module>autoconfigure</module>
         <module>core</module>
@@ -66,7 +68,6 @@
         <module>follow</module>
         <module>trade</module>
         <module>shipping</module>
-        <module>inventory</module>
         <module>payment</module>
     </modules>
 
@@ -101,6 +102,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-shipping-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-payment-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

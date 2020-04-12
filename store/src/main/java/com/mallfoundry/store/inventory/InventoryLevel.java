@@ -16,5 +16,5 @@
 
 package com.mallfoundry.store.inventory;
 
-public class Test {
+public class InventoryLevel {
 }
