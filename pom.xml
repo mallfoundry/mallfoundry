@@ -67,6 +67,7 @@
         <module>shipping</module>
         <module>inventory</module>
         <module>payment</module>
+        <module>shipping-api</module>
     </modules>
 
     <dependencyManagement>

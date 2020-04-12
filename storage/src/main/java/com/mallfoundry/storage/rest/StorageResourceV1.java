@@ -49,21 +49,6 @@ public class StorageResourceV1 {
         return this.storageService.getBlobs(this.storageService.createBlobQuery().toBuilder().bucket(bucket).path(path).build());
     }
 
-//    @PostMapping("/buckets/{bucket}/objects/**")
-//    public StorageObject storeObject(@PathVariable("bucket") String bucket,
-//                                     @RequestParam("file") MultipartFile file,
-//                                     HttpServletRequest request) throws IOException {
-//        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
-//    }
-//
-//    @PostMapping("/buckets/{bucket}/images/**")
-//    public StorageObject storeImage(@PathVariable("bucket") String bucket,
-//                                    @RequestParam("file") MultipartFile file,
-//                                    HttpServletRequest request) throws IOException {
-//        System.out.println(file.getOriginalFilename());
-//        return this.storageSystem.storeObject(new ObjectResource(bucket, getObjectPath(request, file), file.getInputStream()));
-//    }
-
     private String getObjectPath(HttpServletRequest request, MultipartFile file) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
