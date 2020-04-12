@@ -11,5 +11,16 @@
 
     <artifactId>mall-shipping-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-commons-api</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,9 +1,11 @@
-package com.mallfoundry.shipping;
+package com.mallfoundry.tracking;
 
 import java.util.Date;
 import java.util.List;
 
-public interface Tracking {
+public interface Tracker {
+
+    String getCarrierCode();
 
     String getTrackingNumber();
 
