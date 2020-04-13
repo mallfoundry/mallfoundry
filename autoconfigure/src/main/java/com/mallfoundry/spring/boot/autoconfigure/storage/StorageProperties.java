@@ -20,49 +20,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@Getter
+@Setter
 @ConfigurationProperties(prefix = "mall.storage")
 public class StorageProperties {
 
-    @Setter
-    private Http http;
+    private SystemType type;
 
-    @Setter
-    private Store store;
+    private String directory;
 
-    public Store getStore() {
-        if (this.store == null) {
-            this.store = new Store();
-        }
-        return this.store;
-    }
+    private String baseUrl;
 
-    public Http getHttp() {
-        if (this.http == null) {
-            this.http = new Http();
-        }
-        return this.http;
-    }
-
-    public enum StoreType {
+    public enum SystemType {
         LOCAL, FTP, ALI_CLOUD_OSS
-    }
-
-    public static class Store {
-
-        @Getter
-        @Setter
-        private StoreType type;
-
-        @Getter
-        @Setter
-        private String directory;
-    }
-
-
-    public static class Http {
-
-        @Getter
-        @Setter
-        private String baseUrl;
     }
 }

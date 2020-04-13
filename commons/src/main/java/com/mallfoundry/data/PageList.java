@@ -17,20 +17,18 @@
 package com.mallfoundry.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
 public class PageList<T> implements SliceList<T> {
 
     private int page;
 
     private int limit;
 
-    private long size;
+    private int size;
 
     @JsonProperty("total_pages")
     private int totalPages;
@@ -75,5 +73,59 @@ public class PageList<T> implements SliceList<T> {
             return;
         }
         this.totalPages = (int) ((totalSize + limit - 1) / limit);
+    }
+
+    @Override
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    @Override
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    @Override
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    @Override
+    public long getTotalSize() {
+        return totalSize;
+    }
+
+    public void setTotalSize(long totalSize) {
+        this.totalSize = totalSize;
+    }
+
+    @Override
+    public List<T> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<T> elements) {
+        this.elements = elements;
     }
 }

@@ -82,6 +82,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-shipping</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>

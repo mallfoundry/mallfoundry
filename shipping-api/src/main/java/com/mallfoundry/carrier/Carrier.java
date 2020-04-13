@@ -1,9 +1,9 @@
 package com.mallfoundry.carrier;
 
-public class Carrier {
+public interface Carrier {
 
-    private String name;
+    String getName();
 
-    private String code;
+    String getCode();
 
 }

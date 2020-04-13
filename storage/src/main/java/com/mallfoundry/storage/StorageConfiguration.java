@@ -20,16 +20,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * mall.storage.store.type=ali_cloud_oos
- * mall.storage.store.directory=/data_dir
+ * mall.storage.system=ali_cloud_oos
+ * mall.storage.local.directory=/data_dir
  * mall.storage.store.ali-cloud-oss.username=sss
  */
+@Getter
+@Setter
 public class StorageConfiguration {
 
-    @Setter
     private Http http;
 
-    @Setter
     private Store store;
 
     public Store getStore() {
@@ -50,22 +50,16 @@ public class StorageConfiguration {
         LOCAL, FTP, ALI_CLOUD_OSS
     }
 
+    @Getter
+    @Setter
     public static class Store {
-
-        @Getter
-        @Setter
         private StoreType type;
-
-        @Getter
-        @Setter
         private String directory;
     }
 
-
+    @Getter
+    @Setter
     public static class Http {
-
-        @Getter
-        @Setter
         private String baseUrl;
     }
 }

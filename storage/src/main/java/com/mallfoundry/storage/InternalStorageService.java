@@ -19,7 +19,6 @@ package com.mallfoundry.storage;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.storage.acl.InternalOwner;
 import com.mallfoundry.storage.acl.Owner;
-import com.mallfoundry.util.PathUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,15 +36,19 @@ public class InternalStorageService implements StorageService {
 
     private final InternalBlobRepository blobRepository;
 
+    private final SharedBlobRepository sharedBlobRepository;
+
     private final IndexBlobService indexBlobService;
 
     public InternalStorageService(StorageSystem storageSystem,
                                   InternalBucketRepository bucketRepository,
                                   InternalBlobRepository blobRepository,
+                                  SharedBlobRepository sharedBlobRepository,
                                   IndexBlobService indexBlobService) {
         this.storageSystem = storageSystem;
         this.bucketRepository = bucketRepository;
         this.blobRepository = blobRepository;
+        this.sharedBlobRepository = sharedBlobRepository;
         this.indexBlobService = indexBlobService;
     }
 
@@ -112,7 +115,20 @@ public class InternalStorageService implements StorageService {
     public Blob storeBlob(Blob blob) throws StorageException, IOException {
         InternalBlob internalBlob = InternalBlob.of(blob);
         makeDirectories(internalBlob);
-        this.storageSystem.storeBlob(internalBlob);
+        if (internalBlob.isFile()) {
+            try (var sharedBlob = SharedBlob.of(internalBlob)) {
+                var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
+                if (Objects.isNull(existsSharedBlob)) {
+                    this.storageSystem.storeBlob(internalBlob);
+                    sharedBlob.setUrl(internalBlob.getUrl());
+                    sharedBlob.setPath(internalBlob.getPath());
+                    this.sharedBlobRepository.save(sharedBlob);
+                } else {
+                    internalBlob.setUrl(sharedBlob.getUrl());
+                    internalBlob.setSize(sharedBlob.getSize());
+                }
+            }
+        }
         this.indexBlobService.buildIndexes(blob.getBucket(), blob.getPath());
         return this.blobRepository.save(internalBlob);
     }

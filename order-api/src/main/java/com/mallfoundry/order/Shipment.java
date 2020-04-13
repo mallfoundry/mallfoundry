@@ -13,8 +13,6 @@ public interface Shipment {
 
     List<OrderItem> getItems();
 
-    boolean containsItem(OrderItem item);
-
     BillingAddress getBillingAddress();
 
     void setBillingAddress(BillingAddress billingAddress);
@@ -34,10 +32,6 @@ public interface Shipment {
     String getTrackingNumber();
 
     void setTrackingNumber(String trackingNumber);
-
-//    void setTrackingCarrier(String trackingCarrier);
-//
-//    String getTrackingCarrier();
 
     Date getShippedTime();
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TrackingStatus {
     UNKNOWN, // 未知
+    PRE_TRANSIT, // 等待拦包
     TRANSIT, //运输中
     DELIVERED, //已送达
     RETURNED, //退回

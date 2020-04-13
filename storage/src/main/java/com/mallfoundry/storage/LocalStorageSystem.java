@@ -16,61 +16,36 @@
 
 package com.mallfoundry.storage;
 
-import lombok.Getter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public class LocalStorageSystem implements StorageSystem {
 
-    private final SharedBlobRepository sharedBlobRepository;
+    private final String directory;
 
-    @Getter
-    private final StorageConfiguration configuration;
+    private final String baseUrl;
 
-    public LocalStorageSystem(SharedBlobRepository sharedBlobRepository,
-                              StorageConfiguration configuration) {
-        this.sharedBlobRepository = sharedBlobRepository;
-        this.configuration = configuration;
+    public LocalStorageSystem(String directory, String baseUrl) {
+        this.directory = directory;
+        this.baseUrl = baseUrl;
     }
+
 
     @Override
     public void storeBlob(Blob blob) throws IOException {
-        String path = PathUtils.concat(blob.getBucket(), blob.getPath());
         if (blob.isFile()) {
-            try (var sharedBlob = SharedBlob.of(blob)) {
-                var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
-                if (Objects.isNull(existsSharedBlob)) {
-                    File storeFile = new File(PathUtils.concat(this.getStoreDirectory(), path));
-                    FileUtils.touch(storeFile);
-                    FileUtils.copyFile(sharedBlob.getFile(), storeFile);
-                    sharedBlob.setUrl(this.getHttpUrl(path));
-                    this.sharedBlobRepository.save(sharedBlob);
-                } else {
-                    sharedBlob.setUrl(existsSharedBlob.getUrl());
-                    sharedBlob.setPath(existsSharedBlob.getPath());
-                }
-
-                blob.setUrl(sharedBlob.getUrl());
-                blob.setSize(sharedBlob.getSize());
-            }
+            String path = PathUtils.concat(blob.getBucket(), blob.getPath());
+            File storeFile = new File(PathUtils.concat(this.directory, path));
+            FileUtils.touch(storeFile);
+            FileUtils.copyInputStreamToFile(blob.getInputStream(), storeFile);
+            blob.setUrl(this.getHttpUrl(path));
+            blob.setSize(storeFile.length());
         }
     }
 
-    @Override
-    public void deleteObject(String bucket, String path) {
-        FileUtils.deleteQuietly(new File(PathUtils.concat(this.getStoreDirectory(), bucket, path)));
-    }
-
-    private String getStoreDirectory() {
-        return this.getConfiguration().getStore().getDirectory();
-    }
-
     private String getHttpUrl(String path) {
-        String baseUrl = this.getConfiguration().getHttp().getBaseUrl();
-        return baseUrl + path;
+        return this.baseUrl + path;
     }
 }

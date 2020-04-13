@@ -1,11 +1,13 @@
 package com.mallfoundry.tracking;
 
+import com.mallfoundry.carrier.CarrierCode;
+
 import java.util.Date;
 import java.util.List;
 
 public interface Tracker {
 
-    String getCarrierCode();
+    CarrierCode getCarrierCode();
 
     String getTrackingNumber();
 

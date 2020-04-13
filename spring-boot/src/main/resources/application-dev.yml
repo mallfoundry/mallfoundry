@@ -12,7 +12,6 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: true
-
 mall:
   payment:
     alipay:
@@ -23,16 +22,19 @@ mall:
       #      return-url: http://localhost:8080/v1/payments/alipay/confirm-payment
       notify-url: http://29nr517912.zicp.vip/v1/payment-orders/{id}/confirm-payment
   storage:
-    store:
-      type: local
-      directory: D:/mall/data/storage/
-      #      http:
-      #        base-url: http://102.mallfoundry.com:${server.port}/static
-    http:
-      base-url: http://192.168.0.102:${server.port}/static
+    type: local
+    directory: D:/mall/data/storage/
+#    base-url: http://102.mallfoundry.com:${server.port}/static
+    base-url: http://192.168.0.102:${server.port}/static
   store:
     product:
       search:
         type: lucene
         lucene:
           directory: D:/mall/data/indexes
+  tracking:
+    type: kdniao
+    kdniao:
+      api-key: 03613fea-82ff-4023-a816-a034b8f453b8
+      e-business-id: 1632631
+      url: http://api.kdniao.com

@@ -17,8 +17,6 @@
 package com.mallfoundry.spring.boot.autoconfigure.storage;
 
 import com.mallfoundry.storage.LocalStorageSystem;
-import com.mallfoundry.storage.SharedBlobRepository;
-import com.mallfoundry.storage.StorageConfiguration;
 import com.mallfoundry.storage.StorageSystem;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -36,35 +34,13 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnClass(LocalStorageSystem.class)
-    @ConditionalOnProperty(prefix = "mall.storage.store", name = "type", havingValue = "local")
-    public StorageSystem storageSystem(SharedBlobRepository sharedBlobRepository, StorageProperties properties) {
-        return new LocalStorageSystem(sharedBlobRepository, this.getConfiguration(properties));
+    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
+    public StorageSystem storageSystem(StorageProperties properties) {
+        return new LocalStorageSystem(properties.getDirectory(), properties.getBaseUrl());
     }
-
-    private StorageConfiguration getConfiguration(StorageProperties properties) {
-        StorageConfiguration config = new StorageConfiguration();
-        config.getHttp().setBaseUrl(properties.getHttp().getBaseUrl());
-        config.getStore().setDirectory(properties.getStore().getDirectory());
-        config.getStore().setType(toStoreType(properties.getStore().getType()));
-        return config;
-    }
-
-    private StorageConfiguration.StoreType toStoreType(StorageProperties.StoreType storeType) {
-        switch (storeType) {
-            case LOCAL:
-                return StorageConfiguration.StoreType.LOCAL;
-            case FTP:
-                return StorageConfiguration.StoreType.FTP;
-            case ALI_CLOUD_OSS:
-                return StorageConfiguration.StoreType.ALI_CLOUD_OSS;
-            default:
-                return null;
-        }
-    }
-
 
     @Configuration
-    @ConditionalOnProperty(prefix = "mall.storage.store", name = "type", havingValue = "local")
+    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
     public static class ResourceHandlerConfiguration implements WebMvcConfigurer {
 
         private final StorageProperties properties;
@@ -76,7 +52,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler("/static/**")
-                    .addResourceLocations("file:" + properties.getStore().getDirectory())
+                    .addResourceLocations("file:" + properties.getDirectory())
                     .setCachePeriod(3000)
                     .resourceChain(true)
                     .addResolver(new EncodedResourceResolver());

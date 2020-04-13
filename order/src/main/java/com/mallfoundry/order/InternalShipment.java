@@ -113,11 +113,6 @@ public class InternalShipment implements Shipment {
     }
 
     @Override
-    public boolean containsItem(OrderItem item) {
-        return this.getItems().contains(item);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -19,9 +19,5 @@ package com.mallfoundry.storage;
 import java.io.IOException;
 
 public interface StorageSystem {
-
     void storeBlob(Blob blob) throws IOException;
-
-    void deleteObject(String bucket, String path);
-
 }
