@@ -1,6 +1,7 @@
 package com.mallfoundry.tracking;
 
 
+import com.mallfoundry.carrier.CarrierCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,26 +12,26 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalTrackerId implements Serializable {
+public class InternalTrackId implements Serializable {
 
-    private String carrierCode;
+    private CarrierCode carrierCode;
 
     private String trackingNumber;
 
-    public InternalTrackerId(String carrierCode, String trackingNumber) {
+    public InternalTrackId(CarrierCode carrierCode, String trackingNumber) {
         this.carrierCode = carrierCode;
         this.trackingNumber = trackingNumber;
     }
 
-    public static InternalTrackerId of(String carrierCode, String trackingNumber) {
-        return new InternalTrackerId(carrierCode, trackingNumber);
+    public static InternalTrackId of(CarrierCode carrierCode, String trackingNumber) {
+        return new InternalTrackId(carrierCode, trackingNumber);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InternalTrackerId that = (InternalTrackerId) o;
+        InternalTrackId that = (InternalTrackId) o;
         return Objects.equals(carrierCode, that.carrierCode) &&
                 Objects.equals(trackingNumber, that.trackingNumber);
     }

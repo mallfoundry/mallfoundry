@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.Date;
 
 @Getter
@@ -39,5 +40,10 @@ public class InternalTrackingEvent implements TrackingEvent {
 
     public void setOccurredTime(Date occurredTime) {
         this.occurredTime = occurredTime;
+    }
+
+    @Override
+    public int compareTo(TrackingEvent o) {
+        return this.getOccurredTime().compareTo(o.getOccurredTime());
     }
 }

@@ -1,6 +1,7 @@
 package com.mallfoundry.tracking.provider;
 
-import com.mallfoundry.tracking.TrackingProvider;
+import com.mallfoundry.carrier.CarrierCode;
+import com.mallfoundry.tracking.TrackProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -8,9 +9,12 @@ import java.io.UnsupportedEncodingException;
 public class TrackingProviderTests {
 
     @Test
-    public void testGetTracking() throws UnsupportedEncodingException {
-        TrackingProvider provider = new KdniaoTrackingProvider();
+    public void testGetTrack() throws UnsupportedEncodingException {
+        String url = "http://api.kdniao.com";
+        String apiKey = "";
+        String eBusinessId = "";
+        TrackProvider provider = new KdniaoTrackingProvider(url, apiKey, eBusinessId);
 //        provider.getTracking("SF", "1234561");
-        provider.getTracking("SF", "118650888018");
+        provider.getTrack(CarrierCode.YTO, "118650888018");
     }
 }
