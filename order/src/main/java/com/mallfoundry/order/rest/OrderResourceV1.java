@@ -29,9 +29,9 @@ import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,7 +53,7 @@ public class OrderResourceV1 {
         this.orderService = orderService;
     }
 
-    private ShippingAddress createShippingAddress(OrderRequest.ShippingAddressRequest request) {
+    private ShippingAddress createShippingAddress(CreateOrderRequest.ShippingAddressRequest request) {
         return Objects.isNull(request) ? null :
                 this.orderService.createShippingAddress().toBuilder()
                         .countryCode(request.getCountryCode()).postalCode(request.getPostalCode())
@@ -61,37 +61,37 @@ public class OrderResourceV1 {
                         .address(request.getAddress()).location(request.getLocation()).build();
     }
 
-    private OrderItem createOrderItem(OrderRequest.OrderItemRequest request) {
+    private OrderItem createOrderItem(CreateOrderRequest.OrderItemRequest request) {
         return this.orderService.createOrderItem(request.getProductId(), request.getVariantId(), request.getQuantity());
     }
 
-    private List<OrderItem> createOrderItems(List<OrderRequest.OrderItemRequest> requests) {
+    private List<OrderItem> createOrderItems(List<CreateOrderRequest.OrderItemRequest> requests) {
         return requests.stream().map(this::createOrderItem).collect(Collectors.toList());
     }
 
-    private Order createOrder(OrderRequest request) {
+    private Order createOrder(CreateOrderRequest request) {
         return this.orderService.createOrder(
                 createShippingAddress(request.getShippingAddress()),
                 createOrderItems(request.getItems()));
     }
 
-    private List<Order> createOrders(List<OrderRequest> requests) {
+    private List<Order> createOrders(List<CreateOrderRequest> requests) {
         return requests.stream().map(this::createOrder).collect(Collectors.toList());
     }
 
     @PostMapping("/orders/batch")
-    public List<Order> checkout(@RequestBody List<OrderRequest> request) throws CustomerValidException {
+    public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) throws CustomerValidException {
         return this.orderService.checkout(this.createOrders(request));
     }
 
     @PostMapping("/orders")
-    public List<Order> checkout(@RequestBody OrderRequest request) {
+    public List<Order> checkout(@RequestBody CreateOrderRequest request) {
         return this.orderService.checkout(this.createOrder(request));
     }
 
     @PostMapping("/orders/{order_id}/shipments")
     public Shipment addShipment(@PathVariable("order_id") String orderId,
-                                @RequestBody ShipmentRequest request) {
+                                @RequestBody AddShipmentRequest request) {
         var shipment = this.orderService.createShipment(orderId, request.getItemIds());
         shipment.setShippingMethod(request.getShippingMethod());
         shipment.setShippingProvider(request.getShippingProvider());
@@ -99,22 +99,50 @@ public class OrderResourceV1 {
         return this.orderService.addShipment(shipment);
     }
 
-    @PutMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public void updateShipment(@PathVariable("order_id") String orderId,
-                               @PathVariable("shipment_id") String shipmentId,
-                               @RequestBody ShipmentRequest request) {
-        var order = this.orderService.getOrder(orderId).orElseThrow();
-        var shipment = order.getShipment(shipmentId).orElseThrow();
+    public void requestToShipment(ShipmentRequest request, Shipment shipment) {
         if (StringUtils.isNotEmpty(request.getShippingMethod())) {
             shipment.setShippingMethod(request.getShippingMethod());
+        }
+
+        if (StringUtils.isNotEmpty(request.getShippingProvider())) {
+            shipment.setShippingProvider(request.getShippingProvider());
+        }
+
+        if (StringUtils.isNotEmpty(request.getTrackingNumber())) {
+            shipment.setTrackingNumber(request.getTrackingNumber());
+        }
+    }
+
+    @PatchMapping("/orders/{order_id}/shipments/{shipment_id}")
+    public void patchShipment(@PathVariable("order_id") String orderId,
+                              @PathVariable("shipment_id") String shipmentId,
+                              @RequestBody ShipmentRequest request) {
+        var order = this.orderService.getOrder(orderId).orElseThrow();
+        var shipment = order.getShipment(shipmentId).orElseThrow();
+        this.requestToShipment(request, shipment);
+        this.orderService.saveOrder(order);
+    }
+
+    @PatchMapping("/orders/{order_id}/shipments/batch")
+    public void patchShipments(@PathVariable("order_id") String orderId,
+                               @RequestBody List<BatchShipmentRequest> requests) {
+        var order = this.orderService.getOrder(orderId).orElseThrow();
+        for (var request : requests) {
+            var shipment = order.getShipment(request.getId()).orElseThrow();
+            this.requestToShipment(request, shipment);
         }
         this.orderService.saveOrder(order);
     }
 
-//    @PostMapping("/orders/total_amount")
-//    public BigDecimal getTotalAmount(@RequestBody PaymentOrder order) {
-//        return this.orderService.totalAmount(order);
-//    }
+    @PatchMapping("/orders/{order_id}")
+    public void patchOrder(@PathVariable("order_id") String orderId,
+                           @RequestBody OrderRequest request) {
+        var order = this.orderService.getOrder(orderId).orElseThrow();
+        if (Objects.nonNull(request.getStaffNotes())) {
+            order.setStaffNotes(request.getStaffNotes());
+        }
+        this.orderService.saveOrder(order);
+    }
 
     @PostMapping("/payment-orders")
     public PaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {

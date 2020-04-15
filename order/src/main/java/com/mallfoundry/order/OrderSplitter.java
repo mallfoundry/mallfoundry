@@ -26,7 +26,7 @@ import java.util.Objects;
 @Service
 public class OrderSplitter {
 
-    private List<OrderSplitPolicy> splitters;
+    private final List<OrderSplitPolicy> splitters;
 
     @Autowired(required = false)
     public OrderSplitter(List<OrderSplitPolicy> splitters) {
@@ -34,11 +34,7 @@ public class OrderSplitter {
     }
 
     public List<Order> splitting(Order order) {
-        var orders = List.of(order);
-        for (OrderSplitPolicy splitter : splitters) {
-            orders = splitter.splitting(orders);
-        }
-        return orders;
+        return splitting(List.of(order));
     }
 
     public List<Order> splitting(List<Order> orders) {

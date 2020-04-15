@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface Refund {
 
+    String getId();
+
     String getOrderId();
 
     List<RefundItem> getItems();

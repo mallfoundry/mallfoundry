@@ -16,20 +16,11 @@
 
 package com.mallfoundry.order.rest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ShipmentRequest {
-
-    @JsonProperty("shipping_provider")
-    private String shippingProvider;
-
-    @JsonProperty("shipping_method")
-    private String shippingMethod;
-
-    @JsonProperty("tracking_number")
-    private String trackingNumber;
+public class BatchShipmentRequest extends ShipmentRequest {
+    private String id;
 }

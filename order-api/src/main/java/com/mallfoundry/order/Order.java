@@ -25,6 +25,10 @@ public interface Order {
 
     void setStoreId(String storeId);
 
+    String getStaffNotes();
+
+    void setStaffNotes(String staffNotes);
+
     List<OrderItem> getItems();
 
     void setItems(List<OrderItem> items);
@@ -36,6 +40,10 @@ public interface Order {
     Optional<Shipment> getShipment(String id);
 
     void addShipment(Shipment shipment);
+
+    List<Refund> getRefunds();
+
+    void addRefund(Refund refund);
 
     int getTotalItems();
 

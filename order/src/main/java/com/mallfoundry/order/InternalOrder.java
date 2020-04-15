@@ -103,6 +103,11 @@ public class InternalOrder implements Order {
     @JoinColumn(name = "order_id_")
     private List<Shipment> shipments = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+            targetEntity = InternalRefund.class)
+    @JoinColumn(name = "order_id_")
+    private List<Refund> refunds = new ArrayList<>();
+
     @JsonProperty(value = "shipped_items", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "shipped_items_")
     private int shippedItems;
@@ -188,6 +193,11 @@ public class InternalOrder implements Order {
             this.setStatus(PARTIALLY_SHIPPED);
         }
         this.setShippedTime(shipment.getShippedTime());
+    }
+
+    @Override
+    public void addRefund(Refund refund) {
+        
     }
 
     public List<Shipment> getShipments() {
