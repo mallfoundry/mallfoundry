@@ -17,7 +17,10 @@ public class CreateOrderRequest {
     @Getter
     @Setter
     static class ShippingAddressRequest {
-        private String consignee;
+        @JsonProperty("first_name")
+        private String firstName;
+        @JsonProperty("last_name")
+        private String lastName;
         @JsonProperty("country_code")
         private String countryCode;
         private String mobile;

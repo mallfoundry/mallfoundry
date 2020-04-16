@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    BillingAddress createBillingAddress();
-
     ShippingAddress createShippingAddress();
 
     OrderQuery createOrderQuery();

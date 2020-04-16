@@ -1,20 +1,55 @@
 package com.mallfoundry.order;
 
-public interface ShippingAddress extends AddressBase {
+import java.io.Serializable;
+
+public interface ShippingAddress extends Serializable {
+
+    String getFirstName();
+
+    void setFirstName(String firstName);
+
+    String getLastName();
+
+    void setLastName(String lastName);
+
+    String getCountryCode();
+
+    void setCountryCode(String countryCode);
+
+    String getMobile();
+
+    void setMobile(String mobile);
+
+    String getPostalCode();
+
+    void setPostalCode(String postalCode);
+
+    String getAddress();
+
+    void setAddress(String address);
+
+    String getLocation();
+
+    void setLocation(String location);
 
     default Builder toBuilder() {
         return new Builder(this);
     }
 
     class Builder {
-        private ShippingAddress address;
+        private final ShippingAddress address;
 
         public Builder(ShippingAddress address) {
             this.address = address;
         }
 
-        public Builder consignee(String consignee) {
-            this.address.setConsignee(consignee);
+        public Builder firstName(String firstName) {
+            this.address.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.address.setLastName(lastName);
             return this;
         }
 

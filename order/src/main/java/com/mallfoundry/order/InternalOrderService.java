@@ -71,11 +71,6 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public BillingAddress createBillingAddress() {
-        return new InternalBillingAddress();
-    }
-
-    @Override
     public ShippingAddress createShippingAddress() {
         return new InternalShippingAddress();
     }
@@ -110,12 +105,11 @@ public class InternalOrderService implements OrderService {
     @Override
     public Shipment createShipment(String orderId, List<String> itemIds) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
-        var shipment =
-                new InternalShipment(orderId,
-                        order.getBillingAddress(),
-                        order.getShippingAddress(),
-                        order.getItems(itemIds));
+        var shipment = new InternalShipment(orderId, order.getItems(itemIds));
         shipment.setId(PrimaryKeyHolder.next(SHIPMENT_VALUE_NAME));
+        shipment.setConsignorId(SecurityUserHolder.getUserId());
+        shipment.setConsignor(SecurityUserHolder.getNickname());
+        shipment.setShippingAddress(order.getShippingAddress());
         return shipment;
     }
 
@@ -135,11 +129,6 @@ public class InternalOrderService implements OrderService {
         return CastUtils.cast(this.orderRepository.saveAll(splitOrders));
     }
 
-    //    public BigDecimal totalAmount(PaymentOrder payOrder) {
-//        List<Order> orders = this.orderRepository.findAllById(payOrder.getOrders());
-//        return this.totalAmount(orders);
-//    }
-//
     private BigDecimal totalAmount(List<InternalOrder> orders) {
         return orders.stream()
                 .map(Order::getTotalAmount)

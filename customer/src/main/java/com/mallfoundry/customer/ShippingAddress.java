@@ -34,16 +34,21 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_delivery_address")
-public class DeliveryAddress {
+@Table(name = "customer_shipping_addresses")
+public class ShippingAddress {
 
     @Id
     @GeneratedValue
     @Column(name = "id_")
     private Long id;
 
-    @Column(name = "consignee_")
-    private String consignee;
+    @Column(name = "first_name_")
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @Column(name = "last_name_")
+    @JsonProperty("last_name")
+    private String lastName;
 
     @JsonProperty("country_code")
     @Column(name = "country_code_")
@@ -88,7 +93,7 @@ public class DeliveryAddress {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DeliveryAddress that = (DeliveryAddress) o;
+        ShippingAddress that = (ShippingAddress) o;
         return Objects.equals(id, that.id);
     }
 
@@ -99,18 +104,23 @@ public class DeliveryAddress {
 
     public static class Builder {
 
-        private final DeliveryAddress address;
+        private final ShippingAddress address;
 
         public Builder() {
-            this(new DeliveryAddress());
+            this(new ShippingAddress());
         }
 
-        public Builder(DeliveryAddress address) {
+        public Builder(ShippingAddress address) {
             this.address = address;
         }
 
-        public Builder consignee(String consignee) {
-            this.address.setConsignee(consignee);
+        public Builder firstName(String firstName) {
+            this.address.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.address.setLastName(lastName);
             return this;
         }
 
@@ -144,7 +154,7 @@ public class DeliveryAddress {
             return this;
         }
 
-        public DeliveryAddress build() {
+        public ShippingAddress build() {
             this.address.nowAddedTimeIfNull();
             return this.address;
         }

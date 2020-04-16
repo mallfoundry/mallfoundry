@@ -9,10 +9,6 @@ public interface Order {
 
     String getId();
 
-    BillingAddress getBillingAddress();
-
-    void setBillingAddress(BillingAddress billingAddress);
-
     ShippingAddress getShippingAddress();
 
     void setShippingAddress(ShippingAddress shippingAddress);

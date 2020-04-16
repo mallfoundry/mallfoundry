@@ -44,7 +44,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_info")
+@Table(name = "customers")
 public class Customer {
 
     @EmbeddedId
@@ -68,7 +68,7 @@ public class Customer {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
     @OrderBy("addedTime ASC")
-    private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
+    private List<ShippingAddress> shippingAddresses = new ArrayList<>();
 
     @JsonIgnore
     @ElementCollection
@@ -77,23 +77,23 @@ public class Customer {
     private List<SearchTerm> searchTerms = new ArrayList<>();
 
     @JsonIgnore
-    public Optional<DeliveryAddress> getDefaultDeliveryAddress() {
-        return this.getDeliveryAddresses().stream().filter(DeliveryAddress::isDefaulted).findFirst();
+    public Optional<ShippingAddress> getDefaultShippingAddress() {
+        return this.getShippingAddresses().stream().filter(ShippingAddress::isDefaulted).findFirst();
     }
 
-    public Optional<DeliveryAddress> getDeliveryAddress(Long id) {
-        return this.getDeliveryAddresses().stream().filter(address -> Objects.equals(address.getId(), id)).findFirst();
+    public Optional<ShippingAddress> getShippingAddress(Long id) {
+        return this.getShippingAddresses().stream().filter(address -> Objects.equals(address.getId(), id)).findFirst();
     }
 
-    public void addDeliveryAddress(final DeliveryAddress address) {
+    public void addShippingAddress(final ShippingAddress address) {
         address.nowAddedTimeIfNull();
-        this.getDeliveryAddress(address.getId())
+        this.getShippingAddress(address.getId())
                 .ifPresentOrElse(
                         oldAddress -> BeanUtils.copyProperties(address, oldAddress, "id", "addedTime"),
-                        () -> this.getDeliveryAddresses().add(address));
+                        () -> this.getShippingAddresses().add(address));
         // defaulted
         if (address.isDefaulted()) {
-            this.getDefaultDeliveryAddress()
+            this.getDefaultShippingAddress()
                     .ifPresent(defaultAddress -> {
                         if (!Objects.equals(defaultAddress, address)) {
                             defaultAddress.setDefaulted(false);
@@ -102,8 +102,8 @@ public class Customer {
         }
     }
 
-    public void removeDeliveryAddress(DeliveryAddress address) {
-        this.getDeliveryAddresses().remove(address);
+    public void removeShippingAddress(ShippingAddress address) {
+        this.getShippingAddresses().remove(address);
     }
 
     public void addSearchTerm(String text) {

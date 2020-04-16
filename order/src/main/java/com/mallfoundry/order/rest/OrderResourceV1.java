@@ -57,7 +57,8 @@ public class OrderResourceV1 {
         return Objects.isNull(request) ? null :
                 this.orderService.createShippingAddress().toBuilder()
                         .countryCode(request.getCountryCode()).postalCode(request.getPostalCode())
-                        .consignee(request.getConsignee()).mobile(request.getMobile())
+                        .firstName(request.getFirstName()).lastName(request.getLastName())
+                        .mobile(request.getMobile())
                         .address(request.getAddress()).location(request.getLocation()).build();
     }
 

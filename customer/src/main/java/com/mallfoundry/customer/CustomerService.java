@@ -41,29 +41,29 @@ public class CustomerService {
     }
 
     @Transactional
-    public void addDeliveryAddress(String customerId, DeliveryAddress deliveryAddress) {
-        this.getCustomer(customerId).orElseThrow().addDeliveryAddress(deliveryAddress);
+    public void addShippingAddress(String customerId, ShippingAddress deliveryAddress) {
+        this.getCustomer(customerId).orElseThrow().addShippingAddress(deliveryAddress);
     }
 
     @Transactional
-    public void removeDeliveryAddress(String customerId, Long deliveryAddressId) {
+    public void removeShippingAddress(String customerId, Long addressId) {
         Customer customer = this.getCustomer(customerId).orElseThrow();
-        customer.getDeliveryAddress(deliveryAddressId).ifPresent(customer::removeDeliveryAddress);
+        customer.getShippingAddress(addressId).ifPresent(customer::removeShippingAddress);
     }
 
     @Transactional
-    public List<DeliveryAddress> getDeliveryAddresses(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getDeliveryAddresses();
+    public List<ShippingAddress> getShippingAddresses(String customerId) {
+        return this.getCustomer(customerId).orElseThrow().getShippingAddresses();
     }
 
     @Transactional
-    public Optional<DeliveryAddress> getDeliveryAddress(String customerId, Long deliveryAddressId) {
-        return this.getCustomer(customerId).orElseThrow().getDeliveryAddress(deliveryAddressId);
+    public Optional<ShippingAddress> getShippingAddress(String customerId, Long addressId) {
+        return this.getCustomer(customerId).orElseThrow().getShippingAddress(addressId);
     }
 
     @Transactional
-    public Optional<DeliveryAddress> getDefaultDeliveryAddress(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getDefaultDeliveryAddress();
+    public Optional<ShippingAddress> getDefaultShippingAddress(String customerId) {
+        return this.getCustomer(customerId).orElseThrow().getDefaultShippingAddress();
     }
 
     @Transactional

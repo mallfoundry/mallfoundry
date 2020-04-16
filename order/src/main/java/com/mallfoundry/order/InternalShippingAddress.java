@@ -20,31 +20,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 @Getter
 @Setter
-@Embeddable
 public class InternalShippingAddress implements ShippingAddress {
 
-    @Column(name = "shipping_address_consignee_")
-    private String consignee;
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @JsonProperty("last_name")
+    private String lastName;
 
     @JsonProperty("country_code")
-    @Column(name = "shipping_address_country_code_")
     private String countryCode;
 
-    @Column(name = "shipping_address_mobile_")
     private String mobile;
 
     @JsonProperty("postal_code")
-    @Column(name = "shipping_address_postal_code_")
     private String postalCode;
 
-    @Column(name = "shipping_address_address_")
     private String address;
 
-    @Column(name = "shipping_address_location_")
     private String location;
 }

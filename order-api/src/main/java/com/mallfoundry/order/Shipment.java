@@ -11,11 +11,11 @@ public interface Shipment {
 
     String getOrderId();
 
+    String getConsignorId();
+
+    String getConsignor();
+
     List<OrderItem> getItems();
-
-    BillingAddress getBillingAddress();
-
-    void setBillingAddress(BillingAddress billingAddress);
 
     ShippingAddress getShippingAddress();
 

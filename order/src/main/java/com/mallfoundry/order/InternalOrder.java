@@ -19,7 +19,6 @@ package com.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.order.repository.jpa.convert.BillingAddressConverter;
 import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
 import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
@@ -83,11 +82,6 @@ public class InternalOrder implements Order {
     @Column(name = "customer_message_")
     private String customerMessage;
 
-    @JsonProperty("billing_address")
-    @Convert(converter = BillingAddressConverter.class)
-    @Column(name = "billing_address_")
-    private BillingAddress billingAddress;
-
     @JsonProperty("shipping_address")
     @Convert(converter = ShippingAddressConverter.class)
     @Column(name = "shipping_address_")
@@ -145,7 +139,6 @@ public class InternalOrder implements Order {
     private Date shippedTime;
 
     public InternalOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
-        this.setBillingAddress(billingAddress);
         this.setShippingAddress(shippingAddress);
         this.setItems(items);
     }
@@ -181,8 +174,8 @@ public class InternalOrder implements Order {
     public void addShipment(Shipment shipment) {
         shipment = InternalShipment.of(shipment);
 
-        if (Objects.isNull(shipment.getBillingAddress())) {
-            shipment.setBillingAddress(billingAddress);
+        if (Objects.isNull(shipment.getShippingAddress())) {
+            shipment.setShippingAddress(this.shippingAddress);
         }
 
         this.getShipments().add(shipment);
@@ -197,7 +190,7 @@ public class InternalOrder implements Order {
 
     @Override
     public void addRefund(Refund refund) {
-        
+
     }
 
     public List<Shipment> getShipments() {

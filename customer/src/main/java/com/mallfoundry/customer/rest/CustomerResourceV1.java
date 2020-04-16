@@ -19,7 +19,7 @@ package com.mallfoundry.customer.rest;
 import com.mallfoundry.customer.Customer;
 import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.customer.CustomerService;
-import com.mallfoundry.customer.DeliveryAddress;
+import com.mallfoundry.customer.ShippingAddress;
 import com.mallfoundry.customer.SearchTerm;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,41 +56,41 @@ public class CustomerResourceV1 {
         return this.customerService.saveCustomer(customer);
     }
 
-    @PostMapping("/customers/{customer_id}/delivery_addresses")
+    @PostMapping("/customers/{customer_id}/shipping_addresses")
     public void addDeliveryAddress(@PathVariable("customer_id") String id,
-                                   @RequestBody DeliveryAddress deliveryAddress) {
-        this.customerService.addDeliveryAddress(id, deliveryAddress);
+                                   @RequestBody ShippingAddress address) {
+        this.customerService.addShippingAddress(id, address);
     }
 
-    @PutMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
+    @PutMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
     public void addDeliveryAddress(@PathVariable("customer_id") String customerId,
-                                   @PathVariable("delivery_address_id") Long deliveryAddressId,
-                                   @RequestBody DeliveryAddress deliveryAddress) {
-        deliveryAddress.setId(deliveryAddressId);
-        this.customerService.addDeliveryAddress(customerId, deliveryAddress);
+                                   @PathVariable("address_id") Long addressId,
+                                   @RequestBody ShippingAddress address) {
+        address.setId(addressId);
+        this.customerService.addShippingAddress(customerId, address);
     }
 
-    @DeleteMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
+    @DeleteMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
     public void removeDeliveryAddress(@PathVariable("customer_id") String id,
-                                      @PathVariable("delivery_address_id") Long deliveryAddressId) {
-        this.customerService.removeDeliveryAddress(id, deliveryAddressId);
+                                      @PathVariable("address_id") Long addressId) {
+        this.customerService.removeShippingAddress(id, addressId);
     }
 
-    @GetMapping("/customers/{customer_id}/delivery_addresses")
-    public List<DeliveryAddress> getDeliveryAddresses(@PathVariable("customer_id") String id) {
-        return this.customerService.getDeliveryAddresses(id);
+    @GetMapping("/customers/{customer_id}/shipping_addresses")
+    public List<ShippingAddress> getDeliveryAddresses(@PathVariable("customer_id") String id) {
+        return this.customerService.getShippingAddresses(id);
     }
 
-    @GetMapping("/customers/{customer_id}/delivery_addresses/{delivery_address_id}")
-    public Optional<DeliveryAddress> getDeliveryAddress(
+    @GetMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
+    public Optional<ShippingAddress> getDeliveryAddress(
             @PathVariable("customer_id") String customerId,
-            @PathVariable("delivery_address_id") Long deliveryAddressId) {
-        return this.customerService.getDeliveryAddress(customerId, deliveryAddressId);
+            @PathVariable("address_id") Long addressId) {
+        return this.customerService.getShippingAddress(customerId, addressId);
     }
 
-    @GetMapping("/customers/{customer_id}/delivery_addresses/default")
-    public Optional<DeliveryAddress> getDefaultDeliveryAddress(@PathVariable("customer_id") String id) {
-        return this.customerService.getDefaultDeliveryAddress(id);
+    @GetMapping("/customers/{customer_id}/shipping_addresses/default")
+    public Optional<ShippingAddress> getDefaultShippingAddress(@PathVariable("customer_id") String id) {
+        return this.customerService.getDefaultShippingAddress(id);
     }
 
     @PostMapping("/customers/{customer_id}/search_terms")

@@ -41,14 +41,14 @@ public class CustomerTests {
         customer.setNickname("tang zhi");
         customer.setBirthday(new Date());
         customer.setUserId("user 1");
-        customer.addDeliveryAddress(
-                DeliveryAddress.builder()
-                        .consignee("唐治")
+        customer.addShippingAddress(
+                ShippingAddress.builder()
+                        .firstName("治").lastName("唐")
                         .mobile("1888888888")
                         .postalCode("2500000")
                         .countryCode("86")
                         .location("001,220,3222,333")
-                        .address("山东省济南市历城区023号")
+                        .address("山东省 济南市 历城区023号")
                         .defaulted()
                         .build());
         this.customerService.saveCustomer(customer);
