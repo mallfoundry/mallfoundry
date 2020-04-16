@@ -192,4 +192,11 @@ public class InternalOrderService implements OrderService {
     public SliceList<Order> getOrders(OrderQuery query) {
         return CastUtils.cast(this.orderRepository.findAll(query));
     }
+
+    @Transactional
+    @Override
+    public void cancelOrder(String orderId) {
+        this.orderRepository.findById(orderId)
+                .ifPresent(InternalOrder::cancel);
+    }
 }

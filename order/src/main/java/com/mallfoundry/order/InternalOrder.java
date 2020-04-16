@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 
 import static com.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static com.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
+import static com.mallfoundry.order.OrderStatus.CANCELLED;
 import static com.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static com.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static com.mallfoundry.order.OrderStatus.PENDING;
@@ -113,15 +114,34 @@ public class InternalOrder implements Order {
     @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "store_id_")
     private String storeId;
+//
+//    @JsonProperty(value = "discount_amount")
+//    @Column(name = "discount_amount_")
+//    private BigDecimal discountAmount;
+
+    @JsonProperty("subtotal_amount")
+    @Transient
+    @Override
+    public BigDecimal getSubtotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getSubtotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
     @JsonProperty("total_amount")
     @Transient
     @Override
     public BigDecimal getTotalAmount() {
-        return this.getItems().stream()
-                .map(OrderItem::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return this.getSubtotalAmount()
+                // Discount amount
+//                .add(this.getDiscountAmount())
+                ;
     }
+
+//    @Override
+//    public void discount(BigDecimal discountAmount) {
+//        this.discountAmount = discountAmount;
+//    }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
@@ -229,5 +249,10 @@ public class InternalOrder implements Order {
             this.setStatus(AWAITING_FULFILLMENT);
             this.setPaidTime(new Date());
         }
+    }
+
+    @Override
+    public void cancel() {
+        this.setStatus(CANCELLED);
     }
 }

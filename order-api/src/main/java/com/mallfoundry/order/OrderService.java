@@ -28,4 +28,6 @@ public interface OrderService {
     SliceList<Order> getOrders(OrderQuery query);
 
 //    void refund(Refund refund);
+
+    void cancelOrder(String orderId);
 }

@@ -45,6 +45,8 @@ public interface Order {
 
     int getShippedItems();
 
+    BigDecimal getSubtotalAmount();
+
     BigDecimal getTotalAmount();
 
     PaymentDetails getPaymentDetails();
@@ -55,9 +57,13 @@ public interface Order {
 
     Date getShippedTime();
 
+//    void discount(BigDecimal discountAmount);
+
     void pending();
 
     void awaitingPayment(PaymentDetails details);
 
     void confirmPayment(PaymentDetails details);
+
+    void cancel();
 }

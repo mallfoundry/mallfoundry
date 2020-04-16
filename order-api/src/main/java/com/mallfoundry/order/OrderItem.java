@@ -27,5 +27,7 @@ public interface OrderItem {
 
     BigDecimal getPrice();
 
-    BigDecimal getAmount();
+//    BigDecimal getDiscountAmount();
+
+    BigDecimal getSubtotalAmount();
 }

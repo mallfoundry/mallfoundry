@@ -75,9 +75,10 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "price_")
     private BigDecimal price;
 
+    @JsonProperty("subtotal_amount")
     @Transient
     @Override
-    public BigDecimal getAmount() {
+    public BigDecimal getSubtotalAmount() {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
 
