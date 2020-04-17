@@ -173,6 +173,13 @@ public class InternalOrder implements Order {
         return target;
     }
 
+    @Override
+    public Optional<OrderItem> getItem(String itemId) {
+        return this.getItems().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst();
+    }
+
     public List<OrderItem> getItems(List<String> itemIds) {
         return this.items.stream()
                 .filter(item -> itemIds.contains(item.getId()))

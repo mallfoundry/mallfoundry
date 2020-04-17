@@ -1,10 +1,11 @@
 package com.mallfoundry.tracking;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mallfoundry.shipping.TrackingEvent;
+import com.mallfoundry.shipping.TrackingStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Comparator;
 import java.util.Date;
 
 @Getter

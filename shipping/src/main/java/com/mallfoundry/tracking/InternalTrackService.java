@@ -1,6 +1,8 @@
 package com.mallfoundry.tracking;
 
-import com.mallfoundry.carrier.CarrierCode;
+import com.mallfoundry.shipping.CarrierCode;
+import com.mallfoundry.shipping.Track;
+import com.mallfoundry.shipping.TrackService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

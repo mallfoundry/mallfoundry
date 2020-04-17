@@ -1,7 +1,7 @@
 package com.mallfoundry.tracking.repository.jpa.convert;
 
 import com.mallfoundry.tracking.InternalTrackingEvent;
-import com.mallfoundry.tracking.TrackingEvent;
+import com.mallfoundry.shipping.TrackingEvent;
 import com.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;

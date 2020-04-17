@@ -145,6 +145,11 @@ public class OrderResourceV1 {
         this.orderService.saveOrder(order);
     }
 
+    @PostMapping("/orders/{order_id}/cancel")
+    public void cancelOrder(@PathVariable("order_id") String orderId) {
+        this.orderService.cancelOrder(orderId);
+    }
+
     @PostMapping("/payment-orders")
     public PaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
         return this.orderService.createPaymentOrder(order);

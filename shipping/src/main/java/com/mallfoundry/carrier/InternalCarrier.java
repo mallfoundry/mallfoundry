@@ -1,5 +1,7 @@
 package com.mallfoundry.carrier;
 
+import com.mallfoundry.shipping.Carrier;
+import com.mallfoundry.shipping.CarrierCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

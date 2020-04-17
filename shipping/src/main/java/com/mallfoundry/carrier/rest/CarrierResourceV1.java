@@ -1,7 +1,7 @@
 package com.mallfoundry.carrier.rest;
 
-import com.mallfoundry.carrier.Carrier;
-import com.mallfoundry.carrier.CarrierService;
+import com.mallfoundry.shipping.Carrier;
+import com.mallfoundry.shipping.CarrierService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

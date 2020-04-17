@@ -1,4 +1,4 @@
-package com.mallfoundry.carrier;
+package com.mallfoundry.shipping;
 
 public interface Carrier {
 

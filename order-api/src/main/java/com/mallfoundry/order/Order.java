@@ -29,6 +29,8 @@ public interface Order {
 
     void setItems(List<OrderItem> items);
 
+    Optional<OrderItem> getItem(String itemId);
+
     List<OrderItem> getItems(List<String> itemIds);
 
     List<Shipment> getShipments();

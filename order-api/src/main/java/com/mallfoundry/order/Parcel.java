@@ -1,6 +1,6 @@
 package com.mallfoundry.order;
 
-public interface ShipmentItem {
+public interface Parcel {
 
     String getId();
 

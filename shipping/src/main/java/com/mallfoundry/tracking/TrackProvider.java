@@ -1,6 +1,7 @@
 package com.mallfoundry.tracking;
 
-import com.mallfoundry.carrier.CarrierCode;
+import com.mallfoundry.shipping.CarrierCode;
+import com.mallfoundry.shipping.Track;
 
 public interface TrackProvider {
 

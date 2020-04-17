@@ -1,6 +1,4 @@
-package com.mallfoundry.tracking;
-
-import com.mallfoundry.carrier.CarrierCode;
+package com.mallfoundry.shipping;
 
 import java.io.Serializable;
 import java.util.List;

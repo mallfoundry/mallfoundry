@@ -1,4 +1,4 @@
-package com.mallfoundry.carrier;
+package com.mallfoundry.shipping;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

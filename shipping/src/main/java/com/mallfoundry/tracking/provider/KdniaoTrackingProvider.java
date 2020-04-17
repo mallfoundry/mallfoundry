@@ -1,13 +1,13 @@
 package com.mallfoundry.tracking.provider;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.carrier.CarrierCode;
+import com.mallfoundry.shipping.CarrierCode;
 import com.mallfoundry.tracking.InternalTrack;
 import com.mallfoundry.tracking.InternalTrackingEvent;
-import com.mallfoundry.tracking.Track;
-import com.mallfoundry.tracking.TrackingEvent;
+import com.mallfoundry.shipping.Track;
+import com.mallfoundry.shipping.TrackingEvent;
 import com.mallfoundry.tracking.TrackProvider;
-import com.mallfoundry.tracking.TrackingStatus;
+import com.mallfoundry.shipping.TrackingStatus;
 import com.mallfoundry.util.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;

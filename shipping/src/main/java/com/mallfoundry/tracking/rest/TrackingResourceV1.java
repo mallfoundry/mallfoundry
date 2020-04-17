@@ -1,8 +1,8 @@
 package com.mallfoundry.tracking.rest;
 
-import com.mallfoundry.carrier.CarrierCode;
-import com.mallfoundry.tracking.Track;
-import com.mallfoundry.tracking.TrackService;
+import com.mallfoundry.shipping.CarrierCode;
+import com.mallfoundry.shipping.Track;
+import com.mallfoundry.shipping.TrackService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

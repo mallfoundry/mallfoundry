@@ -16,7 +16,6 @@
 
 package com.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
@@ -74,6 +73,9 @@ public class InternalOrderItem implements OrderItem {
 
     @Column(name = "price_")
     private BigDecimal price;
+
+    @Column(name = "discount_amount_")
+    private BigDecimal discountAmount;
 
     @JsonProperty("subtotal_amount")
     @Transient

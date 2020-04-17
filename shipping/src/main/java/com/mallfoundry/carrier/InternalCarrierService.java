@@ -1,5 +1,8 @@
 package com.mallfoundry.carrier;
 
+import com.mallfoundry.shipping.Carrier;
+import com.mallfoundry.shipping.CarrierCode;
+import com.mallfoundry.shipping.CarrierService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

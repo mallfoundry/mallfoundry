@@ -1,6 +1,6 @@
 package com.mallfoundry.tracking.provider;
 
-import com.mallfoundry.carrier.CarrierCode;
+import com.mallfoundry.shipping.CarrierCode;
 import com.mallfoundry.tracking.TrackProvider;
 import org.junit.jupiter.api.Test;
 

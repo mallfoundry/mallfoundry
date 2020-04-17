@@ -1,4 +1,4 @@
-package com.mallfoundry.tracking;
+package com.mallfoundry.shipping;
 
 import java.util.Date;
 

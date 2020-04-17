@@ -1,6 +1,4 @@
-package com.mallfoundry.tracking;
-
-import com.mallfoundry.carrier.CarrierCode;
+package com.mallfoundry.shipping;
 
 public interface TrackService {
 
