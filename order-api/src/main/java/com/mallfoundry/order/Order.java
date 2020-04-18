@@ -3,6 +3,7 @@ package com.mallfoundry.order;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface Order {
@@ -59,7 +60,7 @@ public interface Order {
 
     Date getShippedTime();
 
-//    void discount(BigDecimal discountAmount);
+    void discount(Map<String, BigDecimal> amounts);
 
     void pending();
 

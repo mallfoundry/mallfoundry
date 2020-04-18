@@ -74,8 +74,13 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "price_")
     private BigDecimal price;
 
+    @JsonProperty("discount_amount")
     @Column(name = "discount_amount_")
-    private BigDecimal discountAmount;
+    private BigDecimal discountAmount = BigDecimal.ZERO;
+
+//    @JsonProperty("shipping_cost")
+//    @Column(name = "shipping_cost_")
+//    private BigDecimal shippingCost = BigDecimal.ZERO;
 
     @JsonProperty("subtotal_amount")
     @Transient

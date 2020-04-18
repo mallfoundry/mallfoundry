@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -136,6 +137,12 @@ public class InternalOrder implements Order {
                 // Discount amount
 //                .add(this.getDiscountAmount())
                 ;
+    }
+
+    @Override
+    public void discount(Map<String, BigDecimal> amounts) {
+        amounts.forEach((itemId, discountAmount) ->
+                this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
     }
 
 //    @Override

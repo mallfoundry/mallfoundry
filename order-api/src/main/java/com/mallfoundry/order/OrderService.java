@@ -2,9 +2,7 @@ package com.mallfoundry.order;
 
 import com.mallfoundry.data.SliceList;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface OrderService {
@@ -28,12 +26,6 @@ public interface OrderService {
     Optional<Order> getOrder(String orderId);
 
     SliceList<Order> getOrders(OrderQuery query);
-
-    void changeDiscountAmount(String orderId, Map<String, BigDecimal> amounts);
-
-//    void changeDiscountAmount(String orderId, BigDecimal amount);
-
-//    void discount(String orderId, String itemId, BigDecimal decimal);
 
 //    void refund(Refund refund);
 

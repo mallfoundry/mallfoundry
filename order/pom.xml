@@ -32,6 +32,16 @@
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-order-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-engine</artifactId>
+            <version>6.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-rest</artifactId>
+            <version>6.5.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.mallfoundry</groupId>

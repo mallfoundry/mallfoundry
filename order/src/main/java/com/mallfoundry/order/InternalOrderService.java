@@ -193,16 +193,6 @@ public class InternalOrderService implements OrderService {
         return CastUtils.cast(this.orderRepository.findAll(query));
     }
 
-    @Override
-    public void changeDiscountAmount(String orderId, Map<String, BigDecimal> amounts) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-
-//        amounts.forEach(itemDiscount -> {
-//            order.getItems()
-//        });
-
-    }
-
     @Transactional
     @Override
     public void cancelOrder(String orderId) {
