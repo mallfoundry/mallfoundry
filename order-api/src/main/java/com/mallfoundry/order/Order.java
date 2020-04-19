@@ -62,6 +62,8 @@ public interface Order {
 
     void discount(Map<String, BigDecimal> amounts);
 
+    void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
+
     void pending();
 
     void awaitingPayment(PaymentDetails details);

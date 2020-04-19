@@ -27,9 +27,9 @@ public interface OrderItem {
 
     BigDecimal getPrice();
 
-//    BigDecimal getShippingCost();
-//
-//    void setShippingCost(BigDecimal amount);
+    BigDecimal getShippingCost();
+
+    void setShippingCost(BigDecimal amount);
 
     BigDecimal getSubtotalAmount();
 
