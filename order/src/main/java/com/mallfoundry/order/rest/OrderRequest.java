@@ -24,14 +24,6 @@ public class OrderRequest {
 
     private List<OrderItemRequest> items;
 
-    @Getter
-    @Setter
-    public static class OrderItemRequest {
-        private String id;
-        @JsonProperty("discount_amount")
-        private BigDecimal discountAmount;
-    }
-
     public boolean isDiscountAmountsChanged() {
         return MapUtils.isNotEmpty(this.getDiscountAmounts());
     }
@@ -41,5 +33,19 @@ public class OrderRequest {
                 this.getItems().stream()
                         .collect(Collectors.toMap(OrderItemRequest::getId,
                                 OrderItemRequest::getDiscountAmount));
+    }
+
+    @Getter
+    @Setter
+    public static class OrderItemRequest {
+        private String id;
+        @JsonProperty("discount_amount")
+        private BigDecimal discountAmount;
+    }
+
+    @Getter
+    @Setter
+    public static class CancelRequest {
+        private String reason;
     }
 }

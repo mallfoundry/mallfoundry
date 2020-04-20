@@ -37,6 +37,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
@@ -72,9 +73,9 @@ public class InternalOrder implements Order {
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
-    @JsonProperty("staff_notes")
-    @Column(name = "staff_notes_")
-    private String staffNotes;
+    @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "store_id_")
+    private String storeId;
 
     @JsonProperty("customer_id")
     @Column(name = "customer_id_")
@@ -84,6 +85,10 @@ public class InternalOrder implements Order {
     @Column(name = "customer_message_")
     private String customerMessage;
 
+    @JsonProperty("staff_notes")
+    @Column(name = "staff_notes_")
+    private String staffNotes;
+
     @JsonProperty("shipping_address")
     @Convert(converter = ShippingAddressConverter.class)
     @Column(name = "shipping_address_")
@@ -92,6 +97,7 @@ public class InternalOrder implements Order {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = InternalOrderItem.class)
     @JoinColumn(name = "order_id_")
+    @OrderBy("id ASC")
     private List<OrderItem> items = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
@@ -112,43 +118,8 @@ public class InternalOrder implements Order {
     @Embedded
     private InternalPaymentDetails paymentDetails;
 
-    @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "store_id_")
-    private String storeId;
-//
-//    @JsonProperty(value = "discount_amount")
-//    @Column(name = "discount_amount_")
-//    private BigDecimal discountAmount;
-
-    @JsonProperty("subtotal_amount")
-    @Transient
-    @Override
-    public BigDecimal getSubtotalAmount() {
-        return this.getItems().stream()
-                .map(OrderItem::getSubtotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @JsonProperty("total_amount")
-    @Transient
-    @Override
-    public BigDecimal getTotalAmount() {
-        return this.getSubtotalAmount()
-                // Discount amount
-//                .add(this.getDiscountAmount())
-                ;
-    }
-
-    @Override
-    public void discount(Map<String, BigDecimal> amounts) {
-        amounts.forEach((itemId, discountAmount) ->
-                this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
-    }
-
-//    @Override
-//    public void discount(BigDecimal discountAmount) {
-//        this.discountAmount = discountAmount;
-//    }
+    @JsonProperty("cancel_reason")
+    private String cancelReason;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
@@ -164,6 +135,11 @@ public class InternalOrder implements Order {
     @JsonProperty(value = "shipped_time", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "shipped_time_")
     private Date shippedTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty(value = "cancelled_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "cancelled_time_")
+    private Date cancelledTime;
 
     public InternalOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
         this.setShippingAddress(shippingAddress);
@@ -227,6 +203,48 @@ public class InternalOrder implements Order {
 
     }
 
+    @JsonProperty("total_discount_amount")
+    @Transient
+    @Override
+    public BigDecimal getTotalDiscountAmount() {
+        return BigDecimal.ZERO.subtract(this.getItems().stream()
+                .map(OrderItem::getDiscountAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+    }
+
+    @JsonProperty("subtotal_amount")
+    @Transient
+    @Override
+    public BigDecimal getSubtotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getSubtotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @JsonProperty("total_shipping_cost")
+    @Transient
+    @Override
+    public BigDecimal getTotalShippingCost() {
+        return this.getItems().stream()
+                .map(OrderItem::getShippingCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @JsonProperty("total_amount")
+    @Transient
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public void discount(Map<String, BigDecimal> amounts) {
+        amounts.forEach((itemId, discountAmount) ->
+                this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
+    }
+
     public List<Shipment> getShipments() {
         return this.shipments;
     }
@@ -266,7 +284,9 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void cancel() {
+    public void cancel(String reason) {
         this.setStatus(CANCELLED);
+        this.setCancelledTime(new Date());
+        this.setCancelReason(reason);
     }
 }

@@ -48,11 +48,17 @@ public interface Order {
 
     int getShippedItems();
 
+    BigDecimal getTotalDiscountAmount();
+
     BigDecimal getSubtotalAmount();
 
     BigDecimal getTotalAmount();
 
+    BigDecimal getTotalShippingCost();
+
     PaymentDetails getPaymentDetails();
+
+    String getCancelReason();
 
     Date getCreatedTime();
 
@@ -60,9 +66,11 @@ public interface Order {
 
     Date getShippedTime();
 
+    Date getCancelledTime();
+
     void discount(Map<String, BigDecimal> amounts);
 
-    void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
+//    void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
 
     void pending();
 
@@ -70,5 +78,5 @@ public interface Order {
 
     void confirmPayment(PaymentDetails details);
 
-    void cancel();
+    void cancel(String reason);
 }

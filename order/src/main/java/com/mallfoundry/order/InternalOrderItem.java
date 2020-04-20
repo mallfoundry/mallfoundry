@@ -16,6 +16,7 @@
 
 package com.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
@@ -76,18 +77,11 @@ public class InternalOrderItem implements OrderItem {
 
     @JsonProperty("discount_amount")
     @Column(name = "discount_amount_")
-    private BigDecimal discountAmount = BigDecimal.ZERO;
+    private BigDecimal discountAmount;
 
     @JsonProperty("shipping_cost")
     @Column(name = "shipping_cost_")
-    private BigDecimal shippingCost = BigDecimal.ZERO;
-
-    @JsonProperty("subtotal_amount")
-    @Transient
-    @Override
-    public BigDecimal getSubtotalAmount() {
-        return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
-    }
+    private BigDecimal shippingCost;
 
     public InternalOrderItem(String productId, String variantId, int quantity) {
         this.setProductId(productId);
@@ -103,6 +97,29 @@ public class InternalOrderItem implements OrderItem {
         var target = new InternalOrderItem();
         BeanUtils.copyProperties(item, target);
         return target;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return Objects.isNull(this.discountAmount) ? BigDecimal.ZERO : this.discountAmount;
+    }
+
+    public BigDecimal getShippingCost() {
+        return Objects.isNull(this.shippingCost) ? BigDecimal.ZERO : this.shippingCost;
+    }
+
+    @JsonProperty("subtotal_amount")
+    @Transient
+    @Override
+    public BigDecimal getSubtotalAmount() {
+        return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
+    }
+
+    @JsonIgnore
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.getSubtotalAmount()
+                .add(this.getDiscountAmount())
+                .add(this.getShippingCost());
     }
 
     @Override

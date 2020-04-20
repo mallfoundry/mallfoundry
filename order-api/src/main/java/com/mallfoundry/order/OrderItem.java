@@ -36,4 +36,6 @@ public interface OrderItem {
     BigDecimal getDiscountAmount();
 
     void setDiscountAmount(BigDecimal discountAmount);
+
+    BigDecimal getTotalAmount();
 }

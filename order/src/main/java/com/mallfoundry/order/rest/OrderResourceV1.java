@@ -148,8 +148,9 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders/{order_id}/cancel")
-    public void cancelOrder(@PathVariable("order_id") String orderId) {
-        this.orderService.cancelOrder(orderId);
+    public void cancelOrder(@PathVariable("order_id") String orderId,
+                            @RequestBody OrderRequest.CancelRequest request) {
+        this.orderService.cancelOrder(orderId, request.getReason());
     }
 
     @PostMapping("/payment-orders")

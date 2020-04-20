@@ -195,8 +195,8 @@ public class InternalOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void cancelOrder(String orderId) {
-        this.orderRepository.findById(orderId)
-                .ifPresent(InternalOrder::cancel);
+    public void cancelOrder(String orderId, String reason) {
+      var order =  this.orderRepository.findById(orderId).orElseThrow();
+      order.cancel(reason);
     }
 }
