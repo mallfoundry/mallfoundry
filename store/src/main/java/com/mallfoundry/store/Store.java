@@ -16,6 +16,7 @@
 
 package com.mallfoundry.store;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,13 @@ public class Store {
     @Column(name = "owner_id_")
     private String ownerId;
 
+    @Column(name = "industry_")
+    private String industry;
+
+    @Column(name = "description_")
+    private String description;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "created_time_")
     private Date createdTime;

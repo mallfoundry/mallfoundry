@@ -31,8 +31,21 @@ public class OrderRequest {
     public Map<String, BigDecimal> getDiscountAmounts() {
         return Objects.isNull(this.getItems()) ? Collections.emptyMap() :
                 this.getItems().stream()
+                        .filter(request -> Objects.nonNull(request.getDiscountAmount()))
                         .collect(Collectors.toMap(OrderItemRequest::getId,
                                 OrderItemRequest::getDiscountAmount));
+    }
+
+    public boolean isDiscountShippingCostsChanged() {
+        return MapUtils.isNotEmpty(this.getDiscountShippingCosts());
+    }
+
+    public Map<String, BigDecimal> getDiscountShippingCosts() {
+        return Objects.isNull(this.getItems()) ? Collections.emptyMap() :
+                this.getItems().stream()
+                        .filter(request -> Objects.nonNull(request.getDiscountShippingCost()))
+                        .collect(Collectors.toMap(OrderItemRequest::getId,
+                                OrderItemRequest::getDiscountShippingCost));
     }
 
     @Getter
@@ -41,6 +54,8 @@ public class OrderRequest {
         private String id;
         @JsonProperty("discount_amount")
         private BigDecimal discountAmount;
+        @JsonProperty("discount_shipping_cost")
+        private BigDecimal discountShippingCost;
     }
 
     @Getter

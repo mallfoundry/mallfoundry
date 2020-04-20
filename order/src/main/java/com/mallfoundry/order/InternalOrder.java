@@ -212,15 +212,6 @@ public class InternalOrder implements Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 
-    @JsonProperty("subtotal_amount")
-    @Transient
-    @Override
-    public BigDecimal getSubtotalAmount() {
-        return this.getItems().stream()
-                .map(OrderItem::getSubtotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
     @JsonProperty("total_shipping_cost")
     @Transient
     @Override
@@ -230,19 +221,34 @@ public class InternalOrder implements Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @JsonProperty("subtotal_amount")
+    @Transient
+    @Override
+    public BigDecimal getSubtotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getSubtotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     @JsonProperty("total_amount")
     @Transient
     @Override
     public BigDecimal getTotalAmount() {
         return this.getItems().stream()
-                .map(OrderItem::getTotalAmount)
+                .map(OrderItem::getActualAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
-    public void discount(Map<String, BigDecimal> amounts) {
+    public void discounts(Map<String, BigDecimal> amounts) {
         amounts.forEach((itemId, discountAmount) ->
                 this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
+    }
+
+    @Override
+    public void discountShippingCosts(Map<String, BigDecimal> shippingCosts) {
+        shippingCosts.forEach((itemId, discountCost) ->
+                this.getItem(itemId).orElseThrow().setDiscountShippingCost(discountCost));
     }
 
     public List<Shipment> getShipments() {

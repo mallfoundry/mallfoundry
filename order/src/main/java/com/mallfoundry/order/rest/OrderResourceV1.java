@@ -141,8 +141,14 @@ public class OrderResourceV1 {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         if (Objects.nonNull(request.getStaffNotes())) {
             order.setStaffNotes(request.getStaffNotes());
-        } else if (request.isDiscountAmountsChanged()) {
-            order.discount(request.getDiscountAmounts());
+        }
+
+        if (request.isDiscountAmountsChanged()) {
+            order.discounts(request.getDiscountAmounts());
+        }
+
+        if (request.isDiscountShippingCostsChanged()) {
+            order.discountShippingCosts(request.getDiscountShippingCosts());
         }
         this.orderService.saveOrder(order);
     }

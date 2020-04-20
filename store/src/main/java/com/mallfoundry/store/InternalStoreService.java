@@ -43,8 +43,7 @@ public class InternalStoreService implements StoreService {
 
     @Transactional
     public void saveStore(Store store) {
-        this.getStore(store.getId())
-                .ifPresent(savedStore -> BeanUtils.copyProperties(store, savedStore));
+        this.storeRepository.save(store);
     }
 
     public SliceList<Store> getStores(StoreQuery query) {

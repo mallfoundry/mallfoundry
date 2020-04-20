@@ -29,13 +29,19 @@ public interface OrderItem {
 
     BigDecimal getShippingCost();
 
-    void setShippingCost(BigDecimal amount);
+    void setShippingCost(BigDecimal shippingCost);
+
+    BigDecimal getDiscountShippingCost();
+
+    void setDiscountShippingCost(BigDecimal discountShippingCost);
 
     BigDecimal getSubtotalAmount();
+
+    BigDecimal getOriginalAmount();
 
     BigDecimal getDiscountAmount();
 
     void setDiscountAmount(BigDecimal discountAmount);
 
-    BigDecimal getTotalAmount();
+    BigDecimal getActualAmount();
 }

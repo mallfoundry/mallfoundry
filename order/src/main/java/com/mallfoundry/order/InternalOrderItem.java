@@ -83,6 +83,10 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "shipping_cost_")
     private BigDecimal shippingCost;
 
+    @JsonProperty("discount_shipping_cost")
+    @Column(name = "discount_shipping_cost_")
+    private BigDecimal discountShippingCost;
+
     public InternalOrderItem(String productId, String variantId, int quantity) {
         this.setProductId(productId);
         this.setVariantId(variantId);
@@ -107,6 +111,10 @@ public class InternalOrderItem implements OrderItem {
         return Objects.isNull(this.shippingCost) ? BigDecimal.ZERO : this.shippingCost;
     }
 
+    public BigDecimal getDiscountShippingCost() {
+        return Objects.isNull(this.discountShippingCost) ? BigDecimal.ZERO : this.discountShippingCost;
+    }
+
     @JsonProperty("subtotal_amount")
     @Transient
     @Override
@@ -114,12 +122,20 @@ public class InternalOrderItem implements OrderItem {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
 
-    @JsonIgnore
+    @JsonProperty("original_amount")
+    @Transient
     @Override
-    public BigDecimal getTotalAmount() {
+    public BigDecimal getOriginalAmount() {
+        return this.getSubtotalAmount().add(this.getShippingCost());
+    }
+
+    @JsonProperty("actual_amount")
+    @Override
+    public BigDecimal getActualAmount() {
         return this.getSubtotalAmount()
                 .add(this.getDiscountAmount())
-                .add(this.getShippingCost());
+                .add(this.getShippingCost())
+                .add(this.getDiscountShippingCost());
     }
 
     @Override

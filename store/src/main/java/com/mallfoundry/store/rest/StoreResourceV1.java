@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -56,8 +57,17 @@ public class StoreResourceV1 {
 
     @PutMapping("/stores/{store_id}")
     public void saveStore(@PathVariable("store_id") String storeId,
-                          @RequestBody Store store) {
-        store.setId(storeId);
+                          @RequestBody StoreRequest request) {
+        var store = this.storeService.getStore(storeId).orElseThrow();
+
+        if (Objects.nonNull(request.getLogoUrl())) {
+            store.setLogoUrl(request.getLogoUrl());
+        }
+
+        if (Objects.nonNull(request.getLogoUrl())) {
+            store.setDescription(request.getDescription());
+        }
+
         this.storeService.saveStore(store);
     }
 
