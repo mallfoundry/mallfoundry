@@ -19,11 +19,19 @@ package com.mallfoundry.district;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "district_counties")
 public class County {
+
+    @Id
+    @Column(name = "id_")
+    private String id;
 
 }

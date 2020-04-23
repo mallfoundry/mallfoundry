@@ -29,8 +29,8 @@ public class DistrictService {
         this.provinceRepository = provinceRepository;
     }
 
-    public List<Province> getProvinces(String countryCode) {
-        return this.provinceRepository.findAllByCountryCode(countryCode);
+    public List<Province> getProvinces(String countryId) {
+        return this.provinceRepository.findAllByCountryId(countryId);
     }
 
 //    public List<Province> getCities(String provinceCode) {

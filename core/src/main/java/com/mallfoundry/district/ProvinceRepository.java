@@ -20,5 +20,5 @@ import java.util.List;
 
 public interface ProvinceRepository {
 
-    List<Province> findAllByCountryCode(String countryCode);
+    List<Province> findAllByCountryId(String countryId);
 }
