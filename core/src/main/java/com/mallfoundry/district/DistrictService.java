@@ -18,7 +18,7 @@ package com.mallfoundry.district;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class DistrictService {
@@ -29,7 +29,11 @@ public class DistrictService {
         this.provinceRepository = provinceRepository;
     }
 
-    public Optional<Province> getProvince(String code) {
-        return this.provinceRepository.findByCode(code);
+    public List<Province> getProvinces(String countryCode) {
+        return this.provinceRepository.findAllByCountryCode(countryCode);
     }
+
+//    public List<Province> getCities(String provinceCode) {
+//        return this.provinceRepository.findAll();
+//    }
 }

@@ -18,7 +18,7 @@ package com.mallfoundry.store.product.search;
 
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -64,7 +64,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         this.directoryPath = directoryPath;
     }
 
-    private Product getProduct(Long productId) {
+    private InternalProduct getProduct(Long productId) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             if (ArrayUtils.isEmpty(directory.listAll())) {
@@ -80,7 +80,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 int docId = scoreDoc.doc;
                 Document doc = reader.document(docId);
                 String product = doc.get("product");
-                return JsonUtils.parse(product, Product.class);
+                return JsonUtils.parse(product, InternalProduct.class);
             }
 
             return null;
@@ -89,7 +89,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         }
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(InternalProduct product) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -110,7 +110,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
 
-    public void updateProduct(Product product) {
+    public void updateProduct(InternalProduct product) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -130,7 +130,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     @Override
-    public void save(Product product) {
+    public void save(InternalProduct product) {
         if (Objects.isNull(getProduct(product.getId()))) {
             this.addProduct(product);
         } else {
@@ -139,12 +139,12 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     @Override
-    public void delete(Product product) {
+    public void delete(InternalProduct product) {
 
     }
 
     @Override
-    public SliceList<Product> search(ProductQuery search) {
+    public SliceList<InternalProduct> search(ProductQuery search) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -167,12 +167,12 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
 
-            List<Product> products = new ArrayList<>();
+            List<InternalProduct> products = new ArrayList<>();
             for (ScoreDoc scoreDoc : scoreDocs) {
                 int docId = scoreDoc.doc;
                 Document doc = reader.document(docId);
                 String product = doc.get("product");
-                products.add(JsonUtils.parse(product, Product.class));
+                products.add(JsonUtils.parse(product, InternalProduct.class));
             }
             return PageList.of(products).page(search.getPage()).limit(search.getLimit()).totalSize(totalSize);
         } catch (Exception e) {

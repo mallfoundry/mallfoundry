@@ -18,6 +18,8 @@ package com.mallfoundry.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.mallfoundry.data.jpa.convert.StringStringMapConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -57,6 +59,7 @@ import java.util.Optional;
 @Entity
 @Table(name = "storage_blob")
 @IdClass(InternalBlobId.class)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class InternalBlob implements Blob {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -83,7 +86,6 @@ public class InternalBlob implements Blob {
     @Column(name = "size_")
     private long size;
 
-    @JsonProperty("content_type")
     @Column(name = "content_type_")
     private String contentType;
 

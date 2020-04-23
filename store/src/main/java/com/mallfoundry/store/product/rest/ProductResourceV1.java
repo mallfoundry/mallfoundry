@@ -17,7 +17,7 @@
 package com.mallfoundry.store.product.rest;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.ProductService;
 import com.mallfoundry.store.product.search.ProductQuery;
 import org.springframework.beans.BeanUtils;
@@ -43,7 +43,7 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products")
-    public SliceList<Product> getProducts(
+    public SliceList<InternalProduct> getProducts(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "title", required = false) String title,
@@ -55,20 +55,20 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products/{id}")
-    public Optional<Product> getProduct(@PathVariable("id") Long id) {
+    public Optional<InternalProduct> getProduct(@PathVariable("id") Long id) {
         return this.productService.getProduct(id);
     }
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
-        Product newProduct = this.productService.newProduct();
+    public InternalProduct createProduct(@RequestBody InternalProduct product) {
+        InternalProduct newProduct = this.productService.newProduct();
         BeanUtils.copyProperties(product, newProduct);
         return this.productService.saveProduct(newProduct);
     }
 
     @PutMapping("/products/{id}")
     public void saveProduct(@PathVariable("id") Long id,
-                            @RequestBody Product newProduct) {
+                            @RequestBody InternalProduct newProduct) {
         newProduct.setId(id);
         this.productService.saveProduct(newProduct);
     }

@@ -19,7 +19,6 @@ package com.mallfoundry.store.product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mallfoundry.data.jpa.convert.LongListConverter;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
@@ -50,11 +49,9 @@ import java.util.Optional;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"id", "shortName", "name", "freeShipping", "shippingMoney",
-        "description", "variants", "attributes", "options", "images", "videos"})
 @Entity
 @Table(name = "store_product")
-public class Product implements Serializable {
+public class InternalProduct implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -63,7 +60,6 @@ public class Product implements Serializable {
     @Column(name = "id_")
     private Long id;
 
-    @JsonProperty("store_id")
     @Column(name = "store_id_")
     private String storeId;
 
@@ -73,7 +69,6 @@ public class Product implements Serializable {
     @Column(name = "description_")
     private String description;
 
-    @JsonProperty("collection_ids")
     @Column(name = "collection_ids_")
     @Convert(converter = LongListConverter.class)
     private List<Long> collectionIds = new ArrayList<>();
@@ -82,7 +77,6 @@ public class Product implements Serializable {
     private BigDecimal price;
 
     @Column(name = "market_price_")
-    @JsonProperty("market_price")
     private BigDecimal marketPrice;
 
     @Lob
@@ -99,19 +93,19 @@ public class Product implements Serializable {
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
-    @JsonProperty("image_urls")
     @Lob
     @Column(name = "image_urls_")
     @Convert(converter = StringListConverter.class)
     private List<String> imageUrls = new ArrayList<>();
 
-    @JsonProperty("video_urls")
     @Lob
     @Column(name = "video_urls_")
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
-    @JsonProperty("created_time")
+    @Column(name = "fixed_shipping_cost_")
+    private String fixedShippingCost;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_time_")
     private Date createdTime;
@@ -124,7 +118,7 @@ public class Product implements Serializable {
                         .orElse(BigDecimal.ZERO);
     }
 
-    @JsonProperty(value = "inventory_quantity", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Integer getInventoryQuantity() {
         return CollectionUtils.isEmpty(this.getVariants()) ? 0 :
                 this.getVariants()
@@ -177,10 +171,10 @@ public class Product implements Serializable {
 
     public static class Builder {
 
-        private Product product;
+        private final InternalProduct product;
 
         public Builder() {
-            this.product = new Product();
+            this.product = new InternalProduct();
         }
 
         public Builder storeId(String storeId) {
@@ -203,7 +197,7 @@ public class Product implements Serializable {
             return this;
         }
 
-        public Product build() {
+        public InternalProduct build() {
             return this.product;
         }
 

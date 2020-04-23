@@ -6,6 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/mall
   jackson:
     time-zone: GMT+8
+    property-naming-strategy: SNAKE_CASE
+    mapper:
+      accept-case-insensitive-enums: true
   profiles:
     active: dev
   application:

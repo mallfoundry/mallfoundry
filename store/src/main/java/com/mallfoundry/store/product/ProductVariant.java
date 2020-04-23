@@ -62,6 +62,13 @@ public class ProductVariant implements Serializable {
     @JsonProperty("market_price")
     private BigDecimal marketPrice;
 
+    @Column(name = "cost_price_")
+    @JsonProperty("cost_price")
+    private BigDecimal costPrice;
+
+    @Column(name = "weight_")
+    private String weight;
+
     @Column(name = "inventory_quantity_")
     @JsonProperty("inventory_quantity")
     private int inventoryQuantity;

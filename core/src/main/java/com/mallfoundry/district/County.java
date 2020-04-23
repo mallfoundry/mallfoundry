@@ -16,39 +16,14 @@
 
 package com.mallfoundry.district;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("county")
-public class County extends District {
+public class County {
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "province_code_")
-    private Province province;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "city_code_")
-    private City city;
-
-    @JsonProperty("province_code")
-    private String getProvinceCode() {
-        return this.getProvince().getCode();
-    }
-
-    @JsonProperty("city_code")
-    private String getCityCode() {
-        return this.getCity().getCode();
-    }
 }

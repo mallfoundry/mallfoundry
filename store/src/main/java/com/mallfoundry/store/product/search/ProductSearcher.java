@@ -17,9 +17,9 @@
 package com.mallfoundry.store.product.search;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 
 public interface ProductSearcher {
 
-    SliceList<Product> search(ProductQuery query);
+    SliceList<InternalProduct> search(ProductQuery query);
 }

@@ -16,12 +16,12 @@
 
 package com.mallfoundry.store.product.search;
 
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 
 public interface ProductSearchProvider extends ProductSearcher {
 
-    void save(Product product);
+    void save(InternalProduct product);
 
-    void delete(Product product);
+    void delete(InternalProduct product);
 
 }

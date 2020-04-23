@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.ProductService;
 import com.mallfoundry.store.product.ProductVariant;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +39,7 @@ public class CheckoutCounter {
             List<OrderItem> items = order.getItems();
             order.setStoreId(null);
             for (var item : items) {
-                Product product = this.productService.getProduct(item.getProductId()).orElseThrow();
+                InternalProduct product = this.productService.getProduct(item.getProductId()).orElseThrow();
                 ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
 //                variant.decrementInventoryQuantity(item.getQuantity());
 

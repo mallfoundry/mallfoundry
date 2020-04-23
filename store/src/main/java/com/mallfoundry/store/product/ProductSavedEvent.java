@@ -22,9 +22,9 @@ import org.springframework.context.ApplicationEvent;
 public class ProductSavedEvent extends ApplicationEvent {
 
     @Getter
-    private final Product product;
+    private final InternalProduct product;
 
-    public ProductSavedEvent(Product product) {
+    public ProductSavedEvent(InternalProduct product) {
         super(product);
         this.product = product;
     }

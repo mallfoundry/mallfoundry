@@ -123,8 +123,6 @@ public class InternalStorageService implements StorageService {
                     sharedBlob.setUrl(internalBlob.getUrl());
                     sharedBlob.setPath(internalBlob.getPath());
                     this.sharedBlobRepository.save(sharedBlob);
-                    internalBlob.setUrl(sharedBlob.getUrl());
-                    internalBlob.setSize(sharedBlob.getSize());
                 } else {
                     internalBlob.setUrl(existsSharedBlob.getUrl());
                     internalBlob.setSize(existsSharedBlob.getSize());

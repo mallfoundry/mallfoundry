@@ -42,7 +42,7 @@ public class InternalOrderService implements OrderService {
 
     String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
 
-    String SHIPMENT_VALUE_NAME = "shipment.id";
+    String SHIPMENT_ID_VALUE_NAME = "shipment.id";
 
     private final OrderRepository orderRepository;
 
@@ -106,7 +106,7 @@ public class InternalOrderService implements OrderService {
     public Shipment createShipment(String orderId, List<String> itemIds) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         var shipment = new InternalShipment(orderId, order.getItems(itemIds));
-        shipment.setId(PrimaryKeyHolder.next(SHIPMENT_VALUE_NAME));
+        shipment.setId(PrimaryKeyHolder.next(SHIPMENT_ID_VALUE_NAME));
         shipment.setConsignorId(SecurityUserHolder.getUserId());
         shipment.setConsignor(SecurityUserHolder.getNickname());
         shipment.setShippingAddress(order.getShippingAddress());

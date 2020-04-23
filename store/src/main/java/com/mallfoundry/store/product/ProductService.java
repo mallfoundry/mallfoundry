@@ -44,18 +44,18 @@ public class ProductService {
         this.eventPublisher = eventPublisher;
     }
 
-    public Product newProduct() {
-        return new Product();
+    public InternalProduct newProduct() {
+        return new InternalProduct();
     }
 
     @Transactional
-    public Product saveProduct(Product newProduct) {
-        Product savedProduct;
+    public InternalProduct saveProduct(InternalProduct newProduct) {
+        InternalProduct savedProduct;
         if (Objects.isNull(newProduct.getId())) {
             newProduct.create();
             savedProduct = this.productRepository.save(newProduct);
         } else {
-            Product oldProduct = this.getProduct(newProduct.getId()).orElseThrow();
+            InternalProduct oldProduct = this.getProduct(newProduct.getId()).orElseThrow();
             BeanUtils.copyProperties(newProduct, oldProduct, "variants");
             oldProduct.getVariants().clear();
             oldProduct.getVariants().addAll(newProduct.getVariants());
@@ -66,15 +66,15 @@ public class ProductService {
     }
 
     @Transactional
-    public Optional<Product> getProduct(Long id) {
+    public Optional<InternalProduct> getProduct(Long id) {
         return this.productRepository.findById(id);
     }
 
-    public Optional<Product> getProduct(String id) {
+    public Optional<InternalProduct> getProduct(String id) {
         return this.productRepository.findById(Long.parseLong(id));
     }
 
-    public SliceList<Product> getProducts(ProductQuery query) {
+    public SliceList<InternalProduct> getProducts(ProductQuery query) {
         return this.productSearcher.search(query);
     }
 }

@@ -17,11 +17,8 @@
 package com.mallfoundry.district;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProvinceRepository {
 
-    Optional<Province> findByCode(String code);
-
-    List<Province> findAll();
+    List<Province> findAllByCountryCode(String countryCode);
 }

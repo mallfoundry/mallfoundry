@@ -1,8 +1,9 @@
 logging:
   level:
     com.mallfoundry: debug
-    org.hibernate: info
+#    org.hibernate: debug
     org.springframework.web: debug
+#    org.springframework: debug
 spring:
   jpa:
     hibernate:

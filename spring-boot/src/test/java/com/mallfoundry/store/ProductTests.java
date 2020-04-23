@@ -18,7 +18,7 @@ package com.mallfoundry.store;
 
 
 import com.mallfoundry.StaticServer;
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.ProductAttribute;
 import com.mallfoundry.store.product.ProductService;
 import com.mallfoundry.store.product.ProductVariant;
@@ -71,8 +71,8 @@ public class ProductTests {
         return StaticServer.BASE_URL + "/images/" + id;
     }
 
-    private Product newProduct1() {
-        Product product = new Product();
+    private InternalProduct newProduct1() {
+        InternalProduct product = new InternalProduct();
         double price = 0.01;
         product.setStoreId("huawei");
         product.setTitle("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
@@ -110,8 +110,8 @@ public class ProductTests {
         return product;
     }
 
-    private Product newProduct2() {
-        Product product = new Product();
+    private InternalProduct newProduct2() {
+        InternalProduct product = new InternalProduct();
         double price = 0.01;
         product.setStoreId("mi");
         product.setTitle("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
@@ -149,8 +149,8 @@ public class ProductTests {
         return product;
     }
 
-    private Product newProduct3() {
-        Product product = new Product();
+    private InternalProduct newProduct3() {
+        InternalProduct product = new InternalProduct();
         double price = 0.01;
         product.setStoreId("oppo");
         product.setTitle("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
@@ -199,8 +199,8 @@ public class ProductTests {
         return product;
     }
 
-    private Product newProduct4() {
-        Product product = new Product();
+    private InternalProduct newProduct4() {
+        InternalProduct product = new InternalProduct();
         double price = 0.01;
         product.setStoreId("vivo");
         product.setTitle("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
@@ -238,9 +238,9 @@ public class ProductTests {
         return product;
     }
 
-    private Product newProduct5() {
+    private InternalProduct newProduct5() {
         double price = 0.01;
-        Product product = new Product();
+        InternalProduct product = new InternalProduct();
         product.setStoreId("one plus");
         product.setTitle("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
         product.setCreatedTime(new Date());

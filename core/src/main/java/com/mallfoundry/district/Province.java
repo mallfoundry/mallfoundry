@@ -16,23 +16,37 @@
 
 package com.mallfoundry.district;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mallfoundry.util.Position;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("province")
-public class Province extends District {
+@Table(name = "district_provinces")
+public class Province implements Position {
 
-    @OneToMany
-    @JoinColumn(name = "province_code_")
-    private List<City> cities = new ArrayList<>();
+    @JsonIgnore
+    @Id
+    @Column(name = "id_")
+    private String id;
+
+    @JsonIgnore
+    @Column(name = "country_code_")
+    private String countryCode;
+
+    @Column(name = "code_")
+    private String code;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "position_")
+    private Integer position;
 }

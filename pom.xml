@@ -70,6 +70,7 @@
         <module>shipping</module>
         <module>payment</module>
         <module>identity-api</module>
+        <module>analyze</module>
     </modules>
 
     <dependencyManagement>

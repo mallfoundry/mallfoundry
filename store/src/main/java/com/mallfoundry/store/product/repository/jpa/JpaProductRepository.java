@@ -16,12 +16,12 @@
 
 package com.mallfoundry.store.product.repository.jpa;
 
-import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.ProductRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaProductRepository
-        extends ProductRepository, JpaRepository<Product, Long> {
+        extends ProductRepository, JpaRepository<InternalProduct, Long> {
 }

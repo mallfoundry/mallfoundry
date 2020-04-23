@@ -21,14 +21,7 @@ import com.mallfoundry.district.ProvinceRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface JpaProvinceRepository
         extends ProvinceRepository, JpaRepository<Province, String> {
-
-    @Override
-    default Optional<Province> findByCode(String code) {
-        return this.findById(code);
-    }
 }
