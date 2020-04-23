@@ -16,7 +16,6 @@
 
 package com.mallfoundry.district;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mallfoundry.util.Position;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,20 +31,18 @@ import javax.persistence.Table;
 @Table(name = "district_provinces")
 public class Province implements Position {
 
-    @JsonIgnore
     @Id
     @Column(name = "id_")
     private String id;
-
-    @JsonIgnore
-    @Column(name = "country_code_")
-    private String countryCode;
 
     @Column(name = "code_")
     private String code;
 
     @Column(name = "name_")
     private String name;
+
+    @Column(name = "country_id_")
+    private String countryId;
 
     @Column(name = "position_")
     private Integer position;
