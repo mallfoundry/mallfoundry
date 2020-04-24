@@ -20,5 +20,10 @@ import java.util.List;
 
 public interface ProvinceRepository {
 
-    List<Province> findAllByCountryId(String countryId);
+    InternalProvince save(InternalProvince province);
+
+    List<InternalProvince> findAllByCountryId(String countryId);
+
+    int countByCountryId(String countryId);
+
 }

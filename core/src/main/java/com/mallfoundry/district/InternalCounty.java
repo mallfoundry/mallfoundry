@@ -16,34 +16,38 @@
 
 package com.mallfoundry.district;
 
-import com.mallfoundry.util.Position;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "district_provinces")
-public class Province implements Position {
+@Table(name = "district_counties")
+public class InternalCounty extends DistrictSupport implements County {
 
-    @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "city_id_")
+    private String cityId;
 
-    @Column(name = "code_")
-    private String code;
+    public InternalCounty(String id, String code, String name, String cityId) {
+        this.setId(id);
+        this.setCode(code);
+        this.setName(name);
+        this.cityId = cityId;
+    }
 
-    @Column(name = "name_")
-    private String name;
-
-    @Column(name = "country_id_")
-    private String countryId;
-
-    @Column(name = "position_")
-    private Integer position;
+    public static InternalCounty of(County county) {
+        if (county instanceof InternalCounty) {
+            return (InternalCounty) county;
+        }
+        var target = new InternalCounty();
+        BeanUtils.copyProperties(county, target);
+        return target;
+    }
 }

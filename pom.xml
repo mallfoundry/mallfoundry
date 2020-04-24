@@ -50,6 +50,8 @@
         <module>order-api</module>
         <module>shipping-api</module>
         <module>payment-api</module>
+        <module>identity-api</module>
+        <module>district-api</module>
 
         <module>commons</module>
         <module>autoconfigure</module>
@@ -69,7 +71,6 @@
         <module>trade</module>
         <module>shipping</module>
         <module>payment</module>
-        <module>identity-api</module>
         <module>analyze</module>
     </modules>
 
@@ -110,6 +111,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-payment-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-district-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

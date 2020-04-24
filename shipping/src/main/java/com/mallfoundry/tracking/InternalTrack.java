@@ -25,7 +25,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "tracks")
+@Table(name = "shipping_tracks")
 @IdClass(InternalTrackId.class)
 public class InternalTrack implements Track {
 

@@ -30,6 +30,11 @@
     <dependencies>
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-district-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
         </dependency>
 

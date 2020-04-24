@@ -17,21 +17,37 @@
 package com.mallfoundry.district;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "district_counties")
-public class County {
+@Table(name = "district_provinces")
+public class InternalProvince extends DistrictSupport implements Province {
 
-    @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "country_id_")
+    private String countryId;
 
+    public InternalProvince(String id, String code, String name, String countryId) {
+        this.setId(id);
+        this.setCode(code);
+        this.setName(name);
+        this.countryId = countryId;
+    }
+
+    public static InternalProvince of(Province province) {
+        if (province instanceof InternalProvince) {
+            return (InternalProvince) province;
+        }
+        var target = new InternalProvince();
+        BeanUtils.copyProperties(province, target);
+        return target;
+    }
 }
