@@ -4,6 +4,7 @@ import com.mallfoundry.district.City;
 import com.mallfoundry.district.County;
 import com.mallfoundry.district.InternalDistrictService;
 import com.mallfoundry.district.Province;
+import com.mallfoundry.district.Region;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,11 @@ public class DistrictResourceV1 {
 
     public DistrictResourceV1(InternalDistrictService districtService) {
         this.districtService = districtService;
+    }
+
+    @GetMapping("/countries/{country_id}/regions")
+    public List<Region> getRegions(@PathVariable("country_id") String countryId) {
+        return this.districtService.getRegions(countryId);
     }
 
     @GetMapping("/countries/{country_id}/provinces")

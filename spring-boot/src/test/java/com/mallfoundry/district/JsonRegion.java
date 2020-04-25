@@ -10,8 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Region {
+public class JsonRegion {
 
+    @JsonProperty("part")
     private String name;
 
     private List<Province> provinces;

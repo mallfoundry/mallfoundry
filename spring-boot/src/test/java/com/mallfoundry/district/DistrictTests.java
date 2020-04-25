@@ -24,12 +24,15 @@ public class DistrictTests {
     @Rollback(false)
     @Transactional
     @Test
-    public void testSaveProvinces() throws IOException {
+    public void testSaveRegions() throws IOException {
         var jsonString = FileUtils.readFileToString(new File("d://region.json"), "utf-8");
-        List<Region> regions = JsonUtils.parse(jsonString, List.class, Region.class);
+        List<JsonRegion> regions = JsonUtils.parse(jsonString, List.class, JsonRegion.class);
         for (var region : regions) {
+            var savedRegion = saveRegion(this.getRegionCode(region.getName()), region.getName());
+
             for (var province : region.getProvinces()) {
                 var savedProvince = this.saveProvince(province.getCode(), province.getName());
+                savedRegion.getProvinces().add(savedProvince);
                 for (var city : province.getCities()) {
                     var savedCity = this.saveCity(city.getCode(), city.getName(), savedProvince.getId());
                     for (var county : city.getCounties()) {
@@ -37,9 +40,33 @@ public class DistrictTests {
                     }
                 }
             }
+        }
+    }
 
+    private String getRegionCode(String name) {
+        if ("东北".equals(name)) {
+            return "NE";
+        } else if ("华东".equals(name)) {
+            return "EC";
+        } else if ("华中".equals(name)) {
+            return "CC";
+        } else if ("华南".equals(name)) {
+            return "SC";
+        } else if ("华北".equals(name)) {
+            return "NC";
+        } else if ("西北".equals(name)) {
+            return "NW";
+        } else if ("西南".equals(name)) {
+            return "SW";
+        } else if ("港澳台".equals(name)) {
+            return "HMT";
         }
 
+        return null;
+    }
+
+    private Region saveRegion(String code, String name) {
+        return this.districtService.saveRegion(this.districtService.createRegion(code, name, "1"));
     }
 
     private Province saveProvince(String code, String name) {

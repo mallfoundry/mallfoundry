@@ -27,11 +27,15 @@ import java.util.Objects;
 @Service
 public class InternalDistrictService implements DistrictService {
 
+    private final static String REGION_ID_VALUE_NAME = "district.region.id";
+
     private final static String PROVINCE_ID_VALUE_NAME = "district.province.id";
 
     private final static String CITY_ID_VALUE_NAME = "district.city.id";
 
     private final static String COUNTY_ID_VALUE_NAME = "district.county.id";
+
+    private final RegionRepository regionRepository;
 
     private final ProvinceRepository provinceRepository;
 
@@ -39,12 +43,19 @@ public class InternalDistrictService implements DistrictService {
 
     private final CountyRepository countyRepository;
 
-    public InternalDistrictService(ProvinceRepository provinceRepository,
+    public InternalDistrictService(RegionRepository regionRepository,
+                                   ProvinceRepository provinceRepository,
                                    CityRepository cityRepository,
                                    CountyRepository countyRepository) {
+        this.regionRepository = regionRepository;
         this.provinceRepository = provinceRepository;
         this.cityRepository = cityRepository;
         this.countyRepository = countyRepository;
+    }
+
+    @Override
+    public Region createRegion(String code, String name, String countryId) {
+        return new InternalRegion(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME), code, name, countryId);
     }
 
     @Override
@@ -62,6 +73,15 @@ public class InternalDistrictService implements DistrictService {
         return new InternalCounty(PrimaryKeyHolder.next(COUNTY_ID_VALUE_NAME), code, name, cityId);
     }
 
+    @Override
+    public Region saveRegion(Region region) {
+        if (Objects.isNull(region.getPosition())) {
+            var count = this.regionRepository.countByCountryId(region.getCountryId());
+            region.setPosition(count + 1);
+        }
+        return this.regionRepository.save(InternalRegion.of(region));
+    }
+
     @Transactional
     @Override
     public Province saveProvince(Province province) {
@@ -70,12 +90,6 @@ public class InternalDistrictService implements DistrictService {
             province.setPosition(count + 1);
         }
         return this.provinceRepository.save(InternalProvince.of(province));
-    }
-
-
-    @Override
-    public List<Province> getProvinces(String countryId) {
-        return CastUtils.cast(this.provinceRepository.findAllByCountryId(countryId));
     }
 
     @Override
@@ -94,6 +108,16 @@ public class InternalDistrictService implements DistrictService {
             county.setPosition(count + 1);
         }
         return this.countyRepository.save(InternalCounty.of(county));
+    }
+
+    @Override
+    public List<Region> getRegions(String countryId) {
+        return CastUtils.cast(this.regionRepository.findAllByCountryId(countryId));
+    }
+
+    @Override
+    public List<Province> getProvinces(String countryId) {
+        return CastUtils.cast(this.provinceRepository.findAllByCountryId(countryId));
     }
 
     @Override
