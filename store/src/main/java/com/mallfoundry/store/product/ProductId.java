@@ -52,7 +52,7 @@ public class ProductId implements UniqueIdentifier<Long> {
     }
 
     @Override
-    public Long identity() {
+    public Long getIdentifier() {
         return this.id;
     }
 

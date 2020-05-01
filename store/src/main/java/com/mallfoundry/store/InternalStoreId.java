@@ -55,7 +55,7 @@ public class InternalStoreId implements StoreId {
     }
 
     @Override
-    public String identity() {
+    public String getIdentifier() {
         return this.id;
     }
 

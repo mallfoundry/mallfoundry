@@ -38,6 +38,11 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-identity</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
 
