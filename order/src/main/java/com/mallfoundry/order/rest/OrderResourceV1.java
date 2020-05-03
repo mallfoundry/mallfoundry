@@ -27,6 +27,7 @@ import com.mallfoundry.order.ShippingAddress;
 import com.mallfoundry.payment.PaymentException;
 import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -84,6 +85,7 @@ public class OrderResourceV1 {
     public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) throws CustomerValidException {
         return this.orderService.checkout(this.createOrders(request));
     }
+
 
     @PostMapping("/orders")
     public List<Order> checkout(@RequestBody CreateOrderRequest request) {

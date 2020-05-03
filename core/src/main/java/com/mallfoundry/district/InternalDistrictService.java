@@ -54,6 +54,11 @@ public class InternalDistrictService implements DistrictService {
     }
 
     @Override
+    public DistrictQuery createQuery() {
+        return new InternalDistrictQuery();
+    }
+
+    @Override
     public Region createRegion(String code, String name, String countryId) {
         return new InternalRegion(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME), code, name, countryId);
     }
@@ -111,13 +116,13 @@ public class InternalDistrictService implements DistrictService {
     }
 
     @Override
-    public List<Region> getRegions(String countryId) {
-        return CastUtils.cast(this.regionRepository.findAllByCountryId(countryId));
+    public List<Region> getRegions(DistrictQuery query) {
+        return CastUtils.cast(this.regionRepository.findAllByCountryId(query.getCountryId()));
     }
 
     @Override
-    public List<Province> getProvinces(String countryId) {
-        return CastUtils.cast(this.provinceRepository.findAllByCountryId(countryId));
+    public List<Province> getProvinces(DistrictQuery query) {
+        return CastUtils.cast(this.provinceRepository.findAllByCountryId(query.getCountryId()));
     }
 
     @Override

@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface DistrictService {
 
+    DistrictQuery createQuery();
+
     Region createRegion(String code, String name, String countryId);
 
     Province createProvince(String code, String name, String countryId);
@@ -20,9 +22,9 @@ public interface DistrictService {
 
     County saveCounty(County county);
 
-    List<Region> getRegions(String countryId);
+    List<Region> getRegions(DistrictQuery query);
 
-    List<Province> getProvinces(String countryId);
+    List<Province> getProvinces(DistrictQuery query);
 
     List<City> getCities(String provinceId);
 

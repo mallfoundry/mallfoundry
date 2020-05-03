@@ -1,15 +1,8 @@
 package com.mallfoundry.district.rest;
 
-import com.mallfoundry.district.City;
-import com.mallfoundry.district.County;
-import com.mallfoundry.district.InternalDistrictService;
-import com.mallfoundry.district.Province;
-import com.mallfoundry.district.Region;
+import com.mallfoundry.district.*;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,18 +12,26 @@ public class DistrictResourceV1 {
 
     private final InternalDistrictService districtService;
 
-    public DistrictResourceV1(InternalDistrictService districtService) {
+    private final RestDistrictService restDistrictService;
+
+    public DistrictResourceV1(InternalDistrictService districtService,
+                              RestDistrictService restDistrictService) {
         this.districtService = districtService;
+        this.restDistrictService = restDistrictService;
     }
 
     @GetMapping("/countries/{country_id}/regions")
-    public List<Region> getRegions(@PathVariable("country_id") String countryId) {
-        return this.districtService.getRegions(countryId);
+    public List<RegionResponse> getRegions(@PathVariable("country_id") String countryId,
+                                   @RequestParam(required = false, defaultValue = "0") byte scope) {
+        return this.restDistrictService.getRegions(
+                this.districtService.createQuery().toBuilder().countryId(countryId).scope(scope).build());
     }
 
     @GetMapping("/countries/{country_id}/provinces")
-    public List<Province> getProvinces(@PathVariable("country_id") String countryId) {
-        return this.districtService.getProvinces(countryId);
+    public List<ProvinceResponse> getProvinces(@PathVariable("country_id") String countryId,
+                                               @RequestParam(required = false, defaultValue = "0") byte scope) {
+        return this.restDistrictService.getProvinces(
+                this.districtService.createQuery().toBuilder().countryId(countryId).scope(scope).build());
     }
 
     @GetMapping("/countries/{country_id}/provinces/{province_id}/cities")

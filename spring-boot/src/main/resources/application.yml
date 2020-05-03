@@ -18,3 +18,12 @@ server:
   tomcat:
     max-threads: 200
     min-spare-threads: 20
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    displayRequestDuration: true
+    tagsSorter: alpha

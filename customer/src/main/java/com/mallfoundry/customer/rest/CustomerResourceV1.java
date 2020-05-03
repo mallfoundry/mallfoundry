@@ -56,55 +56,55 @@ public class CustomerResourceV1 {
         return this.customerService.saveCustomer(customer);
     }
 
-    @PostMapping("/customers/{customer_id}/shipping_addresses")
-    public void addDeliveryAddress(@PathVariable("customer_id") String id,
+    @PostMapping("/customers/{customer_id}/shipping-addresses")
+    public void addShippingAddress(@PathVariable("customer_id") String id,
                                    @RequestBody ShippingAddress address) {
         this.customerService.addShippingAddress(id, address);
     }
 
-    @PutMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
-    public void addDeliveryAddress(@PathVariable("customer_id") String customerId,
+    @PutMapping("/customers/{customer_id}/shipping-addresses/{address_id}")
+    public void addShippingAddress(@PathVariable("customer_id") String customerId,
                                    @PathVariable("address_id") Long addressId,
                                    @RequestBody ShippingAddress address) {
         address.setId(addressId);
         this.customerService.addShippingAddress(customerId, address);
     }
 
-    @DeleteMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
-    public void removeDeliveryAddress(@PathVariable("customer_id") String id,
+    @DeleteMapping("/customers/{customer_id}/shipping-addresses/{address_id}")
+    public void removeShippingAddress(@PathVariable("customer_id") String id,
                                       @PathVariable("address_id") Long addressId) {
         this.customerService.removeShippingAddress(id, addressId);
     }
 
-    @GetMapping("/customers/{customer_id}/shipping_addresses")
-    public List<ShippingAddress> getDeliveryAddresses(@PathVariable("customer_id") String id) {
+    @GetMapping("/customers/{customer_id}/shipping-addresses")
+    public List<ShippingAddress> getShippingAddresses(@PathVariable("customer_id") String id) {
         return this.customerService.getShippingAddresses(id);
     }
 
-    @GetMapping("/customers/{customer_id}/shipping_addresses/{address_id}")
-    public Optional<ShippingAddress> getDeliveryAddress(
+    @GetMapping("/customers/{customer_id}/shipping-addresses/{address_id}")
+    public Optional<ShippingAddress> getShippingAddress(
             @PathVariable("customer_id") String customerId,
             @PathVariable("address_id") Long addressId) {
         return this.customerService.getShippingAddress(customerId, addressId);
     }
 
-    @GetMapping("/customers/{customer_id}/shipping_addresses/default")
+    @GetMapping("/customers/{customer_id}/shipping-addresses/default")
     public Optional<ShippingAddress> getDefaultShippingAddress(@PathVariable("customer_id") String id) {
         return this.customerService.getDefaultShippingAddress(id);
     }
 
-    @PostMapping("/customers/{customer_id}/search_terms")
+    @PostMapping("/customers/{customer_id}/search-terms")
     public void addSearchTerm(@PathVariable("customer_id") String customerId,
                               @RequestBody SearchTermRequest request) {
         this.customerService.addSearchTerm(customerId, request.getText());
     }
 
-    @DeleteMapping("/customers/{customer_id}/search_terms")
+    @DeleteMapping("/customers/{customer_id}/search-terms")
     public void clearSearchTerms(@PathVariable("customer_id") String customerId) {
         this.customerService.clearSearchTerms(customerId);
     }
 
-    @GetMapping("/customers/{customer_id}/search_terms")
+    @GetMapping("/customers/{customer_id}/search-terms")
     public List<SearchTerm> getSearchTerms(@PathVariable("customer_id") String customerId) {
         return this.customerService.getSearchTerms(customerId);
     }

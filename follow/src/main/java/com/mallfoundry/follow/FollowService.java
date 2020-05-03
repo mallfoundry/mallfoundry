@@ -62,7 +62,7 @@ public class FollowService {
                 .findAll(Example.of(new FollowProduct(customerId)))
                 .stream()
                 .map(FollowProduct::getProductId)
-                .map(ProductId::identity)
+                .map(ProductId::getIdentifier)
                 .distinct()
                 .collect(Collectors.toList());
     }

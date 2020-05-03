@@ -51,7 +51,7 @@ public class InternalStoreBlobService implements StoreBlobService {
 
     @Override
     public String getBucketName(StoreId storeId) {
-        return STORE_BUCKET_PREFIX + storeId.identity();
+        return STORE_BUCKET_PREFIX + storeId.getIdentifier();
     }
 
     @Override

@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,6 +34,10 @@ public class InternalProvince extends DistrictSupport implements Province {
 
     @Column(name = "country_id_")
     private String countryId;
+
+    @OneToMany(targetEntity = InternalCity.class)
+    @JoinColumn(name = "province_id_")
+    private List<City> cities = new ArrayList<>();
 
     public InternalProvince(String id, String code, String name, String countryId) {
         this.setId(id);

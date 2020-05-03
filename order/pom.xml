@@ -28,6 +28,13 @@
     <artifactId>mall-order</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-order-api</artifactId>

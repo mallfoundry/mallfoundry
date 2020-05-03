@@ -5,12 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +16,7 @@ import java.util.List;
 @Table(name = "district_regions")
 public class InternalRegion extends DistrictSupport implements Region {
 
-    @OneToMany(targetEntity = InternalProvince.class,
-            fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = InternalProvince.class)
     @JoinColumn(name = "region_id_")
     private List<Province> provinces = new ArrayList<>();
 
