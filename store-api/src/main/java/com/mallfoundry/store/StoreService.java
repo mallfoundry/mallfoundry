@@ -7,4 +7,6 @@ public interface StoreService {
     Store createStore();
 
     StoreConfiguration getConfiguration(String storeId);
+
+    void saveConfiguration(String storeId, StoreConfiguration configuration);
 }

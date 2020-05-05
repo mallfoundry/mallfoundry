@@ -18,12 +18,12 @@ package com.mallfoundry.store;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.blob.StoreBlobService;
-import com.mallfoundry.util.ApplicationContextUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InternalStoreService implements StoreService {
@@ -32,12 +32,16 @@ public class InternalStoreService implements StoreService {
 
     private final StoreRepository storeRepository;
 
+    private final StoreConfigPropertyRepository storeConfigPropertyRepository;
+
     private final ApplicationEventPublisher eventPublisher;
 
     public InternalStoreService(StoreBlobService storeBlobService,
                                 StoreRepository storeRepository,
+                                StoreConfigPropertyRepository storeConfigPropertyRepository,
                                 ApplicationEventPublisher eventPublisher) {
         this.storeRepository = storeRepository;
+        this.storeConfigPropertyRepository = storeConfigPropertyRepository;
         this.eventPublisher = eventPublisher;
         this.storeBlobService = storeBlobService;
     }
@@ -54,8 +58,16 @@ public class InternalStoreService implements StoreService {
 
     @Override
     public StoreConfiguration getConfiguration(String storeId) {
-        return ApplicationContextUtils.getApplicationContext().getBean(StoreConfigurationRepository.class)
-                .toBuilder().storeId(storeId).build();
+        var configProperties = this.storeConfigPropertyRepository.findAllByStoreId(storeId)
+                .stream().collect(Collectors.toMap(StoreConfigProperty::getName, StoreConfigProperty::getValue));
+        return new StoreMapConfiguration(configProperties);
+    }
+
+    @Transactional
+    @Override
+    public void saveConfiguration(String storeId, StoreConfiguration configuration) {
+        configuration.toMap().forEach((name, value) ->
+                this.storeConfigPropertyRepository.save(new StoreConfigProperty(storeId, name, value)));
     }
 
     public Optional<InternalStore> getStore(String id) {
