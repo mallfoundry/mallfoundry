@@ -19,9 +19,8 @@ package com.mallfoundry.store;
 
 import com.mallfoundry.StaticServer;
 import com.mallfoundry.store.product.InternalProduct;
+import com.mallfoundry.store.product.InternalProductService;
 import com.mallfoundry.store.product.ProductAttribute;
-import com.mallfoundry.store.product.ProductService;
-import com.mallfoundry.store.product.ProductVariant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class ProductTests {
 
 
     @Autowired
-    private ProductService productService;
+    private InternalProductService productService;
 
     @Test
     @Rollback(false)
@@ -72,7 +71,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct1() {
-        InternalProduct product = new InternalProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("huawei");
         product.setTitle("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
@@ -87,20 +86,20 @@ public class ProductTests {
         product.setCreatedTime(new Date());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
                         .optionValues(List.of("翡冷翠", "8GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
                         .optionValues(List.of("翡冷翠", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
                         .optionValues(List.of("丹霞橙", "8GB 128GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
                         .optionValues(List.of("丹霞橙", "12GB 256GB")).position(1).build());
 
@@ -111,7 +110,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct2() {
-        InternalProduct product = new InternalProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("mi");
         product.setTitle("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
@@ -126,20 +125,20 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
                         .optionValues(List.of("梦之白", "8GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
                         .optionValues(List.of("梦之白", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
                         .optionValues(List.of("钛银黑", "8GB 128GB")).position(2).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
                         .optionValues(List.of("钛银黑", "12GB 256GB")).position(3).build());
 
@@ -150,7 +149,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct3() {
-        InternalProduct product = new InternalProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("oppo");
         product.setTitle("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
@@ -167,29 +166,29 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ea203c122fb3dae.jpg"), resolveImageUrl("7eac762ed4bcb66f.jpg")))
                         .optionValues(List.of("雾月白", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ea203c122fb3dae.jpg"), resolveImageUrl("7eac762ed4bcb66f.jpg")))
                         .optionValues(List.of("雾月白", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("b72e95f6953e2f3c.jpg"), resolveImageUrl("c682d018d572c792.jpg")))
                         .optionValues(List.of("日出印象", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("b72e95f6953e2f3c.jpg"), resolveImageUrl("c682d018d572c792.jpg")))
                         .optionValues(List.of("日出印象", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
                         .optionValues(List.of("蓝色星夜", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
                         .optionValues(List.of("蓝色星夜", "12GB 256GB")).position(1).build());
 
@@ -200,7 +199,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct4() {
-        InternalProduct product = new InternalProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("vivo");
         product.setTitle("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
@@ -215,20 +214,20 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("3c5048ac3b93dcca.png"), resolveImageUrl("3c5048ac3b93dccc.jpg")))
                         .optionValues(List.of("深空流光", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("3c5048ac3b93dcca.png"), resolveImageUrl("3c5048ac3b93dccc.jpg")))
                         .optionValues(List.of("深空流光", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("ec48ee3a1e78a5ce.png"), resolveImageUrl("178e05db88b4477e.jpg")))
                         .optionValues(List.of("液态天河", "8GB 256GB")).position(1).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("ec48ee3a1e78a5ce.png"), resolveImageUrl("178e05db88b4477e.jpg")))
                         .optionValues(List.of("液态天河", "12GB 256GB")).position(1).build());
 
@@ -240,7 +239,7 @@ public class ProductTests {
 
     private InternalProduct newProduct5() {
         double price = 0.01;
-        InternalProduct product = new InternalProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct();
         product.setStoreId("one plus");
         product.setTitle("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
         product.setCreatedTime(new Date());
@@ -256,41 +255,41 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("6GB 128GB", "8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
                         .optionValues(List.of("曜岩灰", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
                         .optionValues(List.of("曜岩灰", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
                         .optionValues(List.of("曜岩灰", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
                         .optionValues(List.of("星雾蓝", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
                         .optionValues(List.of("星雾蓝", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
                         .optionValues(List.of("星雾蓝", "12GB 256GB")).position(0).build());
 
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
                         .optionValues(List.of("皓月金", "6GB 128GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
                         .optionValues(List.of("皓月金", "8GB 256GB")).position(0).build());
         product.addVariant(
-                new ProductVariant.Builder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
                         .optionValues(List.of("皓月金", "12GB 256GB")).position(0).build());
 

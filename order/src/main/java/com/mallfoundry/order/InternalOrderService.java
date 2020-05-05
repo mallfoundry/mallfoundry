@@ -22,7 +22,7 @@ import com.mallfoundry.payment.PaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentService;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.store.product.InternalProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,14 +54,14 @@ public class InternalOrderService implements OrderService {
 
     private final PaymentService paymentService;
 
-    private final ProductService productService;
+    private final InternalProductService productService;
 
     public InternalOrderService(OrderRepository orderRepository,
                                 CustomerValidator customerValidator,
                                 CheckoutCounter checkoutCounter,
                                 OrderSplitter orderSplitter,
                                 PaymentService paymentService,
-                                ProductService productService) {
+                                InternalProductService productService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
         this.checkoutCounter = checkoutCounter;

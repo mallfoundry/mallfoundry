@@ -35,11 +35,11 @@ public class StoreTests {
     @Transactional
     @Test
     public void testSaveStores() {
-        this.storeService.createStore(new Store("mi", "小米官方旗舰店", getLogoUrl("mi-logo")));
-        this.storeService.createStore(new Store("oppo", "OPPO官方旗舰店", getLogoUrl("oppo-logo")));
-        this.storeService.createStore(new Store("huawei", "华为官方旗舰店", getLogoUrl("huawei-logo")));
-        this.storeService.createStore(new Store("vivo", "VIVO官方旗舰店", getLogoUrl("vivo-logo")));
-        this.storeService.createStore(new Store("one plus", "一加官方旗舰店", getLogoUrl("oneplus-logo")));
+        this.storeService.createStore(new InternalStore("mi", "小米官方旗舰店", getLogoUrl("mi-logo")));
+        this.storeService.createStore(new InternalStore("oppo", "OPPO官方旗舰店", getLogoUrl("oppo-logo")));
+        this.storeService.createStore(new InternalStore("huawei", "华为官方旗舰店", getLogoUrl("huawei-logo")));
+        this.storeService.createStore(new InternalStore("vivo", "VIVO官方旗舰店", getLogoUrl("vivo-logo")));
+        this.storeService.createStore(new InternalStore("one plus", "一加官方旗舰店", getLogoUrl("oneplus-logo")));
     }
 
     private String getLogoUrl(String name) {

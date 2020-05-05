@@ -18,7 +18,7 @@ package com.mallfoundry.store.repository.jpa;
 
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.store.Store;
+import com.mallfoundry.store.InternalStore;
 import com.mallfoundry.store.StoreQuery;
 import com.mallfoundry.store.StoreRepository;
 import org.springframework.data.domain.Page;
@@ -26,18 +26,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
+@Repository
 public interface JpaStoreRepository
         extends StoreRepository,
-        JpaRepository<Store, String>,
-        JpaSpecificationExecutor<Store> {
+        JpaRepository<InternalStore, String>,
+        JpaSpecificationExecutor<InternalStore> {
 
     @Override
-    default SliceList<Store> findAll(StoreQuery storeQuery) {
-        Page<Store> page = this.findAll((Specification<Store>) (root, query, criteriaBuilder) -> {
+    default SliceList<InternalStore> findAll(StoreQuery storeQuery) {
+        Page<InternalStore> page = this.findAll((Specification<InternalStore>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(storeQuery.getOwnerId())) {

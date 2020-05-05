@@ -26,11 +26,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,15 +43,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "store_product_variant")
-public class ProductVariant implements Serializable {
+@Table(name = "store_product_variants")
+public class InternalProductVariant implements ProductVariant {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
     @Column(name = "price_")
     private BigDecimal price;
@@ -92,6 +89,11 @@ public class ProductVariant implements Serializable {
         return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
     }
 
+    @Override
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
     public void decrementInventoryQuantity(int quantity) throws InventoryException {
         if (quantity > this.getInventoryQuantity()) {
             throw new InventoryException("The stock quantity is insufficient");
@@ -103,55 +105,12 @@ public class ProductVariant implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductVariant that = (ProductVariant) o;
+        InternalProductVariant that = (InternalProductVariant) o;
         return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public static class Builder {
-
-        private ProductVariant variant;
-
-        public Builder() {
-            variant = new ProductVariant();
-        }
-
-        public Builder price(double price) {
-            this.variant.setPrice(BigDecimal.valueOf(price));
-            return this;
-        }
-
-        public Builder marketPrice(double marketPrice) {
-            this.variant.setMarketPrice(BigDecimal.valueOf(marketPrice));
-            return this;
-        }
-
-        public Builder inventoryQuantity(int inventoryQuantity) {
-            this.variant.setInventoryQuantity(inventoryQuantity);
-            return this;
-        }
-
-        public Builder position(int position) {
-            this.variant.setPosition(position);
-            return this;
-        }
-
-        public Builder optionValues(List<String> optionValues) {
-            this.variant.setOptionValues(optionValues);
-            return this;
-        }
-
-        public Builder imageUrls(List<String> imageUrls) {
-            this.variant.setImageUrls(imageUrls);
-            return this;
-        }
-
-        public ProductVariant build() {
-            return this.variant;
-        }
     }
 }

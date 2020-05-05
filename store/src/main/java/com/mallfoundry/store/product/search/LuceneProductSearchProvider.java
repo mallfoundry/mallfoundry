@@ -19,28 +19,16 @@ package com.mallfoundry.store.product.search;
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.InternalProduct;
+import com.mallfoundry.store.product.Product;
+import com.mallfoundry.store.product.ProductQuery;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StoredField;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -64,7 +52,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         this.directoryPath = directoryPath;
     }
 
-    private InternalProduct getProduct(Long productId) {
+    private Product getProduct(String productId) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             if (ArrayUtils.isEmpty(directory.listAll())) {
@@ -73,7 +61,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-            queryBuilder.add(new TermQuery(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(productId))), BooleanClause.Occur.MUST);
+            queryBuilder.add(new TermQuery(new Term(PRODUCT_ID_FIELD_NAME, productId)), BooleanClause.Occur.MUST);
             TopDocs topDocs = searcher.search(queryBuilder.build(), 1);
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
             for (ScoreDoc scoreDoc : scoreDocs) {
@@ -89,7 +77,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         }
     }
 
-    public void addProduct(InternalProduct product) {
+    public void addProduct(Product product) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -109,8 +97,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         }
     }
 
-
-    public void updateProduct(InternalProduct product) {
+    public void updateProduct(Product product) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -130,7 +117,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     @Override
-    public void save(InternalProduct product) {
+    public void save(Product product) {
         if (Objects.isNull(getProduct(product.getId()))) {
             this.addProduct(product);
         } else {
@@ -139,12 +126,12 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     @Override
-    public void delete(InternalProduct product) {
+    public void delete(Product product) {
 
     }
 
     @Override
-    public SliceList<InternalProduct> search(ProductQuery search) {
+    public SliceList<Product> search(ProductQuery search) {
         try {
             Directory directory = FSDirectory.open(Path.of(this.directoryPath));
             Analyzer analyzer = new StandardAnalyzer();
@@ -167,7 +154,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
 
-            List<InternalProduct> products = new ArrayList<>();
+            List<Product> products = new ArrayList<>();
             for (ScoreDoc scoreDoc : scoreDocs) {
                 int docId = scoreDoc.doc;
                 Document doc = reader.document(docId);

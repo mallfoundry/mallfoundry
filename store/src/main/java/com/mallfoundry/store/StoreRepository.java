@@ -22,11 +22,11 @@ import java.util.Optional;
 
 public interface StoreRepository {
 
-    Store save(Store store);
+    InternalStore save(InternalStore store);
 
-    void delete(Store store);
+    void delete(InternalStore store);
 
-    Optional<Store> findById(String id);
+    Optional<InternalStore> findById(String id);
 
-    SliceList<Store> findAll(StoreQuery query);
+    SliceList<InternalStore> findAll(StoreQuery query);
 }

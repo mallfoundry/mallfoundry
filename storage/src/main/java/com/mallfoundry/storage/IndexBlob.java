@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "storage_index_blob")
+@Table(name = "storage_index_blobs")
 public class IndexBlob implements Serializable {
 
     @EmbeddedId

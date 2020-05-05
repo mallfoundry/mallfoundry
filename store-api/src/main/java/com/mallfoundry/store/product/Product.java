@@ -1,10 +1,12 @@
 package com.mallfoundry.store.product;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-public interface Product {
+public interface Product extends Serializable {
 
     String getId();
 
@@ -32,7 +34,7 @@ public interface Product {
 
     List<String> getVideoUrls();
 
-    boolean getFreeShipping();
+    boolean isFreeShipping();
 
     void setFreeShipping(boolean freeShipping);
 
@@ -44,5 +46,9 @@ public interface Product {
 
     void setShippingRateId(String shippingRateId);
 
-    Date createdTime();
+    Date getCreatedTime();
+
+    List<ProductVariant> getVariants();
+
+    Optional<ProductVariant> getVariant(String variantId);
 }

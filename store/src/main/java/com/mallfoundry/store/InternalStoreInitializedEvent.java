@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.product.repository.jpa;
+package com.mallfoundry.store;
 
-import com.mallfoundry.store.product.InternalProduct;
-import com.mallfoundry.store.product.ProductRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-@Repository
-public interface JpaProductRepository
-        extends ProductRepository, JpaRepository<InternalProduct, String> {
+public class InternalStoreInitializedEvent extends ApplicationEvent implements StoreInitializedEvent {
+
+    @Getter
+    private final InternalStore store;
+
+    public InternalStoreInitializedEvent(InternalStore source) {
+        super(source);
+        this.store = source;
+    }
 }

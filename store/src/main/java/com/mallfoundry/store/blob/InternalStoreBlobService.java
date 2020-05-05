@@ -26,6 +26,7 @@ import com.mallfoundry.util.PathUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class InternalStoreBlobService implements StoreBlobService {
+
+    private static final String STORE_OWNER_TYPE = "store";
 
     private static final String STORE_BUCKET_PREFIX = "store-";
 
@@ -57,6 +60,14 @@ public class InternalStoreBlobService implements StoreBlobService {
     @Override
     public Optional<Bucket> getBucket(StoreId storeId) {
         return this.storageService.getBucket(this.getBucketName(storeId));
+    }
+
+    @Transactional
+    @Override
+    public void initializeBucket(StoreId storeId) {
+        var owner = this.storageService.createOwner(STORE_OWNER_TYPE, storeId.getIdentifier());
+        var bucket = this.storageService.createBucket(this.getBucketName(storeId), owner);
+        this.storageService.saveBucket(bucket);
     }
 
     @Override

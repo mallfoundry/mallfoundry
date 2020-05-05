@@ -19,12 +19,12 @@ package com.mallfoundry.store;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-public class StoreCancelledEvent extends ApplicationEvent {
+public class InternalStoreCancelledEvent extends ApplicationEvent implements StoreCancelledEvent {
 
     @Getter
-    private final Store store;
+    private final InternalStore store;
 
-    public StoreCancelledEvent(Store source) {
+    public InternalStoreCancelledEvent(InternalStore source) {
         super(source);
         this.store = source;
     }

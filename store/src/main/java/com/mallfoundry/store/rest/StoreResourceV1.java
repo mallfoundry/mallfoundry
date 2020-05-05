@@ -18,7 +18,7 @@ package com.mallfoundry.store.rest;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.Store;
+import com.mallfoundry.store.InternalStore;
 import com.mallfoundry.store.StoreQuery;
 import com.mallfoundry.store.InternalStoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +45,7 @@ public class StoreResourceV1 {
     }
 
     @PostMapping("/stores")
-    public void createStore(@RequestBody Store store) {
+    public void createStore(@RequestBody InternalStore store) {
         store.setOwnerId(SecurityUserHolder.getUserId());
         this.storeService.createStore(store);
     }
@@ -72,12 +72,12 @@ public class StoreResourceV1 {
     }
 
     @GetMapping("/stores/{id}")
-    public Optional<Store> getStore(@PathVariable("id") String id) {
+    public Optional<InternalStore> getStore(@PathVariable("id") String id) {
         return this.storeService.getStore(id);
     }
 
     @GetMapping("/stores")
-    public SliceList<Store> getStores(
+    public SliceList<InternalStore> getStores(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "owner_id") String ownerId) {

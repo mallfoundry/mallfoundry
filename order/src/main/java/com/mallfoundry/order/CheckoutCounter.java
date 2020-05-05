@@ -16,9 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.store.product.InternalProduct;
-import com.mallfoundry.store.product.ProductService;
-import com.mallfoundry.store.product.ProductVariant;
+import com.mallfoundry.store.product.InternalProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +26,9 @@ import java.util.Objects;
 @Component
 public class CheckoutCounter {
 
-    private final ProductService productService;
+    private final InternalProductService productService;
 
-    public CheckoutCounter(ProductService productService) {
+    public CheckoutCounter(InternalProductService productService) {
         this.productService = productService;
     }
 
@@ -39,8 +37,8 @@ public class CheckoutCounter {
             List<OrderItem> items = order.getItems();
             order.setStoreId(null);
             for (var item : items) {
-                InternalProduct product = this.productService.getProduct(item.getProductId()).orElseThrow();
-                ProductVariant variant = product.getVariant(item.getVariantId()).orElseThrow();
+                var product = this.productService.getProduct(item.getProductId()).orElseThrow();
+                var variant = product.getVariant(item.getVariantId()).orElseThrow();
 //                variant.decrementInventoryQuantity(item.getQuantity());
 
                 if (StringUtils.isEmpty(item.getTitle())) {

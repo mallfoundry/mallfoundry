@@ -32,8 +32,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "store_info")
-public class Store {
+@Table(name = "stores")
+public class InternalStore implements Store {
 
     @Id
     @Column(name = "id_")
@@ -61,7 +61,7 @@ public class Store {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public Store(String id, String name, String logoUrl) {
+    public InternalStore(String id, String name, String logoUrl) {
         this.setId(id);
         this.setName(name);
         this.setLogoUrl(logoUrl);

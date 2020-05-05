@@ -57,7 +57,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "storage_blob")
+@Table(name = "storage_blobs")
 @IdClass(InternalBlobId.class)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class InternalBlob implements Blob {

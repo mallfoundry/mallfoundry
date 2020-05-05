@@ -34,6 +34,8 @@ public interface StoreBlobService {
 
     Optional<Bucket> getBucket(StoreId storeId);
 
+    void initializeBucket(StoreId storeId);
+
     Blob storeBlob(Blob blob) throws IOException, StoreBlobException;
 
     void deleteBlob(StoreId storeId, String path);

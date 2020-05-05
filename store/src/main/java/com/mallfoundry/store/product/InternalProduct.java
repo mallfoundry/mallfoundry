@@ -19,26 +19,25 @@ package com.mallfoundry.store.product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.data.jpa.convert.LongListConverter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,15 +49,14 @@ import java.util.Optional;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "store_product")
-public class InternalProduct implements Serializable {
+@Table(name = "store_products")
+public class InternalProduct implements Product {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
     @Column(name = "store_id_")
     private String storeId;
@@ -70,8 +68,8 @@ public class InternalProduct implements Serializable {
     private String description;
 
     @Column(name = "collection_ids_")
-    @Convert(converter = LongListConverter.class)
-    private List<Long> collectionIds = new ArrayList<>();
+    @Convert(converter = StringListConverter.class)
+    private List<String> collectionIds = new ArrayList<>();
 
     @Column(name = "price_")
     private BigDecimal price;
@@ -89,7 +87,9 @@ public class InternalProduct implements Serializable {
     @Convert(converter = ProductAttributeListConverter.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = InternalProductVariant.class,
+            cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonDeserialize(contentAs = InternalProductVariant.class)
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
@@ -103,12 +103,27 @@ public class InternalProduct implements Serializable {
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
+    @Column(name = "free_shipping_")
+    private boolean freeShipping;
+
     @Column(name = "fixed_shipping_cost_")
-    private String fixedShippingCost;
+    private BigDecimal fixedShippingCost;
+
+    @Column(name = "shipping_rate_id_")
+    private String shippingRateId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_time_")
     private Date createdTime;
+
+    public static InternalProduct of(Product product) {
+        if (product instanceof InternalProduct) {
+            return (InternalProduct) product;
+        }
+        var target = new InternalProduct();
+        BeanUtils.copyProperties(product, target);
+        return target;
+    }
 
     public BigDecimal getPrice() {
         return CollectionUtils.isEmpty(this.getVariants()) ? this.price :
@@ -131,15 +146,12 @@ public class InternalProduct implements Serializable {
         this.getVariants().add(variant);
     }
 
-    public Optional<ProductVariant> getVariant(Long id) {
+    @Override
+    public Optional<ProductVariant> getVariant(String id) {
         return this.getVariants()
                 .stream()
                 .filter(variant -> Objects.equals(variant.getId(), id))
                 .findFirst();
-    }
-
-    public Optional<ProductVariant> getVariant(String id) {
-        return this.getVariant(Long.parseLong(id));
     }
 
     public ProductOption createOption(String name) {

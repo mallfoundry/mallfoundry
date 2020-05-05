@@ -18,8 +18,8 @@ package com.mallfoundry.store.product.rest;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.InternalProduct;
+import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
-import com.mallfoundry.store.product.search.ProductQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,31 +43,31 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products")
-    public SliceList<InternalProduct> getProducts(
+    public SliceList<Product> getProducts(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "store_id", required = false) String storeId,
             @RequestParam(name = "product_id", required = false) String productId) {
-        return this.productService.getProducts(ProductQuery.builder()
+        return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
                 .page(page).limit(limit).title(title)
                 .productId(productId).storeId(storeId).build());
     }
 
     @GetMapping("/products/{id}")
-    public Optional<InternalProduct> getProduct(@PathVariable("id") Long id) {
+    public Optional<Product> getProduct(@PathVariable("id") String id) {
         return this.productService.getProduct(id);
     }
 
     @PostMapping("/products")
-    public InternalProduct createProduct(@RequestBody InternalProduct product) {
-        InternalProduct newProduct = this.productService.newProduct();
+    public Product createProduct(@RequestBody InternalProduct product) {
+        var newProduct = this.productService.createProduct();
         BeanUtils.copyProperties(product, newProduct);
         return this.productService.saveProduct(newProduct);
     }
 
     @PutMapping("/products/{id}")
-    public void saveProduct(@PathVariable("id") Long id,
+    public void saveProduct(@PathVariable("id") String id,
                             @RequestBody InternalProduct newProduct) {
         newProduct.setId(id);
         this.productService.saveProduct(newProduct);
