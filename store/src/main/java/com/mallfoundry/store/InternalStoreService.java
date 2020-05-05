@@ -18,6 +18,7 @@ package com.mallfoundry.store;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.blob.StoreBlobService;
+import com.mallfoundry.util.ApplicationContextUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,12 @@ public class InternalStoreService implements StoreService {
     @Override
     public Store createStore() {
         return new InternalStore();
+    }
+
+    @Override
+    public StoreConfiguration getConfiguration(String storeId) {
+        return ApplicationContextUtils.getApplicationContext().getBean(StoreConfigurationRepository.class)
+                .toBuilder().storeId(storeId).build();
     }
 
     public Optional<InternalStore> getStore(String id) {

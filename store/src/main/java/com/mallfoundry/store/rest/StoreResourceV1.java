@@ -19,8 +19,8 @@ package com.mallfoundry.store.rest;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.security.SecurityUserHolder;
 import com.mallfoundry.store.InternalStore;
-import com.mallfoundry.store.StoreQuery;
 import com.mallfoundry.store.InternalStoreService;
+import com.mallfoundry.store.StoreQuery;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -69,6 +70,17 @@ public class StoreResourceV1 {
         }
 
         this.storeService.saveStore(store);
+    }
+
+    @GetMapping("/stores/{store_id}/configuration")
+    public Map<String, String> getConfiguration(@PathVariable("store_id") String storeId) {
+        return this.storeService.getConfiguration(storeId).toMap();
+    }
+
+    @GetMapping("/stores/{store_id}/configuration/{name}")
+    public String getConfigurationValue(@PathVariable("store_id") String storeId,
+                                        @PathVariable("name") String name) {
+        return this.storeService.getConfiguration(storeId).get(name);
     }
 
     @GetMapping("/stores/{id}")

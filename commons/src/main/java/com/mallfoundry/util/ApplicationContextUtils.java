@@ -7,17 +7,17 @@ import org.springframework.context.annotation.Configuration;
 
 public final class ApplicationContextUtils {
 
-    private ApplicationContext context;
+    private static ApplicationContext context;
 
-    public ApplicationContext getApplicationContext() {
-        return this.context;
+    public static ApplicationContext getApplicationContext() {
+        return context;
     }
 
     @Configuration
-    class ApplicationContextConfiguration implements ApplicationContextAware {
+    static class ApplicationContextConfiguration implements ApplicationContextAware {
         @Override
         public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            ApplicationContextUtils.this.context = applicationContext;
+            context = applicationContext;
         }
     }
 }
