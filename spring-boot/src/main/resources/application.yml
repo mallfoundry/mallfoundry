@@ -13,6 +13,8 @@ spring:
     active: dev
   application:
     name: Mall-Foundry-APP
+  cache:
+    type: simple
 server:
   port: 8077
   tomcat:

@@ -10,7 +10,9 @@ public interface StoreConfiguration {
 
     void set(String name, String value);
 
-    void unset(String name);
+    void remove(String name);
+
+    void clear();
 
     Map<String, String> toMap();
 }

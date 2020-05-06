@@ -77,11 +77,12 @@ public class StoreResourceV1 {
         return this.storeService.getConfiguration(storeId).toMap();
     }
 
-    @PostMapping("/stores/{store_id}/configuration")
+    @PutMapping("/stores/{store_id}/configuration")
     public void saveConfiguration(@PathVariable("store_id") String storeId,
-                                 @RequestBody Map<String, String> map) {
+                                  @RequestBody Map<String, String> map) {
         if (Objects.nonNull(map)) {
             var config = this.storeService.getConfiguration(storeId);
+            config.clear();
             map.forEach(config::set);
             this.storeService.saveConfiguration(storeId, config);
         }
