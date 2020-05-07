@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import java.util.Objects;
 
 @Configuration
-public class AclConfiguration {
+public class  AclConfiguration {
 
     @Bean
     public AuditLogger auditLogger() {
@@ -35,10 +35,10 @@ public class AclConfiguration {
 
     @Bean
     public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        var a1 = new SimpleGrantedAuthority("ROLE_ADMIN");
-        var a2 = new SimpleGrantedAuthority("gaModifyAuditing");
-        var a3 = new SimpleGrantedAuthority("gaGeneralChanges");
-        return new AclAuthorizationStrategyImpl(a1, a2, a3);
+        var a1 = new SimpleGrantedAuthority("ADMIN");
+//        var a2 = new SimpleGrantedAuthority("gaModifyAuditing");
+//        var a3 = new SimpleGrantedAuthority("gaGeneralChanges");
+        return new AclAuthorizationStrategyImpl(a1/*, a2, a3*/);
     }
 
     @Bean

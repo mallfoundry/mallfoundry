@@ -48,12 +48,10 @@ public class AclTests {
     @Transactional
     @Rollback(false)
     @Test
-    @WithUserDetails("tangzhi")
+    @WithUserDetails("tangzhi2")
     public void testInsert2() {
         ObjectIdentity oi = new ObjectIdentityImpl(User.class, 1);
-//        MutableAcl acl = this.aclService.createAcl(oi);
         MutableAcl acl = (MutableAcl) this.aclService.readAclById(oi);
-
         Sid sid = new PrincipalSid(SecurityContextHolder.getContext().getAuthentication());
         acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, sid, true);
         acl.insertAce(acl.getEntries().size(), BasePermission.CREATE, sid, true);

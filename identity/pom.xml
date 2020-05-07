@@ -27,12 +27,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper-contrib-rest</artifactId>
-            <version>3.6.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
         </dependency>
