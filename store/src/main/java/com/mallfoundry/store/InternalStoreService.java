@@ -105,7 +105,7 @@ public class InternalStoreService implements StoreService {
         return CastUtils.cast(this.storeRepository.findById(id));
     }
 
-        @Override
+    @Override
     public SliceList<Store> getStores(StoreQuery query) {
         return CastUtils.cast(this.storeRepository.findAll(query));
     }

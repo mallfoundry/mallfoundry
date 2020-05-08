@@ -30,7 +30,7 @@ public abstract class SecurityUserHolder {
     }
 
     public static String getUserId() {
-        return getSecurityUser().getUserId();
+        return getSecurityUser().getId();
     }
 
     public static String getUsername() {

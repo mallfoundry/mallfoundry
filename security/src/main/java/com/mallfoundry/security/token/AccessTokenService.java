@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.token;
+package com.mallfoundry.security.token;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cache.annotation.CacheEvict;

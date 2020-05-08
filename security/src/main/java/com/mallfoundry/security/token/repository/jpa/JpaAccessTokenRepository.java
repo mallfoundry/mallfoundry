@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.token.repository.jpa;
+package com.mallfoundry.security.token.repository.jpa;
 
-import com.mallfoundry.access.token.AccessToken;
-import com.mallfoundry.access.token.AccessTokenRepository;
+import com.mallfoundry.security.token.AccessToken;
+import com.mallfoundry.security.token.AccessTokenRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface JpaAccessTokenRepository
         extends AccessTokenRepository,
         JpaRepository<AccessToken, String> {

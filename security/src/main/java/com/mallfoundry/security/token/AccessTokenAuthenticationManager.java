@@ -16,8 +16,6 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.token.AccessTokenService;
-import com.mallfoundry.access.token.AccessToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -12,13 +12,17 @@ public interface ProductQuery extends Pageable {
 
     void setStoreId(String storeId);
 
-    String getProductId();
+//    String getProductId();
+//
+//    void setProductId(String productId);
 
-    void setProductId(String productId);
+    ProductType getType();
+
+    void setType(ProductType type);
 
     Builder toBuilder();
 
-    public static class Builder {
+    class Builder {
 
         private final ProductQuery query;
 
@@ -36,10 +40,10 @@ public interface ProductQuery extends Pageable {
             return this;
         }
 
-        public Builder productId(String productId) {
-            this.query.setProductId(productId);
-            return this;
-        }
+//        public Builder productId(String productId) {
+//            this.query.setProductId(productId);
+//            return this;
+//        }
 
         public Builder storeId(String storeId) {
             this.query.setStoreId(storeId);
@@ -48,6 +52,11 @@ public interface ProductQuery extends Pageable {
 
         public Builder title(String title) {
             this.query.setTitle(title);
+            return this;
+        }
+
+        public Builder type(ProductType type) {
+            this.query.setType(type);
             return this;
         }
 

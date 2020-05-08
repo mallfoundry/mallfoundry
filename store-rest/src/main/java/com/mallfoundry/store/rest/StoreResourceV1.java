@@ -61,7 +61,6 @@ public class StoreResourceV1 {
 
     @PostMapping("/stores")
     public Store initializeStore(@RequestBody StoreRequest request) {
-//        store.setOwnerId(SecurityUserHolder.getUserId());
         var store = this.storeService.createStore(request.getId());
         store.setName(request.getName());
         store.setLogoUrl(request.getLogoUrl());

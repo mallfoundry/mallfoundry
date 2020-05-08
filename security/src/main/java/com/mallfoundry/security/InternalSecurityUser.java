@@ -20,7 +20,6 @@ import com.mallfoundry.identity.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,13 +27,13 @@ import java.util.List;
 /**
  * Use identity user to enhance user details to support extended properties of identity user.
  */
-public class SecurityUser implements UserDetails {
+public class InternalSecurityUser implements SecurityUser {
 
     private final User user;
 
     private final List<GrantedAuthority> authorities;
 
-    public SecurityUser(User user) {
+    public InternalSecurityUser(User user) {
         this.user = user;
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities()) ?
                 AuthorityUtils.NO_AUTHORITIES :
@@ -76,7 +75,7 @@ public class SecurityUser implements UserDetails {
         return this.user.isEnabled();
     }
 
-    public String getUserId() {
+    public String getId() {
         return this.user.getId();
     }
 

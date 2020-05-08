@@ -43,6 +43,6 @@ public class SecurityUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = this.userService.getUser(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
-        return new SecurityUser(user);
+        return new InternalSecurityUser(user);
     }
 }

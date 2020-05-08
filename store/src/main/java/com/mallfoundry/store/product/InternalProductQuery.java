@@ -28,7 +28,9 @@ public class InternalProductQuery extends PageableSupport implements ProductQuer
 
     private String storeId;
 
-    private String productId;
+//    private String productId;
+
+    private ProductType type;
 
     @Override
     public Builder toBuilder() {

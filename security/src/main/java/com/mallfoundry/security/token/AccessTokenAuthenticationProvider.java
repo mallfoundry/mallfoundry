@@ -16,10 +16,9 @@
 
 package com.mallfoundry.security.token;
 
-import com.mallfoundry.access.token.AccessTokenService;
 import com.mallfoundry.identity.User;
 import com.mallfoundry.identity.UserService;
-import com.mallfoundry.security.SecurityUser;
+import com.mallfoundry.security.InternalSecurityUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,7 +52,7 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
                         .orElseThrow(() -> new BadCredentialsException("Bad credentials"))
                         .getUsername();
         Optional<User> userOptional = this.userService.getUser(username);
-        SecurityUser securityUser = new SecurityUser(userOptional.orElseThrow());
+        InternalSecurityUser securityUser = new InternalSecurityUser(userOptional.orElseThrow());
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }
 

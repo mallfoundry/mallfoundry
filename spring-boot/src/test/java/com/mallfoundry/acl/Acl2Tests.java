@@ -62,6 +62,7 @@ public class Acl2Tests {
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
         var granted = accessControl.granted(principal2, read);
+        // this.acService.granted(principal2, read);
         System.out.println(granted);
     }
 

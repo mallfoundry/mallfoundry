@@ -68,6 +68,11 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-store-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-follow</artifactId>
         </dependency>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.access.token;
+package com.mallfoundry.security.token;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

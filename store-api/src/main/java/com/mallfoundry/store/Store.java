@@ -51,6 +51,11 @@ public interface Store {
             return this;
         }
 
+        public Builder ownerId(String ownerId) {
+            this.store.setOwnerId(ownerId);
+            return this;
+        }
+
         Store build() {
             return this.store;
         }
