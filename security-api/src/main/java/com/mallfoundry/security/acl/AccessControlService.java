@@ -3,7 +3,7 @@ package com.mallfoundry.security.acl;
 import java.io.Serializable;
 import java.util.Optional;
 
-public interface AclService {
+public interface AccessControlService {
 
     Principal createPrincipal(String type, String name);
 
@@ -13,10 +13,10 @@ public interface AclService {
 
     Permission createPermission(String mask);
 
-    Acl createAcl(Resource resource);
+    AccessControl createAccessControl(Principal owner, Resource resource);
 
-    Optional<Acl> getAcl(Resource resource);
+    Optional<AccessControl> getAccessControl(Resource resource);
 
-    Acl saveAcl(Acl acl);
+    AccessControl saveAccessControl(AccessControl control);
 
 }

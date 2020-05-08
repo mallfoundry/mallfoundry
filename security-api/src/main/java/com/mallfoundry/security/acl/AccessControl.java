@@ -3,19 +3,19 @@ package com.mallfoundry.security.acl;
 import java.io.Serializable;
 import java.util.List;
 
-public interface Acl extends Serializable {
+public interface AccessControl extends Serializable {
 
     Resource getResource();
 
     Principal getOwner();
 
-    Acl getParent();
+    AccessControl getParent();
 
     boolean isInherit();
 
     void setInherit(boolean inherit);
 
-    List<AclEntry> getEntries();
+    List<AccessControlEntry> getEntries();
 
     void grant(Principal principal, Permission permission);
 

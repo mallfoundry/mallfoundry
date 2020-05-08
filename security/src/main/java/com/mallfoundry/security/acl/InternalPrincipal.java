@@ -8,12 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "acl_principals")
+@Table(name = "access_control_principals")
 public class InternalPrincipal implements Principal {
 
     @Id
@@ -30,5 +31,18 @@ public class InternalPrincipal implements Principal {
         this.id = id;
         this.type = type;
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InternalPrincipal that = (InternalPrincipal) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

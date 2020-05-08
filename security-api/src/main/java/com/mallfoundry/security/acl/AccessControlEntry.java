@@ -3,7 +3,7 @@ package com.mallfoundry.security.acl;
 import java.io.Serializable;
 import java.util.List;
 
-public interface AclEntry extends Serializable {
+public interface AccessControlEntry extends Serializable {
 
     Principal getPrincipal();
 
