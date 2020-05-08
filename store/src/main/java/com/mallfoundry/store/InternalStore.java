@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,13 +62,27 @@ public class InternalStore implements Store {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalStore(String id, String name, String logoUrl) {
+    public InternalStore(String id) {
         this.setId(id);
-        this.setName(name);
-        this.setLogoUrl(logoUrl);
     }
 
+    public static InternalStore of(Store store) {
+        if (store instanceof InternalStore) {
+            return (InternalStore) store;
+        }
+
+        var target = new InternalStore();
+        BeanUtils.copyProperties(store, target);
+        return target;
+    }
+
+    @Override
     public void initialize() {
         this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 }

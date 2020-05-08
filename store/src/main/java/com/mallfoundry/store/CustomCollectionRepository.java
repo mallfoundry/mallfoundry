@@ -21,11 +21,11 @@ import java.util.Optional;
 
 public interface CustomCollectionRepository {
 
-    CustomCollection save(CustomCollection collection);
+    InternalCustomCollection save(InternalCustomCollection collection);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
-    Optional<CustomCollection> findById(Long id);
+    Optional<InternalCustomCollection> findById(String id);
 
-    List<CustomCollection> findAllByStoreId(InternalStoreId storeId);
+    List<InternalCustomCollection> findAllByStoreId(String storeId);
 }

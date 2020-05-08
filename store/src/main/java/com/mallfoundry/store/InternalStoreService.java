@@ -19,6 +19,7 @@ package com.mallfoundry.store;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,13 +48,18 @@ public class InternalStoreService implements StoreService {
     }
 
     @Override
+    public StoreQuery createStoreQuery() {
+        return new InternalStoreQuery();
+    }
+
+    @Override
     public StoreId createStoreId(String id) {
         return new InternalStoreId(id);
     }
 
     @Override
-    public Store createStore() {
-        return new InternalStore();
+    public Store createStore(String id) {
+        return new InternalStore(id);
     }
 
     @Override
@@ -70,32 +76,38 @@ public class InternalStoreService implements StoreService {
                 this.storeConfigPropertyRepository.save(new StoreConfigProperty(storeId, name, value)));
     }
 
-    public Optional<InternalStore> getStore(String id) {
-        return this.storeRepository.findById(id);
-    }
-
     @Transactional
-    public void saveStore(InternalStore store) {
-        this.storeRepository.save(store);
-    }
-
-    public SliceList<InternalStore> getStores(StoreQuery query) {
-        return this.storeRepository.findAll(query);
-    }
-
-    @Transactional
-    public void createStore(InternalStore store) {
+    @Override
+    public Store initializeStore(Store store) {
         store.initialize();
-        this.storeRepository.save(store);
+        var savedStore = this.storeRepository.save(InternalStore.of(store));
         this.storeBlobService.initializeBucket(this.createStoreId(store.getId()));
         this.eventPublisher.publishEvent(new InternalStoreInitializedEvent(store));
+        return savedStore;
     }
 
     @Transactional
+    @Override
+    public Store saveStore(Store store) {
+        return this.storeRepository.save(InternalStore.of(store));
+    }
+
+    @Transactional
+    @Override
     public void cancelStore(String storeId) {
         InternalStore store = this.storeRepository.findById(storeId).orElseThrow();
         this.eventPublisher.publishEvent(new InternalStoreCancelledEvent(store));
         this.storeRepository.delete(store);
+    }
+
+    @Override
+    public Optional<Store> getStore(String id) {
+        return CastUtils.cast(this.storeRepository.findById(id));
+    }
+
+        @Override
+    public SliceList<Store> getStores(StoreQuery query) {
+        return CastUtils.cast(this.storeRepository.findAll(query));
     }
 
 }

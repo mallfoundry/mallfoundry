@@ -16,9 +16,8 @@
 
 package com.mallfoundry.store.repository.jpa;
 
-import com.mallfoundry.store.CustomCollection;
 import com.mallfoundry.store.CustomCollectionRepository;
-import com.mallfoundry.store.InternalStoreId;
+import com.mallfoundry.store.InternalCustomCollection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,8 +25,8 @@ import java.util.List;
 
 @Repository
 public interface JpaCustomCollectionRepository
-        extends CustomCollectionRepository, JpaRepository<CustomCollection, String> {
+        extends CustomCollectionRepository, JpaRepository<InternalCustomCollection, String> {
 
     @Override
-    List<CustomCollection> findAllByStoreId(InternalStoreId storeId);
+    List<InternalCustomCollection> findAllByStoreId(String storeId);
 }

@@ -44,6 +44,7 @@
     </properties>
 
     <modules>
+        <!-- api modules -->
         <module>commons-api</module>
         <module>storage-api</module>
         <module>store-api</module>
@@ -74,6 +75,9 @@
         <module>payment</module>
         <module>analyze</module>
         <module>spring-boot</module>
+
+        <!-- rest modules-->
+        <module>store-rest</module>
     </modules>
 
     <dependencyManagement>
@@ -228,6 +232,13 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-shipping</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <!-- mall rest libraries -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-store-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

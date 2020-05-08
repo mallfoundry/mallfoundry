@@ -22,38 +22,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StoreQuery extends PageableSupport {
+public class InternalStoreQuery extends PageableSupport implements StoreQuery {
 
     private String ownerId;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private StoreQuery query;
-
-        public Builder() {
-            this.query = new StoreQuery();
-        }
-
-        public Builder page(int page) {
-            this.query.setPage(page);
-            return this;
-        }
-
-        public Builder limit(int limit) {
-            this.query.setLimit(limit);
-            return this;
-        }
-
-        public Builder ownerId(String ownerId) {
-            this.query.setOwnerId(ownerId);
-            return this;
-        }
-
-        public StoreQuery build() {
-            return this.query;
-        }
+    @Override
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 }

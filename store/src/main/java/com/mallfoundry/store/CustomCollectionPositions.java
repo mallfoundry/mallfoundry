@@ -21,10 +21,10 @@ import java.util.List;
 
 public abstract class CustomCollectionPositions {
 
-    public static void sort(List<? extends CustomCollection> collections) {
+    public static void sort(List<? extends InternalCustomCollection> collections) {
         Collections.sort(collections);
         int i = 0;
-        for (CustomCollection category : collections) {
+        for (InternalCustomCollection category : collections) {
             category.setPosition(i++);
         }
     }

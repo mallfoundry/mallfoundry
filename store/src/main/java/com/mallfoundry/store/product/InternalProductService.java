@@ -31,9 +31,9 @@ import java.util.Optional;
 @Service
 public class InternalProductService implements ProductService {
 
-    private static final String PRODUCT_ID_VALUE_NAME = "product.id";
+    private static final String PRODUCT_ID_VALUE_NAME = "store.product.id";
 
-    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "product.variant.id";
+    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "store.product.variant.id";
 
     private final ProductRepository productRepository;
 

@@ -29,13 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomCollectionTests {
 
     @Autowired
-    private CollectionService customCollectionService;
+    private InternalCollectionService customCollectionService;
 
     @Transactional
     @Rollback(false)
     @Test
     public void testAdd() {
-        InternalStoreId storeId = new InternalStoreId("mi");
+        var storeId = "mi";
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "手机"));
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "电视/盒子"));
         customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "笔记本/路由"));

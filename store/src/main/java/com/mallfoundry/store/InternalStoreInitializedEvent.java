@@ -22,9 +22,9 @@ import org.springframework.context.ApplicationEvent;
 public class InternalStoreInitializedEvent extends ApplicationEvent implements StoreInitializedEvent {
 
     @Getter
-    private final InternalStore store;
+    private final Store store;
 
-    public InternalStoreInitializedEvent(InternalStore source) {
+    public InternalStoreInitializedEvent(Store source) {
         super(source);
         this.store = source;
     }

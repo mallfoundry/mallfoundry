@@ -16,7 +16,8 @@
 
 package com.mallfoundry.store;
 
-import org.apache.commons.collections4.CollectionUtils;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,38 +25,36 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CollectionService {
+public class InternalCollectionService implements CollectionService {
+
+    private static final String COLLECTION_ID_VALUE_NAME = "store.collection.id";
 
     private final CustomCollectionRepository customCollectionRepository;
 
-    public CollectionService(CustomCollectionRepository customCollectionRepository) {
+    public InternalCollectionService(CustomCollectionRepository customCollectionRepository) {
         this.customCollectionRepository = customCollectionRepository;
     }
 
-    public CustomCollection createCollection(InternalStoreId storeId, String name) {
-        CustomCollection collection = new CustomCollection(storeId, name);
-        collection.create();
-        return collection;
+    public CustomCollection createCollection(String storeId, String name) {
+        return new InternalCustomCollection(PrimaryKeyHolder.next(COLLECTION_ID_VALUE_NAME), storeId, name);
     }
 
     @Transactional
     public CustomCollection saveCollection(CustomCollection collection) {
-        List<CustomCollection> collections = this.getCollections(collection.getStoreId());
-        collection.setPosition(CollectionUtils.size(collections));
-        return this.customCollectionRepository.save(collection);
+        return this.customCollectionRepository.save(InternalCustomCollection.of(collection));
     }
 
     @Transactional
-    public void deleteCollection(Long id) {
+    public void deleteCollection(String id) {
         this.customCollectionRepository.deleteById(id);
     }
 
-    public Optional<CustomCollection> getCollection(Long id) {
-        return this.customCollectionRepository.findById(id);
+    public Optional<CustomCollection> getCollection(String id) {
+        return CastUtils.cast(this.customCollectionRepository.findById(id));
     }
 
-    public List<CustomCollection> getCollections(InternalStoreId storeId) {
-        return this.customCollectionRepository.findAllByStoreId(storeId);
+    public List<CustomCollection> getCollections(StoreId storeId) {
+        return CastUtils.cast(this.customCollectionRepository.findAllByStoreId(storeId.getIdentifier()));
     }
 
 }

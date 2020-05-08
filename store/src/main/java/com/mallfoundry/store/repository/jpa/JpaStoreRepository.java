@@ -19,6 +19,7 @@ package com.mallfoundry.store.repository.jpa;
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.InternalStore;
+import com.mallfoundry.store.InternalStoreQuery;
 import com.mallfoundry.store.StoreQuery;
 import com.mallfoundry.store.StoreRepository;
 import org.springframework.data.domain.Page;

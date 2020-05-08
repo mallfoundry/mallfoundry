@@ -2,7 +2,7 @@ package com.mallfoundry.store.rest;
 
 import com.mallfoundry.store.CollectionService;
 import com.mallfoundry.store.CustomCollection;
-import com.mallfoundry.store.InternalStoreId;
+import com.mallfoundry.store.StoreService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,30 +19,32 @@ import java.util.List;
 @RequestMapping("/v1")
 public class CollectionResourceV1 {
 
+    private final StoreService storeService;
+
     private final CollectionService collectionService;
 
-    public CollectionResourceV1(CollectionService customCollectionService) {
-        this.collectionService = customCollectionService;
+    public CollectionResourceV1(StoreService storeService, CollectionService collectionService) {
+        this.storeService = storeService;
+        this.collectionService = collectionService;
     }
 
     @PostMapping("/stores/{store_id}/custom-collections")
     public CustomCollection saveCollection(@PathVariable("store_id") String storeId,
-                                           @RequestBody CustomCollection collection) {
-        CustomCollection newCollection =
-                this.collectionService.createCollection(InternalStoreId.of(storeId), collection.getName());
+                                           @RequestBody CollectionRequest request) {
+        var newCollection = this.collectionService.createCollection(storeId, request.getTitle());
         return this.collectionService.saveCollection(newCollection);
     }
 
     @PutMapping("/stores/{store_id}/custom-collections/{collection_id}")
     public void updateCollection(@PathVariable("store_id") String storeId,
-                                 @PathVariable("collection_id") Long collectionId,
-                                 @RequestBody CustomCollection collection) {
+                                 @PathVariable("collection_id") String collectionId,
+                                 @RequestBody CollectionRequest request) {
         Assert.notNull(storeId, "Store id must not be null");
         Assert.notNull(collectionId, "Collection id must not be null");
         this.collectionService
                 .getCollection(collectionId)
                 .ifPresent(oldCollection -> {
-                    oldCollection.setName(collection.getName());
+                    oldCollection.setTitle(request.getTitle());
                     this.collectionService.saveCollection(oldCollection);
                 });
     }
@@ -50,14 +52,14 @@ public class CollectionResourceV1 {
 
     @DeleteMapping("/stores/{store_id}/custom-collections/{collection_id}")
     public void deleteCollection(@PathVariable("store_id") String storeId,
-                                 @PathVariable("collection_id") Long id) {
+                                 @PathVariable("collection_id") String id) {
         Assert.notNull(storeId, "Store id must not be null");
         this.collectionService.deleteCollection(id);
     }
 
     @GetMapping("/stores/{store_id}/custom-collections")
     public List<CustomCollection> getCollections(@PathVariable("store_id") String storeId) {
-        return this.collectionService.getCollections(InternalStoreId.of(storeId));
+        return this.collectionService.getCollections(this.storeService.createStoreId(storeId));
     }
 
 }

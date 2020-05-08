@@ -19,15 +19,13 @@ package com.mallfoundry.store;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -36,21 +34,20 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "name", "position", "createdTime"})
 @Entity
-@Table(name = "store_custom_collection")
-public class CustomCollection implements Comparable<CustomCollection> {
-
-    @JsonIgnore
-    private InternalStoreId storeId;
+@Table(name = "store_custom_collections")
+public class InternalCustomCollection implements CustomCollection {
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
-    @Column(name = "name_")
-    private String name;
+    @JsonIgnore
+    @Column(name = "store_id_")
+    private String storeId;
+
+    @Column(name = "title_")
+    private String title;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "products_")
@@ -64,37 +61,32 @@ public class CustomCollection implements Comparable<CustomCollection> {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public CustomCollection(InternalStoreId storeId, String name) {
-        this.setStoreId(storeId);
-        this.setName(name);
-    }
-
-    @Embedded
-    public InternalStoreId getStoreId() {
-        return storeId;
-    }
-
-    public void create() {
+    public InternalCustomCollection(String id, String storeId, String title) {
+        this.id = id;
+        this.storeId = storeId;
+        this.title = title;
         this.setCreatedTime(new Date());
+    }
+
+    public static InternalCustomCollection of(CustomCollection collection) {
+        if (collection instanceof InternalCustomCollection) {
+            return (InternalCustomCollection) collection;
+        }
+        var target = new InternalCustomCollection();
+        BeanUtils.copyProperties(collection, target);
+        return target;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CustomCollection that = (CustomCollection) o;
+        InternalCustomCollection that = (InternalCustomCollection) o;
         return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public int compareTo(CustomCollection o) {
-        int selfPosition = Objects.isNull(this.getPosition()) ? Integer.MAX_VALUE : this.getPosition();
-        int otherPosition = Objects.isNull(o.getPosition()) ? Integer.MAX_VALUE : o.getPosition();
-        return Integer.compare(selfPosition, otherPosition);
     }
 }

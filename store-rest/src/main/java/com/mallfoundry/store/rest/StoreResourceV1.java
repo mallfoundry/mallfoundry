@@ -17,10 +17,8 @@
 package com.mallfoundry.store.rest;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.InternalStore;
-import com.mallfoundry.store.InternalStoreService;
-import com.mallfoundry.store.StoreQuery;
+import com.mallfoundry.store.Store;
+import com.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,37 +37,10 @@ import java.util.Optional;
 @RequestMapping("/v1")
 public class StoreResourceV1 {
 
-    private final InternalStoreService storeService;
+    private final StoreService storeService;
 
-    public StoreResourceV1(InternalStoreService storeService) {
+    public StoreResourceV1(StoreService storeService) {
         this.storeService = storeService;
-    }
-
-    @PostMapping("/stores")
-    public void createStore(@RequestBody InternalStore store) {
-        store.setOwnerId(SecurityUserHolder.getUserId());
-        this.storeService.createStore(store);
-    }
-
-    @DeleteMapping("/stores/{store_id}")
-    public void cancelStore(@PathVariable("store_id") String storeId) {
-        this.storeService.cancelStore(storeId);
-    }
-
-    @PutMapping("/stores/{store_id}")
-    public void saveStore(@PathVariable("store_id") String storeId,
-                          @RequestBody StoreRequest request) {
-        var store = this.storeService.getStore(storeId).orElseThrow();
-
-        if (Objects.nonNull(request.getLogoUrl())) {
-            store.setLogoUrl(request.getLogoUrl());
-        }
-
-        if (Objects.nonNull(request.getLogoUrl())) {
-            store.setDescription(request.getDescription());
-        }
-
-        this.storeService.saveStore(store);
     }
 
     @GetMapping("/stores/{store_id}/configuration")
@@ -88,17 +59,47 @@ public class StoreResourceV1 {
         }
     }
 
+    @PostMapping("/stores")
+    public Store initializeStore(@RequestBody StoreRequest request) {
+//        store.setOwnerId(SecurityUserHolder.getUserId());
+        var store = this.storeService.createStore(request.getId());
+        store.setName(request.getName());
+        store.setLogoUrl(request.getLogoUrl());
+        store.setDescription(request.getDescription());
+        return this.storeService.initializeStore(store);
+    }
+
+    @DeleteMapping("/stores/{store_id}")
+    public void cancelStore(@PathVariable("store_id") String storeId) {
+        this.storeService.cancelStore(storeId);
+    }
+
+    @PutMapping("/stores/{store_id}")
+    public void saveStore(@PathVariable("store_id") String storeId,
+                          @RequestBody StoreRequest request) {
+        var store = this.storeService.getStore(storeId).orElseThrow();
+
+        if (Objects.nonNull(request.getLogoUrl())) {
+            store.setLogoUrl(request.getLogoUrl());
+        }
+
+        if (Objects.nonNull(request.getDescription())) {
+            store.setDescription(request.getDescription());
+        }
+
+        this.storeService.saveStore(store);
+    }
+
     @GetMapping("/stores/{id}")
-    public Optional<InternalStore> getStore(@PathVariable("id") String id) {
+    public Optional<Store> getStore(@PathVariable("id") String id) {
         return this.storeService.getStore(id);
     }
 
     @GetMapping("/stores")
-    public SliceList<InternalStore> getStores(
-            @RequestParam(name = "page", defaultValue = "1") Integer page,
-            @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-            @RequestParam(name = "owner_id") String ownerId) {
-        return this.storeService.getStores(StoreQuery.builder().page(page).limit(limit).ownerId(ownerId).build());
+    public SliceList<Store> getStores(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                      @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                      @RequestParam(name = "owner_id") String ownerId) {
+        return this.storeService.getStores(this.storeService.createStoreQuery().toBuilder().page(page).limit(limit).ownerId(ownerId).build());
     }
 
 }
