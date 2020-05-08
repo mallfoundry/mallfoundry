@@ -13,6 +13,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @SpringBootTest
 public class Acl2Tests {
 
@@ -33,6 +35,22 @@ public class Acl2Tests {
         this.acService.saveAccessControl(accessControl);
     }
 
+    @Transactional
+    @Rollback(false)
+    @Test
+    @WithUserDetails("tangzhi")
+    public void testGrantAcl() {
+        Principal principal2 = this.acService.createPrincipal("user", "2");
+        Principal principal3 = this.acService.createPrincipal("user", "3");
+        Permission delete = this.acService.createPermission("delete");
+        Permission write = this.acService.createPermission("write");
+        Resource userResource = this.acService.createResource(new User("test_1"));
+        var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
+        accessControl.grant(principal2, delete);
+        accessControl.grant(principal3, write);
+        this.acService.saveAccessControl(accessControl);
+    }
+
 
     @Transactional
     @Rollback(false)
@@ -43,6 +61,19 @@ public class Acl2Tests {
         Permission read = this.acService.createPermission("read");
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
+        var granted = accessControl.granted(principal2, read);
+        System.out.println(granted);
+    }
+
+    @Transactional
+    @Rollback(false)
+    @Test
+    @WithUserDetails("tangzhi")
+    public void testGrantedAcl2() {
+        Principal principal2 = this.acService.createPrincipal("user", "2");
+        Permission read = this.acService.createPermission("read");
+        Resource userResource = this.acService.createResource(new User("test_1"));
+        var accessControl = this.acService.getAccessControl(userResource, List.of(principal2)).orElseThrow();
         var granted = accessControl.granted(principal2, read);
         System.out.println(granted);
     }

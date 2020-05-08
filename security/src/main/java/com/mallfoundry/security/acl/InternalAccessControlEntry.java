@@ -29,7 +29,7 @@ public class InternalAccessControlEntry implements AccessControlEntry {
     @Column(name = "id_")
     private String id;
 
-    @ManyToOne(targetEntity = InternalPrincipal.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = InternalPrincipal.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "principal_id_")
     private Principal principal;
 

@@ -1,12 +1,15 @@
 package com.mallfoundry.security.acl;
 
 import com.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,14 +26,18 @@ public class InternalAccessControlService implements AccessControlService {
 
     private final AccessControlRepository accessControlRepository;
 
+    private final AccessControlEntryRepository accessControlEntryRepository;
+
     private final PrincipalRepository principalRepository;
 
     private final ResourceRepository resourceRepository;
 
     public InternalAccessControlService(AccessControlRepository accessControlRepository,
+                                        AccessControlEntryRepository accessControlEntryRepository,
                                         PrincipalRepository principalRepository,
                                         ResourceRepository resourceRepository) {
         this.accessControlRepository = accessControlRepository;
+        this.accessControlEntryRepository = accessControlEntryRepository;
         this.principalRepository = principalRepository;
         this.resourceRepository = resourceRepository;
     }
@@ -38,7 +45,7 @@ public class InternalAccessControlService implements AccessControlService {
     @Override
     public Principal createPrincipal(String type, String name) {
         return this.principalRepository.findByTypeAndName(type, name)
-                .orElseGet(() -> new InternalPrincipal(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME), type, name));
+                .orElseGet(() -> new InternalPrincipal(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME), type, name));
     }
 
     @Override
@@ -77,7 +84,11 @@ public class InternalAccessControlService implements AccessControlService {
 
     @Override
     public Optional<AccessControl> getAccessControl(Resource resource) {
-        resource = this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier()).orElseThrow();
+        return CastUtils.cast(this.accessControlRepository.findByResource(resource));
+    }
+
+    @Override
+    public Optional<AccessControl> getAccessControl(Resource resource, List<Principal> principals) {
         return CastUtils.cast(this.accessControlRepository.findByResource(resource));
     }
 
