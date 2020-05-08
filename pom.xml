@@ -52,6 +52,8 @@
         <module>payment-api</module>
         <module>identity-api</module>
         <module>district-api</module>
+        <module>dom-api</module>
+        <module>security-api</module>
 
         <module>commons</module>
         <module>autoconfigure</module>
@@ -63,7 +65,6 @@
         <module>store</module>
         <module>catalog</module>
         <module>customer</module>
-        <module>spring-boot</module>
         <module>order</module>
         <module>search</module>
         <module>app</module>
@@ -72,7 +73,7 @@
         <module>shipping</module>
         <module>payment</module>
         <module>analyze</module>
-        <module>dom-api</module>
+        <module>spring-boot</module>
     </modules>
 
     <dependencyManagement>
@@ -118,6 +119,18 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-district-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-dom-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-security-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

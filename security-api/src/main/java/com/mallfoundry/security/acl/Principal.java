@@ -1,6 +1,8 @@
 package com.mallfoundry.security.acl;
 
-public interface Principal {
+import java.io.Serializable;
+
+public interface Principal extends Serializable {
 
     String getName();
 

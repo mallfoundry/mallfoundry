@@ -1,4 +1,7 @@
 package com.mallfoundry.security.acl;
 
-public interface AclEntry {
+public interface AclRepository {
+
+
+
 }

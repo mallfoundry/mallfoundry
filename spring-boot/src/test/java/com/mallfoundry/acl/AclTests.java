@@ -10,13 +10,13 @@ import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.MutableAclService;
 import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootTest
 public class AclTests {
@@ -59,5 +59,17 @@ public class AclTests {
 
 //        acl.setParent();
 //        acl.
+    }
+
+    @Transactional
+    @Rollback(false)
+    @Test
+    @WithUserDetails("tangzhi")
+    public void test() {
+        ObjectIdentity oi = new ObjectIdentityImpl(User.class, 1);
+        MutableAcl acl = (MutableAcl) this.aclService.readAclById(oi);
+        List<Sid> sids = List.of(new PrincipalSid(SecurityContextHolder.getContext().getAuthentication()));
+        var granted = acl.isGranted(List.of(BasePermission.CREATE), sids, true);
+        System.out.println(granted);
     }
 }
