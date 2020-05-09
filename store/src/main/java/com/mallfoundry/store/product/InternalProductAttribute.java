@@ -20,12 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductAttribute implements Serializable {
+public class InternalProductAttribute implements ProductAttribute {
 
     private String namespace;
 
@@ -35,16 +33,13 @@ public class ProductAttribute implements Serializable {
 
     private Integer position;
 
-    public ProductAttribute(String name, String value, Integer position) {
+    public InternalProductAttribute(String name, String value) {
         this.name = name;
         this.value = value;
-        this.position = position;
     }
 
-    public ProductAttribute(String namespace, String name, String value, Integer position) {
+    public InternalProductAttribute(String namespace, String name, String value) {
+        this(name, value);
         this.namespace = namespace;
-        this.name = name;
-        this.value = value;
-        this.position = position;
     }
 }

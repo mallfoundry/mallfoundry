@@ -21,19 +21,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductOptionValue implements Serializable {
+public class InternalProductOptionValue implements ProductOptionValue {
 
     private String value;
 
     private Integer position;
 
-    public ProductOptionValue(String value, Integer position) {
+    public InternalProductOptionValue(String value, Integer position) {
         this.value = value;
         this.position = position;
     }

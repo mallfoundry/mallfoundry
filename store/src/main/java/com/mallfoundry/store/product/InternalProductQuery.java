@@ -20,17 +20,21 @@ import com.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class InternalProductQuery extends PageableSupport implements ProductQuery {
 
-    private String title;
+    private String name;
 
     private String storeId;
 
 //    private String productId;
 
-    private ProductType type;
+    private Set<String> collectionIds;
+
+    private Set<ProductType> types;
 
     @Override
     public Builder toBuilder() {

@@ -10,9 +10,9 @@ public interface CustomCollection extends Position {
 
     void setId(String id);
 
-    String getTitle();
+    String getName();
 
-    void setTitle(String title);
+    void setName(String name);
 
     int getProducts();
 

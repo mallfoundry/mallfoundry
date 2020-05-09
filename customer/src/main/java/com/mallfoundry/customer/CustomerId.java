@@ -18,20 +18,20 @@ package com.mallfoundry.customer;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.mallfoundry.util.UniqueIdentifier;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Embeddable
-public class CustomerId implements Serializable {
+public class CustomerId implements UniqueIdentifier<String> {
 
     @JsonValue
     @Column(name = "customer_id_")
@@ -53,5 +53,10 @@ public class CustomerId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.id;
     }
 }

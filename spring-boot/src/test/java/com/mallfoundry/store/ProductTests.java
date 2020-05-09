@@ -19,8 +19,8 @@ package com.mallfoundry.store;
 
 import com.mallfoundry.StaticServer;
 import com.mallfoundry.store.product.InternalProduct;
+import com.mallfoundry.store.product.InternalProductAttribute;
 import com.mallfoundry.store.product.InternalProductService;
-import com.mallfoundry.store.product.ProductAttribute;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class ProductTests {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("huawei");
-        product.setTitle("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
+        product.setName("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
 
         product.addImageUrl(resolveImageUrl("e070a0bc693efc85.jpg"));
         product.addImageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"));
@@ -103,9 +103,9 @@ public class ProductTests {
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
                         .optionValues(List.of("丹霞橙", "12GB 256GB")).position(1).build());
 
-        product.addAttribute(new ProductAttribute("产地", "中国", 1));
-        product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));
-        product.addAttribute(new ProductAttribute("颜色", "黑", 3));
+        product.addAttribute(new InternalProductAttribute("产地", "中国"));
+        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
+        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
         return product;
     }
 
@@ -113,7 +113,7 @@ public class ProductTests {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("mi");
-        product.setTitle("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
+        product.setName("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("da769739c0a75afb.jpg"));
@@ -142,9 +142,9 @@ public class ProductTests {
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
                         .optionValues(List.of("钛银黑", "12GB 256GB")).position(3).build());
 
-        product.addAttribute(new ProductAttribute("产地", "中国", 1));
-        product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));
-        product.addAttribute(new ProductAttribute("颜色", "黑", 3));
+        product.addAttribute(new InternalProductAttribute("产地", "中国"));
+        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
+        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
         return product;
     }
 
@@ -152,7 +152,7 @@ public class ProductTests {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("oppo");
-        product.setTitle("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
+        product.setName("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("0ea203c122fb3dae.jpg"));
@@ -192,9 +192,9 @@ public class ProductTests {
                         .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
                         .optionValues(List.of("蓝色星夜", "12GB 256GB")).position(1).build());
 
-        product.addAttribute(new ProductAttribute("产地", "中国", 1));
-        product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));
-        product.addAttribute(new ProductAttribute("颜色", "黑", 3));
+        product.addAttribute(new InternalProductAttribute("产地", "中国"));
+        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
+        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
         return product;
     }
 
@@ -202,7 +202,7 @@ public class ProductTests {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
         double price = 0.01;
         product.setStoreId("vivo");
-        product.setTitle("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
+        product.setName("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("3c5048ac3b93dcca.png"));
@@ -231,9 +231,9 @@ public class ProductTests {
                         .imageUrls(List.of(resolveImageUrl("ec48ee3a1e78a5ce.png"), resolveImageUrl("178e05db88b4477e.jpg")))
                         .optionValues(List.of("液态天河", "12GB 256GB")).position(1).build());
 
-        product.addAttribute(new ProductAttribute("产地", "中国", 1));
-        product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));
-        product.addAttribute(new ProductAttribute("颜色", "黑", 3));
+        product.addAttribute(new InternalProductAttribute("产地", "中国"));
+        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
+        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
         return product;
     }
 
@@ -241,7 +241,7 @@ public class ProductTests {
         double price = 0.01;
         InternalProduct product = (InternalProduct) this.productService.createProduct();
         product.setStoreId("one plus");
-        product.setTitle("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
+        product.setName("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("47fdb0779e7dad8a.jpg"));
@@ -293,9 +293,9 @@ public class ProductTests {
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
                         .optionValues(List.of("皓月金", "12GB 256GB")).position(0).build());
 
-        product.addAttribute(new ProductAttribute("产地", "中国", 1));
-        product.addAttribute(new ProductAttribute("生成时间", "2018-10-11", 2));
-        product.addAttribute(new ProductAttribute("颜色", "黑", 3));
+        product.addAttribute(new InternalProductAttribute("产地", "中国"));
+        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
+        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
         return product;
     }
 

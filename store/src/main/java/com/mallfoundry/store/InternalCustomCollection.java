@@ -46,8 +46,8 @@ public class InternalCustomCollection implements CustomCollection {
     @Column(name = "store_id_")
     private String storeId;
 
-    @Column(name = "title_")
-    private String title;
+    @Column(name = "name_")
+    private String name;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "products_")
@@ -61,10 +61,10 @@ public class InternalCustomCollection implements CustomCollection {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalCustomCollection(String id, String storeId, String title) {
+    public InternalCustomCollection(String id, String storeId, String name) {
         this.id = id;
         this.storeId = storeId;
-        this.title = title;
+        this.name = name;
         this.setCreatedTime(new Date());
     }
 

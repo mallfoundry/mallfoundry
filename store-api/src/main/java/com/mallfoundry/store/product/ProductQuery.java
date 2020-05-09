@@ -2,11 +2,14 @@ package com.mallfoundry.store.product;
 
 import com.mallfoundry.data.Pageable;
 
+import java.util.Set;
+import java.util.function.Supplier;
+
 public interface ProductQuery extends Pageable {
 
-    String getTitle();
+    String getName();
 
-    void setTitle(String title);
+    void setName(String name);
 
     String getStoreId();
 
@@ -16,9 +19,13 @@ public interface ProductQuery extends Pageable {
 //
 //    void setProductId(String productId);
 
-    ProductType getType();
+    Set<String> getCollectionIds();
 
-    void setType(ProductType type);
+    void setCollectionIds(Set<String> collectionIds);
+
+    Set<ProductType> getTypes();
+
+    void setTypes(Set<ProductType> types);
 
     Builder toBuilder();
 
@@ -50,14 +57,23 @@ public interface ProductQuery extends Pageable {
             return this;
         }
 
-        public Builder title(String title) {
-            this.query.setTitle(title);
+        public Builder collectionIds(Set<String> collectionIds) {
+            this.query.setCollectionIds(collectionIds);
             return this;
         }
 
-        public Builder type(ProductType type) {
-            this.query.setType(type);
+        public Builder name(String name) {
+            this.query.setName(name);
             return this;
+        }
+
+        public Builder types(Set<ProductType> types) {
+            this.query.setTypes(types);
+            return this;
+        }
+
+        public Builder types(Supplier<Set<ProductType>> supplier) {
+            return this.types(supplier.get());
         }
 
         public ProductQuery build() {

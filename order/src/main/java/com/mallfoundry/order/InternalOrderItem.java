@@ -61,8 +61,8 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "image_url_")
     private String imageUrl;
 
-    @Column(name = "title_")
-    private String title;
+    @Column(name = "name_")
+    private String name;
 
     @JsonProperty("option_values")
     @Column(name = "option_values_")

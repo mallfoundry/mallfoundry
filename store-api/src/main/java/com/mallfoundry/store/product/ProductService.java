@@ -8,6 +8,8 @@ public interface ProductService {
 
     ProductQuery createProductQuery();
 
+    ProductId createProductId(String id);
+
     Product createProduct();
 
     ProductVariant createProductVariant();

@@ -17,6 +17,7 @@
 package com.mallfoundry.follow;
 
 import com.mallfoundry.customer.CustomerId;
+import com.mallfoundry.store.product.InternalProductId;
 import com.mallfoundry.store.product.ProductId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,23 +43,23 @@ public class FollowProduct {
     @Column(name = "id_")
     private Integer id;
 
-    @Embedded
-    private CustomerId customerId;
+    @Column(name = "customer_id_")
+    private String customerId;
 
-    @Embedded
-    private ProductId productId;
+    @Column(name = "product_id_")
+    private String productId;
 
     public FollowProduct(CustomerId customerId) {
-        this.setCustomerId(customerId);
+        this.setCustomerId(customerId.getIdentifier());
     }
 
     public FollowProduct(ProductId productId) {
-        this.setProductId(productId);
+        this.setProductId(productId.getIdentifier());
     }
 
     public FollowProduct(CustomerId customerId, ProductId productId) {
-        this.setCustomerId(customerId);
-        this.setProductId(productId);
+        this.setCustomerId(customerId.getIdentifier());
+        this.setProductId(productId.getIdentifier());
     }
 
     @Override

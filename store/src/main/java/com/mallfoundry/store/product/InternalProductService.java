@@ -56,6 +56,11 @@ public class InternalProductService implements ProductService {
     }
 
     @Override
+    public ProductId createProductId(String id) {
+        return new InternalProductId(id);
+    }
+
+    @Override
     public Product createProduct() {
         var product = new InternalProduct();
         product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
@@ -84,7 +89,7 @@ public class InternalProductService implements ProductService {
             oldProduct.getVariants().addAll(newProduct.getVariants());
             savedProduct = this.productRepository.save(oldProduct);
         }
-        this.eventPublisher.publishEvent(new ProductSavedEvent(savedProduct));
+        this.eventPublisher.publishEvent(new InternalProductSavedEvent(savedProduct));
         return savedProduct;
     }
 

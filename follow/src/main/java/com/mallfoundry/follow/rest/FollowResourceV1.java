@@ -19,7 +19,7 @@ package com.mallfoundry.follow.rest;
 import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.follow.FollowService;
 import com.mallfoundry.store.InternalStoreId;
-import com.mallfoundry.store.product.ProductId;
+import com.mallfoundry.store.product.InternalProductId;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,24 +41,24 @@ public class FollowResourceV1 {
 
     @PostMapping("/customers/{customer_id}/following_products/{product_id}")
     public void followProduct(@PathVariable("customer_id") String customerId,
-                              @PathVariable("product_id") Long productId) {
-        this.followService.followProduct(new CustomerId(customerId), new ProductId(productId));
+                              @PathVariable("product_id") String productId) {
+        this.followService.followProduct(new CustomerId(customerId), new InternalProductId(productId));
     }
 
     @DeleteMapping("/customers/{customer_id}/following_products/{product_id}")
     public void unfollowProduct(@PathVariable("customer_id") String customerId,
-                                @PathVariable("product_id") Long productId) {
-        this.followService.unfollowProduct(new CustomerId(customerId), new ProductId(productId));
+                                @PathVariable("product_id") String productId) {
+        this.followService.unfollowProduct(new CustomerId(customerId), new InternalProductId(productId));
     }
 
     @GetMapping("/customers/{customer_id}/following_products/{product_id}")
     public boolean isFollowingProduct(@PathVariable("customer_id") String customerId,
-                                      @PathVariable("product_id") Long productId) {
-        return this.followService.isFollowingProduct(new CustomerId(customerId), new ProductId(productId));
+                                      @PathVariable("product_id") String productId) {
+        return this.followService.isFollowingProduct(new CustomerId(customerId), new InternalProductId(productId));
     }
 
     @GetMapping("/customers/{customer_id}/following_products")
-    public List<Long> getFollowProducts(@PathVariable("customer_id") String customerId) {
+    public List<String> getFollowProducts(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingProducts(new CustomerId(customerId));
     }
 
@@ -68,8 +68,8 @@ public class FollowResourceV1 {
     }
 
     @GetMapping("/products/{product_id}/followers/count")
-    public long getProductFollowerCount(@PathVariable("product_id") Long productId) {
-        return this.followService.getProductFollowerCount(new ProductId(productId));
+    public long getProductFollowerCount(@PathVariable("product_id") String productId) {
+        return this.followService.getProductFollowerCount(new InternalProductId(productId));
     }
 
     @PostMapping("/customers/{customer_id}/following_stores/{store_id}")

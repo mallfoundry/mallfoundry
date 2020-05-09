@@ -18,7 +18,6 @@ package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.mallfoundry.util.UniqueIdentifier;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -27,14 +26,14 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Embeddable
-public class ProductId implements UniqueIdentifier<Long> {
+public class InternalProductId implements ProductId {
 
     @JsonValue
     @Column(name = "product_id_")
-    private Long id;
+    private String id;
 
     @JsonCreator
-    public ProductId(final Long id) {
+    public InternalProductId(final String id) {
         this.id = id;
     }
 
@@ -42,8 +41,8 @@ public class ProductId implements UniqueIdentifier<Long> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductId storeId = (ProductId) o;
-        return Objects.equals(id, storeId.id);
+        InternalProductId that = (InternalProductId) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class ProductId implements UniqueIdentifier<Long> {
     }
 
     @Override
-    public Long getIdentifier() {
+    public String getIdentifier() {
         return this.id;
     }
 

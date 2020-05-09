@@ -19,6 +19,8 @@ package com.mallfoundry.store.product.rest;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.store.product.ProductType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/v1")
@@ -43,12 +48,15 @@ public class ProductResourceV1 {
     @GetMapping("/products")
     public SliceList<Product> getProducts(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                           @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                          @RequestParam(name = "title", required = false) String title,
-                                          @RequestParam(name = "store_id", required = false) String storeId/*,
-                                          @RequestParam(name = "product_id", required = false) String productId*/) {
+                                          @RequestParam(name = "name", required = false) String name,
+                                          @RequestParam(name = "store_id", required = false) String storeId,
+                                          @RequestParam(name = "collection_ids", required = false) Set<String> collectionIds,
+                                          @RequestParam(name = "types", required = false) Set<String> types) {
         return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
-                .page(page).limit(limit).title(title)
-                /*.productId(productId)*/.storeId(storeId).build());
+                .page(page).limit(limit).name(name).storeId(storeId)
+                .types(() -> Stream.ofNullable(types).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
+                .collectionIds(collectionIds).build());
     }
 
     @GetMapping("/products/{id}")

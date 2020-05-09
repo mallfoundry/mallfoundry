@@ -18,7 +18,7 @@ package com.mallfoundry.customer;
 
 
 import com.mallfoundry.follow.FollowService;
-import com.mallfoundry.store.product.ProductId;
+import com.mallfoundry.store.product.InternalProductId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +35,6 @@ public class FollowTests {
     @Rollback(false)
     @Test
     public void testUnfollowProduct() {
-        followService.unfollowProduct(new CustomerId("string"), new ProductId(10000000000015L));
+        followService.unfollowProduct(new CustomerId("string"), new InternalProductId("10000000000015"));
     }
 }

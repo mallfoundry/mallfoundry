@@ -18,6 +18,7 @@ package com.mallfoundry.follow;
 
 import com.mallfoundry.customer.CustomerId;
 import com.mallfoundry.store.InternalStoreId;
+import com.mallfoundry.store.product.InternalProductId;
 import com.mallfoundry.store.product.ProductId;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class FollowService {
     }
 
     @Transactional
-    public void followProduct(CustomerId customerId, ProductId productId) {
+    public void followProduct(CustomerId customerId, InternalProductId productId) {
         if (this.isFollowingProduct(customerId, productId)) {
             throw new FollowException("The customer has followed to this product.");
         }
@@ -48,21 +49,20 @@ public class FollowService {
     }
 
     @Transactional
-    public void unfollowProduct(CustomerId customerId, ProductId productId) {
+    public void unfollowProduct(CustomerId customerId, InternalProductId productId) {
         this.followProductRepository.findOne(Example.of(new FollowProduct(customerId, productId)))
                 .ifPresent(this.followProductRepository::delete);
     }
 
-    public boolean isFollowingProduct(CustomerId customerId, ProductId productId) {
+    public boolean isFollowingProduct(CustomerId customerId, InternalProductId productId) {
         return this.followProductRepository.count(Example.of(new FollowProduct(customerId, productId))) > 0;
     }
 
-    public List<Long> getFollowingProducts(CustomerId customerId) {
+    public List<String> getFollowingProducts(CustomerId customerId) {
         return this.followProductRepository
                 .findAll(Example.of(new FollowProduct(customerId)))
                 .stream()
                 .map(FollowProduct::getProductId)
-                .map(ProductId::getIdentifier)
                 .distinct()
                 .collect(Collectors.toList());
     }

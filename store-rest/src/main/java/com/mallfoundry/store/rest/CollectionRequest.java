@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CollectionRequest {
-    private String title;
+    private String name;
 }

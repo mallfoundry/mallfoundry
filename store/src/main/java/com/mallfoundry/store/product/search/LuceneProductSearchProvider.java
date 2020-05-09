@@ -25,10 +25,24 @@ import com.mallfoundry.util.JsonUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.*;
-import org.apache.lucene.index.*;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -44,7 +58,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private static final String PRODUCT_ID_FIELD_NAME = "product_id";
 
-    private static final String PRODUCT_TITLE_FIELD_NAME = "product_title";
+    private static final String PRODUCT_NAME_FIELD_NAME = "product_name";
 
     private final String directoryPath;
 
@@ -78,39 +92,36 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
     }
 
     public void addProduct(Product product) {
-        try {
-            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+        try (Directory directory = FSDirectory.open(Path.of(this.directoryPath))) {
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
-            IndexWriter indexWriter = new IndexWriter(directory, config);
-            Document document = new Document();
-            document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
-            document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
-            document.add(new TextField(PRODUCT_TITLE_FIELD_NAME, product.getTitle(), Field.Store.YES));
-            document.add(new StoredField("product", JsonUtils.stringify(product)));
-            indexWriter.addDocument(document);
-
-            indexWriter.commit();
-            indexWriter.close();
+            try (IndexWriter indexWriter = new IndexWriter(directory, config)) {
+                Document document = new Document();
+                document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
+                document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
+                document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
+                document.add(new StoredField("product", JsonUtils.stringify(product)));
+                indexWriter.addDocument(document);
+                indexWriter.commit();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void updateProduct(Product product) {
-        try {
-            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+        try (Directory directory = FSDirectory.open(Path.of(this.directoryPath))) {
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
-            IndexWriter indexWriter = new IndexWriter(directory, config);
-            Document document = new Document();
-            document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
-            document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
-            document.add(new TextField(PRODUCT_TITLE_FIELD_NAME, product.getTitle(), Field.Store.YES));
-            document.add(new StoredField("product", JsonUtils.stringify(product)));
-            indexWriter.updateDocument(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId())), document);
-            indexWriter.commit();
-            indexWriter.close();
+            try (IndexWriter indexWriter = new IndexWriter(directory, config)) {
+                Document document = new Document();
+                document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
+                document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
+                document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
+                document.add(new StoredField("product", JsonUtils.stringify(product)));
+                indexWriter.updateDocument(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId())), document);
+                indexWriter.commit();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -132,36 +143,35 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     @Override
     public SliceList<Product> search(ProductQuery search) {
-        try {
-            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+        try (Directory directory = FSDirectory.open(Path.of(this.directoryPath))) {
             Analyzer analyzer = new StandardAnalyzer();
-            IndexReader reader = DirectoryReader.open(directory);
-            IndexSearcher searcher = new IndexSearcher(reader);
-            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+            try (IndexReader reader = DirectoryReader.open(directory)) {
+                IndexSearcher searcher = new IndexSearcher(reader);
+                BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+                if (Objects.nonNull(search.getName())) {
+                    QueryParser parser = new QueryParser(PRODUCT_NAME_FIELD_NAME, analyzer);
+                    Query queryName = parser.parse(search.getName());
+                    queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);
+                }
 
-            if (Objects.nonNull(search.getTitle())) {
-                QueryParser parser = new QueryParser(PRODUCT_TITLE_FIELD_NAME, analyzer);
-                Query queryName = parser.parse(search.getTitle());
-                queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);
+                if (Objects.nonNull(search.getStoreId())) {
+                    queryBuilder.add(new TermQuery(new Term(STORE_ID_FIELD_NAME, search.getStoreId())), BooleanClause.Occur.MUST);
+                }
+
+                int totalSize = searcher.count(queryBuilder.build());
+                TopDocs topDocs = searcher.search(queryBuilder.build(), 10);
+
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+
+                List<Product> products = new ArrayList<>();
+                for (ScoreDoc scoreDoc : scoreDocs) {
+                    int docId = scoreDoc.doc;
+                    Document doc = reader.document(docId);
+                    String product = doc.get("product");
+                    products.add(JsonUtils.parse(product, InternalProduct.class));
+                }
+                return PageList.of(products).page(search.getPage()).limit(search.getLimit()).totalSize(totalSize);
             }
-
-            if (Objects.nonNull(search.getStoreId())) {
-                queryBuilder.add(new TermQuery(new Term(STORE_ID_FIELD_NAME, search.getStoreId())), BooleanClause.Occur.MUST);
-            }
-
-            int totalSize = searcher.count(queryBuilder.build());
-            TopDocs topDocs = searcher.search(queryBuilder.build(), 10);
-
-            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-
-            List<Product> products = new ArrayList<>();
-            for (ScoreDoc scoreDoc : scoreDocs) {
-                int docId = scoreDoc.doc;
-                Document doc = reader.document(docId);
-                String product = doc.get("product");
-                products.add(JsonUtils.parse(product, InternalProduct.class));
-            }
-            return PageList.of(products).page(search.getPage()).limit(search.getLimit()).totalSize(totalSize);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

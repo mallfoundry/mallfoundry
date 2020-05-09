@@ -19,12 +19,12 @@ package com.mallfoundry.store.product;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-public class ProductDeletedEvent extends ApplicationEvent {
+public class InternalProductDeletedEvent extends ApplicationEvent implements ProductDeletedEvent {
 
     @Getter
     private final InternalProduct product;
 
-    public ProductDeletedEvent(InternalProduct product) {
+    public InternalProductDeletedEvent(InternalProduct product) {
         super(product);
         this.product = product;
     }

@@ -98,7 +98,7 @@ public class InternalOrderService implements OrderService {
         item.setImageUrl(variant.getFirstImageUrl());
         item.setPrice(variant.getPrice());
         item.setOptionValues(List.copyOf(variant.getOptionValues()));
-        item.setTitle(item.getTitle());
+        item.setName(item.getName());
         return item;
     }
 

@@ -19,9 +19,9 @@ public interface OrderItem {
 
     void setImageUrl(String imageUrl);
 
-    String getTitle();
+    String getName();
 
-    void setTitle(String title);
+    void setName(String name);
 
     int getQuantity();
 

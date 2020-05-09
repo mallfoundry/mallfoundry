@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
+import com.mallfoundry.util.Positions;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -61,8 +62,11 @@ public class InternalProduct implements Product {
     @Column(name = "store_id_")
     private String storeId;
 
-    @Column(name = "title_")
-    private String title;
+    @Column(name = "type_")
+    private ProductType type;
+
+    @Column(name = "name_")
+    private String name;
 
     @Column(name = "description_")
     private String description;
@@ -80,7 +84,7 @@ public class InternalProduct implements Product {
     @Lob
     @Column(name = "options_")
     @Convert(converter = ProductOptionListConverter.class)
-    private List<ProductOption> options = new ArrayList<>();
+    private List<InternalProductOption> options = new ArrayList<>();
 
     @Lob
     @Column(name = "attributes_")
@@ -142,6 +146,7 @@ public class InternalProduct implements Product {
                         .sum();
     }
 
+    @Override
     public void addVariant(ProductVariant variant) {
         this.getVariants().add(variant);
     }
@@ -154,64 +159,46 @@ public class InternalProduct implements Product {
                 .findFirst();
     }
 
+    @Override
     public ProductOption createOption(String name) {
-        ProductOption option = new ProductOption(name);
+        var option = new InternalProductOption(name);
         option.setPosition(this.getOptions().size());
         this.getOptions().add(option);
         return option;
     }
 
+    @Override
+    public ProductAttribute createAttribute(String name, String value) {
+        return new InternalProductAttribute(name, value);
+    }
+
+    @Override
+    public ProductAttribute createAttribute(String namespace, String name, String value) {
+        return new InternalProductAttribute(namespace, name, value);
+    }
+
+    @Override
     public void addImageUrl(String imageUrl) {
         this.getImageUrls().add(imageUrl);
     }
 
+    @Override
     public void addVideoUrl(String video) {
         this.getVideoUrls().add(video);
     }
 
     public void addAttribute(ProductAttribute attribute) {
         this.getAttributes().add(attribute);
+        Positions.sort(this.getAttributes());
     }
 
     public void create() {
         this.setCreatedTime(new Date());
     }
 
-    public static Builder builder() {
-        return new Builder();
+    @Override
+    public Builder toBuilder() {
+        return null;
     }
 
-    public static class Builder {
-
-        private final InternalProduct product;
-
-        public Builder() {
-            this.product = new InternalProduct();
-        }
-
-        public Builder storeId(String storeId) {
-            this.product.setStoreId(storeId);
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.product.setTitle(title);
-            return this;
-        }
-
-        public Builder addImageUrl(String image) {
-            this.product.addImageUrl(image);
-            return this;
-        }
-
-        public Builder addVideoUrl(String video) {
-            this.product.addVideoUrl(video);
-            return this;
-        }
-
-        public InternalProduct build() {
-            return this.product;
-        }
-
-    }
 }

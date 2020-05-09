@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductOption implements Serializable {
+public class InternalProductOption implements ProductOption {
 
     private String name;
 
@@ -36,14 +35,14 @@ public class ProductOption implements Serializable {
 
     private Integer position;
 
-    public ProductOption(String name) {
+    public InternalProductOption(String name) {
         this.setName(name);
     }
 
     public void addSimpleValues(List<String> values) {
         List<ProductOptionValue> optionValues = new ArrayList<>();
         for (String value : values) {
-            optionValues.add(new ProductOptionValue(value, optionValues.size()));
+            optionValues.add(new InternalProductOptionValue(value, optionValues.size()));
         }
         this.setValues(optionValues);
     }

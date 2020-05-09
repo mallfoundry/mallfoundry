@@ -31,7 +31,7 @@ public class CollectionResourceV1 {
     @PostMapping("/stores/{store_id}/custom-collections")
     public CustomCollection saveCollection(@PathVariable("store_id") String storeId,
                                            @RequestBody CollectionRequest request) {
-        var newCollection = this.collectionService.createCollection(storeId, request.getTitle());
+        var newCollection = this.collectionService.createCollection(storeId, request.getName());
         return this.collectionService.saveCollection(newCollection);
     }
 
@@ -44,7 +44,7 @@ public class CollectionResourceV1 {
         this.collectionService
                 .getCollection(collectionId)
                 .ifPresent(oldCollection -> {
-                    oldCollection.setTitle(request.getTitle());
+                    oldCollection.setName(request.getName());
                     this.collectionService.saveCollection(oldCollection);
                 });
     }

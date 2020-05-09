@@ -41,8 +41,8 @@ public class CheckoutCounter {
                 var variant = product.getVariant(item.getVariantId()).orElseThrow();
 //                variant.decrementInventoryQuantity(item.getQuantity());
 
-                if (StringUtils.isEmpty(item.getTitle())) {
-                    item.setTitle(product.getTitle());
+                if (StringUtils.isEmpty(item.getName())) {
+                    item.setName(product.getName());
                 }
 
                 if (Objects.isNull(order.getStoreId())) {
