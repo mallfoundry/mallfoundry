@@ -33,6 +33,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -62,6 +64,7 @@ public class InternalProduct implements Product {
     @Column(name = "store_id_")
     private String storeId;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "type_")
     private ProductType type;
 
@@ -84,11 +87,13 @@ public class InternalProduct implements Product {
     @Lob
     @Column(name = "options_")
     @Convert(converter = ProductOptionListConverter.class)
-    private List<InternalProductOption> options = new ArrayList<>();
+    @JsonDeserialize(contentAs = InternalProductOption.class)
+    private List<ProductOption> options = new ArrayList<>();
 
     @Lob
     @Column(name = "attributes_")
     @Convert(converter = ProductAttributeListConverter.class)
+    @JsonDeserialize(contentAs = InternalProductAttribute.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
     @OneToMany(targetEntity = InternalProductVariant.class,

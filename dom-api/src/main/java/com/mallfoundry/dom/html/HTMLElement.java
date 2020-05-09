@@ -1,12 +1,7 @@
 package com.mallfoundry.dom.html;
 
-import com.mallfoundry.dom.css.CSSStyleDeclaration;
+import com.mallfoundry.dom.Node;
 
-public interface HTMLElement {
+public interface HTMLElement extends Node {
 
-    CSSStyleDeclaration getStyle();
-
-    String getTextContent();
-
-    void setTextContent(String textContent);
 }

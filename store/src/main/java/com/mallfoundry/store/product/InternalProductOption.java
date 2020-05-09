@@ -16,6 +16,7 @@
 
 package com.mallfoundry.store.product;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class InternalProductOption implements ProductOption {
 
     private String name;
 
+    @JsonDeserialize(contentAs = InternalProductOptionValue.class)
     private List<ProductOptionValue> values = new ArrayList<>();
 
     private Integer position;

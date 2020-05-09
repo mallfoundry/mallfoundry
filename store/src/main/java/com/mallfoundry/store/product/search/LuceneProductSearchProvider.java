@@ -41,24 +41,33 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermInSetQuery;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.BytesRef;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LuceneProductSearchProvider implements ProductSearchProvider {
 
-    private static final String STORE_ID_FIELD_NAME = "store_id";
+    private static final String PRODUCT_FIELD_NAME = "product";
 
-    private static final String PRODUCT_ID_FIELD_NAME = "product_id";
+    private static final String STORE_ID_FIELD_NAME = "product.storeId";
 
-    private static final String PRODUCT_NAME_FIELD_NAME = "product_name";
+    private static final String PRODUCT_ID_FIELD_NAME = "product.id";
+
+    private static final String PRODUCT_NAME_FIELD_NAME = "product.name";
+
+    private static final String PRODUCT_TYPE_FIELD_NAME = "product.type";
+
+//    private static final String PRODUCT_TYPE_FIELD_NAME = "product.collectionIds";
 
     private final String directoryPath;
 
@@ -99,8 +108,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 Document document = new Document();
                 document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
                 document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
+                document.add(new StringField(PRODUCT_TYPE_FIELD_NAME, String.valueOf(product.getType()), Field.Store.YES));
                 document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
-                document.add(new StoredField("product", JsonUtils.stringify(product)));
+                document.add(new StoredField(PRODUCT_FIELD_NAME, JsonUtils.stringify(product)));
                 indexWriter.addDocument(document);
                 indexWriter.commit();
             }
@@ -117,8 +127,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 Document document = new Document();
                 document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
                 document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
+                document.add(new StringField(PRODUCT_TYPE_FIELD_NAME, String.valueOf(product.getType()), Field.Store.YES));
                 document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
-                document.add(new StoredField("product", JsonUtils.stringify(product)));
+                document.add(new StoredField(PRODUCT_FIELD_NAME, JsonUtils.stringify(product)));
                 indexWriter.updateDocument(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId())), document);
                 indexWriter.commit();
             }
@@ -156,6 +167,20 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
                 if (Objects.nonNull(search.getStoreId())) {
                     queryBuilder.add(new TermQuery(new Term(STORE_ID_FIELD_NAME, search.getStoreId())), BooleanClause.Occur.MUST);
+                }
+
+                if (Objects.nonNull(search.getTypes())) {
+                    var types = search.getTypes().stream()
+                            .map(type -> new BytesRef(type.toString()))
+                            .collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_TYPE_FIELD_NAME, types), BooleanClause.Occur.MUST);
+                }
+
+                if (Objects.nonNull(search.getCollectionIds())) {
+                    var collectionIds = search.getCollectionIds().stream()
+                            .map(BytesRef::new)
+                            .collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_TYPE_FIELD_NAME, collectionIds), BooleanClause.Occur.MUST);
                 }
 
                 int totalSize = searcher.count(queryBuilder.build());

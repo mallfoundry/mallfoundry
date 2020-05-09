@@ -90,6 +90,11 @@ public interface Product extends Serializable {
             return this;
         }
 
+        public Builder type(ProductType type) {
+            this.product.setType(type);
+            return this;
+        }
+
         public Builder addImageUrl(String image) {
             this.product.addImageUrl(image);
             return this;
