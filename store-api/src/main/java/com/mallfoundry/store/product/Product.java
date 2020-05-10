@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface Product extends Serializable {
 
@@ -24,6 +25,10 @@ public interface Product extends Serializable {
 
     void setType(ProductType type);
 
+    ProductStatus getStatus();
+
+    void setStatus(ProductStatus status);
+
     String getDescription();
 
     void setDescription(String description);
@@ -35,6 +40,10 @@ public interface Product extends Serializable {
     BigDecimal getMarketPrice();
 
     void setMarketPrice(BigDecimal marketPrice);
+
+    Set<String> getCollectionIds();
+
+    void setCollectionIds(Set<String> ids);
 
     List<String> getImageUrls();
 
@@ -52,11 +61,17 @@ public interface Product extends Serializable {
 
     void setShippingRateId(String shippingRateId);
 
-    Date getCreatedTime();
+    Integer getInventoryQuantity();
+
+    InventoryStatus getInventoryStatus();
+
+    void setInventoryStatus(InventoryStatus status);
 
     List<ProductVariant> getVariants();
 
     Optional<ProductVariant> getVariant(String variantId);
+
+    Date getCreatedTime();
 
     void addVariant(ProductVariant variant);
 

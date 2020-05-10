@@ -20,6 +20,7 @@ import com.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
@@ -30,11 +31,15 @@ public class InternalProductQuery extends PageableSupport implements ProductQuer
 
     private String storeId;
 
-//    private String productId;
+    private BigDecimal minPrice;
+
+    private BigDecimal maxPrice;
 
     private Set<String> collectionIds;
 
     private Set<ProductType> types;
+
+    private Set<ProductStatus> statuses;
 
     @Override
     public Builder toBuilder() {

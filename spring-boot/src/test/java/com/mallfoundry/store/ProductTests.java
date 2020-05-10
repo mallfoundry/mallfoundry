@@ -21,6 +21,7 @@ import com.mallfoundry.StaticServer;
 import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.InternalProductAttribute;
 import com.mallfoundry.store.product.InternalProductService;
+import com.mallfoundry.store.product.ProductStatus;
 import com.mallfoundry.store.product.ProductType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -79,6 +81,7 @@ public class ProductTests {
         product.setStoreId("huawei");
         product.setName("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
         product.setType(ProductType.PHYSICAL);
+        product.setStatus(ProductStatus.ACTIVE);
 
         product.addImageUrl(resolveImageUrl("e070a0bc693efc85.jpg"));
         product.addImageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"));
@@ -115,11 +118,13 @@ public class ProductTests {
 
     private InternalProduct newProduct2() {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
-        double price = 0.01;
+        double price = 0.04;
         product.setStoreId("mi");
         product.setName("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
         product.setCreatedTime(new Date());
         product.setType(ProductType.PHYSICAL);
+        product.setStatus(ProductStatus.ACTIVE);
+        product.setCollectionIds(Set.of("12236", "12243"));
 
         product.addImageUrl(resolveImageUrl("da769739c0a75afb.jpg"));
         product.addImageUrl(resolveImageUrl("753768612ae90b4e.jpg"));
@@ -130,20 +135,20 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.04).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
                         .optionValues(List.of("梦之白", "8GB 128GB")).position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.06).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
                         .optionValues(List.of("梦之白", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.08).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
                         .optionValues(List.of("钛银黑", "8GB 128GB")).position(2).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
                         .optionValues(List.of("钛银黑", "12GB 256GB")).position(3).build());
 
@@ -155,11 +160,13 @@ public class ProductTests {
 
     private InternalProduct newProduct2_1() {
         InternalProduct product = (InternalProduct) this.productService.createProduct();
-        double price = 0.01;
+        double price = 0.02;
         product.setStoreId("mi");
         product.setName("【向往的生活同款】小米10 双模5G 骁龙865 1亿像素8K电影相机 对称式立体声");
         product.setCreatedTime(new Date());
         product.setType(ProductType.DIGITAL);
+        product.setStatus(ProductStatus.ACTIVE);
+        product.setCollectionIds(Set.of("12230", "12243"));
 
         product.addImageUrl(resolveImageUrl("6626003a708ce8ef.jpg"));
         product.addImageUrl(resolveImageUrl("df797544001e5ba3.jpg"));
@@ -172,24 +179,24 @@ public class ProductTests {
         product.createOption("版本").addSimpleValues("8GB 128GB", "8GB 256GB", "12GB 256GB");
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
                         .optionValues(List.of("钛银黑", "8GB 128GB")).position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.12).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
                         .optionValues(List.of("钛银黑", "8GB 256GB")).position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.14).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
                         .optionValues(List.of("钛银黑", "12GB 256GB")).position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.16).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ad4ba55c20c6903.jpg"), resolveImageUrl("e523be52552921bf.jpg"), resolveImageUrl("6765a52c369741ec.jpg")))
                         .optionValues(List.of("冰海蓝", "8GB 128GB")).position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.18).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ad4ba55c20c6903.jpg"), resolveImageUrl("e523be52552921bf.jpg"), resolveImageUrl("6765a52c369741ec.jpg")))
                         .optionValues(List.of("冰海蓝", "8GB 256GB")).position(1).build());
         product.addVariant(
@@ -222,6 +229,7 @@ public class ProductTests {
         product.setStoreId("oppo");
         product.setName("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
         product.setType(ProductType.PHYSICAL);
+        product.setStatus(ProductStatus.ACTIVE);
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("0ea203c122fb3dae.jpg"));
@@ -273,6 +281,7 @@ public class ProductTests {
         product.setStoreId("vivo");
         product.setName("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
         product.setType(ProductType.PHYSICAL);
+        product.setStatus(ProductStatus.ACTIVE);
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("3c5048ac3b93dcca.png"));
@@ -313,6 +322,7 @@ public class ProductTests {
         product.setStoreId("one plus");
         product.setName("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
         product.setType(ProductType.PHYSICAL);
+        product.setStatus(ProductStatus.ACTIVE);
         product.setCreatedTime(new Date());
 
         product.addImageUrl(resolveImageUrl("47fdb0779e7dad8a.jpg"));

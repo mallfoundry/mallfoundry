@@ -21,7 +21,9 @@ import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductQuery;
+import com.mallfoundry.store.product.ProductVariant;
 import com.mallfoundry.util.JsonUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -43,17 +45,20 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermInSetQuery;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LuceneProductSearchProvider implements ProductSearchProvider {
 
@@ -67,7 +72,11 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private static final String PRODUCT_TYPE_FIELD_NAME = "product.type";
 
-//    private static final String PRODUCT_TYPE_FIELD_NAME = "product.collectionIds";
+    private static final String PRODUCT_PRICE_FIELD_NAME = "product.price";
+
+    private static final String PRODUCT_COLLECTION_IDS_FIELD_NAME = "product.collectionIds";
+
+    private static final String PRODUCT_STATUS_FIELD_NAME = "product.status";
 
     private final String directoryPath;
 
@@ -75,29 +84,62 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
         this.directoryPath = directoryPath;
     }
 
-    private Product getProduct(String productId) {
-        try {
-            Directory directory = FSDirectory.open(Path.of(this.directoryPath));
+    private Document getDocument(String productId) {
+        try (Directory directory = FSDirectory.open(Path.of(this.directoryPath))) {
             if (ArrayUtils.isEmpty(directory.listAll())) {
                 return null;
             }
-            IndexReader reader = DirectoryReader.open(directory);
-            IndexSearcher searcher = new IndexSearcher(reader);
-            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-            queryBuilder.add(new TermQuery(new Term(PRODUCT_ID_FIELD_NAME, productId)), BooleanClause.Occur.MUST);
-            TopDocs topDocs = searcher.search(queryBuilder.build(), 1);
-            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-            for (ScoreDoc scoreDoc : scoreDocs) {
-                int docId = scoreDoc.doc;
-                Document doc = reader.document(docId);
-                String product = doc.get("product");
-                return JsonUtils.parse(product, InternalProduct.class);
+            try (IndexReader reader = DirectoryReader.open(directory)) {
+                IndexSearcher searcher = new IndexSearcher(reader);
+                BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+                queryBuilder.add(new TermQuery(new Term(PRODUCT_ID_FIELD_NAME, productId)), BooleanClause.Occur.MUST);
+                TopDocs topDocs = searcher.search(queryBuilder.build(), 1);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (ScoreDoc scoreDoc : scoreDocs) {
+                    int docId = scoreDoc.doc;
+                    return reader.document(docId);
+                }
             }
-
             return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Product getProduct(String productId) {
+        var document = this.getDocument(productId);
+        return Objects.isNull(document) ? null : JsonUtils.parse(document.get("product"), InternalProduct.class);
+    }
+
+    private void setDocument(Product product, Document document) {
+        document.removeFields(PRODUCT_ID_FIELD_NAME);
+        document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
+
+        document.removeFields(STORE_ID_FIELD_NAME);
+        document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.NO));
+
+        document.removeFields(PRODUCT_NAME_FIELD_NAME);
+        document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
+
+        document.removeFields(PRODUCT_TYPE_FIELD_NAME);
+        document.add(new StringField(PRODUCT_TYPE_FIELD_NAME, String.valueOf(product.getType()), Field.Store.NO));
+
+        document.removeFields(PRODUCT_STATUS_FIELD_NAME);
+        document.add(new StringField(PRODUCT_STATUS_FIELD_NAME, String.valueOf(product.getStatus()), Field.Store.NO));
+
+        document.removeFields(PRODUCT_PRICE_FIELD_NAME);
+        Stream.concat(Stream.ofNullable(product.getPrice()), product.getVariants().stream().map(ProductVariant::getPrice))
+                .map(BigDecimal::toString).distinct()
+                .forEach(price -> document.add(new StringField(PRODUCT_PRICE_FIELD_NAME, price, Field.Store.NO)));
+
+        if (CollectionUtils.isNotEmpty(product.getCollectionIds())) {
+            document.removeFields(PRODUCT_COLLECTION_IDS_FIELD_NAME);
+            product.getCollectionIds().forEach(collectionId ->
+                    document.add(new StringField(PRODUCT_COLLECTION_IDS_FIELD_NAME, collectionId, Field.Store.NO)));
+        }
+
+        document.removeFields(PRODUCT_FIELD_NAME);
+        document.add(new StoredField(PRODUCT_FIELD_NAME, JsonUtils.stringify(product)));
     }
 
     public void addProduct(Product product) {
@@ -106,11 +148,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
             try (IndexWriter indexWriter = new IndexWriter(directory, config)) {
                 Document document = new Document();
-                document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
-                document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
-                document.add(new StringField(PRODUCT_TYPE_FIELD_NAME, String.valueOf(product.getType()), Field.Store.YES));
-                document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
-                document.add(new StoredField(PRODUCT_FIELD_NAME, JsonUtils.stringify(product)));
+                setDocument(product, document);
                 indexWriter.addDocument(document);
                 indexWriter.commit();
             }
@@ -125,11 +163,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
             try (IndexWriter indexWriter = new IndexWriter(directory, config)) {
                 Document document = new Document();
-                document.add(new StringField(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId()), Field.Store.YES));
-                document.add(new StringField(STORE_ID_FIELD_NAME, String.valueOf(product.getStoreId()), Field.Store.YES));
-                document.add(new StringField(PRODUCT_TYPE_FIELD_NAME, String.valueOf(product.getType()), Field.Store.YES));
-                document.add(new TextField(PRODUCT_NAME_FIELD_NAME, product.getName(), Field.Store.YES));
-                document.add(new StoredField(PRODUCT_FIELD_NAME, JsonUtils.stringify(product)));
+                setDocument(product, document);
                 indexWriter.updateDocument(new Term(PRODUCT_ID_FIELD_NAME, String.valueOf(product.getId())), document);
                 indexWriter.commit();
             }
@@ -169,18 +203,25 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                     queryBuilder.add(new TermQuery(new Term(STORE_ID_FIELD_NAME, search.getStoreId())), BooleanClause.Occur.MUST);
                 }
 
-                if (Objects.nonNull(search.getTypes())) {
-                    var types = search.getTypes().stream()
-                            .map(type -> new BytesRef(type.toString()))
-                            .collect(Collectors.toSet());
+                if (CollectionUtils.isNotEmpty(search.getTypes())) {
+                    var types = search.getTypes().stream().map(Enum::toString).map(BytesRef::new).collect(Collectors.toSet());
                     queryBuilder.add(new TermInSetQuery(PRODUCT_TYPE_FIELD_NAME, types), BooleanClause.Occur.MUST);
                 }
 
-                if (Objects.nonNull(search.getCollectionIds())) {
-                    var collectionIds = search.getCollectionIds().stream()
-                            .map(BytesRef::new)
-                            .collect(Collectors.toSet());
-                    queryBuilder.add(new TermInSetQuery(PRODUCT_TYPE_FIELD_NAME, collectionIds), BooleanClause.Occur.MUST);
+                if (CollectionUtils.isNotEmpty(search.getStatuses())) {
+                    var statuses = search.getStatuses().stream().map(Enum::toString).map(BytesRef::new).collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_STATUS_FIELD_NAME, statuses), BooleanClause.Occur.MUST);
+                }
+
+                if (CollectionUtils.isNotEmpty(search.getCollectionIds())) {
+                    var collectionIds = search.getCollectionIds().stream().map(BytesRef::new).collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_COLLECTION_IDS_FIELD_NAME, collectionIds), BooleanClause.Occur.MUST);
+                }
+
+                if (Objects.nonNull(search.getMinPrice()) || Objects.nonNull(search.getMaxPrice())) {
+                    var minPrice = Objects.nonNull(search.getMinPrice()) ? new BytesRef(search.getMinPrice().toString()) : null;
+                    var maxPrice = Objects.nonNull(search.getMaxPrice()) ? new BytesRef(search.getMaxPrice().toString()) : null;
+                    queryBuilder.add(new TermRangeQuery(PRODUCT_PRICE_FIELD_NAME, minPrice, maxPrice, true, true), BooleanClause.Occur.MUST);
                 }
 
                 int totalSize = searcher.count(queryBuilder.build());

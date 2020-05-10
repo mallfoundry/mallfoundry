@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
+import com.mallfoundry.data.jpa.convert.StringSetConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
 import com.mallfoundry.util.Positions;
@@ -44,9 +45,11 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -68,6 +71,10 @@ public class InternalProduct implements Product {
     @Column(name = "type_")
     private ProductType type;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status_")
+    private ProductStatus status;
+
     @Column(name = "name_")
     private String name;
 
@@ -75,8 +82,8 @@ public class InternalProduct implements Product {
     private String description;
 
     @Column(name = "collection_ids_")
-    @Convert(converter = StringListConverter.class)
-    private List<String> collectionIds = new ArrayList<>();
+    @Convert(converter = StringSetConverter.class)
+    private Set<String> collectionIds = new HashSet<>();
 
     @Column(name = "price_")
     private BigDecimal price;
@@ -101,6 +108,10 @@ public class InternalProduct implements Product {
     @JsonDeserialize(contentAs = InternalProductVariant.class)
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "inventory_status_")
+    private InventoryStatus inventoryStatus;
 
     @Lob
     @Column(name = "image_urls_")

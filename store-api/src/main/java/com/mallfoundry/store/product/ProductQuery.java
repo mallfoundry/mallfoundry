@@ -2,6 +2,7 @@ package com.mallfoundry.store.product;
 
 import com.mallfoundry.data.Pageable;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -15,9 +16,13 @@ public interface ProductQuery extends Pageable {
 
     void setStoreId(String storeId);
 
-//    String getProductId();
-//
-//    void setProductId(String productId);
+    BigDecimal getMinPrice();
+
+    void setMinPrice(BigDecimal minPrice);
+
+    BigDecimal getMaxPrice();
+
+    void setMaxPrice(BigDecimal maxPrice);
 
     Set<String> getCollectionIds();
 
@@ -26,6 +31,10 @@ public interface ProductQuery extends Pageable {
     Set<ProductType> getTypes();
 
     void setTypes(Set<ProductType> types);
+
+    Set<ProductStatus> getStatuses();
+
+    void setStatuses(Set<ProductStatus> statuses);
 
     Builder toBuilder();
 
@@ -52,6 +61,21 @@ public interface ProductQuery extends Pageable {
 //            return this;
 //        }
 
+        public Builder name(String name) {
+            this.query.setName(name);
+            return this;
+        }
+
+        public Builder minPrice(BigDecimal minPrice) {
+            this.query.setMinPrice(minPrice);
+            return this;
+        }
+
+        public Builder maxPrice(BigDecimal maxPrice) {
+            this.query.setMaxPrice(maxPrice);
+            return this;
+        }
+
         public Builder storeId(String storeId) {
             this.query.setStoreId(storeId);
             return this;
@@ -62,11 +86,6 @@ public interface ProductQuery extends Pageable {
             return this;
         }
 
-        public Builder name(String name) {
-            this.query.setName(name);
-            return this;
-        }
-
         public Builder types(Set<ProductType> types) {
             this.query.setTypes(types);
             return this;
@@ -74,6 +93,15 @@ public interface ProductQuery extends Pageable {
 
         public Builder types(Supplier<Set<ProductType>> supplier) {
             return this.types(supplier.get());
+        }
+
+        public Builder statuses(Set<ProductStatus> statuses) {
+            this.query.setStatuses(statuses);
+            return this;
+        }
+
+        public Builder statuses(Supplier<Set<ProductStatus>> supplier) {
+            return this.statuses(supplier.get());
         }
 
         public ProductQuery build() {

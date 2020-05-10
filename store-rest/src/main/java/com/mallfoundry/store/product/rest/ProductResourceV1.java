@@ -19,6 +19,7 @@ package com.mallfoundry.store.product.rest;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.store.product.ProductStatus;
 import com.mallfoundry.store.product.ProductType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,11 +53,17 @@ public class ProductResourceV1 {
                                           @RequestParam(name = "name", required = false) String name,
                                           @RequestParam(name = "store_id", required = false) String storeId,
                                           @RequestParam(name = "collection_ids", required = false) Set<String> collectionIds,
-                                          @RequestParam(name = "types", required = false) Set<String> types) {
+                                          @RequestParam(name = "types", required = false) Set<String> types,
+                                          @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                          @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
+                                          @RequestParam(name = "max_price", required = false) BigDecimal maxPrice) {
         return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
                 .page(page).limit(limit).name(name).storeId(storeId)
+                .minPrice(minPrice).maxPrice(maxPrice)
                 .types(() -> Stream.ofNullable(types).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
+                .statuses(() -> Stream.ofNullable(statuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(ProductStatus::valueOf).collect(Collectors.toSet()))
                 .collectionIds(collectionIds).build());
     }
 
