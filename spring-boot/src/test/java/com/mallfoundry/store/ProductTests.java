@@ -82,6 +82,7 @@ public class ProductTests {
         product.setName("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
         product.setType(ProductType.PHYSICAL);
         product.setStatus(ProductStatus.ACTIVE);
+        product.create();
 
         product.addImageUrl(resolveImageUrl("e070a0bc693efc85.jpg"));
         product.addImageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"));
@@ -125,6 +126,7 @@ public class ProductTests {
         product.setType(ProductType.PHYSICAL);
         product.setStatus(ProductStatus.ACTIVE);
         product.setCollectionIds(Set.of("12236", "12243"));
+        product.create();
 
         product.addImageUrl(resolveImageUrl("da769739c0a75afb.jpg"));
         product.addImageUrl(resolveImageUrl("753768612ae90b4e.jpg"));
@@ -167,6 +169,7 @@ public class ProductTests {
         product.setType(ProductType.DIGITAL);
         product.setStatus(ProductStatus.ACTIVE);
         product.setCollectionIds(Set.of("12230", "12243"));
+        product.create();
 
         product.addImageUrl(resolveImageUrl("6626003a708ce8ef.jpg"));
         product.addImageUrl(resolveImageUrl("df797544001e5ba3.jpg"));

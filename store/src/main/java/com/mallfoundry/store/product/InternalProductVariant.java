@@ -17,7 +17,6 @@
 package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,26 +55,21 @@ public class InternalProductVariant implements ProductVariant {
     private BigDecimal price;
 
     @Column(name = "market_price_")
-    @JsonProperty("market_price")
     private BigDecimal marketPrice;
 
     @Column(name = "cost_price_")
-    @JsonProperty("cost_price")
     private BigDecimal costPrice;
 
     @Column(name = "weight_")
     private String weight;
 
     @Column(name = "inventory_quantity_")
-    @JsonProperty("inventory_quantity")
     private int inventoryQuantity;
 
-    @JsonProperty("option_values")
     @Column(name = "option_values_")
     @Convert(converter = StringListConverter.class)
     private List<String> optionValues = new ArrayList<>();
 
-    @JsonProperty("image_urls")
     @Lob
     @Convert(converter = StringListConverter.class)
     @Column(name = "image_urls_")
@@ -90,15 +84,13 @@ public class InternalProductVariant implements ProductVariant {
     }
 
     @Override
-    public Builder toBuilder() {
-        return new Builder(this);
+    public InventoryStatus getInventoryStatus() {
+        return this.getInventoryQuantity() == 0 ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK;
     }
 
-    public void decrementInventoryQuantity(int quantity) throws InventoryException {
-        if (quantity > this.getInventoryQuantity()) {
-            throw new InventoryException("The stock quantity is insufficient");
-        }
-        this.setInventoryQuantity(this.getInventoryQuantity() - quantity);
+    @Override
+    public Builder toBuilder() {
+        return new Builder(this);
     }
 
     @Override

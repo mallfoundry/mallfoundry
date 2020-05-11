@@ -17,6 +17,7 @@
 package com.mallfoundry.store.product.rest;
 
 import com.mallfoundry.data.SliceList;
+import com.mallfoundry.store.product.InventoryStatus;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductService;
 import com.mallfoundry.store.product.ProductStatus;
@@ -55,6 +56,7 @@ public class ProductResourceV1 {
                                           @RequestParam(name = "collection_ids", required = false) Set<String> collectionIds,
                                           @RequestParam(name = "types", required = false) Set<String> types,
                                           @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                          @RequestParam(name = "inventory_statuses", required = false) Set<String> inventoryStatuses,
                                           @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
                                           @RequestParam(name = "max_price", required = false) BigDecimal maxPrice) {
         return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
@@ -64,6 +66,8 @@ public class ProductResourceV1 {
                         .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
                 .statuses(() -> Stream.ofNullable(statuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase).map(ProductStatus::valueOf).collect(Collectors.toSet()))
+                .inventoryStatuses(() -> Stream.ofNullable(inventoryStatuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(InventoryStatus::valueOf).collect(Collectors.toSet()))
                 .collectionIds(collectionIds).build());
     }
 

@@ -36,6 +36,10 @@ public interface ProductQuery extends Pageable {
 
     void setStatuses(Set<ProductStatus> statuses);
 
+    Set<InventoryStatus> getInventoryStatuses();
+
+    void setInventoryStatuses(Set<InventoryStatus> statuses);
+
     Builder toBuilder();
 
     class Builder {
@@ -102,6 +106,15 @@ public interface ProductQuery extends Pageable {
 
         public Builder statuses(Supplier<Set<ProductStatus>> supplier) {
             return this.statuses(supplier.get());
+        }
+
+        public Builder inventoryStatuses(Set<InventoryStatus> statuses) {
+            this.query.setInventoryStatuses(statuses);
+            return this;
+        }
+
+        public Builder inventoryStatuses(Supplier<Set<InventoryStatus>> supplier) {
+            return this.inventoryStatuses(supplier.get());
         }
 
         public ProductQuery build() {

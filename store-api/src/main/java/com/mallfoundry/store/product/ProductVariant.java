@@ -34,6 +34,8 @@ public interface ProductVariant extends Serializable, Position {
 
     void setInventoryQuantity(int inventoryQuantity);
 
+    InventoryStatus getInventoryStatus();
+
     Builder toBuilder();
 
     class Builder {

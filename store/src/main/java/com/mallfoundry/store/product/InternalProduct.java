@@ -109,10 +109,6 @@ public class InternalProduct implements Product {
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "inventory_status_")
-    private InventoryStatus inventoryStatus;
-
     @Lob
     @Column(name = "image_urls_")
     @Convert(converter = StringListConverter.class)
@@ -153,13 +149,20 @@ public class InternalProduct implements Product {
                         .orElse(BigDecimal.ZERO);
     }
 
+    @Override
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public Integer getInventoryQuantity() {
+    public int getInventoryQuantity() {
         return CollectionUtils.isEmpty(this.getVariants()) ? 0 :
                 this.getVariants()
                         .stream()
                         .mapToInt(ProductVariant::getInventoryQuantity)
                         .sum();
+    }
+
+    @Override
+    public InventoryStatus getInventoryStatus() {
+        return this.getInventoryQuantity() == 0 ? InventoryStatus.OUT_OF_STOCK
+                : InventoryStatus.IN_STOCK;
     }
 
     @Override

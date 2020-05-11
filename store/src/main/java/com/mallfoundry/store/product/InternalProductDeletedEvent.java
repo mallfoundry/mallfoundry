@@ -22,9 +22,9 @@ import org.springframework.context.ApplicationEvent;
 public class InternalProductDeletedEvent extends ApplicationEvent implements ProductDeletedEvent {
 
     @Getter
-    private final InternalProduct product;
+    private final Product product;
 
-    public InternalProductDeletedEvent(InternalProduct product) {
+    public InternalProductDeletedEvent(Product product) {
         super(product);
         this.product = product;
     }

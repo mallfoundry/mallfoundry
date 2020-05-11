@@ -9,6 +9,9 @@ spring:
     property-naming-strategy: SNAKE_CASE
     mapper:
       accept-case-insensitive-enums: true
+    generator:
+      ignore-unknown: true
+    date-format: yyyy-MM-dd HH:mm:ss
   profiles:
     active: dev
   application:

@@ -19,8 +19,10 @@ package com.mallfoundry.store.product.search;
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.product.InternalProduct;
+import com.mallfoundry.store.product.InventoryStatus;
 import com.mallfoundry.store.product.Product;
 import com.mallfoundry.store.product.ProductQuery;
+import com.mallfoundry.store.product.ProductStatus;
 import com.mallfoundry.store.product.ProductVariant;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -78,6 +80,8 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private static final String PRODUCT_STATUS_FIELD_NAME = "product.status";
 
+    private static final String PRODUCT_INVENTORY_STATUS_FIELD_NAME = "product.inventoryStatus";
+
     private final String directoryPath;
 
     public LuceneProductSearchProvider(String directoryPath) {
@@ -126,6 +130,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
         document.removeFields(PRODUCT_STATUS_FIELD_NAME);
         document.add(new StringField(PRODUCT_STATUS_FIELD_NAME, String.valueOf(product.getStatus()), Field.Store.NO));
+
+        document.removeFields(PRODUCT_INVENTORY_STATUS_FIELD_NAME);
+        document.add(new StringField(PRODUCT_INVENTORY_STATUS_FIELD_NAME, String.valueOf(product.getInventoryStatus()), Field.Store.NO));
 
         document.removeFields(PRODUCT_PRICE_FIELD_NAME);
         Stream.concat(Stream.ofNullable(product.getPrice()), product.getVariants().stream().map(ProductVariant::getPrice))
@@ -196,7 +203,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 if (Objects.nonNull(search.getName())) {
                     QueryParser parser = new QueryParser(PRODUCT_NAME_FIELD_NAME, analyzer);
                     Query queryName = parser.parse(search.getName());
-                    queryBuilder.add(queryName, BooleanClause.Occur.SHOULD);
+                    queryBuilder.add(queryName, BooleanClause.Occur.MUST);
                 }
 
                 if (Objects.nonNull(search.getStoreId())) {
@@ -209,8 +216,12 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 }
 
                 if (CollectionUtils.isNotEmpty(search.getStatuses())) {
-                    var statuses = search.getStatuses().stream().map(Enum::toString).map(BytesRef::new).collect(Collectors.toSet());
+                    var statuses = search.getStatuses().stream().map(ProductStatus::toString).map(BytesRef::new).collect(Collectors.toSet());
                     queryBuilder.add(new TermInSetQuery(PRODUCT_STATUS_FIELD_NAME, statuses), BooleanClause.Occur.MUST);
+                }
+                if (CollectionUtils.isNotEmpty(search.getInventoryStatuses())) {
+                    var statuses = search.getInventoryStatuses().stream().map(InventoryStatus::toString).map(BytesRef::new).collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_INVENTORY_STATUS_FIELD_NAME, statuses), BooleanClause.Occur.MUST);
                 }
 
                 if (CollectionUtils.isNotEmpty(search.getCollectionIds())) {

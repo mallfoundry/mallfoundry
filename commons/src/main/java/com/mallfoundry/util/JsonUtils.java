@@ -16,8 +16,18 @@
 
 package com.mallfoundry.util;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Configuration;
+
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 public abstract class JsonUtils {
 
@@ -26,6 +36,14 @@ public abstract class JsonUtils {
     private static ObjectMapper getObjectMapper() {
         if (objectMapper == null) {
             objectMapper = new ObjectMapper();
+            objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
+            objectMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+            var timeZone = TimeZone.getTimeZone("GMT+8");
+            objectMapper.setTimeZone(timeZone);
+            var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            dateFormat.setTimeZone(timeZone);
+            objectMapper.setDateFormat(dateFormat);
         }
         return objectMapper;
     }
@@ -53,6 +71,14 @@ public abstract class JsonUtils {
             return getObjectMapper().writeValueAsString(object);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Configuration
+    static class JsonUtilsConfiguration implements ApplicationContextAware {
+        @Override
+        public void setApplicationContext(ApplicationContext context) throws BeansException {
+            objectMapper = context.getBean(ObjectMapper.class);
         }
     }
 }

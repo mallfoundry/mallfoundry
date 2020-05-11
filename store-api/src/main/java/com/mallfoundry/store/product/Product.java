@@ -61,11 +61,9 @@ public interface Product extends Serializable {
 
     void setShippingRateId(String shippingRateId);
 
-    Integer getInventoryQuantity();
+    int getInventoryQuantity();
 
     InventoryStatus getInventoryStatus();
-
-    void setInventoryStatus(InventoryStatus status);
 
     List<ProductVariant> getVariants();
 

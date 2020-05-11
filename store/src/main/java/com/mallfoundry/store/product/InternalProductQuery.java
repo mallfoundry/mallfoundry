@@ -41,6 +41,8 @@ public class InternalProductQuery extends PageableSupport implements ProductQuer
 
     private Set<ProductStatus> statuses;
 
+    private Set<InventoryStatus> inventoryStatuses;
+
     @Override
     public Builder toBuilder() {
         return new Builder(this);
