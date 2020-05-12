@@ -32,7 +32,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "identity_user")
-public class User {
+public class InternalUser {
 
     @Id
     @Column(name = "id_")

@@ -16,7 +16,7 @@
 
 package com.mallfoundry.identity.repository.jpa;
 
-import com.mallfoundry.identity.User;
+import com.mallfoundry.identity.InternalUser;
 import com.mallfoundry.identity.UserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -25,11 +25,11 @@ import java.util.Optional;
 
 @Repository
 public interface JpaUserRepository
-        extends UserRepository, JpaRepository<User, String> {
+        extends UserRepository, JpaRepository<InternalUser, String> {
 
     @Override
     void deleteByUsername(String username);
 
     @Override
-    Optional<User> findByUsername(String username);
+    Optional<InternalUser> findByUsername(String username);
 }

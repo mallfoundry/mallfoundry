@@ -20,9 +20,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    User save(User user);
+    InternalUser save(InternalUser user);
 
     void deleteByUsername(String username);
 
-    Optional<User> findByUsername(String username);
+    Optional<InternalUser> findByUsername(String username);
 }

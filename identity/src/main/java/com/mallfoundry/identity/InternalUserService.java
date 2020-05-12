@@ -23,17 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class InternalUserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public InternalUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Cacheable(value = "Users", key = "#username")
     @Transactional
-    public Optional<User> getUser(String username) {
+    public Optional<InternalUser> getUser(String username) {
         return this.userRepository.findByUsername(username);
     }
 }
