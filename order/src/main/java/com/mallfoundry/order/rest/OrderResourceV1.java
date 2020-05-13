@@ -25,9 +25,8 @@ import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
 import com.mallfoundry.order.ShippingAddress;
 import com.mallfoundry.payment.PaymentException;
-import com.mallfoundry.payment.PaymentLink;
+import com.mallfoundry.payment.InternalPaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -162,7 +161,7 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/payment-orders")
-    public PaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
+    public InternalPaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
         return this.orderService.createPaymentOrder(order);
     }
 

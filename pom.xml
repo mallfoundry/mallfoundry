@@ -78,6 +78,7 @@
 
         <!-- rest modules-->
         <module>store-rest</module>
+        <module>payment-rest</module>
     </modules>
 
     <dependencyManagement>
@@ -239,6 +240,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-store-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-payment-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

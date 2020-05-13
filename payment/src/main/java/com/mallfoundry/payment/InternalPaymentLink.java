@@ -16,9 +16,17 @@
 
 package com.mallfoundry.payment;
 
-public class PaymentException extends RuntimeException {
+import lombok.Getter;
 
-    public PaymentException(String message) {
-        super(message);
+@Getter
+public class InternalPaymentLink {
+
+    private final Long id;
+
+    private final String url;
+
+    public InternalPaymentLink(Long id, String url) {
+        this.id = id;
+        this.url = url;
     }
 }

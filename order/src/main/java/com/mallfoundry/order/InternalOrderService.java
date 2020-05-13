@@ -18,9 +18,9 @@ package com.mallfoundry.order;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
-import com.mallfoundry.payment.PaymentLink;
+import com.mallfoundry.payment.InternalPaymentLink;
 import com.mallfoundry.payment.PaymentOrder;
-import com.mallfoundry.payment.PaymentService;
+import com.mallfoundry.payment.PaymentServiceImpl;
 import com.mallfoundry.security.SecurityUserHolder;
 import com.mallfoundry.store.product.InternalProductService;
 import org.springframework.data.util.CastUtils;
@@ -52,7 +52,7 @@ public class InternalOrderService implements OrderService {
 
     private final OrderSplitter orderSplitter;
 
-    private final PaymentService paymentService;
+    private final PaymentServiceImpl paymentService;
 
     private final InternalProductService productService;
 
@@ -60,7 +60,7 @@ public class InternalOrderService implements OrderService {
                                 CustomerValidator customerValidator,
                                 CheckoutCounter checkoutCounter,
                                 OrderSplitter orderSplitter,
-                                PaymentService paymentService,
+                                PaymentServiceImpl paymentService,
                                 InternalProductService productService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
@@ -136,7 +136,7 @@ public class InternalOrderService implements OrderService {
     }
 
     @Transactional
-    public PaymentLink createPaymentOrder(PaymentOrder payOrder) {
+    public InternalPaymentLink createPaymentOrder(PaymentOrder payOrder) {
         List<InternalOrder> orders = this.orderRepository.findAllById(payOrder.getOrders());
         orders = Objects.isNull(orders) ? Collections.emptyList() : orders;
         Map<String, Order> orderMap = orders.stream().collect(Collectors.toMap(Order::getId, order -> order));
@@ -148,7 +148,7 @@ public class InternalOrderService implements OrderService {
         }
 
         payOrder.setTotalAmount(this.totalAmount(orders));
-        PaymentLink link = this.paymentService.createOrder(payOrder);
+        InternalPaymentLink link = this.paymentService.createOrder(payOrder);
 
         // Set order payment details.
         for (var order : orders) {

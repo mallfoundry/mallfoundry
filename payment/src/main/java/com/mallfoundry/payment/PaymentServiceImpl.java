@@ -16,7 +16,6 @@
 
 package com.mallfoundry.payment;
 
-import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class PaymentService {
+public class PaymentServiceImpl {
 
     private final PaymentClientFactory clientFactory;
 
@@ -35,9 +34,9 @@ public class PaymentService {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public PaymentService(PaymentClientFactory clientFactory,
-                          PaymentOrderRepository paymentOrderRepository,
-                          ApplicationEventPublisher eventPublisher) {
+    public PaymentServiceImpl(PaymentClientFactory clientFactory,
+                              PaymentOrderRepository paymentOrderRepository,
+                              ApplicationEventPublisher eventPublisher) {
         this.clientFactory = clientFactory;
         this.eventPublisher = eventPublisher;
         this.paymentOrderRepository = paymentOrderRepository;
@@ -52,19 +51,20 @@ public class PaymentService {
     }
 
     @Transactional(rollbackFor = PaymentException.class)
-    public PaymentLink createOrder(PaymentOrder newOrder) throws PaymentException {
-        newOrder.setPayerId(SecurityUserHolder.getUserId());
-        newOrder.pending();
-        this.paymentOrderRepository.save(newOrder);
-        String url = this.clientFactory.getClient(newOrder.getProvider()).createOrder(newOrder);
-        return new PaymentLink(newOrder.getId(), url);
+    public InternalPaymentLink createOrder(PaymentOrder newOrder) throws PaymentException {
+//        newOrder.setPayerId(SecurityUserHolder.getUserId());
+//        newOrder.pending();
+//        this.paymentOrderRepository.save(newOrder);
+//        String url = this.clientFactory.getClient(newOrder.getProvider()).createOrder(newOrder);
+//        return new InternalPaymentLink(newOrder.getId(), url);
+        return null;
     }
 
     @Transactional
-    public PaymentConfirmation confirmPayment(Long orderId, Map<String, String> params) {
+    public AsyncConfirmation confirmPayment(Long orderId, Map<String, String> params) {
         PaymentOrder order = this.paymentOrderRepository.findById(orderId)
                 .orElseThrow(() -> new PaymentException(String.format("The payment order(%s) does not exist.", orderId)));
-        PaymentConfirmation confirmation = this.clientFactory.getClient(order.getProvider()).confirmPayment(params);
+        AsyncConfirmation confirmation = this.clientFactory.getClient(order.getProvider()).confirmPayment(params);
         if (Objects.nonNull(confirmation.getOrderId())) {
             order.setStatus(confirmation.getStatus());
             order.setTransactionId(confirmation.getTransactionId());

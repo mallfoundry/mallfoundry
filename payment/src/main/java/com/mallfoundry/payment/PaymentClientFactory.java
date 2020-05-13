@@ -22,6 +22,7 @@ import com.mallfoundry.util.Position;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PaymentClientFactory {
@@ -37,6 +38,13 @@ public class PaymentClientFactory {
                 .filter(client -> client.supportsPayment(provider)).findFirst()
                 .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", provider)));
     }
+
+
+    public Optional<PaymentClient> getClient(Payment payment) throws PaymentException {
+        return this.clients.stream().filter(client -> client.supportsPayment(payment)).findFirst();
+//                .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", payment.getSource().getType())));
+    }
+
 
     public List<PaymentProvider> getPaymentProviders() {
         return this.clients.stream()

@@ -1,4 +1,4 @@
 package com.mallfoundry.payment;
 
-public class Ts {
+public interface CapturedEvent {
 }

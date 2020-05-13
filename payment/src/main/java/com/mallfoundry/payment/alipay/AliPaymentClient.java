@@ -23,10 +23,10 @@ import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
+import com.mallfoundry.payment.Payment;
 import com.mallfoundry.payment.PaymentClient;
-import com.mallfoundry.payment.PaymentConfirmation;
+import com.mallfoundry.payment.AsyncConfirmation;
 import com.mallfoundry.payment.PaymentException;
-import com.mallfoundry.payment.PaymentOrder;
 import com.mallfoundry.payment.PaymentProviderType;
 import com.mallfoundry.payment.PaymentStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -53,8 +53,7 @@ public class AliPaymentClient implements PaymentClient {
     }
 
     @Override
-    public String createOrder(PaymentOrder order) throws PaymentException {
-
+    public String createPaymentRedirectUrl(Payment payment) throws PaymentException {
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
 
         if (StringUtils.isNotBlank(this.properties.getReturnUrl())) {
@@ -63,27 +62,26 @@ public class AliPaymentClient implements PaymentClient {
 
         request.setNotifyUrl(UriComponentsBuilder
                 .fromHttpUrl(this.properties.getNotifyUrl())
-                .build(Map.of("id", order.getId())).toString());
+                .build(Map.of("id", payment.getId())).toString());
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-        model.setOutTradeNo(String.valueOf(order.getId()));
+        model.setOutTradeNo(String.valueOf(payment.getId()));
         model.setSubject("Mall-Foundry-APP");
-//        model.setTotalAmount(order.getTotalAmount().toString());
-        model.setTotalAmount("1");
+        model.setTotalAmount(String.valueOf(payment.getAmount()));
         model.setProductCode("QUICK_WAP_WAY");
         model.setTimeoutExpress("20m");
         // Set biz model.
         request.setBizModel(model);
         try {
             AlipayTradeWapPayResponse response = alipayClient.pageExecute(request, "get");
-            order.setTransactionId(response.getTradeNo());
             return response.getBody();
         } catch (AlipayApiException e) {
-            throw new PaymentException(e.getErrMsg());
+            throw new PaymentException(e);
         }
     }
 
+    // async-approve
     @Override
-    public PaymentConfirmation confirmPayment(Map<String, String> params) {
+    public AsyncConfirmation confirmPayment(Map<String, String> params) {
 
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(params,
@@ -99,7 +97,7 @@ public class AliPaymentClient implements PaymentClient {
             String transactionId = params.get("trade_no");
             String tradeStatus = params.get("trade_status");
 
-            PaymentConfirmation confirmation = new PaymentConfirmation();
+            AsyncConfirmation confirmation = new AsyncConfirmation();
             confirmation.setOrderId(orderId);
             confirmation.setTransactionId(transactionId);
             if ("WAIT_BUYER_PAY".equals(tradeStatus)) {
@@ -112,7 +110,7 @@ public class AliPaymentClient implements PaymentClient {
             return confirmation;
         } catch (Exception e) {
             e.printStackTrace();
-            PaymentConfirmation confirmation = new PaymentConfirmation();
+            AsyncConfirmation confirmation = new AsyncConfirmation();
             confirmation.setStatus(PaymentStatus.FAILURE);
             confirmation.setBody("fail");
             return confirmation;
@@ -122,6 +120,11 @@ public class AliPaymentClient implements PaymentClient {
     @Override
     public boolean supportsPayment(PaymentProviderType provider) {
         return PaymentProviderType.ALIPAY == provider;
+    }
+
+    @Override
+    public boolean supportsPayment(Payment payment) {
+        return "alipay".equalsIgnoreCase(payment.getSource().getType());
     }
 
     @Override

@@ -24,7 +24,11 @@ public interface PaymentClient extends Ordered {
 
     boolean supportsPayment(PaymentProviderType provider);
 
-    String createOrder(PaymentOrder order) throws PaymentException;
+    boolean supportsPayment(Payment payment);
 
-    PaymentConfirmation confirmPayment(Map<String, String> params);
+    String createPaymentRedirectUrl(Payment payment) throws PaymentException;
+
+    AsyncConfirmation confirmPayment(Map<String, String> params);
+
+//    PaymentConfirmation approvePayment(Map<String, String> params);
 }

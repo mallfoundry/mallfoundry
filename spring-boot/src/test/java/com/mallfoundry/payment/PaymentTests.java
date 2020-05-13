@@ -26,7 +26,7 @@ import java.util.List;
 public class PaymentTests {
 
     @Autowired
-    private PaymentService paymentService;
+    private PaymentServiceImpl paymentService;
 
     @Test
     public void testCapturePayment() throws Exception {
@@ -36,6 +36,6 @@ public class PaymentTests {
                 .provider(PaymentProviderType.ALIPAY)
                 .totalAmount(1.1)
                 .build();
-        PaymentLink paymentLink = this.paymentService.createOrder(order);
+        InternalPaymentLink paymentLink = this.paymentService.createOrder(order);
     }
 }
