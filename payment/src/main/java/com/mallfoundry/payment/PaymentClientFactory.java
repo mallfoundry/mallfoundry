@@ -33,18 +33,9 @@ public class PaymentClientFactory {
         this.clients = Collections.unmodifiableList(clients);
     }
 
-    public PaymentClient getClient(PaymentProviderType provider) throws PaymentException {
-        return this.clients.stream()
-                .filter(client -> client.supportsPayment(provider)).findFirst()
-                .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", provider)));
-    }
-
-
     public Optional<PaymentClient> getClient(Payment payment) throws PaymentException {
         return this.clients.stream().filter(client -> client.supportsPayment(payment)).findFirst();
-//                .orElseThrow(() -> new PaymentException(String.format("The %s is not supported.", payment.getSource().getType())));
     }
-
 
     public List<PaymentProvider> getPaymentProviders() {
         return this.clients.stream()

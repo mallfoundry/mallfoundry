@@ -24,9 +24,6 @@ import com.mallfoundry.order.OrderItem;
 import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
 import com.mallfoundry.order.ShippingAddress;
-import com.mallfoundry.payment.PaymentException;
-import com.mallfoundry.payment.InternalPaymentLink;
-import com.mallfoundry.payment.PaymentOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -158,11 +155,6 @@ public class OrderResourceV1 {
     public void cancelOrder(@PathVariable("order_id") String orderId,
                             @RequestBody OrderRequest.CancelRequest request) {
         this.orderService.cancelOrder(orderId, request.getReason());
-    }
-
-    @PostMapping("/payment-orders")
-    public InternalPaymentLink createPaymentOrder(@RequestBody PaymentOrder order) throws PaymentException {
-        return this.orderService.createPaymentOrder(order);
     }
 
     @GetMapping("/orders/{order_id}")

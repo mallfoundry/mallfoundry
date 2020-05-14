@@ -23,11 +23,11 @@ import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
+import com.mallfoundry.payment.InternalPaymentNotification;
 import com.mallfoundry.payment.Payment;
 import com.mallfoundry.payment.PaymentClient;
-import com.mallfoundry.payment.AsyncConfirmation;
 import com.mallfoundry.payment.PaymentException;
-import com.mallfoundry.payment.PaymentProviderType;
+import com.mallfoundry.payment.PaymentNotification;
 import com.mallfoundry.payment.PaymentStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -57,12 +57,17 @@ public class AliPaymentClient implements PaymentClient {
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
 
         if (StringUtils.isNotBlank(this.properties.getReturnUrl())) {
-            request.setReturnUrl(this.properties.getReturnUrl());
+            request.setReturnUrl(UriComponentsBuilder
+                    .fromHttpUrl(this.properties.getReturnUrl())
+                    .build(Map.of("paymemt_id", payment.getId())).toString());
         }
 
-        request.setNotifyUrl(UriComponentsBuilder
-                .fromHttpUrl(this.properties.getNotifyUrl())
-                .build(Map.of("id", payment.getId())).toString());
+        if (StringUtils.isNotBlank(this.properties.getNotifyUrl())) {
+            request.setNotifyUrl(UriComponentsBuilder
+                    .fromHttpUrl(this.properties.getNotifyUrl())
+                    .build(Map.of("paymemt_id", payment.getId())).toString());
+        }
+
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
         model.setOutTradeNo(String.valueOf(payment.getId()));
         model.setSubject("Mall-Foundry-APP");
@@ -79,12 +84,16 @@ public class AliPaymentClient implements PaymentClient {
         }
     }
 
-    // async-approve
     @Override
-    public AsyncConfirmation confirmPayment(Map<String, String> params) {
+    public PaymentNotification createPaymentNotification(Object parameterObject) throws PaymentException {
+        return new InternalPaymentNotification(parameterObject);
+    }
 
+    @Override
+    public void validateNotification(PaymentNotification notification) {
+        Map<String, String> parameters = notification.getParameters();
         try {
-            boolean signVerified = AlipaySignature.rsaCheckV1(params,
+            boolean signVerified = AlipaySignature.rsaCheckV1(parameters,
                     this.properties.getAlipayPublicKey(),
                     this.properties.getCharset(),
                     this.properties.getSignType());
@@ -93,33 +102,18 @@ public class AliPaymentClient implements PaymentClient {
                 throw new PaymentException("Call alipay SDK to verify the signature is bad.");
             }
 
-            String orderId = params.get("out_trade_no");
-            String transactionId = params.get("trade_no");
-            String tradeStatus = params.get("trade_status");
-
-            AsyncConfirmation confirmation = new AsyncConfirmation();
-            confirmation.setOrderId(orderId);
-            confirmation.setTransactionId(transactionId);
+            String tradeStatus = parameters.get("trade_status");
             if ("WAIT_BUYER_PAY".equals(tradeStatus)) {
-                confirmation.setStatus(PaymentStatus.PENDING);
-            } else if ("TRADE_SUCCESS".equals(tradeStatus) || "TRADE_FINISHED".equals(tradeStatus)) {
-                confirmation.setStatus(PaymentStatus.SUCCESS);
+                notification.setStatus(PaymentStatus.PENDING);
+            } else if ("TRADE_SUCCESS".equals(tradeStatus) ||
+                    "TRADE_FINISHED".equals(tradeStatus)) {
+                notification.setStatus(PaymentStatus.CAPTURED);
             }
-
-            confirmation.setBody("success");
-            return confirmation;
+            notification.setResult("success".getBytes());
         } catch (Exception e) {
             e.printStackTrace();
-            AsyncConfirmation confirmation = new AsyncConfirmation();
-            confirmation.setStatus(PaymentStatus.FAILURE);
-            confirmation.setBody("fail");
-            return confirmation;
+            notification.setResult("fail".getBytes());
         }
-    }
-
-    @Override
-    public boolean supportsPayment(PaymentProviderType provider) {
-        return PaymentProviderType.ALIPAY == provider;
     }
 
     @Override

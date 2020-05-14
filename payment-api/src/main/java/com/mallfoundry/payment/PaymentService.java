@@ -10,9 +10,9 @@ public interface PaymentService {
 
     Payment savePayment(Payment payment);
 
-    void capturePayment(String id);
+    void capturePayment(String id) throws PaymentException;
 
-    void voidPayment(String id);
+    PaymentNotification validatePayment(String id, Object parameters) throws PaymentException;
 
     Optional<Payment> getPayment(String id);
 

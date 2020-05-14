@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package com.mallfoundry.payment.wxpay;
 
-import lombok.Getter;
+public class TenpayClient /*implements PaymentClient*/ {
 
-@Getter
-public class InternalPaymentLink {
-
-    private final Long id;
-
-    private final String url;
-
-    public InternalPaymentLink(Long id, String url) {
-        this.id = id;
-        this.url = url;
-    }
 }

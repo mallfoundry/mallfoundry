@@ -1,10 +1,12 @@
 package com.mallfoundry.payment;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum PaymentStatus {
 
-    PENDING, CAPTURED
+    PENDING, CAPTURED;
 
-//    public static final String AUTHORIZED = "Authorized";
+    //    public static final String AUTHORIZED = "Authorized";
 //    public static final String CANCELED = "Canceled";
 //    public static final String CAPTURED = "Captured";
 //    public static final String DECLINED = "Declined";
@@ -16,4 +18,10 @@ public enum PaymentStatus {
 //    public static final String VOIDED = "Voided";
 //    public static final String CARD_VERIFIED = "Card Verified";
 //    public static final String CHARGEBACK = "Chargeback";
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

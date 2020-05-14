@@ -11,5 +11,15 @@
 
     <artifactId>mall-payment-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-commons-api</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

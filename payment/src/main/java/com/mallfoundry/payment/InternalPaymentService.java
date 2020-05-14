@@ -41,13 +41,21 @@ public class InternalPaymentService implements PaymentService {
     }
 
     @Override
-    public void capturePayment(String id) {
+    public void capturePayment(String id) throws PaymentException {
 
     }
 
+    @Transactional
     @Override
-    public void voidPayment(String id) {
-
+    public PaymentNotification validatePayment(String id, Object parameters) throws PaymentException {
+        var payment = this.paymentRepository.findById(id).orElseThrow();
+        var paymentClient = this.paymentClientFactory.getClient(payment).orElseThrow();
+        var notification = paymentClient.createPaymentNotification(parameters);
+        paymentClient.validateNotification(notification);
+        if (!notification.isPending()) {
+            payment.setStatus(notification.getStatus());
+        }
+        return notification;
     }
 
     @Override

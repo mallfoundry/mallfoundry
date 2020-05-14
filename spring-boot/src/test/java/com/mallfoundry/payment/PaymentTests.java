@@ -16,26 +16,9 @@
 
 package com.mallfoundry.payment;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 public class PaymentTests {
 
-    @Autowired
-    private PaymentServiceImpl paymentService;
-
-    @Test
-    public void testCapturePayment() throws Exception {
-        PaymentOrder order = PaymentOrder.builder()
-                .title("title")
-                .orders(List.of("1", "2"))
-                .provider(PaymentProviderType.ALIPAY)
-                .totalAmount(1.1)
-                .build();
-        InternalPaymentLink paymentLink = this.paymentService.createOrder(order);
-    }
 }

@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.payment.PaidEvent;
+import com.mallfoundry.payment.CapturedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
@@ -30,7 +30,7 @@ public class PaymentEventListener {
     }
 
     @EventListener
-    public void paid(PaidEvent event) {
-        this.orderService.confirmPayment(event.getOrder());
+    public void paid(CapturedEvent event) {
+//        this.orderService.confirmPayment(event.getOrder());
     }
 }

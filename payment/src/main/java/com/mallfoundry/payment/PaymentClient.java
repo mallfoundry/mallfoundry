@@ -18,17 +18,14 @@ package com.mallfoundry.payment;
 
 import org.springframework.core.Ordered;
 
-import java.util.Map;
-
 public interface PaymentClient extends Ordered {
-
-    boolean supportsPayment(PaymentProviderType provider);
 
     boolean supportsPayment(Payment payment);
 
     String createPaymentRedirectUrl(Payment payment) throws PaymentException;
 
-    AsyncConfirmation confirmPayment(Map<String, String> params);
+    PaymentNotification createPaymentNotification(Object parameters) throws PaymentException;
 
-//    PaymentConfirmation approvePayment(Map<String, String> params);
+    void validateNotification(PaymentNotification notification);
+
 }

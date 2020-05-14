@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Objects;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -56,6 +61,26 @@ public class PaymentResourceV1 {
                 .getPaymentRedirectUrl(payment.getId())
                 .ifPresent(redirectUrl -> entity.add(new Link(redirectUrl, LinkRelation.of("redirect"))));
         return entity;
+    }
+
+    @GetMapping("/payments/{id}/validate")
+    public void validatePaymentGet(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var notification = this.paymentService.validatePayment(id, request.getParameterMap());
+        if (Objects.nonNull(notification.getResult())) {
+            try (var output = response.getOutputStream()) {
+                output.write(notification.getResult());
+            }
+        }
+    }
+
+    @PostMapping("/payments/{id}/validate")
+    public void validatePayment(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var notification = this.paymentService.validatePayment(id, request.getParameterMap());
+        if (Objects.nonNull(notification.getResult())) {
+            try (var output = response.getOutputStream()) {
+                output.write(notification.getResult());
+            }
+        }
     }
 
     @PatchMapping("/payments/{id}")
