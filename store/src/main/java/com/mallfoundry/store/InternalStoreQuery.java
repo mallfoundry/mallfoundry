@@ -25,9 +25,4 @@ import lombok.Setter;
 public class InternalStoreQuery extends PageableSupport implements StoreQuery {
 
     private String ownerId;
-
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
 }

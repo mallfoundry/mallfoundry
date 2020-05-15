@@ -28,7 +28,7 @@ public class LocaleMessageHolder {
     /**
      * Shared default locale.
      */
-    private static Locale defaultLocale = Locale.getDefault();
+    private static final Locale defaultLocale = Locale.getDefault();
 
     private static MessageSource messageSource;
 

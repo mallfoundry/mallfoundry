@@ -8,7 +8,9 @@ public interface StoreQuery extends Pageable {
 
     void setOwnerId(String ownerId);
 
-    Builder toBuilder();
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
     class Builder {
 

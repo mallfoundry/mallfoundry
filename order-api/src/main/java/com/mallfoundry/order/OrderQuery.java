@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 public interface OrderQuery extends Pageable {
 
-    String getTitle();
+    String getName();
 
-    void setTitle(String title);
+    void setName(String name);
 
     List<OrderStatus> getStatuses();
 
@@ -29,7 +29,7 @@ public interface OrderQuery extends Pageable {
 
     class Builder {
 
-        private OrderQuery query;
+        private final OrderQuery query;
 
         public Builder(OrderQuery query) {
             this.query = query;
@@ -42,6 +42,11 @@ public interface OrderQuery extends Pageable {
 
         public Builder limit(int limit) {
             this.query.setLimit(limit);
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.query.setName(name);
             return this;
         }
 

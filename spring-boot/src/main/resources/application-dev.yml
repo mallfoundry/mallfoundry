@@ -1,7 +1,7 @@
 logging:
   level:
     com.mallfoundry: debug
-#    org.hibernate: debug
+    #    org.hibernate: debug
     org.springframework.web: debug
 #    org.springframework: debug
 spring:
@@ -25,7 +25,7 @@ mall:
   storage:
     type: local
     directory: D:/mall/data/storage/
-#    base-url: http://102.mallfoundry.com:${server.port}/static
+    #    base-url: http://102.mallfoundry.com:${server.port}/static
     base-url: http://192.168.0.102:${server.port}/static
   store:
     product:
@@ -39,3 +39,5 @@ mall:
       api-key: 03613fea-82ff-4023-a816-a034b8f453b8
       e-business-id: 1632631
       url: http://api.kdniao.com
+  cart:
+    scope: store

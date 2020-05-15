@@ -26,7 +26,7 @@ import java.util.List;
 @Setter
 public class InternalOrderQuery extends PageableSupport implements OrderQuery {
 
-    private String title;
+    private String name;
 
     private List<OrderStatus> statuses;
 

@@ -36,7 +36,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"storeId", "productId", "variantId", "quantity", "addedTime"})
 @Entity
 @Table(name = "customer_cart_item")
 public class CartItem implements Serializable {

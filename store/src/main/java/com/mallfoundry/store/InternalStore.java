@@ -80,9 +80,4 @@ public class InternalStore implements Store {
     public void initialize() {
         this.setCreatedTime(new Date());
     }
-
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
 }

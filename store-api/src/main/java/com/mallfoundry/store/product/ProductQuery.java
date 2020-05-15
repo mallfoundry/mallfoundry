@@ -40,7 +40,9 @@ public interface ProductQuery extends Pageable {
 
     void setInventoryStatuses(Set<InventoryStatus> statuses);
 
-    Builder toBuilder();
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
     class Builder {
 

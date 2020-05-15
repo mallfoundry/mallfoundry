@@ -32,7 +32,9 @@ public interface Store {
 
     void initialize();
 
-    Builder toBuilder();
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
     class Builder {
         private final Store store;
