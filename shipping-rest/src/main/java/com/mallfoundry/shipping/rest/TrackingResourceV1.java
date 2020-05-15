@@ -1,4 +1,4 @@
-package com.mallfoundry.tracking.rest;
+package com.mallfoundry.shipping.rest;
 
 import com.mallfoundry.shipping.CarrierCode;
 import com.mallfoundry.shipping.Track;

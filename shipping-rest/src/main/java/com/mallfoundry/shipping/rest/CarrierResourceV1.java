@@ -1,4 +1,4 @@
-package com.mallfoundry.carrier.rest;
+package com.mallfoundry.shipping.rest;
 
 import com.mallfoundry.shipping.Carrier;
 import com.mallfoundry.shipping.CarrierService;

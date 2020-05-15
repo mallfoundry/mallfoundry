@@ -79,6 +79,10 @@
         <!-- rest modules-->
         <module>store-rest</module>
         <module>payment-rest</module>
+        <module>shipping-rest</module>
+        <module>order-rest</module>
+        <module>identity-rest</module>
+        <module>customer-api</module>
     </modules>
 
     <dependencyManagement>
@@ -142,6 +146,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-identity-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-customer-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -251,7 +261,25 @@
 
             <dependency>
                 <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-identity-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-payment-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-shipping-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-order-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

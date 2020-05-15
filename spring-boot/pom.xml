@@ -102,6 +102,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-shipping-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-order-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-identity-rest</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>

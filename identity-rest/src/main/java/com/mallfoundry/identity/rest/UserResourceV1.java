@@ -16,8 +16,8 @@
 
 package com.mallfoundry.identity.rest;
 
-import com.mallfoundry.identity.InternalUserService;
 import com.mallfoundry.identity.User;
+import com.mallfoundry.identity.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,9 @@ import java.util.Optional;
 @RestController
 public class UserResourceV1 {
 
-    private final InternalUserService userService;
+    private final UserService userService;
 
-    public UserResourceV1(InternalUserService userService) {
+    public UserResourceV1(UserService userService) {
         this.userService = userService;
     }
 
