@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -66,7 +65,7 @@ public class PaymentResourceV1 {
     @GetMapping("/payments/{id}/validate")
     public void validatePaymentGet(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         var notification = this.paymentService.validatePayment(id, request.getParameterMap());
-        if (Objects.nonNull(notification.getResult())) {
+        if (notification.hasResult()) {
             try (var output = response.getOutputStream()) {
                 output.write(notification.getResult());
             }
@@ -76,7 +75,7 @@ public class PaymentResourceV1 {
     @PostMapping("/payments/{id}/validate")
     public void validatePayment(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         var notification = this.paymentService.validatePayment(id, request.getParameterMap());
-        if (Objects.nonNull(notification.getResult())) {
+        if (notification.hasResult()) {
             try (var output = response.getOutputStream()) {
                 output.write(notification.getResult());
             }

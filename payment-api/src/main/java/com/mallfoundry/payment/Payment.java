@@ -32,6 +32,8 @@ public interface Payment {
 
     void pending();
 
+    void capture();
+
     Builder toBuilder();
 
     class Builder {

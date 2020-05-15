@@ -16,15 +16,12 @@
 
 package com.mallfoundry.security;
 
-import com.mallfoundry.identity.InternalUser;
 import com.mallfoundry.identity.InternalUserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Load security user service.
@@ -41,8 +38,7 @@ public class SecurityUserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<InternalUser> userOptional = this.userService.getUser(username);
-        InternalUser user = userOptional.orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
+        var user = this.userService.getUser(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
         return new InternalSecurityUser(user);
     }
 }

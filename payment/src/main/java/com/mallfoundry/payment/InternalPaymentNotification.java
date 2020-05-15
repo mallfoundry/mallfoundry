@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -22,6 +23,16 @@ public class InternalPaymentNotification implements PaymentNotification {
     @Override
     public boolean isPending() {
         return PaymentStatus.PENDING == this.status;
+    }
+
+    @Override
+    public boolean isCaptured() {
+        return PaymentStatus.CAPTURED == this.status;
+    }
+
+    @Override
+    public boolean hasResult() {
+        return Objects.nonNull(this.result);
     }
 
     public InternalPaymentNotification(Object parameterObject) throws PaymentException {

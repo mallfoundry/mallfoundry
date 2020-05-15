@@ -28,7 +28,7 @@ public interface JpaUserRepository
         extends UserRepository, JpaRepository<InternalUser, String> {
 
     @Override
-    void deleteByUsername(String username);
+    void delete(InternalUser internalUser);
 
     @Override
     Optional<InternalUser> findByUsername(String username);

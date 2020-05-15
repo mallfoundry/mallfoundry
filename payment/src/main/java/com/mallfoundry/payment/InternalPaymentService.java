@@ -52,8 +52,8 @@ public class InternalPaymentService implements PaymentService {
         var paymentClient = this.paymentClientFactory.getClient(payment).orElseThrow();
         var notification = paymentClient.createPaymentNotification(parameters);
         paymentClient.validateNotification(notification);
-        if (!notification.isPending()) {
-            payment.setStatus(notification.getStatus());
+        if (notification.isCaptured()) {
+            payment.capture();
         }
         return notification;
     }

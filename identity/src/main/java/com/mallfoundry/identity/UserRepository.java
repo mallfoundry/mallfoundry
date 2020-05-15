@@ -22,7 +22,7 @@ public interface UserRepository {
 
     InternalUser save(InternalUser user);
 
-    void deleteByUsername(String username);
+    void delete(InternalUser user);
 
     Optional<InternalUser> findByUsername(String username);
 }

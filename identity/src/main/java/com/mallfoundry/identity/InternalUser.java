@@ -18,7 +18,9 @@ package com.mallfoundry.identity;
 
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -30,9 +32,10 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "identity_user")
-public class InternalUser {
+public class InternalUser implements User {
 
     @Id
     @Column(name = "id_")
@@ -56,4 +59,25 @@ public class InternalUser {
     @Convert(converter = StringListConverter.class)
     @Column(name = "authorities_")
     private List<String> authorities = new ArrayList<>();
+
+    public InternalUser(String id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    public static InternalUser of(User user) {
+        if (user instanceof InternalUser) {
+            return (InternalUser) (user);
+        }
+
+        var target = new InternalUser();
+        BeanUtils.copyProperties(user, target);
+        return target;
+    }
+
+    @Override
+    public void changePassword(String password) {
+        this.setPassword(password);
+    }
 }

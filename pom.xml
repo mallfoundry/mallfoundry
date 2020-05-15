@@ -139,6 +139,12 @@
                 <version>${mall.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-identity-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <!-- mall libraries -->
             <dependency>
                 <groupId>com.mallfoundry</groupId>

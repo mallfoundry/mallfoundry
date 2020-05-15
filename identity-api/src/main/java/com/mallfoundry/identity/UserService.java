@@ -6,8 +6,12 @@ public interface UserService {
 
     User createUser(String username, String password);
 
-    Optional<User> getUser(String username);
+    void deleteUser(String username);
 
-    // void changePassword(String username, String password, String oldPassword);
+    void changePassword(String username, String password, String originalPassword) throws UserException;
+
+    User saveUser(User user);
+
+    Optional<User> getUser(String username);
 
 }

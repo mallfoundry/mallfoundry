@@ -32,9 +32,9 @@ import java.io.IOException;
 
 public class AccessTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private AccessTokenAuthenticationConverter authenticationConverter = new AccessTokenAuthenticationConverter();
+    private final AccessTokenAuthenticationConverter authenticationConverter = new AccessTokenAuthenticationConverter();
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     public AccessTokenAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;

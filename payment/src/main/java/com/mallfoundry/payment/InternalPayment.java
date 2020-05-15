@@ -76,6 +76,12 @@ public class InternalPayment implements Payment {
     }
 
     @Override
+    public void capture() {
+        this.setStatus(PaymentStatus.CAPTURED);
+        this.setCapturedTime(new Date());
+    }
+
+    @Override
     public Builder toBuilder() {
         return new Builder(this);
     }

@@ -17,6 +17,7 @@
 package com.mallfoundry.security;
 
 import com.mallfoundry.identity.InternalUser;
+import com.mallfoundry.identity.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -29,11 +30,11 @@ import java.util.List;
  */
 public class InternalSecurityUser implements SecurityUser {
 
-    private final InternalUser user;
+    private final User user;
 
     private final List<GrantedAuthority> authorities;
 
-    public InternalSecurityUser(InternalUser user) {
+    public InternalSecurityUser(User user) {
         this.user = user;
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities()) ?
                 AuthorityUtils.NO_AUTHORITIES :

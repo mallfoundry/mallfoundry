@@ -14,6 +14,10 @@ public interface PaymentNotification {
 
     boolean isPending();
 
+    boolean isCaptured();
+
+    boolean hasResult();
+
     byte[] getResult();
 
     void setResult(byte[] bytes);
