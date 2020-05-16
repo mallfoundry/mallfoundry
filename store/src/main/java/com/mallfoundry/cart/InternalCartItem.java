@@ -50,25 +50,8 @@ public class InternalCartItem implements CartItem {
     @Column(name = "added_time_")
     private Date addedTime;
 
-    public InternalCartItem(String id, String productId, String variantId) {
+    public InternalCartItem(String id) {
         this.id = id;
-        this.productId = productId;
-        this.variantId = variantId;
         this.addedTime = new Date();
-    }
-
-    @Override
-    public void increaseQuantity(int quantity) {
-        this.quantity += quantity;
-    }
-
-    @Override
-    public void decrementQuantity(int quantity) {
-        this.quantity -= quantity;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.quantity <= 0;
     }
 }

@@ -1,27 +1,20 @@
 package com.mallfoundry.spring.boot.autoconfigure.cart;
 
-import com.mallfoundry.cart.CartRepository;
-import com.mallfoundry.cart.CartService;
-import com.mallfoundry.cart.DefaultCartService;
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.cart.CartTokenService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.Objects;
-
+@Configuration
 @EnableConfigurationProperties(CartProperties.class)
 public class CartAutoConfiguration {
 
     @Bean
-    @ConditionalOnClass(DefaultCartService.class)
-    public CartService cartService(CartProperties properties,
-                                   ProductService productService,
-                                   CartRepository cartRepository) {
-        var service = new DefaultCartService(productService, cartRepository);
-        if (Objects.nonNull(properties.getScope())) {
-            service.setCartScope(properties.getScope());
-        }
-        return service;
+    @ConditionalOnClass(CartTokenService.class)
+    @ConditionalOnProperty(prefix = "mall.cart", name = "scope")
+    public CartTokenService cartTokenService(CartProperties properties) {
+        return new CartTokenService(properties.getScope());
     }
 }

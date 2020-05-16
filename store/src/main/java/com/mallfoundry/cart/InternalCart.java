@@ -40,21 +40,12 @@ public class InternalCart implements Cart {
     }
 
     @Override
-    public void addItem(CartItem item) {
-        if (items.contains(item)) {
-            item.increaseQuantity(item.getQuantity());
-        } else {
-            items.add(item);
-        }
+    public void addItem(CartItem newItem) {
+        this.items.add(newItem);
     }
 
     @Override
     public void removeItem(CartItem item) {
-        if (items.contains(item)) {
-            item.decrementQuantity(item.getQuantity());
-            if (item.isEmpty()) {
-                items.remove(item);
-            }
-        }
+        this.items.remove(item);
     }
 }

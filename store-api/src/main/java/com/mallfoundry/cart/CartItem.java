@@ -12,7 +12,11 @@ public interface CartItem extends Serializable {
 
     String getProductId();
 
+    void setProductId(String productId);
+
     String getVariantId();
+
+    void setVariantId(String variantId);
 
     String getName();
 
@@ -30,12 +34,6 @@ public interface CartItem extends Serializable {
 
     void setQuantity(int quantity);
 
-    void increaseQuantity(int quantity);
-
-    void decrementQuantity(int quantity);
-
-    boolean isEmpty();
-
     Date getAddedTime();
 
     default Builder toBuilder() {
@@ -47,6 +45,16 @@ public interface CartItem extends Serializable {
 
         public Builder(CartItem item) {
             this.item = item;
+        }
+
+        public Builder productId(String productId) {
+            this.item.setProductId(productId);
+            return this;
+        }
+
+        public Builder variantId(String variantId) {
+            this.item.setVariantId(variantId);
+            return this;
         }
 
         public Builder quantity(int quantity) {

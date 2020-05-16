@@ -4,5 +4,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.mallfoundry.spring.boot.autoconfigure.payment.PaymentAutoConfiguration,\
   com.mallfoundry.spring.boot.autoconfigure.storage.StorageAutoConfiguration,\
   com.mallfoundry.spring.boot.autoconfigure.store.StoreProductAutoConfiguration,\
-  com.mallfoundry.spring.boot.autoconfigure.tracking.TrackingAutoConfiguration
+  com.mallfoundry.spring.boot.autoconfigure.tracking.TrackingAutoConfiguration,\
+  com.mallfoundry.spring.boot.autoconfigure.cart.CartAutoConfiguration
 

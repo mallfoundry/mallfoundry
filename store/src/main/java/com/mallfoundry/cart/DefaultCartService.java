@@ -1,17 +1,13 @@
 package com.mallfoundry.cart;
 
 import com.mallfoundry.keygen.PrimaryKeyHolder;
-import com.mallfoundry.security.SecurityUserHolder;
 import com.mallfoundry.store.product.ProductService;
-import lombok.Setter;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-
-// mall.cart.scope=global,store
-//
 @Service
 public class DefaultCartService implements CartService {
 
@@ -21,14 +17,15 @@ public class DefaultCartService implements CartService {
 
     private final ProductService productService;
 
+    private final CartTokenService cartTokenService;
+
     private final CartRepository cartRepository;
 
-    @Setter
-    private CartScope cartScope = CartScope.GLOBAL;
-
     public DefaultCartService(ProductService productService,
+                              CartTokenService cartTokenService,
                               CartRepository cartRepository) {
         this.productService = productService;
+        this.cartTokenService = cartTokenService;
         this.cartRepository = cartRepository;
     }
 
@@ -38,43 +35,33 @@ public class DefaultCartService implements CartService {
     }
 
     @Override
-    public CartItem createCartItem(String productId, String variantId, int quantity) {
-        var product = this.productService.getProduct(productId).orElseThrow();
-        var variant = product.getVariant(variantId).orElseThrow();
-        return new InternalCartItem(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME), productId, variantId)
-                .toBuilder()
-                .quantity(quantity)
-                .imageUrl(variant.getFirstImageUrl())
-                .name(product.getName())
-                .optionValues(variant.getOptionValues())
-                .build();
-    }
-
-    @Override
-    public CartScope getCartScope() {
-        return this.cartScope;
+    public CartItem createCartItem() {
+        return new InternalCartItem(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
     }
 
     @Override
     public Optional<Cart> getCart(String token) {
-
-        if (this.getCartScope().equals(CartScope.GLOBAL)) {
-
-        }
-
-        var customerId = SecurityUserHolder.getUserId();
-
-
-        return CastUtils.cast(this.cartRepository.findById(token));
+        var cartId = this.cartTokenService.getCartId(token);
+        return CastUtils.cast(this.cartRepository.findById(cartId));
     }
 
+    @Transactional
     @Override
     public void addCartItem(String token, CartItem item) {
-
+        this.getCart(token).orElseThrow().addItem(item);
     }
 
+    @Transactional
+    @Override
+    public void saveCartItem(String token, CartItem newItem) {
+        this.getCart(token).orElseThrow().getItem(newItem.getId()).orElseThrow();
+//        this.cartRepository.
+    }
 
-
-
-
+    @Transactional
+    @Override
+    public void removeCartItem(String token, String itemId) {
+        var cart = this.getCart(token).orElseThrow();
+        cart.removeItem(cart.getItem(itemId).orElseThrow());
+    }
 }
