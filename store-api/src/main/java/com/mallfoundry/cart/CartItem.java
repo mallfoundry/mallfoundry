@@ -41,6 +41,7 @@ public interface CartItem extends Serializable {
     }
 
     class Builder {
+
         private final CartItem item;
 
         public Builder(CartItem item) {
@@ -81,6 +82,4 @@ public interface CartItem extends Serializable {
             return this.item;
         }
     }
-
-
 }

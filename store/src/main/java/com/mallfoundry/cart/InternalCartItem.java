@@ -1,10 +1,10 @@
 package com.mallfoundry.cart;
 
-import com.mallfoundry.cart.CartItem;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -53,5 +54,28 @@ public class InternalCartItem implements CartItem {
     public InternalCartItem(String id) {
         this.id = id;
         this.addedTime = new Date();
+    }
+
+    public static InternalCartItem of(CartItem item) {
+        if (item instanceof InternalCartItem) {
+            return (InternalCartItem) item;
+        }
+        var target = new InternalCartItem();
+        BeanUtils.copyProperties(item, target);
+        return target;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InternalCartItem that = (InternalCartItem) o;
+        return Objects.equals(productId, that.productId) &&
+                Objects.equals(variantId, that.variantId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, variantId);
     }
 }

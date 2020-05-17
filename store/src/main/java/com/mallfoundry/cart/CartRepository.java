@@ -4,6 +4,9 @@ import java.util.Optional;
 
 public interface CartRepository {
 
-    Optional<InternalCart> findById(String id);
+    <S extends InternalCart> S save(S s);
 
+    void delete(InternalCart cart);
+
+    Optional<InternalCart> findById(String id);
 }

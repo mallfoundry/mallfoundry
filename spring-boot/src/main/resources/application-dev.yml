@@ -39,5 +39,3 @@ mall:
       api-key: 03613fea-82ff-4023-a816-a034b8f453b8
       e-business-id: 1632631
       url: http://api.kdniao.com
-  cart:
-    scope: store

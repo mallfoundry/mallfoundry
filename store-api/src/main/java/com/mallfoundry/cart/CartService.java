@@ -4,16 +4,20 @@ import java.util.Optional;
 
 public interface CartService {
 
-    Cart createCart();
+    Cart createCart(String id);
 
     CartItem createCartItem();
 
-    Optional<Cart> getCart(String token);
+    Cart saveCart(Cart cart);
 
-    void addCartItem(String token, CartItem item);
+    void deleteCart(String id);
 
-    void saveCartItem(String token, CartItem item);
+    void addCartItem(String id, CartItem item);
 
-    void removeCartItem(String token, String itemId);
+    void saveCartItem(String id, CartItem item);
+
+    void removeCartItem(String id, String itemId);
+
+    Optional<Cart> getCart(String id);
 
 }

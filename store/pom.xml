@@ -27,7 +27,6 @@
     <artifactId>mall-store</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-storage-api</artifactId>

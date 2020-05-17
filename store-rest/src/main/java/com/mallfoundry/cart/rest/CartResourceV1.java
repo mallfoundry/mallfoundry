@@ -21,23 +21,33 @@ public class CartResourceV1 {
         this.cartRestService = cartRestService;
     }
 
-    @GetMapping("/carts/{token}")
-    public Optional<CartResponse> getCart(@PathVariable("token") String token) {
-        return this.cartRestService.getCart(token);
+    @PostMapping("/carts")
+    public CartResponse createCart(@RequestBody CreateCartRequest request) {
+        return this.cartRestService.createCart(request);
     }
 
-    @PostMapping("/carts/{token}/items")
-    public CartItemResponse addCartItem(@PathVariable("token") String token, @RequestBody CartItemRequest request) {
-        return this.cartRestService.addCartItem(token, request);
+    @DeleteMapping("/carts/{id}")
+    public void deleteCart(@PathVariable("id") String id) {
+        this.cartRestService.deleteCart(id);
     }
 
-    @DeleteMapping("/carts/{token}/items/{item_id}")
-    public void removeCartItem(@PathVariable("token") String token, @PathVariable("item_id") String itemId) {
-        this.cartRestService.removeCartItem(token, itemId);
+    @PostMapping("/carts/{id}/items")
+    public CartItemResponse addCartItem(@PathVariable("id") String id, @RequestBody CartItemRequest request) {
+        return this.cartRestService.addCartItem(id, request);
     }
 
-    @PatchMapping("/carts/{token}/items/{item_id}")
-    public void saveCartItem(@PathVariable("token") String token, @PathVariable("item_id") String itemId, @RequestBody CartItemRequest request) {
-        this.cartRestService.saveCartItem(token, itemId, request);
+    @DeleteMapping("/carts/{id}/items/{item_id}")
+    public void removeCartItem(@PathVariable("id") String id, @PathVariable("item_id") String itemId) {
+        this.cartRestService.removeCartItem(id, itemId);
+    }
+
+    @PatchMapping("/carts/{id}/items/{item_id}")
+    public void saveCartItem(@PathVariable("token") String id, @PathVariable("item_id") String itemId, @RequestBody CartItemRequest request) {
+        this.cartRestService.saveCartItem(id, itemId, request);
+    }
+
+    @GetMapping("/carts/{id}")
+    public Optional<CartResponse> getCart(@PathVariable("id") String id) {
+        return this.cartRestService.getCart(id);
     }
 }

@@ -3,7 +3,9 @@ package com.mallfoundry.cart;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,12 +28,24 @@ public class InternalCart implements Cart {
     @Column(name = "id_")
     private String id;
 
-    @OneToMany(targetEntity = InternalCartItem.class)
+    @Column(name = "customer_id_")
+    private String customerId;
+
+    @OneToMany(targetEntity = InternalCartItem.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id_")
     private List<CartItem> items = new ArrayList<>();
 
     public InternalCart(String id) {
         this.id = id;
+    }
+
+    public static InternalCart of(Cart cart) {
+        if (cart instanceof InternalCart) {
+            return (InternalCart) cart;
+        }
+        var target = new InternalCart();
+        BeanUtils.copyProperties(cart, target);
+        return target;
     }
 
     @Override
@@ -41,6 +55,7 @@ public class InternalCart implements Cart {
 
     @Override
     public void addItem(CartItem newItem) {
+        this.items.remove(newItem);
         this.items.add(newItem);
     }
 
