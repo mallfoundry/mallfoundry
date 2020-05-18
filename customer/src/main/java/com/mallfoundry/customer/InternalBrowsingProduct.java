@@ -19,26 +19,24 @@ package com.mallfoundry.customer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_browse_product")
-public class BrowsingProduct {
+@Table(name = "customer_browse_products")
+public class InternalBrowsingProduct implements BrowsingProduct {
 
     @Id
     @Column(name = "id_")
-    private Integer id;
+    private String id;
 
     @Column(name = "customer_id_")
     private String customerId;
@@ -49,13 +47,14 @@ public class BrowsingProduct {
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public BrowsingProduct(String customerId, String productId) {
+    public InternalBrowsingProduct(String id, String customerId, String productId) {
+        this.id = id;
         this.customerId = customerId;
         this.productId = productId;
         this.setNowBrowsingTime();
     }
 
-    public BrowsingProduct(String customerId) {
+    public InternalBrowsingProduct(String customerId) {
         this.customerId = customerId;
     }
 
@@ -63,10 +62,13 @@ public class BrowsingProduct {
         this.setBrowsingTime(new Date());
     }
 
-    public static List<BrowsingProduct> of(String customerId, List<String> productIds) {
-        if (productIds == null) {
-            return Collections.emptyList();
+
+    public static InternalBrowsingProduct of(BrowsingProduct browsingProduct) {
+        if (browsingProduct instanceof InternalBrowsingProduct) {
+            return (InternalBrowsingProduct) browsingProduct;
         }
-        return productIds.stream().map(productId -> new BrowsingProduct(customerId, productId)).collect(Collectors.toList());
+        var target = new InternalBrowsingProduct();
+        BeanUtils.copyProperties(browsingProduct, target);
+        return target;
     }
 }

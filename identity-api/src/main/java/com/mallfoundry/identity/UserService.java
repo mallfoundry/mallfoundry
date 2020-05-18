@@ -4,6 +4,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+    UserId createUserId(String userId);
+
     User createUser(String username, String password);
 
     void deleteUser(String username);
@@ -13,5 +15,7 @@ public interface UserService {
     User saveUser(User user);
 
     Optional<User> getUser(String username);
+
+    Optional<User> getUser(UserId userId);
 
 }

@@ -16,34 +16,52 @@
 
 package com.mallfoundry.customer;
 
+import com.mallfoundry.data.SliceList;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BrowsingProductService {
+public class InternalBrowsingProductService implements BrowsingProductService {
 
     private final BrowsingProductRepository browsingProductRepository;
 
-    public BrowsingProductService(BrowsingProductRepository browsingProductRepository) {
+    public InternalBrowsingProductService(BrowsingProductRepository browsingProductRepository) {
         this.browsingProductRepository = browsingProductRepository;
     }
 
+    @Override
+    public BrowsingProduct createBrowsingProduct(String customerId, String productId) {
+        return null;
+    }
+
     public void addBrowsingProduct(BrowsingProduct browsingProduct) {
-        this.browsingProductRepository.save(browsingProduct);
+        this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
     }
 
-    public void deleteBrowsingProduct(BrowsingProduct browsingProduct) {
-        this.browsingProductRepository.delete(browsingProduct);
+    @Override
+    public void deleteBrowsingProduct(String id) {
+
     }
 
-    public void deleteBrowsingProducts(List<BrowsingProduct> browsingProducts) {
-        this.browsingProductRepository.deleteAll(browsingProducts);
+    @Override
+    public void deleteBrowsingProducts(List<String> ids) {
+
+    }
+
+    @Override
+    public SliceList<BrowsingProduct> getBrowsingProducts(BrowsingProductQuery query) {
+        return null;
+    }
+
+    @Override
+    public long getBrowsingProductCount(BrowsingProductQuery query) {
+        return 0;
     }
 
     public long getBrowsingProductCount(String customerId) {
-        return this.browsingProductRepository.count(Example.of(new BrowsingProduct(customerId)));
+        return this.browsingProductRepository.count(Example.of(new InternalBrowsingProduct(customerId)));
     }
 
 }

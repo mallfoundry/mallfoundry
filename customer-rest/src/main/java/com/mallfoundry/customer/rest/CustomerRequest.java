@@ -16,6 +16,17 @@
 
 package com.mallfoundry.customer.rest;
 
+import com.mallfoundry.customer.Gender;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
 public class CustomerRequest {
 
+    private Gender gender;
+
+    private Date birthday;
 }

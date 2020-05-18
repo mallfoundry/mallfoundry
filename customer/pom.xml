@@ -28,6 +28,12 @@
     <artifactId>mall-customer</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-identity-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-customer-api</artifactId>

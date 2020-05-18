@@ -16,20 +16,15 @@
 
 package com.mallfoundry.customer;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -45,11 +40,11 @@ import java.util.Optional;
 @NoArgsConstructor
 @Entity
 @Table(name = "customers")
-public class Customer {
+public class InternalCustomer implements Customer {
 
-    @EmbeddedId
-    @AttributeOverride(name = "id", column = @Column(name = "id_"))
-    private CustomerId id;
+    @Id
+    @Column(name = "id_")
+    private String id;
 
     @Column(name = "user_id_")
     private String userId;
@@ -60,37 +55,51 @@ public class Customer {
     @Column(name = "gender_")
     private Gender gender;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "birthday_")
     private Date birthday;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = InternalShippingAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
-    @OrderBy("addedTime ASC")
+    @OrderBy("createdTime ASC")
     private List<ShippingAddress> shippingAddresses = new ArrayList<>();
 
-    @JsonIgnore
-    @ElementCollection
-    @CollectionTable(name = "customer_search_term", joinColumns = @JoinColumn(name = "customer_id_"))
-    @OrderBy("time DESC")
-    private List<SearchTerm> searchTerms = new ArrayList<>();
+    public InternalCustomer(String userId) {
+        this.id = userId;
+        this.userId = userId;
+        this.gender = Gender.UNKNOWN;
+        this.birthday = new Date();
+    }
 
-    @JsonIgnore
+    public static InternalCustomer of(Customer customer) {
+        if (customer instanceof InternalCustomer) {
+            return (InternalCustomer) customer;
+        }
+        var target = new InternalCustomer();
+        BeanUtils.copyProperties(customer, target);
+        return target;
+    }
+
+
+    //    @JsonIgnore
+//    @ElementCollection
+//    @CollectionTable(name = "customer_search_term", joinColumns = @JoinColumn(name = "customer_id_"))
+//    @OrderBy("time DESC")
+//    private List<SearchTerm> searchTerms = new ArrayList<>();
+
+    @Override
     public Optional<ShippingAddress> getDefaultShippingAddress() {
         return this.getShippingAddresses().stream().filter(ShippingAddress::isDefaulted).findFirst();
     }
 
-    public Optional<ShippingAddress> getShippingAddress(Long id) {
-        return this.getShippingAddresses().stream().filter(address -> Objects.equals(address.getId(), id)).findFirst();
+    @Override
+    public Optional<ShippingAddress> getShippingAddress(String addressId) {
+        return this.getShippingAddresses().stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
     }
 
+    @Override
     public void addShippingAddress(final ShippingAddress address) {
-        address.nowAddedTimeIfNull();
-        this.getShippingAddress(address.getId())
-                .ifPresentOrElse(
-                        oldAddress -> BeanUtils.copyProperties(address, oldAddress, "id", "addedTime"),
-                        () -> this.getShippingAddresses().add(address));
+        this.shippingAddresses.remove(address);
+        this.shippingAddresses.add(address);
         // defaulted
         if (address.isDefaulted()) {
             this.getDefaultShippingAddress()
@@ -102,25 +111,26 @@ public class Customer {
         }
     }
 
+    @Override
     public void removeShippingAddress(ShippingAddress address) {
         this.getShippingAddresses().remove(address);
     }
 
-    public void addSearchTerm(String text) {
-        this.searchTerms
-                .stream()
-                .filter(term -> Objects.equals(term.getText(), text))
-                .findFirst()
-                .ifPresentOrElse(SearchTerm::nowTime,
-                        () -> this.searchTerms.add(new SearchTerm(text)));
-    }
-
-    public void removeSearchTerm(String text) {
-        this.searchTerms.remove(new SearchTerm(text));
-    }
-
-    public void clearSearchTerms() {
-        this.searchTerms.clear();
-    }
+//    public void addSearchTerm(String text) {
+//        this.searchTerms
+//                .stream()
+//                .filter(term -> Objects.equals(term.getText(), text))
+//                .findFirst()
+//                .ifPresentOrElse(SearchTerm::nowTime,
+//                        () -> this.searchTerms.add(new SearchTerm(text)));
+//    }
+//
+//    public void removeSearchTerm(String text) {
+//        this.searchTerms.remove(new SearchTerm(text));
+//    }
+//
+//    public void clearSearchTerms() {
+//        this.searchTerms.clear();
+//    }
 
 }

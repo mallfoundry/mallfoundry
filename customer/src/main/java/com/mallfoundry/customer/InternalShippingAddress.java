@@ -24,7 +24,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -35,31 +34,26 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "customer_shipping_addresses")
-public class ShippingAddress {
+public class InternalShippingAddress implements ShippingAddress {
 
     @Id
-    @GeneratedValue
     @Column(name = "id_")
-    private Long id;
+    private String id;
 
-    @Column(name = "first_name_")
     @JsonProperty("first_name")
     private String firstName;
 
-    @Column(name = "last_name_")
     @JsonProperty("last_name")
     private String lastName;
 
-    @JsonProperty("country_code")
     @Column(name = "country_code_")
     private String countryCode;
 
     @Column(name = "mobile_")
     private String mobile;
 
-    @JsonProperty("postal_code")
-    @Column(name = "postal_code_")
-    private String postalCode;
+    @Column(name = "zip_code_")
+    private String zipCode;
 
     @Column(name = "location_")
     private String location;
@@ -70,16 +64,9 @@ public class ShippingAddress {
     @Column(name = "defaulted_")
     private boolean defaulted;
 
-    @JsonProperty("added_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "added_time_")
-    private Date addedTime;
-
-    public void nowAddedTimeIfNull() {
-        if (Objects.isNull(this.getAddedTime())) {
-            this.setAddedTime(new Date());
-        }
-    }
+    @Column(name = "created_time_")
+    private Date createdTime;
 
     public void defaulted() {
         this.setDefaulted(true);
@@ -93,7 +80,7 @@ public class ShippingAddress {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShippingAddress that = (ShippingAddress) o;
+        InternalShippingAddress that = (InternalShippingAddress) o;
         return Objects.equals(id, that.id);
     }
 
@@ -104,13 +91,13 @@ public class ShippingAddress {
 
     public static class Builder {
 
-        private final ShippingAddress address;
+        private final InternalShippingAddress address;
 
         public Builder() {
-            this(new ShippingAddress());
+            this(new InternalShippingAddress());
         }
 
-        public Builder(ShippingAddress address) {
+        public Builder(InternalShippingAddress address) {
             this.address = address;
         }
 
@@ -134,8 +121,8 @@ public class ShippingAddress {
             return this;
         }
 
-        public Builder postalCode(String postalCode) {
-            this.address.setPostalCode(postalCode);
+        public Builder zipCode(String zipCode) {
+            this.address.setZipCode(zipCode);
             return this;
         }
 
@@ -154,8 +141,8 @@ public class ShippingAddress {
             return this;
         }
 
-        public ShippingAddress build() {
-            this.address.nowAddedTimeIfNull();
+        public InternalShippingAddress build() {
+            this.address.setCreatedTime(new Date());
             return this.address;
         }
     }

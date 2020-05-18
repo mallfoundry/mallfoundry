@@ -44,6 +44,11 @@ public class InternalUserService implements UserService {
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Override
+    public UserId createUserId(String userId) {
+        return new InternalUserId(userId);
+    }
+
     @Transactional
     @Override
     public User createUser(String username, String password) {
@@ -78,5 +83,10 @@ public class InternalUserService implements UserService {
     @Transactional
     public Optional<User> getUser(String username) {
         return CastUtils.cast(this.userRepository.findByUsername(username));
+    }
+
+    @Override
+    public Optional<User> getUser(UserId userId) {
+        return CastUtils.cast(this.userRepository.findById(userId.getIdentifier()));
     }
 }

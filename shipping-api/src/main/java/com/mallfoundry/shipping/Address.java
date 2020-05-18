@@ -20,9 +20,9 @@ public interface Address extends Serializable {
 
     void setMobile(String mobile);
 
-    String getPostalCode();
+    String getZipCode();
 
-    void setPostalCode(String postalCode);
+    void setZipCode(String zipCode);
 
     String getCountyCode();
 
@@ -67,8 +67,8 @@ public interface Address extends Serializable {
             return this;
         }
 
-        public Builder postalCode(String postalCode) {
-            this.address.setPostalCode(postalCode);
+        public Builder zipCode(String zipCode) {
+            this.address.setZipCode(zipCode);
             return this;
         }
 

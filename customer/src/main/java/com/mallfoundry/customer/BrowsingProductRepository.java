@@ -20,11 +20,11 @@ import org.springframework.data.domain.Example;
 
 public interface BrowsingProductRepository {
 
-    BrowsingProduct save(BrowsingProduct browsingProduct);
+    InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
 
-    void delete(BrowsingProduct browsingProduct);
+    void delete(InternalBrowsingProduct browsingProduct);
 
-    void deleteAll(Iterable<? extends BrowsingProduct> browsingProducts);
+    void deleteAll(Iterable<? extends InternalBrowsingProduct> browsingProducts);
 
-    <S extends BrowsingProduct> long count(Example<S> example);
+    <S extends InternalBrowsingProduct> long count(Example<S> example);
 }

@@ -24,5 +24,7 @@ public interface UserRepository {
 
     void delete(InternalUser user);
 
+    Optional<InternalUser> findById(String id);
+
     Optional<InternalUser> findByUsername(String username);
 }

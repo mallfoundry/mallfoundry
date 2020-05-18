@@ -28,24 +28,24 @@ import java.util.Date;
 public class CustomerTests {
 
     @Autowired
-    private CustomerService customerService;
+    private InternalCustomerService customerService;
 
     @Test
     @Transactional
     @Rollback(false)
     public void testCreateCustomer() {
 
-        Customer customer = new Customer();
-        customer.setId(new CustomerId("customer 1"));
+        InternalCustomer customer = new InternalCustomer();
+        customer.setId("customer 1");
         customer.setGender(Gender.MALE);
         customer.setNickname("tang zhi");
         customer.setBirthday(new Date());
         customer.setUserId("user 1");
         customer.addShippingAddress(
-                ShippingAddress.builder()
+                InternalShippingAddress.builder()
                         .firstName("治").lastName("唐")
                         .mobile("1888888888")
-                        .postalCode("2500000")
+                        .zipCode("2500000")
                         .countryCode("86")
                         .location("001,220,3222,333")
                         .address("山东省 济南市 历城区023号")

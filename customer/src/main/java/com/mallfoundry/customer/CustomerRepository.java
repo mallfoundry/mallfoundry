@@ -20,10 +20,9 @@ import java.util.Optional;
 
 public interface CustomerRepository {
 
-    Customer save(Customer customer);
+    InternalCustomer save(InternalCustomer customer);
 
-    void deleteById(CustomerId customerId);
+    Optional<InternalCustomer> findById(String id);
 
-    Optional<Customer> findById(CustomerId customerId);
-
+    void deleteById(String id);
 }
