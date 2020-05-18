@@ -1,5 +1,6 @@
 package com.mallfoundry.cart;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
@@ -17,6 +18,8 @@ public interface CartService {
     void saveCartItem(String id, CartItem item);
 
     void removeCartItem(String id, String itemId);
+
+    void removeCartItems(String id, List<String> itemIds);
 
     Optional<Cart> getCart(String id);
 

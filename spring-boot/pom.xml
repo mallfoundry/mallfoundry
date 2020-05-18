@@ -93,6 +93,11 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-customer-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-store-rest</artifactId>
         </dependency>
 

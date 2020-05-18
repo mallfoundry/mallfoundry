@@ -26,7 +26,7 @@ public class CartItemResponse {
         this.quantity = item.getQuantity();
         this.optionValues = item.getOptionValues();
         this.name = item.getName();
-        this.imageUrl = item.getName();
+        this.imageUrl = item.getImageUrl();
         this.addedTime = item.getAddedTime();
     }
 }

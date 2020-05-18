@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,9 +67,12 @@ public class CartRestService {
         this.cartService.saveCartItem(id, item);
     }
 
-    @Transactional
     public void removeCartItem(String id, String itemId) {
         this.cartService.removeCartItem(id, itemId);
+    }
+
+    public void removeCartItems(String id, List<String> itemIds) {
+        this.cartService.removeCartItems(id, itemIds);
     }
 
     @Transactional

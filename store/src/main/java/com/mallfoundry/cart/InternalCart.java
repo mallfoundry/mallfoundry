@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -54,6 +55,11 @@ public class InternalCart implements Cart {
     }
 
     @Override
+    public List<CartItem> getItems(List<String> itemIds) {
+        return this.items.stream().filter(item -> itemIds.contains(item.getId())).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
     public void addItem(CartItem newItem) {
         this.items.remove(newItem);
         this.items.add(newItem);
@@ -62,5 +68,10 @@ public class InternalCart implements Cart {
     @Override
     public void removeItem(CartItem item) {
         this.items.remove(item);
+    }
+
+    @Override
+    public void removeItems(List<CartItem> items) {
+        items.forEach(this::removeItem);
     }
 }

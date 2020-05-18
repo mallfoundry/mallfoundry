@@ -18,7 +18,11 @@ public interface Cart extends Serializable {
 
     void removeItem(CartItem item);
 
-    Optional<CartItem> getItem(String id);
+    void removeItems(List<CartItem> items);
+
+    Optional<CartItem> getItem(String itemId);
+
+    List<CartItem> getItems(List<String> itemIds);
 
     default Builder toBuilder() {
         return new Builder(this);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,6 +40,11 @@ public class CartResourceV1 {
     @DeleteMapping("/carts/{id}/items/{item_id}")
     public void removeCartItem(@PathVariable("id") String id, @PathVariable("item_id") String itemId) {
         this.cartRestService.removeCartItem(id, itemId);
+    }
+
+    @DeleteMapping("/carts/{id}/items/batch")
+    public void removeCartItems(@PathVariable("id") String id, @RequestBody List<String> itemIds) {
+        this.cartRestService.removeCartItems(id, itemIds);
     }
 
     @PatchMapping("/carts/{id}/items/{item_id}")

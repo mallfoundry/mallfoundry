@@ -83,6 +83,7 @@
         <module>order-rest</module>
         <module>identity-rest</module>
         <module>customer-api</module>
+        <module>customer-rest</module>
     </modules>
 
     <dependencyManagement>
@@ -253,6 +254,12 @@
             </dependency>
 
             <!-- mall rest libraries -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-customer-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-store-rest</artifactId>

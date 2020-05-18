@@ -101,6 +101,11 @@ public class InternalAccessControl implements AccessControl {
                 return true;
             }
         }
+
+        if (this.isInherit() && Objects.nonNull(this.getParent())) {
+            return this.getParent().granted(principals, permissions);
+        }
+
         return false;
     }
 }

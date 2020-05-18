@@ -8,6 +8,7 @@ import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,5 +96,11 @@ public class DefaultCartService implements CartService {
     public void removeCartItem(String id, String itemId) {
         var cart = this.getCart(id).orElseThrow();
         cart.removeItem(cart.getItem(itemId).orElseThrow());
+    }
+
+    @Override
+    public void removeCartItems(String id, List<String> itemIds) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.removeItems(cart.getItems(itemIds));
     }
 }
