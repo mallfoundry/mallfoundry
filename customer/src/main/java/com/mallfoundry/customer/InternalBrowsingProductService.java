@@ -49,8 +49,8 @@ public class InternalBrowsingProductService implements BrowsingProductService {
 
     @Override
     public void deleteBrowsingProduct(String id) {
-//        this.browsingProductRepository.
-//        this.browsingProductRepository.delete();
+        var browsingProduct = this.browsingProductRepository.findById(id).orElseThrow();
+        this.browsingProductRepository.delete(browsingProduct);
     }
 
     @Override

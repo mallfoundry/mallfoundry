@@ -18,7 +18,11 @@ package com.mallfoundry.customer;
 
 import org.springframework.data.domain.Example;
 
+import java.util.Optional;
+
 public interface BrowsingProductRepository {
+
+    Optional<InternalBrowsingProduct> findById(String id);
 
     InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
 
