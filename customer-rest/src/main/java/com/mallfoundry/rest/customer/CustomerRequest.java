@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer.rest;
+package com.mallfoundry.rest.customer;
 
 import com.mallfoundry.customer.Gender;
 import lombok.Getter;

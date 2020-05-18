@@ -16,6 +16,7 @@
 
 package com.mallfoundry.customer;
 
+import com.mallfoundry.browsing.BrowsingProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,8 +39,8 @@ public class InternalBrowsingProduct implements BrowsingProduct {
     @Column(name = "id_")
     private String id;
 
-    @Column(name = "customer_id_")
-    private String customerId;
+    @Column(name = "browser_id_")
+    private String browserId;
 
     @Column(name = "product_id_")
     private String productId;
@@ -47,21 +48,12 @@ public class InternalBrowsingProduct implements BrowsingProduct {
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public InternalBrowsingProduct(String id, String customerId, String productId) {
+    public InternalBrowsingProduct(String id, String browserId, String productId) {
         this.id = id;
-        this.customerId = customerId;
+        this.browserId = browserId;
         this.productId = productId;
-        this.setNowBrowsingTime();
+        this.browsingTime = new Date();
     }
-
-    public InternalBrowsingProduct(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public void setNowBrowsingTime() {
-        this.setBrowsingTime(new Date());
-    }
-
 
     public static InternalBrowsingProduct of(BrowsingProduct browsingProduct) {
         if (browsingProduct instanceof InternalBrowsingProduct) {

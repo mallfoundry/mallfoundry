@@ -1,4 +1,4 @@
-package com.mallfoundry.customer;
+package com.mallfoundry.browsing;
 
 import com.mallfoundry.data.SliceList;
 
@@ -8,7 +8,9 @@ public interface BrowsingProductService {
 
     BrowsingProduct createBrowsingProduct(String customerId, String productId);
 
-    void addBrowsingProduct(BrowsingProduct browsingProduct);
+    BrowsingProductQuery createBrowsingProductQuery();
+
+    BrowsingProduct saveBrowsingProduct(BrowsingProduct browsingProduct);
 
     void deleteBrowsingProduct(String id);
 

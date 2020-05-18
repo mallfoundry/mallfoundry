@@ -1,12 +1,10 @@
-package com.mallfoundry.customer;
+package com.mallfoundry.browsing;
 
 import java.util.Date;
 
 public interface BrowsingProduct {
 
-    String getId();
-
-    String getCustomerId();
+    String getBrowserId();
 
     String getProductId();
 

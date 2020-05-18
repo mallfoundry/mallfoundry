@@ -35,13 +35,13 @@ public class BrowsingProductQuery extends OffsetLimit {
     }
 
     public static class BrowsingProductQueryBuilder {
-        private final BrowsingProductQuery query;
+        private final com.mallfoundry.browsing.BrowsingProductQuery query;
 
         public BrowsingProductQueryBuilder() {
-            this(new BrowsingProductQuery());
+            this(new com.mallfoundry.browsing.BrowsingProductQuery());
         }
 
-        public BrowsingProductQueryBuilder(BrowsingProductQuery query) {
+        public BrowsingProductQueryBuilder(com.mallfoundry.browsing.BrowsingProductQuery query) {
             this.query = query;
         }
 
@@ -65,7 +65,7 @@ public class BrowsingProductQuery extends OffsetLimit {
             return this;
         }
 
-        public BrowsingProductQuery build() {
+        public com.mallfoundry.browsing.BrowsingProductQuery build() {
             return this.query;
         }
 

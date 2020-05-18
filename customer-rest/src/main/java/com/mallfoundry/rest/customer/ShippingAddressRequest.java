@@ -1,4 +1,4 @@
-package com.mallfoundry.customer.rest;
+package com.mallfoundry.rest.customer;
 
 import lombok.Getter;
 import lombok.Setter;

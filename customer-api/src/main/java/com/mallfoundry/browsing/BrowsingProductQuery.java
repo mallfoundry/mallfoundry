@@ -1,4 +1,4 @@
-package com.mallfoundry.customer;
+package com.mallfoundry.browsing;
 
 import java.util.Date;
 

@@ -16,8 +16,10 @@
 
 package com.mallfoundry.customer;
 
+import com.mallfoundry.browsing.BrowsingProduct;
+import com.mallfoundry.browsing.BrowsingProductQuery;
+import com.mallfoundry.browsing.BrowsingProductService;
 import com.mallfoundry.data.SliceList;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,13 +38,19 @@ public class InternalBrowsingProductService implements BrowsingProductService {
         return null;
     }
 
-    public void addBrowsingProduct(BrowsingProduct browsingProduct) {
-        this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
+    @Override
+    public BrowsingProductQuery createBrowsingProductQuery() {
+        return null;
+    }
+
+    public BrowsingProduct saveBrowsingProduct(BrowsingProduct browsingProduct) {
+        return this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
     }
 
     @Override
     public void deleteBrowsingProduct(String id) {
-
+//        this.browsingProductRepository.
+//        this.browsingProductRepository.delete();
     }
 
     @Override
@@ -51,7 +59,7 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     }
 
     @Override
-    public SliceList<BrowsingProduct> getBrowsingProducts(BrowsingProductQuery query) {
+    public SliceList<BrowsingProduct> getBrowsingProducts(com.mallfoundry.browsing.BrowsingProductQuery query) {
         return null;
     }
 
@@ -59,9 +67,4 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     public long getBrowsingProductCount(BrowsingProductQuery query) {
         return 0;
     }
-
-    public long getBrowsingProductCount(String customerId) {
-        return this.browsingProductRepository.count(Example.of(new InternalBrowsingProduct(customerId)));
-    }
-
 }
