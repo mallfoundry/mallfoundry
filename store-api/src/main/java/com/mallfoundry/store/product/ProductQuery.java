@@ -3,10 +3,15 @@ package com.mallfoundry.store.product;
 import com.mallfoundry.data.Pageable;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
 public interface ProductQuery extends Pageable {
+
+    Set<String> getIds();
+
+    void setIds(Set<String> ids);
 
     String getName();
 
@@ -62,10 +67,10 @@ public interface ProductQuery extends Pageable {
             return this;
         }
 
-//        public Builder productId(String productId) {
-//            this.query.setProductId(productId);
-//            return this;
-//        }
+        public Builder ids(Set<String> ids) {
+            this.query.setIds(ids);
+            return this;
+        }
 
         public Builder name(String name) {
             this.query.setName(name);

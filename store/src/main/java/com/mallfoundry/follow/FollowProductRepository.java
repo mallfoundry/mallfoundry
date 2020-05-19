@@ -16,20 +16,22 @@
 
 package com.mallfoundry.follow;
 
-import org.springframework.data.domain.Example;
+import com.mallfoundry.data.SliceList;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface FollowStoreRepository {
+public interface FollowProductRepository {
 
-    FollowStore save(FollowStore followStore);
 
-    void delete(FollowStore followStore);
+    Optional<InternalFollowProduct> findById(InternalFollowProductId id);
 
-    <S extends FollowStore> Optional<S> findOne(Example<S> example);
+    InternalFollowProduct save(InternalFollowProduct followProduct);
 
-    <S extends FollowStore> List<S> findAll(Example<S> example);
+    boolean existsById(InternalFollowProductId id);
 
-    <S extends FollowStore> long count(Example<S> example);
+    void delete(InternalFollowProduct followProduct);
+
+    SliceList<InternalFollowProduct> findAll(FollowProductQuery query);
+
+    long count(FollowProductQuery query);
 }

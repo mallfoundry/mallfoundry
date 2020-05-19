@@ -79,6 +79,7 @@ public class InternalProductVariant implements ProductVariant {
     private Integer position;
 
     @JsonIgnore
+    @Override
     public String getFirstImageUrl() {
         return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
     }

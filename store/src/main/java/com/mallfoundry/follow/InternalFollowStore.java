@@ -14,35 +14,40 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store.product;
+package com.mallfoundry.follow;
 
-import com.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import java.util.Date;
 
 @Getter
 @Setter
-public class InternalProductQuery extends PageableSupport implements ProductQuery {
+@Entity
+@Table(name = "follow_stores")
+@IdClass(InternalFollowStoreId.class)
+public class InternalFollowStore implements FollowStore {
 
-    private Set<String> ids;
+    @Id
+    @Column(name = "follower_id_")
+    private String followerId;
 
+    @Id
+    @Column(name = "id_")
+    private String id;
+
+    @Column(name = "logo_url_")
+    private String logoUrl;
+
+    @Column(name = "name_")
     private String name;
 
-    private String storeId;
+    @Column(name = "follow_time_")
+    private Date followTime;
 
-    private BigDecimal minPrice;
-
-    private BigDecimal maxPrice;
-
-    private Set<String> collectionIds;
-
-    private Set<ProductType> types;
-
-    private Set<ProductStatus> statuses;
-
-    private Set<InventoryStatus> inventoryStatuses;
 }

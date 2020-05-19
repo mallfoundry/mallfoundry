@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer;
+package com.mallfoundry.follow;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
+import java.util.Optional;
 
-@Embeddable
-public class CustomerAvatar {
+public interface FollowStoreRepository {
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "avatar_")
-    private String avatar;
+    Optional<InternalFollowStore> findById(InternalFollowStoreId storeId);
 
+    InternalFollowStore save(InternalFollowStore mapping);
+
+    boolean existsById(InternalFollowStoreId storeId);
+
+    void delete(InternalFollowStore mapping);
 }

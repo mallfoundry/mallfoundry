@@ -16,12 +16,26 @@
 
 package com.mallfoundry.follow.repository.jpa;
 
-import com.mallfoundry.follow.FollowStore;
-import com.mallfoundry.follow.FollowStoreRepository;
+import com.mallfoundry.data.SliceList;
+import com.mallfoundry.follow.FollowProductQuery;
+import com.mallfoundry.follow.FollowProductRepository;
+import com.mallfoundry.follow.InternalFollowProduct;
+import com.mallfoundry.follow.InternalFollowProductId;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JpaFollowStoreRepository extends
-        FollowStoreRepository, JpaRepository<FollowStore, Integer> {
+public interface JpaFollowProductRepository extends
+        FollowProductRepository, JpaRepository<InternalFollowProduct, InternalFollowProductId> {
+
+    @Override
+    default SliceList<InternalFollowProduct> findAll(FollowProductQuery query) {
+        return null;
+    }
+
+    @Override
+    default long count(FollowProductQuery query) {
+        return 0;
+    }
 }

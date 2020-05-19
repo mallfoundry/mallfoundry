@@ -47,6 +47,8 @@ public interface Product extends Serializable {
 
     List<String> getImageUrls();
 
+    String getFirstImageUrl();
+
     List<String> getVideoUrls();
 
     boolean isFreeShipping();

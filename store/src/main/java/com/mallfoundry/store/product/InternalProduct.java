@@ -17,6 +17,7 @@
 package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -147,6 +148,12 @@ public class InternalProduct implements Product {
                         .map(ProductVariant::getPrice)
                         .max(BigDecimal::compareTo)
                         .orElse(BigDecimal.ZERO);
+    }
+
+    @JsonIgnore
+    @Override
+    public String getFirstImageUrl()  {
+        return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
     }
 
     @Override

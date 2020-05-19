@@ -10,6 +10,14 @@ public interface Customer {
 
     String getUserId();
 
+    String getAvatar();
+
+    void setAvatar(String avatar);
+
+    String getNickname();
+
+    void setNickname(String nickname);
+
     Gender getGender();
 
     void setGender(Gender gender);

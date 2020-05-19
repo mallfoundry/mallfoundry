@@ -283,7 +283,7 @@ public class InternalOrder implements Order {
 
     public void confirmPayment(PaymentDetails details) {
         this.setPaymentDetails(InternalPaymentDetails.of(details));
-        if (details.getStatus() == PaymentStatus.SUCCESS) {
+        if (details.getStatus() == PaymentStatus.CAPTURED) {
             this.setStatus(AWAITING_FULFILLMENT);
             this.setPaidTime(new Date());
         }

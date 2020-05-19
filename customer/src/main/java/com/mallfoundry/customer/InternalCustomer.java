@@ -49,6 +49,9 @@ public class InternalCustomer implements Customer {
     @Column(name = "user_id_")
     private String userId;
 
+    @Column(name = "avatar_")
+    private String avatar;
+
     @Column(name = "nickname_")
     private String nickname;
 

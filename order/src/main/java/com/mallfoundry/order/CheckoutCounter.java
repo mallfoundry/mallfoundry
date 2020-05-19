@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.store.product.InternalProductService;
+import com.mallfoundry.store.product.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +26,9 @@ import java.util.Objects;
 @Component
 public class CheckoutCounter {
 
-    private final InternalProductService productService;
+    private final ProductService productService;
 
-    public CheckoutCounter(InternalProductService productService) {
+    public CheckoutCounter(ProductService productService) {
         this.productService = productService;
     }
 

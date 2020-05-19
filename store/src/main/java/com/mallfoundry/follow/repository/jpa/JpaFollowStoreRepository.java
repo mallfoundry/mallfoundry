@@ -16,13 +16,16 @@
 
 package com.mallfoundry.follow.repository.jpa;
 
-import com.mallfoundry.follow.FollowProduct;
-import com.mallfoundry.follow.FollowProductRepository;
+import com.mallfoundry.follow.FollowStoreRepository;
+import com.mallfoundry.follow.InternalFollowStore;
+import com.mallfoundry.follow.InternalFollowStoreId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface JpaFollowProductRepository extends
-        FollowProductRepository, JpaRepository<FollowProduct, Integer> {
+public interface JpaFollowStoreRepository extends
+        FollowStoreRepository, JpaRepository<InternalFollowStore, InternalFollowStoreId> {
 
 }

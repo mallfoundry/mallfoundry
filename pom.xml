@@ -69,7 +69,6 @@
         <module>order</module>
         <module>search</module>
         <module>app</module>
-        <module>follow</module>
         <module>trade</module>
         <module>shipping</module>
         <module>payment</module>
@@ -214,12 +213,6 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-store</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-follow</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

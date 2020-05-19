@@ -19,7 +19,7 @@ package com.mallfoundry.order;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.product.InternalProductService;
+import com.mallfoundry.store.product.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +47,13 @@ public class InternalOrderService implements OrderService {
     private final OrderSplitter orderSplitter;
 
 
-    private final InternalProductService productService;
+    private final ProductService productService;
 
     public InternalOrderService(OrderRepository orderRepository,
                                 CustomerValidator customerValidator,
                                 CheckoutCounter checkoutCounter,
                                 OrderSplitter orderSplitter,
-                                InternalProductService productService) {
+                                ProductService productService) {
         this.orderRepository = orderRepository;
         this.customerValidator = customerValidator;
         this.checkoutCounter = checkoutCounter;

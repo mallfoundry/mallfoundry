@@ -16,15 +16,24 @@
 
 package com.mallfoundry.customer.repository.jpa;
 
-import com.mallfoundry.customer.InternalBrowsingProduct;
+import com.mallfoundry.browsing.BrowsingProductQuery;
 import com.mallfoundry.customer.BrowsingProductRepository;
+import com.mallfoundry.customer.InternalBrowsingProduct;
+import com.mallfoundry.data.SliceList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface JpaBrowsingProductRepository
         extends BrowsingProductRepository, JpaRepository<InternalBrowsingProduct, String> {
 
+    @Override
+    default SliceList<InternalBrowsingProduct> findAll(BrowsingProductQuery query) {
+        return null;
+    }
+
+    @Override
+    default long count(BrowsingProductQuery query) {
+        return 0;
+    }
 }
