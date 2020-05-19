@@ -52,7 +52,13 @@ public interface JpaFollowProductRepository extends
     }
 
     @Override
-    default long count(FollowProductQuery query) {
-        return 0;
+    default long count(FollowProductQuery followQuery) {
+        return this.count((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(followQuery.getFollowerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
+            }
+            return predicate;
+        });
     }
 }
