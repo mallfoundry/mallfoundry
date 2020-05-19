@@ -20,12 +20,18 @@ import com.mallfoundry.browsing.BrowsingProduct;
 import com.mallfoundry.browsing.BrowsingProductQuery;
 import com.mallfoundry.browsing.BrowsingProductService;
 import com.mallfoundry.data.SliceList;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
+import com.mallfoundry.security.SecurityUserHolder;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class InternalBrowsingProductService implements BrowsingProductService {
+
+    private static final String BROWSING_PRODUCT_ID_VALUE_NAME = "browsing.product.id";
 
     private final BrowsingProductRepository browsingProductRepository;
 
@@ -34,37 +40,42 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     }
 
     @Override
-    public BrowsingProduct createBrowsingProduct(String customerId, String productId) {
-        return null;
+    public BrowsingProduct createBrowsingProduct() {
+        var browserId = SecurityUserHolder.getUserId();
+        return new InternalBrowsingProduct(PrimaryKeyHolder.next(BROWSING_PRODUCT_ID_VALUE_NAME), browserId);
     }
 
     @Override
     public BrowsingProductQuery createBrowsingProductQuery() {
-        return null;
+        return new InternalBrowsingProductQuery();
     }
 
-    public BrowsingProduct saveBrowsingProduct(BrowsingProduct browsingProduct) {
+    @Transactional
+    public BrowsingProduct addBrowsingProduct(BrowsingProduct browsingProduct) {
         return this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
     }
 
+    @Transactional
     @Override
     public void deleteBrowsingProduct(String id) {
         var browsingProduct = this.browsingProductRepository.findById(id).orElseThrow();
         this.browsingProductRepository.delete(browsingProduct);
     }
 
+    @Transactional
     @Override
     public void deleteBrowsingProducts(List<String> ids) {
-
+        var browsingProducts = this.browsingProductRepository.findAllById(ids);
+        this.browsingProductRepository.deleteAll(browsingProducts);
     }
 
     @Override
-    public SliceList<BrowsingProduct> getBrowsingProducts(com.mallfoundry.browsing.BrowsingProductQuery query) {
-        return null;
+    public SliceList<BrowsingProduct> getBrowsingProducts(BrowsingProductQuery query) {
+        return CastUtils.cast(this.browsingProductRepository.findAll(query));
     }
 
     @Override
     public long getBrowsingProductCount(BrowsingProductQuery query) {
-        return 0;
+        return this.browsingProductRepository.count(query);
     }
 }

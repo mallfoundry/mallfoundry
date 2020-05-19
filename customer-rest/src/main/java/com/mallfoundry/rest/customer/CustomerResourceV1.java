@@ -107,7 +107,7 @@ public class CustomerResourceV1 {
             address.setDefaulted(request.isDefaulted());
         }
 
-        this.customerService.saveShippingAddress(customerId, address);
+        this.customerService.setShippingAddress(customerId, address);
     }
 
     @DeleteMapping("/customers/{customer_id}/shipping-addresses/{address_id}")

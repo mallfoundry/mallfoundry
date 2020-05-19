@@ -23,7 +23,7 @@ public interface CustomerService {
 
     Optional<ShippingAddress> getDefaultShippingAddress(String customerId);
 
-    void saveShippingAddress(String customerId, ShippingAddress address);
+    void setShippingAddress(String customerId, ShippingAddress address);
 
     void removeShippingAddress(String customerId, String addressId);
 

@@ -17,24 +17,17 @@
 package com.mallfoundry.customer;
 
 import com.mallfoundry.browsing.BrowsingProductQuery;
-import com.mallfoundry.data.SliceList;
+import com.mallfoundry.data.PageableSupport;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Date;
 
-public interface BrowsingProductRepository {
+@Getter
+@Setter
+public class InternalBrowsingProductQuery extends PageableSupport implements BrowsingProductQuery {
 
-    Optional<InternalBrowsingProduct> findById(String id);
+    private String browserId;
 
-    List<InternalBrowsingProduct> findAllById(Iterable<String> integers);
-
-    InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
-
-    void delete(InternalBrowsingProduct browsingProduct);
-
-    void deleteAll(Iterable<? extends InternalBrowsingProduct> browsingProducts);
-
-    SliceList<InternalBrowsingProduct> findAll(BrowsingProductQuery query);
-
-    long count(BrowsingProductQuery query);
+    private Date browsingTime;
 }

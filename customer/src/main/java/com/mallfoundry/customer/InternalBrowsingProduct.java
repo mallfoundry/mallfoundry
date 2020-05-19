@@ -48,10 +48,9 @@ public class InternalBrowsingProduct implements BrowsingProduct {
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public InternalBrowsingProduct(String id, String browserId, String productId) {
+    public InternalBrowsingProduct(String id, String browserId) {
         this.id = id;
         this.browserId = browserId;
-        this.productId = productId;
         this.browsingTime = new Date();
     }
 

@@ -21,7 +21,10 @@ import com.mallfoundry.customer.BrowsingProductRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface JpaBrowsingProductRepository
-        extends BrowsingProductRepository, JpaRepository<InternalBrowsingProduct, Integer> {
+        extends BrowsingProductRepository, JpaRepository<InternalBrowsingProduct, String> {
+
 }

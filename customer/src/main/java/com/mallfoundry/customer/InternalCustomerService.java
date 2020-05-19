@@ -90,8 +90,8 @@ public class InternalCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public void saveShippingAddress(String customerId, ShippingAddress address) {
-        this.getCustomer(customerId).orElseThrow().addShippingAddress(address);
+    public void setShippingAddress(String customerId, ShippingAddress newAddress) {
+        this.getCustomer(customerId).orElseThrow().addShippingAddress(newAddress);
     }
 
     @Transactional

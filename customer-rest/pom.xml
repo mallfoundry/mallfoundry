@@ -13,6 +13,10 @@
     <dependencies>
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-security-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-customer-api</artifactId>
         </dependency>
 

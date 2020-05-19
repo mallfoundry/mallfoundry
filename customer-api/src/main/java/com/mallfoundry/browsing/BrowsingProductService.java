@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface BrowsingProductService {
 
-    BrowsingProduct createBrowsingProduct(String customerId, String productId);
+    BrowsingProduct createBrowsingProduct();
 
     BrowsingProductQuery createBrowsingProductQuery();
 
-    BrowsingProduct saveBrowsingProduct(BrowsingProduct browsingProduct);
+    BrowsingProduct addBrowsingProduct(BrowsingProduct browsingProduct);
 
     void deleteBrowsingProduct(String id);
 

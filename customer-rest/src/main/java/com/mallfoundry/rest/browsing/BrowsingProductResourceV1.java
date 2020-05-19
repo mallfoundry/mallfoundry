@@ -18,14 +18,18 @@ package com.mallfoundry.rest.browsing;
 
 import com.mallfoundry.browsing.BrowsingProduct;
 import com.mallfoundry.browsing.BrowsingProductService;
+import com.mallfoundry.data.SliceList;
+import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -39,8 +43,10 @@ public class BrowsingProductResourceV1 {
     }
 
     @PostMapping("/browsing-products")
-    public BrowsingProduct saveBrowsingProduct(@RequestBody BrowsingProductRequest request) {
-        return this.browsingProductService.saveBrowsingProduct(this.browsingProductService.createBrowsingProduct(request.getBrowserId(), request.getProductId()));
+    public BrowsingProduct addBrowsingProduct(@RequestBody BrowsingProductRequest request) {
+        var browsingProduct = this.browsingProductService.createBrowsingProduct()
+                .toBuilder().productId(request.getProductId()).build();
+        return this.browsingProductService.addBrowsingProduct(browsingProduct);
     }
 
     @DeleteMapping("/browsing-products/{id}")
@@ -53,27 +59,23 @@ public class BrowsingProductResourceV1 {
         this.browsingProductService.deleteBrowsingProducts(ids);
     }
 
-//    @GetMapping("/customers/{customer_id}/browsing_products")
-//    public OffsetList<BrowsingProduct> getBrowsingProducts(
-//            @PathVariable("customer_id") String customerId,
-//            @RequestParam(required = false, name = "browsing_time") Date browsingTime,
-//            @RequestParam(defaultValue = "0") int offset,
-//            @RequestParam(defaultValue = "20") int limit) {
-//        return this.browsingProductService
-//                .getBrowsingProducts(
-//                        BrowsingProductQuery
-//                                .builder()
-//                                .customerId(customerId)
-//                                .browsingTime(browsingTime)
-//                                .offset(offset)
-//                                .limit(limit)
-//                                .build());
-//    }
+    @GetMapping("/browsing_products")
+    public SliceList<BrowsingProduct> getBrowsingProducts(
+            @RequestParam(name = "browser_id", required = false) String browserId,
+            @RequestParam(name = "browsing_time", required = false) Date browsingTime,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int limit) {
+        var query = this.browsingProductService.createBrowsingProductQuery()
+                .toBuilder().page(page).limit(limit).browserId(browserId).browsingTime(browsingTime).build();
+        return this.browsingProductService.getBrowsingProducts(query);
+    }
 
-    @GetMapping("/customers/{customer_id}/browsing_products/count")
-    public long getBrowsingProductCount(@PathVariable("customer_id") String customerId) {
-//        return this.browsingProductService.getBrowsingProductCount(customerId);
-        return 0;
+    @GetMapping("/browsing_products/count")
+    public long getBrowsingProductCount(@RequestParam(name = "browser_id", required = false) String browserId,
+                                        @RequestParam(name = "browsing_time", required = false) Date browsingTime) {
+        var query = this.browsingProductService.createBrowsingProductQuery()
+                .toBuilder().browserId(browserId).browsingTime(browsingTime).build();
+        return this.browsingProductService.getBrowsingProductCount(query);
     }
 
 }
