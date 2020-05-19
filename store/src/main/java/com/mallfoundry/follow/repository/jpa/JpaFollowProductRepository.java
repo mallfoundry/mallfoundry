@@ -16,22 +16,39 @@
 
 package com.mallfoundry.follow.repository.jpa;
 
+import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.follow.FollowProductQuery;
 import com.mallfoundry.follow.FollowProductRepository;
 import com.mallfoundry.follow.InternalFollowProduct;
 import com.mallfoundry.follow.InternalFollowProductId;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
 @Repository
 public interface JpaFollowProductRepository extends
-        FollowProductRepository, JpaRepository<InternalFollowProduct, InternalFollowProductId> {
+        FollowProductRepository,
+        JpaRepository<InternalFollowProduct, InternalFollowProductId>,
+        JpaSpecificationExecutor<InternalFollowProduct> {
 
     @Override
-    default SliceList<InternalFollowProduct> findAll(FollowProductQuery query) {
-        return null;
+    default SliceList<InternalFollowProduct> findAll(FollowProductQuery followQuery) {
+
+        Page<InternalFollowProduct> page = this.findAll((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(followQuery.getFollowerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
+            }
+            return predicate;
+        }, PageRequest.of(followQuery.getPage() - 1, followQuery.getLimit()));
+        return PageList.of(page.getContent()).page(page.getNumber()).limit(followQuery.getLimit()).totalSize(page.getTotalElements());
     }
 
     @Override

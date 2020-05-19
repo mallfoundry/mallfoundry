@@ -16,9 +16,10 @@
 
 package com.mallfoundry.follow.rest;
 
+import com.mallfoundry.data.SliceList;
 import com.mallfoundry.follow.DefaultFollowService;
 import com.mallfoundry.follow.FollowProduct;
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +33,8 @@ public class FollowResourceV1 {
 
     private final DefaultFollowService followService;
 
-    private final ProductService productService;
-
-    public FollowResourceV1(DefaultFollowService followService, ProductService productService) {
+    public FollowResourceV1(DefaultFollowService followService) {
         this.followService = followService;
-        this.productService = productService;
     }
 
     @PostMapping("/customer/following-products/{product_id}")
@@ -53,11 +51,11 @@ public class FollowResourceV1 {
     public boolean checkFollowingProduct(@PathVariable("product_id") String productId) {
         return this.followService.checkFollowingProduct(productId);
     }
-//
-//    @GetMapping("/customers/{customer_id}/following_products")
-//    public List<String> getFollowProducts(@PathVariable("customer_id") String customerId) {
-//        return this.followService.getFollowingProducts(new CustomerId(customerId));
-//    }
+
+    @GetMapping("/customer/following-products")
+    public SliceList<FollowProduct> getFollowProducts() {
+        return this.followService.getFollowingProducts(this.followService.createFollowProductQuery().toBuilder().followerId(SecurityUserHolder.getUserId()).build());
+    }
 //
 //    @GetMapping("/customers/{customer_id}/following_products/count")
 //    public long getFollowingProductCount(@PathVariable("customer_id") String customerId) {
