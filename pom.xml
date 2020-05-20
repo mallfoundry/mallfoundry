@@ -65,7 +65,6 @@
         <module>identity</module>
         <module>security</module>
         <module>storage</module>
-        <module>discuss</module>
         <module>store</module>
         <module>catalog</module>
         <module>customer</module>
@@ -188,12 +187,6 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-storage</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.mallfoundry</groupId>
-                <artifactId>mall-discuss</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
