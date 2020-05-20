@@ -46,6 +46,7 @@
     <modules>
         <!-- api modules -->
         <module>commons-api</module>
+        <module>customer-api</module>
         <module>storage-api</module>
         <module>store-api</module>
         <module>order-api</module>
@@ -56,6 +57,8 @@
         <module>dom-api</module>
         <module>security-api</module>
 
+        <module>analyze</module>
+        <module>app</module>
         <module>commons</module>
         <module>autoconfigure</module>
         <module>core</module>
@@ -67,12 +70,9 @@
         <module>catalog</module>
         <module>customer</module>
         <module>order</module>
-        <module>search</module>
-        <module>app</module>
         <module>trade</module>
         <module>shipping</module>
         <module>payment</module>
-        <module>analyze</module>
         <module>spring-boot</module>
 
         <!-- rest modules-->
@@ -81,7 +81,6 @@
         <module>shipping-rest</module>
         <module>order-rest</module>
         <module>identity-rest</module>
-        <module>customer-api</module>
         <module>customer-rest</module>
     </modules>
 
