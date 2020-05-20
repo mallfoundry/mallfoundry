@@ -18,7 +18,7 @@ package com.mallfoundry.follow;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.StoreId;
+import com.mallfoundry.store.StoreService;
 import com.mallfoundry.store.product.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,18 @@ public class DefaultFollowService implements FollowService {
 
     private final ProductService productService;
 
+    private final StoreService storeService;
+
     private final FollowProductRepository followProductRepository;
 
     private final FollowStoreRepository followStoreRepository;
 
     public DefaultFollowService(ProductService productService,
+                                StoreService storeService,
                                 FollowProductRepository followProductRepository,
                                 FollowStoreRepository followStoreRepository) {
         this.productService = productService;
+        this.storeService = storeService;
         this.followProductRepository = followProductRepository;
         this.followStoreRepository = followStoreRepository;
     }
@@ -94,35 +98,50 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public void followingStore(FollowerId followerId, StoreId storeId) {
-//        var mapping = new FollowStoreMapping(followerId.getIdentifier(), storeId.getIdentifier());
-//        if (!this.followStoreRepository.exists(mapping)) {
-//            throw new FollowException("The follower has followed to this store");
-//        }
-//        this.followStoreRepository.save(mapping);
+    public long getProductFollowerCount(String productId) {
+        return this.followProductRepository.countById(productId);
     }
 
     @Override
-    public void unfollowingStore(FollowerId followerId, StoreId storeId) {
-        var id = new InternalFollowStoreId(followerId.getIdentifier(), storeId.getIdentifier());
+    public void followingStore(String storeId) {
+        var followerId = SecurityUserHolder.getUserId();
+        var id = new InternalFollowStoreId(followerId, storeId);
+        if (!this.followStoreRepository.existsById(id)) {
+            throw new FollowException("The follower has followed to this store");
+        }
+        var store = this.storeService.getStore(storeId).orElseThrow();
+        var followStore = new InternalFollowStore(followerId, storeId);
+        followStore.setLogoUrl(store.getLogoUrl());
+        followStore.setName(store.getName());
+        this.followStoreRepository.save(followStore);
+    }
+
+    @Override
+    public void unfollowingStore(String storeId) {
+        var id = new InternalFollowStoreId(SecurityUserHolder.getUserId(), storeId);
         var followStore = this.followStoreRepository.findById(id).orElseThrow();
         this.followStoreRepository.delete(followStore);
     }
 
     @Override
-    public boolean checkFollowingStore(FollowerId followerId, StoreId storeId) {
-        var id = new InternalFollowStoreId(followerId.getIdentifier(), storeId.getIdentifier());
+    public boolean checkFollowingStore(String storeId) {
+        var id = new InternalFollowStoreId(SecurityUserHolder.getUserId(), storeId);
         return this.followStoreRepository.existsById(id);
     }
 
     @Override
     public SliceList<FollowStore> getFollowingStores(FollowStoreQuery query) {
-        return null;
+        return CastUtils.cast(this.followStoreRepository.findAll(query));
     }
 
     @Override
     public long getFollowingStoreCount(FollowStoreQuery query) {
-        return 0;
+        return this.followStoreRepository.count(query);
+    }
+
+    @Override
+    public long getStoreFollowerCount(String storeId) {
+        return this.followStoreRepository.countById(storeId);
     }
 
 }

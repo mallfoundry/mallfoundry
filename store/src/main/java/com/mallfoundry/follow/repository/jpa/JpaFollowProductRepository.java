@@ -40,7 +40,6 @@ public interface JpaFollowProductRepository extends
 
     @Override
     default SliceList<InternalFollowProduct> findAll(FollowProductQuery followQuery) {
-
         Page<InternalFollowProduct> page = this.findAll((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {

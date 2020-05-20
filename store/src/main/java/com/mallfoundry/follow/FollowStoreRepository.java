@@ -16,15 +16,23 @@
 
 package com.mallfoundry.follow;
 
+import com.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface FollowStoreRepository {
 
     Optional<InternalFollowStore> findById(InternalFollowStoreId storeId);
 
-    InternalFollowStore save(InternalFollowStore mapping);
+    InternalFollowStore save(InternalFollowStore followStore);
 
     boolean existsById(InternalFollowStoreId storeId);
 
-    void delete(InternalFollowStore mapping);
+    void delete(InternalFollowStore followStore);
+
+    SliceList<InternalFollowStore> findAll(FollowStoreQuery query);
+
+    long count(FollowStoreQuery query);
+
+    long countById(String id);
 }

@@ -17,6 +17,7 @@
 package com.mallfoundry.follow;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "follow_stores")
 @IdClass(InternalFollowStoreId.class)
@@ -50,4 +52,9 @@ public class InternalFollowStore implements FollowStore {
     @Column(name = "follow_time_")
     private Date followTime;
 
+    public InternalFollowStore(String followerId, String id) {
+        this.followerId = followerId;
+        this.id = id;
+        this.followTime = new Date();
+    }
 }

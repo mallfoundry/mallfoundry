@@ -34,4 +34,6 @@ public interface FollowProductRepository {
     SliceList<InternalFollowProduct> findAll(FollowProductQuery query);
 
     long count(FollowProductQuery query);
+
+    long countById(String id);
 }
