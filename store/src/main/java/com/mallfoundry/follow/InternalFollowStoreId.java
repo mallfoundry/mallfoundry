@@ -1,6 +1,7 @@
 package com.mallfoundry.follow;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class InternalFollowStoreId implements Serializable {
 
     private String followerId;

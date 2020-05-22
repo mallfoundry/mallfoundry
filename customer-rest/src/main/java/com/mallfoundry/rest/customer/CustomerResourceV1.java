@@ -19,6 +19,7 @@ package com.mallfoundry.rest.customer;
 import com.mallfoundry.customer.Customer;
 import com.mallfoundry.customer.CustomerService;
 import com.mallfoundry.customer.ShippingAddress;
+import com.mallfoundry.security.SecurityUserHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,11 @@ public class CustomerResourceV1 {
 
     public CustomerResourceV1(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @GetMapping("/customer")
+    public Optional<CustomerResponse> getCustomer() {
+        return this.customerService.getCustomer(SecurityUserHolder.getUserId()).map(CustomerResponse::new);
     }
 
     @GetMapping("/customers/{customer_id}")

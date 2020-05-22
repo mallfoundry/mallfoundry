@@ -1,4 +1,4 @@
-package com.mallfoundry.order.rest;
+package com.mallfoundry.rest.order;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

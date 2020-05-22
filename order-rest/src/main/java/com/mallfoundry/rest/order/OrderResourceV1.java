@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order.rest;
+package com.mallfoundry.rest.order;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.order.CustomerValidException;
-import com.mallfoundry.order.InternalOrderService;
 import com.mallfoundry.order.Order;
 import com.mallfoundry.order.OrderItem;
+import com.mallfoundry.order.OrderService;
 import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
 import com.mallfoundry.order.ShippingAddress;
@@ -44,9 +43,9 @@ import java.util.stream.Stream;
 @RequestMapping("/v1")
 public class OrderResourceV1 {
 
-    private final InternalOrderService orderService;
+    private final OrderService orderService;
 
-    public OrderResourceV1(InternalOrderService orderService) {
+    public OrderResourceV1(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -78,7 +77,7 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders/batch")
-    public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) throws CustomerValidException {
+    public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) {
         return this.orderService.checkout(this.createOrders(request));
     }
 
@@ -119,7 +118,7 @@ public class OrderResourceV1 {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         var shipment = order.getShipment(shipmentId).orElseThrow();
         this.requestToShipment(request, shipment);
-        this.orderService.saveOrder(order);
+        this.orderService.checkout(order);
     }
 
     @PatchMapping("/orders/{order_id}/shipments/batch")
@@ -130,7 +129,7 @@ public class OrderResourceV1 {
             var shipment = order.getShipment(request.getId()).orElseThrow();
             this.requestToShipment(request, shipment);
         }
-        this.orderService.saveOrder(order);
+        this.orderService.checkout(order);
     }
 
     @PatchMapping("/orders/{order_id}")
@@ -148,7 +147,7 @@ public class OrderResourceV1 {
         if (request.isDiscountShippingCostsChanged()) {
             order.discountShippingCosts(request.getDiscountShippingCosts());
         }
-        this.orderService.saveOrder(order);
+        this.orderService.checkout(order);
     }
 
     @PostMapping("/orders/{order_id}/cancel")

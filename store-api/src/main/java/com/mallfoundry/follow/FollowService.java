@@ -10,11 +10,11 @@ public interface FollowService {
 
     FollowStoreQuery createFollowStoreQuery();
 
-    FollowProduct followingProduct(String productId);
+    FollowProduct followingProduct(String followerId, String productId);
 
-    void unfollowingProduct(String productId);
+    void unfollowingProduct(String followerId, String productId);
 
-    boolean checkFollowingProduct(String productId);
+    boolean checkFollowingProduct(String followerId, String productId);
 
     SliceList<FollowProduct> getFollowingProducts(FollowProductQuery query);
 
@@ -22,11 +22,11 @@ public interface FollowService {
 
     long getProductFollowerCount(String productId);
 
-    void followingStore(String storeId);
+    void followingStore(String followerId, String storeId);
 
-    void unfollowingStore(String storeId);
+    void unfollowingStore(String followerId, String storeId);
 
-    boolean checkFollowingStore(String storeId);
+    boolean checkFollowingStore(String followerId, String storeId);
 
     SliceList<FollowStore> getFollowingStores(FollowStoreQuery query);
 

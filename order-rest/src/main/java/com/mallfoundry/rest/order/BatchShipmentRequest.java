@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order.rest;
+package com.mallfoundry.rest.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class AddShipmentRequest extends ShipmentRequest {
-
-    @JsonProperty("item_ids")
-    private List<String> itemIds;
+public class BatchShipmentRequest extends ShipmentRequest {
+    private String id;
 }

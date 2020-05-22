@@ -40,17 +40,17 @@ public class FollowResourceV1 {
 
     @PostMapping("/customer/following-products/{product_id}")
     public FollowProduct followingProduct(@PathVariable("product_id") String productId) {
-        return this.followService.followingProduct(productId);
+        return this.followService.followingProduct(SecurityUserHolder.getUserId(), productId);
     }
 
     @DeleteMapping("/customer/following-products/{product_id}")
     public void unfollowingProduct(@PathVariable("product_id") String productId) {
-        this.followService.unfollowingProduct(productId);
+        this.followService.unfollowingProduct(SecurityUserHolder.getUserId(), productId);
     }
 
     @GetMapping("/customer/following-products/{product_id}")
     public boolean checkFollowingProduct(@PathVariable("product_id") String productId) {
-        return this.followService.checkFollowingProduct(productId);
+        return this.followService.checkFollowingProduct(SecurityUserHolder.getUserId(), productId);
     }
 
     @GetMapping("/customer/following-products")
@@ -72,21 +72,21 @@ public class FollowResourceV1 {
 
     @PostMapping("/customer/following-stores/{store_id}")
     public void followingStore(@PathVariable("store_id") String storeId) {
-        this.followService.followingStore(storeId);
+        this.followService.followingStore(SecurityUserHolder.getUserId(), storeId);
     }
 
     @DeleteMapping("/customer/following-stores/{store_id}")
     public void unfollowingStore(@PathVariable("store_id") String storeId) {
-        this.followService.unfollowingStore(storeId);
+        this.followService.unfollowingStore(SecurityUserHolder.getUserId(), storeId);
     }
 
     @GetMapping("/customer/following-stores/{store_id}")
     public boolean checkFollowingStore(@PathVariable("store_id") String storeId) {
-        return this.followService.checkFollowingStore(storeId);
+        return this.followService.checkFollowingStore(SecurityUserHolder.getUserId(), storeId);
     }
 
     @GetMapping("/customer/following-stores")
-    public SliceList<FollowStore> getFollowStores(@PathVariable("customer_id") String customerId) {
+    public SliceList<FollowStore> getFollowStores() {
         return this.followService.getFollowingStores(this.followService.createFollowStoreQuery()
                 .toBuilder().followerId(SecurityUserHolder.getUserId()).build());
     }
