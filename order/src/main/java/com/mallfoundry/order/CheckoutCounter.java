@@ -16,7 +16,7 @@
 
 package com.mallfoundry.order;
 
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.rest.store.product.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
