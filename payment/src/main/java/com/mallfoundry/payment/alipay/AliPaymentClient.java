@@ -118,7 +118,7 @@ public class AliPaymentClient implements PaymentClient {
 
     @Override
     public boolean supportsPayment(Payment payment) {
-        return "alipay".equalsIgnoreCase(payment.getSource().getType());
+        return "alipay".equalsIgnoreCase(payment.getInstrument().getType());
     }
 
     @Override

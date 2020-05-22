@@ -17,6 +17,8 @@
 package com.mallfoundry.rest.store;
 
 import com.mallfoundry.data.SliceList;
+import com.mallfoundry.store.Store;
+import com.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

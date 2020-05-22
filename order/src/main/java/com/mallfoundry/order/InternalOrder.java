@@ -270,18 +270,7 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void awaitingPayment(PaymentDetails details) throws OrderException {
-        if (!this.isAwaitingPayment()) {
-            throw new OrderException(
-                    String.format("The order(%s) status is '%s', Payment process cannot be started.",
-                            this.getId(), this.getStatus()));
-        }
-
-        this.setStatus(AWAITING_PAYMENT);
-        this.setPaymentDetails(InternalPaymentDetails.of(details));
-    }
-
-    public void confirmPayment(PaymentDetails details) {
+    public void pay(PaymentDetails details) {
         this.setPaymentDetails(InternalPaymentDetails.of(details));
         if (details.getStatus() == PaymentStatus.CAPTURED) {
             this.setStatus(AWAITING_FULFILLMENT);

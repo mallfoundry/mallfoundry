@@ -19,7 +19,7 @@ package com.mallfoundry.order;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.rest.store.product.ProductService;
+import com.mallfoundry.store.product.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,6 +147,12 @@ public class InternalOrderService implements OrderService {
     @Override
     public SliceList<Order> getOrders(OrderQuery query) {
         return CastUtils.cast(this.orderRepository.findAll(query));
+    }
+
+    @Transactional
+    @Override
+    public void payOrder(String orderId, PaymentDetails details) {
+        this.orderRepository.findById(orderId).orElseThrow().pay(details);
     }
 
     @Transactional

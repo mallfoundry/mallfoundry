@@ -53,7 +53,7 @@ public class PaymentResourceV1 {
                         .amount(request.getAmount())
                         .reference(request.getReference())
                         .metadata(request.getMetadata())
-                        .source(this.paymentService.createPaymentSource(request.getSource().getType()))
+                        .instrument(this.paymentService.createInstrument(request.getInstrument().getType()))
                         .build());
         var entity = new EntityModel<>(payment, linkTo(methodOn(this.getClass()).getPayment(payment.getId())).withSelfRel());
         this.paymentService

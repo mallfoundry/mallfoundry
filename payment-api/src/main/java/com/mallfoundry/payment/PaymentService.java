@@ -6,7 +6,7 @@ public interface PaymentService {
 
     Payment createPayment();
 
-    PaymentSource createPaymentSource(String type);
+    Instrument createInstrument(String type);
 
     Payment savePayment(Payment payment);
 

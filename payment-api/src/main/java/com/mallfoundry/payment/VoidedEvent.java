@@ -1,4 +1,4 @@
 package com.mallfoundry.payment;
 
-public interface VoidedEvent {
+public interface VoidedEvent extends PaymentEvent {
 }

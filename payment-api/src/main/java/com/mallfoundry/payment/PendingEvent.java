@@ -1,8 +1,4 @@
 package com.mallfoundry.payment;
 
-public interface PendingEvent {
-
-    Payment getPayment();
-
-    long getTimestamp();
+public interface PendingEvent extends PaymentEvent {
 }

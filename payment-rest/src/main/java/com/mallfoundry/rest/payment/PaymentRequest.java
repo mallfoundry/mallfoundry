@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 public class PaymentRequest {
 
-    private PaymentSourceRequest source = new PaymentSourceRequest();
+    private PaymentInstrumentRequest instrument = new PaymentInstrumentRequest();
 
     private BigDecimal amount;
 
@@ -21,7 +21,7 @@ public class PaymentRequest {
 
     @Getter
     @Setter
-    static class PaymentSourceRequest {
+    static class PaymentInstrumentRequest {
         private String type;
     }
 }

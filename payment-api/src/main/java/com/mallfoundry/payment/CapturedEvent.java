@@ -1,4 +1,4 @@
 package com.mallfoundry.payment;
 
-public interface CapturedEvent {
+public interface CapturedEvent extends PaymentEvent {
 }

@@ -17,8 +17,10 @@
 package com.mallfoundry.order;
 
 import com.mallfoundry.payment.CapturedEvent;
+import com.mallfoundry.payment.Payment;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.util.StringUtils;
 
 @Configuration
 public class PaymentEventListener {
@@ -29,10 +31,15 @@ public class PaymentEventListener {
         this.orderService = orderService;
     }
 
+    private PaymentDetails createPaymentDetails(Payment payment) {
+        var instrument = payment.getInstrument();
+        return new InternalPaymentDetails(payment.getId(), instrument.getType(), payment.getStatus());
+    }
+
     @EventListener
-    public void paid(CapturedEvent event) {
-//        this.orderService.
-//        this.orderService.getOrder(event)
-//        this.orderService.confirmPayment(event.getOrder());
+    public void handleCaptured(CapturedEvent event) {
+        var payment = event.getPayment();
+        StringUtils.commaDelimitedListToSet(payment.getReference())
+                .forEach(orderId -> this.orderService.payOrder(orderId, createPaymentDetails(payment)));
     }
 }

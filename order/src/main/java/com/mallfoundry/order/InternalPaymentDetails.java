@@ -16,8 +16,6 @@
 
 package com.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.payment.PaymentProviderType;
 import com.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,20 +33,19 @@ import javax.persistence.Enumerated;
 @Embeddable
 public class InternalPaymentDetails implements PaymentDetails {
 
-    @JsonProperty("order_id")
-    @Column(name = "payment_order_id_")
-    private Long orderId;
+    @Column(name = "payment_id_")
+    private String paymentId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_provider_")
-    private PaymentProviderType provider;
+    private String provider;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status_")
     private PaymentStatus status;
 
-    public InternalPaymentDetails(Long orderId, PaymentProviderType provider, PaymentStatus status) {
-        this.orderId = orderId;
+    public InternalPaymentDetails(String paymentId, String provider, PaymentStatus status) {
+        this.paymentId = paymentId;
         this.provider = provider;
         this.status = status;
     }

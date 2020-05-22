@@ -76,9 +76,7 @@ public interface Order {
 
     void pending();
 
-    void awaitingPayment(PaymentDetails details);
-
-    void confirmPayment(PaymentDetails details);
+    void pay(PaymentDetails details);
 
     void cancel(String reason);
 }

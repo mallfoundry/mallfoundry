@@ -1,5 +1,8 @@
 package com.mallfoundry.rest.store;
 
+import com.mallfoundry.store.CollectionService;
+import com.mallfoundry.store.CustomCollection;
+import com.mallfoundry.store.StoreService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

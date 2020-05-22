@@ -30,8 +30,8 @@ public class InternalPaymentService implements PaymentService {
     }
 
     @Override
-    public PaymentSource createPaymentSource(String type) {
-        return new InternalPaymentSource(type);
+    public Instrument createInstrument(String type) {
+        return new InternalInstrument(type);
     }
 
     @Transactional
