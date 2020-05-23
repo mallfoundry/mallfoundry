@@ -86,7 +86,7 @@ public class DefaultCartService implements CartService {
 
     @Transactional
     @Override
-    public void saveCartItem(String id, CartItem newItem) {
+    public void setCartItem(String id, CartItem newItem) {
         var cart = this.getInternalCart(id).orElseThrow();
         cart.addItem(setCartItem(newItem));
     }

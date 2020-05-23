@@ -74,6 +74,11 @@ public class InternalProductService implements ProductService {
         return variant;
     }
 
+    @Override
+    public InventoryAdjustment createInventoryAdjustment() {
+        return null;
+    }
+
     @Transactional
     @Override
     public Product saveProduct(Product product) {
@@ -91,6 +96,14 @@ public class InternalProductService implements ProductService {
         }
         this.eventPublisher.publishEvent(new InternalProductSavedEvent(savedProduct));
         return savedProduct;
+    }
+
+    @Transactional
+    @Override
+    public void adjustInventory(InventoryAdjustment adjustment) {
+        var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
+        var variant = product.getVariant(adjustment.getVariantId()).orElseThrow();
+        variant.adjustInventoryQuantity(adjustment.getQuantity());
     }
 
     @Transactional

@@ -48,8 +48,8 @@ public class CartResourceV1 {
     }
 
     @PatchMapping("/carts/{id}/items/{item_id}")
-    public void saveCartItem(@PathVariable("token") String id, @PathVariable("item_id") String itemId, @RequestBody CartItemRequest request) {
-        this.cartRestService.saveCartItem(id, itemId, request);
+    public void setCartItem(@PathVariable("token") String id, @PathVariable("item_id") String itemId, @RequestBody CartItemRequest request) {
+        this.cartRestService.setCartItem(id, itemId, request);
     }
 
     @GetMapping("/carts/{id}")

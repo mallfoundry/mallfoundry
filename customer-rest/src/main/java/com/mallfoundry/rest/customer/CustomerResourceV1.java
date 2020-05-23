@@ -105,8 +105,8 @@ public class CustomerResourceV1 {
             address.setMobile(request.getMobile());
         }
 
-        if (StringUtils.isNotBlank(request.getZipCode())) {
-            address.setZipCode(request.getZipCode());
+        if (StringUtils.isNotBlank(request.getZip())) {
+            address.setZip(request.getZip());
         }
 
         if (address.isDefaulted() != request.isDefaulted()) {

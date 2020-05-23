@@ -24,8 +24,7 @@ public class CreateOrderRequest {
         @JsonProperty("country_code")
         private String countryCode;
         private String mobile;
-        @JsonProperty("postal_code")
-        private String postalCode;
+        private String zip;
         private String address;
         private String location;
     }

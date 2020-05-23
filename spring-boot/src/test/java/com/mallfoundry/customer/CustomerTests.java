@@ -45,7 +45,7 @@ public class CustomerTests {
                 InternalShippingAddress.builder()
                         .firstName("治").lastName("唐")
                         .mobile("1888888888")
-                        .zipCode("2500000")
+                        .zip("2500000")
                         .countryCode("86")
                         .location("001,220,3222,333")
                         .address("山东省 济南市 历城区023号")

@@ -56,7 +56,7 @@ public class CartRestService {
     }
 
     @Transactional
-    public void saveCartItem(String id, String itemId, CartItemRequest request) {
+    public void setCartItem(String id, String itemId, CartItemRequest request) {
         var item = this.cartService.getCart(id).orElseThrow().getItem(itemId).orElseThrow().toBuilder()
                 .productId(request.getProductId())
                 .variantId(request.getVariantId())
@@ -64,7 +64,7 @@ public class CartRestService {
                 .name(request.getName())
                 .imageUrl(request.getImageUrl())
                 .build();
-        this.cartService.saveCartItem(id, item);
+        this.cartService.setCartItem(id, item);
     }
 
     public void removeCartItem(String id, String itemId) {

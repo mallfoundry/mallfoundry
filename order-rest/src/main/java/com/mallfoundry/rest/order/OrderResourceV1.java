@@ -52,7 +52,7 @@ public class OrderResourceV1 {
     private ShippingAddress createShippingAddress(CreateOrderRequest.ShippingAddressRequest request) {
         return Objects.isNull(request) ? null :
                 this.orderService.createShippingAddress().toBuilder()
-                        .countryCode(request.getCountryCode()).postalCode(request.getPostalCode())
+                        .countryCode(request.getCountryCode()).zip(request.getZip())
                         .firstName(request.getFirstName()).lastName(request.getLastName())
                         .mobile(request.getMobile())
                         .address(request.getAddress()).location(request.getLocation()).build();

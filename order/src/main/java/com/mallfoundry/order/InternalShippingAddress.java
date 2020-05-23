@@ -35,8 +35,7 @@ public class InternalShippingAddress implements ShippingAddress {
 
     private String mobile;
 
-    @JsonProperty("postal_code")
-    private String postalCode;
+    private String zip;
 
     private String address;
 

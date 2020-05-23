@@ -43,6 +43,9 @@ public class InternalStore implements Store {
     @Column(name = "name_")
     private String name;
 
+    @Column(name = "domain_")
+    private String domain;
+
     @JsonProperty("logo_url")
     @Column(name = "logo_url_")
     private String logoUrl;

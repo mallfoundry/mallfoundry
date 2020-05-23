@@ -14,10 +14,13 @@ public interface ProductService {
 
     ProductVariant createProductVariant();
 
-    Product saveProduct(Product product);
+    InventoryAdjustment createInventoryAdjustment();
 
     Optional<Product> getProduct(String id);
 
     SliceList<Product> getProducts(ProductQuery query);
 
+    Product saveProduct(Product product);
+
+    void adjustInventory(InventoryAdjustment adjustment);
 }

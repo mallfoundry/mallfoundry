@@ -1,9 +1,9 @@
-package com.mallfoundry.marketing.banner;
+package com.mallfoundry.catalog;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum BannerPage {
-    HOME_PAGE, CATEGORY_PAGE, BRAND_PAGE, SEARCH_PAGE;
+public enum CategoryVisibility {
+    VISIBLE, HIDDEN;
 
     @JsonValue
     @Override

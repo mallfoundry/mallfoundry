@@ -1,10 +1,18 @@
-package com.mallfoundry.customer;
+package com.mallfoundry.store;
 
 import java.util.Date;
 
-public interface ShippingAddress {
+public interface Location {
 
     String getId();
+
+    boolean isDefaulted();
+
+    void setDefaulted(boolean defaulted);
+
+    boolean isActive();
+
+    void setActive(boolean active);
 
     String getFirstName();
 
@@ -33,10 +41,6 @@ public interface ShippingAddress {
     String getAddress();
 
     void setAddress(String address);
-
-    boolean isDefaulted();
-
-    void setDefaulted(boolean defaulted);
 
     Date getCreatedTime();
 }

@@ -52,8 +52,8 @@ public class InternalShippingAddress implements ShippingAddress {
     @Column(name = "mobile_")
     private String mobile;
 
-    @Column(name = "zip_code_")
-    private String zipCode;
+    @Column(name = "zip_")
+    private String zip;
 
     @Column(name = "location_")
     private String location;
@@ -121,8 +121,8 @@ public class InternalShippingAddress implements ShippingAddress {
             return this;
         }
 
-        public Builder zipCode(String zipCode) {
-            this.address.setZipCode(zipCode);
+        public Builder zip(String zip) {
+            this.address.setZip(zip);
             return this;
         }
 

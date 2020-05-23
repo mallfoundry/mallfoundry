@@ -12,6 +12,10 @@ public interface Store {
 
     void setName(String name);
 
+    String getDomain();
+
+    void setDomain(String domain);
+
     String getLogoUrl();
 
     void setLogoUrl(String logoUrl);

@@ -20,9 +20,9 @@ public interface ShippingAddress extends Serializable {
 
     void setMobile(String mobile);
 
-    String getPostalCode();
+    String getZip();
 
-    void setPostalCode(String postalCode);
+    void setZip(String zip);
 
     String getAddress();
 
@@ -63,8 +63,8 @@ public interface ShippingAddress extends Serializable {
             return this;
         }
 
-        public Builder postalCode(String postalCode) {
-            this.address.setPostalCode(postalCode);
+        public Builder zip(String zip) {
+            this.address.setZip(zip);
             return this;
         }
 

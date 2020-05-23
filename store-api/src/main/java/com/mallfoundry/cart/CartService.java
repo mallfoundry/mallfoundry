@@ -15,7 +15,7 @@ public interface CartService {
 
     void addCartItem(String id, CartItem item);
 
-    void saveCartItem(String id, CartItem item);
+    void setCartItem(String id, CartItem item);
 
     void removeCartItem(String id, String itemId);
 

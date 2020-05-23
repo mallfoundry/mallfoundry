@@ -85,6 +85,19 @@ public class InternalProductVariant implements ProductVariant {
     }
 
     @Override
+    public void setInventoryQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new RuntimeException("");
+        }
+        this.inventoryQuantity = quantity;
+    }
+
+    @Override
+    public void adjustInventoryQuantity(int adjustQuantity) {
+        this.setInventoryQuantity(this.inventoryQuantity + adjustQuantity);
+    }
+
+    @Override
     public InventoryStatus getInventoryStatus() {
         return this.getInventoryQuantity() == 0 ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK;
     }

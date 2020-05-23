@@ -44,6 +44,7 @@ public class InternalBanner implements Banner {
     @Column(name = "date_to_")
     private Date dateTo;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "location_")
     private BannerLocation location;
 

@@ -61,8 +61,12 @@ public class InternalCart implements Cart {
 
     @Override
     public void addItem(CartItem newItem) {
-        this.items.remove(newItem);
         this.items.add(newItem);
+    }
+
+    @Override
+    public void setItem(CartItem newItem) {
+        this.items.remove(newItem);
     }
 
     @Override
