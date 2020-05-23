@@ -48,6 +48,11 @@
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-marketing</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
             <artifactId>mall-storage</artifactId>
         </dependency>
 
@@ -114,6 +119,11 @@
         <dependency>
             <groupId>com.mallfoundry</groupId>
             <artifactId>mall-identity-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-marketing-rest</artifactId>
         </dependency>
 
         <dependency>

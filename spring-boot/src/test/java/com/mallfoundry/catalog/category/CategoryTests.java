@@ -61,25 +61,25 @@ public class CategoryTests {
     @Test
     public void testLocalCategoriesToRepository() throws Exception {
 
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource resource = resolver.getResource("classpath:/categories.json");
-        String jsonString = IOUtils.toString(resource.getURI(), StandardCharsets.UTF_8);
-
-        List<ChildCategory> categories = JsonUtils.parse(jsonString, List.class, ChildCategory.class);
-        for (ChildCategory category1 : categories) {
-            Category topCategory = this.categoryService.createTopCategory(category1.getName());
-
-            for (ChildCategory category2 : category1.getChildren()) {
-                ChildCategory category22 = topCategory.createChildCategory(category2.getName());
-                topCategory.addChildCategory(category22);
-
-                for (ChildCategory category3 : category2.getChildren()) {
-                    ChildCategory category33 = category22.createChildCategory(category3.getName());
-                    category33.setIcon(category3.getIcon());
-                    category33.setKeywords(category3.getKeywords());
-                    category22.addChildCategory(category33);
-                }
-            }
-        }
+//        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//        Resource resource = resolver.getResource("classpath:/categories.json");
+//        String jsonString = IOUtils.toString(resource.getURI(), StandardCharsets.UTF_8);
+//
+//        List<ChildCategory> categories = JsonUtils.parse(jsonString, List.class, ChildCategory.class);
+//        for (ChildCategory category1 : categories) {
+//            Category topCategory = this.categoryService.createTopCategory(category1.getName());
+//
+//            for (ChildCategory category2 : category1.getChildren()) {
+//                ChildCategory category22 = topCategory.createChildCategory(category2.getName());
+//                topCategory.addChildCategory(category22);
+//
+//                for (ChildCategory category3 : category2.getChildren()) {
+//                    ChildCategory category33 = category22.createChildCategory(category3.getName());
+//                    category33.setIcon(category3.getIcon());
+//                    category33.set(category3.getKeywords());
+//                    category22.addChildCategory(category33);
+//                }
+//            }
+//        }
     }
 }

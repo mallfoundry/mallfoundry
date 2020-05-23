@@ -22,8 +22,8 @@ public class TopCategory extends Category {
         this(name, null);
     }
 
-    public TopCategory(String name, CategoryIcon icon) {
-        super(name, icon);
+    public TopCategory(String name, String imageUrl) {
+        super(name, imageUrl);
         this.setPosition(Integer.MAX_VALUE);
     }
 }

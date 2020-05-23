@@ -40,12 +40,11 @@ public class Category implements Position {
     @Column(name = "name_")
     private String name;
 
-    @Column(name = "keywords_")
-    private String keywords;
+    @Column(name = "search_keywords_")
+    private String searchKeywords;
 
-    @JsonUnwrapped
-    @Embedded
-    private CategoryIcon icon;
+    @Column(name = "image_url_")
+    private String imageUrl;
 
     @Column(name = "position_")
     private Integer position;
@@ -58,9 +57,9 @@ public class Category implements Position {
         this.name = name;
     }
 
-    public Category(String name, CategoryIcon icon) {
-        this.setName(name);
-        this.setIcon(icon);
+    public Category(String name, String imageUrl) {
+        this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public ChildCategory createChildCategory(String name) {

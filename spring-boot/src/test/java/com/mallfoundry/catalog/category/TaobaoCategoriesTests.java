@@ -167,7 +167,7 @@ public class TaobaoCategoriesTests {
                     module.items.forEach(item -> {
                         var itemCategory = new ChildCategory(item.name);
                         try {
-                            itemCategory.setIcon(new CategoryIcon(CategoryIcon.Type.IMAGE_URL, this.getPic(item.pic)));
+                            itemCategory.setImageUrl(item.pic);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

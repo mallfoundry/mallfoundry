@@ -36,7 +36,6 @@ public class InternalPaymentDetails implements PaymentDetails {
     @Column(name = "payment_id_")
     private String paymentId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "payment_provider_")
     private String provider;
 

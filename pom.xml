@@ -46,6 +46,7 @@
     <modules>
         <!-- api modules -->
         <module>commons-api</module>
+        <module>catalog-api</module>
         <module>customer-api</module>
         <module>storage-api</module>
         <module>store-api</module>
@@ -56,6 +57,7 @@
         <module>district-api</module>
         <module>dom-api</module>
         <module>security-api</module>
+        <module>marketing-api</module>
 
         <module>analyze</module>
         <module>app</module>
@@ -72,6 +74,7 @@
         <module>trade</module>
         <module>shipping</module>
         <module>payment</module>
+        <module>marketing</module>
         <module>spring-boot</module>
 
         <!-- rest modules-->
@@ -81,6 +84,7 @@
         <module>order-rest</module>
         <module>identity-rest</module>
         <module>customer-rest</module>
+        <module>marketing-rest</module>
     </modules>
 
     <dependencyManagement>
@@ -96,6 +100,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-storage-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-marketing-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -169,6 +179,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-autoconfigure</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-marketing</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -272,6 +288,12 @@
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-order-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-marketing-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
