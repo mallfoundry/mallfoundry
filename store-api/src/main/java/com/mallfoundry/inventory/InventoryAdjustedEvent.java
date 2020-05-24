@@ -1,5 +1,7 @@
 package com.mallfoundry.inventory;
 
-public interface InventoryAdjustedEvent {
+public interface InventoryAdjustedEvent extends InventoryEvent {
+
+    InventoryAdjustment getInventoryAdjustment();
 
 }

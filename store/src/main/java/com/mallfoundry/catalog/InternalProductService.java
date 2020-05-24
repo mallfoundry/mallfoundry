@@ -68,11 +68,6 @@ public class InternalProductService implements ProductService {
         return product;
     }
 
-    @Override
-    public InventoryAdjustment createInventoryAdjustment() {
-        return null;
-    }
-
     @Transactional
     @Override
     public Product saveProduct(Product product) {
