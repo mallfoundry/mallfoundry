@@ -1,5 +1,7 @@
 package com.mallfoundry.order;
 
+import com.mallfoundry.catalog.OptionSelection;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface OrderItem {
 
     String getVariantId();
 
-    List<String> getOptionValues();
+    List<OptionSelection> getOptionSelections();
 
     String getImageUrl();
 

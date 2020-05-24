@@ -1,6 +1,7 @@
 package com.mallfoundry.cart;
 
-import com.mallfoundry.data.jpa.convert.StringListConverter;
+import com.mallfoundry.catalog.OptionSelection;
+import com.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,9 +42,9 @@ public class InternalCartItem implements CartItem {
     @Column(name = "image_url_")
     private String imageUrl;
 
-    @Column(name = "option_values_")
-    @Convert(converter = StringListConverter.class)
-    private List<String> optionValues;
+    @Column(name = "option_selections_", length = 1024)
+    @Convert(converter = OptionSelectionListConverter.class)
+    private List<OptionSelection> optionSelections;
 
     @Column(name = "quantity_")
     private int quantity;

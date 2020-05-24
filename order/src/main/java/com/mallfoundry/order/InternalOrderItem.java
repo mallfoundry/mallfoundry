@@ -16,9 +16,9 @@
 
 package com.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.data.jpa.convert.StringListConverter;
+import com.mallfoundry.catalog.OptionSelection;
+import com.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,10 +64,9 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "name_")
     private String name;
 
-    @JsonProperty("option_values")
-    @Column(name = "option_values_")
-    @Convert(converter = StringListConverter.class)
-    private List<String> optionValues;
+    @Column(name = "option_selections_", length = 1024)
+    @Convert(converter = OptionSelectionListConverter.class)
+    private List<OptionSelection> optionSelections;
 
     @Column(name = "quantity_")
     private int quantity;

@@ -68,13 +68,6 @@ public class InternalProductService implements ProductService {
     }
 
     @Override
-    public ProductVariant createProductVariant() {
-        var variant = new InternalProductVariant();
-        variant.setId(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME));
-        return variant;
-    }
-
-    @Override
     public InventoryAdjustment createInventoryAdjustment() {
         return null;
     }

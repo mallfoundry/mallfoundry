@@ -43,6 +43,16 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mallfoundry</groupId>
+            <artifactId>mall-identity</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
         </dependency>
@@ -70,16 +80,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-commons</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-identity</artifactId>
         </dependency>
 
         <dependency>

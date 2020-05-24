@@ -17,6 +17,8 @@
 package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mallfoundry.catalog.OptionSelection;
+import com.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +28,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "store_product_variants")
+@Table(name = "catalog_product_variants")
 public class InternalProductVariant implements ProductVariant {
 
     private static final long serialVersionUID = 1L;
@@ -66,13 +67,12 @@ public class InternalProductVariant implements ProductVariant {
     @Column(name = "inventory_quantity_")
     private int inventoryQuantity;
 
-    @Column(name = "option_values_")
-    @Convert(converter = StringListConverter.class)
-    private List<String> optionValues = new ArrayList<>();
+    @Column(name = "option_selections_")
+    @Convert(converter = OptionSelectionListConverter.class)
+    private List<OptionSelection> optionSelections = new ArrayList<>();
 
-    @Lob
     @Convert(converter = StringListConverter.class)
-    @Column(name = "image_urls_")
+    @Column(name = "image_urls_", length = 521)
     private List<String> imageUrls;
 
     @Column(name = "position_")

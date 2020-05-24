@@ -18,6 +18,7 @@ package com.mallfoundry.store;
 
 
 import com.mallfoundry.StaticServer;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.store.product.InternalProduct;
 import com.mallfoundry.store.product.InternalProductAttribute;
 import com.mallfoundry.store.product.InternalProductService;
@@ -33,12 +34,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class ProductTests {
 
+    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "store.product.variant.id";
+
+    private static final String PRODUCT_OPTION_ID_VALUE_NAME = "store.product.option.id";
+
+    private static final String PRODUCT_OPTION_VALUE_ID_VALUE_NAME = "store.product.option.value.id";
 
     @Autowired
     private InternalProductService productService;
@@ -89,27 +96,40 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"));
         product.addImageUrl(resolveImageUrl("777b12adea1822f6.jpg"));
 
-        product.createOption("颜色").addSimpleValues("翡冷翠", "丹霞橙");
-        product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
-        product.setCreatedTime(new Date());
+        // options
+        product.addOption(product.createOption("颜色").toBuilder().values("翡冷翠", "丹霞橙").build());
+        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "12GB 256GB").build());
+
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
-                        .optionValues(List.of("翡冷翠", "8GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "翡冷翠").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
-                        .optionValues(List.of("翡冷翠", "12GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "翡冷翠").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
-                        .optionValues(List.of("丹霞橙", "8GB 128GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "丹霞橙").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
-                        .optionValues(List.of("丹霞橙", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "丹霞橙").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
@@ -133,26 +153,39 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("cd769d2bd022de2a.jpg"));
         product.addImageUrl(resolveImageUrl("62edde5e1ef2fd85.jpg"));
 
-        product.createOption("颜色").addSimpleValues("梦之白", "钛银黑");
-        product.createOption("版本").addSimpleValues("8GB 128GB", "12GB 256GB");
+        // options
+        product.addOption(product.createOption("颜色").toBuilder().values("梦之白", "钛银黑").build());
+        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "12GB 256GB").build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.04).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.04).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
-                        .optionValues(List.of("梦之白", "8GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "梦之白").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.06).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.06).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("da769739c0a75afb.jpg"), resolveImageUrl("753768612ae90b4e.jpg")))
-                        .optionValues(List.of("梦之白", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "梦之白").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.08).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.08).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
-                        .optionValues(List.of("钛银黑", "8GB 128GB")).position(2).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "钛银黑").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(2).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("cd769d2bd022de2a.jpg"), resolveImageUrl("62edde5e1ef2fd85.jpg")))
-                        .optionValues(List.of("钛银黑", "12GB 256GB")).position(3).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "钛银黑").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(3).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
@@ -178,47 +211,75 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("e523be52552921bf.jpg"));
         product.addImageUrl(resolveImageUrl("6765a52c369741ec.jpg"));
 
-        product.createOption("颜色").addSimpleValues("钛银黑", "冰海蓝", "蜜桃金");
-        product.createOption("版本").addSimpleValues("8GB 128GB", "8GB 256GB", "12GB 256GB");
+        // options
+        product.addOption(product.createOption("颜色").toBuilder().values("钛银黑", "冰海蓝", "蜜桃金").build());
+        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "8GB 256GB", "12GB 256GB").build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
-                        .optionValues(List.of("钛银黑", "8GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "钛银黑").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.12).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.12).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
-                        .optionValues(List.of("钛银黑", "8GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "钛银黑").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.14).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.14).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6626003a708ce8ef.jpg"), resolveImageUrl("df797544001e5ba3.jpg"), resolveImageUrl("979bde1d68c3de5b.jpg")))
-                        .optionValues(List.of("钛银黑", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "钛银黑").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.16).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.16).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ad4ba55c20c6903.jpg"), resolveImageUrl("e523be52552921bf.jpg"), resolveImageUrl("6765a52c369741ec.jpg")))
-                        .optionValues(List.of("冰海蓝", "8GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "冰海蓝").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(0.18).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.18).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ad4ba55c20c6903.jpg"), resolveImageUrl("e523be52552921bf.jpg"), resolveImageUrl("6765a52c369741ec.jpg")))
-                        .optionValues(List.of("冰海蓝", "8GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "冰海蓝").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ad4ba55c20c6903.jpg"), resolveImageUrl("e523be52552921bf.jpg"), resolveImageUrl("6765a52c369741ec.jpg")))
-                        .optionValues(List.of("冰海蓝", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "冰海蓝").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6ec29e79b28d7c0b.jpg"), resolveImageUrl("05fdde3b515dae87.jpg"), resolveImageUrl("e7233f1b0e4b0c45.jpg")))
-                        .optionValues(List.of("蜜桃金", "8GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "蜜桃金").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6ec29e79b28d7c0b.jpg"), resolveImageUrl("05fdde3b515dae87.jpg"), resolveImageUrl("e7233f1b0e4b0c45.jpg")))
-                        .optionValues(List.of("蜜桃金", "8GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "蜜桃金").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("6ec29e79b28d7c0b.jpg"), resolveImageUrl("05fdde3b515dae87.jpg"), resolveImageUrl("e7233f1b0e4b0c45.jpg")))
-                        .optionValues(List.of("蜜桃金", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "蜜桃金").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
@@ -242,35 +303,56 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("8bf9144ad8c26840.jpg"));
         product.addImageUrl(resolveImageUrl("6f728a6562668d8f.jpg"));
 
-        product.createOption("颜色").addSimpleValues("雾月白", "日出印象", "蓝色星夜");
-        product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
+        // options
+        product.addOption(product.createOption("颜色").toBuilder().values("雾月白", "日出印象").build());
+        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "8GB 256GB", "12GB 256GB").build());
+
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ea203c122fb3dae.jpg"), resolveImageUrl("7eac762ed4bcb66f.jpg")))
-                        .optionValues(List.of("雾月白", "8GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "雾月白").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("0ea203c122fb3dae.jpg"), resolveImageUrl("7eac762ed4bcb66f.jpg")))
-                        .optionValues(List.of("雾月白", "12GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "雾月白").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("b72e95f6953e2f3c.jpg"), resolveImageUrl("c682d018d572c792.jpg")))
-                        .optionValues(List.of("日出印象", "8GB 256GB")).position(1).build());
-        product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("b72e95f6953e2f3c.jpg"), resolveImageUrl("c682d018d572c792.jpg")))
-                        .optionValues(List.of("日出印象", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "雾月白").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
-                        .optionValues(List.of("蓝色星夜", "8GB 256GB")).position(1).build());
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("b72e95f6953e2f3c.jpg"), resolveImageUrl("c682d018d572c792.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "日出印象").orElseThrow(),
+                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(1).build());
+
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
-                        .optionValues(List.of("蓝色星夜", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "日出印象").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(1).build());
+        product.addVariant(
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("8bf9144ad8c26840.jpg"), resolveImageUrl("6f728a6562668d8f.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "日出印象").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
@@ -292,26 +374,39 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("ec48ee3a1e78a5ce.jpg"));
         product.addImageUrl(resolveImageUrl("178e05db88b4477e.jpg"));
 
-        product.createOption("颜色").addSimpleValues("深空流光", "液态天河");
-        product.createOption("版本").addSimpleValues("8GB 256GB", "12GB 256GB");
+        product.addOption(product.createOption("颜色").toBuilder().values("深空流光", "液态天河").build());
+        product.addOption(product.createOption("版本").toBuilder().values("8GB 256GB", "12GB 256GB").build());
+
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("3c5048ac3b93dcca.png"), resolveImageUrl("3c5048ac3b93dccc.jpg")))
-                        .optionValues(List.of("深空流光", "8GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "深空流光").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("3c5048ac3b93dcca.png"), resolveImageUrl("3c5048ac3b93dccc.jpg")))
-                        .optionValues(List.of("深空流光", "12GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "深空流光").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("ec48ee3a1e78a5ce.png"), resolveImageUrl("178e05db88b4477e.jpg")))
-                        .optionValues(List.of("液态天河", "8GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "液态天河").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(1).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("ec48ee3a1e78a5ce.png"), resolveImageUrl("178e05db88b4477e.jpg")))
-                        .optionValues(List.of("液态天河", "12GB 256GB")).position(1).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "液态天河").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
@@ -335,47 +430,75 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("a95c82b7c278fe1a.jpg"));
         product.addImageUrl(resolveImageUrl("3e4ee6b91564649d.jpg"));
 
-        product.createOption("颜色").addSimpleValues("曜岩灰", "星雾蓝", "皓月金");
-        product.createOption("版本").addSimpleValues("6GB 128GB", "8GB 256GB", "12GB 256GB");
+        product.addOption(product.createOption("颜色").toBuilder().values("曜岩灰", "星雾蓝", "皓月金").build());
+        product.addOption(product.createOption("版本").toBuilder().values("6GB 128GB", "8GB 256GB", "12GB 256GB").build());
+
+
+        product.addVariant(product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME))
+                .toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
+                .optionSelections(List.of(
+                        product.selectOption("颜色", "曜岩灰").orElseThrow(),
+                        product.selectOption("版本", "6GB 128GB").orElseThrow()))
+                .position(0).build());
+        product.addVariant(
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "曜岩灰").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(0).build());
+        product.addVariant(
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "曜岩灰").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
-                        .optionValues(List.of("曜岩灰", "6GB 128GB")).position(0).build());
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "星雾蓝").orElseThrow(),
+                                product.selectOption("版本", "6GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
-                        .optionValues(List.of("曜岩灰", "8GB 256GB")).position(0).build());
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "星雾蓝").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("47fdb0779e7dad8a.png"), resolveImageUrl("5cdd0ce2N5852750d.jpg")))
-                        .optionValues(List.of("曜岩灰", "12GB 256GB")).position(0).build());
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "星雾蓝").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
-                        .optionValues(List.of("星雾蓝", "6GB 128GB")).position(0).build());
-        product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
-                        .optionValues(List.of("星雾蓝", "8GB 256GB")).position(0).build());
-        product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
-                        .imageUrls(List.of(resolveImageUrl("0d0601b02dbb38e9.png"), resolveImageUrl("5cdd0d93N3d7e0776.jpg")))
-                        .optionValues(List.of("星雾蓝", "12GB 256GB")).position(0).build());
-
-        product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
-                        .optionValues(List.of("皓月金", "6GB 128GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "皓月金").orElseThrow(),
+                                product.selectOption("版本", "6GB 128GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
-                        .optionValues(List.of("皓月金", "8GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "皓月金").orElseThrow(),
+                                product.selectOption("版本", "8GB 256GB").orElseThrow()))
+                        .position(0).build());
         product.addVariant(
-                this.productService.createProductVariant().toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("a95c82b7c278fe1a.png"), resolveImageUrl("3e4ee6b91564649d.jpg")))
-                        .optionValues(List.of("皓月金", "12GB 256GB")).position(0).build());
+                        .optionSelections(List.of(
+                                product.selectOption("颜色", "皓月金").orElseThrow(),
+                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build());
 
         product.addAttribute(new InternalProductAttribute("产地", "中国"));
         product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));

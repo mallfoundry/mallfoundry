@@ -1,6 +1,7 @@
 package com.mallfoundry.rest.cart;
 
 import com.mallfoundry.cart.CartItem;
+import com.mallfoundry.catalog.OptionSelection;
 import lombok.Getter;
 
 import java.util.Date;
@@ -13,7 +14,7 @@ public class CartItemResponse {
     private final String productId;
     private final String variantId;
     private final int quantity;
-    private final List<String> optionValues;
+    private final List<OptionSelection> optionSelections;
     private final String name;
     private final String imageUrl;
     private final Date addedTime;
@@ -24,7 +25,7 @@ public class CartItemResponse {
         this.productId = item.getProductId();
         this.variantId = item.getVariantId();
         this.quantity = item.getQuantity();
-        this.optionValues = item.getOptionValues();
+        this.optionSelections = item.getOptionSelections();
         this.name = item.getName();
         this.imageUrl = item.getImageUrl();
         this.addedTime = item.getAddedTime();

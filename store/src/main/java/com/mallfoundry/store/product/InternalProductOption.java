@@ -17,39 +17,60 @@
 package com.mallfoundry.store.product;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionValueListConverter;
+import com.mallfoundry.util.Positions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Embeddable;
+import javax.persistence.Enumerated;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Embeddable
 public class InternalProductOption implements ProductOption {
 
+    @Column(name = "name_")
     private String name;
 
+    @Column(name = "values_", length = 1024)
+    @Convert(converter = ProductOptionValueListConverter.class)
     @JsonDeserialize(contentAs = InternalProductOptionValue.class)
     private List<ProductOptionValue> values = new ArrayList<>();
 
+    @Column(name = "position_")
     private Integer position;
 
     public InternalProductOption(String name) {
-        this.setName(name);
+        this.name = name;
     }
 
-    public void addSimpleValues(List<String> values) {
-        List<ProductOptionValue> optionValues = new ArrayList<>();
-        for (String value : values) {
-            optionValues.add(new InternalProductOptionValue(value, optionValues.size()));
-        }
-        this.setValues(optionValues);
+    @Override
+    public ProductOptionValue createValue(String label) {
+        return new InternalProductOptionValue(label);
     }
 
-    public void addSimpleValues(String... values) {
-        this.addSimpleValues(Arrays.asList(values));
+    @Override
+    public Optional<ProductOptionValue> getValue(String label) {
+        return this.values.stream().filter(value -> Objects.equals(value.getLabel(), label)).findFirst();
+    }
+
+    @Override
+    public void addValue(ProductOptionValue value) {
+        this.values.add(value);
+        Positions.sort(this.values);
+    }
+
+    @Override
+    public void removeValue(ProductOptionValue value) {
+        this.values.remove(value);
     }
 }

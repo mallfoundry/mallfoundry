@@ -21,10 +21,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.mallfoundry.catalog.DefaultOptionSelection;
+import com.mallfoundry.catalog.OptionSelection;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.data.jpa.convert.StringSetConverter;
 import com.mallfoundry.store.product.repository.jpa.convert.ProductAttributeListConverter;
-import com.mallfoundry.store.product.repository.jpa.convert.ProductOptionListConverter;
 import com.mallfoundry.util.Positions;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,15 +33,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -56,7 +58,7 @@ import java.util.Set;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "store_products")
+@Table(name = "catalog_products")
 public class InternalProduct implements Product {
 
     private static final long serialVersionUID = 1L;
@@ -92,14 +94,12 @@ public class InternalProduct implements Product {
     @Column(name = "market_price_")
     private BigDecimal marketPrice;
 
-    @Lob
-    @Column(name = "options_")
-    @Convert(converter = ProductOptionListConverter.class)
+    @ElementCollection(targetClass = InternalProductOption.class)
+    @CollectionTable(name = "catalog_product_options", joinColumns = @JoinColumn(name = "product_id_"))
     @JsonDeserialize(contentAs = InternalProductOption.class)
     private List<ProductOption> options = new ArrayList<>();
 
-    @Lob
-    @Column(name = "attributes_")
+    @Column(name = "attributes_", length = 2048)
     @Convert(converter = ProductAttributeListConverter.class)
     @JsonDeserialize(contentAs = InternalProductAttribute.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
@@ -110,13 +110,11 @@ public class InternalProduct implements Product {
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
 
-    @Lob
-    @Column(name = "image_urls_")
+    @Column(name = "image_urls_", length = 2048)
     @Convert(converter = StringListConverter.class)
     private List<String> imageUrls = new ArrayList<>();
 
-    @Lob
-    @Column(name = "video_urls_")
+    @Column(name = "video_urls_", length = 2048)
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
@@ -152,7 +150,7 @@ public class InternalProduct implements Product {
 
     @JsonIgnore
     @Override
-    public String getFirstImageUrl()  {
+    public String getFirstImageUrl() {
         return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
     }
 
@@ -186,11 +184,32 @@ public class InternalProduct implements Product {
     }
 
     @Override
+    public ProductVariant createVariant(String id) {
+        var variant = new InternalProductVariant();
+        variant.setId(id);
+        return variant;
+    }
+
+    @Override
     public ProductOption createOption(String name) {
-        var option = new InternalProductOption(name);
-        option.setPosition(this.getOptions().size());
-        this.getOptions().add(option);
-        return option;
+        return new InternalProductOption(name);
+    }
+
+    @Override
+    public Optional<ProductOption> getOption(String name) {
+        return this.options.stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
+    }
+
+    @Override
+    public void addOption(ProductOption option) {
+        this.options.add(option);
+    }
+
+    @Override
+    public Optional<OptionSelection> selectOption(final String name, final String label) {
+        return this.getOption(name)
+                .flatMap(option -> option.getValue(label))
+                .map(value -> new DefaultOptionSelection(name, label));
     }
 
     @Override
@@ -204,6 +223,11 @@ public class InternalProduct implements Product {
     }
 
     @Override
+    public Optional<ProductAttribute> getAttribute(String namespace, String name) {
+        return Optional.empty();
+    }
+
+    @Override
     public void addImageUrl(String imageUrl) {
         this.getImageUrls().add(imageUrl);
     }
@@ -213,6 +237,7 @@ public class InternalProduct implements Product {
         this.getVideoUrls().add(video);
     }
 
+    //    @Override
     public void addAttribute(ProductAttribute attribute) {
         this.getAttributes().add(attribute);
         Positions.sort(this.getAttributes());

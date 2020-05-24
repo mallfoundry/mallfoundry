@@ -1,5 +1,6 @@
 package com.mallfoundry.store.product;
 
+import com.mallfoundry.catalog.OptionSelection;
 import com.mallfoundry.util.Position;
 
 import java.io.Serializable;
@@ -16,9 +17,9 @@ public interface ProductVariant extends Serializable, Position {
 
     void setPrice(BigDecimal price);
 
-    List<String> getOptionValues();
+    List<OptionSelection> getOptionSelections();
 
-    void setOptionValues(List<String> optionValues);
+    void setOptionSelections(List<OptionSelection> optionSelections);
 
     List<String> getImageUrls();
 
@@ -68,8 +69,8 @@ public interface ProductVariant extends Serializable, Position {
             return this;
         }
 
-        public Builder optionValues(List<String> optionValues) {
-            this.variant.setOptionValues(optionValues);
+        public Builder optionSelections(List<OptionSelection> optionSelections) {
+            this.variant.setOptionSelections(optionSelections);
             return this;
         }
 

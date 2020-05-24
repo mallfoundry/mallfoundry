@@ -65,7 +65,7 @@ public class DefaultCartService implements CartService {
         var item = InternalCartItem.of(newItem);
         var product = this.productService.getProduct(item.getProductId()).orElseThrow();
         var variant = product.getVariant(item.getVariantId()).orElseThrow();
-        item.setOptionValues(variant.getOptionValues());
+        item.setOptionSelections(variant.getOptionSelections());
         item.setStoreId(product.getStoreId());
         if (StringUtils.isBlank(item.getName())) {
             item.setName(product.getName());

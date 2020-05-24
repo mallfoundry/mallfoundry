@@ -1,5 +1,7 @@
 package com.mallfoundry.cart;
 
+import com.mallfoundry.catalog.OptionSelection;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +28,9 @@ public interface CartItem extends Serializable {
 
     void setImageUrl(String imageUrl);
 
-    List<String> getOptionValues();
+    List<OptionSelection> getOptionSelections();
 
-    void setOptionValues(List<String> optionValues);
+    void setOptionSelections(List<OptionSelection> optionSelections);
 
     int getQuantity();
 
@@ -73,8 +75,8 @@ public interface CartItem extends Serializable {
             return this;
         }
 
-        public Builder optionValues(List<String> optionValues) {
-            this.item.setOptionValues(optionValues);
+        public Builder optionSelections(List<OptionSelection> optionSelections) {
+            this.item.setOptionSelections(optionSelections);
             return this;
         }
 

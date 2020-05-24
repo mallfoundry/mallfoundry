@@ -12,8 +12,6 @@ public interface ProductService {
 
     Product createProduct();
 
-    ProductVariant createProductVariant();
-
     InventoryAdjustment createInventoryAdjustment();
 
     Optional<Product> getProduct(String id);

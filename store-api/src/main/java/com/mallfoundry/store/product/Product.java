@@ -1,5 +1,7 @@
 package com.mallfoundry.store.product;
 
+import com.mallfoundry.catalog.OptionSelection;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,6 +47,8 @@ public interface Product extends Serializable {
 
     void setCollectionIds(Set<String> ids);
 
+    List<ProductOption> getOptions();
+
     List<String> getImageUrls();
 
     String getFirstImageUrl();
@@ -69,17 +73,29 @@ public interface Product extends Serializable {
 
     List<ProductVariant> getVariants();
 
+    Date getCreatedTime();
+
     Optional<ProductVariant> getVariant(String variantId);
 
-    Date getCreatedTime();
+    ProductVariant createVariant(String id);
 
     void addVariant(ProductVariant variant);
 
-    ProductOption createOption(String name);
+    ProductOption createOption(String id);
+
+    Optional<ProductOption> getOption(String name);
+
+    void addOption(ProductOption option);
+
+    Optional<OptionSelection> selectOption(String name, String label);
 
     ProductAttribute createAttribute(String name, String value);
 
     ProductAttribute createAttribute(String namespace, String name, String value);
+
+    Optional<ProductAttribute> getAttribute(String namespace, String name);
+
+    void addAttribute(ProductAttribute attribute);
 
     void addImageUrl(String url);
 

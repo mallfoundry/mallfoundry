@@ -21,18 +21,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InternalProductOptionValue implements ProductOptionValue {
 
-    private String value;
+    private String label;
 
     private Integer position;
 
-    public InternalProductOptionValue(String value, Integer position) {
-        this.value = value;
-        this.position = position;
+    public InternalProductOptionValue(String label) {
+        this.label = label;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InternalProductOptionValue that = (InternalProductOptionValue) o;
+        return Objects.equals(label, that.label);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(label);
     }
 }
