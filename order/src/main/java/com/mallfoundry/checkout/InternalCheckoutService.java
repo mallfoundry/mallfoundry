@@ -1,6 +1,6 @@
 package com.mallfoundry.checkout;
 
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.catalog.product.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

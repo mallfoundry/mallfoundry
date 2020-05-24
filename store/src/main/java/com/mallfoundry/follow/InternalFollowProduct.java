@@ -17,7 +17,7 @@
 package com.mallfoundry.follow;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mallfoundry.store.product.ProductStatus;
+import com.mallfoundry.catalog.product.ProductStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

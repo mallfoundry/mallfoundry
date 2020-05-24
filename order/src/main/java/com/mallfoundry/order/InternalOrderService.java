@@ -19,7 +19,7 @@ package com.mallfoundry.order;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.store.product.ProductService;
+import com.mallfoundry.catalog.product.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

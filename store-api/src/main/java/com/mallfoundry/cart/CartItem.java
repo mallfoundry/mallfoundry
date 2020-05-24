@@ -1,6 +1,6 @@
 package com.mallfoundry.cart;
 
-import com.mallfoundry.catalog.OptionSelection;
+import com.mallfoundry.catalog.product.OptionSelection;
 
 import java.io.Serializable;
 import java.util.Date;

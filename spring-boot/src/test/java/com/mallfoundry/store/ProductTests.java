@@ -19,11 +19,11 @@ package com.mallfoundry.store;
 
 import com.mallfoundry.StaticServer;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
-import com.mallfoundry.store.product.InternalProduct;
-import com.mallfoundry.store.product.InternalProductAttribute;
-import com.mallfoundry.store.product.InternalProductService;
-import com.mallfoundry.store.product.ProductStatus;
-import com.mallfoundry.store.product.ProductType;
+import com.mallfoundry.catalog.product.InternalProduct;
+import com.mallfoundry.catalog.product.InternalProductAttribute;
+import com.mallfoundry.catalog.product.InternalProductService;
+import com.mallfoundry.catalog.product.ProductStatus;
+import com.mallfoundry.catalog.product.ProductType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @SpringBootTest
