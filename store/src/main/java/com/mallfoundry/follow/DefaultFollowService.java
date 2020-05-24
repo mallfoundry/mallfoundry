@@ -21,6 +21,7 @@ import com.mallfoundry.store.StoreService;
 import com.mallfoundry.catalog.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class DefaultFollowService implements FollowService {
@@ -66,7 +67,7 @@ public class DefaultFollowService implements FollowService {
         }
         var product = this.productService.getProduct(productId).orElseThrow();
         var followProduct = new InternalFollowProduct(followerId, productId);
-        followProduct.setImageUrl(product.getFirstImageUrl());
+        followProduct.setImageUrl(CollectionUtils.firstElement(product.getImageUrls()));
         followProduct.setName(product.getName());
         followProduct.setStatus(product.getStatus());
         return this.followProductRepository.save(followProduct);

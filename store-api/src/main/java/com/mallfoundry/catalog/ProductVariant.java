@@ -1,5 +1,6 @@
 package com.mallfoundry.catalog;
 
+import com.mallfoundry.inventory.InventoryException;
 import com.mallfoundry.inventory.InventoryStatus;
 import com.mallfoundry.util.Position;
 
@@ -25,21 +26,21 @@ public interface ProductVariant extends Serializable, Position {
 
     void setImageUrls(List<String> imageUrls);
 
-    String getFirstImageUrl();
-
     BigDecimal getMarketPrice();
 
     void setMarketPrice(BigDecimal marketPrice);
 
     int getInventoryQuantity();
 
-    void setInventoryQuantity(int inventoryQuantity);
+    void setInventoryQuantity(int inventoryQuantity) throws InventoryException;
 
-    void adjustInventoryQuantity(int adjustQuantity);
+    void adjustInventoryQuantity(int adjustQuantity) throws InventoryException;
 
     InventoryStatus getInventoryStatus();
 
-    Builder toBuilder();
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
     class Builder {
 

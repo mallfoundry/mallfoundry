@@ -41,7 +41,7 @@ public class InternalProductQuery extends PageableSupport implements ProductQuer
 
     private BigDecimal maxPrice;
 
-    private Set<String> collectionIds;
+    private Set<String> collections;
 
     private Set<ProductType> types;
 

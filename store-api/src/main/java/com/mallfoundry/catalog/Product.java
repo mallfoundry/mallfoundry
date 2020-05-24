@@ -43,15 +43,13 @@ public interface Product extends Serializable {
 
     void setMarketPrice(BigDecimal marketPrice);
 
-    Set<String> getCollectionIds();
+    Set<String> getCollections();
 
-    void setCollectionIds(Set<String> ids);
+    void setCollections(Set<String> collections);
 
     List<ProductOption> getOptions();
 
     List<String> getImageUrls();
-
-    String getFirstImageUrl();
 
     List<String> getVideoUrls();
 

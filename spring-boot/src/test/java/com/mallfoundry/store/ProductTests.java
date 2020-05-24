@@ -144,7 +144,7 @@ public class ProductTests {
         product.setCreatedTime(new Date());
         product.setType(ProductType.PHYSICAL);
         product.setStatus(ProductStatus.ACTIVE);
-        product.setCollectionIds(Set.of("12236", "12243"));
+        product.setCollections(Set.of("12236", "12243"));
         product.create();
 
         product.addImageUrl(resolveImageUrl("da769739c0a75afb.jpg"));
@@ -200,7 +200,7 @@ public class ProductTests {
         product.setCreatedTime(new Date());
         product.setType(ProductType.DIGITAL);
         product.setStatus(ProductStatus.ACTIVE);
-        product.setCollectionIds(Set.of("12230", "12243"));
+        product.setCollections(Set.of("12230", "12243"));
         product.create();
 
         product.addImageUrl(resolveImageUrl("6626003a708ce8ef.jpg"));

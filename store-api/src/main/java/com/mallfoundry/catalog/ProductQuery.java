@@ -29,9 +29,9 @@ public interface ProductQuery extends Pageable {
 
     void setMaxPrice(BigDecimal maxPrice);
 
-    Set<String> getCollectionIds();
+    Set<String> getCollections();
 
-    void setCollectionIds(Set<String> collectionIds);
+    void setCollections(Set<String> collections);
 
     Set<ProductType> getTypes();
 
@@ -92,8 +92,8 @@ public interface ProductQuery extends Pageable {
             return this;
         }
 
-        public Builder collectionIds(Set<String> collectionIds) {
-            this.query.setCollectionIds(collectionIds);
+        public Builder collections(Set<String> collections) {
+            this.query.setCollections(collections);
             return this;
         }
 

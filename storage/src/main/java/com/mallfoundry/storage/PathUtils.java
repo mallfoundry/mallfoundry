@@ -20,7 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.util.Objects;
 
-abstract class PathUtils extends com.mallfoundry.util.PathUtils {
+abstract class PathUtils implements com.mallfoundry.util.PathUtils {
 
     public static final String PATH_SEPARATOR = "/";
 

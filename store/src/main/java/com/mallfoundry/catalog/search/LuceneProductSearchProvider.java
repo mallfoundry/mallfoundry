@@ -16,14 +16,14 @@
 
 package com.mallfoundry.catalog.search;
 
+import com.mallfoundry.catalog.InternalProduct;
+import com.mallfoundry.catalog.Product;
+import com.mallfoundry.catalog.ProductQuery;
+import com.mallfoundry.catalog.ProductStatus;
+import com.mallfoundry.catalog.ProductVariant;
 import com.mallfoundry.data.PageList;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.inventory.InventoryStatus;
-import com.mallfoundry.catalog.ProductQuery;
-import com.mallfoundry.catalog.ProductVariant;
-import com.mallfoundry.catalog.InternalProduct;
-import com.mallfoundry.catalog.Product;
-import com.mallfoundry.catalog.ProductStatus;
 import com.mallfoundry.util.JsonUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -76,7 +76,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private static final String PRODUCT_PRICE_FIELD_NAME = "product.price";
 
-    private static final String PRODUCT_COLLECTION_IDS_FIELD_NAME = "product.collectionIds";
+    private static final String PRODUCT_COLLECTIONS_FIELD_NAME = "product.collections";
 
     private static final String PRODUCT_STATUS_FIELD_NAME = "product.status";
 
@@ -139,10 +139,10 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 .map(BigDecimal::toString).distinct()
                 .forEach(price -> document.add(new StringField(PRODUCT_PRICE_FIELD_NAME, price, Field.Store.NO)));
 
-        if (CollectionUtils.isNotEmpty(product.getCollectionIds())) {
-            document.removeFields(PRODUCT_COLLECTION_IDS_FIELD_NAME);
-            product.getCollectionIds().forEach(collectionId ->
-                    document.add(new StringField(PRODUCT_COLLECTION_IDS_FIELD_NAME, collectionId, Field.Store.NO)));
+        if (CollectionUtils.isNotEmpty(product.getCollections())) {
+            document.removeFields(PRODUCT_COLLECTIONS_FIELD_NAME);
+            product.getCollections().forEach(collection ->
+                    document.add(new StringField(PRODUCT_COLLECTIONS_FIELD_NAME, collection, Field.Store.NO)));
         }
 
         document.removeFields(PRODUCT_FIELD_NAME);
@@ -224,9 +224,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                     queryBuilder.add(new TermInSetQuery(PRODUCT_INVENTORY_STATUS_FIELD_NAME, statuses), BooleanClause.Occur.MUST);
                 }
 
-                if (CollectionUtils.isNotEmpty(search.getCollectionIds())) {
-                    var collectionIds = search.getCollectionIds().stream().map(BytesRef::new).collect(Collectors.toSet());
-                    queryBuilder.add(new TermInSetQuery(PRODUCT_COLLECTION_IDS_FIELD_NAME, collectionIds), BooleanClause.Occur.MUST);
+                if (CollectionUtils.isNotEmpty(search.getCollections())) {
+                    var collectionIds = search.getCollections().stream().map(BytesRef::new).collect(Collectors.toSet());
+                    queryBuilder.add(new TermInSetQuery(PRODUCT_COLLECTIONS_FIELD_NAME, collectionIds), BooleanClause.Occur.MUST);
                 }
 
                 if (Objects.nonNull(search.getMinPrice()) || Objects.nonNull(search.getMaxPrice())) {

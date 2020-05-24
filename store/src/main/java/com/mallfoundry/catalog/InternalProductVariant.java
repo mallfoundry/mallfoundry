@@ -16,13 +16,12 @@
 
 package com.mallfoundry.catalog;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
+import com.mallfoundry.inventory.InventoryException;
 import com.mallfoundry.inventory.InventoryStatus;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -78,33 +77,22 @@ public class InternalProductVariant implements ProductVariant {
     @Column(name = "position_")
     private Integer position;
 
-    @JsonIgnore
     @Override
-    public String getFirstImageUrl() {
-        return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
-    }
-
-    @Override
-    public void setInventoryQuantity(int quantity) {
+    public void setInventoryQuantity(int quantity) throws InventoryException {
         if (quantity < 0) {
-            throw new RuntimeException("");
+            throw new InventoryException("Inventory quantity cannot be less than zero");
         }
         this.inventoryQuantity = quantity;
     }
 
     @Override
-    public void adjustInventoryQuantity(int adjustQuantity) {
+    public void adjustInventoryQuantity(int adjustQuantity) throws InventoryException {
         this.setInventoryQuantity(this.inventoryQuantity + adjustQuantity);
     }
 
     @Override
     public InventoryStatus getInventoryStatus() {
         return this.getInventoryQuantity() == 0 ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK;
-    }
-
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
     }
 
     @Override

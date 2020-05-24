@@ -19,9 +19,9 @@ package com.mallfoundry.util;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Positions {
+public interface Positions {
 
-    public static <T extends Position> void sort(List<T> positions) {
+    static <T extends Position> void sort(List<T> positions) {
         Collections.sort(positions);
         var i = 0;
         for (Position position : positions) {

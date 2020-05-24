@@ -17,13 +17,12 @@
 package com.mallfoundry.catalog;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.mallfoundry.catalog.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.data.jpa.convert.StringListConverter;
 import com.mallfoundry.data.jpa.convert.StringSetConverter;
-import com.mallfoundry.catalog.repository.jpa.convert.ProductAttributeListConverter;
 import com.mallfoundry.inventory.InventoryStatus;
 import com.mallfoundry.util.Positions;
 import lombok.Getter;
@@ -83,9 +82,9 @@ public class InternalProduct implements Product {
     @Column(name = "description_")
     private String description;
 
-    @Column(name = "collection_ids_")
+    @Column(name = "collections_")
     @Convert(converter = StringSetConverter.class)
-    private Set<String> collectionIds = new HashSet<>();
+    private Set<String> collections = new HashSet<>();
 
     @Column(name = "price_")
     private BigDecimal price;
@@ -145,12 +144,6 @@ public class InternalProduct implements Product {
                         .map(ProductVariant::getPrice)
                         .max(BigDecimal::compareTo)
                         .orElse(BigDecimal.ZERO);
-    }
-
-    @JsonIgnore
-    @Override
-    public String getFirstImageUrl() {
-        return CollectionUtils.isEmpty(imageUrls) ? null : imageUrls.iterator().next();
     }
 
     @Override

@@ -53,7 +53,7 @@ public class ProductResourceV1 {
                                           @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                           @RequestParam(name = "name", required = false) String name,
                                           @RequestParam(name = "store_id", required = false) String storeId,
-                                          @RequestParam(name = "collection_ids", required = false) Set<String> collectionIds,
+                                          @RequestParam(name = "collections", required = false) Set<String> collections,
                                           @RequestParam(name = "types", required = false) Set<String> types,
                                           @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                           @RequestParam(name = "inventory_statuses", required = false) Set<String> inventoryStatuses,
@@ -68,7 +68,7 @@ public class ProductResourceV1 {
                         .map(StringUtils::upperCase).map(ProductStatus::valueOf).collect(Collectors.toSet()))
                 .inventoryStatuses(() -> Stream.ofNullable(inventoryStatuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase).map(InventoryStatus::valueOf).collect(Collectors.toSet()))
-                .collectionIds(collectionIds).build());
+                .collections(collections).build());
     }
 
     @GetMapping("/products/{id}")

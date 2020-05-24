@@ -5,9 +5,9 @@ import org.apache.commons.io.FilenameUtils;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public abstract class PathUtils {
+public interface PathUtils {
 
-    public static String normalize(String path) {
+    static String normalize(String path) {
         return Optional.of(path)
                 .map(s -> FilenameUtils.normalize(s, true))
                 .map(s -> s.replaceAll("/+", "/"))
@@ -15,7 +15,7 @@ public abstract class PathUtils {
                 .orElseThrow();
     }
 
-    public static String concat(String first, String... more) {
+    static String concat(String first, String... more) {
         return normalize(concat0(first, more));
     }
 

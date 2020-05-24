@@ -16,13 +16,14 @@
 
 package com.mallfoundry.order;
 
+import com.mallfoundry.catalog.ProductService;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.security.SecurityUserHolder;
-import com.mallfoundry.catalog.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -86,7 +87,7 @@ public class InternalOrderService implements OrderService {
         var product = this.productService.getProduct(productId).orElseThrow();
         var variant = product.getVariant(variantId).orElseThrow();
         item.setStoreId(product.getStoreId());
-        item.setImageUrl(variant.getFirstImageUrl());
+        item.setImageUrl(CollectionUtils.firstElement(variant.getImageUrls()));
         item.setPrice(variant.getPrice());
         item.setOptionSelections(List.copyOf(variant.getOptionSelections()));
         item.setName(item.getName());

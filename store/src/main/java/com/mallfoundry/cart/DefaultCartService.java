@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,7 @@ public class DefaultCartService implements CartService {
         }
 
         if (StringUtils.isBlank(item.getImageUrl())) {
-            item.setImageUrl(variant.getFirstImageUrl());
+            item.setImageUrl(CollectionUtils.firstElement(variant.getImageUrls()));
         }
 
         return item;
