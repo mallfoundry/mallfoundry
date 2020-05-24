@@ -9,7 +9,4 @@ public interface CheckoutService {
     Optional<Checkout> getCheckout(String id);
 
     Checkout checkout(Checkout checkout);
-
-    Checkout saveCheckout(Checkout checkout);
-
 }

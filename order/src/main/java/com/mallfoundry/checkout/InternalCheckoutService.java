@@ -30,9 +30,4 @@ public class InternalCheckoutService implements CheckoutService {
 //        this.productService.
         return null;
     }
-
-    @Override
-    public Checkout saveCheckout(Checkout checkout) {
-        return null;
-    }
 }
