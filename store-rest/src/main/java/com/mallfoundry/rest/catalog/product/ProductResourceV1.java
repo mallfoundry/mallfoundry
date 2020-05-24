@@ -17,11 +17,11 @@
 package com.mallfoundry.rest.catalog.product;
 
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.catalog.product.InventoryStatus;
-import com.mallfoundry.catalog.product.Product;
-import com.mallfoundry.catalog.product.ProductService;
-import com.mallfoundry.catalog.product.ProductStatus;
-import com.mallfoundry.catalog.product.ProductType;
+import com.mallfoundry.inventory.InventoryStatus;
+import com.mallfoundry.catalog.Product;
+import com.mallfoundry.catalog.ProductService;
+import com.mallfoundry.catalog.ProductStatus;
+import com.mallfoundry.catalog.ProductType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

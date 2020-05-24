@@ -17,8 +17,8 @@
 package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.catalog.product.OptionSelection;
-import com.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
+import com.mallfoundry.catalog.OptionSelection;
+import com.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.mallfoundry.rest.cart;
 
 import com.mallfoundry.cart.CartItem;
-import com.mallfoundry.catalog.product.OptionSelection;
+import com.mallfoundry.catalog.OptionSelection;
 import lombok.Getter;
 
 import java.util.Date;

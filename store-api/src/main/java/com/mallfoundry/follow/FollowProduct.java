@@ -1,6 +1,6 @@
 package com.mallfoundry.follow;
 
-import com.mallfoundry.catalog.product.ProductStatus;
+import com.mallfoundry.catalog.ProductStatus;
 
 import java.io.Serializable;
 import java.util.Date;

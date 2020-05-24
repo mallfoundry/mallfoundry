@@ -1,7 +1,7 @@
 package com.mallfoundry.rest.catalog.product;
 
-import com.mallfoundry.catalog.product.Product;
-import com.mallfoundry.catalog.product.ProductService;
+import com.mallfoundry.catalog.Product;
+import com.mallfoundry.catalog.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

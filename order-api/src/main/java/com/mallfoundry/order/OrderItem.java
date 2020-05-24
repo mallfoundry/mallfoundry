@@ -1,6 +1,6 @@
 package com.mallfoundry.order;
 
-import com.mallfoundry.catalog.product.OptionSelection;
+import com.mallfoundry.catalog.OptionSelection;
 
 import java.math.BigDecimal;
 import java.util.List;

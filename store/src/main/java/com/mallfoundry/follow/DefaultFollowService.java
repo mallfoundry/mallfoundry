@@ -18,7 +18,7 @@ package com.mallfoundry.follow;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.store.StoreService;
-import com.mallfoundry.catalog.product.ProductService;
+import com.mallfoundry.catalog.ProductService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 
