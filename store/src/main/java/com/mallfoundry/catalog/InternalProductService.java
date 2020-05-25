@@ -34,8 +34,6 @@ public class InternalProductService implements ProductService {
 
     private static final String PRODUCT_ID_VALUE_NAME = "catalog.product.id";
 
-    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "catalog.product.variant.id";
-
     private final ProductRepository productRepository;
 
     private final ProductSearcher productSearcher;
