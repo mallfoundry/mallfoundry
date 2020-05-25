@@ -9,19 +9,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(TrackingProperties.class)
-public class TrackingAutoConfiguration {
+@EnableConfigurationProperties(TrackerProperties.class)
+public class TrackerAutoConfiguration {
 
-    private final TrackingProperties properties;
+    private final TrackerProperties properties;
 
-    public TrackingAutoConfiguration(TrackingProperties properties) {
+    public TrackerAutoConfiguration(TrackerProperties properties) {
         this.properties = properties;
     }
 
 
     @Bean
     @ConditionalOnClass(KdniaoTrackerProvider.class)
-    @ConditionalOnProperty(prefix = "mall.tracking", name = "type", havingValue = "kdniao")
+    @ConditionalOnProperty(prefix = "mall.tracker", name = "type", havingValue = "kdniao")
     public TrackerProvider trackingProvider() {
         var config = properties.getKdniao();
         return new KdniaoTrackerProvider(config.getUrl(), config.getApiKey(), config.getEBusinessId());

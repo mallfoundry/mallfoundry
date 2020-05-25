@@ -16,7 +16,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Getter
 @Setter
 @ConfigurationProperties("mall.tracker")
-public class TrackingProperties {
+public class TrackerProperties {
 
     TrackingType type;
 
