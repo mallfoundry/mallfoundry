@@ -6,16 +6,16 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-// mall.tracking.kdniao.e-business-id
-// mall.tracking.kdniao.api-key
-// mall.tracking.kdniao.url
-// mall.tracking.kuaidi100.customer-id
-// mall.tracking.kuaidi100.api-key
-// mall.tracking.kuaidi100.url
+// mall.tracker.kdniao.e-business-id
+// mall.tracker.kdniao.api-key
+// mall.tracker.kdniao.url
+// mall.tracker.kuaidi100.customer-id
+// mall.tracker.kuaidi100.api-key
+// mall.tracker.kuaidi100.url
 //
 @Getter
 @Setter
-@ConfigurationProperties("mall.tracking")
+@ConfigurationProperties("mall.tracker")
 public class TrackingProperties {
 
     TrackingType type;

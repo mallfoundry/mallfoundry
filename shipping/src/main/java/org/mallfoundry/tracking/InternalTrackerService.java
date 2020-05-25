@@ -10,10 +10,10 @@ import java.util.Objects;
 @Service
 public class InternalTrackerService implements TrackerService {
     private final TrackerRepository trackRepository;
-    private final TrackingProvider trackProvider;
+    private final TrackerProvider trackProvider;
 
     public InternalTrackerService(TrackerRepository trackRepository,
-                                  TrackingProvider trackProvider) {
+                                  TrackerProvider trackProvider) {
         this.trackRepository = trackRepository;
         this.trackProvider = trackProvider;
     }

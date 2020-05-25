@@ -33,7 +33,7 @@ mall:
         type: lucene
         lucene:
           directory: D:/mall/data/indexes
-  tracking:
+  tracker:
     type: kdniao
     kdniao:
       api-key: 03613fea-82ff-4023-a816-a034b8f453b8

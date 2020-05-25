@@ -6,7 +6,7 @@ import org.mallfoundry.tracking.InternalTracker;
 import org.mallfoundry.tracking.InternalTrackingEvent;
 import org.mallfoundry.shipping.Tracker;
 import org.mallfoundry.shipping.TrackingEvent;
-import org.mallfoundry.tracking.TrackingProvider;
+import org.mallfoundry.tracking.TrackerProvider;
 import org.mallfoundry.shipping.TrackingStatus;
 import org.mallfoundry.util.JsonUtils;
 import lombok.Getter;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class KdniaoTrackingProvider implements TrackingProvider {
+public class KdniaoTrackerProvider implements TrackerProvider {
 
 //    private static final String trackUrl = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 //    private static final String trackUrl = "http://sandboxapi.kdniao.com:8080/kdniaosandbox/gateway/exterfaceInvoke.json";
@@ -58,7 +58,7 @@ public class KdniaoTrackingProvider implements TrackingProvider {
     private final String eBusinessId;
     private final String trackUrl;
 
-    public KdniaoTrackingProvider(String url, String apiKey, String eBusinessId) {
+    public KdniaoTrackerProvider(String url, String apiKey, String eBusinessId) {
         this.apiKey = apiKey;
         this.eBusinessId = eBusinessId;
         this.trackUrl = resolveUrl(url, "/Ebusiness/EbusinessOrderHandle.aspx");
