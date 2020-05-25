@@ -12,6 +12,8 @@ public interface User {
 
     void setNickname(String nickname);
 
+//    String getMobile();
+
     String getPassword();
 
     void changePassword(String password);

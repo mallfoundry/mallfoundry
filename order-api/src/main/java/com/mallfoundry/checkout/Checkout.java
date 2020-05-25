@@ -1,7 +1,6 @@
 package com.mallfoundry.checkout;
 
 import com.mallfoundry.order.Order;
-import com.mallfoundry.order.ShippingAddress;
 import com.mallfoundry.shipping.Address;
 
 import java.util.List;

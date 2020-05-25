@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    ShippingAddress createShippingAddress();
-
     OrderQuery createOrderQuery();
 
     Order createOrder(String id);

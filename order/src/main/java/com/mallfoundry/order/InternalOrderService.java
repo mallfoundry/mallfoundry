@@ -42,11 +42,6 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public ShippingAddress createShippingAddress() {
-        return new InternalShippingAddress();
-    }
-
-    @Override
     public OrderQuery createOrderQuery() {
         return new InternalOrderQuery();
     }

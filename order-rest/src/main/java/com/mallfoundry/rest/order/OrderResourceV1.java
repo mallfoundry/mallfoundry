@@ -18,11 +18,9 @@ package com.mallfoundry.rest.order;
 
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.order.Order;
-import com.mallfoundry.order.OrderItem;
 import com.mallfoundry.order.OrderService;
 import com.mallfoundry.order.OrderStatus;
 import com.mallfoundry.order.Shipment;
-import com.mallfoundry.order.ShippingAddress;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -49,15 +47,15 @@ public class OrderResourceV1 {
         this.orderService = orderService;
     }
 
-    private ShippingAddress createShippingAddress(CreateOrderRequest.ShippingAddressRequest request) {
-        return Objects.isNull(request) ? null :
-                this.orderService.createShippingAddress().toBuilder()
-                        .countryCode(request.getCountryCode()).zip(request.getZip())
-                        .firstName(request.getFirstName()).lastName(request.getLastName())
-                        .mobile(request.getMobile())
-                        .address(request.getAddress()).location(request.getLocation()).build();
-    }
-
+//    private ShippingAddress createShippingAddress(CreateOrderRequest.ShippingAddressRequest request) {
+//        return Objects.isNull(request) ? null :
+//                this.orderService.createShippingAddress().toBuilder()
+//                        .countryCode(request.getCountryCode()).zip(request.getZip())
+//                        .firstName(request.getFirstName()).lastName(request.getLastName())
+//                        .mobile(request.getMobile())
+//                        .address(request.getAddress()).location(request.getLocation()).build();
+//    }
+//
 //    private OrderItem createOrderItem(CreateOrderRequest.OrderItemRequest request) {
 //        return this.orderService.createOrderItem(request.getProductId(), request.getVariantId(), request.getQuantity());
 //    }

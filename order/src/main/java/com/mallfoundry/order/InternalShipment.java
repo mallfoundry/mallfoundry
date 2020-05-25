@@ -18,7 +18,6 @@ package com.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
 import com.mallfoundry.shipping.Address;
 import com.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import lombok.Getter;
