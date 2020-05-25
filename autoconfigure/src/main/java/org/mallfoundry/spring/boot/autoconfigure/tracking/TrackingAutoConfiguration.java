@@ -1,6 +1,6 @@
 package org.mallfoundry.spring.boot.autoconfigure.tracking;
 
-import org.mallfoundry.tracking.TrackProvider;
+import org.mallfoundry.tracking.TrackingProvider;
 import org.mallfoundry.tracking.provider.KdniaoTrackingProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,7 +22,7 @@ public class TrackingAutoConfiguration {
     @Bean
     @ConditionalOnClass(KdniaoTrackingProvider.class)
     @ConditionalOnProperty(prefix = "mall.tracking", name = "type", havingValue = "kdniao")
-    public TrackProvider trackingProvider() {
+    public TrackingProvider trackingProvider() {
         var config = properties.getKdniao();
         return new KdniaoTrackingProvider(config.getUrl(), config.getApiKey(), config.getEBusinessId());
     }

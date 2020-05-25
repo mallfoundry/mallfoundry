@@ -2,11 +2,11 @@ package org.mallfoundry.tracking.provider;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.tracking.InternalTrack;
+import org.mallfoundry.tracking.InternalTracker;
 import org.mallfoundry.tracking.InternalTrackingEvent;
-import org.mallfoundry.shipping.Track;
+import org.mallfoundry.shipping.Tracker;
 import org.mallfoundry.shipping.TrackingEvent;
-import org.mallfoundry.tracking.TrackProvider;
+import org.mallfoundry.tracking.TrackingProvider;
 import org.mallfoundry.shipping.TrackingStatus;
 import org.mallfoundry.util.JsonUtils;
 import lombok.Getter;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class KdniaoTrackingProvider implements TrackProvider {
+public class KdniaoTrackingProvider implements TrackingProvider {
 
 //    private static final String trackUrl = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 //    private static final String trackUrl = "http://sandboxapi.kdniao.com:8080/kdniaosandbox/gateway/exterfaceInvoke.json";
@@ -69,7 +69,7 @@ public class KdniaoTrackingProvider implements TrackProvider {
     }
 
     @Override
-    public Track getTrack(CarrierCode carrier, String trackingNumber) {
+    public Tracker getTracker(CarrierCode carrier, String trackingNumber) {
         String requestData = "{'OrderCode':'','ShipperCode':'" + shipperCode(carrier) +
                 "','LogisticCode':'" + trackingNumber + "'}";
         var restTemplate = new RestTemplate();
@@ -155,8 +155,8 @@ public class KdniaoTrackingProvider implements TrackProvider {
         }
 
 
-        public Track toTracker() {
-            var tracker = new InternalTrack();
+        public Tracker toTracker() {
+            var tracker = new InternalTracker();
             tracker.setCarrierCode(carrierCode(this.shipperCode));
             tracker.setTrackingNumber(this.getLogisticCode());
             tracker.setTrackingStatus(trackingStatus(this.state));

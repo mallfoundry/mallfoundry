@@ -2,13 +2,13 @@ package org.mallfoundry.tracking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
+import org.mallfoundry.shipping.Tracker;
 import org.mallfoundry.shipping.TrackingEvent;
 import org.mallfoundry.shipping.TrackingStatus;
 import org.mallfoundry.tracking.repository.jpa.convert.TrackingEventListConverter;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -25,9 +25,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "shipping_tracks")
-@IdClass(InternalTrackId.class)
-public class InternalTrack implements Track {
+@Table(name = "shipping_trackers")
+@IdClass(InternalTrackerId.class)
+public class InternalTracker implements Tracker {
 
     @JsonProperty("carrier_code")
     @Id
@@ -54,12 +54,12 @@ public class InternalTrack implements Track {
     @Column(name = "expires_")
     private long expires;
 
-    public static InternalTrack of(Track track) {
-        if (track instanceof InternalTrack) {
-            return (InternalTrack) track;
+    public static InternalTracker of(Tracker track) {
+        if (track instanceof InternalTracker) {
+            return (InternalTracker) track;
         }
 
-        var target = new InternalTrack();
+        var target = new InternalTracker();
         BeanUtils.copyProperties(track, target);
         return target;
     }

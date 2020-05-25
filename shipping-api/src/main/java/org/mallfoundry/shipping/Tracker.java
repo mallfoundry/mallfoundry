@@ -3,7 +3,7 @@ package org.mallfoundry.shipping;
 import java.io.Serializable;
 import java.util.List;
 
-public interface Track extends Serializable {
+public interface Tracker extends Serializable {
 
     CarrierCode getCarrierCode();
 
