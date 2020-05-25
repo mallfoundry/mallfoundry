@@ -240,13 +240,8 @@ public class InternalProduct implements Product {
         Positions.sort(this.getAttributes());
     }
 
+    @Override
     public void create() {
         this.setCreatedTime(new Date());
     }
-
-    @Override
-    public Builder toBuilder() {
-        return null;
-    }
-
 }

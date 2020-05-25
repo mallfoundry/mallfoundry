@@ -1,6 +1,7 @@
 package com.mallfoundry.catalog;
 
 import com.mallfoundry.inventory.InventoryStatus;
+import com.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 public interface Product extends Serializable {
 
@@ -101,13 +103,47 @@ public interface Product extends Serializable {
 
     void addVideoUrl(String url);
 
-    Builder toBuilder();
+    void create();
 
-    class Builder {
+    default Builder toBuilder() {
+        return new BuilderSupport(this);
+    }
+
+
+    interface Builder extends ObjectBuilder<Product> {
+
+        Builder storeId(String storeId);
+
+        Builder name(String name);
+
+        Builder type(ProductType type);
+
+        Builder status(ProductStatus status);
+
+        Builder imageUrl(String image);
+
+        Builder videoUrl(String video);
+
+        Builder option(ProductOption option);
+
+        Builder option(Function<Product, ProductOption> option);
+
+        Builder variant(ProductVariant variant);
+
+        Builder variant(Function<Product, ProductVariant> variant);
+
+        Builder attribute(ProductAttribute attribute);
+
+        Builder attribute(Function<Product, ProductAttribute> attribute);
+
+        Builder create();
+    }
+
+    class BuilderSupport implements Builder {
 
         private final Product product;
 
-        public Builder(Product product) {
+        public BuilderSupport(Product product) {
             this.product = product;
         }
 
@@ -126,13 +162,57 @@ public interface Product extends Serializable {
             return this;
         }
 
-        public Builder addImageUrl(String image) {
+        public Builder status(ProductStatus status) {
+            this.product.setStatus(status);
+            return this;
+        }
+
+        public Builder imageUrl(String image) {
             this.product.addImageUrl(image);
             return this;
         }
 
-        public Builder addVideoUrl(String video) {
+        public Builder videoUrl(String video) {
             this.product.addVideoUrl(video);
+            return this;
+        }
+
+        @Override
+        public Builder option(ProductOption option) {
+            this.product.addOption(option);
+            return this;
+        }
+
+        @Override
+        public Builder option(Function<Product, ProductOption> option) {
+            return this.option(option.apply(this.product));
+        }
+
+        @Override
+        public Builder variant(ProductVariant variant) {
+            this.product.addVariant(variant);
+            return this;
+        }
+
+        @Override
+        public Builder variant(Function<Product, ProductVariant> variant) {
+            return this.variant(variant.apply(this.product));
+        }
+
+        @Override
+        public Builder attribute(ProductAttribute attribute) {
+            this.product.addAttribute(attribute);
+            return this;
+        }
+
+        @Override
+        public Builder attribute(Function<Product, ProductAttribute> attribute) {
+            return this.attribute(attribute.apply(this.product));
+        }
+
+        @Override
+        public Builder create() {
+            this.product.create();
             return this;
         }
 

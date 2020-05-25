@@ -21,6 +21,7 @@ import com.mallfoundry.StaticServer;
 import com.mallfoundry.catalog.InternalProduct;
 import com.mallfoundry.catalog.InternalProductAttribute;
 import com.mallfoundry.catalog.InternalProductService;
+import com.mallfoundry.catalog.Product;
 import com.mallfoundry.catalog.ProductStatus;
 import com.mallfoundry.catalog.ProductType;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
@@ -81,68 +82,61 @@ public class ProductTests {
         return StaticServer.BASE_URL + "/images/" + id;
     }
 
-    private InternalProduct newProduct1() {
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+    private Product newProduct1() {
         double price = 0.01;
-        product.setStoreId("huawei");
-        product.setName("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机");
-        product.setType(ProductType.PHYSICAL);
-        product.setStatus(ProductStatus.ACTIVE);
-        product.create();
-
-        product.addImageUrl(resolveImageUrl("e070a0bc693efc85.jpg"));
-        product.addImageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"));
-        product.addImageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"));
-        product.addImageUrl(resolveImageUrl("777b12adea1822f6.jpg"));
-
-        // options
-        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
-                .name("颜色")
-                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("翡冷翠").build())
-                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("丹霞橙").build())
-                .build());
-
-        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+        return this.productService.createProduct()
                 .toBuilder()
-                .name("版本")
-                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
-                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
-                .build());
-
-        product.addVariant(
-                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                .storeId("huawei")
+                .name("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机")
+                .type(ProductType.PHYSICAL)
+                .status(ProductStatus.ACTIVE)
+                .imageUrl(resolveImageUrl("e070a0bc693efc85.jpg"))
+                .imageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"))
+                .imageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"))
+                .imageUrl(resolveImageUrl("777b12adea1822f6.jpg"))
+                //
+                .option(product1 -> product1.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                        .name("颜色")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("翡冷翠").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("丹霞橙").build())
+                        .build())
+                .option(product1 -> product1.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                        .toBuilder()
+                        .name("版本")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                        .build())
+                //
+                .variant(product1 -> product1.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
                         .optionSelections(List.of(
-                                product.selectOption("颜色", "翡冷翠").orElseThrow(),
-                                product.selectOption("版本", "8GB 128GB").orElseThrow()))
-                        .position(0).build());
-        product.addVariant(
-                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                                product1.selectOption("颜色", "翡冷翠").orElseThrow(),
+                                product1.selectOption("版本", "8GB 128GB").orElseThrow()))
+                        .position(0).build())
+                .variant(product1 -> product1.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("e070a0bc693efc85.jpg"), resolveImageUrl("cd96fb7761beeb9e.jpg")))
                         .optionSelections(List.of(
-                                product.selectOption("颜色", "翡冷翠").orElseThrow(),
-                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
-                        .position(0).build());
-
-        product.addVariant(
-                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                                product1.selectOption("颜色", "翡冷翠").orElseThrow(),
+                                product1.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(0).build())
+                .variant(product1 -> product1.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
                         .optionSelections(List.of(
-                                product.selectOption("颜色", "丹霞橙").orElseThrow(),
-                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
-                        .position(1).build());
-        product.addVariant(
-                product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
+                                product1.selectOption("颜色", "丹霞橙").orElseThrow(),
+                                product1.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build())
+                .variant(product1 -> product1.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
                         .imageUrls(List.of(resolveImageUrl("c78c80a4116ee57d.jpg"), resolveImageUrl("777b12adea1822f6.jpg")))
                         .optionSelections(List.of(
-                                product.selectOption("颜色", "丹霞橙").orElseThrow(),
-                                product.selectOption("版本", "12GB 256GB").orElseThrow()))
-                        .position(1).build());
-
-        product.addAttribute(new InternalProductAttribute("产地", "中国"));
-        product.addAttribute(new InternalProductAttribute("生成时间", "2018-10-11"));
-        product.addAttribute(new InternalProductAttribute("颜色", "黑"));
-        return product;
+                                product1.selectOption("颜色", "丹霞橙").orElseThrow(),
+                                product1.selectOption("版本", "12GB 256GB").orElseThrow()))
+                        .position(1).build())
+                //attributes
+                .attribute(product1 -> product1.createAttribute("产地", "中国"))
+                .attribute(product1 -> product1.createAttribute("生成时间", "2018-10-11"))
+                .attribute(product1 -> product1.createAttribute("颜色", "黑"))
+                .create()
+                .build();
     }
 
     private InternalProduct newProduct2() {
