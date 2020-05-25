@@ -16,10 +16,10 @@
 
 package com.mallfoundry.catalog;
 
+import com.mallfoundry.catalog.search.ProductSearcher;
 import com.mallfoundry.data.SliceList;
 import com.mallfoundry.inventory.InventoryAdjustment;
 import com.mallfoundry.keygen.PrimaryKeyHolder;
-import com.mallfoundry.catalog.search.ProductSearcher;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
@@ -32,9 +32,9 @@ import java.util.Optional;
 @Service
 public class InternalProductService implements ProductService {
 
-    private static final String PRODUCT_ID_VALUE_NAME = "store.product.id";
+    private static final String PRODUCT_ID_VALUE_NAME = "catalog.product.id";
 
-    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "store.product.variant.id";
+    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "catalog.product.variant.id";
 
     private final ProductRepository productRepository;
 
@@ -91,8 +91,7 @@ public class InternalProductService implements ProductService {
     @Override
     public void adjustInventory(InventoryAdjustment adjustment) {
         var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
-        var variant = product.getVariant(adjustment.getVariantId()).orElseThrow();
-        variant.adjustInventoryQuantity(adjustment.getQuantity());
+        product.adjustVariantInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantity());
     }
 
     @Transactional

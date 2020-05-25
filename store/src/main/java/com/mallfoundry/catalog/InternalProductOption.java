@@ -25,7 +25,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +36,13 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
+@Entity
+@Table(name = "catalog_product_options")
 public class InternalProductOption implements ProductOption {
+
+    @Id
+    @Column(name = "id_")
+    private String id;
 
     @Column(name = "name_")
     private String name;
@@ -48,13 +55,13 @@ public class InternalProductOption implements ProductOption {
     @Column(name = "position_")
     private Integer position;
 
-    public InternalProductOption(String name) {
-        this.name = name;
+    public InternalProductOption(String id) {
+        this.id = id;
     }
 
     @Override
-    public ProductOptionValue createValue(String label) {
-        return new InternalProductOptionValue(label);
+    public ProductOptionValue createValue(String valueId) {
+        return new InternalProductOptionValue(valueId);
     }
 
     @Override

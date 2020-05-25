@@ -18,12 +18,12 @@ package com.mallfoundry.store;
 
 
 import com.mallfoundry.StaticServer;
-import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.catalog.InternalProduct;
 import com.mallfoundry.catalog.InternalProductAttribute;
 import com.mallfoundry.catalog.InternalProductService;
 import com.mallfoundry.catalog.ProductStatus;
 import com.mallfoundry.catalog.ProductType;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,9 +96,18 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("777b12adea1822f6.jpg"));
 
         // options
-        product.addOption(product.createOption("颜色").toBuilder().values("翡冷翠", "丹霞橙").build());
-        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("翡冷翠").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("丹霞橙").build())
+                .build());
 
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(
                 product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
@@ -153,8 +162,18 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("62edde5e1ef2fd85.jpg"));
 
         // options
-        product.addOption(product.createOption("颜色").toBuilder().values("梦之白", "钛银黑").build());
-        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("梦之白").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("钛银黑").build())
+                .build());
+
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(
                 product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.04).inventoryQuantity(100)
@@ -211,8 +230,20 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("6765a52c369741ec.jpg"));
 
         // options
-        product.addOption(product.createOption("颜色").toBuilder().values("钛银黑", "冰海蓝", "蜜桃金").build());
-        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "8GB 256GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("钛银黑").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("冰海蓝").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("蜜桃金").build())
+                .build());
+
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 256GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(
                 product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
@@ -303,9 +334,19 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("6f728a6562668d8f.jpg"));
 
         // options
-        product.addOption(product.createOption("颜色").toBuilder().values("雾月白", "日出印象").build());
-        product.addOption(product.createOption("版本").toBuilder().values("8GB 128GB", "8GB 256GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("雾月白").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("日出印象").build())
+                .build());
 
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 128GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 256GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(
                 product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
@@ -373,9 +414,18 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("ec48ee3a1e78a5ce.jpg"));
         product.addImageUrl(resolveImageUrl("178e05db88b4477e.jpg"));
 
-        product.addOption(product.createOption("颜色").toBuilder().values("深空流光", "液态天河").build());
-        product.addOption(product.createOption("版本").toBuilder().values("8GB 256GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("深空流光").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("液态天河").build())
+                .build());
 
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 256GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(
                 product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(price).inventoryQuantity(100)
@@ -429,9 +479,20 @@ public class ProductTests {
         product.addImageUrl(resolveImageUrl("a95c82b7c278fe1a.jpg"));
         product.addImageUrl(resolveImageUrl("3e4ee6b91564649d.jpg"));
 
-        product.addOption(product.createOption("颜色").toBuilder().values("曜岩灰", "星雾蓝", "皓月金").build());
-        product.addOption(product.createOption("版本").toBuilder().values("6GB 128GB", "8GB 256GB", "12GB 256GB").build());
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                .name("颜色")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("曜岩灰").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("星雾蓝").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("皓月金").build())
+                .build());
 
+        product.addOption(product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                .toBuilder()
+                .name("版本")
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("6GB 128GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("8GB 256GB").build())
+                .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("12GB 256GB").build())
+                .build());
 
         product.addVariant(product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME))
                 .toBuilder().marketPrice(price).price(price).inventoryQuantity(100)

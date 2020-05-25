@@ -79,6 +79,8 @@ public interface Product extends Serializable {
 
     void addVariant(ProductVariant variant);
 
+    void adjustVariantInventoryQuantity(String variantId, int adjustQuantity);
+
     ProductOption createOption(String id);
 
     Optional<ProductOption> getOption(String name);

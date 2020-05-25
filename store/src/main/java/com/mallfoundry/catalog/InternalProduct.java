@@ -31,14 +31,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -48,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -92,8 +90,8 @@ public class InternalProduct implements Product {
     @Column(name = "market_price_")
     private BigDecimal marketPrice;
 
-    @ElementCollection(targetClass = InternalProductOption.class)
-    @CollectionTable(name = "catalog_product_options", joinColumns = @JoinColumn(name = "product_id_"))
+    @OneToMany(targetEntity = InternalProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id_")
     @JsonDeserialize(contentAs = InternalProductOption.class)
     private List<ProductOption> options = new ArrayList<>();
 
@@ -102,8 +100,7 @@ public class InternalProduct implements Product {
     @JsonDeserialize(contentAs = InternalProductAttribute.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
-    @OneToMany(targetEntity = InternalProductVariant.class,
-            cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = InternalProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonDeserialize(contentAs = InternalProductVariant.class)
     @JoinColumn(name = "product_id_")
     private List<ProductVariant> variants = new ArrayList<>();
@@ -168,6 +165,11 @@ public class InternalProduct implements Product {
     }
 
     @Override
+    public void adjustVariantInventoryQuantity(String variantId, int adjustQuantity) {
+        this.getVariant(variantId).orElseThrow().adjustInventoryQuantity(adjustQuantity);
+    }
+
+    @Override
     public Optional<ProductVariant> getVariant(String id) {
         return this.getVariants()
                 .stream()
@@ -183,8 +185,8 @@ public class InternalProduct implements Product {
     }
 
     @Override
-    public ProductOption createOption(String name) {
-        return new InternalProductOption(name);
+    public ProductOption createOption(String id) {
+        return new InternalProductOption(id);
     }
 
     @Override
@@ -195,13 +197,14 @@ public class InternalProduct implements Product {
     @Override
     public void addOption(ProductOption option) {
         this.options.add(option);
+        Positions.sort(this.options);
     }
 
     @Override
     public Optional<OptionSelection> selectOption(final String name, final String label) {
         return this.getOption(name)
-                .flatMap(option -> option.getValue(label))
-                .map(value -> new DefaultOptionSelection(name, label));
+                .map(option -> Map.entry(option, option.getValue(label).orElseThrow()))
+                .map(entry -> new DefaultOptionSelection(entry.getKey().getId(), name, entry.getValue().getId(), label));
     }
 
     @Override

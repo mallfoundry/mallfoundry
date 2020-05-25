@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public interface ProductOptionValue extends Serializable, Position {
 
+    String getId();
+
     String getLabel();
 
     void setLabel(String label);

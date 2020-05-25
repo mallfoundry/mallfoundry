@@ -4,17 +4,19 @@ import com.mallfoundry.util.ObjectBuilder;
 import com.mallfoundry.util.Position;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public interface ProductOption extends Serializable, Position {
+
+    String getId();
 
     String getName();
 
     void setName(String name);
 
-    ProductOptionValue createValue(String label);
+    ProductOptionValue createValue(String valueId);
 
     Optional<ProductOptionValue> getValue(String label);
 
@@ -37,13 +39,14 @@ public interface ProductOption extends Serializable, Position {
 
         Builder value(ProductOptionValue value);
 
+        Builder value(Function<ProductOption, ProductOptionValue> value);
+
         Builder values(List<ProductOptionValue> values);
 
         Builder values(ProductOptionValue... values);
 
-        Builder value(String value);
+        Builder values(Function<ProductOption, List<ProductOptionValue>> values);
 
-        Builder values(String... values);
     }
 
     abstract class BuilderSupport implements Builder {
@@ -67,6 +70,11 @@ public interface ProductOption extends Serializable, Position {
         }
 
         @Override
+        public Builder value(Function<ProductOption, ProductOptionValue> values) {
+            return this.value(values.apply(this.option));
+        }
+
+        @Override
         public Builder values(List<ProductOptionValue> values) {
             values.forEach(this::value);
             return this;
@@ -74,20 +82,12 @@ public interface ProductOption extends Serializable, Position {
 
         @Override
         public Builder values(ProductOptionValue... values) {
-            this.values(List.of(values));
-            return this;
+            return this.values(List.of(values));
         }
 
         @Override
-        public Builder value(String label) {
-            this.option.addValue(this.option.createValue(label));
-            return this;
-        }
-
-        @Override
-        public Builder values(String... values) {
-            Arrays.stream(values).forEach(this::value);
-            return this;
+        public Builder values(Function<ProductOption, List<ProductOptionValue>> values) {
+            return this.values(values.apply(this.option));
         }
 
         @Override

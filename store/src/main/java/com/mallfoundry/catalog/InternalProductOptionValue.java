@@ -29,12 +29,14 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InternalProductOptionValue implements ProductOptionValue {
 
+    private String id;
+
     private String label;
 
     private Integer position;
 
-    public InternalProductOptionValue(String label) {
-        this.label = label;
+    public InternalProductOptionValue(String id) {
+        this.id = id;
     }
 
     @Override
