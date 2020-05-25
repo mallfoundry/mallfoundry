@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry;
+package org.mallfoundry;
 
 public class StaticServer {
 

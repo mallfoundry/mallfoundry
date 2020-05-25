@@ -1,7 +1,7 @@
-package com.mallfoundry.tracking.provider;
+package org.mallfoundry.tracking.provider;
 
-import com.mallfoundry.shipping.CarrierCode;
-import com.mallfoundry.tracking.TrackProvider;
+import org.mallfoundry.shipping.CarrierCode;
+import org.mallfoundry.tracking.TrackProvider;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;

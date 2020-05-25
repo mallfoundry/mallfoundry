@@ -1,6 +1,6 @@
 logging:
   level:
-    com.mallfoundry: debug
+    org.mallfoundry: debug
     #    org.hibernate: debug
     org.springframework.web: debug
 #    org.springframework: debug

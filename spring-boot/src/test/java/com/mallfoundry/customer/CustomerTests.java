@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer;
+package org.mallfoundry.customer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

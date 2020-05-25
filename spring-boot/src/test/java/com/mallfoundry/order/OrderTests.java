@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package org.mallfoundry.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

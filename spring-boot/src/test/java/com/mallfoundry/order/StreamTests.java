@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package org.mallfoundry.order;
 
 import java.util.List;
 import java.util.stream.Collectors;

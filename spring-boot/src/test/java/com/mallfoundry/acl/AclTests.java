@@ -1,6 +1,6 @@
-package com.mallfoundry.acl;
+package org.mallfoundry.acl;
 
-import com.mallfoundry.identity.InternalUser;
+import org.mallfoundry.identity.InternalUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

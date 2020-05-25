@@ -1,9 +1,9 @@
-package com.mallfoundry.acl;
+package org.mallfoundry.acl;
 
-import com.mallfoundry.security.acl.AccessControlService;
-import com.mallfoundry.security.acl.Permission;
-import com.mallfoundry.security.acl.Principal;
-import com.mallfoundry.security.acl.Resource;
+import org.mallfoundry.security.acl.AccessControlService;
+import org.mallfoundry.security.acl.Permission;
+import org.mallfoundry.security.acl.Principal;
+import org.mallfoundry.security.acl.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.mallfoundry.identity;
+package org.mallfoundry.identity;
 
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;

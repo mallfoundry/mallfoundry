@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package org.mallfoundry.store;
 
 
-import com.mallfoundry.StaticServer;
-import com.mallfoundry.catalog.InternalProduct;
-import com.mallfoundry.catalog.InternalProductAttribute;
-import com.mallfoundry.catalog.InternalProductService;
-import com.mallfoundry.catalog.Product;
-import com.mallfoundry.catalog.ProductStatus;
-import com.mallfoundry.catalog.ProductType;
-import com.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.StaticServer;
+import org.mallfoundry.catalog.InternalProduct;
+import org.mallfoundry.catalog.InternalProductAttribute;
+import org.mallfoundry.catalog.InternalProductService;
+import org.mallfoundry.catalog.Product;
+import org.mallfoundry.catalog.ProductStatus;
+import org.mallfoundry.catalog.ProductType;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

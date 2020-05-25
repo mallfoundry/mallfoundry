@@ -1,6 +1,6 @@
-package com.mallfoundry.district;
+package org.mallfoundry.district;
 
-import com.mallfoundry.util.JsonUtils;
+import org.mallfoundry.util.JsonUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.category;
+package org.mallfoundry.catalog.category;
 
-import com.mallfoundry.catalog.Category;
-import com.mallfoundry.catalog.CategoryService;
-import com.mallfoundry.catalog.ChildCategory;
-import com.mallfoundry.util.JsonUtils;
+import org.mallfoundry.catalog.Category;
+import org.mallfoundry.catalog.CategoryService;
+import org.mallfoundry.catalog.ChildCategory;
+import org.mallfoundry.util.JsonUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

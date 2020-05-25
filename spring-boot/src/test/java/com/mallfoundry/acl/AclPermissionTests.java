@@ -1,4 +1,4 @@
-package com.mallfoundry.acl;
+package org.mallfoundry.acl;
 
 import org.springframework.security.acls.domain.BasePermission;
 

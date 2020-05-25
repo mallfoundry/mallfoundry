@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package org.mallfoundry.store;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

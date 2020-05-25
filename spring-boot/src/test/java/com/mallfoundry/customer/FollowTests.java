@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.customer;
+package org.mallfoundry.customer;
 
 
-import com.mallfoundry.follow.DefaultFollowService;
+import org.mallfoundry.follow.DefaultFollowService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

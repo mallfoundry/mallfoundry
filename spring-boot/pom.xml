@@ -21,108 +21,108 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>mall</artifactId>
-        <groupId>com.mallfoundry</groupId>
+        <groupId>org.mallfoundry</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>mall-spring-boot</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-autoconfigure</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-identity</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-marketing</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-storage</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-catalog</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-customer</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-store</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-app</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-order</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-payment</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-shipping</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-customer-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-store-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-payment-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-shipping-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-order-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-identity-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mallfoundry</groupId>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-marketing-rest</artifactId>
         </dependency>
 

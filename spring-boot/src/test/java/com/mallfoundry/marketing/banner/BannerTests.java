@@ -1,4 +1,4 @@
-package com.mallfoundry.marketing.banner;
+package org.mallfoundry.marketing.banner;
 
 
 import org.junit.jupiter.api.Test;

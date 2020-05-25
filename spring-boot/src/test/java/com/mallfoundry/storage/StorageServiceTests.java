@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storage;
+package org.mallfoundry.storage;
 
-import com.mallfoundry.data.SliceList;
+import org.mallfoundry.data.SliceList;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

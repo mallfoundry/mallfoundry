@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.store;
+package org.mallfoundry.store;
 
 
-import com.mallfoundry.StaticServer;
+import org.mallfoundry.StaticServer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

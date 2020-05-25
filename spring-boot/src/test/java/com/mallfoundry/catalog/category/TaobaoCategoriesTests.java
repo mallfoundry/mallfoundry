@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.catalog.category;
+package org.mallfoundry.catalog.category;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mallfoundry.catalog.CategoryIcon;
-import com.mallfoundry.catalog.ChildCategory;
-import com.mallfoundry.util.JsonUtils;
-import com.mallfoundry.util.Positions;
+import org.mallfoundry.catalog.CategoryIcon;
+import org.mallfoundry.catalog.ChildCategory;
+import org.mallfoundry.util.JsonUtils;
+import org.mallfoundry.util.Positions;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;

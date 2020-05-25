@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.payment;
+package org.mallfoundry.payment;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

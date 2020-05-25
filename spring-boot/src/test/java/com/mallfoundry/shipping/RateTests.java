@@ -1,4 +1,4 @@
-package com.mallfoundry.shipping;
+package org.mallfoundry.shipping;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

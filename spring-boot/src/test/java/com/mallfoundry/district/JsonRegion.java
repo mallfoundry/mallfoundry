@@ -1,4 +1,4 @@
-package com.mallfoundry.district;
+package org.mallfoundry.district;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

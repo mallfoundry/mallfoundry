@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.storage;
+package org.mallfoundry.storage;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.Base64Utils;
