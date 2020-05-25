@@ -40,6 +40,7 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-codec.version>1.14</commons-codec.version>
         <lucene.version>8.5.1</lucene.version>
+        <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
         <mall.version>${project.version}</mall.version>
     </properties>
 
@@ -333,6 +334,12 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
                 <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu-sdk.version}</version>
             </dependency>
 
             <dependency>
