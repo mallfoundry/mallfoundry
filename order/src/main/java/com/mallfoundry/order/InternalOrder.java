@@ -19,8 +19,9 @@ package com.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
 import com.mallfoundry.payment.PaymentStatus;
+import com.mallfoundry.shipping.Address;
+import com.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -90,9 +91,9 @@ public class InternalOrder implements Order {
     private String staffNotes;
 
     @JsonProperty("shipping_address")
-    @Convert(converter = ShippingAddressConverter.class)
+    @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
-    private ShippingAddress shippingAddress;
+    private Address shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = InternalOrderItem.class)
@@ -141,9 +142,8 @@ public class InternalOrder implements Order {
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
 
-    public InternalOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
-        this.setShippingAddress(shippingAddress);
-        this.setItems(items);
+    public InternalOrder(String id) {
+        this.setId(id);
     }
 
     public static InternalOrder of(Order order) {
@@ -154,6 +154,16 @@ public class InternalOrder implements Order {
         var target = new InternalOrder();
         BeanUtils.copyProperties(order, target);
         return target;
+    }
+
+    @Override
+    public OrderItem createItem(String itemId) {
+        return new InternalOrderItem(itemId);
+    }
+
+    @Override
+    public void addItem(OrderItem item) {
+        this.items.add(item);
     }
 
     @Override
@@ -174,13 +184,33 @@ public class InternalOrder implements Order {
         return CollectionUtils.size(this.getItems());
     }
 
-    public Optional<Shipment> getShipment(String id) {
+    @Override
+    public Optional<Shipment> getShipment(String shipmentId) {
         return this.getShipments()
                 .stream()
                 .filter(shipment -> Objects.equals(shipment.getId(), id))
                 .findFirst();
     }
 
+    @Override
+    public void setShipment(Shipment shipment) {
+        BeanUtils.copyProperties(shipment, this.getShipment(shipment.getId()).orElseThrow());
+    }
+
+    @Override
+    public void removeShipment(Shipment shipment) {
+        this.getShipments().remove(shipment);
+    }
+
+    @Override
+    public Shipment createShipment(String shipmentId) {
+        var shipment = new InternalShipment(shipmentId);
+        shipment.setOrderId(this.getId());
+        shipment.setShippingAddress(this.getShippingAddress());
+        return shipment;
+    }
+
+    @Override
     public void addShipment(Shipment shipment) {
         shipment = InternalShipment.of(shipment);
 
@@ -261,7 +291,7 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void pending() throws OrderException {
+    public void place() throws OrderException {
         if (this.status != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }

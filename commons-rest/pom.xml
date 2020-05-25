@@ -9,33 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall-order-rest</artifactId>
+    <artifactId>mall-commons-rest</artifactId>
+
 
     <dependencies>
-
         <dependency>
-            <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-commons-rest</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.mallfoundry</groupId>
-            <artifactId>mall-order-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>mall-commons-api</artifactId>
         </dependency>
 
         <dependency>
@@ -44,5 +29,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

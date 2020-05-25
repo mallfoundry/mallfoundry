@@ -69,4 +69,6 @@ public interface Coupon {
     void setExcludedCollections(List<String> collections);
 
     Date getCreatedTime();
+
+//    BigDecimal calculateDiscountAmount();
 }

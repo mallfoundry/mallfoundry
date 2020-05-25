@@ -87,6 +87,11 @@ public class InternalProductService implements ProductService {
         return savedProduct;
     }
 
+    @Override
+    public Optional<ProductVariant> getProductVariant(String productId, String variantId) {
+        return this.getProduct(productId).orElseThrow().getVariant(variantId);
+    }
+
     @Transactional
     @Override
     public void adjustInventory(InventoryAdjustment adjustment) {

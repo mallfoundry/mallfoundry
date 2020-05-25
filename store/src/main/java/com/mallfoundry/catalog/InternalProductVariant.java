@@ -51,6 +51,12 @@ public class InternalProductVariant implements ProductVariant {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "product_id_")
+    private String productId;
+
+    @Column(name = "store_id_")
+    private String storeId;
+
     @Column(name = "price_")
     private BigDecimal price;
 

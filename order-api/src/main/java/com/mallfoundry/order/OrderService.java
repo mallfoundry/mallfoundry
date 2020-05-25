@@ -11,17 +11,19 @@ public interface OrderService {
 
     OrderQuery createOrderQuery();
 
-    Order createOrder(ShippingAddress shippingAddress, List<OrderItem> items);
+    Order createOrder(String id);
 
-    OrderItem createOrderItem(String productId, String variantId, int quantity);
+    List<Order> placeOrder(Order order);
 
-    Shipment createShipment(String orderId, List<String> itemIds);
+    List<Order> placeOrders(List<Order> orders);
 
-    List<Order> checkout(Order order);
+    void addShipment(String orderId, Shipment shipment);
 
-    List<Order> checkout(List<Order> orders);
+    Optional<Shipment> getShipment(String orderId, String shipmentId);
 
-    Shipment addShipment(Shipment shipment);
+    void setShipment(String orderId, Shipment shipment);
+
+    void removeShipment(String orderId, String shipmentId);
 
     Optional<Order> getOrder(String orderId);
 

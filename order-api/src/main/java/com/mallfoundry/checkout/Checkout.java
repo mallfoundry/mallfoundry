@@ -2,16 +2,23 @@ package com.mallfoundry.checkout;
 
 import com.mallfoundry.order.Order;
 import com.mallfoundry.order.ShippingAddress;
+import com.mallfoundry.shipping.Address;
 
 import java.util.List;
 
 public interface Checkout {
 
-    String getId();
+    String getCartId();
 
-    ShippingAddress getShippingAddress();
+    void setCartId(String cartId);
 
-    void setShippingAddress(ShippingAddress shippingAddress);
+    Address getShippingAddress();
+
+    void setShippingAddress(Address shippingAddress);
+
+    CheckoutItem createItem();
+
+    void addItem(CheckoutItem item);
 
     List<CheckoutItem> getItems();
 

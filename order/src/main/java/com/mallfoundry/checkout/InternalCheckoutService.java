@@ -1,33 +1,106 @@
 package com.mallfoundry.checkout;
 
 import com.mallfoundry.catalog.ProductService;
+import com.mallfoundry.inventory.InventoryService;
+import com.mallfoundry.keygen.PrimaryKeyHolder;
+import com.mallfoundry.order.Order;
+import com.mallfoundry.order.OrderService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InternalCheckoutService implements CheckoutService {
 
+    static final String ORDER_ID_VALUE_NAME = "order.id";
+
+    static final String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
+
     private final ProductService productService;
 
-    public InternalCheckoutService(ProductService productService) {
+    private final InventoryService inventoryService;
+
+    private final OrderService orderService;
+
+    public InternalCheckoutService(ProductService productService,
+                                   InventoryService inventoryService,
+                                   OrderService orderService) {
         this.productService = productService;
+        this.inventoryService = inventoryService;
+        this.orderService = orderService;
     }
 
     @Override
     public Checkout createCheckout() {
-        return null;
+        return new InternalCheckout();
     }
 
-    @Override
-    public Optional<Checkout> getCheckout(String id) {
-        return Optional.empty();
+    private List<InternalCheckoutItem> ofCheckoutItems(List<CheckoutItem> items) {
+        return items.stream().map(InternalCheckoutItem::of).collect(Collectors.toList());
     }
 
+    private Optional<Order> findOrderByStoreId(List<Order> orders, String storeId) {
+        return orders.stream().filter(order -> Objects.equals(order.getStoreId(), storeId)).findFirst();
+    }
+
+    private Checkout checkout(InternalCheckout checkout) {
+        var items = ofCheckoutItems(checkout.getItems());
+
+        var orders = new ArrayList<Order>();
+
+        for (var item : items) {
+            if (item.getQuantity() <= 0) {
+                throw new CheckoutException("The checkout item must be greater than zero");
+            }
+
+            this.inventoryService.adjustInventory(
+                    this.inventoryService.createInventoryAdjustment()
+                            .toBuilder()
+                            .productId(item.getProductId())
+                            .variantId(item.getVariantId())
+                            .quantityDelta(-item.getQuantity())
+                            .build());
+
+            var product = this.productService.getProduct(item.getProductId()).orElseThrow();
+            var variant = product.getVariant(item.getVariantId()).orElseThrow();
+            var order = this.findOrderByStoreId(orders, product.getStoreId())
+                    .orElseGet(() -> this.orderService
+                            .createOrder(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME))
+                            .toBuilder()
+                            .shippingAddress(checkout.getShippingAddress())
+                            .build());
+
+            order.addItem(order.createItem(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))
+                    .toBuilder()
+                    .storeId(product.getStoreId())
+                    .productId(product.getId())
+                    .variantId(variant.getId())
+                    .name(product.getName())
+                    .optionSelections(List.copyOf(variant.getOptionSelections()))
+                    .imageUrl(CollectionUtils.firstElement(variant.getImageUrls()))
+                    .price(variant.getPrice())
+                    .quantity(item.getQuantity())
+                    .build());
+
+            // Add to orders.
+            if (!orders.contains(order)) {
+                orders.add(order);
+            }
+        }
+
+        checkout.setOrders(this.orderService.placeOrders(orders));
+        return checkout;
+    }
+
+    @Transactional
     @Override
     public Checkout checkout(Checkout checkout) {
-
-//        this.productService.
-        return null;
+        return checkout(InternalCheckout.of(checkout));
     }
 }

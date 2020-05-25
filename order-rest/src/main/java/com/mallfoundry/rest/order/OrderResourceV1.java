@@ -58,44 +58,46 @@ public class OrderResourceV1 {
                         .address(request.getAddress()).location(request.getLocation()).build();
     }
 
-    private OrderItem createOrderItem(CreateOrderRequest.OrderItemRequest request) {
-        return this.orderService.createOrderItem(request.getProductId(), request.getVariantId(), request.getQuantity());
-    }
-
-    private List<OrderItem> createOrderItems(List<CreateOrderRequest.OrderItemRequest> requests) {
-        return requests.stream().map(this::createOrderItem).collect(Collectors.toList());
-    }
-
-    private Order createOrder(CreateOrderRequest request) {
-        return this.orderService.createOrder(
-                createShippingAddress(request.getShippingAddress()),
-                createOrderItems(request.getItems()));
-    }
-
-    private List<Order> createOrders(List<CreateOrderRequest> requests) {
-        return requests.stream().map(this::createOrder).collect(Collectors.toList());
-    }
-
-    @PostMapping("/orders/batch")
-    public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) {
-        return this.orderService.checkout(this.createOrders(request));
-    }
-
-
-    @PostMapping("/orders")
-    public List<Order> checkout(@RequestBody CreateOrderRequest request) {
-        return this.orderService.checkout(this.createOrder(request));
-    }
-
-    @PostMapping("/orders/{order_id}/shipments")
-    public Shipment addShipment(@PathVariable("order_id") String orderId,
-                                @RequestBody AddShipmentRequest request) {
-        var shipment = this.orderService.createShipment(orderId, request.getItemIds());
-        shipment.setShippingMethod(request.getShippingMethod());
-        shipment.setShippingProvider(request.getShippingProvider());
-        shipment.setTrackingNumber(request.getTrackingNumber());
-        return this.orderService.addShipment(shipment);
-    }
+//    private OrderItem createOrderItem(CreateOrderRequest.OrderItemRequest request) {
+//        return this.orderService.createOrderItem(request.getProductId(), request.getVariantId(), request.getQuantity());
+//    }
+//
+//    private List<OrderItem> createOrderItems(List<CreateOrderRequest.OrderItemRequest> requests) {
+//        return requests.stream().map(this::createOrderItem).collect(Collectors.toList());
+//    }
+//
+//    private Order createOrder(CreateOrderRequest request) {
+//        return this.orderService.createOrder(
+//                createShippingAddress(request.getShippingAddress()),
+//                createOrderItems(request.getItems()));
+//    }
+//
+//    private List<Order> createOrders(List<CreateOrderRequest> requests) {
+//        return requests.stream().map(this::createOrder).collect(Collectors.toList());
+//    }
+//
+//    @PostMapping("/orders/batch")
+//    public List<Order> checkout(@RequestBody List<CreateOrderRequest> request) {
+//        return this.orderService.checkout(this.createOrders(request));
+//    }
+//
+//
+//    @PostMapping("/orders")
+//    public List<Order> checkout(@RequestBody CreateOrderRequest request) {
+//        return this.orderService.checkout(this.createOrder(request));
+//    }
+//
+//    @PostMapping("/orders/{order_id}/shipments")
+//    public Shipment addShipment(@PathVariable("order_id") String orderId,
+//                                @RequestBody AddShipmentRequest request) {
+//
+//        this.orderService.getOrder(orderId).orElseThrow().createShipment(PrimaryKeyHoldr)
+//        var shipment = this.orderService.createShipment(orderId, request.getItemIds());
+//        shipment.setShippingMethod(request.getShippingMethod());
+//        shipment.setShippingProvider(request.getShippingProvider());
+//        shipment.setTrackingNumber(request.getTrackingNumber());
+//        return this.orderService.addShipment(shipment);
+//    }
 
     public void requestToShipment(ShipmentRequest request, Shipment shipment) {
         if (StringUtils.isNotEmpty(request.getShippingMethod())) {
@@ -118,7 +120,7 @@ public class OrderResourceV1 {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         var shipment = order.getShipment(shipmentId).orElseThrow();
         this.requestToShipment(request, shipment);
-        this.orderService.checkout(order);
+//        this.orderService.checkout(order);
     }
 
     @PatchMapping("/orders/{order_id}/shipments/batch")
@@ -129,7 +131,7 @@ public class OrderResourceV1 {
             var shipment = order.getShipment(request.getId()).orElseThrow();
             this.requestToShipment(request, shipment);
         }
-        this.orderService.checkout(order);
+//        this.orderService.checkout(order);
     }
 
     @PatchMapping("/orders/{order_id}")
@@ -147,7 +149,7 @@ public class OrderResourceV1 {
         if (request.isDiscountShippingCostsChanged()) {
             order.discountShippingCosts(request.getDiscountShippingCosts());
         }
-        this.orderService.checkout(order);
+//        this.orderService.checkout(order);
     }
 
     @PostMapping("/orders/{order_id}/cancel")

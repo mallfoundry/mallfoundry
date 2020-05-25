@@ -86,17 +86,14 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "discount_shipping_cost_")
     private BigDecimal discountShippingCost;
 
-    public InternalOrderItem(String productId, String variantId, int quantity) {
-        this.setProductId(productId);
-        this.setVariantId(variantId);
-        this.setQuantity(quantity);
+    public InternalOrderItem(String itemId) {
+        this.id = itemId;
     }
 
     public static InternalOrderItem of(OrderItem item) {
         if (item instanceof InternalOrderItem) {
             return (InternalOrderItem) item;
         }
-
         var target = new InternalOrderItem();
         BeanUtils.copyProperties(item, target);
         return target;

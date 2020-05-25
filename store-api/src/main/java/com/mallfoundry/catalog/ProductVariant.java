@@ -14,6 +14,10 @@ public interface ProductVariant extends Serializable, Position {
 
     void setId(String id);
 
+    String getStoreId();
+
+    String getProductId();
+
     BigDecimal getPrice();
 
     void setPrice(BigDecimal price);

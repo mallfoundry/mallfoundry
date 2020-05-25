@@ -78,6 +78,7 @@
         <module>spring-boot</module>
 
         <!-- rest modules-->
+        <module>commons-rest</module>
         <module>store-rest</module>
         <module>payment-rest</module>
         <module>shipping-rest</module>
@@ -255,6 +256,12 @@
             </dependency>
 
             <!-- mall rest libraries -->
+            <dependency>
+                <groupId>com.mallfoundry</groupId>
+                <artifactId>mall-commons-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.mallfoundry</groupId>
                 <artifactId>mall-customer-rest</artifactId>

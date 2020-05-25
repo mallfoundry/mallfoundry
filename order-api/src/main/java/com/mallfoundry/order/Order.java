@@ -1,18 +1,22 @@
 package com.mallfoundry.order;
 
+import com.mallfoundry.shipping.Address;
+import com.mallfoundry.util.ObjectBuilder;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public interface Order {
 
     String getId();
 
-    ShippingAddress getShippingAddress();
+    Address getShippingAddress();
 
-    void setShippingAddress(ShippingAddress shippingAddress);
+    void setShippingAddress(Address shippingAddress);
 
     String getCustomerId();
 
@@ -28,17 +32,27 @@ public interface Order {
 
     List<OrderItem> getItems();
 
-    void setItems(List<OrderItem> items);
+    OrderItem createItem(String itemId);
+
+    void addItem(OrderItem item);
 
     Optional<OrderItem> getItem(String itemId);
 
+    void setItems(List<OrderItem> items);
+
     List<OrderItem> getItems(List<String> itemIds);
+
+    Shipment createShipment(String shipmentId);
+
+    void addShipment(Shipment shipment);
 
     List<Shipment> getShipments();
 
     Optional<Shipment> getShipment(String id);
 
-    void addShipment(Shipment shipment);
+    void setShipment(Shipment shipment);
+
+    void removeShipment(Shipment shipment);
 
     List<Refund> getRefunds();
 
@@ -74,9 +88,53 @@ public interface Order {
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
 
-    void pending();
+    void place();
 
     void pay(PaymentDetails details);
 
     void cancel(String reason);
+
+    default Builder toBuilder() {
+        return new BuilderSupport(this);
+    }
+
+    interface Builder extends ObjectBuilder<Order> {
+
+        Builder shippingAddress(Address shippingAddress);
+
+        Builder item(OrderItem item);
+
+        Builder item(Function<Order, OrderItem> item);
+    }
+
+    class BuilderSupport implements Builder {
+
+        private final Order order;
+
+        public BuilderSupport(Order order) {
+            this.order = order;
+        }
+
+        @Override
+        public Builder shippingAddress(Address shippingAddress) {
+            this.order.setShippingAddress(shippingAddress);
+            return this;
+        }
+
+        @Override
+        public Builder item(OrderItem item) {
+            this.order.addItem(item);
+            return this;
+        }
+
+        @Override
+        public Builder item(Function<Order, OrderItem> item) {
+            return this.item(item.apply(this.order));
+        }
+
+        @Override
+        public Order build() {
+            return this.order;
+        }
+    }
 }

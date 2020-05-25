@@ -18,14 +18,11 @@ package com.mallfoundry.order;
 
 import com.mallfoundry.catalog.ProductService;
 import com.mallfoundry.data.SliceList;
-import com.mallfoundry.keygen.PrimaryKeyHolder;
 import com.mallfoundry.security.SecurityUserHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,33 +30,15 @@ import java.util.stream.Collectors;
 @Service
 public class InternalOrderService implements OrderService {
 
-    String ORDER_ID_VALUE_NAME = "order.id";
-
-    String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
-
-    String SHIPMENT_ID_VALUE_NAME = "shipment.id";
-
     private final OrderRepository orderRepository;
-
-    private final CustomerValidator customerValidator;
-
-    private final CheckoutCounter checkoutCounter;
 
     private final OrderSplitter orderSplitter;
 
-
-    private final ProductService productService;
-
     public InternalOrderService(OrderRepository orderRepository,
-                                CustomerValidator customerValidator,
-                                CheckoutCounter checkoutCounter,
                                 OrderSplitter orderSplitter,
                                 ProductService productService) {
         this.orderRepository = orderRepository;
-        this.customerValidator = customerValidator;
-        this.checkoutCounter = checkoutCounter;
         this.orderSplitter = orderSplitter;
-        this.productService = productService;
     }
 
     @Override
@@ -73,71 +52,48 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public Order createOrder(ShippingAddress shippingAddress, List<OrderItem> items) {
-        var order = new InternalOrder(shippingAddress, items);
-        order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME));
+    public Order createOrder(String id) {
+        var order = new InternalOrder(id);
         order.setCustomerId(SecurityUserHolder.getUserId());
         return order;
     }
 
+    @Transactional
     @Override
-    public OrderItem createOrderItem(String productId, String variantId, int quantity) {
-        var item = new InternalOrderItem(productId, variantId, quantity);
-        item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME));
-        var product = this.productService.getProduct(productId).orElseThrow();
-        var variant = product.getVariant(variantId).orElseThrow();
-        item.setStoreId(product.getStoreId());
-        item.setImageUrl(CollectionUtils.firstElement(variant.getImageUrls()));
-        item.setPrice(variant.getPrice());
-        item.setOptionSelections(List.copyOf(variant.getOptionSelections()));
-        item.setName(item.getName());
-        return item;
-    }
-
-    @Override
-    public Shipment createShipment(String orderId, List<String> itemIds) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        var shipment = new InternalShipment(orderId, order.getItems(itemIds));
-        shipment.setId(PrimaryKeyHolder.next(SHIPMENT_ID_VALUE_NAME));
-        shipment.setConsignorId(SecurityUserHolder.getUserId());
-        shipment.setConsignor(SecurityUserHolder.getNickname());
-        shipment.setShippingAddress(order.getShippingAddress());
-        return shipment;
+    public List<Order> placeOrder(Order order) {
+        return this.placeOrders(List.of(order));
     }
 
     @Transactional
     @Override
-    public List<Order> checkout(Order order) {
-        return this.checkout(List.of(order));
-    }
-
-    @Transactional
-    @Override
-    public List<Order> checkout(List<Order> orders) throws CustomerValidException {
-        customerValidator.validate(orders);
-        checkoutCounter.checkout(orders);
-        var splitOrders = this.orderSplitter.splitting(orders)
-                .stream().map(InternalOrder::of).collect(Collectors.toList());
+    public List<Order> placeOrders(List<Order> orders) {
+        var splitOrders = this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
+        splitOrders.forEach(Order::place);
         return CastUtils.cast(this.orderRepository.saveAll(splitOrders));
     }
 
-    private BigDecimal totalAmount(List<InternalOrder> orders) {
-        return orders.stream()
-                .map(Order::getTotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    @Transactional
+    @Override
+    public void addShipment(String orderId, Shipment shipment) {
+        this.orderRepository.findById(orderId).orElseThrow().addShipment(shipment);
+    }
+
+    @Override
+    public Optional<Shipment> getShipment(String orderId, String shipmentId) {
+        return this.orderRepository.findById(orderId).orElseThrow().getShipment(shipmentId);
     }
 
     @Transactional
     @Override
-    public Shipment addShipment(Shipment shipment) {
-        var order = this.orderRepository.findById(shipment.getOrderId()).orElseThrow();
-        order.addShipment(shipment);
-        return shipment;
+    public void setShipment(String orderId, Shipment shipment) {
+        this.orderRepository.findById(orderId).orElseThrow().setShipment(shipment);
     }
 
     @Transactional
-    public void saveOrder(Order order) {
-        this.orderRepository.save(InternalOrder.of(order));
+    @Override
+    public void removeShipment(String orderId, String shipmentId) {
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.removeShipment(order.getShipment(shipmentId).orElseThrow());
     }
 
     @Override

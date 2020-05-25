@@ -19,6 +19,8 @@ package com.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mallfoundry.order.repository.jpa.convert.ShippingAddressConverter;
+import com.mallfoundry.shipping.Address;
+import com.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,9 +57,9 @@ public class InternalShipment implements Shipment {
     private String consignor;
 
     @JsonProperty("shipping_address")
-    @Convert(converter = ShippingAddressConverter.class)
+    @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
-    private ShippingAddress shippingAddress;
+    private Address shippingAddress;
 
     @JsonProperty("shipping_provider")
     @Column(name = "shipping_provider_")
@@ -86,9 +88,8 @@ public class InternalShipment implements Shipment {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    public InternalShipment(String orderId, List<OrderItem> items) {
-        this.setOrderId(orderId);
-        this.setItems(items);
+    public InternalShipment(String id) {
+        this.id = id;
         this.setShippedTime(new Date());
     }
 

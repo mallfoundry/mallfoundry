@@ -1,42 +1,42 @@
 package com.mallfoundry.checkout;
 
-import com.mallfoundry.order.InternalOrder;
 import com.mallfoundry.order.Order;
-import com.mallfoundry.order.ShippingAddress;
+import com.mallfoundry.shipping.Address;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "checkouts")
 public class InternalCheckout implements Checkout {
 
-    @Id
-    @Column(name = "id_")
-    private String id;
+    private String cartId;
 
-    @Column(name = "shipping_address_")
-    private ShippingAddress shippingAddress;
+    private Address shippingAddress;
 
-    @OneToMany(targetEntity = InternalCheckoutItem.class)
-    @JoinColumn(name = "checkout_id_")
-    private List<CheckoutItem> items;
+    private List<CheckoutItem> items = new ArrayList<>();
 
-    @ManyToMany(targetEntity = InternalOrder.class)
-    @JoinTable(name = "checkout_orders",
-            joinColumns = @JoinColumn(name = "checkout_id_"),
-            inverseJoinColumns = @JoinColumn(name = "order_id_"))
     private List<Order> orders;
 
+    public static InternalCheckout of(Checkout checkout) {
+        if (checkout instanceof InternalCheckout) {
+            return (InternalCheckout) checkout;
+        }
+        var target = new InternalCheckout();
+        BeanUtils.copyProperties(checkout, target);
+        return target;
+    }
+
+    @Override
+    public CheckoutItem createItem() {
+        return new InternalCheckoutItem();
+    }
+
+    @Override
+    public void addItem(CheckoutItem item) {
+        this.items.add(item);
+    }
 }

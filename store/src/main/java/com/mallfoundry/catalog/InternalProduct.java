@@ -181,6 +181,8 @@ public class InternalProduct implements Product {
     public ProductVariant createVariant(String id) {
         var variant = new InternalProductVariant();
         variant.setId(id);
+        variant.setProductId(this.getId());
+        variant.setStoreId(this.getStoreId());
         return variant;
     }
 

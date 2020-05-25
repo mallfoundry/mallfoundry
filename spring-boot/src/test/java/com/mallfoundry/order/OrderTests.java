@@ -16,30 +16,13 @@
 
 package com.mallfoundry.order;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class OrderTests {
 
     @Autowired
-    private InternalOrderService orderService;
+    private OrderService orderService;
 
-    @Test
-    @Transactional
-    @Rollback(false)
-    public void testSubmitOrder() throws CustomerValidException {
-        
-    }
-
-    @Test
-    @Transactional
-    @Rollback(false)
-    public void testAddShipment() throws CustomerValidException {
-        Order order = new InternalOrder();
-        order.addShipment(new InternalShipment());
-    }
 }

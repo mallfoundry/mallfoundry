@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package com.mallfoundry.order;
+package com.mallfoundry.checkout;
 
 public class CheckoutException extends RuntimeException {
+
+    public CheckoutException(String message) {
+        super(message);
+    }
 
     public CheckoutException(Throwable cause) {
         super(cause);
