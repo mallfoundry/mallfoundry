@@ -86,8 +86,8 @@ public class InternalProductVariant implements ProductVariant {
     }
 
     @Override
-    public void adjustInventoryQuantity(int adjustQuantity) throws InventoryException {
-        this.setInventoryQuantity(this.inventoryQuantity + adjustQuantity);
+    public void adjustInventoryQuantity(int quantityDelta) throws InventoryException {
+        this.setInventoryQuantity(this.inventoryQuantity + quantityDelta);
     }
 
     @Override

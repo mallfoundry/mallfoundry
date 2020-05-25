@@ -11,5 +11,5 @@ public class InternalInventoryAdjustment implements InventoryAdjustment {
 
     private String variantId;
 
-    private int quantity;
+    private int quantityDelta;
 }

@@ -165,8 +165,8 @@ public class InternalProduct implements Product {
     }
 
     @Override
-    public void adjustVariantInventoryQuantity(String variantId, int adjustQuantity) {
-        this.getVariant(variantId).orElseThrow().adjustInventoryQuantity(adjustQuantity);
+    public void adjustVariantInventoryQuantity(String variantId, int quantityDelta) {
+        this.getVariant(variantId).orElseThrow().adjustInventoryQuantity(quantityDelta);
     }
 
     @Override

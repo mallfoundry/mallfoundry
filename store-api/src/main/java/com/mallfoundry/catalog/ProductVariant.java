@@ -34,7 +34,7 @@ public interface ProductVariant extends Serializable, Position {
 
     void setInventoryQuantity(int inventoryQuantity) throws InventoryException;
 
-    void adjustInventoryQuantity(int adjustQuantity) throws InventoryException;
+    void adjustInventoryQuantity(int quantityDelta) throws InventoryException;
 
     InventoryStatus getInventoryStatus();
 

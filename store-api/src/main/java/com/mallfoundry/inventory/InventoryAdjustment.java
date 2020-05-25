@@ -10,7 +10,7 @@ public interface InventoryAdjustment {
 
     void setVariantId(String variantId);
 
-    int getQuantity();
+    int getQuantityDelta();
 
-    void setQuantity(int quantity);
+    void setQuantityDelta(int quantityDelta);
 }

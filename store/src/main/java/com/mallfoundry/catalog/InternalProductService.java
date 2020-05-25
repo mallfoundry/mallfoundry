@@ -91,7 +91,7 @@ public class InternalProductService implements ProductService {
     @Override
     public void adjustInventory(InventoryAdjustment adjustment) {
         var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
-        product.adjustVariantInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantity());
+        product.adjustVariantInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
     }
 
     @Transactional
