@@ -28,12 +28,10 @@ public abstract class AbstractCaptchaService implements CaptchaService {
     }
 
     @Override
-    public boolean checkCaptcha(Captcha captcha) {
-        var storedCaptcha = this.captchaRepository.findByToken(captcha.getToken()).orElseThrow();
-        return (storedCaptcha.getCreatedTime().getTime() + captcha.getExpires()) < System.currentTimeMillis()
-                && Objects.equals(captcha.getType(), storedCaptcha.getType())
-                && Objects.equals(captcha.getToken(), storedCaptcha.getToken())
-                && Objects.equals(captcha.getCode(), storedCaptcha.getCode());
+    public boolean checkCaptcha(String token, String code) {
+        var storedCaptcha = this.captchaRepository.findByToken(token).orElseThrow();
+        return (storedCaptcha.getCreatedTime().getTime() + storedCaptcha.getExpires()) < System.currentTimeMillis()
+                && Objects.equals(code, storedCaptcha.getCode());
     }
 
     protected abstract void invokeCaptcha(Captcha captcha);

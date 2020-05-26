@@ -4,5 +4,5 @@ public interface CaptchaService {
 
     Captcha createCaptcha(CaptchaType type);
 
-    boolean checkCaptcha(Captcha captcha);
+    boolean checkCaptcha(String token, String code);
 }
