@@ -19,11 +19,16 @@ public abstract class AbstractCaptchaService implements CaptchaService {
         this.captchaRepository = captchaRepository;
     }
 
-    @Transactional
     @Override
     public Captcha createCaptcha(CaptchaType type) {
+        return this.captchaRepository.create(type);
+    }
+
+    @Transactional
+    @Override
+    public Captcha generateCaptcha(CaptchaType type) {
         var captcha = this.captchaRepository.create(type).toBuilder().token(this.createToken()).code(this.generateCode()).build();
-        this.invokeCaptcha(captcha);
+        this.doGenerateCaptcha(captcha);
         return this.captchaRepository.save(captcha);
     }
 
@@ -34,7 +39,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
                 && Objects.equals(code, storedCaptcha.getCode());
     }
 
-    protected abstract void invokeCaptcha(Captcha captcha);
+    protected abstract void doGenerateCaptcha(Captcha captcha);
 
     protected String createToken() {
         return UUID.randomUUID().toString().replaceAll("-", "");

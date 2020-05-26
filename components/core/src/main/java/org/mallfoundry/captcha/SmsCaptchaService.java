@@ -21,7 +21,7 @@ public class SmsCaptchaService extends AbstractCaptchaService {
     }
 
     @Override
-    protected void invokeCaptcha(Captcha captcha) {
+    protected void doGenerateCaptcha(Captcha captcha) {
         var mobile = captcha.getParameters().get("mobile");
         this.messageService.sendMessage(this.messageService.createMessage().toBuilder().mobile(mobile)
                 .signature(this.signature)

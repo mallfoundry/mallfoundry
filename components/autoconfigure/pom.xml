@@ -30,6 +30,13 @@
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
