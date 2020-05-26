@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>mall</artifactId>
+        <groupId>org.mallfoundry</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>mall-components</artifactId>
+    <packaging>pom</packaging>
+	
+	
+    <modules>
+        <!-- api modules -->
+        <module>commons-api</module>
+        <module>catalog-api</module>
+        <module>customer-api</module>
+        <module>storage-api</module>
+        <module>store-api</module>
+        <module>order-api</module>
+        <module>shipping-api</module>
+        <module>payment-api</module>
+        <module>identity-api</module>
+        <module>district-api</module>
+        <module>dom-api</module>
+        <module>security-api</module>
+        <module>marketing-api</module>
+
+        <module>analyze</module>
+        <module>app</module>
+        <module>commons</module>
+        <module>autoconfigure</module>
+        <module>core</module>
+        <module>identity</module>
+        <module>security</module>
+        <module>storage</module>
+        <module>store</module>
+        <module>catalog</module>
+        <module>customer</module>
+        <module>order</module>
+        <module>trade</module>
+        <module>shipping</module>
+        <module>payment</module>
+        <module>marketing</module>
+        <module>spring-boot</module>
+
+        <!-- rest modules-->
+        <module>commons-rest</module>
+        <module>store-rest</module>
+        <module>payment-rest</module>
+        <module>shipping-rest</module>
+        <module>order-rest</module>
+        <module>identity-rest</module>
+        <module>customer-rest</module>
+        <module>marketing-rest</module>
+    </modules>
+
+</project>

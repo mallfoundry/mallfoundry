@@ -42,51 +42,11 @@
         <lucene.version>8.5.1</lucene.version>
         <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
         <mall.version>${project.version}</mall.version>
+        <checkstyle.config.location>checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
 
     <modules>
-        <!-- api modules -->
-        <module>commons-api</module>
-        <module>catalog-api</module>
-        <module>customer-api</module>
-        <module>storage-api</module>
-        <module>store-api</module>
-        <module>order-api</module>
-        <module>shipping-api</module>
-        <module>payment-api</module>
-        <module>identity-api</module>
-        <module>district-api</module>
-        <module>dom-api</module>
-        <module>security-api</module>
-        <module>marketing-api</module>
-
-        <module>analyze</module>
-        <module>app</module>
-        <module>commons</module>
-        <module>autoconfigure</module>
-        <module>core</module>
-        <module>identity</module>
-        <module>security</module>
-        <module>storage</module>
-        <module>store</module>
-        <module>catalog</module>
-        <module>customer</module>
-        <module>order</module>
-        <module>trade</module>
-        <module>shipping</module>
-        <module>payment</module>
-        <module>marketing</module>
-        <module>spring-boot</module>
-
-        <!-- rest modules-->
-        <module>commons-rest</module>
-        <module>store-rest</module>
-        <module>payment-rest</module>
-        <module>shipping-rest</module>
-        <module>order-rest</module>
-        <module>identity-rest</module>
-        <module>customer-rest</module>
-        <module>marketing-rest</module>
+        <module>components</module>
     </modules>
 
     <dependencyManagement>
@@ -352,13 +312,51 @@
         </dependencies>
     </dependencyManagement>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.1</version>
+                    <configuration>
+                        <configLocation>checkstyle/checkstyle.xml</configLocation>
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <failsOnError>true</failsOnError>
+                        <linkXRef>false</linkXRef>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
