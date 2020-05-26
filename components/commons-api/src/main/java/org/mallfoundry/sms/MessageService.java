@@ -16,5 +16,9 @@
 
 package org.mallfoundry.sms;
 
-public interface ShortMessageService {
+public interface MessageService {
+
+    Message createMessage();
+
+    void sendMessage(Message message);
 }

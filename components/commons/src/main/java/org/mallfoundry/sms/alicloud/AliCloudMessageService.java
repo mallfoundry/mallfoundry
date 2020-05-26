@@ -16,5 +16,13 @@
 
 package org.mallfoundry.sms.alicloud;
 
-public class AliCloudShortMessageService {
+import org.mallfoundry.sms.AbstractMessageService;
+import org.mallfoundry.sms.Message;
+
+public class AliCloudMessageService extends AbstractMessageService {
+
+    @Override
+    public void sendMessage(Message message) {
+
+    }
 }
