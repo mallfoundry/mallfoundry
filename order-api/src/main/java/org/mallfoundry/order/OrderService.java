@@ -15,13 +15,7 @@ public interface OrderService {
 
     List<Order> placeOrders(List<Order> orders);
 
-    void addShipment(String orderId, Shipment shipment);
-
-    Optional<Shipment> getShipment(String orderId, String shipmentId);
-
-    void setShipment(String orderId, Shipment shipment);
-
-    void removeShipment(String orderId, String shipmentId);
+    Order saveOrder(Order order);
 
     Optional<Order> getOrder(String orderId);
 
@@ -30,4 +24,17 @@ public interface OrderService {
     void payOrder(String orderId, PaymentDetails details);
 
     void cancelOrder(String orderId, String reason);
+
+    Shipment createShipment(String orderId, List<String> itemIds);
+
+    Shipment addShipment(String orderId, Shipment shipment);
+
+    Optional<Shipment> getShipment(String orderId, String shipmentId);
+
+    void setShipment(String orderId, Shipment shipment);
+
+    void setShipments(String orderId, List<Shipment> shipments);
+
+    void removeShipment(String orderId, String shipmentId);
+
 }

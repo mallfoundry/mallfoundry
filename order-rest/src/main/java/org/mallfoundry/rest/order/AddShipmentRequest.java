@@ -16,7 +16,6 @@
 
 package org.mallfoundry.rest.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +24,5 @@ import java.util.List;
 @Getter
 @Setter
 public class AddShipmentRequest extends ShipmentRequest {
-
-    @JsonProperty("item_ids")
-    private List<String> itemIds;
+    private List<OrderRequest.OrderItemRequest> items;
 }

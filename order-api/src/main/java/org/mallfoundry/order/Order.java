@@ -100,6 +100,8 @@ public interface Order {
 
     interface Builder extends ObjectBuilder<Order> {
 
+        Builder customerId(String customerId);
+
         Builder shippingAddress(Address shippingAddress);
 
         Builder item(OrderItem item);
@@ -113,6 +115,12 @@ public interface Order {
 
         public BuilderSupport(Order order) {
             this.order = order;
+        }
+
+        @Override
+        public Builder customerId(String customerId) {
+            this.order.setCustomerId(customerId);
+            return this;
         }
 
         @Override

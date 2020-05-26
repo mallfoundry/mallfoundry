@@ -18,11 +18,11 @@ package org.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mallfoundry.shipping.Address;
-import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.shipping.Address;
+import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -87,6 +87,10 @@ public class InternalShipment implements Shipment {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
+    public void setItems(List<OrderItem> items) {
+        this.items = items.stream().map(InternalOrderItem::of).collect(Collectors.toList());
+    }
+
     public InternalShipment(String id) {
         this.id = id;
         this.setShippedTime(new Date());
@@ -99,10 +103,6 @@ public class InternalShipment implements Shipment {
         var target = new InternalShipment();
         BeanUtils.copyProperties(shipment, target);
         return target;
-    }
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items.stream().map(InternalOrderItem::of).collect(Collectors.toList());
     }
 
     @Override

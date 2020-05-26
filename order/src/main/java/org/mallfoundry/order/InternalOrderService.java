@@ -16,8 +16,9 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.catalog.ProductService;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,13 @@ import java.util.stream.Collectors;
 @Service
 public class InternalOrderService implements OrderService {
 
+    static final String ORDER_SHIPMENT_ID_VALUE_NAME = "order.shipment.id";
+
     private final OrderRepository orderRepository;
 
     private final OrderSplitter orderSplitter;
 
-    public InternalOrderService(OrderRepository orderRepository,
-                                OrderSplitter orderSplitter,
-                                ProductService productService) {
+    public InternalOrderService(OrderRepository orderRepository, OrderSplitter orderSplitter) {
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
     }
@@ -48,9 +49,7 @@ public class InternalOrderService implements OrderService {
 
     @Override
     public Order createOrder(String id) {
-        var order = new InternalOrder(id);
-        order.setCustomerId(SecurityUserHolder.getUserId());
-        return order;
+        return new InternalOrder(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
     }
 
     @Transactional
@@ -69,26 +68,21 @@ public class InternalOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void addShipment(String orderId, Shipment shipment) {
-        this.orderRepository.findById(orderId).orElseThrow().addShipment(shipment);
-    }
-
-    @Override
-    public Optional<Shipment> getShipment(String orderId, String shipmentId) {
-        return this.orderRepository.findById(orderId).orElseThrow().getShipment(shipmentId);
+    public Order saveOrder(Order order) {
+        return this.orderRepository.save(InternalOrder.of(order));
     }
 
     @Transactional
     @Override
-    public void setShipment(String orderId, Shipment shipment) {
-        this.orderRepository.findById(orderId).orElseThrow().setShipment(shipment);
+    public void payOrder(String orderId, PaymentDetails details) {
+        this.orderRepository.findById(orderId).orElseThrow().pay(details);
     }
 
     @Transactional
     @Override
-    public void removeShipment(String orderId, String shipmentId) {
+    public void cancelOrder(String orderId, String reason) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.removeShipment(order.getShipment(shipmentId).orElseThrow());
+        order.cancel(reason);
     }
 
     @Override
@@ -103,14 +97,48 @@ public class InternalOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrder(String orderId, PaymentDetails details) {
-        this.orderRepository.findById(orderId).orElseThrow().pay(details);
+    public Shipment addShipment(String orderId, Shipment shipment) {
+        var order = this.getOrder(orderId).orElseThrow();
+
+        if (StringUtils.isBlank(shipment.getId())) {
+            shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
+        }
+
+        shipment.toBuilder()
+                .consignorId(SecurityUserHolder.getUserId())
+                .consignor(SecurityUserHolder.getNickname());
+
+        order.addShipment(shipment);
+        return shipment;
+    }
+
+    @Override
+    public Optional<Shipment> getShipment(String orderId, String shipmentId) {
+        return this.orderRepository.findById(orderId).orElseThrow().getShipment(shipmentId);
     }
 
     @Transactional
     @Override
-    public void cancelOrder(String orderId, String reason) {
+    public void setShipment(String orderId, Shipment shipment) {
+        this.orderRepository.findById(orderId).orElseThrow().setShipment(shipment);
+    }
+
+    @Override
+    public void setShipments(String orderId, List<Shipment> shipments) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.cancel(reason);
+        shipments.forEach(order::setShipment);
+    }
+
+    @Transactional
+    @Override
+    public void removeShipment(String orderId, String shipmentId) {
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.removeShipment(order.getShipment(shipmentId).orElseThrow());
+    }
+
+    @Override
+    public Shipment createShipment(String orderId, List<String> itemIds) {
+        var order = this.getOrder(orderId).orElseThrow();
+        return order.createShipment(null).toBuilder().items(order.getItems(itemIds)).build();
     }
 }

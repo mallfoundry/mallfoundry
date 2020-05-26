@@ -14,6 +14,8 @@ public interface Shipment {
 
     String getOrderId();
 
+    void setOrderId(String orderId);
+
     String getConsignorId();
 
     void setConsignorId(String consignorId);
@@ -23,6 +25,8 @@ public interface Shipment {
     void setConsignor(String consignor);
 
     List<OrderItem> getItems();
+
+    void setItems(List<OrderItem> items);
 
     Address getShippingAddress();
 
@@ -49,6 +53,10 @@ public interface Shipment {
 
     interface Builder extends ObjectBuilder<Shipment> {
 
+        Builder orderId(String orderId);
+
+        Builder items(List<OrderItem> items);
+
         Builder consignorId(String consignorId);
 
         Builder consignor(String consignor);
@@ -68,6 +76,18 @@ public interface Shipment {
 
         public BuilderSupport(Shipment shipment) {
             this.shipment = shipment;
+        }
+
+        @Override
+        public Builder orderId(String orderId) {
+            this.shipment.setOrderId(orderId);
+            return this;
+        }
+
+        @Override
+        public Builder items(List<OrderItem> items) {
+            this.shipment.setItems(items);
+            return this;
         }
 
         @Override

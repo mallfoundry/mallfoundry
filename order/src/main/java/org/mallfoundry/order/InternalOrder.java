@@ -19,13 +19,13 @@ package org.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mallfoundry.payment.PaymentStatus;
-import org.mallfoundry.shipping.Address;
-import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.shipping.Address;
+import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -204,10 +204,11 @@ public class InternalOrder implements Order {
 
     @Override
     public Shipment createShipment(String shipmentId) {
-        var shipment = new InternalShipment(shipmentId);
-        shipment.setOrderId(this.getId());
-        shipment.setShippingAddress(this.getShippingAddress());
-        return shipment;
+        return new InternalShipment(shipmentId)
+                .toBuilder()
+                .orderId(this.getId())
+                .shippingAddress(this.getShippingAddress())
+                .build();
     }
 
     @Override
