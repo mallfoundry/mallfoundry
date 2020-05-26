@@ -44,5 +44,9 @@ mall:
     aliyun:
       access-key-id: LTAI4G7mqTDp1xTXdzauuRmu
       access-secret: DZT5rcCfqmd5cWN2rhtY2cDDBVRRsN
-#      template-code: SMS_190975735
-#      sign-name: 商铸
+  captcha:
+    type: sms
+    code-length: 6
+    sms:
+      signature: 商铸
+      template: SMS_190975735

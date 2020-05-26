@@ -1,6 +1,13 @@
 package org.mallfoundry.captcha;
 
+import org.mallfoundry.util.ObjectBuilder;
+
+import java.util.Date;
+import java.util.Map;
+
 public interface Captcha {
+
+    CaptchaType getType();
 
     String getToken();
 
@@ -10,5 +17,53 @@ public interface Captcha {
 
     void setCode(String code);
 
-    CaptchaType getType();
+    Map<String, String> getParameters();
+
+    void setParameters(Map<String, String> parameters);
+
+    int getExpires();
+
+    void setExpires(int expires);
+
+    Date getCreatedTime();
+
+    default Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    interface Builder extends ObjectBuilder<Captcha> {
+
+
+        Builder token(String token);
+
+        Builder code(String code);
+    }
+
+    class BuilderSupport implements Builder {
+
+        private final Captcha captcha;
+
+        public BuilderSupport(Captcha captcha) {
+            this.captcha = captcha;
+        }
+
+        @Override
+        public Builder token(String token) {
+            this.captcha.setToken(token);
+            return this;
+        }
+
+        @Override
+        public Builder code(String code) {
+            this.captcha.setCode(code);
+            return this;
+        }
+
+        @Override
+        public Captcha build() {
+            return this.captcha;
+        }
+    }
+
 }

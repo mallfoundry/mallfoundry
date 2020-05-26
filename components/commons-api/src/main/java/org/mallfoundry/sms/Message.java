@@ -38,6 +38,10 @@ public interface Message extends Serializable {
 
         Builder mobile(String mobile);
 
+        Builder template(String template);
+
+        Builder signature(String signature);
+
         Builder body(String body);
 
         Builder variable(String name, String value);
@@ -55,6 +59,18 @@ public interface Message extends Serializable {
         @Override
         public Builder mobile(String mobile) {
             this.message.setMobile(mobile);
+            return this;
+        }
+
+        @Override
+        public Builder template(String template) {
+            this.message.setTemplate(template);
+            return this;
+        }
+
+        @Override
+        public Builder signature(String signature) {
+            this.message.setSignature(signature);
             return this;
         }
 

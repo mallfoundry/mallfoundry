@@ -1,18 +1,31 @@
 package org.mallfoundry.captcha;
 
 
-// mall.captcha.type=sms
-// mall.captcha.sms.template=xxx
-// mall.captcha.sms.signature=xxx
-public class SmsCaptchaService implements CaptchaService {
+import lombok.Setter;
+import org.mallfoundry.sms.Message;
+import org.mallfoundry.sms.MessageService;
 
-    @Override
-    public Captcha createCaptcha(CaptchaType type) {
-        return null;
+public class SmsCaptchaService extends AbstractCaptchaService {
+
+    private final MessageService messageService;
+
+    @Setter
+    private String template;
+
+    @Setter
+    private String signature;
+
+    public SmsCaptchaService(CaptchaRepository repository, MessageService messageService) {
+        super(repository);
+        this.messageService = messageService;
     }
 
     @Override
-    public boolean checkCaptcha(Captcha captcha) {
-        return false;
+    protected void invokeCaptcha(Captcha captcha) {
+        var mobile = captcha.getParameters().get("mobile");
+        this.messageService.sendMessage(this.messageService.createMessage().toBuilder().mobile(mobile)
+                .signature(this.signature)
+                .template(this.template)
+                .variable(Message.CODE_VARIABLE_NAME, captcha.getCode()).build());
     }
 }
