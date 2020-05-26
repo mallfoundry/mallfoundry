@@ -39,3 +39,10 @@ mall:
       api-key: 03613fea-82ff-4023-a816-a034b8f453b8
       e-business-id: 1632631
       url: http://api.kdniao.com
+  sms:
+    type: aliyun
+    aliyun:
+      access-key-id: LTAI4G7mqTDp1xTXdzauuRmu
+      access-secret: DZT5rcCfqmd5cWN2rhtY2cDDBVRRsN
+#      template-code: SMS_190975735
+#      sign-name: 商铸

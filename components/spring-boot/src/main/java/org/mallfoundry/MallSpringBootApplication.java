@@ -32,6 +32,4 @@ public class MallSpringBootApplication {
         SpringApplication.run(MallSpringBootApplication.class, args);
     }
 
-    private MallSpringBootApplication() {
-    }
 }

@@ -20,5 +20,5 @@ public interface MessageService {
 
     Message createMessage();
 
-    void sendMessage(Message message);
+    void sendMessage(Message message) throws MessageException;
 }

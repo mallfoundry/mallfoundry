@@ -7,6 +7,16 @@ import java.util.Map;
 
 public interface Message extends Serializable {
 
+    String CODE_VARIABLE_NAME = "code";
+
+    String getTemplate();
+
+    void setTemplate(String template);
+
+    String getSignature();
+
+    void setSignature(String signature);
+
     String getMobile();
 
     void setMobile(String mobile);
@@ -15,9 +25,9 @@ public interface Message extends Serializable {
 
     void setBody(String body);
 
-    Map<String, String> getParameters();
+    Map<String, String> getVariables();
 
-    void setParameter(String name, String value);
+    void setVariable(String name, String value);
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {
@@ -30,7 +40,7 @@ public interface Message extends Serializable {
 
         Builder body(String body);
 
-        Builder parameter(String name, String value);
+        Builder variable(String name, String value);
 
     }
 
@@ -55,8 +65,8 @@ public interface Message extends Serializable {
         }
 
         @Override
-        public Builder parameter(String name, String value) {
-            this.message.setParameter(name, value);
+        public Builder variable(String name, String value) {
+            this.message.setVariable(name, value);
             return this;
         }
 

@@ -12,14 +12,18 @@ import java.util.Map;
 @NoArgsConstructor
 public class DefaultMessage implements Message {
 
-    private String body;
+    private String template;
+
+    private String signature;
 
     private String mobile;
 
-    private Map<String, String> parameters = new HashMap<>();
+    private String body;
+
+    private Map<String, String> variables = new HashMap<>();
 
     @Override
-    public void setParameter(String name, String value) {
-        this.parameters.put(name, value);
+    public void setVariable(String name, String value) {
+        this.variables.put(name, value);
     }
 }

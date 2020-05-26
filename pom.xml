@@ -41,6 +41,8 @@
         <commons-codec.version>1.14</commons-codec.version>
         <lucene.version>8.5.1</lucene.version>
         <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
+        <aliyun-sdk.version>4.5.1</aliyun-sdk.version>
+        <alipay-sdk.version>4.9.13.ALL</alipay-sdk.version>
         <mall.version>${project.version}</mall.version>
         <checkstyle.config.location>checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
@@ -300,6 +302,18 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${qiniu-sdk.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-sdk.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-sdk.version}</version>
             </dependency>
 
             <dependency>
