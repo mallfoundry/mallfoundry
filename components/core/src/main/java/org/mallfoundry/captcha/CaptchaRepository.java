@@ -1,5 +1,8 @@
 package org.mallfoundry.captcha;
 
+import org.mallfoundry.captcha.Captcha;
+import org.mallfoundry.captcha.CaptchaType;
+
 import java.util.Optional;
 
 public interface CaptchaRepository {

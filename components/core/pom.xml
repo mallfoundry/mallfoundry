@@ -28,6 +28,7 @@
     <artifactId>mall-core</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-district-api</artifactId>
@@ -35,7 +36,17 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-security-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
         </dependency>
 
         <dependency>

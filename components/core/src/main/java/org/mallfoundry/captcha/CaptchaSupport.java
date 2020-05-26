@@ -2,6 +2,8 @@ package org.mallfoundry.captcha;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.captcha.Captcha;
+import org.mallfoundry.captcha.CaptchaType;
 
 import java.util.Date;
 import java.util.Map;
