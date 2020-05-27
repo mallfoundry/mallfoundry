@@ -1,8 +1,5 @@
 package org.mallfoundry.captcha;
 
-import org.mallfoundry.captcha.Captcha;
-import org.mallfoundry.captcha.CaptchaType;
-
 import java.util.Optional;
 
 public interface CaptchaRepository {
@@ -11,8 +8,12 @@ public interface CaptchaRepository {
 
     Optional<Captcha> findByToken(String token);
 
+    Optional<Captcha> findByMobile(String mobile);
+
     Captcha save(Captcha captcha);
 
     void deleteByToken(String token);
+
+    void deleteByMobile(String mobile);
 
 }

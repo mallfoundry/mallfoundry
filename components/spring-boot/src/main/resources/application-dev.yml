@@ -50,3 +50,4 @@ mall:
     sms:
       signature: 商铸
       template: SMS_190975735
+      interval: 120

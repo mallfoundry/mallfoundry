@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Map;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -42,6 +43,18 @@ public class JpaCaptcha extends CaptchaSupport {
     @Override
     public Map<String, String> getParameters() {
         return super.getParameters();
+    }
+
+    @Column(name = "mobile_", length = 20)
+    private String getMobile() {
+        return this.getParameters().getOrDefault("mobile", null);
+    }
+
+    private void setMobile(String mobile) {
+        if (Objects.nonNull(mobile)
+                && !super.getParameters().containsKey("mobile")) {
+            this.getParameters().put("mobile", mobile);
+        }
     }
 
     public JpaCaptcha(CaptchaType type) {

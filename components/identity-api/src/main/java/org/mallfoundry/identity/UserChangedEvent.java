@@ -1,4 +1,4 @@
 package org.mallfoundry.identity;
 
-public interface UserChangedEvent {
+public interface UserChangedEvent extends UserEvent {
 }

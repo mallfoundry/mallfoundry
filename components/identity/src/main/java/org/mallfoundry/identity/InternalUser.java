@@ -60,10 +60,8 @@ public class InternalUser implements User {
     @Column(name = "authorities_")
     private List<String> authorities = new ArrayList<>();
 
-    public InternalUser(String id, String username, String password) {
+    public InternalUser(String id) {
         this.id = id;
-        this.username = username;
-        this.password = password;
     }
 
     public static InternalUser of(User user) {

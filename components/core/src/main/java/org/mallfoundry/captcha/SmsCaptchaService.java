@@ -21,8 +21,14 @@ public class SmsCaptchaService extends AbstractCaptchaService {
     }
 
     @Override
-    protected void doGenerateCaptcha(Captcha captcha) {
+    protected void doGenerateCaptcha(Captcha captcha) throws CaptchaException {
         var mobile = captcha.getParameters().get("mobile");
+//        var existCaptcha = this.captchaRepository.findByMobile(mobile).orElse(null);
+
+        if (this.captchaRepository.findByMobile(mobile).isPresent()) {
+            throw new CaptchaException("");
+        }
+
         this.messageService.sendMessage(this.messageService.createMessage().toBuilder().mobile(mobile)
                 .signature(this.signature)
                 .template(this.template)

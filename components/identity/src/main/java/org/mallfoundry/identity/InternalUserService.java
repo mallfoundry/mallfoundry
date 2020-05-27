@@ -16,6 +16,7 @@
 
 package org.mallfoundry.identity;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,13 +35,18 @@ public class InternalUserService implements UserService {
 
     private static final String USER_ID_VALUE_NAME = "identity.user.id";
 
+    private final List<UserValidator> userValidators;
+
     private final ApplicationEventPublisher eventPublisher;
 
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
-    public InternalUserService(ApplicationEventPublisher eventPublisher, UserRepository userRepository) {
+    public InternalUserService(List<UserValidator> userValidators,
+                               ApplicationEventPublisher eventPublisher,
+                               UserRepository userRepository) {
+        this.userValidators = userValidators;
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -51,24 +59,47 @@ public class InternalUserService implements UserService {
 
     @Transactional
     @Override
-    public User createUser(String username, String password) {
-        return new InternalUser(PrimaryKeyHolder.next(USER_ID_VALUE_NAME), username, password);
+    public User createUser(UserRegistration registration) {
+        if (CollectionUtils.isNotEmpty(this.userValidators)) {
+            this.userValidators.forEach(userValidator -> userValidator.validateCreateUser(registration));
+        }
+        var user = new InternalUser(PrimaryKeyHolder.next(USER_ID_VALUE_NAME));
+        registration.assignToUser(user);
+        user.changePassword(this.encodePassword(registration.getPassword()));
+        this.eventPublisher.publishEvent(new InternalUserCreatedEvent(user));
+        this.userRepository.save(user);
+        return user;
     }
 
     @Transactional
     @Override
-    public User saveUser(User user) {
+    public User setUser(User user) {
+        var savedUser = this.userRepository.findById(user.getId()).orElseThrow();
+        if (!Objects.equals(user.getNickname(), savedUser.getNickname())) {
+            savedUser.setNickname(savedUser.getNickname());
+        }
+        this.eventPublisher.publishEvent(new InternalUserChangedEvent(savedUser));
         return this.userRepository.save(InternalUser.of(user));
+    }
+
+    private String encodePassword(String password) {
+        return this.passwordEncoder.encode(password);
+    }
+
+    private boolean matchesPassword(String rawPassword, String encodedPassword) {
+        return this.passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
     @Transactional
     @Override
     public void changePassword(String username, String password, String originalPassword) throws UserException {
         var user = this.userRepository.findByUsername(username).orElseThrow();
-        if (!this.passwordEncoder.matches(originalPassword, user.getPassword())) {
+        if (!this.matchesPassword(originalPassword, user.getPassword())) {
             throw new UserException("The original password is incorrect");
         }
-        user.changePassword(this.passwordEncoder.encode(password));
+        user.changePassword(this.encodePassword(password));
+        this.eventPublisher.publishEvent(new InternalUserChangedEvent(user));
+        this.userRepository.save(user);
     }
 
     @Transactional

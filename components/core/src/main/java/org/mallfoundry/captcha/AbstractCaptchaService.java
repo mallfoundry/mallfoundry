@@ -26,7 +26,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
 
     @Transactional
     @Override
-    public Captcha generateCaptcha(CaptchaType type) {
+    public Captcha generateCaptcha(CaptchaType type) throws CaptchaException {
         var captcha = this.captchaRepository.create(type).toBuilder().token(this.createToken()).code(this.generateCode()).build();
         this.doGenerateCaptcha(captcha);
         return this.captchaRepository.save(captcha);
@@ -39,7 +39,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
                 && Objects.equals(code, storedCaptcha.getCode());
     }
 
-    protected abstract void doGenerateCaptcha(Captcha captcha);
+    protected abstract void doGenerateCaptcha(Captcha captcha) throws CaptchaException;
 
     protected String createToken() {
         return UUID.randomUUID().toString().replaceAll("-", "");
