@@ -32,15 +32,13 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
         if (captcha.getType() != CaptchaType.SMS) {
             throw new BadCredentialsException("Only SMS authentication is supported");
         }
-
         if (!this.captchaService.checkCaptcha(token, code)) {
             throw new BadCredentialsException("Invalid captcha");
         }
-
         var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
-        var user = this.userService.getUser(new SecurityMobilePrincipal(mobile))
+        var user = this.userService.getUserByMobile(mobile)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s not found", mobile)));
-        var securityUser = new InternalSecurityUser(user);
+        var securityUser = new DefaultSecurityUser(user);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }
 

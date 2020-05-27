@@ -39,6 +39,6 @@ public class SecurityUserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = this.userService.getUser(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
-        return new InternalSecurityUser(user);
+        return new DefaultSecurityUser(user);
     }
 }

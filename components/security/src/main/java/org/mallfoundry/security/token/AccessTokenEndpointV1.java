@@ -47,9 +47,9 @@ public class AccessTokenEndpointV1 {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/tokens")
-    public ResponseEntity<?> token(@RequestParam(name = "grant_type", required = false) String grantType,
-                                   HttpServletRequest request) {
+    @PostMapping("/token")
+    public ResponseEntity<?> token(
+            @RequestParam(name = "grant_type", required = false) String grantType, HttpServletRequest request) {
         var type = GrantType.valueOf(StringUtils.upperCase(grantType));
         Credentials credentials = null;
         if (type == GrantType.PASSWORD) {
@@ -66,7 +66,7 @@ public class AccessTokenEndpointV1 {
         }
     }
 
-    @DeleteMapping(path = {"/tokens/{token}", "/tokens"})
+    @DeleteMapping("/token")
     public void deleteToken(HttpServletRequest request) {
         String token = AccessTokenConverter.convert(request);
         this.tokenService.deleteAccessToken(token);

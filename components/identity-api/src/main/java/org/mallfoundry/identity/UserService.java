@@ -19,6 +19,6 @@ public interface UserService {
 
     Optional<User> getUser(UserId userId);
 
-    Optional<User> getUser(Principal principal);
+    Optional<User> getUserByMobile(String mobile);
 
 }
