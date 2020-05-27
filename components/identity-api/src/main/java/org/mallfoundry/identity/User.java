@@ -18,9 +18,11 @@ public interface User {
 
     void changePassword(String password);
 
-    boolean isEnabled();
+//    boolean isEnabled();
+//
+//    void setEnabled(boolean enabled);
 
-    void setEnabled(boolean enabled);
+
 
     List<String> getAuthorities();
 

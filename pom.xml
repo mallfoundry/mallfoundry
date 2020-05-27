@@ -35,6 +35,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <mall.version>${project.version}</mall.version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -43,8 +44,8 @@
         <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
         <aliyun-sdk.version>4.5.1</aliyun-sdk.version>
         <alipay-sdk.version>4.9.13.ALL</alipay-sdk.version>
+        <springdoc-openapi.version>1.3.9</springdoc-openapi.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
-        <mall.version>${project.version}</mall.version>
         <checkstyle.config.location>checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
 
@@ -309,6 +310,18 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
                 <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
 
             <dependency>

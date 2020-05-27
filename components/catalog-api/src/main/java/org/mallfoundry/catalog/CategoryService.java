@@ -4,12 +4,11 @@ public interface CategoryService {
 
     CategoryId createCategoryId(String categoryId);
 
-    Category createCategory();
-
-    Category createCategory(CategoryId parentId);
+    Category createCategory(String id);
 
     Category saveCategory(Category category);
 
-    void deleteCategory(String categoryId);
+    Category addChildCategory(String id, Category category);
 
+    void deleteCategory(String categoryId);
 }

@@ -38,7 +38,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order_items")
+@Table(name = "mf_order_item")
 public class InternalOrderItem implements OrderItem {
 
     @Id
