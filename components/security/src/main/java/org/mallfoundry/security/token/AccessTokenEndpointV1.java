@@ -48,8 +48,8 @@ public class AccessTokenEndpointV1 {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> token(
-            @RequestParam(name = "grant_type", required = false) String grantType, HttpServletRequest request) {
+    public ResponseEntity<?> token(@RequestParam(name = "grant_type", required = false) String grantType,
+                                   HttpServletRequest request) {
         var type = GrantType.valueOf(StringUtils.upperCase(grantType));
         Credentials credentials = null;
         if (type == GrantType.PASSWORD) {
