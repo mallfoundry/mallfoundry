@@ -62,7 +62,7 @@ import static org.mallfoundry.order.OrderStatus.SHIPPED;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "mf_order")
 public class InternalOrder implements Order {
 
     @Id

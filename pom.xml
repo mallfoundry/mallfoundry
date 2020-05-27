@@ -43,6 +43,7 @@
         <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
         <aliyun-sdk.version>4.5.1</aliyun-sdk.version>
         <alipay-sdk.version>4.9.13.ALL</alipay-sdk.version>
+        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
         <mall.version>${project.version}</mall.version>
         <checkstyle.config.location>checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
@@ -331,7 +332,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.1</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -349,7 +349,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>${maven-checkstyle-plugin.version}</version>
                     <configuration>
                         <configLocation>checkstyle/checkstyle.xml</configLocation>
                         <encoding>UTF-8</encoding>
@@ -366,11 +366,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>

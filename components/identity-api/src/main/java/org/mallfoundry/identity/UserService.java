@@ -1,6 +1,5 @@
 package org.mallfoundry.identity;
 
-import java.security.Principal;
 import java.util.Optional;
 
 public interface UserService {
