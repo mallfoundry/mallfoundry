@@ -10,8 +10,8 @@
     </parent>
     <artifactId>mall-components</artifactId>
     <packaging>pom</packaging>
-	
-	
+
+
     <modules>
         <!-- api modules -->
         <module>commons-api</module>
@@ -48,6 +48,7 @@
 
         <!-- rest modules-->
         <module>commons-rest</module>
+        <module>catalog-rest</module>
         <module>store-rest</module>
         <module>payment-rest</module>
         <module>shipping-rest</module>

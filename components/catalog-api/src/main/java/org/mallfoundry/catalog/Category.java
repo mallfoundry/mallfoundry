@@ -3,6 +3,7 @@ package org.mallfoundry.catalog;
 import org.mallfoundry.util.Position;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface Category extends Position {
@@ -20,6 +21,16 @@ public interface Category extends Position {
     String getParentId();
 
     List<Category> getChildren();
+
+    Category createChildCategory(String childId);
+
+    Optional<Category> getChildCategory(String childId);
+
+    void setChildCategory(Category category);
+
+    void addChildCategory(Category category);
+
+    void removeChildCategory(Category category);
 
     CategoryVisibility getVisibility();
 

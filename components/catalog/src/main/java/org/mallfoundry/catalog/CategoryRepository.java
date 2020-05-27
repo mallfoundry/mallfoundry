@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface CategoryRepository {
 
-    <S extends Category> S save(S category);
+    <S extends InternalCategory> S save(S category);
 
-    Optional<Category> findById(Integer id);
+    Optional<InternalCategory> findById(Integer id);
 
-    <S extends Category> List<S> findAll(Example<S> example, Sort sort);
+    <S extends InternalCategory> List<S> findAll(Example<S> example, Sort sort);
 }

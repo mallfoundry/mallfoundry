@@ -16,22 +16,13 @@
 
 package org.mallfoundry.catalog.category;
 
-import org.mallfoundry.catalog.Category;
+import org.mallfoundry.catalog.InternalCategory;
 import org.mallfoundry.catalog.CategoryService;
-import org.mallfoundry.catalog.ChildCategory;
-import org.mallfoundry.util.JsonUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @SpringBootTest
 public class CategoryTests {
@@ -51,7 +42,7 @@ public class CategoryTests {
     @Rollback(false)
     @Test
     public void testGetCategory() {
-        Category category = this.categoryService.getCategory(732);
+        InternalCategory category = this.categoryService.getCategory(732);
         System.out.println(category);
     }
 

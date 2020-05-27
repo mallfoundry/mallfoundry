@@ -94,6 +94,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-catalog-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-customer-rest</artifactId>
         </dependency>
 

@@ -33,7 +33,7 @@ public class CategoryService {
     }
 
     @SuppressWarnings("unchecked")
-    public <S extends Category> S getCategory(Integer id) {
+    public <S extends InternalCategory> S getCategory(Integer id) {
         return (S) this.categoryRepository.findById(id).orElseThrow();
     }
 
