@@ -46,11 +46,11 @@ public class JpaCaptcha extends CaptchaSupport {
     }
 
     @Column(name = "mobile_", length = 20)
-    private String getMobile() {
+    public String getMobile() {
         return this.getParameters().getOrDefault("mobile", null);
     }
 
-    private void setMobile(String mobile) {
+    public void setMobile(String mobile) {
         if (Objects.nonNull(mobile)
                 && !super.getParameters().containsKey("mobile")) {
             this.getParameters().put("mobile", mobile);
@@ -65,7 +65,6 @@ public class JpaCaptcha extends CaptchaSupport {
         if (captcha instanceof JpaCaptcha) {
             return (JpaCaptcha) captcha;
         }
-
         return (JpaCaptcha) new JpaCaptcha(captcha.getType())
                 .toBuilder()
                 .code(captcha.getCode())

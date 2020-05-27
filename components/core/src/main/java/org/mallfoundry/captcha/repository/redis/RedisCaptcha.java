@@ -1,4 +1,6 @@
 package org.mallfoundry.captcha.repository.redis;
 
-public class RedisCaptcha {
+import org.mallfoundry.captcha.CaptchaSupport;
+
+public class RedisCaptcha extends CaptchaSupport {
 }

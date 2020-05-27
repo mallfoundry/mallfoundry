@@ -24,7 +24,7 @@ import java.util.Collection;
 
 public class AccessTokenAuthentication implements Authentication {
 
-    private String token;
+    private final String token;
 
     private Object details;
 

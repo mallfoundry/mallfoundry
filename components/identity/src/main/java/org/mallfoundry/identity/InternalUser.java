@@ -16,10 +16,10 @@
 
 package org.mallfoundry.identity;
 
-import org.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.data.jpa.convert.StringListConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -46,6 +46,9 @@ public class InternalUser implements User {
 
     @Column(name = "nickname_")
     private String nickname;
+
+    @Column(name = "mobile_")
+    private String mobile;
 
     @Column(name = "password_")
     private String password;

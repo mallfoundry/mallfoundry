@@ -3,7 +3,6 @@ package org.mallfoundry.captcha.repository.jpa;
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaRepository;
 import org.mallfoundry.captcha.CaptchaType;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +11,9 @@ import java.util.Optional;
 @Repository
 public class JpaCaptchaRepository implements CaptchaRepository {
 
-    private final JpaCaptchaRepositoryProxy captchaRepository;
+    private final JpaCaptchaRepositoryDelegate captchaRepository;
 
-    public JpaCaptchaRepository(JpaCaptchaRepositoryProxy captchaRepository) {
+    public JpaCaptchaRepository(JpaCaptchaRepositoryDelegate captchaRepository) {
         this.captchaRepository = captchaRepository;
     }
 
@@ -29,6 +28,11 @@ public class JpaCaptchaRepository implements CaptchaRepository {
     }
 
     @Override
+    public Optional<Captcha> findByMobile(String mobile) {
+        return CastUtils.cast(this.captchaRepository.findByMobile(mobile));
+    }
+
+    @Override
     public Captcha save(Captcha captcha) {
         return this.captchaRepository.save(JpaCaptcha.of(captcha));
     }
@@ -38,7 +42,9 @@ public class JpaCaptchaRepository implements CaptchaRepository {
         this.captchaRepository.deleteById(token);
     }
 
-    @Repository
-    interface JpaCaptchaRepositoryProxy extends JpaRepository<JpaCaptcha, String> {
+    @Override
+    public void deleteByMobile(String mobile) {
+        this.captchaRepository.deleteByMobile(mobile);
     }
+
 }

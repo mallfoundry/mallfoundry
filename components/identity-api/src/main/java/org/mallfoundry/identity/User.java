@@ -12,7 +12,7 @@ public interface User {
 
     void setNickname(String nickname);
 
-//    String getMobile();
+    String getMobile();
 
     String getPassword();
 

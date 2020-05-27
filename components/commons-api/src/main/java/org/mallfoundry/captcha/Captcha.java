@@ -7,6 +7,8 @@ import java.util.Map;
 
 public interface Captcha {
 
+    String MOBILE_PARAMETER_NAME = "mobile";
+
     CaptchaType getType();
 
     String getToken();
@@ -18,6 +20,8 @@ public interface Captcha {
     void setCode(String code);
 
     Map<String, String> getParameters();
+
+    String getParameter(String name);
 
     void setParameters(Map<String, String> parameters);
 

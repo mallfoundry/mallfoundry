@@ -37,11 +37,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AccessTokenAuthenticationProvider tokenAuthenticationProvider;
 
-    public SecurityConfiguration(
-            SecurityUserService securityUserService,
-            AccessTokenAuthenticationProvider tokenAuthenticationProvider) {
+    private final CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider;
+
+    public SecurityConfiguration(SecurityUserService securityUserService,
+                                 AccessTokenAuthenticationProvider tokenAuthenticationProvider,
+                                 CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider) {
         this.securityUserService = securityUserService;
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
+        this.captchaCredentialsAuthenticationProvider = captchaCredentialsAuthenticationProvider;
     }
 
     @Override
@@ -53,7 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.securityUserService);
-        auth.authenticationProvider(this.tokenAuthenticationProvider);
+        auth.authenticationProvider(this.tokenAuthenticationProvider)
+                .authenticationProvider(captchaCredentialsAuthenticationProvider);
 
     }
 

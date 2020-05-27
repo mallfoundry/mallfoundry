@@ -22,4 +22,9 @@ public abstract class CaptchaSupport implements Captcha {
     private int expires;
 
     private Date createdTime;
+
+    @Override
+    public String getParameter(String name) {
+        return this.parameters.get(name);
+    }
 }

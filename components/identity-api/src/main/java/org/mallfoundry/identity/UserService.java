@@ -1,5 +1,6 @@
 package org.mallfoundry.identity;
 
+import java.security.Principal;
 import java.util.Optional;
 
 public interface UserService {
@@ -14,10 +15,10 @@ public interface UserService {
 
     User setUser(User user);
 
-//    void login();
-
     Optional<User> getUser(String username);
 
     Optional<User> getUser(UserId userId);
+
+    Optional<User> getUser(Principal principal);
 
 }

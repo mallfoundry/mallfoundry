@@ -26,5 +26,7 @@ public interface UserRepository {
 
     Optional<InternalUser> findById(String id);
 
+    Optional<InternalUser> findByMobile(String mobile);
+
     Optional<InternalUser> findByUsername(String username);
 }

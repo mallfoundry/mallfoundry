@@ -16,19 +16,25 @@
 
 package org.mallfoundry.security.token;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.http.ErrorMessage;
+import org.mallfoundry.security.Credentials;
+import org.mallfoundry.security.DefaultCaptchaCredentials;
+import org.mallfoundry.security.DefaultPasswordCredentials;
+import org.mallfoundry.security.GrantType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
-@RequestMapping("/v1/access")
+@RequestMapping("/v1")
 public class AccessTokenEndpointV1 {
 
     private final AccessTokenAuthenticationManager tokenAuthenticationManager;
@@ -41,20 +47,26 @@ public class AccessTokenEndpointV1 {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/token")
-    public ResponseEntity<?> token(String username, String password) {
+    @PostMapping("/tokens")
+    public ResponseEntity<?> token(@RequestParam(name = "grant_type", required = false) String grantType,
+                                   HttpServletRequest request) {
+        var type = GrantType.valueOf(StringUtils.upperCase(grantType));
+        Credentials credentials = null;
+        if (type == GrantType.PASSWORD) {
+            credentials = new DefaultPasswordCredentials(request.getParameter("username"), request.getParameter("password"));
+        } else if (type == GrantType.CAPTCHA) {
+            credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));
+        }
         try {
-            AccessToken token = this.tokenAuthenticationManager.authenticate(username, password);
+            var token = this.tokenAuthenticationManager.authenticate(credentials);
             return ResponseEntity.ok(token);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(ErrorMessage.error("invalid_grant", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorMessage.error("invalid_grant", e.getMessage()));
         }
     }
 
-    @DeleteMapping("/token")
+    @DeleteMapping(path = {"/tokens/{token}", "/tokens"})
     public void deleteToken(HttpServletRequest request) {
         String token = AccessTokenConverter.convert(request);
         this.tokenService.deleteAccessToken(token);

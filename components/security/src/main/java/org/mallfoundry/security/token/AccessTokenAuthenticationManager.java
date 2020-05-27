@@ -16,6 +16,10 @@
 
 package org.mallfoundry.security.token;
 
+import org.mallfoundry.security.CaptchaCredentials;
+import org.mallfoundry.security.Credentials;
+import org.mallfoundry.security.PasswordCredentials;
+import org.mallfoundry.security.SecurityUser;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class AccessTokenAuthenticationManager {
 
     private final AuthenticationManager authenticationManager;
+
     private final AccessTokenService tokenService;
 
     public AccessTokenAuthenticationManager(AuthenticationManager authenticationManager,
@@ -34,12 +39,20 @@ public class AccessTokenAuthenticationManager {
         this.tokenService = tokenService;
     }
 
-    public AccessToken authenticate(String username, String password) throws AuthenticationException {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-        this.authenticationManager.authenticate(authentication);
-        return tokenService
-                .getAccessToken(username)
+    public AccessToken authenticate(Credentials credentials) throws AuthenticationException {
+        Authentication authentication = null;
+        if (credentials instanceof PasswordCredentials) {
+            var passwordCredentials = (PasswordCredentials) credentials;
+            authentication = new UsernamePasswordAuthenticationToken(passwordCredentials.getUsername(), passwordCredentials.getPassword());
+
+        } else if (credentials instanceof CaptchaCredentials) {
+            var captchaCredentials = (CaptchaCredentials) credentials;
+            authentication = new UsernamePasswordAuthenticationToken(captchaCredentials.getToken(), captchaCredentials.getCode());
+        }
+        authentication = this.authenticationManager.authenticate(authentication);
+        var user = (SecurityUser) authentication.getPrincipal();
+        var username = user.getUsername();
+        return tokenService.getAccessToken(username)
                 .orElseGet(() -> this.tokenService.storeAccessToken(this.tokenService.createToken(username)));
     }
-
 }
