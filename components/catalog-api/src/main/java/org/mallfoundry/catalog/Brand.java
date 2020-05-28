@@ -14,9 +14,21 @@ public interface Brand extends Position {
 
     String getName();
 
+    void setName(String name);
+
     String getDescription();
+
+    void setDescription(String description);
 
     String getImageUrl();
 
+    void setImageUrl(String imageUrl);
+
+    Set<String> getCategories();
+
+    void setCategories(Set<String> categories);
+
     Set<String> getSearchKeywords();
+
+    void setSearchKeywords(Set<String> searchKeywords);
 }

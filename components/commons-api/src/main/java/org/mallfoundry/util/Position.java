@@ -17,7 +17,6 @@
 package org.mallfoundry.util;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * @author Tang Zhi
@@ -25,18 +24,12 @@ import java.util.Objects;
  */
 public interface Position extends Comparable<Position>, Serializable {
 
-    void setPosition(Integer position);
+    void setPosition(long position);
 
-    Integer getPosition();
+    long getPosition();
 
     @Override
     default int compareTo(Position o) {
-        int selfPosition = Objects.isNull(this.getPosition())
-                ? Integer.MAX_VALUE
-                : this.getPosition();
-        int otherPosition = Objects.isNull(o.getPosition())
-                ? Integer.MAX_VALUE
-                : o.getPosition();
-        return Integer.compare(selfPosition, otherPosition);
+        return Long.compare(this.getPosition(), o.getPosition());
     }
 }

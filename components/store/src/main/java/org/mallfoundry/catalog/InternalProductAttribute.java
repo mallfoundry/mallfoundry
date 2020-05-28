@@ -31,7 +31,7 @@ public class InternalProductAttribute implements ProductAttribute {
 
     private String value;
 
-    private Integer position;
+    private long position;
 
     public InternalProductAttribute(String name, String value) {
         this.name = name;

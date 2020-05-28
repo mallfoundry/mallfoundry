@@ -28,7 +28,7 @@ public class CountyResponse {
         return this.county.getName();
     }
 
-    public Integer getPosition() {
+    public long getPosition() {
         return this.county.getPosition();
     }
 }

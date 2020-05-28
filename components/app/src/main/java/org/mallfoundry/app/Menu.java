@@ -62,7 +62,7 @@ public class Menu implements Position {
     private String title;
 
     @Column(name = "position_")
-    private Integer position;
+    private long position;
 
     @JsonUnwrapped
     @Embedded

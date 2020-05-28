@@ -23,7 +23,7 @@ public interface Positions {
 
     static <T extends Position> void sort(List<T> positions) {
         Collections.sort(positions);
-        var i = 0;
+        long i = 0;
         for (Position position : positions) {
             position.setPosition(i++);
         }

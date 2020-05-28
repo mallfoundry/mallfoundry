@@ -42,7 +42,7 @@ public class CityResponse {
         return this.city.getName();
     }
 
-    public Integer getPosition() {
+    public long getPosition() {
         return this.city.getPosition();
     }
 }

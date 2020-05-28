@@ -24,6 +24,6 @@ public abstract class DistrictSupport implements District {
     private String name;
 
     @Column(name = "position_")
-    private Integer position;
+    private long position;
 
 }

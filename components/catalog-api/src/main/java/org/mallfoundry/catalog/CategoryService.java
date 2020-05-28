@@ -24,5 +24,4 @@ public interface CategoryService {
     Category addChildCategory(String id, Category category);
 
     void deleteCategory(String categoryId);
-
 }

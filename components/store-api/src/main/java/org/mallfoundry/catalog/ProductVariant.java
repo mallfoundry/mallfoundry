@@ -69,7 +69,7 @@ public interface ProductVariant extends Serializable, Position {
             return this;
         }
 
-        public Builder position(int position) {
+        public Builder position(long position) {
             this.variant.setPosition(position);
             return this;
         }

@@ -33,7 +33,7 @@ public class InternalProductOptionValue implements ProductOptionValue {
 
     private String label;
 
-    private Integer position;
+    private long position;
 
     public InternalProductOptionValue(String id) {
         this.id = id;

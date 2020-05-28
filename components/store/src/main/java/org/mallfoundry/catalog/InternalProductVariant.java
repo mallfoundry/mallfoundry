@@ -81,7 +81,7 @@ public class InternalProductVariant implements ProductVariant {
     private List<String> imageUrls;
 
     @Column(name = "position_")
-    private Integer position;
+    private long position;
 
     @Override
     public void setInventoryQuantity(int quantity) throws InventoryException {

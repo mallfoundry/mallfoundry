@@ -42,7 +42,7 @@ public class ProvinceResponse {
         return this.province.getName();
     }
 
-    public Integer getPosition() {
+    public long getPosition() {
         return this.province.getPosition();
     }
 }

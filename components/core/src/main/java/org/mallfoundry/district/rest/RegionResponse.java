@@ -42,7 +42,7 @@ public class RegionResponse {
         return this.region.getName();
     }
 
-    public Integer getPosition() {
+    public long getPosition() {
         return this.region.getPosition();
     }
 }
