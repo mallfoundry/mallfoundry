@@ -29,7 +29,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "district_counties")
+@Table(name = "mf_district_county")
 public class InternalCounty extends DistrictSupport implements County {
 
     @Column(name = "city_id_")

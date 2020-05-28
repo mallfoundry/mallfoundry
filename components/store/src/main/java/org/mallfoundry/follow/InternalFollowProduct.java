@@ -35,7 +35,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "follow_products")
+@Table(name = "mf_follow_product")
 @IdClass(InternalFollowProductId.class)
 public class InternalFollowProduct implements FollowProduct {
 

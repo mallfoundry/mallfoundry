@@ -33,7 +33,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "stores")
+@Table(name = "mf_store")
 public class InternalStore implements Store {
 
     @Id

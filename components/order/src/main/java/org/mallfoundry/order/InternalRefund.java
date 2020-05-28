@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "order_refunds")
+@Table(name = "mf_order_refund")
 public class InternalRefund implements Refund {
 
     @Id

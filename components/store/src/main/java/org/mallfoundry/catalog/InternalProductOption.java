@@ -37,7 +37,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "catalog_product_options")
+@Table(name = "mf_catalog_product_option")
 public class InternalProductOption implements ProductOption {
 
     @Id

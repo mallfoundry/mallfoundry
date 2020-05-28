@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "store_configs")
+@Table(name = "mf_store_config")
 @IdClass(StoreConfigPropertyId.class)
 public class StoreConfigProperty {
 

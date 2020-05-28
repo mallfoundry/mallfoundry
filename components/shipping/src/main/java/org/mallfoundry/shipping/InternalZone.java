@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "shipping_zones")
+@Table(name = "mf_shipping_zone")
 public class InternalZone implements Zone {
     @Id
     @Column(name = "id_")

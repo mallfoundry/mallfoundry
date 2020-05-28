@@ -34,7 +34,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "identity_user")
+@Table(name = "mf_identity_user")
 public class InternalUser implements User {
 
     @Id

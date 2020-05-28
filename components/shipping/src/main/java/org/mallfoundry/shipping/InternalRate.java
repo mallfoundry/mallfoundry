@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "shipping_rates")
+@Table(name = "mf_shipping_rate")
 public class InternalRate implements Rate {
 
     @Id

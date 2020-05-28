@@ -54,7 +54,7 @@ import java.util.Set;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "catalog_products")
+@Table(name = "mf_catalog_product")
 public class InternalProduct implements Product {
 
     private static final long serialVersionUID = 1L;

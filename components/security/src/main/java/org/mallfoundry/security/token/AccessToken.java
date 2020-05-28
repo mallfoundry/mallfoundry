@@ -28,7 +28,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "access_token")
+@Table(name = "mf_access_token")
 public class AccessToken {
 
     @Id

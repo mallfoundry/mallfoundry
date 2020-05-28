@@ -42,7 +42,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "catalog_product_variants")
+@Table(name = "mf_catalog_product_variant")
 public class InternalProductVariant implements ProductVariant {
 
     private static final long serialVersionUID = 1L;

@@ -33,7 +33,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "district_provinces")
+@Table(name = "mf_district_province")
 public class InternalProvince extends DistrictSupport implements Province {
 
     @Column(name = "country_id_")

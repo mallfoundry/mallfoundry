@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "carts")
+@Table(name = "mf_cart")
 public class InternalCart implements Cart {
 
     @Id

@@ -31,7 +31,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "follow_stores")
+@Table(name = "mf_follow_store")
 @IdClass(InternalFollowStoreId.class)
 public class InternalFollowStore implements FollowStore {
 

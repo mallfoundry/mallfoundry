@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "captchas")
+@Table(name = "mf_captcha")
 public class JpaCaptcha extends CaptchaSupport {
 
     @Column(name = "type_")

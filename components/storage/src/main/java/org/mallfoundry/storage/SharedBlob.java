@@ -36,7 +36,7 @@ import java.io.IOException;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "storage_shared_blobs")
+@Table(name = "mf_storage_shared_blob")
 public class SharedBlob implements AutoCloseable {
 
     @Id

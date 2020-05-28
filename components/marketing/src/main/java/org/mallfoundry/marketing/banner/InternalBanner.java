@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "marketing_banner")
+@Table(name = "mf_marketing_banner")
 public class InternalBanner implements Banner {
 
     @Id

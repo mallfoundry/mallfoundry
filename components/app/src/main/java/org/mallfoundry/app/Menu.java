@@ -44,7 +44,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "app_menu")
+@Table(name = "mf_app_menu")
 public class Menu implements Position {
 
     @Column(name = "app_id_")

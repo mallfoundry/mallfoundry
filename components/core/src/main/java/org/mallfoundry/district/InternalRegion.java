@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "district_regions")
+@Table(name = "mf_district_region")
 public class InternalRegion extends DistrictSupport implements Region {
 
     @OneToMany(targetEntity = InternalProvince.class)

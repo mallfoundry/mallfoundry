@@ -28,7 +28,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "app_info")
+@Table(name = "mf_app_info")
 public class Application {
 
     @Id

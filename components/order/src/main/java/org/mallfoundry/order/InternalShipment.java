@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order_shipments")
+@Table(name = "mf_order_shipment")
 public class InternalShipment implements Shipment {
 
     @Id
@@ -77,7 +77,7 @@ public class InternalShipment implements Shipment {
     private String orderId;
 
     @OneToMany(targetEntity = InternalOrderItem.class)
-    @JoinTable(name = "order_shipments_items",
+    @JoinTable(name = "mf_order_shipment_item",
             joinColumns = @JoinColumn(name = "shipment_id_"),
             inverseJoinColumns = @JoinColumn(name = "order_item_id_"))
     private List<OrderItem> items = new ArrayList<>();

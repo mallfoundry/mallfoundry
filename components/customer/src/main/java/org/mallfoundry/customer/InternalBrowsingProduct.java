@@ -32,7 +32,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_browse_products")
+@Table(name = "mf_customer_browsing_product")
 public class InternalBrowsingProduct implements BrowsingProduct {
 
     @Id

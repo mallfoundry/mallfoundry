@@ -20,7 +20,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "cart_items")
+@Table(name = "mf_cart_item")
 public class InternalCartItem implements CartItem {
 
     @Id

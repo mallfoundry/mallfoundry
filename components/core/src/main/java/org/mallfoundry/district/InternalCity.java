@@ -33,7 +33,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "district_cities")
+@Table(name = "mf_district_city")
 public class InternalCity extends DistrictSupport implements City {
 
     @Column(name = "province_id_")

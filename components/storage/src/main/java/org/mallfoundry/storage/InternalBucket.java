@@ -34,7 +34,7 @@ import java.io.InputStream;
 @Getter
 @Setter
 @Entity
-@Table(name = "storage_buckets")
+@Table(name = "mf_storage_bucket")
 public class InternalBucket implements Bucket {
 
     @Id

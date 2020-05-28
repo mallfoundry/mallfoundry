@@ -23,7 +23,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "payments")
+@Table(name = "mf_payment")
 public class InternalPayment implements Payment {
 
     @Id
