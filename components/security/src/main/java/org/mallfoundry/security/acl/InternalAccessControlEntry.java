@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "access_control_entries")
+@Table(name = "mf_access_control_entry")
 public class InternalAccessControlEntry implements AccessControlEntry {
 
     @Id

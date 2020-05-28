@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "access_control_principals")
+@Table(name = "mf_access_control_principal")
 public class InternalPrincipal implements Principal {
 
     @Id

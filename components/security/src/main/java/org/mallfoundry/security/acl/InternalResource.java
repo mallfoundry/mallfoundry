@@ -19,7 +19,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "access_control_resources")
+@Table(name = "mf_access_control_resource")
 public class InternalResource implements Resource {
 
     @Id

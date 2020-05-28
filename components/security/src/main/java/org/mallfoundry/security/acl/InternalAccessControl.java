@@ -19,7 +19,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "access_controls")
+@Table(name = "mf_access_control")
 public class InternalAccessControl implements AccessControl {
 
     @Id
