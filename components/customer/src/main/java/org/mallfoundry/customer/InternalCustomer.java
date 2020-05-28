@@ -82,13 +82,6 @@ public class InternalCustomer implements Customer {
         return target;
     }
 
-
-    //    @JsonIgnore
-//    @ElementCollection
-//    @CollectionTable(name = "customer_search_term", joinColumns = @JoinColumn(name = "customer_id_"))
-//    @OrderBy("time DESC")
-//    private List<SearchTerm> searchTerms = new ArrayList<>();
-
     @Override
     public Optional<ShippingAddress> getDefaultAddress() {
         return this.addresses.stream().filter(ShippingAddress::isDefaulted).findFirst();

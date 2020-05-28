@@ -1,4 +1,4 @@
-package org.mallfoundry.rest.browsing;
+package org.mallfoundry.rest.customer;
 
 import lombok.Getter;
 import lombok.Setter;

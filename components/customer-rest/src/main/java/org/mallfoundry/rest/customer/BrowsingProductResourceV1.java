@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.rest.browsing;
+package org.mallfoundry.rest.customer;
 
 import org.mallfoundry.customer.BrowsingProduct;
 import org.mallfoundry.customer.BrowsingProductService;

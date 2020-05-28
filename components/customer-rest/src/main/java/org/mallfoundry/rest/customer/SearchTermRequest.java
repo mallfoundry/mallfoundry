@@ -22,6 +22,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchTermRequest {
-
-    private String text;
+    private String term;
 }
