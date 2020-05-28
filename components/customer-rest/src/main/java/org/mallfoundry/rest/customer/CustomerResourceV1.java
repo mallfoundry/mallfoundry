@@ -94,25 +94,8 @@ public class CustomerResourceV1 {
         return this.customerService.getAddress(customerId, addressId);
     }
 
-    @GetMapping("/customers/{customer_id}/shipping-addresses/default")
+    @GetMapping("/customers/{customer_id}/addresses/default")
     public Optional<ShippingAddress> getDefaultAddress(@PathVariable("customer_id") String id) {
         return this.customerService.getDefaultAddress(id);
     }
-//
-//    @PostMapping("/customers/{customer_id}/search-terms")
-//    public void addSearchTerm(@PathVariable("customer_id") String customerId,
-//                              @RequestBody SearchTermRequest request) {
-//        this.customerService.addSearchTerm(customerId, request.getText());
-//    }
-//
-//    @DeleteMapping("/customers/{customer_id}/search-terms")
-//    public void clearSearchTerms(@PathVariable("customer_id") String customerId) {
-//        this.customerService.clearSearchTerms(customerId);
-//    }
-//
-//    @GetMapping("/customers/{customer_id}/search-terms")
-//    public List<SearchTerm> getSearchTerms(@PathVariable("customer_id") String customerId) {
-//        return this.customerService.getSearchTerms(customerId);
-//    }
-
 }
