@@ -5,26 +5,26 @@ import java.util.Optional;
 
 public interface CustomerService {
 
-    Customer createCustomer(String userId);
-
-    ShippingAddress createShippingAddress();
+    Customer createCustomer(String customerId);
 
     Optional<Customer> getCustomer(String customerId);
 
-    Customer saveCustomer(Customer customer);
+    Customer addCustomer(Customer customer);
+
+    void setCustomer(Customer customer);
 
     void deleteCustomer(String customerId);
 
-    void addShippingAddress(String customerId, ShippingAddress address);
+    ShippingAddress addAddress(String customerId, ShippingAddress address);
 
-    List<ShippingAddress> getShippingAddresses(String customerId);
+    List<ShippingAddress> getAddresses(String customerId);
 
-    Optional<ShippingAddress> getShippingAddress(String customerId, String addressId);
+    Optional<ShippingAddress> getAddress(String customerId, String addressId);
 
-    Optional<ShippingAddress> getDefaultShippingAddress(String customerId);
+    Optional<ShippingAddress> getDefaultAddress(String customerId);
 
-    void setShippingAddress(String customerId, ShippingAddress address);
+    void setAddress(String customerId, ShippingAddress address);
 
-    void removeShippingAddress(String customerId, String addressId);
+    void removeAddress(String customerId, String addressId);
 
 }

@@ -16,7 +16,6 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.browsing.BrowsingProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -39,18 +39,20 @@ public class InternalBrowsingProduct implements BrowsingProduct {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "price_")
+    private BigDecimal price;
+
     @Column(name = "browser_id_")
     private String browserId;
-
-    @Column(name = "product_id_")
-    private String productId;
 
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public InternalBrowsingProduct(String id, String browserId) {
+    public InternalBrowsingProduct(String id) {
         this.id = id;
-        this.browserId = browserId;
         this.browsingTime = new Date();
     }
 

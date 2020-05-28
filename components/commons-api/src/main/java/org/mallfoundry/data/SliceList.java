@@ -19,6 +19,10 @@ package org.mallfoundry.data;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface SliceList<T> extends Iterable<T> {
 
     int getPage();

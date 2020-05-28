@@ -1,4 +1,4 @@
-package org.mallfoundry.browsing;
+package org.mallfoundry.customer;
 
 import org.mallfoundry.data.SliceList;
 
@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface BrowsingProductService {
 
-    BrowsingProduct createBrowsingProduct();
+    BrowsingProduct createBrowsingProduct(String id);
 
     BrowsingProductQuery createBrowsingProductQuery();
 
     BrowsingProduct addBrowsingProduct(BrowsingProduct browsingProduct);
 
-    void deleteBrowsingProduct(String id);
-
-    void deleteBrowsingProducts(List<String> ids);
-
     SliceList<BrowsingProduct> getBrowsingProducts(BrowsingProductQuery query);
 
     long getBrowsingProductCount(BrowsingProductQuery query);
+
+    void deleteBrowsingProduct(String browserId, String id);
+
+    void deleteBrowsingProducts(String browserId, List<String> ids);
 }

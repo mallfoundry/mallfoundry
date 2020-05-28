@@ -4,6 +4,10 @@ import org.mallfoundry.util.Position;
 
 import java.util.Set;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface Brand extends Position {
 
     String getId();

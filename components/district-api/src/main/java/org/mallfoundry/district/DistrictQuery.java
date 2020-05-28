@@ -10,24 +10,24 @@ public interface DistrictQuery {
 
     void setScope(byte scope);
 
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
-    DistrictQueryBuilder toBuilder();
-
-
-    class DistrictQueryBuilder {
+    class Builder {
 
         private final DistrictQuery query;
 
-        public DistrictQueryBuilder(DistrictQuery query) {
+        public Builder(DistrictQuery query) {
             this.query = query;
         }
 
-        public DistrictQueryBuilder countryId(String countryId) {
+        public Builder countryId(String countryId) {
             this.query.setCountryId(countryId);
             return this;
         }
 
-        public DistrictQueryBuilder scope(byte scope) {
+        public Builder scope(byte scope) {
             this.query.setScope(scope);
             return this;
         }

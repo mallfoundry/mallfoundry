@@ -16,7 +16,6 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.browsing.BrowsingProductQuery;
 import org.mallfoundry.data.SliceList;
 
 import java.util.List;
@@ -24,17 +23,17 @@ import java.util.Optional;
 
 public interface BrowsingProductRepository {
 
-    Optional<InternalBrowsingProduct> findById(String id);
-
-    List<InternalBrowsingProduct> findAllById(Iterable<String> integers);
-
     InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
+
+    Optional<InternalBrowsingProduct> findByIdAndBrowserId(String id, String browserId);
+
+    List<InternalBrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId);
+
+    SliceList<InternalBrowsingProduct> findAll(BrowsingProductQuery query);
 
     void delete(InternalBrowsingProduct browsingProduct);
 
     void deleteAll(Iterable<? extends InternalBrowsingProduct> browsingProducts);
-
-    SliceList<InternalBrowsingProduct> findAll(BrowsingProductQuery query);
 
     long count(BrowsingProductQuery query);
 }

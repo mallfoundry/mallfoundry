@@ -16,6 +16,10 @@
 
 package org.mallfoundry.data;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface Pageable {
 
     int DEFAULT_PAGE = 1;

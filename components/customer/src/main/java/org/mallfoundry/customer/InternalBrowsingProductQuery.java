@@ -16,7 +16,6 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.browsing.BrowsingProductQuery;
 import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;

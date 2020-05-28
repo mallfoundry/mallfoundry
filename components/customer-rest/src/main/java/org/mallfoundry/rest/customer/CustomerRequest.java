@@ -19,6 +19,7 @@ package org.mallfoundry.rest.customer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.customer.Customer;
 import org.mallfoundry.customer.Gender;
 
 import java.util.Date;
@@ -31,6 +32,18 @@ public class CustomerRequest {
     @Schema(name = "gender")
     private Gender gender;
 
+    @Schema(name = "avatar")
+    private String avatar;
+
     @Schema(name = "birthday")
     private Date birthday;
+
+
+    public Customer assignToCustomer(Customer customer) {
+        return customer.toBuilder()
+                .avatar(this.avatar)
+                .gender(this.gender)
+                .birthday(this.birthday)
+                .build();
+    }
 }

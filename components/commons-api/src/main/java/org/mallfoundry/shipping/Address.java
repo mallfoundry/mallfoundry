@@ -2,6 +2,10 @@ package org.mallfoundry.shipping;
 
 import java.io.Serializable;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface Address extends Serializable {
 
     String getFirstName();

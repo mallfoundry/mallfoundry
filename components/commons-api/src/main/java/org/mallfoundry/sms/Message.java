@@ -5,6 +5,10 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface Message extends Serializable {
 
     String CODE_VARIABLE_NAME = "code";

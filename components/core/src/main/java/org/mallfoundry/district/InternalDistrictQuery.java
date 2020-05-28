@@ -8,9 +8,4 @@ import lombok.Setter;
 public class InternalDistrictQuery implements DistrictQuery {
     private String countryId;
     private byte scope;
-
-    @Override
-    public DistrictQueryBuilder toBuilder() {
-        return new DistrictQueryBuilder(this);
-    }
 }

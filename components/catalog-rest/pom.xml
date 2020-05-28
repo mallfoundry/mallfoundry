@@ -13,14 +13,30 @@
     <artifactId>mall-catalog-rest</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-catalog-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-catalog-api</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
         </dependency>
 
         <dependency>

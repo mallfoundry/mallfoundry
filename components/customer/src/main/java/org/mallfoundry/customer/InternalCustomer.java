@@ -39,7 +39,7 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customers")
+@Table(name = "mf_customer")
 public class InternalCustomer implements Customer {
 
     @Id
@@ -64,7 +64,7 @@ public class InternalCustomer implements Customer {
     @OneToMany(targetEntity = InternalShippingAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
     @OrderBy("createdTime ASC")
-    private List<ShippingAddress> shippingAddresses = new ArrayList<>();
+    private List<ShippingAddress> addresses = new ArrayList<>();
 
     public InternalCustomer(String userId) {
         this.id = userId;
@@ -90,22 +90,27 @@ public class InternalCustomer implements Customer {
 //    private List<SearchTerm> searchTerms = new ArrayList<>();
 
     @Override
-    public Optional<ShippingAddress> getDefaultShippingAddress() {
-        return this.getShippingAddresses().stream().filter(ShippingAddress::isDefaulted).findFirst();
+    public Optional<ShippingAddress> getDefaultAddress() {
+        return this.addresses.stream().filter(ShippingAddress::isDefaulted).findFirst();
     }
 
     @Override
-    public Optional<ShippingAddress> getShippingAddress(String addressId) {
-        return this.getShippingAddresses().stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
+    public Optional<ShippingAddress> getAddress(String addressId) {
+        return this.addresses.stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
     }
 
     @Override
-    public void addShippingAddress(final ShippingAddress address) {
-        this.shippingAddresses.remove(address);
-        this.shippingAddresses.add(address);
+    public ShippingAddress createAddress(String id) {
+        return new InternalShippingAddress(id);
+    }
+
+    @Override
+    public void addAddress(final ShippingAddress address) {
+        this.addresses.remove(address);
+        this.addresses.add(address);
         // defaulted
         if (address.isDefaulted()) {
-            this.getDefaultShippingAddress()
+            this.getDefaultAddress()
                     .ifPresent(defaultAddress -> {
                         if (!Objects.equals(defaultAddress, address)) {
                             defaultAddress.setDefaulted(false);
@@ -115,8 +120,13 @@ public class InternalCustomer implements Customer {
     }
 
     @Override
-    public void removeShippingAddress(ShippingAddress address) {
-        this.getShippingAddresses().remove(address);
+    public void setAddress(ShippingAddress shippingAddress) {
+
+    }
+
+    @Override
+    public void removeAddress(ShippingAddress address) {
+        this.addresses.remove(address);
     }
 
 //    public void addSearchTerm(String text) {

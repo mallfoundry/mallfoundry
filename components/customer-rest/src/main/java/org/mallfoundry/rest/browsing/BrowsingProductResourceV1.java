@@ -16,8 +16,8 @@
 
 package org.mallfoundry.rest.browsing;
 
-import org.mallfoundry.browsing.BrowsingProduct;
-import org.mallfoundry.browsing.BrowsingProductService;
+import org.mallfoundry.customer.BrowsingProduct;
+import org.mallfoundry.customer.BrowsingProductService;
 import org.mallfoundry.data.SliceList;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,40 +41,41 @@ public class BrowsingProductResourceV1 {
         this.browsingProductService = browsingProductService;
     }
 
-    @PostMapping("/browsing-products")
-    public BrowsingProduct addBrowsingProduct(@RequestBody BrowsingProductRequest request) {
-        var browsingProduct = this.browsingProductService.createBrowsingProduct()
-                .toBuilder().productId(request.getProductId()).build();
-        return this.browsingProductService.addBrowsingProduct(browsingProduct);
+    @PostMapping("customers/{customer_id}/browsing-products")
+    public BrowsingProduct addBrowsingProduct(@PathVariable("customer_id") String customerId,
+                                              @RequestBody BrowsingProductRequest request) {
+        return this.browsingProductService.addBrowsingProduct(
+                this.browsingProductService.createBrowsingProduct(request.getId())
+                        .toBuilder().browserId(customerId).name(request.getName()).price(request.getPrice()).build());
     }
 
-    @DeleteMapping("/browsing-products/{id}")
-    public void deleteBrowsingProduct(@PathVariable("id") String id) {
-        this.browsingProductService.deleteBrowsingProduct(id);
-    }
-
-    @DeleteMapping("/browsing-products/batch")
-    public void deleteBrowsingProducts(@RequestBody List<String> ids) {
-        this.browsingProductService.deleteBrowsingProducts(ids);
-    }
-
-    @GetMapping("/browsing_products")
+    @GetMapping("customers/{customer_id}/browsing-products")
     public SliceList<BrowsingProduct> getBrowsingProducts(
-            @RequestParam(name = "browser_id", required = false) String browserId,
+            @PathVariable("customer_id") String customerId,
             @RequestParam(name = "browsing_time", required = false) Date browsingTime,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int limit) {
-        var query = this.browsingProductService.createBrowsingProductQuery()
-                .toBuilder().page(page).limit(limit).browserId(browserId).browsingTime(browsingTime).build();
-        return this.browsingProductService.getBrowsingProducts(query);
+        return this.browsingProductService.getBrowsingProducts(
+                this.browsingProductService.createBrowsingProductQuery().toBuilder()
+                        .page(page).limit(limit)
+                        .browserId(customerId).browsingTime(browsingTime).build());
     }
 
-    @GetMapping("/browsing_products/count")
-    public long getBrowsingProductCount(@RequestParam(name = "browser_id", required = false) String browserId,
+    @GetMapping("customers/{customer_id}/browsing-products/count")
+    public long getBrowsingProductCount(@PathVariable("customer_id") String customerId,
                                         @RequestParam(name = "browsing_time", required = false) Date browsingTime) {
-        var query = this.browsingProductService.createBrowsingProductQuery()
-                .toBuilder().browserId(browserId).browsingTime(browsingTime).build();
-        return this.browsingProductService.getBrowsingProductCount(query);
+        return this.browsingProductService.getBrowsingProductCount(
+                this.browsingProductService.createBrowsingProductQuery().toBuilder()
+                        .browserId(customerId).browsingTime(browsingTime).build());
     }
 
+    @DeleteMapping("customers/{customer_id}/browsing-products/{id}")
+    public void deleteBrowsingProduct(@PathVariable("customer_id") String customerId, @PathVariable("id") String id) {
+        this.browsingProductService.deleteBrowsingProduct(customerId, id);
+    }
+
+    @DeleteMapping("customers/{customer_id}/browsing-products/batch")
+    public void deleteBrowsingProducts(@PathVariable("customer_id") String customerId, @RequestBody List<String> ids) {
+        this.browsingProductService.deleteBrowsingProducts(customerId, ids);
+    }
 }

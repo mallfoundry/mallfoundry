@@ -18,6 +18,10 @@ package org.mallfoundry.util;
 
 import java.io.Serializable;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface UniqueIdentifier<T extends Serializable> extends Serializable {
 
     T getIdentifier();

@@ -2,6 +2,10 @@ package org.mallfoundry.captcha;
 
 import java.util.Optional;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface CaptchaService {
 
     Captcha createCaptcha(CaptchaType type);

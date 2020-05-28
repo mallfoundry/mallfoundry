@@ -5,6 +5,10 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 public interface Captcha {
 
     String MOBILE_PARAMETER_NAME = "mobile";

@@ -33,7 +33,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "customer_shipping_addresses")
+@Table(name = "mf_customer_address")
 public class InternalShippingAddress implements ShippingAddress {
 
     @Id
@@ -68,12 +68,9 @@ public class InternalShippingAddress implements ShippingAddress {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public void defaulted() {
-        this.setDefaulted(true);
-    }
-
-    public static Builder builder() {
-        return new Builder();
+    public InternalShippingAddress(String id) {
+        this.id = id;
+        this.createdTime = new Date();
     }
 
     @Override
@@ -91,63 +88,5 @@ public class InternalShippingAddress implements ShippingAddress {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public static class Builder {
-
-        private final InternalShippingAddress address;
-
-        public Builder() {
-            this(new InternalShippingAddress());
-        }
-
-        public Builder(InternalShippingAddress address) {
-            this.address = address;
-        }
-
-        public Builder firstName(String firstName) {
-            this.address.setFirstName(firstName);
-            return this;
-        }
-
-        public Builder lastName(String lastName) {
-            this.address.setLastName(lastName);
-            return this;
-        }
-
-        public Builder countryCode(String countryCode) {
-            this.address.setCountryCode(countryCode);
-            return this;
-        }
-
-        public Builder mobile(String mobile) {
-            this.address.setMobile(mobile);
-            return this;
-        }
-
-        public Builder zip(String zip) {
-            this.address.setZip(zip);
-            return this;
-        }
-
-        public Builder location(String location) {
-            this.address.setLocation(location);
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.address.setAddress(address);
-            return this;
-        }
-
-        public Builder defaulted() {
-            this.address.defaulted();
-            return this;
-        }
-
-        public InternalShippingAddress build() {
-            this.address.setCreatedTime(new Date());
-            return this.address;
-        }
     }
 }

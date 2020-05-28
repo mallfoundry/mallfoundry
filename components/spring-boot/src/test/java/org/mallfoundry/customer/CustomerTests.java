@@ -41,8 +41,8 @@ public class CustomerTests {
         customer.setNickname("tang zhi");
         customer.setBirthday(new Date());
         customer.setUserId("user 1");
-        customer.addShippingAddress(
-                InternalShippingAddress.builder()
+        customer.addAddress(
+                customer.createAddress("").toBuilder()
                         .firstName("治").lastName("唐")
                         .mobile("1888888888")
                         .zip("2500000")
@@ -51,6 +51,6 @@ public class CustomerTests {
                         .address("山东省 济南市 历城区023号")
                         .defaulted()
                         .build());
-        this.customerService.saveCustomer(customer);
+        this.customerService.addCustomer(customer);
     }
 }

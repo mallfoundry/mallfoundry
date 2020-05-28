@@ -3,6 +3,10 @@ package org.mallfoundry.shipping;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
 @Getter
 @Setter
 public abstract class AddressSupport implements Address {

@@ -16,7 +16,7 @@
 
 package org.mallfoundry.customer.repository.jpa;
 
-import org.mallfoundry.browsing.BrowsingProductQuery;
+import org.mallfoundry.customer.BrowsingProductQuery;
 import org.mallfoundry.customer.BrowsingProductRepository;
 import org.mallfoundry.customer.InternalBrowsingProduct;
 import org.mallfoundry.data.SliceList;

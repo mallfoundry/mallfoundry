@@ -16,12 +16,7 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.browsing.BrowsingProduct;
-import org.mallfoundry.browsing.BrowsingProductQuery;
-import org.mallfoundry.browsing.BrowsingProductService;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +26,6 @@ import java.util.List;
 @Service
 public class InternalBrowsingProductService implements BrowsingProductService {
 
-    private static final String BROWSING_PRODUCT_ID_VALUE_NAME = "browsing.product.id";
-
     private final BrowsingProductRepository browsingProductRepository;
 
     public InternalBrowsingProductService(BrowsingProductRepository browsingProductRepository) {
@@ -40,33 +33,22 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     }
 
     @Override
-    public BrowsingProduct createBrowsingProduct() {
-        var browserId = SecurityUserHolder.getUserId();
-        return new InternalBrowsingProduct(PrimaryKeyHolder.next(BROWSING_PRODUCT_ID_VALUE_NAME), browserId);
+    public BrowsingProduct createBrowsingProduct(String id) {
+        return new InternalBrowsingProduct(id);
     }
 
     @Override
     public BrowsingProductQuery createBrowsingProductQuery() {
+//        var query = new InternalBrowsingProductQuery();
+//        query.setBrowserId(SecurityUserHolder.getUserId());
+//        return query;
         return new InternalBrowsingProductQuery();
     }
 
     @Transactional
+    @Override
     public BrowsingProduct addBrowsingProduct(BrowsingProduct browsingProduct) {
         return this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
-    }
-
-    @Transactional
-    @Override
-    public void deleteBrowsingProduct(String id) {
-        var browsingProduct = this.browsingProductRepository.findById(id).orElseThrow();
-        this.browsingProductRepository.delete(browsingProduct);
-    }
-
-    @Transactional
-    @Override
-    public void deleteBrowsingProducts(List<String> ids) {
-        var browsingProducts = this.browsingProductRepository.findAllById(ids);
-        this.browsingProductRepository.deleteAll(browsingProducts);
     }
 
     @Override
@@ -78,4 +60,19 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     public long getBrowsingProductCount(BrowsingProductQuery query) {
         return this.browsingProductRepository.count(query);
     }
+
+    @Transactional
+    @Override
+    public void deleteBrowsingProduct(String browserId, String id) {
+        var browsingProduct = this.browsingProductRepository.findByIdAndBrowserId(id, browserId).orElseThrow();
+        this.browsingProductRepository.delete(browsingProduct);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBrowsingProducts(String browserId, List<String> ids) {
+        var browsingProducts = this.browsingProductRepository.findAllByIdInAndBrowserId(ids, browserId);
+        this.browsingProductRepository.deleteAll(browsingProducts);
+    }
+
 }

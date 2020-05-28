@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,16 +38,8 @@ public class InternalCustomerService implements CustomerService {
     }
 
     @Override
-    public Customer createCustomer(String userId) {
-        var user = this.userService.getUser(this.userService.createUserId(userId)).orElseThrow();
-        var customer = new InternalCustomer(userId);
-        customer.setNickname(user.getNickname());
-        return customer;
-    }
-
-    @Override
-    public ShippingAddress createShippingAddress() {
-        return new InternalShippingAddress();
+    public Customer createCustomer(String customerId) {
+        return new InternalCustomer(customerId);
     }
 
     @Override
@@ -54,10 +47,25 @@ public class InternalCustomerService implements CustomerService {
         return CastUtils.cast(this.customerRepository.findById(customerId));
     }
 
+    @Override
+    public Customer addCustomer(Customer customer) {
+        var user = this.userService.getUser(this.userService.createUserId(customer.getUserId())).orElseThrow();
+        customer.setUserId(user.getId());
+        customer.setNickname(user.getNickname());
+        return this.customerRepository.save(InternalCustomer.of(customer));
+    }
+
     @Transactional
     @Override
-    public Customer saveCustomer(Customer customer) {
-        return this.customerRepository.save(InternalCustomer.of(customer));
+    public void setCustomer(Customer customer) {
+        var savedCustomer = this.customerRepository.findById(customer.getId()).orElseThrow();
+        if (Objects.nonNull(customer.getGender())) {
+            savedCustomer.setGender(customer.getGender());
+        }
+        if (Objects.nonNull(customer.getBirthday())) {
+            savedCustomer.setBirthday(customer.getBirthday());
+        }
+        this.customerRepository.save(savedCustomer);
     }
 
     @Transactional
@@ -68,36 +76,37 @@ public class InternalCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public void addShippingAddress(String customerId, ShippingAddress address) {
-        this.getCustomer(customerId).orElseThrow().addShippingAddress(address);
+    public ShippingAddress addAddress(String customerId, ShippingAddress address) {
+        this.getCustomer(customerId).orElseThrow().addAddress(address);
+        return address;
     }
 
     @Transactional
     @Override
-    public List<ShippingAddress> getShippingAddresses(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getShippingAddresses();
+    public List<ShippingAddress> getAddresses(String customerId) {
+        return this.getCustomer(customerId).orElseThrow().getAddresses();
     }
 
     @Override
-    public Optional<ShippingAddress> getShippingAddress(String customerId, String addressId) {
-        return this.getCustomer(customerId).orElseThrow().getShippingAddress(addressId);
+    public Optional<ShippingAddress> getAddress(String customerId, String addressId) {
+        return this.getCustomer(customerId).orElseThrow().getAddress(addressId);
     }
 
     @Override
-    public Optional<ShippingAddress> getDefaultShippingAddress(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getDefaultShippingAddress();
-    }
-
-    @Transactional
-    @Override
-    public void setShippingAddress(String customerId, ShippingAddress newAddress) {
-        this.getCustomer(customerId).orElseThrow().addShippingAddress(newAddress);
+    public Optional<ShippingAddress> getDefaultAddress(String customerId) {
+        return this.getCustomer(customerId).orElseThrow().getDefaultAddress();
     }
 
     @Transactional
     @Override
-    public void removeShippingAddress(String customerId, String addressId) {
+    public void setAddress(String customerId, ShippingAddress newAddress) {
+        this.getCustomer(customerId).orElseThrow().setAddress(newAddress);
+    }
+
+    @Transactional
+    @Override
+    public void removeAddress(String customerId, String addressId) {
         var customer = this.getCustomer(customerId).orElseThrow();
-        customer.removeShippingAddress(customer.getShippingAddress(addressId).orElseThrow());
+        customer.removeAddress(customer.getAddress(addressId).orElseThrow());
     }
 }
