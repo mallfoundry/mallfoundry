@@ -3,6 +3,7 @@ package org.mallfoundry.catalog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class InternalBrand implements Brand {
 
     private String description;
 
-    private String imageUrl;
+    private String logoUrl;
 
     private Set<String> categories;
 
@@ -27,5 +28,14 @@ public class InternalBrand implements Brand {
 
     public InternalBrand(String id) {
         this.id = id;
+    }
+
+    public static InternalBrand of(Brand brand) {
+        if (brand instanceof InternalBrand) {
+            return (InternalBrand) brand;
+        }
+        var target = new InternalBrand();
+        BeanUtils.copyProperties(brand, target);
+        return target;
     }
 }

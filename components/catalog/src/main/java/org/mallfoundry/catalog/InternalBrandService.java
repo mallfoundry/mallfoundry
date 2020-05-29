@@ -9,6 +9,17 @@ import java.util.Optional;
 @Service
 public class InternalBrandService implements BrandService {
 
+    private final BrandRepository brandRepository;
+
+    public InternalBrandService(BrandRepository brandRepository) {
+        this.brandRepository = brandRepository;
+    }
+
+    @Override
+    public BrandId createBrandId(String id) {
+        return new InternalBrandId(id);
+    }
+
     @Override
     public Brand createBrand(String id) {
         return new InternalBrand(id);
@@ -20,8 +31,11 @@ public class InternalBrandService implements BrandService {
     }
 
     @Override
-    public Brand addBrand(Brand brand) {
-        return null;
+    public Brand addBrand(Brand brand) throws BrandException {
+        if (this.brandRepository.existsById(brand.getId())) {
+            throw new BrandException("The brand id already exists");
+        }
+        return this.brandRepository.save(InternalBrand.of(brand));
     }
 
     @Override

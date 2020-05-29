@@ -10,11 +10,13 @@ import java.util.Optional;
  */
 public interface BrandService {
 
+    BrandId createBrandId(String id);
+
     Brand createBrand(String id);
 
     BrandQuery createBrandQuery();
 
-    Brand addBrand(Brand brand);
+    Brand addBrand(Brand brand) throws BrandException;
 
     Optional<Brand> getBrand(String id);
 

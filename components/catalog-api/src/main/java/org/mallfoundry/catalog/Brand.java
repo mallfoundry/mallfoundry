@@ -20,9 +20,9 @@ public interface Brand extends Position {
 
     void setDescription(String description);
 
-    String getImageUrl();
+    String getLogoUrl();
 
-    void setImageUrl(String imageUrl);
+    void setLogoUrl(String logoUrl);
 
     Set<String> getCategories();
 
