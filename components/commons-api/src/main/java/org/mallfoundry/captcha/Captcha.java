@@ -41,8 +41,7 @@ public interface Captcha {
     }
 
     interface Builder extends ObjectBuilder<Captcha> {
-
-
+        
         Builder token(String token);
 
         Builder code(String code);

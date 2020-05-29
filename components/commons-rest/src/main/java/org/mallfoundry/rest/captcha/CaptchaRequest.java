@@ -7,6 +7,5 @@ import org.mallfoundry.captcha.CaptchaType;
 @Getter
 @Setter
 public class CaptchaRequest {
-
     private CaptchaType type;
 }
