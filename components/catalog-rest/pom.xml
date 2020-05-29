@@ -13,6 +13,10 @@
     <artifactId>mall-catalog-rest</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-commons-rest</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>

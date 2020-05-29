@@ -1,8 +1,10 @@
 package org.mallfoundry.catalog;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +16,12 @@ public class InternalCategoryService implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public InternalCategoryService(CategoryRepository categoryRepository) {
+    private final ApplicationEventPublisher eventPublisher;
+
+    public InternalCategoryService(CategoryRepository categoryRepository,
+                                   ApplicationEventPublisher eventPublisher) {
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -34,23 +40,6 @@ public class InternalCategoryService implements CategoryService {
     }
 
     @Override
-    public Category saveCategory(Category category) {
-        return null;
-    }
-
-    @Override
-    public Category addChildCategory(String id, Category category) {
-        this.getCategory(id).orElseThrow().addChildCategory(category);
-        return category;
-    }
-
-    @Override
-    public void deleteCategory(String categoryId) {
-        var category = this.categoryRepository.findById(categoryId).orElseThrow();
-        this.categoryRepository.delete(category);
-    }
-
-    @Override
     public List<Category> getCategories() {
         return null;
     }
@@ -59,4 +48,26 @@ public class InternalCategoryService implements CategoryService {
     public List<Category> getCategories(String parentId) {
         return null;
     }
+
+    @Transactional
+    @Override
+    public Category saveCategory(Category category) {
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public Category addChildCategory(String id, Category category) {
+        this.getCategory(id).orElseThrow().addChildCategory(category);
+        return category;
+    }
+
+    @Transactional
+    @Override
+    public void deleteCategory(String categoryId) {
+        var category = this.categoryRepository.findById(categoryId).orElseThrow();
+        this.eventPublisher.publishEvent(new InternalCategoryDeletedEvent(category));
+        this.categoryRepository.delete(category);
+    }
+
 }
