@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -98,6 +99,11 @@ public class InternalOrderItem implements OrderItem {
         BeanUtils.copyProperties(item, target);
         return target;
     }
+
+//    public void setId(String id) {
+//        Assert.isNull(this.id, "Id is not null");
+//        this.id = id;
+//    }
 
     public BigDecimal getDiscountAmount() {
         return Objects.isNull(this.discountAmount)

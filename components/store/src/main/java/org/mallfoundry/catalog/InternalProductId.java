@@ -16,51 +16,24 @@
 
 package org.mallfoundry.catalog;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Objects;
 
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class InternalProductId implements ProductId {
-
     @JsonValue
     @Column(name = "product_id_")
-    private String id;
-
-    @JsonCreator
-    public InternalProductId(final String id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        InternalProductId that = (InternalProductId) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.id;
-    }
-
-    @Override
-    public String toString() {
-        return this.id.toString();
-    }
+    private String identifier;
 }

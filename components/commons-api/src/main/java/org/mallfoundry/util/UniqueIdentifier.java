@@ -25,4 +25,6 @@ import java.io.Serializable;
 public interface UniqueIdentifier<T extends Serializable> extends Serializable {
 
     T getIdentifier();
+
+    void setIdentifier(T identifier);
 }

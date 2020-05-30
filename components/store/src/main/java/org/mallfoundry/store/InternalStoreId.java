@@ -16,26 +16,26 @@
 
 package org.mallfoundry.store;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
 public class InternalStoreId implements StoreId {
 
     @JsonValue
     @Column(name = "store_id_")
-    private String id;
-
-    @JsonCreator
-    public InternalStoreId(final String id) {
-        this.id = id;
-    }
+    private String identifier;
 
     public static InternalStoreId of(String idString) {
         return new InternalStoreId(idString);
@@ -46,25 +46,15 @@ public class InternalStoreId implements StoreId {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof InternalStoreId)) {
             return false;
         }
-        InternalStoreId storeId = (InternalStoreId) o;
-        return Objects.equals(id, storeId.id);
+        InternalStoreId that = (InternalStoreId) o;
+        return Objects.equals(identifier, that.identifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.id;
-    }
-
-    @Override
-    public String toString() {
-        return this.id;
+        return Objects.hash(identifier);
     }
 }

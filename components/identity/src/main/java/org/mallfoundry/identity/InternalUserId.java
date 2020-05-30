@@ -1,14 +1,16 @@
 package org.mallfoundry.identity;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class InternalUserId implements UserId {
-    private final String id;
 
-    public InternalUserId(String id) {
-        this.id = id;
-    }
+    private String identifier;
 
-    @Override
-    public String getIdentifier() {
-        return this.id;
+    public InternalUserId(String identifier) {
+        this.identifier = identifier;
     }
 }

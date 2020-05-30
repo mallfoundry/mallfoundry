@@ -2,7 +2,6 @@ package org.mallfoundry.checkout;
 
 import org.mallfoundry.catalog.ProductService;
 import org.mallfoundry.inventory.InventoryService;
-import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class InternalCheckoutService implements CheckoutService {
-
-    static final String ORDER_ID_VALUE_NAME = "order.id";
-
-    static final String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
 
     private final ProductService productService;
 
@@ -71,12 +66,12 @@ public class InternalCheckoutService implements CheckoutService {
             var variant = product.getVariant(item.getVariantId()).orElseThrow();
             var order = this.findOrderByStoreId(orders, product.getStoreId())
                     .orElseGet(() -> this.orderService
-                            .createOrder(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME))
+                            .createEmptyOrder()
                             .toBuilder()
                             .shippingAddress(checkout.getShippingAddress())
                             .build());
 
-            order.addItem(order.createItem(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))
+            order.addItem(order.createItem(null)
                     .toBuilder()
                     .storeId(product.getStoreId())
                     .productId(product.getId())

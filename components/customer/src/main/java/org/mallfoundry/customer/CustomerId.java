@@ -35,11 +35,11 @@ public class CustomerId implements UniqueIdentifier<String> {
 
     @JsonValue
     @Column(name = "customer_id_")
-    private String id;
+    private String identifier;
 
     @JsonCreator
     public CustomerId(String id) {
-        this.id = id;
+        this.identifier = id;
     }
 
     @Override
@@ -47,20 +47,15 @@ public class CustomerId implements UniqueIdentifier<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CustomerId)) {
             return false;
         }
         CustomerId that = (CustomerId) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(identifier, that.identifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.id;
+        return Objects.hash(identifier);
     }
 }

@@ -12,6 +12,8 @@ public interface Store {
 
     void setName(String name);
 
+    StoreStatus getStatus();
+
     String getDomain();
 
     void setDomain(String domain);

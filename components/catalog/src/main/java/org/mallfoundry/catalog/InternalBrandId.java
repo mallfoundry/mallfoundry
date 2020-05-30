@@ -1,15 +1,16 @@
 package org.mallfoundry.catalog;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternalBrandId implements BrandId {
-
-    private final String id;
-
-    public InternalBrandId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.id;
-    }
+    private String identifier;
 }

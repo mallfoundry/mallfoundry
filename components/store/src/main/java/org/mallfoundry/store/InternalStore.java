@@ -25,6 +25,8 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -42,6 +44,10 @@ public class InternalStore implements Store {
 
     @Column(name = "name_")
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_")
+    private StoreStatus status;
 
     @Column(name = "domain_")
     private String domain;
@@ -81,6 +87,7 @@ public class InternalStore implements Store {
 
     @Override
     public void initialize() {
+        this.setStatus(StoreStatus.ACTIVE);
         this.setCreatedTime(new Date());
     }
 }

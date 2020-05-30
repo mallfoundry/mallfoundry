@@ -1,17 +1,16 @@
 package org.mallfoundry.follow;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternalFollowerId implements FollowerId {
-
-    private final String id;
-
-    public InternalFollowerId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.id;
-    }
-
-
+    private String identifier;
 }

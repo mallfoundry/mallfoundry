@@ -31,6 +31,10 @@ import java.util.stream.Collectors;
 @Service
 public class InternalOrderService implements OrderService {
 
+    static final String ORDER_ID_VALUE_NAME = "order.id";
+
+    static final String ORDER_ITEM_ID_VALUE_NAME = "order.item.id";
+
     static final String ORDER_SHIPMENT_ID_VALUE_NAME = "order.shipment.id";
 
     private final OrderRepository orderRepository;
@@ -48,6 +52,11 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
+    public Order createEmptyOrder() {
+        return new InternalOrder().toBuilder().customerId(SecurityUserHolder.getUserId()).build();
+    }
+
+    @Override
     public Order createOrder(String id) {
         return new InternalOrder(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
     }
@@ -62,7 +71,10 @@ public class InternalOrderService implements OrderService {
     @Override
     public List<Order> placeOrders(List<Order> orders) {
         var splitOrders = this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
-        splitOrders.forEach(Order::place);
+        splitOrders.stream()
+                .peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
+                .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
+                .forEach(Order::place);
         return CastUtils.cast(this.orderRepository.saveAll(splitOrders));
     }
 
