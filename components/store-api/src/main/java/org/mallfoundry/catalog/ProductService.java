@@ -17,9 +17,9 @@ public interface ProductService {
 
     SliceList<Product> getProducts(ProductQuery query);
 
-    Product saveProduct(Product product);
+    Product addProduct(Product product);
 
-    Optional<ProductVariant> getProductVariant(String productId, String variantId);
+    Product saveProduct(Product product);
 
     void adjustInventory(InventoryAdjustment adjustment);
 }

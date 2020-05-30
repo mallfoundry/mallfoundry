@@ -17,7 +17,7 @@
 package org.mallfoundry.catalog.search;
 
 
-import org.mallfoundry.catalog.InternalProductSavedEvent;
+import org.mallfoundry.catalog.InternalProductChangedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +30,8 @@ public class EventBasedProductSearchListener {
         this.productSearchProvider = productSearchProvider;
     }
 
-    @EventListener(InternalProductSavedEvent.class)
-    public void onSaveProduct(InternalProductSavedEvent event) {
+    @EventListener(InternalProductChangedEvent.class)
+    public void onSaveProduct(InternalProductChangedEvent event) {
         this.productSearchProvider.save(event.getProduct());
     }
 }

@@ -16,16 +16,8 @@
 
 package org.mallfoundry.catalog;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-public class InternalProductSavedEvent extends ApplicationEvent implements ProductSavedEvent {
-
-    @Getter
-    private final Product product;
-
-    public InternalProductSavedEvent(Product product) {
+public class InternalProductChangedEvent extends ProductEventSupport {
+    public InternalProductChangedEvent(Product product) {
         super(product);
-        this.product = product;
     }
 }

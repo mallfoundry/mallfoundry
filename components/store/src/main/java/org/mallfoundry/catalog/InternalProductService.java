@@ -61,33 +61,28 @@ public class InternalProductService implements ProductService {
 
     @Override
     public Product createProduct() {
-        var product = new InternalProduct();
-        product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
-        return product;
+        return new InternalProduct();
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        if (Objects.nonNull(product.getId())) {
+            product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
+        }
+        var addedProduct = this.productRepository.save(InternalProduct.of(product));
+        this.eventPublisher.publishEvent(new InternalProductAddedEvent(addedProduct));
+        return null;
     }
 
     @Transactional
     @Override
     public Product saveProduct(Product product) {
-        InternalProduct newProduct = InternalProduct.of(product);
-        InternalProduct savedProduct;
-        var oldProduct = this.productRepository.findById(newProduct.getId()).orElse(null);
-        if (Objects.isNull(oldProduct)) {
-            newProduct.create();
-            savedProduct = this.productRepository.save(newProduct);
-        } else {
-            BeanUtils.copyProperties(newProduct, oldProduct, "variants");
-            oldProduct.getVariants().clear();
-            oldProduct.getVariants().addAll(newProduct.getVariants());
-            savedProduct = this.productRepository.save(oldProduct);
-        }
-        this.eventPublisher.publishEvent(new InternalProductSavedEvent(savedProduct));
+        var newProduct = InternalProduct.of(product);
+        var oldProduct = this.productRepository.findById(newProduct.getId()).orElseThrow();
+        BeanUtils.copyProperties(newProduct, oldProduct, "variants");
+        var savedProduct = this.productRepository.save(oldProduct);
+        this.eventPublisher.publishEvent(new InternalProductChangedEvent(savedProduct));
         return savedProduct;
-    }
-
-    @Override
-    public Optional<ProductVariant> getProductVariant(String productId, String variantId) {
-        return this.getProduct(productId).orElseThrow().getVariant(variantId);
     }
 
     @Transactional
@@ -106,4 +101,6 @@ public class InternalProductService implements ProductService {
     public SliceList<Product> getProducts(ProductQuery query) {
         return this.productSearcher.search(query);
     }
+
+
 }
