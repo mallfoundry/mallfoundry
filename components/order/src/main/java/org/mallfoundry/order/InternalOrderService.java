@@ -52,13 +52,8 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public Order createEmptyOrder() {
+    public Order createOrder() {
         return new InternalOrder().toBuilder().customerId(SecurityUserHolder.getUserId()).build();
-    }
-
-    @Override
-    public Order createOrder(String id) {
-        return new InternalOrder(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
     }
 
     @Transactional
