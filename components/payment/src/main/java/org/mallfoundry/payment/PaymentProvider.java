@@ -28,7 +28,7 @@ public class PaymentProvider implements Position {
 
     private PaymentProviderType type;
 
-    private long position;
+    private int position;
 
     public PaymentProvider(PaymentProviderType type, String name, Integer position) {
         this.name = name;

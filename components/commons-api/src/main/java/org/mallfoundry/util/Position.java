@@ -24,12 +24,12 @@ import java.io.Serializable;
  */
 public interface Position extends Comparable<Position>, Serializable {
 
-    void setPosition(long position);
+    void setPosition(int position);
 
-    long getPosition();
+    int getPosition();
 
     @Override
     default int compareTo(Position o) {
-        return Long.compare(this.getPosition(), o.getPosition());
+        return Integer.compare(this.getPosition(), o.getPosition());
     }
 }

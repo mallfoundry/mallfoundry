@@ -38,7 +38,7 @@ public class InternalCustomCollection implements CustomCollection {
     private int products;
 
     @Column(name = "position_")
-    private long position;
+    private int position;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("created_time")

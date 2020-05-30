@@ -47,7 +47,7 @@ public class InternalBrand implements Brand {
     private Set<String> searchKeywords;
 
     @Column(name = "position_")
-    private long position;
+    private int position;
 
     public InternalBrand(String id) {
         this.id = id;

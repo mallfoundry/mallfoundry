@@ -53,7 +53,7 @@ public class InternalProductOption implements ProductOption {
     private List<ProductOptionValue> values = new ArrayList<>();
 
     @Column(name = "position_")
-    private long position;
+    private int position;
 
     public InternalProductOption(String id) {
         this.id = id;

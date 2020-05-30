@@ -55,7 +55,7 @@ public class InternalCategory implements Category {
     private CategoryVisibility visibility;
 
     @Column(name = "position_")
-    private long position;
+    private int position;
 
     public InternalCategory(String id) {
         this.id = id;
