@@ -23,7 +23,6 @@ import java.util.Objects;
 
 @Getter
 public abstract class PageableSupport implements Pageable {
-
     private Integer page = DEFAULT_PAGE;
 
     private Integer limit = DEFAULT_LIMIT;

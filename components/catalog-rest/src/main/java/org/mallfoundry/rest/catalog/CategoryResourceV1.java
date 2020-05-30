@@ -1,6 +1,9 @@
 package org.mallfoundry.rest.catalog;
 
-import org.mallfoundry.catalog.Category;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.CategoryService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
+@Tag(name = "Category Resource V1", description = "商品类目资源")
 @RestController
 @RequestMapping("/v1")
 public class CategoryResourceV1 {
@@ -27,35 +32,42 @@ public class CategoryResourceV1 {
         this.categoryRestFactory = categoryRestFactory;
     }
 
+    @Operation(summary = "添加商品类目")
     @PostMapping("/categories")
-    public Category createCategory(@RequestBody CategoryRequest request) {
-        return this.categoryService.saveCategory(request.assignToCategory(this.categoryService.createCategory()));
+    public CategoryResponse createCategory(@RequestBody CategoryRequest request) {
+        if (StringUtils.isBlank(request.getParentId())) {
+            return new CategoryResponse(
+                    this.categoryService.saveCategory(
+                            request.assignToCategory(this.categoryService.createCategory())));
+        } else {
+            return new CategoryResponse(
+                    this.categoryService.addChildCategory(request.getParentId(),
+                            request.assignToCategory(this.categoryService.createCategory())));
+        }
     }
 
-    @PostMapping("/categories/{category_id}/children")
-    public Category addChildCategory(@PathVariable("category_id") String categoryId,
-                                     @RequestBody CategoryRequest request) {
-        return this.categoryService.addChildCategory(categoryId,
-                request.assignToCategory(this.categoryService.createCategory()));
-    }
-
+    @Operation(summary = "获得商品类目集合")
     @GetMapping("/categories")
-    public List<CategoryResponse> getTopCategories(@RequestParam(defaultValue = "0", required = false) byte level) {
+    public List<CategoryResponse> getTopCategories(@Parameter(description = "类目层级")
+                                                   @RequestParam(defaultValue = "0", required = false) byte level) {
         return this.categoryRestFactory.getCategories(level);
     }
 
+    @Operation(summary = "根据商品类目标识获得子类目集合")
     @GetMapping("/categories/{category_id}/children")
     public List<CategoryResponse> getCategories(@PathVariable("category_id") String categoryId,
                                                 @RequestParam(defaultValue = "0", required = false) byte level) {
         return this.categoryRestFactory.getCategories(categoryId, level);
     }
 
+    @Operation(summary = "根据商品类目标识更新商品类目对象")
     @PatchMapping("/categories/{category_id}")
     public void saveCategory(@PathVariable("category_id") String categoryId, @RequestBody CategoryRequest request) {
         var category = this.categoryService.getCategory(categoryId).orElseThrow();
         this.categoryService.saveCategory(request.assignToCategory(category));
     }
 
+    @Operation(summary = "根据商品类目标识删除商品类目对象")
     @DeleteMapping("/categories/{category_id}")
     public void deleteCategories(@PathVariable("category_id") String categoryId) {
         this.categoryService.deleteCategory(categoryId);

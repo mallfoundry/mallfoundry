@@ -2,6 +2,7 @@ package org.mallfoundry.catalog;
 
 
 import org.mallfoundry.data.SliceList;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class InternalBrandService implements BrandService {
 
     @Override
     public SliceList<Brand> getBrands(BrandQuery query) {
-        return null;
+        return CastUtils.cast(this.brandRepository.findAll(query));
     }
 
     @Override

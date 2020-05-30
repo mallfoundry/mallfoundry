@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class PageList<T> implements SliceList<T> {
 
@@ -39,7 +41,9 @@ public class PageList<T> implements SliceList<T> {
     private List<T> elements;
 
     public PageList(List<T> elements) {
-        this.elements = Objects.isNull(elements) ? Collections.emptyList() : Collections.unmodifiableList(elements);
+        this.elements = Objects.isNull(elements)
+                ? Collections.emptyList()
+                : Collections.unmodifiableList(elements);
         this.size = this.elements.size();
     }
 
@@ -114,6 +118,12 @@ public class PageList<T> implements SliceList<T> {
     @Override
     public long getTotalSize() {
         return totalSize;
+    }
+
+    @Override
+    public <R> SliceList<R> map(Function<T, R> mapper) {
+        return new PageList<>(this.elements.stream().map(mapper).collect(Collectors.toUnmodifiableList()))
+                .page(this.page).limit(this.limit).totalSize(this.totalSize);
     }
 
     public void setTotalSize(long totalSize) {

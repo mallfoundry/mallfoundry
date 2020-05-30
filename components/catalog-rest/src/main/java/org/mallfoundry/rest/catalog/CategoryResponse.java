@@ -11,15 +11,16 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class CategoryResponse extends CategoryRequest {
-    //    private String name;
-//    private Set<String> searchKeywords;
-//    private String imageUrl;
-//    private String description;
-//    private CategoryVisibility visibility;
+
     private String id;
-    private String parentId;
+
     private Integer position;
+
     private List<CategoryResponse> children;
+
+    public CategoryResponse(Category category) {
+        this(category, 0);
+    }
 
     public CategoryResponse(Category category, int level) {
         BeanUtils.copyProperties(category, this, "children");
@@ -29,7 +30,6 @@ public class CategoryResponse extends CategoryRequest {
                             .stream()
                             .map(child -> new CategoryResponse(child, level - 1))
                             .collect(Collectors.toUnmodifiableList());
-
         }
     }
 }

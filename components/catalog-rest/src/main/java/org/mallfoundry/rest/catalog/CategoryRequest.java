@@ -17,6 +17,8 @@ public class CategoryRequest {
 
     private String imageUrl;
 
+    private String parentId;
+
     private Set<String> searchKeywords;
 
     private CategoryVisibility visibility;

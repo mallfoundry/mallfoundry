@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SearchTermService {
 
-    void addTerm(String customerId, String term);
+    SearchTerm addTerm(String customerId, String term);
 
     List<SearchTerm> getTerms(String customerId);
 

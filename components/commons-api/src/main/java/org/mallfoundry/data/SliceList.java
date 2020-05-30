@@ -18,6 +18,7 @@ package org.mallfoundry.data;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Tang Zhi
@@ -41,4 +42,6 @@ public interface SliceList<T> extends Iterable<T> {
     default Iterator<T> iterator() {
         return this.getElements().iterator();
     }
+
+    <R> SliceList<R> map(Function<T, R> mapper);
 }

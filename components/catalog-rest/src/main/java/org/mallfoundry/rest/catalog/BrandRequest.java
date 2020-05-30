@@ -13,19 +13,19 @@ import java.util.Set;
 public class BrandRequest {
 
     @Schema(title = "品牌名称")
-    private String name;
+    protected String name;
 
     @Schema(title = "品牌描述")
-    private String description;
+    protected String description;
 
     @Schema(name = "logo_url", title = "品牌LOGO URL")
-    private String logoUrl;
+    protected String logoUrl;
 
     @Schema(title = "品牌关联的商品类目集合")
-    private Set<String> categories;
+    protected Set<String> categories;
 
     @Schema(name = "search_keywords", title = "品牌用于搜索的关键字集合")
-    private Set<String> searchKeywords;
+    protected Set<String> searchKeywords;
 
     public Brand assignToBrand(Brand brand) {
         return brand.toBuilder()

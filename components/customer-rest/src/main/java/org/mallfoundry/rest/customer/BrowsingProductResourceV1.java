@@ -16,6 +16,8 @@
 
 package org.mallfoundry.rest.customer;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.customer.BrowsingProduct;
 import org.mallfoundry.customer.BrowsingProductService;
 import org.mallfoundry.data.SliceList;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 
+@Tag(name = "BrowsingProduct Resource V1", description = "顾客浏览商品记录资源")
 @RestController
 @RequestMapping("/v1")
 public class BrowsingProductResourceV1 {
@@ -41,6 +44,7 @@ public class BrowsingProductResourceV1 {
         this.browsingProductService = browsingProductService;
     }
 
+    @Operation(summary = "添加一个顾客浏览的商品记录对象")
     @PostMapping("customers/{customer_id}/browsing-products")
     public BrowsingProduct addBrowsingProduct(@PathVariable("customer_id") String customerId,
                                               @RequestBody BrowsingProductRequest request) {
@@ -49,6 +53,7 @@ public class BrowsingProductResourceV1 {
                         .toBuilder().browserId(customerId).name(request.getName()).price(request.getPrice()).build());
     }
 
+    @Operation(summary = "获得顾客浏览的商品记录分页集合")
     @GetMapping("customers/{customer_id}/browsing-products")
     public SliceList<BrowsingProduct> getBrowsingProducts(
             @PathVariable("customer_id") String customerId,
@@ -61,6 +66,7 @@ public class BrowsingProductResourceV1 {
                         .browserId(customerId).browsingTime(browsingTime).build());
     }
 
+    @Operation(summary = "获得顾客浏览的商品数量")
     @GetMapping("customers/{customer_id}/browsing-products/count")
     public long getBrowsingProductCount(@PathVariable("customer_id") String customerId,
                                         @RequestParam(name = "browsing_time", required = false) Date browsingTime) {
@@ -69,11 +75,13 @@ public class BrowsingProductResourceV1 {
                         .browserId(customerId).browsingTime(browsingTime).build());
     }
 
+    @Operation(summary = "根据标识删除顾客浏览的商品记录")
     @DeleteMapping("customers/{customer_id}/browsing-products/{id}")
     public void deleteBrowsingProduct(@PathVariable("customer_id") String customerId, @PathVariable("id") String id) {
         this.browsingProductService.deleteBrowsingProduct(customerId, id);
     }
 
+    @Operation(summary = "皮亮删除顾客浏览的商品记录")
     @DeleteMapping("customers/{customer_id}/browsing-products/batch")
     public void deleteBrowsingProducts(@PathVariable("customer_id") String customerId, @RequestBody List<String> ids) {
         this.browsingProductService.deleteBrowsingProducts(customerId, ids);

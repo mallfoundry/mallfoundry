@@ -18,13 +18,17 @@ spring:
     name: Mall-Foundry-APP
   cache:
     type: simple
+  messages:
+    basename: messages
 server:
   port: 8077
+  error:
+    include-message: always
 springdoc:
   api-docs:
     enabled: true
     path: /v1/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    displayRequestDuration: true
-    tagsSorter: alpha
+    tags-sorter: alpha
+    display-request-duration: true
