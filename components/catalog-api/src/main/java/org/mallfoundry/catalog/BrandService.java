@@ -22,7 +22,7 @@ public interface BrandService {
 
     SliceList<Brand> getBrands(BrandQuery query);
 
-    Brand saveBrand(Brand brand);
+    Brand updateBrand(Brand brand);
 
     void deleteBrand(String id);
 }

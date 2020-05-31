@@ -49,7 +49,7 @@ public class OrderResourceV1 {
     }
 
     @PatchMapping("/orders/{order_id}")
-    public Order patchOrder(@PathVariable("order_id") String orderId, @RequestBody OrderRequest request) {
+    public Order updateOrder(@PathVariable("order_id") String orderId, @RequestBody OrderRequest request) {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         if (Objects.nonNull(request.getStaffNotes())) {
             order.setStaffNotes(request.getStaffNotes());
@@ -62,7 +62,7 @@ public class OrderResourceV1 {
         if (request.isDiscountShippingCostsChanged()) {
             order.discountShippingCosts(request.getDiscountShippingCosts());
         }
-        return this.orderService.saveOrder(order);
+        return this.orderService.updateOrder(order);
     }
 
     @PostMapping("/orders/{order_id}/cancel")

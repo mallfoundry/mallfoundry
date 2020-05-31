@@ -74,7 +74,7 @@ public class InternalStorageService implements StorageService {
 
     @Transactional
     @Override
-    public Bucket saveBucket(Bucket bucket) throws StorageException {
+    public Bucket addBucket(Bucket bucket) throws StorageException {
         return this.bucketRepository.save(InternalBucket.of(bucket));
     }
 

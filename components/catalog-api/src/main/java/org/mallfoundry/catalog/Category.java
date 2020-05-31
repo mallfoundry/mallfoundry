@@ -15,6 +15,8 @@ public interface Category extends Position {
 
     String getId();
 
+    void setId(String id);
+
     String getName();
 
     void setName(String name);
@@ -35,7 +37,7 @@ public interface Category extends Position {
 
     List<Category> getChildren();
 
-    Category createChildCategory(String childId);
+    Category createChildCategory();
 
     Optional<Category> getChildCategory(String childId);
 

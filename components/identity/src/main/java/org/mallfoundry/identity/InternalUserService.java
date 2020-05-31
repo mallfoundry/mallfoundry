@@ -18,7 +18,6 @@ package org.mallfoundry.identity;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -57,6 +56,11 @@ public class InternalUserService implements UserService {
         return new InternalUserId(userId);
     }
 
+    @Override
+    public User createUser(String id) {
+        return new InternalUser(id);
+    }
+
     @Transactional
     @Override
     public User createUser(UserRegistration registration) {
@@ -73,7 +77,7 @@ public class InternalUserService implements UserService {
 
     @Transactional
     @Override
-    public User setUser(User user) {
+    public User updateUser(User user) {
         var savedUser = this.userRepository.findById(user.getId()).orElseThrow();
         if (!Objects.equals(user.getNickname(), savedUser.getNickname())) {
             savedUser.setNickname(savedUser.getNickname());
@@ -110,15 +114,14 @@ public class InternalUserService implements UserService {
         this.userRepository.delete(user);
     }
 
-    @Cacheable(value = "Users", key = "#username")
     @Transactional
-    public Optional<User> getUser(String username) {
-        return CastUtils.cast(this.userRepository.findByUsername(username));
+    public Optional<User> getUser(String userId) {
+        return CastUtils.cast(this.userRepository.findById(userId));
     }
 
     @Override
-    public Optional<User> getUser(UserId userId) {
-        return CastUtils.cast(this.userRepository.findById(userId.getIdentifier()));
+    public Optional<User> getUserByUsername(String username) {
+        return CastUtils.cast(this.userRepository.findByUsername(username));
     }
 
     @Override

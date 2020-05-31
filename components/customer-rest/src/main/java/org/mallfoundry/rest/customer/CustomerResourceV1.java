@@ -61,7 +61,7 @@ public class CustomerResourceV1 {
     @PatchMapping("/customers/{customer_id}")
     public void setCustomer(@PathVariable("customer_id") String customerId,
                             @RequestBody CustomerRequest request) {
-        this.customerService.setCustomer(
+        this.customerService.updateCustomer(
                 request.assignToCustomer(
                         this.customerService.createCustomer(customerId)));
     }

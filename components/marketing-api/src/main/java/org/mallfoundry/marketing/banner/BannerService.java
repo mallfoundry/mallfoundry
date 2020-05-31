@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface BannerService {
 
-    Banner createBanner();
+    Banner createBanner(String id);
 
     BannerQuery createBannerQuery();
 
@@ -14,7 +14,9 @@ public interface BannerService {
 
     SliceList<Banner> getBanners(BannerQuery query);
 
-    Banner saveBanner(Banner banner);
+    Banner addBanner(Banner banner);
+
+    Banner updateBanner(Banner banner);
 
     void deleteBanner(String bannerId);
 

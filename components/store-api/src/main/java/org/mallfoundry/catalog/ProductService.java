@@ -11,7 +11,7 @@ public interface ProductService {
 
     ProductId createProductId(String id);
 
-    Product createProduct();
+    Product createProduct(String id);
 
     Optional<Product> getProduct(String id);
 
@@ -19,7 +19,7 @@ public interface ProductService {
 
     Product addProduct(Product product);
 
-    Product saveProduct(Product product);
+    void updateProduct(Product product);
 
     void adjustInventory(InventoryAdjustment adjustment);
 }

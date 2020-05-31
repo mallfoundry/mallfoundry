@@ -35,8 +35,7 @@ public class InternalCounty extends DistrictSupport implements County {
     @Column(name = "city_id_")
     private String cityId;
 
-    public InternalCounty(String id, String code, String name, String cityId) {
-        this.setId(id);
+    public InternalCounty(String code, String name, String cityId) {
         this.setCode(code);
         this.setName(name);
         this.cityId = cityId;

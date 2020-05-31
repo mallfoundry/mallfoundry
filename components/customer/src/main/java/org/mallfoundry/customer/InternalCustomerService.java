@@ -49,15 +49,14 @@ public class InternalCustomerService implements CustomerService {
 
     @Override
     public Customer addCustomer(Customer customer) {
-        var user = this.userService.getUser(this.userService.createUserId(customer.getUserId())).orElseThrow();
-        customer.setUserId(user.getId());
+        var user = this.userService.getUser(customer.getUserId()).orElseThrow();
         customer.setNickname(user.getNickname());
         return this.customerRepository.save(InternalCustomer.of(customer));
     }
 
     @Transactional
     @Override
-    public void setCustomer(Customer customer) {
+    public void updateCustomer(Customer customer) {
         var savedCustomer = this.customerRepository.findById(customer.getId()).orElseThrow();
         if (Objects.nonNull(customer.getGender())) {
             savedCustomer.setGender(customer.getGender());

@@ -75,7 +75,7 @@ public class InternalOrderService implements OrderService {
 
     @Transactional
     @Override
-    public Order saveOrder(Order order) {
+    public Order updateOrder(Order order) {
         return this.orderRepository.save(InternalOrder.of(order));
     }
 

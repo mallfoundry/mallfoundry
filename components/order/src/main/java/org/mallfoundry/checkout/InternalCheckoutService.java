@@ -65,11 +65,8 @@ public class InternalCheckoutService implements CheckoutService {
             var product = this.productService.getProduct(item.getProductId()).orElseThrow();
             var variant = product.getVariant(item.getVariantId()).orElseThrow();
             var order = this.findOrderByStoreId(orders, product.getStoreId())
-                    .orElseGet(() -> this.orderService
-                            .createEmptyOrder()
-                            .toBuilder()
-                            .shippingAddress(checkout.getShippingAddress())
-                            .build());
+                    .orElseGet(() -> this.orderService.createOrder().toBuilder()
+                            .shippingAddress(checkout.getShippingAddress()).build());
 
             order.addItem(order.createItem(null)
                     .toBuilder()

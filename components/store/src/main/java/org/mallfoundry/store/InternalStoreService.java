@@ -78,7 +78,7 @@ public class InternalStoreService implements StoreService {
 
     @Transactional
     @Override
-    public Store initializeStore(Store store) {
+    public Store createStore(Store store) {
         store.initialize();
         var savedStore = this.storeRepository.save(InternalStore.of(store));
         this.storeBlobService.initializeBucket(this.createStoreId(store.getId()));
@@ -88,7 +88,7 @@ public class InternalStoreService implements StoreService {
 
     @Transactional
     @Override
-    public Store saveStore(Store store) {
+    public Store updateStore(Store store) {
         return this.storeRepository.save(InternalStore.of(store));
     }
 

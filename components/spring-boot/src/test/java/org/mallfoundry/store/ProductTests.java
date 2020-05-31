@@ -17,6 +17,8 @@
 package org.mallfoundry.store;
 
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mallfoundry.StaticServer;
 import org.mallfoundry.catalog.InternalProduct;
 import org.mallfoundry.catalog.InternalProductAttribute;
@@ -25,8 +27,6 @@ import org.mallfoundry.catalog.Product;
 import org.mallfoundry.catalog.ProductStatus;
 import org.mallfoundry.catalog.ProductType;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -68,14 +68,12 @@ public class ProductTests {
     @Rollback(false)
     @Transactional
     public void testSaveProducts() {
-
-        productService.saveProduct(this.newProduct1());
-
-        productService.saveProduct(this.newProduct2());
-        productService.saveProduct(this.newProduct2_1());
-        productService.saveProduct(this.newProduct3());
-        productService.saveProduct(this.newProduct4());
-        productService.saveProduct(this.newProduct5());
+        productService.addProduct(this.newProduct1());
+        productService.addProduct(this.newProduct2());
+        productService.addProduct(this.newProduct2_1());
+        productService.addProduct(this.newProduct3());
+        productService.addProduct(this.newProduct4());
+        productService.addProduct(this.newProduct5());
     }
 
     private String resolveImageUrl(String id) {
@@ -84,7 +82,7 @@ public class ProductTests {
 
     private Product newProduct1() {
         double price = 0.01;
-        return this.productService.createProduct()
+        return this.productService.createProduct(null)
                 .toBuilder()
                 .storeId("huawei")
                 .name("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机")
@@ -140,7 +138,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct2() {
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct(null);
         double price = 0.04;
         product.setStoreId("mi");
         product.setName("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机");
@@ -206,7 +204,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct2_1() {
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct(null);
         double price = 0.02;
         product.setStoreId("mi");
         product.setName("【向往的生活同款】小米10 双模5G 骁龙865 1亿像素8K电影相机 对称式立体声");
@@ -312,7 +310,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct3() {
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct(null);
         double price = 0.01;
         product.setStoreId("oppo");
         product.setName("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机");
@@ -395,7 +393,7 @@ public class ProductTests {
     }
 
     private InternalProduct newProduct4() {
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct(null);
         double price = 0.01;
         product.setStoreId("vivo");
         product.setName("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机");
@@ -459,7 +457,7 @@ public class ProductTests {
 
     private InternalProduct newProduct5() {
         double price = 0.01;
-        InternalProduct product = (InternalProduct) this.productService.createProduct();
+        InternalProduct product = (InternalProduct) this.productService.createProduct(null);
         product.setStoreId("one plus");
         product.setName("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机");
         product.setType(ProductType.PHYSICAL);

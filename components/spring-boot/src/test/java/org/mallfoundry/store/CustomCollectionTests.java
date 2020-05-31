@@ -36,13 +36,13 @@ public class CustomCollectionTests {
     @Test
     public void testAdd() {
         var storeId = "mi";
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "手机"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "电视/盒子"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "笔记本/路由"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "智能家电"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "儿童智能"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "耳机/音箱"));
-        customCollectionService.saveCollection(customCollectionService.createCollection(storeId, "生活/箱包"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "手机"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "电视/盒子"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "笔记本/路由"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "智能家电"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "儿童智能"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "耳机/音箱"));
+        customCollectionService.addCollection(customCollectionService.createCollection(storeId, "生活/箱包"));
     }
 
 

@@ -15,7 +15,7 @@ public interface OrderService {
 
     List<Order> placeOrders(List<Order> orders);
 
-    Order saveOrder(Order order);
+    Order updateOrder(Order order);
 
     Optional<Order> getOrder(String orderId);
 

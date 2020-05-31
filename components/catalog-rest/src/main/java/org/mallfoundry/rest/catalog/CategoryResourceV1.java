@@ -37,12 +37,11 @@ public class CategoryResourceV1 {
     public CategoryResponse createCategory(@RequestBody CategoryRequest request) {
         if (StringUtils.isBlank(request.getParentId())) {
             return new CategoryResponse(
-                    this.categoryService.saveCategory(
-                            request.assignToCategory(this.categoryService.createCategory())));
+                    this.categoryService.addCategory(request.assignToCategory(this.categoryService.createCategory(null))));
         } else {
             return new CategoryResponse(
                     this.categoryService.addChildCategory(request.getParentId(),
-                            request.assignToCategory(this.categoryService.createCategory())));
+                            request.assignToCategory(this.categoryService.createCategory(null))));
         }
     }
 
@@ -62,9 +61,9 @@ public class CategoryResourceV1 {
 
     @Operation(summary = "根据商品类目标识更新商品类目对象")
     @PatchMapping("/categories/{category_id}")
-    public void saveCategory(@PathVariable("category_id") String categoryId, @RequestBody CategoryRequest request) {
-        var category = this.categoryService.getCategory(categoryId).orElseThrow();
-        this.categoryService.saveCategory(request.assignToCategory(category));
+    public void updateCategory(@PathVariable("category_id") String categoryId, @RequestBody CategoryRequest request) {
+        var category = this.categoryService.createCategory(categoryId);
+        this.categoryService.updateCategory(request.assignToCategory(category));
     }
 
     @Operation(summary = "根据商品类目标识删除商品类目对象")

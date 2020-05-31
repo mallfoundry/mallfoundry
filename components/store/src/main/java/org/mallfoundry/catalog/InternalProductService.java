@@ -60,8 +60,8 @@ public class InternalProductService implements ProductService {
     }
 
     @Override
-    public Product createProduct() {
-        return new InternalProduct();
+    public Product createProduct(String id) {
+        return new InternalProduct(id);
     }
 
     @Override
@@ -71,18 +71,17 @@ public class InternalProductService implements ProductService {
         }
         var addedProduct = this.productRepository.save(InternalProduct.of(product));
         this.eventPublisher.publishEvent(new InternalProductAddedEvent(addedProduct));
-        return null;
+        return addedProduct;
     }
 
     @Transactional
     @Override
-    public Product saveProduct(Product product) {
+    public void updateProduct(Product product) {
         var newProduct = InternalProduct.of(product);
         var oldProduct = this.productRepository.findById(newProduct.getId()).orElseThrow();
         BeanUtils.copyProperties(newProduct, oldProduct, "variants");
         var savedProduct = this.productRepository.save(oldProduct);
         this.eventPublisher.publishEvent(new InternalProductChangedEvent(savedProduct));
-        return savedProduct;
     }
 
     @Transactional

@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class InternalDistrictService implements DistrictService {
@@ -60,59 +59,71 @@ public class InternalDistrictService implements DistrictService {
 
     @Override
     public Region createRegion(String code, String name, String countryId) {
-        return new InternalRegion(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME), code, name, countryId);
+        return new InternalRegion(code, name, countryId);
     }
 
     @Override
     public Province createProvince(String code, String name, String countryId) {
-        return new InternalProvince(PrimaryKeyHolder.next(PROVINCE_ID_VALUE_NAME), code, name, countryId);
+        return new InternalProvince(code, name, countryId);
     }
 
     @Override
     public City createCity(String code, String name, String provinceId) {
-        return new InternalCity(PrimaryKeyHolder.next(CITY_ID_VALUE_NAME), code, name, provinceId);
+        return new InternalCity(code, name, provinceId);
     }
 
     @Override
     public County createCounty(String code, String name, String cityId) {
-        return new InternalCounty(PrimaryKeyHolder.next(COUNTY_ID_VALUE_NAME), code, name, cityId);
+        return new InternalCounty(code, name, cityId);
     }
 
     @Override
-    public Region saveRegion(Region region) {
-        if (Objects.isNull(region.getPosition())) {
-            var count = this.regionRepository.countByCountryId(region.getCountryId());
-            region.setPosition(count + 1);
-        }
-        return this.regionRepository.save(InternalRegion.of(region));
+    public Region addRegion(Region aRegion) {
+        var region = InternalRegion.of(aRegion);
+        region.setId(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME));
+        return this.regionRepository.save(region);
     }
 
     @Transactional
     @Override
-    public Province saveProvince(Province province) {
-        if (Objects.isNull(province.getPosition())) {
-            var count = this.provinceRepository.countByCountryId(province.getCountryId());
-            province.setPosition(count + 1);
-        }
-        return this.provinceRepository.save(InternalProvince.of(province));
+    public Province addProvince(Province aProvince) {
+        var province = InternalProvince.of(aProvince);
+        province.setId(PrimaryKeyHolder.next(PROVINCE_ID_VALUE_NAME));
+        return this.provinceRepository.save(province);
     }
 
     @Override
-    public City saveCity(City city) {
-        if (Objects.isNull(city.getPosition())) {
-            var count = this.cityRepository.countByProvinceId(city.getProvinceId());
-            city.setPosition(count + 1);
-        }
-        return this.cityRepository.save(InternalCity.of(city));
+    public City addCity(City aCity) {
+        var city = InternalCity.of(aCity);
+        city.setId(PrimaryKeyHolder.next(CITY_ID_VALUE_NAME));
+        return this.cityRepository.save(city);
     }
 
     @Override
-    public County saveCounty(County county) {
-        if (Objects.isNull(county.getPosition())) {
-            var count = this.countyRepository.countByCityId(county.getCityId());
-            county.setPosition(count + 1);
-        }
-        return this.countyRepository.save(InternalCounty.of(county));
+    public County addCounty(County aCounty) {
+        var county = InternalCounty.of(aCounty);
+        county.setId(PrimaryKeyHolder.next(COUNTY_ID_VALUE_NAME));
+        return this.countyRepository.save(county);
+    }
+
+    @Override
+    public Region updateRegion(Region region) {
+        return null;
+    }
+
+    @Override
+    public Province updateProvince(Province province) {
+        return null;
+    }
+
+    @Override
+    public City updateCity(City city) {
+        return null;
+    }
+
+    @Override
+    public County updateCounty(County county) {
+        return null;
     }
 
     @Override

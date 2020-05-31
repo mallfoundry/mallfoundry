@@ -43,8 +43,7 @@ public class InternalCity extends DistrictSupport implements City {
     @JoinColumn(name = "city_id_")
     private List<County> counties = new ArrayList<>();
 
-    public InternalCity(String id, String code, String name, String provinceId) {
-        this.setId(id);
+    public InternalCity(String code, String name, String provinceId) {
         this.setCode(code);
         this.setName(name);
         this.provinceId = provinceId;

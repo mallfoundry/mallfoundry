@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.jpa.convert.StringSetConverter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,9 +62,18 @@ public class InternalCategory implements Category {
         this.id = id;
     }
 
+    public static InternalCategory of(Category category) {
+        if (category instanceof InternalCategory) {
+            return (InternalCategory) category;
+        }
+        var target = new InternalCategory();
+        BeanUtils.copyProperties(category, target);
+        return target;
+    }
+
     @Override
-    public Category createChildCategory(String childId) {
-        return new InternalCategory(childId);
+    public Category createChildCategory() {
+        return new InternalCategory();
     }
 
     @Override

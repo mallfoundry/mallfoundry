@@ -33,7 +33,7 @@ public interface StorageService {
 
     boolean existsBucket(String bucketName);
 
-    Bucket saveBucket(Bucket bucket) throws StorageException;
+    Bucket addBucket(Bucket bucket) throws StorageException;
 
     void deleteBucket(String bucketName);
 

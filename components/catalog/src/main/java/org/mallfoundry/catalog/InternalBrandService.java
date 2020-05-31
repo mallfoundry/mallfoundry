@@ -50,7 +50,7 @@ public class InternalBrandService implements BrandService {
     }
 
     @Override
-    public Brand saveBrand(Brand brand) {
+    public Brand updateBrand(Brand brand) {
         return null;
     }
 

@@ -5,9 +5,13 @@ import java.util.Optional;
 
 public interface CollectionService {
 
+    CustomCollection createCollection(String id);
+
     CustomCollection createCollection(String storeId, String name);
 
-    CustomCollection saveCollection(CustomCollection collection);
+    CustomCollection addCollection(CustomCollection collection);
+
+    CustomCollection updateCollection(CustomCollection collection);
 
     void deleteCollection(String id);
 

@@ -4,11 +4,11 @@ import java.util.Optional;
 
 public interface PaymentService {
 
-    Payment createPayment();
+    Payment createPayment(String id);
 
     Instrument createInstrument(String type);
 
-    Payment savePayment(Payment payment);
+    Payment createPayment(Payment payment);
 
     void capturePayment(String id) throws PaymentException;
 

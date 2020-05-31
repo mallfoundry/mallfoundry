@@ -52,8 +52,8 @@ public class BrandResourceV1 {
 
     @Operation(summary = "根据标识修改商品品牌")
     @PatchMapping("/brands/{brand_id}")
-    public BrandResponse saveBrand(@PathVariable("brand_id") String brandId, @RequestBody BrandRequest request) {
-        return new BrandResponse(this.brandService.saveBrand(request.assignToBrand(this.brandService.getBrand(brandId).orElseThrow())));
+    public BrandResponse updateBrand(@PathVariable("brand_id") String brandId, @RequestBody BrandRequest request) {
+        return new BrandResponse(this.brandService.updateBrand(request.assignToBrand(this.brandService.getBrand(brandId).orElseThrow())));
     }
 
     @Operation(summary = "根据标识删除商品品牌")

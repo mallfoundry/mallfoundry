@@ -45,8 +45,11 @@ public class InternalCustomCollection implements CustomCollection {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalCustomCollection(String id, String storeId, String name) {
+    public InternalCustomCollection(String id) {
         this.id = id;
+    }
+
+    public InternalCustomCollection(String storeId, String name) {
         this.storeId = storeId;
         this.name = name;
         this.setCreatedTime(new Date());

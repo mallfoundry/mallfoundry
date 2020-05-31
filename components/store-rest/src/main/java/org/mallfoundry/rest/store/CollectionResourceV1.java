@@ -29,10 +29,10 @@ public class CollectionResourceV1 {
     }
 
     @PostMapping("/stores/{store_id}/custom-collections")
-    public CustomCollection saveCollection(@PathVariable("store_id") String storeId,
-                                           @RequestBody CollectionRequest request) {
+    public CustomCollection addCollection(@PathVariable("store_id") String storeId,
+                                          @RequestBody CollectionRequest request) {
         var newCollection = this.collectionService.createCollection(storeId, request.getName());
-        return this.collectionService.saveCollection(newCollection);
+        return this.collectionService.addCollection(newCollection);
     }
 
     @PutMapping("/stores/{store_id}/custom-collections/{collection_id}")
@@ -41,12 +41,9 @@ public class CollectionResourceV1 {
                                  @RequestBody CollectionRequest request) {
         Assert.notNull(storeId, "Store id must not be null");
         Assert.notNull(collectionId, "Collection id must not be null");
-        this.collectionService
-                .getCollection(collectionId)
-                .ifPresent(oldCollection -> {
-                    oldCollection.setName(request.getName());
-                    this.collectionService.saveCollection(oldCollection);
-                });
+        this.collectionService.updateCollection(
+                request.assignToCollection(
+                        this.collectionService.createCollection(collectionId)));
     }
 
 

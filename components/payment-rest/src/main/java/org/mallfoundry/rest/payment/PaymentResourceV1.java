@@ -48,8 +48,8 @@ public class PaymentResourceV1 {
 
     @PostMapping("/payments")
     public EntityModel<Payment> createPayment(@RequestBody PaymentRequest request) {
-        var payment = this.paymentService.savePayment(
-                this.paymentService.createPayment().toBuilder()
+        var payment = this.paymentService.createPayment(
+                this.paymentService.createPayment((String) null).toBuilder()
                         .amount(request.getAmount())
                         .reference(request.getReference())
                         .metadata(request.getMetadata())

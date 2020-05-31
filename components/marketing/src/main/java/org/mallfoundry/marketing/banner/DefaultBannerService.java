@@ -20,8 +20,8 @@ public class DefaultBannerService implements BannerService {
     }
 
     @Override
-    public Banner createBanner() {
-        return new InternalBanner(PrimaryKeyHolder.next(BANNER_ID_VALUE_NAME));
+    public Banner createBanner(String id) {
+        return new InternalBanner(id);
     }
 
     @Override
@@ -41,8 +41,15 @@ public class DefaultBannerService implements BannerService {
 
     @Transactional
     @Override
-    public Banner saveBanner(Banner banner) {
-        return this.bannerRepository.save(InternalBanner.of(banner));
+    public Banner addBanner(Banner aBanner) {
+        var banner = InternalBanner.of(aBanner);
+        banner.setId(PrimaryKeyHolder.next(BANNER_ID_VALUE_NAME));
+        return this.bannerRepository.save(banner);
+    }
+
+    @Override
+    public Banner updateBanner(Banner banner) {
+        return null;
     }
 
     @Transactional

@@ -23,8 +23,8 @@ public class InternalPaymentService implements PaymentService {
     }
 
     @Override
-    public Payment createPayment() {
-        var payment = new InternalPayment(PrimaryKeyHolder.next(PAYMENT_ID_VALUE_NAME));
+    public Payment createPayment(String id) {
+        var payment = new InternalPayment(id);
         payment.pending();
         return payment;
     }
@@ -36,8 +36,11 @@ public class InternalPaymentService implements PaymentService {
 
     @Transactional
     @Override
-    public Payment savePayment(Payment payment) {
-        return this.paymentRepository.save(InternalPayment.of(payment));
+    public Payment createPayment(Payment aPayment) {
+        var payment = InternalPayment.of(aPayment);
+        payment.setId(PrimaryKeyHolder.next(PAYMENT_ID_VALUE_NAME));
+        payment.pending();
+        return this.paymentRepository.save(payment);
     }
 
     @Override

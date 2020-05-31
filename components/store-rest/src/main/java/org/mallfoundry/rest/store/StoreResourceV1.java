@@ -21,6 +21,7 @@ import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -60,12 +61,12 @@ public class StoreResourceV1 {
     }
 
     @PostMapping("/stores")
-    public Store initializeStore(@RequestBody StoreRequest request) {
+    public Store createStore(@RequestBody StoreRequest request) {
         var store = this.storeService.createStore(request.getId());
         store.setName(request.getName());
         store.setLogoUrl(request.getLogoUrl());
         store.setDescription(request.getDescription());
-        return this.storeService.initializeStore(store);
+        return this.storeService.createStore(store);
     }
 
     @DeleteMapping("/stores/{store_id}")
@@ -73,20 +74,11 @@ public class StoreResourceV1 {
         this.storeService.cancelStore(storeId);
     }
 
-    @PutMapping("/stores/{store_id}")
-    public void saveStore(@PathVariable("store_id") String storeId,
-                          @RequestBody StoreRequest request) {
-        var store = this.storeService.getStore(storeId).orElseThrow();
-
-        if (Objects.nonNull(request.getLogoUrl())) {
-            store.setLogoUrl(request.getLogoUrl());
-        }
-
-        if (Objects.nonNull(request.getDescription())) {
-            store.setDescription(request.getDescription());
-        }
-
-        this.storeService.saveStore(store);
+    @PatchMapping("/stores/{store_id}")
+    public void updateStore(@PathVariable("store_id") String storeId,
+                            @RequestBody StoreRequest request) {
+        var store = this.storeService.createStore(storeId);
+        this.storeService.updateStore(request.assignToStore(store));
     }
 
     @GetMapping("/stores/{id}")

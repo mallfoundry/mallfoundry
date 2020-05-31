@@ -12,9 +12,9 @@ public interface StoreService {
 
     Store createStore(String id);
 
-    Store initializeStore(Store store);
+    Store createStore(Store store);
 
-    Store saveStore(Store store);
+    Store updateStore(Store store);
 
     void cancelStore(String id);
 

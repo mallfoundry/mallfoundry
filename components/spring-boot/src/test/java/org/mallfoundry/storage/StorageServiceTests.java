@@ -48,11 +48,11 @@ public class StorageServiceTests {
     }
 
     @Test
-    public void testCreateBucket() {
+    public void testAddBucket() {
         var owner = this.storageService.createOwner("store", "mi");
         var bucket = this.storageService.createBucket("test", owner);
         if (!this.storageService.existsBucket("test")) {
-            Bucket newBucket = this.storageService.saveBucket(bucket);
+            Bucket newBucket = this.storageService.addBucket(bucket);
             System.out.println(newBucket);
         }
     }

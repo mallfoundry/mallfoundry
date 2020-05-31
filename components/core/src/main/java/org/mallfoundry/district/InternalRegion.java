@@ -27,8 +27,7 @@ public class InternalRegion extends DistrictSupport implements Region {
     @Column(name = "country_id_")
     private String countryId;
 
-    public InternalRegion(String id, String code, String name, String countryId) {
-        this.setId(id);
+    public InternalRegion(String code, String name, String countryId) {
         this.setCode(code);
         this.setName(name);
         this.countryId = countryId;

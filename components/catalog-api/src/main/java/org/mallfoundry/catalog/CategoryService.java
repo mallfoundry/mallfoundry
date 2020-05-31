@@ -11,7 +11,7 @@ public interface CategoryService {
 
     CategoryId createCategoryId(String categoryId);
 
-    Category createCategory();
+    Category createCategory(String id);
 
     Optional<Category> getCategory(String id);
 
@@ -19,7 +19,9 @@ public interface CategoryService {
 
     List<Category> getCategories(String parentId);
 
-    Category saveCategory(Category category);
+    Category addCategory(Category category);
+
+    Category updateCategory(Category category);
 
     Category addChildCategory(String id, Category category);
 

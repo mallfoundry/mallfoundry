@@ -24,18 +24,14 @@ public class InternalAccessControlService implements AccessControlService {
 
     private final AccessControlRepository accessControlRepository;
 
-    private final AccessControlEntryRepository accessControlEntryRepository;
-
     private final PrincipalRepository principalRepository;
 
     private final ResourceRepository resourceRepository;
 
     public InternalAccessControlService(AccessControlRepository accessControlRepository,
-                                        AccessControlEntryRepository accessControlEntryRepository,
                                         PrincipalRepository principalRepository,
                                         ResourceRepository resourceRepository) {
         this.accessControlRepository = accessControlRepository;
-        this.accessControlEntryRepository = accessControlEntryRepository;
         this.principalRepository = principalRepository;
         this.resourceRepository = resourceRepository;
     }

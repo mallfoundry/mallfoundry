@@ -38,7 +38,8 @@ public class SecurityUserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = this.userService.getUser(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
+        var user = this.userService.getUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
         return new DefaultSecurityUser(user);
     }
 }

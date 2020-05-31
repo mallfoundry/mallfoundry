@@ -30,8 +30,8 @@ public class InternalCategoryService implements CategoryService {
     }
 
     @Override
-    public Category createCategory() {
-        return new InternalCategory(PrimaryKeyHolder.next(CATALOG_CATEGORY_ID_VALUE_NAME));
+    public Category createCategory(String id) {
+        return new InternalCategory(id);
     }
 
     @Override
@@ -49,10 +49,16 @@ public class InternalCategoryService implements CategoryService {
         return null;
     }
 
+    @Override
+    public Category addCategory(Category category) {
+        category.setId(PrimaryKeyHolder.next(CATALOG_CATEGORY_ID_VALUE_NAME));
+        return this.categoryRepository.save(InternalCategory.of(category));
+    }
+
     @Transactional
     @Override
-    public Category saveCategory(Category category) {
-        return null;
+    public Category updateCategory(Category category) {
+        return this.categoryRepository.save(InternalCategory.of(category));
     }
 
     @Transactional

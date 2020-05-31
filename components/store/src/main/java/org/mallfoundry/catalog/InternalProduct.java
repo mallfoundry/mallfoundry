@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.catalog.repository.jpa.convert.ProductAttributeListConverter;
@@ -52,6 +53,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "mf_catalog_product")
@@ -125,6 +127,10 @@ public class InternalProduct implements Product {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_time_")
     private Date createdTime;
+
+    public InternalProduct(String id) {
+        this.id = id;
+    }
 
     public static InternalProduct of(Product product) {
         if (product instanceof InternalProduct) {

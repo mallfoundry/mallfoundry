@@ -60,6 +60,11 @@ public class InternalCart implements Cart {
     }
 
     @Override
+    public CartItem createItem(String id) {
+        return new InternalCartItem(id);
+    }
+
+    @Override
     public void addItem(CartItem newItem) {
         this.items.add(newItem);
     }

@@ -14,13 +14,21 @@ public interface DistrictService {
 
     County createCounty(String code, String name, String cityId);
 
-    Region saveRegion(Region region);
+    Region addRegion(Region region);
 
-    Province saveProvince(Province province);
+    Province addProvince(Province province);
 
-    City saveCity(City city);
+    City addCity(City city);
 
-    County saveCounty(County county);
+    County addCounty(County county);
+
+    Region updateRegion(Region region);
+
+    Province updateProvince(Province province);
+
+    City updateCity(City city);
+
+    County updateCounty(County county);
 
     List<Region> getRegions(DistrictQuery query);
 

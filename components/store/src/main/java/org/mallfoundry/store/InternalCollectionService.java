@@ -35,13 +35,24 @@ public class InternalCollectionService implements CollectionService {
         this.customCollectionRepository = customCollectionRepository;
     }
 
+    @Override
+    public CustomCollection createCollection(String id) {
+        return null;
+    }
+
     public CustomCollection createCollection(String storeId, String name) {
-        return new InternalCustomCollection(PrimaryKeyHolder.next(COLLECTION_ID_VALUE_NAME), storeId, name);
+        return new InternalCustomCollection(storeId, name);
     }
 
     @Transactional
-    public CustomCollection saveCollection(CustomCollection collection) {
+    public CustomCollection addCollection(CustomCollection collection) {
+        collection.setId(PrimaryKeyHolder.next(COLLECTION_ID_VALUE_NAME));
         return this.customCollectionRepository.save(InternalCustomCollection.of(collection));
+    }
+
+    @Override
+    public CustomCollection updateCollection(CustomCollection collection) {
+        return null;
     }
 
     @Transactional

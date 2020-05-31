@@ -16,17 +16,17 @@
 
 package org.mallfoundry.rest.catalog.product;
 
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.inventory.InventoryStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.Product;
 import org.mallfoundry.catalog.ProductService;
 import org.mallfoundry.catalog.ProductStatus;
 import org.mallfoundry.catalog.ProductType;
-import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.data.SliceList;
+import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,14 +78,13 @@ public class ProductResourceV1 {
 
     @PostMapping("/products")
     public Product createProduct(@RequestBody ProductRequest request) {
-        var newProduct = this.productService.createProduct();
-        return this.productService.saveProduct(newProduct);
+        var newProduct = this.productService.createProduct(null);
+        return this.productService.addProduct(newProduct);
     }
 
-    @PutMapping("/products/{id}")
-    public void saveProduct(@PathVariable("id") String id,
-                            @RequestBody ProductRequest request) {
-        var product = this.productService.getProduct(id).orElseThrow();
-        this.productService.saveProduct(product);
+    @PatchMapping("/products/{id}")
+    public void updateProduct(@PathVariable("id") String id, @RequestBody ProductRequest request) {
+        var product = this.productService.createProduct(id);
+        this.productService.updateProduct(product);
     }
 }

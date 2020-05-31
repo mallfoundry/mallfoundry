@@ -18,12 +18,6 @@ public interface User {
 
     void changePassword(String password);
 
-//    boolean isEnabled();
-//
-//    void setEnabled(boolean enabled);
-
-
-
     List<String> getAuthorities();
 
 }

@@ -67,7 +67,7 @@ public class InternalStoreBlobService implements StoreBlobService {
     public void initializeBucket(StoreId storeId) {
         var owner = this.storageService.createOwner(STORE_OWNER_TYPE, storeId.getIdentifier());
         var bucket = this.storageService.createBucket(this.getBucketName(storeId), owner);
-        this.storageService.saveBucket(bucket);
+        this.storageService.addBucket(bucket);
     }
 
     @Override

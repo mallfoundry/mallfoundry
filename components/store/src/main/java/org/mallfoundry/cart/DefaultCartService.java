@@ -1,9 +1,9 @@
 package org.mallfoundry.cart;
 
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.catalog.ProductService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SecurityUserHolder;
-import org.mallfoundry.catalog.ProductService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +36,10 @@ public class DefaultCartService implements CartService {
         return new InternalCart(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
     }
 
-    @Override
-    public CartItem createCartItem() {
-        return new InternalCartItem(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
-    }
+//    @Override
+//    public CartItem createCartItem() {
+//        return new InternalCartItem(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
+//    }
 
     @Override
     public Cart saveCart(Cart cart) {
@@ -82,7 +82,9 @@ public class DefaultCartService implements CartService {
     @Transactional
     @Override
     public void addCartItem(String id, CartItem newItem) {
-        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(this.setCartItem(newItem));
+        var item = InternalCartItem.of(newItem);
+        item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
+        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(item);
     }
 
     @Transactional
