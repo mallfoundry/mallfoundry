@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,7 +38,7 @@ public class InternalCollectionService implements CollectionService {
 
     @Override
     public CustomCollection createCollection(String id) {
-        return null;
+        return new InternalCustomCollection(id);
     }
 
     public CustomCollection createCollection(String storeId, String name) {
@@ -52,7 +53,11 @@ public class InternalCollectionService implements CollectionService {
 
     @Override
     public CustomCollection updateCollection(CustomCollection collection) {
-        return null;
+        var storedCollection = this.customCollectionRepository.findById(collection.getId()).orElseThrow();
+        if (Objects.nonNull(collection.getName())) {
+            storedCollection.setName(collection.getName());
+        }
+        return this.customCollectionRepository.save(storedCollection);
     }
 
     @Transactional
