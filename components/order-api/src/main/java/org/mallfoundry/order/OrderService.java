@@ -9,7 +9,7 @@ public interface OrderService {
 
     OrderQuery createOrderQuery();
 
-    Order createOrder();
+    Order createOrder(String id);
 
     List<Order> placeOrder(Order order);
 

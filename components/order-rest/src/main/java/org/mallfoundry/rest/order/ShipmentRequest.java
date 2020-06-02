@@ -19,6 +19,7 @@ package org.mallfoundry.rest.order;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.order.Shipment;
 
 @Getter
 @Setter
@@ -32,4 +33,11 @@ public class ShipmentRequest {
 
     @JsonProperty("tracking_number")
     private String trackingNumber;
+
+    public Shipment assignToShipment(Shipment shipment) {
+        return shipment.toBuilder()
+                .shippingProvider(this.shippingProvider)
+                .shippingMethod(this.shippingMethod)
+                .trackingNumber(this.trackingNumber).build();
+    }
 }

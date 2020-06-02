@@ -44,33 +44,34 @@ public class InternalCheckoutService implements CheckoutService {
         return orders.stream().filter(order -> Objects.equals(order.getStoreId(), storeId)).findFirst();
     }
 
-    private Checkout checkout(InternalCheckout checkout) {
-        var items = ofCheckoutItems(checkout.getItems());
+    private void adjustInventories(List<InternalCheckoutItem> items) {
+        var adjustments = items.stream()
+                .peek(item -> {
+                    if (item.getQuantity() <= 0) {
+                        throw new CheckoutException("The checkout item must be greater than zero");
+                    }
+                })
+                .map(item -> this.inventoryService.createInventoryAdjustment().toBuilder()
+                        .productId(item.getProductId()).variantId(item.getVariantId())
+                        .quantityDelta(-item.getQuantity()).build())
+                .collect(Collectors.toUnmodifiableList());
+        this.inventoryService.adjustInventories(adjustments);
+    }
 
+    private List<Order> createOrders(InternalCheckout checkout) {
+        var items = checkout.getItems();
         var orders = new ArrayList<Order>();
-
         for (var item : items) {
-            if (item.getQuantity() <= 0) {
-                throw new CheckoutException("The checkout item must be greater than zero");
-            }
-
-            this.inventoryService.adjustInventory(
-                    this.inventoryService.createInventoryAdjustment()
-                            .toBuilder()
-                            .productId(item.getProductId())
-                            .variantId(item.getVariantId())
-                            .quantityDelta(-item.getQuantity())
-                            .build());
 
             var product = this.productService.getProduct(item.getProductId()).orElseThrow();
             var variant = product.getVariant(item.getVariantId()).orElseThrow();
             var order = this.findOrderByStoreId(orders, product.getStoreId())
-                    .orElseGet(() -> this.orderService.createOrder().toBuilder()
+                    .orElseGet(() -> this.orderService.createOrder(null).toBuilder()
                             .shippingAddress(checkout.getShippingAddress()).build());
 
             order.addItem(order.createItem(null)
                     .toBuilder()
-                    .storeId(product.getStoreId())
+                    .storeId(variant.getStoreId())
                     .productId(product.getId())
                     .variantId(variant.getId())
                     .name(product.getName())
@@ -85,8 +86,14 @@ public class InternalCheckoutService implements CheckoutService {
                 orders.add(order);
             }
         }
+        return orders;
+    }
 
-        checkout.setOrders(this.orderService.placeOrders(orders));
+    private Checkout checkout(InternalCheckout checkout) {
+        var items = ofCheckoutItems(checkout.getItems());
+        this.adjustInventories(items);
+        var orders = this.orderService.placeOrders(this.createOrders(checkout));
+        checkout.setOrders(orders);
         return checkout;
     }
 

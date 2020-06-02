@@ -115,7 +115,7 @@ public class OrderResourceV1 {
         return this.orderService.getShipment(orderId, shipmentId);
     }
 
-    public void requestToShipment(ShipmentRequest request, Shipment shipment) {
+    public Shipment requestToShipment(ShipmentRequest request, Shipment shipment) {
         if (StringUtils.isNotEmpty(request.getShippingMethod())) {
             shipment.setShippingMethod(request.getShippingMethod());
         }
@@ -127,27 +127,26 @@ public class OrderResourceV1 {
         if (StringUtils.isNotEmpty(request.getTrackingNumber())) {
             shipment.setTrackingNumber(request.getTrackingNumber());
         }
+        return shipment;
     }
 
     @PatchMapping("/orders/{order_id}/shipments/{shipment_id}")
     public void setShipment(@PathVariable("order_id") String orderId,
                             @PathVariable("shipment_id") String shipmentId,
                             @RequestBody ShipmentRequest request) {
-        var order = this.orderService.getOrder(orderId).orElseThrow();
-        var shipment = order.createShipment(shipmentId);
-        this.requestToShipment(request, shipment);
-        this.orderService.setShipment(orderId, shipment);
+        this.orderService.setShipment(orderId,
+                request.assignToShipment(
+                        this.orderService.getOrder(orderId).orElseThrow().createShipment(shipmentId)));
     }
 
     @PatchMapping("/orders/{order_id}/shipments/batch")
     public void setShipments(@PathVariable("order_id") String orderId,
                              @RequestBody List<BatchShipmentRequest> requests) {
         var order = this.orderService.getOrder(orderId).orElseThrow();
-        var shipments = requests.stream().map(request -> {
-            var shipment = order.createShipment(request.getId());
-            this.requestToShipment(request, shipment);
-            return shipment;
-        }).collect(Collectors.toList());
+        var shipments = requests.stream()
+                .map(request ->
+                        request.assignToShipment(order.createShipment(request.getId())))
+                .collect(Collectors.toList());
         this.orderService.setShipments(orderId, shipments);
     }
 

@@ -3,6 +3,7 @@ package org.mallfoundry.checkout;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.shipping.Address;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface Checkout {
@@ -23,4 +24,5 @@ public interface Checkout {
 
     List<Order> getOrders();
 
+    BigDecimal getSubtotalAmount();
 }

@@ -26,6 +26,7 @@ import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -89,6 +90,12 @@ public class InternalProductService implements ProductService {
     public void adjustInventory(InventoryAdjustment adjustment) {
         var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
         product.adjustVariantInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
+    }
+
+    @Transactional
+    @Override
+    public void adjustInventories(List<InventoryAdjustment> adjustments) {
+        adjustments.forEach(this::adjustInventory);
     }
 
     @Transactional

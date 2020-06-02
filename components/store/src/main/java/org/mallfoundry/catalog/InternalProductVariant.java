@@ -16,6 +16,7 @@
 
 package org.mallfoundry.catalog;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
@@ -74,6 +75,7 @@ public class InternalProductVariant implements ProductVariant {
 
     @Column(name = "option_selections_")
     @Convert(converter = OptionSelectionListConverter.class)
+    @JsonDeserialize(contentAs = DefaultOptionSelection.class)
     private List<OptionSelection> optionSelections = new ArrayList<>();
 
     @Convert(converter = StringListConverter.class)

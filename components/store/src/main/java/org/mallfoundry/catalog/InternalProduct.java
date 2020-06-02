@@ -144,11 +144,10 @@ public class InternalProduct implements Product {
     public BigDecimal getPrice() {
         return CollectionUtils.isEmpty(this.getVariants())
                 ? this.price
-                :
-                        this.getVariants().stream()
-                                .map(ProductVariant::getPrice)
-                                .max(BigDecimal::compareTo)
-                                .orElse(BigDecimal.ZERO);
+                : this.getVariants().stream()
+                        .map(ProductVariant::getPrice)
+                        .max(BigDecimal::compareTo)
+                        .orElse(BigDecimal.ZERO);
     }
 
     @Override

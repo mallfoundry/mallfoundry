@@ -4,6 +4,8 @@ import org.mallfoundry.catalog.ProductService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DefaultInventoryService implements InventoryService {
 
@@ -26,6 +28,11 @@ public class DefaultInventoryService implements InventoryService {
     public void adjustInventory(InventoryAdjustment adjustment) {
         this.productService.adjustInventory(adjustment);
         this.eventPublisher.publishEvent(new InternalInventoryAdjustedEvent(adjustment));
+    }
+
+    @Override
+    public void adjustInventories(List<InventoryAdjustment> adjustments) {
+
     }
 
 }

@@ -52,8 +52,8 @@ public class InternalOrderService implements OrderService {
     }
 
     @Override
-    public Order createOrder() {
-        return new InternalOrder().toBuilder().customerId(SecurityUserHolder.getUserId()).build();
+    public Order createOrder(String id) {
+        return new InternalOrder(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
     }
 
     @Transactional
@@ -106,15 +106,12 @@ public class InternalOrderService implements OrderService {
     @Override
     public Shipment addShipment(String orderId, Shipment shipment) {
         var order = this.getOrder(orderId).orElseThrow();
-
         if (StringUtils.isBlank(shipment.getId())) {
             shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
         }
-
         shipment.toBuilder()
                 .consignorId(SecurityUserHolder.getUserId())
                 .consignor(SecurityUserHolder.getNickname());
-
         order.addShipment(shipment);
         return shipment;
     }
@@ -127,7 +124,9 @@ public class InternalOrderService implements OrderService {
     @Transactional
     @Override
     public void setShipment(String orderId, Shipment shipment) {
-        this.orderRepository.findById(orderId).orElseThrow().setShipment(shipment);
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.setShipment(shipment);
+        this.orderRepository.save(order);
     }
 
     @Override
