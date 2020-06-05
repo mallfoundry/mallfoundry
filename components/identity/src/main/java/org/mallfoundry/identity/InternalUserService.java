@@ -42,6 +42,7 @@ public class InternalUserService implements UserService {
 
     private final UserRepository userRepository;
 
+
     public InternalUserService(List<UserValidator> userValidators,
                                ApplicationEventPublisher eventPublisher,
                                UserRepository userRepository) {
@@ -83,7 +84,7 @@ public class InternalUserService implements UserService {
             savedUser.setNickname(savedUser.getNickname());
         }
         this.eventPublisher.publishEvent(new InternalUserChangedEvent(savedUser));
-        return this.userRepository.save(InternalUser.of(user));
+        return this.userRepository.save(savedUser);
     }
 
     private String encodePassword(String password) {

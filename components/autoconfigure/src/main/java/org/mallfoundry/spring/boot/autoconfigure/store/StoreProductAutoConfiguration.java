@@ -16,9 +16,9 @@
 
 package org.mallfoundry.spring.boot.autoconfigure.store;
 
-import org.mallfoundry.catalog.search.ProductSearchProvider;
-import org.mallfoundry.catalog.search.ProductSearcher;
-import org.mallfoundry.catalog.search.LuceneProductSearchProvider;
+import org.mallfoundry.catalog.product.search.ProductSearchProvider;
+import org.mallfoundry.catalog.product.search.ProductSearcher;
+import org.mallfoundry.catalog.product.search.LuceneProductSearchProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

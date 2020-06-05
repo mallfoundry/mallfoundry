@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product.search;
 
-public class StaticServer {
+import org.mallfoundry.catalog.product.Product;
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+public interface ProductSearchProvider extends ProductSearcher {
+
+    void add(Product product);
+
+    void delete(Product product);
+
 }

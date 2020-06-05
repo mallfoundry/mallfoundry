@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product;
 
-public class StaticServer {
+import java.util.Optional;
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+public interface ProductRepository {
+
+    InternalProduct save(InternalProduct product);
+
+    Optional<InternalProduct> findById(String id);
 }

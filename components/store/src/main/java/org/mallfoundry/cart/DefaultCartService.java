@@ -1,7 +1,7 @@
 package org.mallfoundry.cart;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.catalog.ProductService;
+import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.data.util.CastUtils;

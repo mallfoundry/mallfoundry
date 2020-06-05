@@ -23,6 +23,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-security-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product;
 
-public class StaticServer {
-
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+public class InternalProductDeletedEvent extends ProductEventSupport implements ProductDeletedEvent {
+    public InternalProductDeletedEvent(Product product) {
+        super(product);
+    }
 }

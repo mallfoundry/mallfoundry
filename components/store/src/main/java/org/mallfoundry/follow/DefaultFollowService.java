@@ -17,9 +17,11 @@
 package org.mallfoundry.follow;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.security.SecurityUserHolder;
 import org.mallfoundry.store.StoreService;
-import org.mallfoundry.catalog.ProductService;
+import org.mallfoundry.catalog.product.ProductService;
 import org.springframework.data.util.CastUtils;
+import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

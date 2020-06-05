@@ -1,6 +1,6 @@
 package org.mallfoundry.inventory;
 
-import org.mallfoundry.catalog.ProductService;
+import org.mallfoundry.catalog.product.ProductService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 

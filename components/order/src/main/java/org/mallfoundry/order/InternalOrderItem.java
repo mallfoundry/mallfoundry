@@ -21,9 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
+import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

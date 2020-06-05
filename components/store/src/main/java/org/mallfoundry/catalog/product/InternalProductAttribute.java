@@ -14,9 +14,32 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product;
 
-public class StaticServer {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+@Getter
+@Setter
+@NoArgsConstructor
+public class InternalProductAttribute implements ProductAttribute {
+
+    private String namespace;
+
+    private String name;
+
+    private String value;
+
+    private int position;
+
+    public InternalProductAttribute(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public InternalProductAttribute(String namespace, String name, String value) {
+        this(name, value);
+        this.namespace = namespace;
+    }
 }

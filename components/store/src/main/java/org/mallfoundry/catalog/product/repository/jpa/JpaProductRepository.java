@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product.repository.jpa;
 
-public class StaticServer {
+import org.mallfoundry.catalog.product.InternalProduct;
+import org.mallfoundry.catalog.product.ProductRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+@Repository
+public interface JpaProductRepository
+        extends ProductRepository, JpaRepository<InternalProduct, String> {
 }

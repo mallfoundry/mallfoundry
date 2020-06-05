@@ -19,7 +19,9 @@ package org.mallfoundry.rest.identity;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +37,13 @@ public class UserResourceV1 {
         this.userService = userService;
     }
 
-    @GetMapping("/users/{username}")
-    public Optional<User> getUser(@PathVariable("username") String username) {
-        return this.userService.getUser(username);
+    @GetMapping("/users/{id}")
+    public Optional<User> getUser(@PathVariable("id") String id) {
+        return this.userService.getUser(id);
+    }
+
+    @PatchMapping("/users/{id}")
+    public void updateUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
+        this.userService.updateUser(request.assignToUser(this.userService.createUser(id)));
     }
 }

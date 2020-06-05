@@ -1,6 +1,6 @@
 package org.mallfoundry.checkout;
 
-import org.mallfoundry.catalog.ProductService;
+import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;

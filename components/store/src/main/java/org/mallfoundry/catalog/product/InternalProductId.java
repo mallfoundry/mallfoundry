@@ -14,9 +14,26 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.catalog.product;
 
-public class StaticServer {
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
+public class InternalProductId implements ProductId {
+    @JsonValue
+    @Column(name = "product_id_")
+    private String identifier;
 }
