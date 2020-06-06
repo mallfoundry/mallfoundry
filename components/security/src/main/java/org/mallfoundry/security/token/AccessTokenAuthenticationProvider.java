@@ -49,7 +49,7 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
                         .readAccessToken(tokenAuthentication.getName())
                         .orElseThrow(() -> new BadCredentialsException("Bad credentials"))
                         .getUsername();
-        var user = this.userService.getUser(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
+        var user = this.userService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
         var securityUser = new DefaultSecurityUser(user);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }

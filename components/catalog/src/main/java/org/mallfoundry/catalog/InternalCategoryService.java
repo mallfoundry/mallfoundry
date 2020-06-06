@@ -35,18 +35,18 @@ public class InternalCategoryService implements CategoryService {
     }
 
     @Override
+    public CategoryQuery createCategoryQuery() {
+        return new InternalCategoryQuery();
+    }
+
+    @Override
     public Optional<Category> getCategory(String id) {
         return CastUtils.cast(categoryRepository.findById(id));
     }
 
     @Override
-    public List<Category> getCategories() {
-        return null;
-    }
-
-    @Override
-    public List<Category> getCategories(String parentId) {
-        return null;
+    public List<Category> getCategories(CategoryQuery query) {
+        return CastUtils.cast(this.categoryRepository.findAll(query));
     }
 
     @Override

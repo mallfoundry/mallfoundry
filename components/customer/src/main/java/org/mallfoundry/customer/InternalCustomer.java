@@ -46,8 +46,8 @@ public class InternalCustomer implements Customer {
     @Column(name = "id_")
     private String id;
 
-    @Column(name = "user_id_")
-    private String userId;
+    @Column(name = "username_")
+    private String username;
 
     @Column(name = "avatar_")
     private String avatar;
@@ -61,14 +61,13 @@ public class InternalCustomer implements Customer {
     @Column(name = "birthday_")
     private Date birthday;
 
-    @OneToMany(targetEntity = InternalShippingAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = InternalCustomerAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
     @OrderBy("createdTime ASC")
-    private List<ShippingAddress> addresses = new ArrayList<>();
+    private List<CustomerAddress> addresses = new ArrayList<>();
 
     public InternalCustomer(String userId) {
         this.id = userId;
-        this.userId = userId;
         this.gender = Gender.UNKNOWN;
         this.birthday = new Date();
     }
@@ -83,22 +82,22 @@ public class InternalCustomer implements Customer {
     }
 
     @Override
-    public Optional<ShippingAddress> getDefaultAddress() {
-        return this.addresses.stream().filter(ShippingAddress::isDefaulted).findFirst();
+    public Optional<CustomerAddress> getDefaultAddress() {
+        return this.addresses.stream().filter(CustomerAddress::isDefaulted).findFirst();
     }
 
     @Override
-    public Optional<ShippingAddress> getAddress(String addressId) {
+    public Optional<CustomerAddress> getAddress(String addressId) {
         return this.addresses.stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
     }
 
     @Override
-    public ShippingAddress createAddress(String id) {
-        return new InternalShippingAddress(id);
+    public CustomerAddress createAddress(String id) {
+        return new InternalCustomerAddress(id);
     }
 
     @Override
-    public void addAddress(final ShippingAddress address) {
+    public void addAddress(final CustomerAddress address) {
         this.addresses.remove(address);
         this.addresses.add(address);
         // defaulted
@@ -113,12 +112,12 @@ public class InternalCustomer implements Customer {
     }
 
     @Override
-    public void setAddress(ShippingAddress shippingAddress) {
+    public void setAddress(CustomerAddress shippingAddress) {
 
     }
 
     @Override
-    public void removeAddress(ShippingAddress address) {
+    public void removeAddress(CustomerAddress address) {
         this.addresses.remove(address);
     }
 

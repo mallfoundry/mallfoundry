@@ -34,7 +34,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_customer_address")
-public class InternalShippingAddress implements ShippingAddress {
+public class InternalCustomerAddress implements CustomerAddress {
 
     @Id
     @Column(name = "id_")
@@ -68,7 +68,7 @@ public class InternalShippingAddress implements ShippingAddress {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalShippingAddress(String id) {
+    public InternalCustomerAddress(String id) {
         this.id = id;
         this.createdTime = new Date();
     }
@@ -81,7 +81,7 @@ public class InternalShippingAddress implements ShippingAddress {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalShippingAddress that = (InternalShippingAddress) o;
+        InternalCustomerAddress that = (InternalCustomerAddress) o;
         return Objects.equals(id, that.id);
     }
 

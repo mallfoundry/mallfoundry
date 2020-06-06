@@ -47,16 +47,11 @@ public class CategoryResourceV1 {
 
     @Operation(summary = "获得商品类目集合")
     @GetMapping("/categories")
-    public List<CategoryResponse> getTopCategories(@Parameter(description = "类目层级")
-                                                   @RequestParam(defaultValue = "0", required = false) byte level) {
-        return this.categoryRestFactory.getCategories(level);
-    }
-
-    @Operation(summary = "根据商品类目标识获得子类目集合")
-    @GetMapping("/categories/{category_id}/children")
-    public List<CategoryResponse> getCategories(@PathVariable("category_id") String categoryId,
-                                                @RequestParam(defaultValue = "0", required = false) byte level) {
-        return this.categoryRestFactory.getCategories(categoryId, level);
+    public List<CategoryResponse> getCategories(@Parameter(description = "类目层级")
+                                                @RequestParam(defaultValue = "0", required = false) byte level,
+                                                @RequestParam(name = "parent_id", required = false) String parentId) {
+        return this.categoryRestFactory.getCategories(
+                this.categoryService.createCategoryQuery().toBuilder().level(level).parentId(parentId).build());
     }
 
     @Operation(summary = "根据商品类目标识更新商品类目对象")

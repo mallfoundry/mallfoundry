@@ -4,7 +4,7 @@ import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 
-public interface ShippingAddress {
+public interface CustomerAddress {
 
     String getId();
 
@@ -47,7 +47,7 @@ public interface ShippingAddress {
         };
     }
 
-    interface Builder extends ObjectBuilder<ShippingAddress> {
+    interface Builder extends ObjectBuilder<CustomerAddress> {
 
         Builder firstName(String firstName);
 
@@ -72,9 +72,9 @@ public interface ShippingAddress {
 
     abstract class BuilderSupport implements Builder {
 
-        private final ShippingAddress address;
+        private final CustomerAddress address;
 
-        public BuilderSupport(ShippingAddress address) {
+        public BuilderSupport(CustomerAddress address) {
             this.address = address;
         }
 
@@ -118,7 +118,7 @@ public interface ShippingAddress {
             return this;
         }
 
-        public ShippingAddress build() {
+        public CustomerAddress build() {
             return this.address;
         }
     }

@@ -1,5 +1,6 @@
 package org.mallfoundry.rest.catalog;
 
+import org.mallfoundry.catalog.CategoryQuery;
 import org.mallfoundry.catalog.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +18,10 @@ public class CategoryRestFactory {
     }
 
     @Transactional
-    List<CategoryResponse> getCategories(byte level) {
-        return this.categoryService.getCategories()
+    List<CategoryResponse> getCategories(CategoryQuery query) {
+        return this.categoryService.getCategories(query)
                 .stream()
-                .map(category -> new CategoryResponse(category, level))
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    @Transactional
-    List<CategoryResponse> getCategories(String parentId, byte level) {
-        return this.categoryService.getCategories(parentId)
-                .stream()
-                .map(category -> new CategoryResponse(category, level))
+                .map(category -> new CategoryResponse(category, query.getLevel()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }

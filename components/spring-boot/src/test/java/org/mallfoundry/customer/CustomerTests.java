@@ -40,7 +40,7 @@ public class CustomerTests {
         customer.setGender(Gender.MALE);
         customer.setNickname("tang zhi");
         customer.setBirthday(new Date());
-        customer.setUserId("user 1");
+        customer.setUsername("tangzhi");
         customer.addAddress(
                 customer.createAddress("").toBuilder()
                         .firstName("治").lastName("唐")

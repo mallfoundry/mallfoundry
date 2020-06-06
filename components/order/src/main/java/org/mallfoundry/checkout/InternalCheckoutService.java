@@ -4,6 +4,7 @@ import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
+import org.mallfoundry.store.StoreService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -17,15 +18,19 @@ import java.util.stream.Collectors;
 @Service
 public class InternalCheckoutService implements CheckoutService {
 
+    private final StoreService storeService;
+
     private final ProductService productService;
 
     private final InventoryService inventoryService;
 
     private final OrderService orderService;
 
-    public InternalCheckoutService(ProductService productService,
+    public InternalCheckoutService(StoreService storeService,
+                                   ProductService productService,
                                    InventoryService inventoryService,
                                    OrderService orderService) {
+        this.storeService = storeService;
         this.productService = productService;
         this.inventoryService = inventoryService;
         this.orderService = orderService;
@@ -68,6 +73,7 @@ public class InternalCheckoutService implements CheckoutService {
             var order = this.findOrderByStoreId(orders, product.getStoreId())
                     .orElseGet(() -> this.orderService.createOrder(null).toBuilder()
                             .shippingAddress(checkout.getShippingAddress()).build());
+            /*  var storeName = storeService.getStore(variant.getStoreId()).orElseThrow().getName();*/
 
             order.addItem(order.createItem(null)
                     .toBuilder()

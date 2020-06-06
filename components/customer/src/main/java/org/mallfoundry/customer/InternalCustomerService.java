@@ -49,7 +49,8 @@ public class InternalCustomerService implements CustomerService {
 
     @Override
     public Customer addCustomer(Customer customer) {
-        var user = this.userService.getUser(customer.getUserId()).orElseThrow();
+        var user = this.userService.getUser(customer.getId()).orElseThrow();
+        customer.setUsername(user.getUsername());
         customer.setNickname(user.getNickname());
         return this.customerRepository.save(InternalCustomer.of(customer));
     }
@@ -75,30 +76,30 @@ public class InternalCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public ShippingAddress addAddress(String customerId, ShippingAddress address) {
+    public CustomerAddress addAddress(String customerId, CustomerAddress address) {
         this.getCustomer(customerId).orElseThrow().addAddress(address);
         return address;
     }
 
     @Transactional
     @Override
-    public List<ShippingAddress> getAddresses(String customerId) {
+    public List<CustomerAddress> getAddresses(String customerId) {
         return this.getCustomer(customerId).orElseThrow().getAddresses();
     }
 
     @Override
-    public Optional<ShippingAddress> getAddress(String customerId, String addressId) {
+    public Optional<CustomerAddress> getAddress(String customerId, String addressId) {
         return this.getCustomer(customerId).orElseThrow().getAddress(addressId);
     }
 
     @Override
-    public Optional<ShippingAddress> getDefaultAddress(String customerId) {
+    public Optional<CustomerAddress> getDefaultAddress(String customerId) {
         return this.getCustomer(customerId).orElseThrow().getDefaultAddress();
     }
 
     @Transactional
     @Override
-    public void setAddress(String customerId, ShippingAddress newAddress) {
+    public void setAddress(String customerId, CustomerAddress newAddress) {
         this.getCustomer(customerId).orElseThrow().setAddress(newAddress);
     }
 

@@ -13,11 +13,11 @@ public interface CategoryService {
 
     Category createCategory(String id);
 
+    CategoryQuery createCategoryQuery();
+
     Optional<Category> getCategory(String id);
 
-    List<Category> getCategories();
-
-    List<Category> getCategories(String parentId);
+    List<Category> getCategories(CategoryQuery query);
 
     Category addCategory(Category category);
 

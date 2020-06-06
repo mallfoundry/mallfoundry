@@ -74,9 +74,11 @@ public class InternalOrder implements Order {
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
-    @JsonProperty(value = "store_id", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "store_id_")
     private String storeId;
+
+    @Column(name = "store_name_")
+    private String storeName;
 
     @JsonProperty("customer_id")
     @Column(name = "customer_id_")

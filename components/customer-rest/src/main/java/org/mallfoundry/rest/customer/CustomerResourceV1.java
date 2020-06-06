@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.customer.Customer;
 import org.mallfoundry.customer.CustomerService;
-import org.mallfoundry.customer.ShippingAddress;
+import org.mallfoundry.customer.CustomerAddress;
 import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +68,7 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "添加一个顾客的收货地址对象")
     @PostMapping("/customers/{customer_id}/addresses")
-    public ShippingAddress addAddress(@PathVariable("customer_id") String customerId,
+    public CustomerAddress addAddress(@PathVariable("customer_id") String customerId,
                                       @RequestBody ShippingAddressRequest request) {
         return this.customerService.addAddress(customerId,
                 request.assignToAddress(
@@ -94,20 +94,20 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "获得顾客的收货地址对象集合")
     @GetMapping("/customers/{customer_id}/addresses")
-    public List<ShippingAddress> getAddresses(@PathVariable("customer_id") String id) {
+    public List<CustomerAddress> getAddresses(@PathVariable("customer_id") String id) {
         return this.customerService.getAddresses(id);
     }
 
     @Operation(summary = "根据标识获得顾客的收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/{address_id}")
-    public Optional<ShippingAddress> getAddress(@PathVariable("customer_id") String customerId,
+    public Optional<CustomerAddress> getAddress(@PathVariable("customer_id") String customerId,
                                                 @PathVariable("address_id") String addressId) {
         return this.customerService.getAddress(customerId, addressId);
     }
 
     @Operation(summary = "根据标识获得顾客的默认收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/default")
-    public Optional<ShippingAddress> getDefaultAddress(@PathVariable("customer_id") String id) {
+    public Optional<CustomerAddress> getDefaultAddress(@PathVariable("customer_id") String id) {
         return this.customerService.getDefaultAddress(id);
     }
 }

@@ -15,15 +15,15 @@ public interface CustomerService {
 
     void deleteCustomer(String customerId);
 
-    ShippingAddress addAddress(String customerId, ShippingAddress address);
+    CustomerAddress addAddress(String customerId, CustomerAddress address);
 
-    List<ShippingAddress> getAddresses(String customerId);
+    List<CustomerAddress> getAddresses(String customerId);
 
-    Optional<ShippingAddress> getAddress(String customerId, String addressId);
+    Optional<CustomerAddress> getAddress(String customerId, String addressId);
 
-    Optional<ShippingAddress> getDefaultAddress(String customerId);
+    Optional<CustomerAddress> getDefaultAddress(String customerId);
 
-    void setAddress(String customerId, ShippingAddress address);
+    void setAddress(String customerId, CustomerAddress address);
 
     void removeAddress(String customerId, String addressId);
 

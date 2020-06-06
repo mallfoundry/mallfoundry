@@ -10,9 +10,9 @@ public interface Customer {
 
     String getId();
 
-    String getUserId();
+    String getUsername();
 
-    void setUserId(String userId);
+    void setUsername(String username);
 
     String getAvatar();
 
@@ -30,19 +30,19 @@ public interface Customer {
 
     void setBirthday(Date birthday);
 
-    ShippingAddress createAddress(String id);
+    CustomerAddress createAddress(String id);
 
-    List<ShippingAddress> getAddresses();
+    List<CustomerAddress> getAddresses();
 
-    Optional<ShippingAddress> getDefaultAddress();
+    Optional<CustomerAddress> getDefaultAddress();
 
-    Optional<ShippingAddress> getAddress(String id);
+    Optional<CustomerAddress> getAddress(String id);
 
-    void addAddress(ShippingAddress shippingAddress);
+    void addAddress(CustomerAddress address);
 
-    void setAddress(ShippingAddress shippingAddress);
+    void setAddress(CustomerAddress address);
 
-    void removeAddress(ShippingAddress shippingAddress);
+    void removeAddress(CustomerAddress address);
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {
@@ -51,7 +51,7 @@ public interface Customer {
 
     interface Builder extends ObjectBuilder<Customer> {
 
-        Builder userId(String userId);
+        Builder username(String username);
 
         Builder avatar(String avatar);
 
@@ -70,8 +70,8 @@ public interface Customer {
         }
 
         @Override
-        public Builder userId(String userId) {
-            this.customer.setUserId(userId);
+        public Builder username(String username) {
+            this.customer.setUsername(username);
             return this;
         }
 

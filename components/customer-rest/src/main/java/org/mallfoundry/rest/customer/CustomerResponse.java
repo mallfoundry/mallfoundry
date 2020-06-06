@@ -11,7 +11,7 @@ public class CustomerResponse {
 
     private final String id;
 
-    private final String userId;
+    private final String username;
 
     private final String avatar;
 
@@ -23,7 +23,7 @@ public class CustomerResponse {
 
     public CustomerResponse(Customer customer) {
         this.id = customer.getId();
-        this.userId = customer.getUserId();
+        this.username = customer.getUsername();
         this.avatar = customer.getAvatar();
         this.gender = customer.getGender();
         this.nickname = customer.getNickname();

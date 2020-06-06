@@ -26,6 +26,10 @@ public interface Order {
 
     void setStoreId(String storeId);
 
+    String getStoreName();
+
+    void setStoreName(String name);
+
     String getStaffNotes();
 
     void setStaffNotes(String staffNotes);

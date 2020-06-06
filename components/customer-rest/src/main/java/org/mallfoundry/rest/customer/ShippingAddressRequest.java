@@ -2,7 +2,7 @@ package org.mallfoundry.rest.customer;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.customer.ShippingAddress;
+import org.mallfoundry.customer.CustomerAddress;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class ShippingAddressRequest {
 
     private boolean defaulted;
 
-    ShippingAddress assignToAddress(ShippingAddress address) {
+    CustomerAddress assignToAddress(CustomerAddress address) {
         return address.toBuilder().firstName(this.firstName)
                 .lastName(this.lastName)
                 .countryCode(this.countryCode)
