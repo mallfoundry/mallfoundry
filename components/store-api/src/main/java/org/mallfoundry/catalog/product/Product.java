@@ -56,6 +56,10 @@ public interface Product extends Serializable {
 
     List<String> getVideoUrls();
 
+    String getShippingOrigin();
+
+    void setShippingOrigin(String shippingOrigin);
+
     boolean isFreeShipping();
 
     void setFreeShipping(boolean freeShipping);

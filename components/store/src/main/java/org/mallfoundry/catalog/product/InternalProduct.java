@@ -117,6 +117,9 @@ public class InternalProduct implements Product {
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
+    @Column(name = "shipping_origin_")
+    private String shippingOrigin;
+
     @Column(name = "free_shipping_")
     private boolean freeShipping;
 
