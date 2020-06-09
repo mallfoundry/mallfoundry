@@ -64,9 +64,21 @@ public class InternalCart implements Cart {
         return new InternalCartItem(id);
     }
 
+    private void addSetItem(CartItem newItem, CartItem targetItem) {
+        targetItem.addQuantity(newItem.getQuantity());
+        targetItem.setName(newItem.getName());
+        targetItem.setImageUrl(newItem.getImageUrl());
+        targetItem.setOptionSelections(newItem.getOptionSelections());
+        targetItem.setPrice(newItem.getPrice());
+    }
+
     @Override
     public void addItem(CartItem newItem) {
-        this.items.add(newItem);
+        this.items.stream().filter(eItem ->
+                Objects.equals(eItem.getProductId(), newItem.getProductId())
+                        && Objects.equals(eItem.getVariantId(), newItem.getVariantId()))
+                .findFirst()
+                .ifPresentOrElse(eItem -> this.addSetItem(newItem, eItem), () -> this.items.add(newItem));
     }
 
     @Override

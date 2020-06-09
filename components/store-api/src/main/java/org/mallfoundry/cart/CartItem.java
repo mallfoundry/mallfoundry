@@ -3,6 +3,7 @@ package org.mallfoundry.cart;
 import org.mallfoundry.catalog.OptionSelection;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,9 +33,15 @@ public interface CartItem extends Serializable {
 
     void setOptionSelections(List<OptionSelection> optionSelections);
 
+    BigDecimal getPrice();
+
+    void setPrice(BigDecimal price);
+
     int getQuantity();
 
     void setQuantity(int quantity);
+
+    void addQuantity(int quantity);
 
     Date getAddedTime();
 

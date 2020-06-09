@@ -7,7 +7,7 @@ public interface CartService {
 
     Cart createCart(String id);
 
-    Cart saveCart(Cart cart);
+    Cart createCart(Cart cart);
 
     void deleteCart(String id);
 

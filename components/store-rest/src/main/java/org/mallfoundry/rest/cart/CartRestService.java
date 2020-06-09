@@ -36,7 +36,7 @@ public class CartRestService {
         request.getItems().stream()
                 .map(itemRequest -> itemRequest.assignCartItem(cart.createItem(null)))
                 .forEach(cart::addItem);
-        return new CartResponse(this.cartService.saveCart(cart));
+        return new CartResponse(this.cartService.createCart(cart));
     }
 
     public void deleteCart(String id) {

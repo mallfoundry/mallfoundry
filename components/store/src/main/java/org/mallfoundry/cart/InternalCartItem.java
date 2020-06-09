@@ -12,6 +12,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +47,9 @@ public class InternalCartItem implements CartItem {
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
 
+    @Column(name = "price_")
+    private BigDecimal price;
+
     @Column(name = "quantity_")
     private int quantity;
 
@@ -67,6 +71,11 @@ public class InternalCartItem implements CartItem {
     }
 
     @Override
+    public void addQuantity(int quantity) {
+        this.setQuantity(this.quantity + quantity);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -76,11 +85,12 @@ public class InternalCartItem implements CartItem {
         }
         InternalCartItem that = (InternalCartItem) o;
         return Objects.equals(productId, that.productId)
-                &&  Objects.equals(variantId, that.variantId);
+                && Objects.equals(variantId, that.variantId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(productId, variantId);
     }
+
 }

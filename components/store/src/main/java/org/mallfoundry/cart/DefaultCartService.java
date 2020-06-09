@@ -42,7 +42,7 @@ public class DefaultCartService implements CartService {
 //    }
 
     @Override
-    public Cart saveCart(Cart cart) {
+    public Cart createCart(Cart cart) {
         return this.cartRepository.save(InternalCart.of(cart));
     }
 
@@ -68,6 +68,8 @@ public class DefaultCartService implements CartService {
         var variant = product.getVariant(item.getVariantId()).orElseThrow();
         item.setOptionSelections(variant.getOptionSelections());
         item.setStoreId(product.getStoreId());
+        item.setPrice(variant.getPrice());
+
         if (StringUtils.isBlank(item.getName())) {
             item.setName(product.getName());
         }
@@ -75,7 +77,6 @@ public class DefaultCartService implements CartService {
         if (StringUtils.isBlank(item.getImageUrl())) {
             item.setImageUrl(CollectionUtils.firstElement(variant.getImageUrls()));
         }
-
         return item;
     }
 
@@ -84,14 +85,14 @@ public class DefaultCartService implements CartService {
     public void addCartItem(String id, CartItem newItem) {
         var item = InternalCartItem.of(newItem);
         item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
-        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(item);
+        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(setCartItem(item));
     }
 
     @Transactional
     @Override
     public void setCartItem(String id, CartItem newItem) {
         var cart = this.getInternalCart(id).orElseThrow();
-        cart.addItem(setCartItem(newItem));
+        cart.setItem(setCartItem(newItem));
     }
 
     @Transactional
