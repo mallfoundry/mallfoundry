@@ -1,10 +1,10 @@
 package org.mallfoundry.rest.checkout;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.mallfoundry.checkout.Checkout;
 import org.mallfoundry.rest.shipping.AddressRequest;
 import org.mallfoundry.shipping.DefaultAddress;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +19,13 @@ public class CheckoutRequest {
 
     private List<CheckoutItemRequest> items;
 
-    public void assignToCheckout(Checkout checkout) {
+    public Checkout assignToCheckout(Checkout checkout) {
         if (Objects.nonNull(this.shippingAddress)) {
             var address = new DefaultAddress();
             this.shippingAddress.assignToAddress(address);
             checkout.setShippingAddress(address);
         }
+        checkout.setCartId(this.cartId);
         this.getItems()
                 .stream()
                 .map(item ->
@@ -35,5 +36,6 @@ public class CheckoutRequest {
                                 .quantity(item.getQuantity())
                                 .build())
                 .forEach(checkout::addItem);
+        return checkout;
     }
 }

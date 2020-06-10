@@ -18,6 +18,8 @@ public class CartItemRequest {
 
     private String imageUrl;
 
+    private boolean checked;
+
     public CartItem assignCartItem(CartItem item) {
         return item.toBuilder()
                 .productId(this.productId)
@@ -25,6 +27,7 @@ public class CartItemRequest {
                 .quantity(this.quantity)
                 .name(this.name)
                 .imageUrl(this.imageUrl)
+                .checked(this.checked)
                 .build();
     }
 }

@@ -25,7 +25,7 @@ import java.util.Objects;
 
 public class AccessTokenAuthenticationConverter implements AuthenticationConverter {
 
-    private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
+    private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
 
     public AccessTokenAuthenticationConverter() {
         this(new WebAuthenticationDetailsSource());

@@ -1,6 +1,7 @@
 package org.mallfoundry.cart;
 
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -41,19 +42,47 @@ public interface CartItem extends Serializable {
 
     void setQuantity(int quantity);
 
-    void addQuantity(int quantity);
+    void incrementQuantity(int quantity);
+
+    boolean isChecked();
+
+    void check();
+
+    void uncheck();
 
     Date getAddedTime();
 
     default Builder toBuilder() {
-        return new Builder(this);
+        return new BuilderSupport(this) {
+        };
     }
 
-    class Builder {
+    interface Builder extends ObjectBuilder<CartItem> {
+
+        Builder productId(String productId);
+
+        Builder variantId(String variantId);
+
+        Builder quantity(int quantity);
+
+        Builder name(String name);
+
+        Builder imageUrl(String imageUrl);
+
+        Builder checked(boolean checked);
+
+        Builder check();
+
+        Builder uncheck();
+
+        Builder optionSelections(List<OptionSelection> optionSelections);
+    }
+
+    abstract class BuilderSupport implements Builder {
 
         private final CartItem item;
 
-        public Builder(CartItem item) {
+        public BuilderSupport(CartItem item) {
             this.item = item;
         }
 
@@ -80,6 +109,22 @@ public interface CartItem extends Serializable {
         public Builder imageUrl(String imageUrl) {
             this.item.setImageUrl(imageUrl);
             return this;
+        }
+
+        public Builder check() {
+            this.item.check();
+            return this;
+        }
+
+        public Builder uncheck() {
+            this.item.uncheck();
+            return this;
+        }
+
+        public Builder checked(boolean checked) {
+            return checked
+                    ? this.check()
+                    : this.uncheck();
         }
 
         public Builder optionSelections(List<OptionSelection> optionSelections) {

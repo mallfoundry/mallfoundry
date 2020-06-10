@@ -1,10 +1,16 @@
 package org.mallfoundry.checkout;
 
 import org.mallfoundry.catalog.product.ProductService;
+import org.mallfoundry.customer.CustomerService;
 import org.mallfoundry.inventory.InventoryService;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
+import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.shipping.Address;
+import org.mallfoundry.shipping.DefaultAddress;
 import org.mallfoundry.store.StoreService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +24,10 @@ import java.util.stream.Collectors;
 @Service
 public class InternalCheckoutService implements CheckoutService {
 
+    static final String CHECKOUT_ID_VALUE_NAME = "checkout.id";
+
+    private final CustomerService customerService;
+
     private final StoreService storeService;
 
     private final ProductService productService;
@@ -26,58 +36,50 @@ public class InternalCheckoutService implements CheckoutService {
 
     private final OrderService orderService;
 
-    public InternalCheckoutService(StoreService storeService,
+    private final CheckoutRepository checkoutRepository;
+
+    public InternalCheckoutService(CustomerService customerService,
+                                   StoreService storeService,
                                    ProductService productService,
                                    InventoryService inventoryService,
-                                   OrderService orderService) {
+                                   OrderService orderService,
+                                   CheckoutRepository checkoutRepository) {
+        this.customerService = customerService;
         this.storeService = storeService;
         this.productService = productService;
         this.inventoryService = inventoryService;
         this.orderService = orderService;
+        this.checkoutRepository = checkoutRepository;
     }
 
     @Override
-    public Checkout createCheckout() {
-        return new InternalCheckout();
+    public Checkout createCheckout(String id) {
+        return new InternalCheckout(id);
     }
 
-    private List<InternalCheckoutItem> ofCheckoutItems(List<CheckoutItem> items) {
-        return items.stream().map(InternalCheckoutItem::of).collect(Collectors.toList());
-    }
+//    private List<InternalCheckoutItem> ofCheckoutItems(List<CheckoutItem> items) {
+//        return items.stream().map(InternalCheckoutItem::of).collect(Collectors.toList());
+//    }
 
     private Optional<Order> findOrderByStoreId(List<Order> orders, String storeId) {
         return orders.stream().filter(order -> Objects.equals(order.getStoreId(), storeId)).findFirst();
-    }
-
-    private void adjustInventories(List<InternalCheckoutItem> items) {
-        var adjustments = items.stream()
-                .peek(item -> {
-                    if (item.getQuantity() <= 0) {
-                        throw new CheckoutException("The checkout item must be greater than zero");
-                    }
-                })
-                .map(item -> this.inventoryService.createInventoryAdjustment().toBuilder()
-                        .productId(item.getProductId()).variantId(item.getVariantId())
-                        .quantityDelta(-item.getQuantity()).build())
-                .collect(Collectors.toUnmodifiableList());
-        this.inventoryService.adjustInventories(adjustments);
     }
 
     private List<Order> createOrders(InternalCheckout checkout) {
         var items = checkout.getItems();
         var orders = new ArrayList<Order>();
         for (var item : items) {
-
             var product = this.productService.getProduct(item.getProductId()).orElseThrow();
             var variant = product.getVariant(item.getVariantId()).orElseThrow();
             var order = this.findOrderByStoreId(orders, product.getStoreId())
-                    .orElseGet(() -> this.orderService.createOrder(null).toBuilder()
+                    .orElseGet(() -> this.orderService.createOrder((String) null).toBuilder()
                             .shippingAddress(checkout.getShippingAddress()).build());
-            /*  var storeName = storeService.getStore(variant.getStoreId()).orElseThrow().getName();*/
-
+            var store = this.storeService.getStore(product.getStoreId()).orElseThrow();
+            order.setStoreId(store.getId());
+            order.setStoreName(store.getName());
             order.addItem(order.createItem(null)
                     .toBuilder()
-                    .storeId(variant.getStoreId())
+                    .storeId(product.getStoreId())
                     .productId(product.getId())
                     .variantId(variant.getId())
                     .name(product.getName())
@@ -95,17 +97,68 @@ public class InternalCheckoutService implements CheckoutService {
         return orders;
     }
 
-    private Checkout checkout(InternalCheckout checkout) {
-        var items = ofCheckoutItems(checkout.getItems());
-        this.adjustInventories(items);
-        var orders = this.orderService.placeOrders(this.createOrders(checkout));
-        checkout.setOrders(orders);
-        return checkout;
+    private Address getCustomerDefaultAddress() {
+        var customerAddress = this.customerService.getDefaultAddress(SecurityUserHolder.getUserId()).orElseThrow();
+        var address = new DefaultAddress();
+        BeanUtils.copyProperties(customerAddress, address);
+        return address;
+    }
+
+    private Checkout createCheckout(InternalCheckout checkout) {
+        if (Objects.isNull(checkout.getId())) {
+            checkout.setId(PrimaryKeyHolder.next(CHECKOUT_ID_VALUE_NAME));
+        }
+        checkout.setOrders(this.orderService.splitOrders(this.createOrders(checkout)));
+        if (Objects.isNull(checkout.getShippingAddress())) {
+            checkout.setShippingAddress(this.getCustomerDefaultAddress());
+        }
+        checkout.create();
+        return this.checkoutRepository.save(checkout);
     }
 
     @Transactional
     @Override
-    public Checkout checkout(Checkout checkout) {
-        return checkout(InternalCheckout.of(checkout));
+    public Checkout createCheckout(Checkout checkout) {
+        return createCheckout(InternalCheckout.of(checkout));
+    }
+
+    @Override
+    public Optional<Checkout> getCheckout(String id) {
+        var checkout = this.checkoutRepository.findById(id).orElseThrow();
+        checkout.setOrders(this.orderService.splitOrders(this.createOrders(checkout)));
+        return Optional.of(checkout);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCheckout(String id) {
+        var checkout = this.checkoutRepository.findById(id).orElseThrow();
+        this.checkoutRepository.delete(checkout);
+    }
+
+    private void adjustInventories(List<CheckoutItem> items) {
+        var adjustments = items.stream()
+                .peek(item -> {
+                    if (item.getQuantity() <= 0) {
+                        throw new CheckoutException("The checkout item must be greater than zero");
+                    }
+                })
+                .map(item -> this.inventoryService.createInventoryAdjustment().toBuilder()
+                        .productId(item.getProductId()).variantId(item.getVariantId())
+                        .quantityDelta(-item.getQuantity()).build())
+                .collect(Collectors.toUnmodifiableList());
+        this.inventoryService.adjustInventories(adjustments);
+    }
+
+    private void placeOrders(List<Order> orders) {
+        this.orderService.placeOrders(orders);
+    }
+
+    @Transactional
+    @Override
+    public void placeCheckout(String id) {
+        var checkout = this.checkoutRepository.findById(id).orElseThrow();
+        this.adjustInventories(checkout.getItems());
+        this.placeOrders(checkout.getOrders());
     }
 }

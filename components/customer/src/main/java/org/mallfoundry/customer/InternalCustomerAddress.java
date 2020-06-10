@@ -40,10 +40,10 @@ public class InternalCustomerAddress implements CustomerAddress {
     @Column(name = "id_")
     private String id;
 
-    @JsonProperty("first_name")
+    @Column(name = "first_name_")
     private String firstName;
 
-    @JsonProperty("last_name")
+    @Column(name = "last_name_")
     private String lastName;
 
     @Column(name = "country_code_")

@@ -60,12 +60,32 @@ public class InternalCart implements Cart {
     }
 
     @Override
+    public void checkItem(String itemId) {
+        this.checkItems(List.of(itemId));
+    }
+
+    @Override
+    public void uncheckItem(String itemId) {
+        this.uncheckItems(List.of(itemId));
+    }
+
+    @Override
+    public void checkItems(List<String> itemIds) {
+        itemIds.stream().map(this::getItem).map(Optional::orElseThrow).forEach(CartItem::check);
+    }
+
+    @Override
+    public void uncheckItems(List<String> itemIds) {
+        itemIds.stream().map(this::getItem).map(Optional::orElseThrow).forEach(CartItem::uncheck);
+    }
+
+    @Override
     public CartItem createItem(String id) {
         return new InternalCartItem(id);
     }
 
-    private void addSetItem(CartItem newItem, CartItem targetItem) {
-        targetItem.addQuantity(newItem.getQuantity());
+    private void incrementItem(CartItem newItem, CartItem targetItem) {
+        targetItem.incrementQuantity(newItem.getQuantity());
         targetItem.setName(newItem.getName());
         targetItem.setImageUrl(newItem.getImageUrl());
         targetItem.setOptionSelections(newItem.getOptionSelections());
@@ -78,7 +98,7 @@ public class InternalCart implements Cart {
                 Objects.equals(eItem.getProductId(), newItem.getProductId())
                         && Objects.equals(eItem.getVariantId(), newItem.getVariantId()))
                 .findFirst()
-                .ifPresentOrElse(eItem -> this.addSetItem(newItem, eItem), () -> this.items.add(newItem));
+                .ifPresentOrElse(eItem -> this.incrementItem(newItem, eItem), () -> this.items.add(newItem));
     }
 
     @Override

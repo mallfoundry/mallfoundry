@@ -65,12 +65,18 @@ public class InternalOrderService implements OrderService {
     @Transactional
     @Override
     public List<Order> placeOrders(List<Order> orders) {
-        var splitOrders = this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
-        splitOrders.stream()
+        var placingOrders = orders.stream()
+                .map(InternalOrder::of)
                 .peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
                 .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
-                .forEach(Order::place);
-        return CastUtils.cast(this.orderRepository.saveAll(splitOrders));
+                .peek(Order::place)
+                .collect(Collectors.toList());
+        return CastUtils.cast(this.orderRepository.saveAll(placingOrders));
+    }
+
+    @Override
+    public List<Order> splitOrders(List<Order> orders) {
+        return this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
     }
 
     @Transactional

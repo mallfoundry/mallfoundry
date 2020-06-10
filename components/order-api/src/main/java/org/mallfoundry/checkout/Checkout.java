@@ -4,9 +4,12 @@ import org.mallfoundry.order.Order;
 import org.mallfoundry.shipping.Address;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface Checkout {
+
+    String getId();
 
     String getCartId();
 
@@ -25,4 +28,8 @@ public interface Checkout {
     List<Order> getOrders();
 
     BigDecimal getSubtotalAmount();
+
+    Date getCreatedTime();
+
+    void create();
 }

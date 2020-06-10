@@ -53,6 +53,9 @@ public class InternalCartItem implements CartItem {
     @Column(name = "quantity_")
     private int quantity;
 
+    @Column(name = "checked_")
+    private boolean checked;
+
     @Column(name = "added_time_")
     private Date addedTime;
 
@@ -71,8 +74,18 @@ public class InternalCartItem implements CartItem {
     }
 
     @Override
-    public void addQuantity(int quantity) {
+    public void incrementQuantity(int quantity) {
         this.setQuantity(this.quantity + quantity);
+    }
+
+    @Override
+    public void check() {
+        this.checked = true;
+    }
+
+    @Override
+    public void uncheck() {
+        this.checked = false;
     }
 
     @Override
@@ -92,5 +105,6 @@ public class InternalCartItem implements CartItem {
     public int hashCode() {
         return Objects.hash(productId, variantId);
     }
+
 
 }

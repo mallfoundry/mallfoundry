@@ -28,6 +28,14 @@ public interface Cart extends Serializable {
 
     List<CartItem> getItems(List<String> itemIds);
 
+    void checkItem(String itemId);
+
+    void uncheckItem(String itemId);
+
+    void checkItems(List<String> itemIds);
+
+    void uncheckItems(List<String> itemIds);
+
     default Builder toBuilder() {
         return new Builder(this);
     }

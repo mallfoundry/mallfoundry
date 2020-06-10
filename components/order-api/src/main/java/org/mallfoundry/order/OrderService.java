@@ -15,6 +15,8 @@ public interface OrderService {
 
     List<Order> placeOrders(List<Order> orders);
 
+    List<Order> splitOrders(List<Order> orders);
+
     Order updateOrder(Order order);
 
     Optional<Order> getOrder(String orderId);
