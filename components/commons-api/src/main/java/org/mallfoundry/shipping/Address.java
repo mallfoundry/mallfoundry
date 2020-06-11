@@ -8,6 +8,10 @@ import java.io.Serializable;
  */
 public interface Address extends Serializable {
 
+    String getId();
+
+    void setId(String id);
+
     String getFirstName();
 
     void setFirstName(String firstName);

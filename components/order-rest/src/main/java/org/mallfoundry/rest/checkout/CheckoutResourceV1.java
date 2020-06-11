@@ -3,6 +3,7 @@ package org.mallfoundry.rest.checkout;
 import org.mallfoundry.checkout.Checkout;
 import org.mallfoundry.checkout.CheckoutService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,15 +22,18 @@ public class CheckoutResourceV1 {
         this.checkoutService = checkoutService;
     }
 
-    private Checkout createCheckout(CheckoutRequest request) {
-        return checkoutService.createCheckout(
-                request.assignToCheckout(
-                        this.checkoutService.createCheckout((String) null)));
+    private Checkout createCheckout(String checkoutId, CheckoutRequest request) {
+        return request.assignToCheckout(this.checkoutService.createCheckout(checkoutId));
     }
 
     @PostMapping("/checkouts")
     public Checkout checkout(@RequestBody CheckoutRequest request) {
-        return checkoutService.createCheckout(this.createCheckout(request));
+        return checkoutService.createCheckout(this.createCheckout(null, request));
+    }
+
+    @PatchMapping("/checkouts/{id}")
+    public Checkout updateCheckout(@PathVariable("id") String checkoutId, @RequestBody CheckoutRequest request) {
+        return checkoutService.updateCheckout(this.createCheckout(checkoutId, request));
     }
 
     @GetMapping("/checkouts/{id}")
@@ -38,7 +42,7 @@ public class CheckoutResourceV1 {
     }
 
     @PostMapping("/checkouts/{id}/place")
-    public void placeCheckout(@PathVariable("id") String checkoutId) {
-        checkoutService.placeCheckout(checkoutId);
+    public Checkout placeCheckout(@PathVariable("id") String checkoutId) {
+        return checkoutService.placeCheckout(checkoutId);
     }
 }

@@ -30,7 +30,7 @@ public class InternalPaymentService implements PaymentService {
     }
 
     @Override
-    public Instrument createInstrument(String type) {
+    public PaymentInstrument createInstrument(String type) {
         return new InternalInstrument(type);
     }
 

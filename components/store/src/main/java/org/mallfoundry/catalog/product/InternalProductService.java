@@ -99,7 +99,7 @@ public class InternalProductService implements ProductService {
         adjustments.forEach(this::adjustInventory);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Product> getProduct(String id) {
         return CastUtils.cast(this.productRepository.findById(id));
     }

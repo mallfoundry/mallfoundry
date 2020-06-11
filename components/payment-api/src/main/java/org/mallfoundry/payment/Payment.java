@@ -8,9 +8,9 @@ public interface Payment {
 
     String getId();
 
-    Instrument getInstrument();
+    PaymentInstrument getInstrument();
 
-    void setInstrument(Instrument instrument);
+    void setInstrument(PaymentInstrument instrument);
 
     String getReference();
 
@@ -59,7 +59,7 @@ public interface Payment {
             return this;
         }
 
-        public Builder instrument(Instrument instrument) {
+        public Builder instrument(PaymentInstrument instrument) {
             this.payment.setInstrument(instrument);
             return this;
         }

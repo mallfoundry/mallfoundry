@@ -100,6 +100,7 @@ public class InternalStoreService implements StoreService {
         this.storeRepository.delete(store);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Store> getStore(String id) {
         return CastUtils.cast(this.storeRepository.findById(id));

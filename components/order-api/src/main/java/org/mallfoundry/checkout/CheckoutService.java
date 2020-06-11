@@ -10,7 +10,9 @@ public interface CheckoutService {
 
     Optional<Checkout> getCheckout(String id);
 
+    Checkout updateCheckout(Checkout checkout);
+
     void deleteCheckout(String id);
 
-    void placeCheckout(String id);
+    Checkout placeCheckout(String id);
 }

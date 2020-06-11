@@ -2,7 +2,7 @@ package org.mallfoundry.payment;
 
 import java.io.Serializable;
 
-public interface Instrument extends Serializable {
+public interface PaymentInstrument extends Serializable {
 
     String getType();
 

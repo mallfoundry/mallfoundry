@@ -1,13 +1,15 @@
 package org.mallfoundry.rest.shipping;
 
-import org.mallfoundry.shipping.Address;
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.shipping.Address;
 import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
 public class AddressRequest {
+
+    private String id;
 
     private String firstName;
 

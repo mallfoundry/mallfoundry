@@ -16,7 +16,7 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.CapturedEvent;
+import org.mallfoundry.payment.PaymentCapturedEvent;
 import org.mallfoundry.payment.Payment;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
@@ -37,7 +37,7 @@ public class PaymentEventListener {
     }
 
     @EventListener
-    public void handleCaptured(CapturedEvent event) {
+    public void handleCaptured(PaymentCapturedEvent event) {
         var payment = event.getPayment();
         StringUtils.commaDelimitedListToSet(payment.getReference())
                 .forEach(orderId -> this.orderService.payOrder(orderId, createPaymentDetails(payment)));

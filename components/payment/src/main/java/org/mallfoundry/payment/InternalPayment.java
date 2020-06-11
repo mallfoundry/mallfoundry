@@ -32,7 +32,7 @@ public class InternalPayment implements Payment {
 
     @Column(name = "source_")
     @Convert(converter = PaymentSourceConverter.class)
-    private Instrument instrument;
+    private PaymentInstrument instrument;
 
     @Column(name = "reference_")
     private String reference;

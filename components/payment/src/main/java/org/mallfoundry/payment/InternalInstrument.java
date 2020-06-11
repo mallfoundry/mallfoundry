@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
 @Setter
 @NoArgsConstructor
 @Embeddable
-public class InternalInstrument implements Instrument {
+public class InternalInstrument implements PaymentInstrument {
 
     @Column(name = "instrument_type_")
     private String type;

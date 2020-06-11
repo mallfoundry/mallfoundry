@@ -26,16 +26,14 @@ public class CheckoutRequest {
             checkout.setShippingAddress(address);
         }
         checkout.setCartId(this.cartId);
-        this.getItems()
-                .stream()
-                .map(item ->
-                        checkout.createItem()
-                                .toBuilder()
-                                .productId(item.getProductId())
-                                .variantId(item.getVariantId())
-                                .quantity(item.getQuantity())
-                                .build())
-                .forEach(checkout::addItem);
+        if (Objects.nonNull(items)) {
+            this.getItems()
+                    .stream()
+                    .map(item -> checkout.createItem().toBuilder()
+                            .productId(item.getProductId()).variantId(item.getVariantId())
+                            .quantity(item.getQuantity()).build())
+                    .forEach(checkout::addItem);
+        }
         return checkout;
     }
 }

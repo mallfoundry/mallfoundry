@@ -16,6 +16,10 @@ public interface CustomerAddress {
 
     void setLastName(String lastName);
 
+    String getTag();
+
+    void setTag(String tag);
+
     String getCountryCode();
 
     void setCountryCode(String countryCode);

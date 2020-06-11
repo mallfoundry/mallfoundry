@@ -17,7 +17,6 @@
 package org.mallfoundry.customer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +44,9 @@ public class InternalCustomerAddress implements CustomerAddress {
 
     @Column(name = "last_name_")
     private String lastName;
+
+    @Column(name = "tag_")
+    private String tag;
 
     @Column(name = "country_code_")
     private String countryCode;

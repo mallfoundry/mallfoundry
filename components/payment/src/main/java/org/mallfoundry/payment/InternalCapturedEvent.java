@@ -3,7 +3,7 @@ package org.mallfoundry.payment;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-public class InternalCapturedEvent extends ApplicationEvent implements CapturedEvent {
+public class InternalCapturedEvent extends ApplicationEvent implements PaymentCapturedEvent {
 
     @Getter
     private final Payment payment;

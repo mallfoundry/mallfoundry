@@ -97,6 +97,10 @@ public class InternalCheckoutService implements CheckoutService {
         return orders;
     }
 
+    private void setOrdersToCheckout(InternalCheckout checkout) {
+        checkout.setOrders(this.createOrders(checkout));
+    }
+
     private Address getCustomerDefaultAddress() {
         var customerAddress = this.customerService.getDefaultAddress(SecurityUserHolder.getUserId()).orElseThrow();
         var address = new DefaultAddress();
@@ -108,10 +112,10 @@ public class InternalCheckoutService implements CheckoutService {
         if (Objects.isNull(checkout.getId())) {
             checkout.setId(PrimaryKeyHolder.next(CHECKOUT_ID_VALUE_NAME));
         }
-        checkout.setOrders(this.orderService.splitOrders(this.createOrders(checkout)));
         if (Objects.isNull(checkout.getShippingAddress())) {
             checkout.setShippingAddress(this.getCustomerDefaultAddress());
         }
+        this.setOrdersToCheckout(checkout);
         checkout.create();
         return this.checkoutRepository.save(checkout);
     }
@@ -125,8 +129,21 @@ public class InternalCheckoutService implements CheckoutService {
     @Override
     public Optional<Checkout> getCheckout(String id) {
         var checkout = this.checkoutRepository.findById(id).orElseThrow();
-        checkout.setOrders(this.orderService.splitOrders(this.createOrders(checkout)));
+        this.setOrdersToCheckout(checkout);
         return Optional.of(checkout);
+    }
+
+    @Transactional
+    @Override
+    public Checkout updateCheckout(Checkout checkout) {
+        var storedCheckout = this.checkoutRepository.findById(checkout.getId()).orElseThrow();
+
+        if (Objects.nonNull(checkout.getShippingAddress())) {
+            storedCheckout.setShippingAddress(checkout.getShippingAddress());
+        }
+        var newCheckout = this.checkoutRepository.save(storedCheckout);
+        this.setOrdersToCheckout(newCheckout);
+        return newCheckout;
     }
 
     @Transactional
@@ -150,15 +167,17 @@ public class InternalCheckoutService implements CheckoutService {
         this.inventoryService.adjustInventories(adjustments);
     }
 
-    private void placeOrders(List<Order> orders) {
-        this.orderService.placeOrders(orders);
+    private void placeOrders(InternalCheckout checkout) {
+        this.orderService.placeOrders(checkout.getOrders());
     }
 
-    @Transactional
     @Override
-    public void placeCheckout(String id) {
+    @Transactional
+    public Checkout placeCheckout(String id) {
         var checkout = this.checkoutRepository.findById(id).orElseThrow();
         this.adjustInventories(checkout.getItems());
-        this.placeOrders(checkout.getOrders());
+        this.setOrdersToCheckout(checkout);
+        this.placeOrders(checkout);
+        return checkout;
     }
 }

@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public abstract class AddressSupport implements Address {
 
+    private String id;
+
     private String firstName;
 
     private String lastName;

@@ -63,7 +63,7 @@ public class InternalCustomer implements Customer {
 
     @OneToMany(targetEntity = InternalCustomerAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
-    @OrderBy("createdTime ASC")
+    @OrderBy("defaulted DESC , createdTime ASC")
     private List<CustomerAddress> addresses = new ArrayList<>();
 
     public InternalCustomer(String userId) {
