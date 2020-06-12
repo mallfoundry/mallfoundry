@@ -74,8 +74,13 @@ public class InternalCartItem implements CartItem {
     }
 
     @Override
-    public void incrementQuantity(int quantity) {
-        this.setQuantity(this.quantity + quantity);
+    public void adjustQuantity(int quantityDelta) throws CartException {
+        var adjustedQuantity = this.quantity + quantityDelta;
+        if (adjustedQuantity <= 0) {
+            throw new CartException("The adjusted quantity cannot be less than zero");
+        }
+
+        this.setQuantity(adjustedQuantity);
     }
 
     @Override

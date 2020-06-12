@@ -1,6 +1,7 @@
 package org.mallfoundry.cart;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,19 +23,25 @@ public interface Cart extends Serializable {
 
     void removeItem(CartItem item);
 
-    void removeItems(List<CartItem> items);
+    void removeItems(Collection<CartItem> items);
 
     Optional<CartItem> getItem(String itemId);
 
-    List<CartItem> getItems(List<String> itemIds);
+    List<CartItem> getItems(Collection<String> itemIds);
+
+    void adjustItemQuantity(String itemId, int quantityDelta) throws CartException;
 
     void checkItem(String itemId);
 
     void uncheckItem(String itemId);
 
-    void checkItems(List<String> itemIds);
+    void checkItems(Collection<String> itemIds);
 
-    void uncheckItems(List<String> itemIds);
+    void uncheckItems(Collection<String> itemIds);
+
+    void checkAllItems();
+
+    void uncheckAllItems();
 
     default Builder toBuilder() {
         return new Builder(this);

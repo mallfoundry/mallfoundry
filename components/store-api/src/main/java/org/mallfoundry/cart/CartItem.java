@@ -42,7 +42,7 @@ public interface CartItem extends Serializable {
 
     void setQuantity(int quantity);
 
-    void incrementQuantity(int quantity);
+    void adjustQuantity(int quantityDelta) throws CartException;
 
     boolean isChecked();
 

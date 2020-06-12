@@ -6,7 +6,6 @@ import org.mallfoundry.cart.CartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,10 +38,6 @@ public class CartRestService {
         return new CartResponse(this.cartService.createCart(cart));
     }
 
-    public void deleteCart(String id) {
-        this.cartService.deleteCart(id);
-    }
-
     @Transactional
     public CartItemResponse addCartItem(String id, CartItemRequest request) {
         var item = this.cartService.getCart(id).orElseThrow().createItem(null).toBuilder()
@@ -54,26 +49,6 @@ public class CartRestService {
                 .build();
         this.cartService.addCartItem(id, item);
         return new CartItemResponse(item);
-    }
-
-    @Transactional
-    public void setCartItem(String id, String itemId, CartItemRequest request) {
-        var item = this.cartService.getCart(id).orElseThrow().getItem(itemId).orElseThrow().toBuilder()
-                .productId(request.getProductId())
-                .variantId(request.getVariantId())
-                .quantity(request.getQuantity())
-                .name(request.getName())
-                .imageUrl(request.getImageUrl())
-                .build();
-        this.cartService.setCartItem(id, item);
-    }
-
-    public void removeCartItem(String id, String itemId) {
-        this.cartService.removeCartItem(id, itemId);
-    }
-
-    public void removeCartItems(String id, List<String> itemIds) {
-        this.cartService.removeCartItems(id, itemIds);
     }
 
     @Transactional

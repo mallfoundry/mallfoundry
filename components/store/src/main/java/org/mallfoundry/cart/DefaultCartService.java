@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -90,9 +91,13 @@ public class DefaultCartService implements CartService {
 
     @Transactional
     @Override
-    public void setCartItem(String id, CartItem newItem) {
+    public void updateCartItem(String id, CartItem newItem) {
         var cart = this.getInternalCart(id).orElseThrow();
-        cart.setItem(setCartItem(newItem));
+        if (Objects.nonNull(newItem.getProductId())
+                && Objects.nonNull(newItem.getVariantId())) {
+            this.setCartItem(newItem);
+        }
+        cart.setItem(newItem);
     }
 
     @Transactional
@@ -102,9 +107,57 @@ public class DefaultCartService implements CartService {
         cart.removeItem(cart.getItem(itemId).orElseThrow());
     }
 
+    @Transactional
     @Override
-    public void removeCartItems(String id, List<String> itemIds) {
+    public void removeCartItems(String id, Collection<String> itemIds) {
         var cart = this.getCart(id).orElseThrow();
         cart.removeItems(cart.getItems(itemIds));
+    }
+
+    @Transactional
+    @Override
+    public void adjustCartItemQuantity(String id, String itemId, int quantityDelta) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.adjustItemQuantity(itemId, quantityDelta);
+    }
+
+    @Transactional
+    @Override
+    public void checkCartItem(String id, String itemId) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.checkItem(itemId);
+    }
+
+    @Transactional
+    @Override
+    public void uncheckCartItem(String id, String itemId) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.uncheckItem(itemId);
+    }
+
+    @Transactional
+    @Override
+    public void checkCartItems(String id, Collection<String> itemIds) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.checkItems(itemIds);
+    }
+
+    @Transactional
+    @Override
+    public void uncheckCartItems(String id, Collection<String> itemIds) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.uncheckItems(itemIds);
+    }
+
+    @Override
+    public void checkAllCartItems(String id) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.checkAllItems();
+    }
+
+    @Override
+    public void uncheckAllCartItems(String id) {
+        var cart = this.getCart(id).orElseThrow();
+        cart.uncheckAllItems();
     }
 }
