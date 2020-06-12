@@ -6,8 +6,6 @@ public interface PaymentService {
 
     Payment createPayment(String id);
 
-    PaymentInstrument createInstrument(String type);
-
     Payment createPayment(Payment payment);
 
     void capturePayment(String id) throws PaymentException;

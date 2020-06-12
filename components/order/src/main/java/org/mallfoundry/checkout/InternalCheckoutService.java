@@ -168,7 +168,7 @@ public class InternalCheckoutService implements CheckoutService {
     }
 
     private void placeOrders(InternalCheckout checkout) {
-        this.orderService.placeOrders(checkout.getOrders());
+        checkout.setOrders(this.orderService.placeOrders(checkout.getOrders()));
     }
 
     @Override

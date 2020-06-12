@@ -149,12 +149,14 @@ public class DefaultCartService implements CartService {
         cart.uncheckItems(itemIds);
     }
 
+    @Transactional
     @Override
     public void checkAllCartItems(String id) {
         var cart = this.getCart(id).orElseThrow();
         cart.checkAllItems();
     }
 
+    @Transactional
     @Override
     public void uncheckAllCartItems(String id) {
         var cart = this.getCart(id).orElseThrow();

@@ -1,10 +1,10 @@
 package org.mallfoundry.payment;
 
-import org.mallfoundry.data.jpa.convert.StringStringMapConverter;
-import org.mallfoundry.payment.repository.jpa.convert.PaymentSourceConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.data.jpa.convert.StringStringMapConverter;
+import org.mallfoundry.payment.repository.jpa.convert.PaymentSourceConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -37,6 +37,9 @@ public class InternalPayment implements Payment {
     @Column(name = "reference_")
     private String reference;
 
+    @Column(name = "return_url_")
+    private String returnUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private PaymentStatus status;
@@ -67,6 +70,11 @@ public class InternalPayment implements Payment {
         var target = new InternalPayment();
         BeanUtils.copyProperties(payment, target);
         return target;
+    }
+
+    @Override
+    public PaymentInstrument createInstrument(String type) {
+        return new InternalInstrument(type);
     }
 
     @Override

@@ -59,13 +59,13 @@ public class AliPaymentClient implements PaymentClient {
         if (StringUtils.isNotBlank(this.properties.getReturnUrl())) {
             request.setReturnUrl(UriComponentsBuilder
                     .fromHttpUrl(this.properties.getReturnUrl())
-                    .build(Map.of("paymemt_id", payment.getId())).toString());
+                    .build(Map.of("payment_id", payment.getId())).toString());
         }
 
         if (StringUtils.isNotBlank(this.properties.getNotifyUrl())) {
             request.setNotifyUrl(UriComponentsBuilder
                     .fromHttpUrl(this.properties.getNotifyUrl())
-                    .build(Map.of("paymemt_id", payment.getId())).toString());
+                    .build(Map.of("payment_id", payment.getId())).toString());
         }
 
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();

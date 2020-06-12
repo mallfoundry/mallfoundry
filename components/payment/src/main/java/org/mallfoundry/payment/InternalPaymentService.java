@@ -29,11 +29,6 @@ public class InternalPaymentService implements PaymentService {
         return payment;
     }
 
-    @Override
-    public PaymentInstrument createInstrument(String type) {
-        return new InternalInstrument(type);
-    }
-
     @Transactional
     @Override
     public Payment createPayment(Payment aPayment) {

@@ -71,8 +71,8 @@ public class InternalOrderService implements OrderService {
                 .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
                 .peek(Order::place)
                 .collect(Collectors.toList());
-//        return CastUtils.cast(this.orderRepository.saveAll(placingOrders));
-        return CastUtils.cast(placingOrders);
+        return CastUtils.cast(this.orderRepository.saveAll(placingOrders));
+//        return CastUtils.cast(placingOrders);
     }
 
     @Override

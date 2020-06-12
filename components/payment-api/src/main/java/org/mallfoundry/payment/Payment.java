@@ -8,6 +8,8 @@ public interface Payment {
 
     String getId();
 
+    PaymentInstrument createInstrument(String type);
+
     PaymentInstrument getInstrument();
 
     void setInstrument(PaymentInstrument instrument);
@@ -15,6 +17,10 @@ public interface Payment {
     String getReference();
 
     void setReference(String reference);
+
+    String getReturnUrl();
+
+    void setReturnUrl(String returnUrl);
 
     PaymentStatus getStatus();
 
@@ -46,6 +52,11 @@ public interface Payment {
 
         public Builder amount(BigDecimal amount) {
             this.payment.setAmount(amount);
+            return this;
+        }
+
+        public Builder returnUrl(String returnUrl) {
+            this.payment.setReturnUrl(returnUrl);
             return this;
         }
 
