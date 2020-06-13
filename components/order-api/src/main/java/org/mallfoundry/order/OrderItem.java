@@ -52,15 +52,15 @@ public interface OrderItem {
 
     void setDiscountShippingCost(BigDecimal discountShippingCost);
 
-    BigDecimal getSubtotalAmount();
+    BigDecimal getTotalPrice();
 
-    BigDecimal getOriginalAmount();
+    BigDecimal getSubtotalAmount();
 
     BigDecimal getDiscountAmount();
 
     void setDiscountAmount(BigDecimal discountAmount);
 
-    BigDecimal getActualAmount();
+    BigDecimal getTotalAmount();
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {

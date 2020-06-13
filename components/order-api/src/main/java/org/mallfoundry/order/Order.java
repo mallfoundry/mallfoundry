@@ -70,13 +70,19 @@ public interface Order {
 
     BigDecimal getTotalShippingCost();
 
-//    BigDecimal getTotalOriginalAmount();
+    BigDecimal getTotalDiscountShippingCost();
 
-    BigDecimal getSubtotalAmount();
+    BigDecimal getTotalPrice();
 
     BigDecimal getTotalAmount();
 
+    BigDecimal getSubtotalAmount();
+
     PaymentDetails getPaymentDetails();
+
+    int getPaymentExpires();
+
+    void setPaymentExpires(int paymentExpires);
 
     String getCancelReason();
 

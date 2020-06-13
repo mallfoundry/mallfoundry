@@ -1,6 +1,7 @@
 package org.mallfoundry.payment;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +17,21 @@ public class InternalPaymentService implements PaymentService {
 
     private final PaymentClientFactory paymentClientFactory;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     public InternalPaymentService(PaymentRepository paymentRepository,
-                                  PaymentClientFactory paymentClientFactory) {
+                                  PaymentClientFactory paymentClientFactory,
+                                  ApplicationEventPublisher eventPublisher) {
         this.paymentRepository = paymentRepository;
         this.paymentClientFactory = paymentClientFactory;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
     public Payment createPayment(String id) {
         var payment = new InternalPayment(id);
         payment.pending();
+        this.eventPublisher.publishEvent(new InternalPaymentPendingEvent(payment));
         return payment;
     }
 
@@ -52,6 +58,7 @@ public class InternalPaymentService implements PaymentService {
         paymentClient.validateNotification(notification);
         if (notification.isCaptured()) {
             payment.capture();
+            this.eventPublisher.publishEvent(new InternalPaymentCapturedEvent(payment));
         }
         return notification;
     }

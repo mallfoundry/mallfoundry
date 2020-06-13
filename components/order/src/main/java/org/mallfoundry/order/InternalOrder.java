@@ -121,6 +121,10 @@ public class InternalOrder implements Order {
     @Embedded
     private InternalPaymentDetails paymentDetails;
 
+    // Default is 60 * 1000 ms
+    @Column(name = "payment_expires_")
+    private int paymentExpires = 60 * 1000;
+
     @JsonProperty("cancel_reason")
     private String cancelReason;
 
@@ -236,16 +240,14 @@ public class InternalOrder implements Order {
 
     }
 
-    @JsonProperty("total_discount_amount")
     @Transient
     @Override
     public BigDecimal getTotalDiscountAmount() {
-        return BigDecimal.ZERO.subtract(this.getItems().stream()
+        return this.getItems().stream()
                 .map(OrderItem::getDiscountAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    @JsonProperty("total_shipping_cost")
     @Transient
     @Override
     public BigDecimal getTotalShippingCost() {
@@ -254,21 +256,32 @@ public class InternalOrder implements Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    @JsonProperty("subtotal_amount")
+    @Override
+    public BigDecimal getTotalDiscountShippingCost() {
+        return this.getItems().stream()
+                .map(OrderItem::getDiscountShippingCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalPrice() {
+        return this.getItems().stream()
+                .map(OrderItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.getItems().stream()
+                .map(OrderItem::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     @Transient
     @Override
     public BigDecimal getSubtotalAmount() {
         return this.getItems().stream()
                 .map(OrderItem::getSubtotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @JsonProperty("total_amount")
-    @Transient
-    @Override
-    public BigDecimal getTotalAmount() {
-        return this.getItems().stream()
-                .map(OrderItem::getActualAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

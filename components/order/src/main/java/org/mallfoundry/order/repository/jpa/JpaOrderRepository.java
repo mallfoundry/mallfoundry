@@ -24,6 +24,7 @@ import org.mallfoundry.order.OrderRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -61,7 +62,7 @@ public interface JpaOrderRepository
             }
 
             return predicate;
-        }, PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit()));
+        }, PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("createdTime"))));
 
         return PageList.of(page.getContent())
                 .page(page.getNumber())

@@ -16,10 +16,13 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.PaymentCapturedEvent;
 import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentCapturedEvent;
+import org.mallfoundry.payment.PaymentEvent;
+import org.mallfoundry.payment.PaymentPendingEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Configuration
@@ -36,8 +39,19 @@ public class PaymentEventListener {
         return new InternalPaymentDetails(payment.getId(), instrument.getType(), payment.getStatus());
     }
 
+    @Transactional
+    @EventListener
+    public void handlePending(PaymentPendingEvent event) {
+        this.handlePaymentEvent(event);
+    }
+
+    @Transactional
     @EventListener
     public void handleCaptured(PaymentCapturedEvent event) {
+        this.handlePaymentEvent(event);
+    }
+
+    private void handlePaymentEvent(PaymentEvent event) {
         var payment = event.getPayment();
         StringUtils.commaDelimitedListToSet(payment.getReference())
                 .forEach(orderId -> this.orderService.payOrder(orderId, createPaymentDetails(payment)));

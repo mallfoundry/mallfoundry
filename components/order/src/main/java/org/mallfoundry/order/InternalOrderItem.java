@@ -45,19 +45,15 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "id_")
     private String id;
 
-    @JsonProperty("store_id")
     @Column(name = "store_id_")
     private String storeId;
 
-    @JsonProperty("product_id")
     @Column(name = "product_id_")
     private String productId;
 
-    @JsonProperty("variant_id")
     @Column(name = "variant_id_")
     private String variantId;
 
-    @JsonProperty("image_url")
     @Column(name = "image_url_")
     private String imageUrl;
 
@@ -74,15 +70,12 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "price_")
     private BigDecimal price;
 
-    @JsonProperty("discount_amount")
     @Column(name = "discount_amount_")
     private BigDecimal discountAmount;
 
-    @JsonProperty("shipping_cost")
     @Column(name = "shipping_cost_")
     private BigDecimal shippingCost;
 
-    @JsonProperty("discount_shipping_cost")
     @Column(name = "discount_shipping_cost_")
     private BigDecimal discountShippingCost;
 
@@ -98,11 +91,6 @@ public class InternalOrderItem implements OrderItem {
         BeanUtils.copyProperties(item, target);
         return target;
     }
-
-//    public void setId(String id) {
-//        Assert.isNull(this.id, "Id is not null");
-//        this.id = id;
-//    }
 
     public BigDecimal getDiscountAmount() {
         return Objects.isNull(this.discountAmount)
@@ -122,26 +110,21 @@ public class InternalOrderItem implements OrderItem {
                 : this.discountShippingCost;
     }
 
-    @JsonProperty("subtotal_amount")
-    @Transient
     @Override
-    public BigDecimal getSubtotalAmount() {
+    public BigDecimal getTotalPrice() {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
 
-    @JsonProperty("original_amount")
     @Transient
     @Override
-    public BigDecimal getOriginalAmount() {
-        return this.getSubtotalAmount().add(this.getShippingCost());
+    public BigDecimal getSubtotalAmount() {
+        return this.getTotalPrice().add(this.getShippingCost());
     }
 
-    @JsonProperty("actual_amount")
     @Override
-    public BigDecimal getActualAmount() {
+    public BigDecimal getTotalAmount() {
         return this.getSubtotalAmount()
                 .add(this.getDiscountAmount())
-                .add(this.getShippingCost())
                 .add(this.getDiscountShippingCost());
     }
 
