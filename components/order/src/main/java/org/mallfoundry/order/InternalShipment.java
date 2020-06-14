@@ -17,26 +17,28 @@
 package org.mallfoundry.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.order.repository.jpa.convert.ShipmentItemListConverter;
 import org.mallfoundry.shipping.Address;
+import org.mallfoundry.shipping.CarrierCode;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -51,45 +53,36 @@ public class InternalShipment implements Shipment {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "consignor_id_")
     private String consignorId;
 
+    @Column(name = "consignor_")
     private String consignor;
 
-    @JsonProperty("shipping_address")
     @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
     private Address shippingAddress;
 
-    @JsonProperty("shipping_provider")
+    @Enumerated(EnumType.STRING)
     @Column(name = "shipping_provider_")
-    private String shippingProvider;
+    private CarrierCode shippingProvider;
 
-    @JsonProperty("shipping_method")
+    @Column(name = "tracking_carrier_")
+    private String trackingCarrier;
+
     @Column(name = "shipping_method_")
     private String shippingMethod;
 
-    @JsonProperty("tracking_number")
     @Column(name = "tracking_number_")
     private String trackingNumber;
 
-    @JsonProperty("order_id")
-    @Column(name = "order_id_")
-    private String orderId;
-
-    @OneToMany(targetEntity = InternalOrderItem.class)
-    @JoinTable(name = "mf_order_shipment_item",
-            joinColumns = @JoinColumn(name = "shipment_id_"),
-            inverseJoinColumns = @JoinColumn(name = "order_item_id_"))
-    private List<OrderItem> items = new ArrayList<>();
+    @Convert(converter = ShipmentItemListConverter.class)
+    @Column(name = "items_")
+    private List<ShipmentItem> items = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty("shipped_time")
     @Column(name = "shipped_time_")
     private Date shippedTime;
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items.stream().map(InternalOrderItem::of).collect(Collectors.toList());
-    }
 
     public InternalShipment(String id) {
         this.id = id;
@@ -103,6 +96,32 @@ public class InternalShipment implements Shipment {
         var target = new InternalShipment();
         BeanUtils.copyProperties(shipment, target);
         return target;
+    }
+
+    @Transient
+    @Override
+    public List<String> getImageUrls() {
+        return this.items.stream().map(ShipmentItem::getImageUrl).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public ShipmentItem createItem(String id) {
+        return new InternalShipmentItem();
+    }
+
+    @Override
+    public Optional<ShipmentItem> getItem(String id) {
+        return this.getItems().stream().filter(item -> item.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public void addItem(ShipmentItem item) {
+        this.getItems().add(item);
+    }
+
+    @Override
+    public void removeItem(ShipmentItem item) {
+        this.getItems().remove(item);
     }
 
     @Override
@@ -121,4 +140,5 @@ public class InternalShipment implements Shipment {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

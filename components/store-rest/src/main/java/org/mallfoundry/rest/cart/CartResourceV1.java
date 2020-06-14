@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1")
@@ -33,8 +34,23 @@ public class CartResourceV1 {
     }
 
     @PostMapping("/carts/{id}/items")
-    public CartItemResponse addCartItem(@PathVariable("id") String id, @RequestBody CartItemRequest request) {
-        return this.cartRestService.addCartItem(id, request);
+    public Optional<CartItemResponse> addCartItem(@PathVariable("id") String id, @RequestBody CartItemRequest request) {
+        return Optional.of(
+                this.cartService.addCartItem(id,
+                        request.assignCartItem(this.cartService.createCart((String) null).createItem(null))))
+                .map(CartItemResponse::new);
+    }
+
+    @PostMapping("/carts/{id}/items/batch")
+    public List<CartItemResponse> addCartItems(@PathVariable("id") String id,
+                                               @RequestBody List<CartItemRequest> requests) {
+        var items = requests.stream()
+                .map(request ->
+                        request.assignCartItem(this.cartService.createCart((String) null).createItem(null)))
+                .collect(Collectors.toList());
+        return this.cartService.addCartItems(id, items)
+                .stream().map(CartItemResponse::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @PostMapping("/carts/{id}/items/{item_id}/quantity/adjust")

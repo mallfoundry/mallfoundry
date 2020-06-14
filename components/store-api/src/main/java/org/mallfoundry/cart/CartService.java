@@ -1,6 +1,7 @@
 package org.mallfoundry.cart;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
@@ -11,7 +12,9 @@ public interface CartService {
 
     void deleteCart(String id);
 
-    void addCartItem(String id, CartItem item);
+    CartItem addCartItem(String id, CartItem item);
+
+    List<CartItem> addCartItems(String id, Collection<CartItem> items);
 
     void updateCartItem(String id, CartItem item);
 

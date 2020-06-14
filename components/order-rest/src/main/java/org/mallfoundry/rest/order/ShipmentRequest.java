@@ -20,13 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.order.Shipment;
+import org.mallfoundry.shipping.CarrierCode;
 
 @Getter
 @Setter
 public class ShipmentRequest {
 
     @JsonProperty("shipping_provider")
-    private String shippingProvider;
+    private CarrierCode shippingProvider;
 
     @JsonProperty("shipping_method")
     private String shippingMethod;

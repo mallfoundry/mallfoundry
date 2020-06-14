@@ -1,6 +1,7 @@
 package org.mallfoundry.shipping;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CarrierService {
 
@@ -10,6 +11,6 @@ public interface CarrierService {
 
     void addCarrier(Carrier carrier);
 
-    Carrier getCarrier(String code);
+    Optional<Carrier> getCarrier(CarrierCode code);
 
 }

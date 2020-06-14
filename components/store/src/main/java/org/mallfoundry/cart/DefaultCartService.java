@@ -10,8 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DefaultCartService implements CartService {
@@ -83,10 +86,27 @@ public class DefaultCartService implements CartService {
 
     @Transactional
     @Override
-    public void addCartItem(String id, CartItem newItem) {
-        var item = InternalCartItem.of(newItem);
-        item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
-        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(setCartItem(item));
+    public CartItem addCartItem(String id, CartItem newItem) {
+        var mapItem = Stream.of(newItem)
+                .map(InternalCartItem::of)
+                .peek(item -> item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME)))
+                .map(this::setCartItem)
+                .findFirst()
+                .orElseThrow();
+        this.getCart(id).orElseGet(() -> this.createEmptyCart(id)).addItem(mapItem);
+        return mapItem;
+    }
+
+    @Transactional
+    @Override
+    public List<CartItem> addCartItems(String id, Collection<CartItem> items) {
+        List<CartItem> itemList = items.stream().map(InternalCartItem::of)
+                .peek(item -> item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME)))
+                .map(this::setCartItem)
+                .collect(Collectors.toList());
+        this.getCart(id).orElseGet(() -> this.createEmptyCart(id))
+                .addItems(itemList);
+        return itemList;
     }
 
     @Transactional

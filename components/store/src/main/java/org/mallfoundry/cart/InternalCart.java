@@ -117,6 +117,10 @@ public class InternalCart implements Cart {
         if (Objects.nonNull(newItem.getPrice())) {
             targetItem.setPrice(newItem.getPrice());
         }
+
+        if (newItem.isChecked()) {
+            targetItem.check();
+        }
     }
 
     private Optional<CartItem> findItem(String productId, String variantId) {
@@ -130,6 +134,11 @@ public class InternalCart implements Cart {
     public void addItem(CartItem newItem) {
         this.findItem(newItem.getProductId(), newItem.getVariantId())
                 .ifPresentOrElse(eItem -> this.adjustItem(newItem, eItem), () -> this.items.add(newItem));
+    }
+
+    @Override
+    public void addItems(Collection<CartItem> items) {
+        items.forEach(this::addItem);
     }
 
     private void setItemSelf(CartItem newItem) {

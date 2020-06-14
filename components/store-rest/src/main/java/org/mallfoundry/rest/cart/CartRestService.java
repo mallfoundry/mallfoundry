@@ -39,19 +39,6 @@ public class CartRestService {
     }
 
     @Transactional
-    public CartItemResponse addCartItem(String id, CartItemRequest request) {
-        var item = this.cartService.getCart(id).orElseThrow().createItem(null).toBuilder()
-                .productId(request.getProductId())
-                .variantId(request.getVariantId())
-                .quantity(request.getQuantity())
-                .name(request.getName())
-                .imageUrl(request.getImageUrl())
-                .build();
-        this.cartService.addCartItem(id, item);
-        return new CartItemResponse(item);
-    }
-
-    @Transactional
     public Optional<CartResponse> getCart(String id) {
         return this.cartService.getCart(id).map(CartResponse::new);
     }

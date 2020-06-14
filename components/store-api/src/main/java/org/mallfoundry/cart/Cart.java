@@ -19,6 +19,8 @@ public interface Cart extends Serializable {
 
     void addItem(CartItem item);
 
+    void addItems(Collection<CartItem> items);
+
     void setItem(CartItem item);
 
     void removeItem(CartItem item);

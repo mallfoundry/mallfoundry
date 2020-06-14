@@ -18,11 +18,40 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.order.Shipment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class AddShipmentRequest extends ShipmentRequest {
-    private List<OrderRequest.OrderItemRequest> items;
+
+    private List<ShipmentItemRequest> items;
+
+    @Override
+    public Shipment assignToShipment(Shipment shipment) {
+        var items = this.items.stream()
+                .map(request ->
+                        shipment.createItem(null).toBuilder()
+                                .productId(request.getProductId())
+                                .variantId(request.getVariantId())
+                                .quantity(request.getQuantity())
+                                .name(request.getName())
+                                .imageUrl(request.getImageUrl()).build())
+                .collect(Collectors.toUnmodifiableList());
+        return super.assignToShipment(shipment).toBuilder().items(items).build();
+    }
+
+
+    @Getter
+    @Setter
+    public static class ShipmentItemRequest {
+        private String productId;
+        private String variantId;
+        private int quantity;
+        private String name;
+        private String imageUrl;
+    }
+
 }

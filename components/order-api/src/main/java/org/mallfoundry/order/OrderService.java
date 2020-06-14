@@ -27,16 +27,16 @@ public interface OrderService {
 
     void cancelOrder(String orderId, String reason);
 
-    Shipment createShipment(String orderId, List<String> itemIds);
+    Shipment addOrderShipment(String orderId, Shipment shipment);
 
-    Shipment addShipment(String orderId, Shipment shipment);
+    Optional<Shipment> getOrderShipment(String orderId, String shipmentId);
 
-    Optional<Shipment> getShipment(String orderId, String shipmentId);
+    List<Shipment> getOrderShipments(String orderId);
 
-    void setShipment(String orderId, Shipment shipment);
+    void setOrderShipment(String orderId, Shipment shipment);
 
-    void setShipments(String orderId, List<Shipment> shipments);
+    void setOrderShipments(String orderId, List<Shipment> shipments);
 
-    void removeShipment(String orderId, String shipmentId);
+    void removeOrderShipment(String orderId, String shipmentId);
 
 }

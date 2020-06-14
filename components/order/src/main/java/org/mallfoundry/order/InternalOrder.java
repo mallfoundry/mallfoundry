@@ -179,6 +179,12 @@ public class InternalOrder implements Order {
                 .findFirst();
     }
 
+    public Optional<OrderItem> getItem(String productId, String variantId) {
+        return this.getItems().stream()
+                .filter(item -> item.getProductId().equals(productId) && item.getVariantId().equals(variantId))
+                .findFirst();
+    }
+
     public List<OrderItem> getItems(List<String> itemIds) {
         return this.items.stream()
                 .filter(item -> itemIds.contains(item.getId()))
@@ -211,21 +217,27 @@ public class InternalOrder implements Order {
     @Override
     public Shipment createShipment(String shipmentId) {
         return new InternalShipment(shipmentId)
-                .toBuilder()
-                .orderId(this.getId())
-                .shippingAddress(this.getShippingAddress())
-                .build();
+                .toBuilder().shippingAddress(this.getShippingAddress()).build();
     }
 
     @Override
-    public void addShipment(Shipment shipment) {
-        shipment = InternalShipment.of(shipment);
+    public void addShipment(Shipment newShipment) {
+        var shipment = InternalShipment.of(newShipment);
 
         if (Objects.isNull(shipment.getShippingAddress())) {
             shipment.setShippingAddress(this.shippingAddress);
         }
 
-        this.getShipments().add(shipment);
+        shipment.getItems().forEach(item -> {
+            var orderItem = this.getItem(item.getProductId(), item.getVariantId()).orElseThrow();
+            if (Objects.isNull(item.getName())) {
+                item.setName(orderItem.getName());
+            }
+            if (Objects.isNull(item.getImageUrl())) {
+                item.setImageUrl(orderItem.getImageUrl());
+            }
+        });
+
         this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
         if (this.getShippedItems() == this.getTotalItems()) {
             this.setStatus(SHIPPED);
@@ -233,6 +245,7 @@ public class InternalOrder implements Order {
             this.setStatus(PARTIALLY_SHIPPED);
         }
         this.setShippedTime(shipment.getShippedTime());
+        this.getShipments().add(shipment);
     }
 
     @Override

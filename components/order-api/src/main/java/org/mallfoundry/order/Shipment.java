@@ -1,20 +1,18 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.shipping.Address;
+import org.mallfoundry.shipping.CarrierCode;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface Shipment {
 
     String getId();
 
     void setId(String id);
-
-    String getOrderId();
-
-    void setOrderId(String orderId);
 
     String getConsignorId();
 
@@ -24,17 +22,31 @@ public interface Shipment {
 
     void setConsignor(String consignor);
 
-    List<OrderItem> getItems();
+    List<String> getImageUrls();
 
-    void setItems(List<OrderItem> items);
+    ShipmentItem createItem(String id);
+
+    Optional<ShipmentItem> getItem(String id);
+
+    void addItem(ShipmentItem item);
+
+    void removeItem(ShipmentItem item);
+
+    List<ShipmentItem> getItems();
+
+    void setItems(List<ShipmentItem> items);
 
     Address getShippingAddress();
 
     void setShippingAddress(Address shippingAddress);
 
-    String getShippingProvider();
+    CarrierCode getShippingProvider();
 
-    void setShippingProvider(String shippingProvider);
+    void setShippingProvider(CarrierCode shippingProvider);
+
+    String getTrackingCarrier();
+
+    void setTrackingCarrier(String trackingCarrier);
 
     String getShippingMethod();
 
@@ -53,9 +65,7 @@ public interface Shipment {
 
     interface Builder extends ObjectBuilder<Shipment> {
 
-        Builder orderId(String orderId);
-
-        Builder items(List<OrderItem> items);
+        Builder items(List<ShipmentItem> items);
 
         Builder consignorId(String consignorId);
 
@@ -63,7 +73,9 @@ public interface Shipment {
 
         Builder shippingAddress(Address shippingAddress);
 
-        Builder shippingProvider(String shippingProvider);
+        Builder shippingProvider(CarrierCode shippingProvider);
+
+        Builder trackingCarrier(String trackingCarrier);
 
         Builder shippingMethod(String shippingMethod);
 
@@ -79,13 +91,7 @@ public interface Shipment {
         }
 
         @Override
-        public Builder orderId(String orderId) {
-            this.shipment.setOrderId(orderId);
-            return this;
-        }
-
-        @Override
-        public Builder items(List<OrderItem> items) {
+        public Builder items(List<ShipmentItem> items) {
             this.shipment.setItems(items);
             return this;
         }
@@ -109,8 +115,14 @@ public interface Shipment {
         }
 
         @Override
-        public Builder shippingProvider(String shippingProvider) {
+        public Builder shippingProvider(CarrierCode shippingProvider) {
             this.shipment.setShippingProvider(shippingProvider);
+            return this;
+        }
+
+        @Override
+        public Builder trackingCarrier(String trackingCarrier) {
+            this.shipment.setTrackingCarrier(trackingCarrier);
             return this;
         }
 

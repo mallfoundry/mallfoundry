@@ -96,63 +96,47 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders/{order_id}/shipments")
-    public Shipment addShipment(@PathVariable("order_id") String orderId,
-                                @RequestBody AddShipmentRequest request) {
-        var itemIds = request.getItems().stream()
-                .map(OrderRequest.OrderItemRequest::getId)
-                .collect(Collectors.toList());
-        var shipment = this.orderService.createShipment(orderId, itemIds).toBuilder()
-                .shippingProvider(request.getShippingProvider())
-                .shippingMethod(request.getShippingMethod())
-                .trackingNumber(request.getTrackingNumber())
-                .build();
-        return this.orderService.addShipment(orderId, shipment);
+    public Shipment addOrderShipment(@PathVariable("order_id") String orderId,
+                                     @RequestBody AddShipmentRequest request) {
+        return this.orderService.addOrderShipment(orderId,
+                request.assignToShipment(
+                        this.orderService.createOrder(orderId).createShipment(null)));
     }
 
-    @PostMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public Optional<Shipment> getShipment(@PathVariable("order_id") String orderId,
-                                          @PathVariable("shipment_id") String shipmentId) {
-        return this.orderService.getShipment(orderId, shipmentId);
+    @GetMapping("/orders/{order_id}/shipments")
+    public List<Shipment> getOrderShipments(@PathVariable("order_id") String orderId) {
+        return this.orderService.getOrderShipments(orderId);
     }
 
-    public Shipment requestToShipment(ShipmentRequest request, Shipment shipment) {
-        if (StringUtils.isNotEmpty(request.getShippingMethod())) {
-            shipment.setShippingMethod(request.getShippingMethod());
-        }
-
-        if (StringUtils.isNotEmpty(request.getShippingProvider())) {
-            shipment.setShippingProvider(request.getShippingProvider());
-        }
-
-        if (StringUtils.isNotEmpty(request.getTrackingNumber())) {
-            shipment.setTrackingNumber(request.getTrackingNumber());
-        }
-        return shipment;
+    @GetMapping("/orders/{order_id}/shipments/{shipment_id}")
+    public Optional<Shipment> getOrderShipment(@PathVariable("order_id") String orderId,
+                                               @PathVariable("shipment_id") String shipmentId) {
+        return this.orderService.getOrderShipment(orderId, shipmentId);
     }
 
     @PatchMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public void setShipment(@PathVariable("order_id") String orderId,
-                            @PathVariable("shipment_id") String shipmentId,
-                            @RequestBody ShipmentRequest request) {
-        this.orderService.setShipment(orderId,
+    public void setOrderShipment(@PathVariable("order_id") String orderId,
+                                 @PathVariable("shipment_id") String shipmentId,
+                                 @RequestBody ShipmentRequest request) {
+        this.orderService.setOrderShipment(orderId,
                 request.assignToShipment(
-                        this.orderService.getOrder(orderId).orElseThrow().createShipment(shipmentId)));
+                        this.orderService.createOrder(orderId).createShipment(shipmentId)));
     }
 
     @PatchMapping("/orders/{order_id}/shipments/batch")
-    public void setShipments(@PathVariable("order_id") String orderId,
-                             @RequestBody List<BatchShipmentRequest> requests) {
+    public void setOrderShipments(@PathVariable("order_id") String orderId,
+                                  @RequestBody List<BatchShipmentRequest> requests) {
         var order = this.orderService.getOrder(orderId).orElseThrow();
         var shipments = requests.stream()
                 .map(request ->
                         request.assignToShipment(order.createShipment(request.getId())))
                 .collect(Collectors.toList());
-        this.orderService.setShipments(orderId, shipments);
+        this.orderService.setOrderShipments(orderId, shipments);
     }
 
     @DeleteMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public void removeShipment(@PathVariable("order_id") String orderId,
-                               @PathVariable("shipment_id") String shipmentId) {
-        this.orderService.removeShipment(orderId, shipmentId);
+    public void removeOrderShipment(@PathVariable("order_id") String orderId,
+                                    @PathVariable("shipment_id") String shipmentId) {
+        this.orderService.removeOrderShipment(orderId, shipmentId);
     }
 }

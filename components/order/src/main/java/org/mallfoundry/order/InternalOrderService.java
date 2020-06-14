@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.shipping.CarrierService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,13 +38,20 @@ public class InternalOrderService implements OrderService {
 
     static final String ORDER_SHIPMENT_ID_VALUE_NAME = "order.shipment.id";
 
+    static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
+
     private final OrderRepository orderRepository;
 
     private final OrderSplitter orderSplitter;
 
-    public InternalOrderService(OrderRepository orderRepository, OrderSplitter orderSplitter) {
+    private final CarrierService carrierService;
+
+    public InternalOrderService(OrderRepository orderRepository,
+                                OrderSplitter orderSplitter,
+                                CarrierService carrierService) {
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
+        this.carrierService = carrierService;
     }
 
     @Override
@@ -111,47 +119,53 @@ public class InternalOrderService implements OrderService {
 
     @Transactional
     @Override
-    public Shipment addShipment(String orderId, Shipment shipment) {
+    public Shipment addOrderShipment(String orderId, Shipment shipment) {
         var order = this.getOrder(orderId).orElseThrow();
         if (StringUtils.isBlank(shipment.getId())) {
             shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
         }
-        shipment.toBuilder()
-                .consignorId(SecurityUserHolder.getUserId())
-                .consignor(SecurityUserHolder.getNickname());
+        shipment.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ITEM_ID_VALUE_NAME)));
+        shipment.setConsignorId(SecurityUserHolder.getUserId());
+        if (StringUtils.isBlank(shipment.getConsignor())) {
+            shipment.setConsignor(SecurityUserHolder.getNickname());
+        }
+        // Set the tracking carrier name.
+        if (StringUtils.isBlank(shipment.getTrackingCarrier())) {
+            var carrier = this.carrierService.getCarrier(shipment.getShippingProvider()).orElseThrow();
+            shipment.setTrackingCarrier(carrier.getName());
+        }
         order.addShipment(shipment);
         return shipment;
     }
 
     @Override
-    public Optional<Shipment> getShipment(String orderId, String shipmentId) {
+    public Optional<Shipment> getOrderShipment(String orderId, String shipmentId) {
         return this.orderRepository.findById(orderId).orElseThrow().getShipment(shipmentId);
+    }
+
+    @Override
+    public List<Shipment> getOrderShipments(String orderId) {
+        return this.orderRepository.findById(orderId).orElseThrow().getShipments();
     }
 
     @Transactional
     @Override
-    public void setShipment(String orderId, Shipment shipment) {
+    public void setOrderShipment(String orderId, Shipment shipment) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         order.setShipment(shipment);
         this.orderRepository.save(order);
     }
 
     @Override
-    public void setShipments(String orderId, List<Shipment> shipments) {
+    public void setOrderShipments(String orderId, List<Shipment> shipments) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         shipments.forEach(order::setShipment);
     }
 
     @Transactional
     @Override
-    public void removeShipment(String orderId, String shipmentId) {
+    public void removeOrderShipment(String orderId, String shipmentId) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         order.removeShipment(order.getShipment(shipmentId).orElseThrow());
-    }
-
-    @Override
-    public Shipment createShipment(String orderId, List<String> itemIds) {
-        var order = this.getOrder(orderId).orElseThrow();
-        return order.createShipment(null).toBuilder().items(order.getItems(itemIds)).build();
     }
 }

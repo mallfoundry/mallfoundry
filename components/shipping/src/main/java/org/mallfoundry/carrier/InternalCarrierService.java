@@ -6,6 +6,7 @@ import org.mallfoundry.shipping.CarrierService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InternalCarrierService implements CarrierService {
@@ -29,7 +30,8 @@ public class InternalCarrierService implements CarrierService {
     }
 
     @Override
-    public Carrier getCarrier(String code) {
-        return null;
+    public Optional<Carrier> getCarrier(CarrierCode code) {
+        return this.getCarriers().stream().filter(carrier -> carrier.getCode().equals(code)).findFirst();
     }
+
 }

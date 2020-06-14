@@ -5,5 +5,4 @@ public interface Carrier {
     String getName();
 
     CarrierCode getCode();
-
 }
