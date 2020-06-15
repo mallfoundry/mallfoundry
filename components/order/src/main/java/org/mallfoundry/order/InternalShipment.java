@@ -77,7 +77,7 @@ public class InternalShipment implements Shipment {
     private String trackingNumber;
 
     @Convert(converter = ShipmentItemListConverter.class)
-    @Column(name = "items_")
+    @Column(name = "items_", length = 1024 * 2)
     private List<ShipmentItem> items = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

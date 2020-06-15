@@ -94,15 +94,23 @@ public interface Order {
 
     Date getCancelledTime();
 
+    Date getPickedTime();
+
+    Date getPickupTime();
+
     void discounts(Map<String, BigDecimal> amounts);
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
 
-    void place();
+    void place() throws OrderException;
 
-    void pay(PaymentDetails details);
+    void pay(PaymentDetails details) throws OrderException;
 
-    void cancel(String reason);
+    void cancel(String reason) throws OrderException;
+
+    void pack() throws OrderException;
+
+    void pickup() throws OrderException;
 
     default Builder toBuilder() {
         return new BuilderSupport(this);

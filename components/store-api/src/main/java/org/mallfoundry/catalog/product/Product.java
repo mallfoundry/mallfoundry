@@ -104,6 +104,8 @@ public interface Product extends Serializable {
 
     void addAttribute(ProductAttribute attribute);
 
+    List<ProductAttribute> getAttributes();
+
     void addImageUrl(String url);
 
     void addVideoUrl(String url);

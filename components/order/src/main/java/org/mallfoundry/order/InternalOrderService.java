@@ -107,6 +107,20 @@ public class InternalOrderService implements OrderService {
         order.cancel(reason);
     }
 
+    @Transactional
+    @Override
+    public void packOrder(String orderId) {
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.pack();
+    }
+
+    @Transactional
+    @Override
+    public void pickupOrder(String orderId) {
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.pickup();
+    }
+
     @Override
     public Optional<Order> getOrder(String orderId) {
         return CastUtils.cast(this.orderRepository.findById(orderId));
@@ -130,7 +144,8 @@ public class InternalOrderService implements OrderService {
             shipment.setConsignor(SecurityUserHolder.getNickname());
         }
         // Set the tracking carrier name.
-        if (StringUtils.isBlank(shipment.getTrackingCarrier())) {
+        if (StringUtils.isNotBlank(shipment.getTrackingNumber())
+                && StringUtils.isBlank(shipment.getTrackingCarrier())) {
             var carrier = this.carrierService.getCarrier(shipment.getShippingProvider()).orElseThrow();
             shipment.setTrackingCarrier(carrier.getName());
         }

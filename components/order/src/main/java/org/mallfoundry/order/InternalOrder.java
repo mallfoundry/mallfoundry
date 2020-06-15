@@ -52,7 +52,9 @@ import java.util.stream.Collectors;
 
 import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
+import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
+import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
@@ -144,9 +146,16 @@ public class InternalOrder implements Order {
     private Date shippedTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty(value = "cancelled_time", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "picked_time_")
+    private Date pickedTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "pickup_time_")
+    private Date pickupTime;
 
     public InternalOrder(String id) {
         this.setId(id);
@@ -329,7 +338,7 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void pay(PaymentDetails details) {
+    public void pay(PaymentDetails details) throws OrderException {
         this.setPaymentDetails(InternalPaymentDetails.of(details));
         if (details.getStatus() == PaymentStatus.CAPTURED) {
             this.setStatus(AWAITING_FULFILLMENT);
@@ -338,9 +347,26 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void cancel(String reason) {
+    public void cancel(String reason) throws OrderException {
+        var status = this.getStatus();
+        if (!Objects.equals(AWAITING_PAYMENT, status)
+                || !Objects.equals(PENDING, status)) {
+            throw new OrderException("The current order status must be awaiting payment or pending");
+        }
         this.setStatus(CANCELLED);
         this.setCancelledTime(new Date());
         this.setCancelReason(reason);
+    }
+
+    @Override
+    public void pack() throws OrderException {
+        this.setStatus(AWAITING_SHIPMENT);
+        this.setPickedTime(new Date());
+    }
+
+    @Override
+    public void pickup() throws OrderException {
+        this.setPickupTime(new Date());
+        this.setStatus(COMPLETED);
     }
 }

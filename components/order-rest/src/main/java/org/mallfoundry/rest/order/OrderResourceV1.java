@@ -71,6 +71,16 @@ public class OrderResourceV1 {
         this.orderService.cancelOrder(orderId, request.getReason());
     }
 
+    @PostMapping("/orders/{order_id}/pack")
+    public void packOrder(@PathVariable("order_id") String orderId) {
+        this.orderService.packOrder(orderId);
+    }
+
+    @PostMapping("/orders/{order_id}/pickup")
+    public void pickupOrder(@PathVariable("order_id") String orderId) {
+        this.orderService.pickupOrder(orderId);
+    }
+
     @GetMapping("/orders/{order_id}")
     public Optional<Order> getOrder(@PathVariable("order_id") String orderId) {
         return this.orderService.getOrder(orderId);
