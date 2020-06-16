@@ -20,7 +20,9 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    InternalProduct save(InternalProduct product);
+    Product create(String id);
 
-    Optional<InternalProduct> findById(String id);
+    Product save(Product product);
+
+    Optional<Product> findById(String id);
 }

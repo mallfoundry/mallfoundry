@@ -127,6 +127,8 @@ public interface Product extends Serializable {
 
         Builder status(ProductStatus status);
 
+        Builder collections(Set<String> collections);
+
         Builder imageUrl(String image);
 
         Builder videoUrl(String video);
@@ -171,6 +173,12 @@ public interface Product extends Serializable {
 
         public Builder status(ProductStatus status) {
             this.product.setStatus(status);
+            return this;
+        }
+
+        @Override
+        public Builder collections(Set<String> collections) {
+            this.product.setCollections(collections);
             return this;
         }
 

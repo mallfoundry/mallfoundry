@@ -16,12 +16,34 @@
 
 package org.mallfoundry.catalog.product.repository.jpa;
 
-import org.mallfoundry.catalog.product.InternalProduct;
+import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface JpaProductRepository
-        extends ProductRepository, JpaRepository<InternalProduct, String> {
+public class JpaProductRepository implements ProductRepository {
+
+    private final JpaProductRepositoryDelegate productRepository;
+
+    public JpaProductRepository(JpaProductRepositoryDelegate productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Override
+    public Product create(String id) {
+        return new JpaProduct(id);
+    }
+
+    @Override
+    public Product save(Product product) {
+        return this.productRepository.save(JpaProduct.of(product));
+    }
+
+    @Override
+    public Optional<Product> findById(String id) {
+        return CastUtils.cast(this.productRepository.findById(id));
+    }
 }

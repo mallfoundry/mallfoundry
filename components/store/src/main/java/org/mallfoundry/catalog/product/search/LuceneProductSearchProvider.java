@@ -16,15 +16,6 @@
 
 package org.mallfoundry.catalog.product.search;
 
-import org.mallfoundry.catalog.product.InternalProduct;
-import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductQuery;
-import org.mallfoundry.catalog.product.ProductStatus;
-import org.mallfoundry.catalog.product.ProductVariant;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.inventory.InventoryStatus;
-import org.mallfoundry.util.JsonUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -52,6 +43,15 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
+import org.mallfoundry.catalog.product.Product;
+import org.mallfoundry.catalog.product.ProductQuery;
+import org.mallfoundry.catalog.product.ProductStatus;
+import org.mallfoundry.catalog.product.ProductVariant;
+import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProduct;
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
+import org.mallfoundry.inventory.InventoryStatus;
+import org.mallfoundry.util.JsonUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -112,7 +112,9 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
 
     private Product getProduct(String productId) {
         var document = this.getDocument(productId);
-        return Objects.isNull(document) ? null : JsonUtils.parse(document.get("product"), InternalProduct.class);
+        return Objects.isNull(document)
+                ? null
+                : JsonUtils.parse(document.get("product"), ElasticsearchProduct.class);
     }
 
     private void setDocument(Product product, Document document) {
@@ -226,8 +228,12 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                 }
 
                 if (Objects.nonNull(search.getMinPrice()) || Objects.nonNull(search.getMaxPrice())) {
-                    var minPrice = Objects.nonNull(search.getMinPrice()) ? new BytesRef(search.getMinPrice().toString()) : null;
-                    var maxPrice = Objects.nonNull(search.getMaxPrice()) ? new BytesRef(search.getMaxPrice().toString()) : null;
+                    var minPrice = Objects.nonNull(search.getMinPrice())
+                            ? new BytesRef(search.getMinPrice().toString())
+                            : null;
+                    var maxPrice = Objects.nonNull(search.getMaxPrice())
+                            ? new BytesRef(search.getMaxPrice().toString())
+                            : null;
                     queryBuilder.add(new TermRangeQuery(PRODUCT_PRICE_FIELD_NAME, minPrice, maxPrice, true, true), BooleanClause.Occur.MUST);
                 }
 
@@ -241,7 +247,7 @@ public class LuceneProductSearchProvider implements ProductSearchProvider {
                     int docId = scoreDoc.doc;
                     Document doc = reader.document(docId);
                     String product = doc.get("product");
-                    products.add(JsonUtils.parse(product, InternalProduct.class));
+                    products.add(JsonUtils.parse(product, ElasticsearchProduct.class));
                 }
                 return PageList.of(products).page(search.getPage()).limit(search.getLimit()).totalSize(totalSize);
             }

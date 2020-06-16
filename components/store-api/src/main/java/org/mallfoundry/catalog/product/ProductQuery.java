@@ -1,13 +1,13 @@
 package org.mallfoundry.catalog.product;
 
-import org.mallfoundry.data.Pageable;
+import org.mallfoundry.data.Query;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public interface ProductQuery extends Pageable {
+public interface ProductQuery extends Query {
 
     Set<String> getIds();
 
