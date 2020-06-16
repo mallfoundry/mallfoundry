@@ -23,6 +23,8 @@ public interface OrderService {
 
     SliceList<Order> getOrders(OrderQuery query);
 
+    long getOrderCount(OrderQuery query);
+
     void payOrder(String orderId, PaymentDetails details);
 
     void cancelOrder(String orderId, String reason);

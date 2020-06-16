@@ -16,15 +16,15 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.QuerySupport;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class InternalOrderQuery extends PageableSupport implements OrderQuery {
+public class InternalOrderQuery extends QuerySupport implements OrderQuery {
 
     private String name;
 

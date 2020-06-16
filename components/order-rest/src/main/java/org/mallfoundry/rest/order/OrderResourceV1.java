@@ -105,6 +105,22 @@ public class OrderResourceV1 {
                 .storeId(storeId).build());
     }
 
+    @GetMapping("/orders/count")
+    public long getOrderCount(@RequestParam(name = "customer_id", required = false) String customerId,
+                              @RequestParam(name = "statuses", required = false) List<String> statuses,
+                              @RequestParam(name = "store_id", required = false) String storeId) {
+        return this.orderService.getOrderCount(this.orderService.createOrderQuery().toBuilder()
+                .customerId(customerId)
+                // flat map -> filter is not empty -> upper case -> enum value of -> to list
+                .statuses(() -> Stream.ofNullable(statuses)
+                        .flatMap(List::stream)
+                        .filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase)
+                        .map(OrderStatus::valueOf)
+                        .collect(Collectors.toList()))
+                .storeId(storeId).build());
+    }
+
     @PostMapping("/orders/{order_id}/shipments")
     public Shipment addOrderShipment(@PathVariable("order_id") String orderId,
                                      @RequestBody AddShipmentRequest request) {

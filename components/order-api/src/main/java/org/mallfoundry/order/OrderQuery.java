@@ -1,11 +1,11 @@
 package org.mallfoundry.order;
 
-import org.mallfoundry.data.Pageable;
+import org.mallfoundry.data.Query;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-public interface OrderQuery extends Pageable {
+public interface OrderQuery extends Query {
 
     String getName();
 

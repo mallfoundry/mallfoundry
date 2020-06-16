@@ -16,12 +16,12 @@
 
 package org.mallfoundry.order.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.InternalOrder;
 import org.mallfoundry.order.OrderQuery;
 import org.mallfoundry.order.OrderRepository;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -43,10 +43,8 @@ public interface JpaOrderRepository
     @Override
     List<InternalOrder> findAllById(Iterable<String> iterable);
 
-    @Override
-    default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
-
-        Page<InternalOrder> page = this.findAll((Specification<InternalOrder>) (root, query, criteriaBuilder) -> {
+    default Specification<InternalOrder> createSpecification(OrderQuery orderQuery) {
+        return (Specification<InternalOrder>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(orderQuery.getCustomerId())) {
@@ -62,11 +60,23 @@ public interface JpaOrderRepository
             }
 
             return predicate;
-        }, PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("createdTime"))));
+        };
+    }
+
+    @Override
+    default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
+
+        Page<InternalOrder> page = this.findAll(this.createSpecification(orderQuery),
+                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("createdTime"))));
 
         return PageList.of(page.getContent())
                 .page(page.getNumber())
                 .limit(orderQuery.getLimit())
                 .totalSize(page.getTotalElements());
+    }
+
+    @Override
+    default long count(OrderQuery orderQuery) {
+        return this.count(this.createSpecification(orderQuery));
     }
 }

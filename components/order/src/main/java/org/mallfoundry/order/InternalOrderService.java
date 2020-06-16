@@ -131,6 +131,11 @@ public class InternalOrderService implements OrderService {
         return CastUtils.cast(this.orderRepository.findAll(query));
     }
 
+    @Override
+    public long getOrderCount(OrderQuery query) {
+        return this.orderRepository.count(query);
+    }
+
     @Transactional
     @Override
     public Shipment addOrderShipment(String orderId, Shipment shipment) {

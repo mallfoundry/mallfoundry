@@ -62,7 +62,7 @@ public class InternalProductService implements ProductService {
 
     @Override
     public Product createProduct(String id) {
-        return new InternalProduct(id);
+        return this.productRepository.create(id);
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class InternalProductService implements ProductService {
         if (Objects.isNull(product.getId())) {
             product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
         }
-        var addedProduct = this.productRepository.save(InternalProduct.of(product));
+        var addedProduct = this.productRepository.save(product);
         this.eventPublisher.publishEvent(new InternalProductAddedEvent(addedProduct));
         return addedProduct;
     }
@@ -79,9 +79,8 @@ public class InternalProductService implements ProductService {
     @Transactional
     @Override
     public void updateProduct(Product product) {
-        var newProduct = InternalProduct.of(product);
-        var oldProduct = this.productRepository.findById(newProduct.getId()).orElseThrow();
-        BeanUtils.copyProperties(newProduct, oldProduct, "variants");
+        var oldProduct = this.productRepository.findById(product.getId()).orElseThrow();
+        BeanUtils.copyProperties(product, oldProduct, "variants");
         var savedProduct = this.productRepository.save(oldProduct);
         this.eventPublisher.publishEvent(new InternalProductChangedEvent(savedProduct));
     }

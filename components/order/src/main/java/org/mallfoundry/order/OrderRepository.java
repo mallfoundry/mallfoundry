@@ -32,4 +32,6 @@ public interface OrderRepository {
     List<InternalOrder> findAllById(Iterable<String> iterable);
 
     SliceList<InternalOrder> findAll(OrderQuery query);
+
+    long count(OrderQuery query);
 }

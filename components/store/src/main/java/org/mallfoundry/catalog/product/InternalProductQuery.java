@@ -18,7 +18,7 @@ package org.mallfoundry.catalog.product;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.data.PageableSupport;
+import org.mallfoundry.data.QuerySupport;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class InternalProductQuery extends PageableSupport implements ProductQuery {
+public class InternalProductQuery extends QuerySupport implements ProductQuery {
 
     private Set<String> ids;
 
