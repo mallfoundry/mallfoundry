@@ -16,22 +16,26 @@
 
 package org.mallfoundry.catalog.product.repository.jpa.convert;
 
-import org.mallfoundry.catalog.product.InternalProductAttribute;
+import org.mallfoundry.catalog.product.DefaultProductAttribute;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductAttributeListConverter implements AttributeConverter<List<InternalProductAttribute>, String> {
+public class ProductAttributeListConverter implements AttributeConverter<List<DefaultProductAttribute>, String> {
 
     @Override
-    public String convertToDatabaseColumn(List<InternalProductAttribute> attribute) {
-        return Objects.isNull(attribute) ? null : JsonUtils.stringify(attribute);
+    public String convertToDatabaseColumn(List<DefaultProductAttribute> attribute) {
+        return Objects.isNull(attribute)
+                ? null
+                : JsonUtils.stringify(attribute);
     }
 
     @Override
-    public List<InternalProductAttribute> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, InternalProductAttribute.class);
+    public List<DefaultProductAttribute> convertToEntityAttribute(String dbData) {
+        return Objects.isNull(dbData)
+                ? null
+                : JsonUtils.parse(dbData, List.class, DefaultProductAttribute.class);
     }
 }

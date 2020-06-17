@@ -23,23 +23,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalProductAttribute implements ProductAttribute {
+public abstract class ProductAttributeSupport implements ProductAttribute {
 
-    private String namespace;
-
-    private String name;
-
-    private String value;
-
-    private int position;
-
-    public InternalProductAttribute(String name, String value) {
-        this.name = name;
-        this.value = value;
+    public ProductAttributeSupport(String name, String value) {
+        this.setName(name);
+        this.setValue(value);
     }
 
-    public InternalProductAttribute(String namespace, String name, String value) {
+    public ProductAttributeSupport(String namespace, String name, String value) {
         this(name, value);
-        this.namespace = namespace;
+        this.setNamespace(namespace);
     }
 }

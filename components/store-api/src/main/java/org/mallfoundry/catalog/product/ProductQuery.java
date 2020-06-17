@@ -1,6 +1,8 @@
 package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
@@ -46,25 +48,44 @@ public interface ProductQuery extends Query {
     void setInventoryStatuses(Set<InventoryStatus> statuses);
 
     default Builder toBuilder() {
-        return new Builder(this);
+        return new BuilderSupport(this);
     }
 
-    class Builder {
+    interface Builder extends QueryBuilder<ProductQuery, Builder> {
+
+        Builder ids(Set<String> ids);
+
+        Builder name(String name);
+
+        Builder minPrice(BigDecimal minPrice);
+
+        Builder maxPrice(BigDecimal maxPrice);
+
+        Builder storeId(String storeId);
+
+        Builder collections(Set<String> collections);
+
+        Builder types(Set<ProductType> types);
+
+        Builder types(Supplier<Set<ProductType>> supplier);
+
+        Builder statuses(Set<ProductStatus> statuses);
+
+        Builder statuses(Supplier<Set<ProductStatus>> supplier);
+
+        Builder inventoryStatuses(Set<InventoryStatus> statuses);
+
+        Builder inventoryStatuses(Supplier<Set<InventoryStatus>> supplier);
+
+    }
+
+    class BuilderSupport extends QueryBuilderSupport<ProductQuery, Builder> implements Builder {
 
         private final ProductQuery query;
 
-        public Builder(ProductQuery query) {
+        public BuilderSupport(ProductQuery query) {
+            super(query);
             this.query = query;
-        }
-
-        public Builder page(Integer page) {
-            this.query.setPage(page);
-            return this;
-        }
-
-        public Builder limit(Integer limit) {
-            this.query.setLimit(limit);
-            return this;
         }
 
         public Builder ids(Set<String> ids) {

@@ -64,12 +64,17 @@ public class ProductTests {
     @Test
     @Rollback(false)
     @Transactional
-    public void testSaveProducts() {
+    public void testSaveProducts() throws InterruptedException {
         productService.addProduct(this.newProduct1());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct2());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct2_1());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct3());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct4());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct5());
     }
 

@@ -58,10 +58,12 @@ public class ProductResourceV1 {
                                           @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                           @RequestParam(name = "inventory_statuses", required = false) Set<String> inventoryStatuses,
                                           @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
-                                          @RequestParam(name = "max_price", required = false) BigDecimal maxPrice) {
+                                          @RequestParam(name = "max_price", required = false) BigDecimal maxPrice,
+                                          @RequestParam(name = "sort", required = false) String sort) {
         return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
-                .page(page).limit(limit).name(name).storeId(storeId)
-                .minPrice(minPrice).maxPrice(maxPrice)
+                .page(page).limit(limit)
+                .sort(aSort -> aSort.from(sort))
+                .name(name).storeId(storeId).minPrice(minPrice).maxPrice(maxPrice)
                 .types(() -> Stream.ofNullable(types).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
                 .statuses(() -> Stream.ofNullable(statuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)

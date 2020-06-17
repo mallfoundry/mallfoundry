@@ -16,6 +16,8 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface ProductRepository {
@@ -25,4 +27,6 @@ public interface ProductRepository {
     Product save(Product product);
 
     Optional<Product> findById(String id);
+
+    SliceList<Product> findAll(ProductQuery query);
 }

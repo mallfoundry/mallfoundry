@@ -1,6 +1,7 @@
 package org.mallfoundry.catalog.product;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
@@ -9,68 +10,23 @@ import org.mallfoundry.inventory.InventoryStatus;
 import org.mallfoundry.util.Positions;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Getter
 @Setter
-public class ProductSupport implements Product {
-
-    private String id;
-
-    private String storeId;
-
-    private ProductType type;
-
-    private ProductStatus status;
-
-    private String name;
-
-    private String description;
-
-    private Set<String> collections = new HashSet<>();
-
-    private BigDecimal price;
-
-    private BigDecimal marketPrice;
-
-    private List<ProductOption> options = new ArrayList<>();
-
-    private List<ProductAttribute> attributes = new ArrayList<>();
-
-    private List<ProductVariant> variants = new ArrayList<>();
-
-    private List<String> imageUrls = new ArrayList<>();
-
-    private List<String> videoUrls = new ArrayList<>();
-
-    private String shippingOrigin;
-
-    private boolean freeShipping;
-
-    private BigDecimal fixedShippingCost;
-
-    private String shippingRateId;
-
-    private Date createdTime;
-
-    public ProductSupport() {
-
-    }
+@NoArgsConstructor
+public abstract class ProductSupport implements MutableProduct {
 
     public ProductSupport(String id) {
-        this.id = id;
+        this.setId(id);
     }
 
     public BigDecimal getPrice() {
         return CollectionUtils.isEmpty(this.getVariants())
-                ? this.price
+                ? this.getPrice()
                 : this.getVariants().stream()
                         .map(ProductVariant::getPrice)
                         .max(BigDecimal::compareTo)
@@ -112,14 +68,14 @@ public class ProductSupport implements Product {
                 .findFirst();
     }
 
-    @Override
-    public ProductVariant createVariant(String id) {
-        var variant = new InternalProductVariant();
-        variant.setId(id);
-        variant.setProductId(this.getId());
-        variant.setStoreId(this.getStoreId());
-        return variant;
-    }
+//    @Override
+//    public ProductVariant createVariant(String id) {
+//        var variant = new InternalProductVariant();
+//        variant.setId(id);
+//        variant.setProductId(this.getId());
+//        variant.setStoreId(this.getStoreId());
+//        return variant;
+//    }
 
     @Override
     public ProductOption createOption(String id) {
@@ -128,13 +84,13 @@ public class ProductSupport implements Product {
 
     @Override
     public Optional<ProductOption> getOption(String name) {
-        return this.options.stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
+        return this.getOptions().stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
     }
 
     @Override
     public void addOption(ProductOption option) {
-        this.options.add(option);
-        Positions.sort(this.options);
+        this.getOptions().add(option);
+        Positions.sort(this.getOptions());
     }
 
     @Override
@@ -142,16 +98,6 @@ public class ProductSupport implements Product {
         return this.getOption(name)
                 .map(option -> Map.entry(option, option.getValue(label).orElseThrow()))
                 .map(entry -> new DefaultOptionSelection(entry.getKey().getId(), name, entry.getValue().getId(), label));
-    }
-
-    @Override
-    public ProductAttribute createAttribute(String name, String value) {
-        return new InternalProductAttribute(name, value);
-    }
-
-    @Override
-    public ProductAttribute createAttribute(String namespace, String name, String value) {
-        return new InternalProductAttribute(namespace, name, value);
     }
 
     @Override
