@@ -16,15 +16,15 @@
 
 package org.mallfoundry.catalog.product.repository.jpa;
 
+import org.mallfoundry.catalog.product.JdbcProductRepository;
 import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductRepository;
+import org.mallfoundry.catalog.product.ProductQuery;
+import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public class JpaProductRepository implements ProductRepository {
+public class JpaProductRepository implements JdbcProductRepository {
 
     private final JpaProductRepositoryDelegate productRepository;
 
@@ -45,5 +45,10 @@ public class JpaProductRepository implements ProductRepository {
     @Override
     public Optional<Product> findById(String id) {
         return CastUtils.cast(this.productRepository.findById(id));
+    }
+
+    @Override
+    public SliceList<Product> findAll(ProductQuery query) {
+        return SliceList.emptyList();
     }
 }

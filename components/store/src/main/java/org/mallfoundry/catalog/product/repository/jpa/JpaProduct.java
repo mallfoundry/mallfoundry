@@ -2,10 +2,10 @@ package org.mallfoundry.catalog.product.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.catalog.product.InternalProductAttribute;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.catalog.product.DefaultProductAttribute;
 import org.mallfoundry.catalog.product.InternalProductOption;
-import org.mallfoundry.catalog.product.InternalProductVariant;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
@@ -31,23 +31,87 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "mf_catalog_product")
 public class JpaProduct extends ProductSupport {
 
-    public static JpaProduct of(Product product) {
-        if (product instanceof JpaProduct) {
-            return (JpaProduct) product;
-        }
-        var target = new JpaProduct(product.getId());
-        BeanUtils.copyProperties(product, target);
-        return target;
-    }
+    @Id
+    @Column(name = "id_")
+    private String id;
+
+    @Column(name = "store_id_")
+    private String storeId;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "type_")
+    private ProductType type;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status_")
+    private ProductStatus status;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "description_")
+    private String description;
+
+    @Column(name = "collections_")
+    @Convert(converter = StringSetConverter.class)
+    private Set<String> collections = new HashSet<>();
+
+    @Column(name = "price_")
+    private BigDecimal price;
+
+    @Column(name = "market_price_")
+    private BigDecimal marketPrice;
+
+    @OneToMany(targetEntity = InternalProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id_")
+    @JsonDeserialize(contentAs = InternalProductOption.class)
+    private List<ProductOption> options = new ArrayList<>();
+
+    @Column(name = "attributes_", length = 2048)
+    @Convert(converter = ProductAttributeListConverter.class)
+    @JsonDeserialize(contentAs = DefaultProductAttribute.class)
+    private List<ProductAttribute> attributes = new ArrayList<>();
+
+    @OneToMany(targetEntity = JpaProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonDeserialize(contentAs = JpaProductVariant.class)
+    @JoinColumn(name = "product_id_")
+    private List<ProductVariant> variants = new ArrayList<>();
+
+    @Column(name = "image_urls_", length = 2048)
+    @Convert(converter = StringListConverter.class)
+    private List<String> imageUrls = new ArrayList<>();
+
+    @Column(name = "video_urls_", length = 2048)
+    @Convert(converter = StringListConverter.class)
+    private List<String> videoUrls = new ArrayList<>();
+
+    @Column(name = "shipping_origin_")
+    private String shippingOrigin;
+
+    @Column(name = "free_shipping_")
+    private boolean freeShipping;
+
+    @Column(name = "fixed_shipping_cost_")
+    private BigDecimal fixedShippingCost;
+
+    @Column(name = "shipping_rate_id_")
+    private String shippingRateId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_time_")
+    private Date createdTime;
 
     public JpaProduct() {
         super(null);
@@ -57,125 +121,13 @@ public class JpaProduct extends ProductSupport {
         super(id);
     }
 
-    @Id
-    @Column(name = "id_")
-    @Override
-    public String getId() {
-        return super.getId();
-    }
-
-    @Column(name = "store_id_")
-    @Override
-    public String getStoreId() {
-        return super.getStoreId();
-    }
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "type_")
-    @Override
-    public ProductType getType() {
-        return super.getType();
-    }
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "status_")
-    @Override
-    public ProductStatus getStatus() {
-        return super.getStatus();
-    }
-
-    @Column(name = "name_")
-    @Override
-    public String getName() {
-        return super.getName();
-    }
-
-    @Column(name = "description_")
-    @Override
-    public String getDescription() {
-        return super.getDescription();
-    }
-
-    @Column(name = "collections_")
-    @Convert(converter = StringSetConverter.class)
-    @Override
-    public Set<String> getCollections() {
-        return super.getCollections();
-    }
-
-    @Column(name = "market_price_")
-    @Override
-    public BigDecimal getMarketPrice() {
-        return super.getMarketPrice();
-    }
-
-    @OneToMany(targetEntity = InternalProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "product_id_")
-    @JsonDeserialize(contentAs = InternalProductOption.class)
-    @Override
-    public List<ProductOption> getOptions() {
-        return super.getOptions();
-    }
-
-    @Column(name = "attributes_", length = 2048)
-    @Convert(converter = ProductAttributeListConverter.class)
-    @JsonDeserialize(contentAs = InternalProductAttribute.class)
-    @Override
-    public List<ProductAttribute> getAttributes() {
-        return super.getAttributes();
-    }
-
-    @OneToMany(targetEntity = InternalProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonDeserialize(contentAs = InternalProductVariant.class)
-    @JoinColumn(name = "product_id_")
-    @Override
-    public List<ProductVariant> getVariants() {
-        return super.getVariants();
-    }
-
-    @Column(name = "image_urls_", length = 2048)
-    @Convert(converter = StringListConverter.class)
-    @Override
-    public List<String> getImageUrls() {
-        return super.getImageUrls();
-    }
-
-    @Column(name = "video_urls_", length = 2048)
-    @Convert(converter = StringListConverter.class)
-    @Override
-    public List<String> getVideoUrls() {
-        return super.getVideoUrls();
-    }
-
-    @Column(name = "shipping_origin_")
-    @Override
-    public String getShippingOrigin() {
-        return super.getShippingOrigin();
-    }
-
-    @Column(name = "free_shipping_")
-    @Override
-    public boolean isFreeShipping() {
-        return super.isFreeShipping();
-    }
-
-    @Column(name = "fixed_shipping_cost_")
-    @Override
-    public BigDecimal getFixedShippingCost() {
-        return super.getFixedShippingCost();
-    }
-
-    @Column(name = "shipping_rate_id_")
-    @Override
-    public String getShippingRateId() {
-        return super.getShippingRateId();
-    }
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "created_time_")
-    @Override
-    public Date getCreatedTime() {
-        return super.getCreatedTime();
+    public static JpaProduct of(Product product) {
+        if (product instanceof JpaProduct) {
+            return (JpaProduct) product;
+        }
+        var target = new JpaProduct(product.getId());
+        BeanUtils.copyProperties(product, target);
+        return target;
     }
 
     @Transient
@@ -197,77 +149,17 @@ public class JpaProduct extends ProductSupport {
     }
 
     @Override
-    public void addVariant(ProductVariant variant) {
-        super.addVariant(variant);
-    }
-
-    @Override
-    public void adjustVariantInventoryQuantity(String variantId, int quantityDelta) {
-        super.adjustVariantInventoryQuantity(variantId, quantityDelta);
-    }
-
-    @Override
-    public Optional<ProductVariant> getVariant(String id) {
-        return super.getVariant(id);
-    }
-
-    @Override
     public ProductVariant createVariant(String id) {
-        return super.createVariant(id);
-    }
-
-    @Override
-    public ProductOption createOption(String id) {
-        return super.createOption(id);
-    }
-
-    @Override
-    public Optional<ProductOption> getOption(String name) {
-        return super.getOption(name);
-    }
-
-    @Override
-    public void addOption(ProductOption option) {
-        super.addOption(option);
-    }
-
-    @Override
-    public Optional<OptionSelection> selectOption(String name, String label) {
-        return super.selectOption(name, label);
+        return new JpaProductVariant(id);
     }
 
     @Override
     public ProductAttribute createAttribute(String name, String value) {
-        return super.createAttribute(name, value);
+        return new DefaultProductAttribute(name, value);
     }
 
     @Override
     public ProductAttribute createAttribute(String namespace, String name, String value) {
-        return super.createAttribute(namespace, name, value);
-    }
-
-    @Override
-    public Optional<ProductAttribute> getAttribute(String namespace, String name) {
-        return super.getAttribute(namespace, name);
-    }
-
-    @Override
-    public void addImageUrl(String imageUrl) {
-        super.addImageUrl(imageUrl);
-    }
-
-    @Override
-    public void addVideoUrl(String video) {
-        super.addVideoUrl(video);
-    }
-
-    @Override
-    public void addAttribute(ProductAttribute attribute) {
-        super.addAttribute(attribute);
-    }
-
-    @Override
-    public void create() {
-        super.create();
+        return new DefaultProductAttribute(namespace, name, value);
     }
 }
