@@ -16,37 +16,28 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.mallfoundry.catalog.product.search.ProductSearcher;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
-public class InternalProductService implements ProductService {
+public class DefaultProductService implements ProductService {
 
     private static final String PRODUCT_ID_VALUE_NAME = "catalog.product.id";
 
     private final ProductRepository productRepository;
 
-    private final ProductSearcher productSearcher;
-
     private final ApplicationEventPublisher eventPublisher;
 
-
-    public InternalProductService(ProductRepository productRepository,
-                                  ProductSearcher productSearcher,
-                                  ApplicationEventPublisher eventPublisher) {
+    public DefaultProductService(ProductRepository productRepository, ApplicationEventPublisher eventPublisher) {
         this.productRepository = productRepository;
-        this.productSearcher = productSearcher;
         this.eventPublisher = eventPublisher;
     }
 
@@ -72,7 +63,7 @@ public class InternalProductService implements ProductService {
             product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
         }
         var addedProduct = this.productRepository.save(product);
-        this.eventPublisher.publishEvent(new InternalProductAddedEvent(addedProduct));
+        this.eventPublisher.publishEvent(new DefaultProductAddedEvent(addedProduct));
         return addedProduct;
     }
 
@@ -105,7 +96,7 @@ public class InternalProductService implements ProductService {
 
     @Override
     public SliceList<Product> getProducts(ProductQuery query) {
-        return this.productSearcher.search(query);
+        return this.productRepository.findAll(query);
     }
 
 
