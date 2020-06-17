@@ -40,7 +40,6 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-codec.version>1.14</commons-codec.version>
-        <lucene.version>8.5.1</lucene.version>
         <qiniu-sdk.version>7.2.29</qiniu-sdk.version>
         <aliyun-sdk.version>4.5.1</aliyun-sdk.version>
         <alipay-sdk.version>4.9.13.ALL</alipay-sdk.version>
@@ -298,18 +297,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons-collections4.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-core</artifactId>
-                <version>${lucene.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-queryparser</artifactId>
-                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
