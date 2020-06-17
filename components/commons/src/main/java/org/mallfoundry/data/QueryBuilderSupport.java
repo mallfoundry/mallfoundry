@@ -20,4 +20,3 @@ public abstract class QueryBuilderSupport<O extends Query, B extends QueryBuilde
         return (B) this;
     }
 }
-
