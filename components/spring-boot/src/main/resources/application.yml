@@ -20,6 +20,9 @@ spring:
     type: simple
   messages:
     basename: messages
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
 server:
   port: 8077
   error:
