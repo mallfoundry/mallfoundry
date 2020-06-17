@@ -1,5 +1,6 @@
 package org.mallfoundry.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface Sort {
@@ -10,5 +11,27 @@ public interface Sort {
 
     Sort desc(String property);
 
-    List<SortOrder> getOrders();
+    List<Order> getOrders();
+
+    enum Direction {
+        ASC, DESC;
+
+        public boolean isAscending() {
+            return this.equals(ASC);
+        }
+
+        public boolean isDescending() {
+            return this.equals(DESC);
+        }
+    }
+
+    interface Order extends Serializable {
+
+        String getProperty();
+
+        void setProperty(String property);
+
+        Direction getDirection();
+    }
+
 }

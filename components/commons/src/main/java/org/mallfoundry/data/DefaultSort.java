@@ -1,5 +1,8 @@
 package org.mallfoundry.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +12,7 @@ import java.util.stream.Stream;
 
 public class DefaultSort implements Sort {
 
-    private final List<SortOrder> orders = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
 
     @Override
     public Sort from(String string) {
@@ -41,7 +44,7 @@ public class DefaultSort implements Sort {
     }
 
     @Override
-    public List<SortOrder> getOrders() {
+    public List<Order> getOrders() {
         return Collections.unmodifiableList(orders);
     }
 
@@ -49,4 +52,24 @@ public class DefaultSort implements Sort {
     public String toString() {
         return this.orders.stream().map(Object::toString).collect(Collectors.joining(","));
     }
+
+    @Getter
+    @Setter
+    private static class DefaultOrder implements Sort.Order {
+
+        private String property;
+
+        private final Direction direction;
+
+        DefaultOrder(String property, Direction direction) {
+            this.property = property;
+            this.direction = direction;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s %s", property, direction);
+        }
+    }
+
 }
