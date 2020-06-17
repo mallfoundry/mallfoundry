@@ -18,11 +18,13 @@ package org.mallfoundry.catalog.product;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
@@ -45,4 +47,80 @@ public class InternalProductQuery extends QuerySupport implements ProductQuery {
     private Set<ProductStatus> statuses;
 
     private Set<InventoryStatus> inventoryStatuses;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this);
+    }
+
+    public static class BuilderSupport extends QueryBuilderSupport<ProductQuery, Builder> implements Builder {
+
+        private final ProductQuery query;
+
+        public BuilderSupport(ProductQuery query) {
+            super(query);
+            this.query = query;
+        }
+
+        public Builder ids(Set<String> ids) {
+            this.query.setIds(ids);
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.query.setName(name);
+            return this;
+        }
+
+        public Builder minPrice(BigDecimal minPrice) {
+            this.query.setMinPrice(minPrice);
+            return this;
+        }
+
+        public Builder maxPrice(BigDecimal maxPrice) {
+            this.query.setMaxPrice(maxPrice);
+            return this;
+        }
+
+        public Builder storeId(String storeId) {
+            this.query.setStoreId(storeId);
+            return this;
+        }
+
+        public Builder collections(Set<String> collections) {
+            this.query.setCollections(collections);
+            return this;
+        }
+
+        public Builder types(Set<ProductType> types) {
+            this.query.setTypes(types);
+            return this;
+        }
+
+        public Builder types(Supplier<Set<ProductType>> supplier) {
+            return this.types(supplier.get());
+        }
+
+        public Builder statuses(Set<ProductStatus> statuses) {
+            this.query.setStatuses(statuses);
+            return this;
+        }
+
+        public Builder statuses(Supplier<Set<ProductStatus>> supplier) {
+            return this.statuses(supplier.get());
+        }
+
+        public Builder inventoryStatuses(Set<InventoryStatus> statuses) {
+            this.query.setInventoryStatuses(statuses);
+            return this;
+        }
+
+        public Builder inventoryStatuses(Supplier<Set<InventoryStatus>> supplier) {
+            return this.inventoryStatuses(supplier.get());
+        }
+
+        public ProductQuery build() {
+            return this.query;
+        }
+    }
 }
