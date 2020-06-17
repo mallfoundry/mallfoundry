@@ -16,8 +16,8 @@
 
 package org.mallfoundry.catalog.product;
 
-public class InternalProductDeletedEvent extends ProductEventSupport implements ProductDeletedEvent {
-    public InternalProductDeletedEvent(Product product) {
+public class DefaultProductDeletedEvent extends ProductEventSupport implements ProductDeletedEvent {
+    public DefaultProductDeletedEvent(Product product) {
         super(product);
     }
 }

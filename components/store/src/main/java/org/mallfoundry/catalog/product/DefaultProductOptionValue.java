@@ -16,7 +16,6 @@
 
 package org.mallfoundry.catalog.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,8 +25,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class InternalProductOptionValue implements ProductOptionValue {
+public class DefaultProductOptionValue implements ProductOptionValue {
 
     private String id;
 
@@ -35,7 +33,7 @@ public class InternalProductOptionValue implements ProductOptionValue {
 
     private int position;
 
-    public InternalProductOptionValue(String id) {
+    public DefaultProductOptionValue(String id) {
         this.id = id;
     }
 
@@ -47,7 +45,7 @@ public class InternalProductOptionValue implements ProductOptionValue {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalProductOptionValue that = (InternalProductOptionValue) o;
+        DefaultProductOptionValue that = (DefaultProductOptionValue) o;
         return Objects.equals(label, that.label);
     }
 

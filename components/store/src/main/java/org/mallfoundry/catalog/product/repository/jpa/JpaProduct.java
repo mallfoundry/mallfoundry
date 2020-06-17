@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.catalog.product.DefaultProductAttribute;
-import org.mallfoundry.catalog.product.InternalProductOption;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
@@ -74,9 +73,9 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "market_price_")
     private BigDecimal marketPrice;
 
-    @OneToMany(targetEntity = InternalProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = JpaProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
-    @JsonDeserialize(contentAs = InternalProductOption.class)
+    @JsonDeserialize(contentAs = JpaProductOption.class)
     private List<ProductOption> options = new ArrayList<>();
 
     @Column(name = "attributes_", length = 2048)
@@ -151,6 +150,11 @@ public class JpaProduct extends ProductSupport {
     @Override
     public ProductVariant createVariant(String id) {
         return new JpaProductVariant(id);
+    }
+
+    @Override
+    public ProductOption createOption(String id) {
+        return new JpaProductOption(id);
     }
 
     @Override

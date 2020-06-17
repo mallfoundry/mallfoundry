@@ -16,8 +16,24 @@
 
 package org.mallfoundry.catalog.product;
 
-public class InternalProductChangedEvent extends ProductEventSupport implements ProductChangedEvent {
-    public InternalProductChangedEvent(Product product) {
-        super(product);
-    }
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
+public class ImmutableProductId implements ProductId {
+    @JsonValue
+    @Column(name = "product_id_")
+    private String identifier;
 }

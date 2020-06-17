@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class InternalProductQuery extends QuerySupport implements ProductQuery {
+public class DefaultProductQuery extends QuerySupport implements ProductQuery {
 
     private Set<String> ids;
 

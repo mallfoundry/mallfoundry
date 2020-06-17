@@ -43,12 +43,12 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public ProductQuery createProductQuery() {
-        return new InternalProductQuery();
+        return new DefaultProductQuery();
     }
 
     @Override
     public ProductId createProductId(String id) {
-        return new InternalProductId(id);
+        return new ImmutableProductId(id);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class DefaultProductService implements ProductService {
         var oldProduct = this.productRepository.findById(product.getId()).orElseThrow();
         BeanUtils.copyProperties(product, oldProduct, "variants");
         var savedProduct = this.productRepository.save(oldProduct);
-        this.eventPublisher.publishEvent(new InternalProductChangedEvent(savedProduct));
+        this.eventPublisher.publishEvent(new DefaultProductChangedEvent(savedProduct));
     }
 
     @Transactional

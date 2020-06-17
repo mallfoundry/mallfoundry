@@ -71,11 +71,6 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public ProductOption createOption(String id) {
-        return new InternalProductOption(id);
-    }
-
-    @Override
     public Optional<ProductOption> getOption(String name) {
         return this.getOptions().stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
     }
