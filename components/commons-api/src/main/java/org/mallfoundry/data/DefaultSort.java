@@ -1,7 +1,5 @@
 package org.mallfoundry.data;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,12 +13,12 @@ public class DefaultSort implements Sort {
 
     @Override
     public Sort from(String string) {
-        Stream.of(string)
+        Stream.ofNullable(string)
                 .flatMap(str -> Arrays.stream(str.split(",")))
                 .map(str -> {
                     if (str.contains(":")) {
                         var propertyAndDirection = str.split(":");
-                        var direction = Direction.valueOf(StringUtils.upperCase(propertyAndDirection[1]));
+                        var direction = Direction.valueOf(propertyAndDirection[1].toUpperCase());
                         return new DefaultOrder(propertyAndDirection[0], direction);
                     } else {
                         return new DefaultOrder(str, Direction.ASC);
