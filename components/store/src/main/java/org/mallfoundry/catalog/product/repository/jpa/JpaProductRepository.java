@@ -19,6 +19,7 @@ package org.mallfoundry.catalog.product.repository.jpa;
 import org.mallfoundry.catalog.product.JdbcProductRepository;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
@@ -49,6 +50,6 @@ public class JpaProductRepository implements JdbcProductRepository {
 
     @Override
     public SliceList<Product> findAll(ProductQuery query) {
-        return SliceList.emptyList();
+        return PageList.empty();
     }
 }
