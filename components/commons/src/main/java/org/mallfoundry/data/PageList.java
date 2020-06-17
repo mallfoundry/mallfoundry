@@ -17,6 +17,7 @@
 package org.mallfoundry.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.util.CastUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +53,7 @@ public class PageList<T> implements SliceList<T> {
     }
 
     public static <T> PageList<T> empty() {
-        return new PageList<>(null);
+        return new EmptyPage<>();
     }
 
     public PageList<T> page(int page) {
@@ -138,4 +139,17 @@ public class PageList<T> implements SliceList<T> {
     public void setElements(List<T> elements) {
         this.elements = elements;
     }
+
+    private static class EmptyPage<E> extends PageList<E> {
+
+        EmptyPage() {
+            super(Collections.emptyList());
+        }
+
+        @Override
+        public <R> SliceList<R> map(Function<E, R> mapper) {
+            return CastUtils.cast(this);
+        }
+    }
+
 }
