@@ -114,10 +114,7 @@ public interface Product extends Serializable {
 
     void create();
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this);
-    }
-
+    Builder toBuilder();
 
     interface Builder extends ObjectBuilder<Product> {
 
@@ -148,93 +145,5 @@ public interface Product extends Serializable {
         Builder attribute(Function<Product, ProductAttribute> attribute);
 
         Builder create();
-    }
-
-    class BuilderSupport implements Builder {
-
-        private final Product product;
-
-        public BuilderSupport(Product product) {
-            this.product = product;
-        }
-
-        public Builder storeId(String storeId) {
-            this.product.setStoreId(storeId);
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.product.setName(name);
-            return this;
-        }
-
-        public Builder type(ProductType type) {
-            this.product.setType(type);
-            return this;
-        }
-
-        public Builder status(ProductStatus status) {
-            this.product.setStatus(status);
-            return this;
-        }
-
-        @Override
-        public Builder collections(Set<String> collections) {
-            this.product.setCollections(collections);
-            return this;
-        }
-
-        public Builder imageUrl(String image) {
-            this.product.addImageUrl(image);
-            return this;
-        }
-
-        public Builder videoUrl(String video) {
-            this.product.addVideoUrl(video);
-            return this;
-        }
-
-        @Override
-        public Builder option(ProductOption option) {
-            this.product.addOption(option);
-            return this;
-        }
-
-        @Override
-        public Builder option(Function<Product, ProductOption> option) {
-            return this.option(option.apply(this.product));
-        }
-
-        @Override
-        public Builder variant(ProductVariant variant) {
-            this.product.addVariant(variant);
-            return this;
-        }
-
-        @Override
-        public Builder variant(Function<Product, ProductVariant> variant) {
-            return this.variant(variant.apply(this.product));
-        }
-
-        @Override
-        public Builder attribute(ProductAttribute attribute) {
-            this.product.addAttribute(attribute);
-            return this;
-        }
-
-        @Override
-        public Builder attribute(Function<Product, ProductAttribute> attribute) {
-            return this.attribute(attribute.apply(this.product));
-        }
-
-        @Override
-        public Builder create() {
-            this.product.create();
-            return this;
-        }
-
-        public Product build() {
-            return this.product;
-        }
     }
 }

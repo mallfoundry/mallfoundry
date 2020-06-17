@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 @Getter
 @Setter
@@ -68,15 +70,6 @@ public abstract class ProductSupport implements MutableProduct {
                 .findFirst();
     }
 
-//    @Override
-//    public ProductVariant createVariant(String id) {
-//        var variant = new InternalProductVariant();
-//        variant.setId(id);
-//        variant.setProductId(this.getId());
-//        variant.setStoreId(this.getStoreId());
-//        return variant;
-//    }
-
     @Override
     public ProductOption createOption(String id) {
         return new InternalProductOption(id);
@@ -124,5 +117,99 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public void create() {
         this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    abstract static class BuilderSupport implements Builder {
+
+        protected final Product product;
+
+        BuilderSupport(Product product) {
+            this.product = product;
+        }
+
+        public Builder storeId(String storeId) {
+            this.product.setStoreId(storeId);
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.product.setName(name);
+            return this;
+        }
+
+        public Builder type(ProductType type) {
+            this.product.setType(type);
+            return this;
+        }
+
+        public Builder status(ProductStatus status) {
+            this.product.setStatus(status);
+            return this;
+        }
+
+        @Override
+        public Builder collections(Set<String> collections) {
+            this.product.setCollections(collections);
+            return this;
+        }
+
+        public Builder imageUrl(String image) {
+            this.product.addImageUrl(image);
+            return this;
+        }
+
+        public Builder videoUrl(String video) {
+            this.product.addVideoUrl(video);
+            return this;
+        }
+
+        @Override
+        public Builder option(ProductOption option) {
+            this.product.addOption(option);
+            return this;
+        }
+
+        @Override
+        public Builder option(Function<Product, ProductOption> option) {
+            return this.option(option.apply(this.product));
+        }
+
+        @Override
+        public Builder variant(ProductVariant variant) {
+            this.product.addVariant(variant);
+            return this;
+        }
+
+        @Override
+        public Builder variant(Function<Product, ProductVariant> variant) {
+            return this.variant(variant.apply(this.product));
+        }
+
+        @Override
+        public Builder attribute(ProductAttribute attribute) {
+            this.product.addAttribute(attribute);
+            return this;
+        }
+
+        @Override
+        public Builder attribute(Function<Product, ProductAttribute> attribute) {
+            return this.attribute(attribute.apply(this.product));
+        }
+
+        @Override
+        public Builder create() {
+            this.product.create();
+            return this;
+        }
+
+        public Product build() {
+            return this.product;
+        }
     }
 }
