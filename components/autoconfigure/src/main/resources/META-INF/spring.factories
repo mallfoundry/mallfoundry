@@ -3,7 +3,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.mallfoundry.spring.boot.autoconfigure.keygen.PrimaryKeyGeneratorAutoConfiguration,\
   org.mallfoundry.spring.boot.autoconfigure.payment.PaymentAutoConfiguration,\
   org.mallfoundry.spring.boot.autoconfigure.storage.StorageAutoConfiguration,\
-  org.mallfoundry.spring.boot.autoconfigure.store.StoreProductAutoConfiguration,\
   org.mallfoundry.spring.boot.autoconfigure.tracking.TrackerAutoConfiguration,\
   org.mallfoundry.spring.boot.autoconfigure.sms.SmsAutoConfiguration
 
