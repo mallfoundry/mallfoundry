@@ -13,5 +13,7 @@ public interface FollowStore extends Serializable {
 
     String getFollowerId();
 
+//    long getFollowers();
+
     Date getFollowTime();
 }
