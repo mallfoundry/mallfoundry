@@ -46,9 +46,25 @@ public interface Product extends Serializable {
 
     void setMarketPrice(BigDecimal marketPrice);
 
+    String getCategoryId();
+
+    void setCategoryId(String categoryId);
+
+    String getBrandId();
+
+    void setBrandId(String brandId);
+
     Set<String> getCollections();
 
     void setCollections(Set<String> collections);
+
+    long getTotalSales();
+
+    void adjustTotalSales(long sales);
+
+    long getMonthlySales();
+
+    void adjustMonthlySales(long sales);
 
     List<ProductOption> getOptions();
 
@@ -86,7 +102,7 @@ public interface Product extends Serializable {
 
     void addVariant(ProductVariant variant);
 
-    void adjustVariantInventoryQuantity(String variantId, int adjustQuantity);
+    void adjustInventoryQuantity(String variantId, int adjustQuantity);
 
     ProductOption createOption(String id);
 
