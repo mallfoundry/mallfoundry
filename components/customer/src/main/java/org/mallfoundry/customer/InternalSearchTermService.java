@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Supplier;
 
 @Service
 public class InternalSearchTermService implements SearchTermService {
@@ -16,22 +16,18 @@ public class InternalSearchTermService implements SearchTermService {
         this.searchTermRepository = searchTermRepository;
     }
 
-    private InternalSearchTerm incrementTermHits(InternalSearchTerm term) {
-        term.incrementHits();
-        return this.searchTermRepository.save(term);
-    }
-
-    private InternalSearchTerm addNewTerm(String customerId, String term) {
-        return this.searchTermRepository.save(new InternalSearchTerm(customerId, term));
+    private Supplier<InternalSearchTerm> addNewTerm(String customerId, String term) {
+        return () -> new InternalSearchTerm(customerId, term);
     }
 
     @Transactional
     @Override
     public SearchTerm addTerm(String customerId, String termText) {
-        var term = this.searchTermRepository.findById(InternalSearchTermId.of(customerId, termText)).orElse(null);
-        return Objects.nonNull(term)
-                ? incrementTermHits(term)
-                : addNewTerm(customerId, termText);
+        var term = this.searchTermRepository
+                .findById(InternalSearchTermId.of(customerId, termText))
+                .orElseGet(addNewTerm(customerId, termText));
+        term.hit();
+        return this.searchTermRepository.save(term);
     }
 
     @Override

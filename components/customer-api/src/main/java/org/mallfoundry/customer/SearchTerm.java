@@ -10,7 +10,5 @@ public interface SearchTerm {
 
     int getHits();
 
-    int incrementHits();
-
-    int decrementHits();
+    int hit();
 }

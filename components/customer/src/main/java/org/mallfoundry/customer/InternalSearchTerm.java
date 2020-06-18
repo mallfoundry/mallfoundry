@@ -51,18 +51,11 @@ public class InternalSearchTerm implements SearchTerm {
     public InternalSearchTerm(String customerId, String term) {
         this.customerId = customerId;
         this.term = term;
-        this.incrementHits();
     }
 
     @Override
-    public int incrementHits() {
+    public int hit() {
         this.timestamp = System.currentTimeMillis();
         return hits++;
-    }
-
-    @Override
-    public int decrementHits() {
-        this.timestamp = System.currentTimeMillis();
-        return hits--;
     }
 }
