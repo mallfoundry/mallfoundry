@@ -159,6 +159,18 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder adjustTotalSales(long sales) {
+            this.product.adjustTotalSales(sales);
+            return this;
+        }
+
+        @Override
+        public Builder adjustMonthlySales(long sales) {
+            this.product.adjustMonthlySales(sales);
+            return this;
+        }
+
+        @Override
         public Builder collections(Set<String> collections) {
             this.product.setCollections(collections);
             return this;

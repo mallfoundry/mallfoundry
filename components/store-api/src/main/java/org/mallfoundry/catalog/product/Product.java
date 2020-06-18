@@ -142,6 +142,10 @@ public interface Product extends Serializable {
 
         Builder status(ProductStatus status);
 
+        Builder adjustTotalSales(long sales);
+
+        Builder adjustMonthlySales(long sales);
+
         Builder collections(Set<String> collections);
 
         Builder imageUrl(String image);
