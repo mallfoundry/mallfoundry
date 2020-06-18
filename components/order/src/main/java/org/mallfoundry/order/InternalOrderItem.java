@@ -16,7 +16,6 @@
 
 package org.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
