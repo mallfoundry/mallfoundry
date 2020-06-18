@@ -23,11 +23,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Document(indexName = "mf_product")
+@Document(indexName = "mf_catalog_product")
 public class ElasticsearchProduct extends ProductSupport {
 
     @Id
@@ -39,17 +40,26 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private ProductStatus status;
 
+    @Field(type = FieldType.Text)
     private String name;
 
     private String description;
 
     private BigDecimal price;
 
+    private String categoryId;
+
+    private String brandId;
+
     private Set<String> collections = new HashSet<>();
+
+    private long totalSales;
+
+    private long monthlySales;
 
     private BigDecimal marketPrice;
 
-    private List<ProductOption> options = new ArrayList<>();
+    private List<ElasticsearchProductOption> options = new ArrayList<>();
 
     @Field(type = FieldType.Nested)
     private List<ElasticsearchProductAttribute> attributes = new ArrayList<>();
@@ -89,6 +99,11 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
+    public ProductOption createOption(String id) {
+        return new ElasticsearchProductOption(id);
+    }
+
+    @Override
     public ProductAttribute createAttribute(String name, String value) {
         return new ElasticsearchProductAttribute(name, value);
     }
@@ -100,26 +115,34 @@ public class ElasticsearchProduct extends ProductSupport {
 
     @Override
     public List<ProductVariant> getVariants() {
-        return CastUtils.cast(variants);
+        return CastUtils.cast(this.variants);
     }
 
     @Override
     public void setVariants(List<ProductVariant> variants) {
-        if (Objects.nonNull(variants)) {
-            this.variants = variants.stream().map(ElasticsearchProductVariant::of).collect(Collectors.toList());
-        }
+        this.variants = Objects.requireNonNullElseGet(variants, (Supplier<List<ProductVariant>>) ArrayList::new)
+                .stream().map(ElasticsearchProductVariant::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductOption> getOptions() {
+        return CastUtils.cast(options);
+    }
+
+    @Override
+    public void setOptions(List<ProductOption> options) {
+        this.options = Objects.requireNonNullElseGet(options, (Supplier<List<ProductOption>>) ArrayList::new)
+                .stream().map(ElasticsearchProductOption::of).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductAttribute> getAttributes() {
-        return CastUtils.cast(attributes);
+        return CastUtils.cast(this.attributes);
     }
 
     @Override
     public void setAttributes(List<ProductAttribute> attributes) {
-        if (Objects.nonNull(attributes)) {
-            this.attributes = attributes.stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
-        }
+        this.attributes = Objects.requireNonNullElseGet(attributes, (Supplier<List<ProductAttribute>>) ArrayList::new)
+                .stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
     }
-
 }

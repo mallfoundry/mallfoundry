@@ -36,6 +36,16 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
+    public void adjustTotalSales(long sales) {
+        this.setTotalSales(this.getTotalSales() + sales);
+    }
+
+    @Override
+    public void adjustMonthlySales(long sales) {
+        this.setMonthlySales(this.getMonthlySales() + sales);
+    }
+
+    @Override
     public int getInventoryQuantity() {
         return CollectionUtils.isEmpty(this.getVariants())
                 ? 0
@@ -58,7 +68,7 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void adjustVariantInventoryQuantity(String variantId, int quantityDelta) {
+    public void adjustInventoryQuantity(String variantId, int quantityDelta) {
         this.getVariant(variantId).orElseThrow().adjustInventoryQuantity(quantityDelta);
     }
 

@@ -63,7 +63,7 @@ public class DefaultProductService implements ProductService {
             product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
         }
         var addedProduct = this.productRepository.save(product);
-        this.eventPublisher.publishEvent(new DefaultProductAddedEvent(addedProduct));
+        this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
         return addedProduct;
     }
 
@@ -73,14 +73,14 @@ public class DefaultProductService implements ProductService {
         var oldProduct = this.productRepository.findById(product.getId()).orElseThrow();
         BeanUtils.copyProperties(product, oldProduct, "variants");
         var savedProduct = this.productRepository.save(oldProduct);
-        this.eventPublisher.publishEvent(new DefaultProductChangedEvent(savedProduct));
+        this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(savedProduct));
     }
 
     @Transactional
     @Override
     public void adjustInventory(InventoryAdjustment adjustment) {
         var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
-        product.adjustVariantInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
+        product.adjustInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
     }
 
     @Transactional

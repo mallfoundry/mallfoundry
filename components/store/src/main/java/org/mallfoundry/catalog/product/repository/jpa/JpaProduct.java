@@ -63,9 +63,21 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "description_")
     private String description;
 
+    @Column(name = "category_id_")
+    private String categoryId;
+
+    @Column(name = "brand_id_")
+    private String brandId;
+
     @Column(name = "collections_")
     @Convert(converter = StringSetConverter.class)
     private Set<String> collections = new HashSet<>();
+
+    @Column(name = "total_sales_")
+    private long totalSales;
+
+    @Column(name = "monthly_sales_")
+    private long monthlySales;
 
     @Column(name = "price_")
     private BigDecimal price;
