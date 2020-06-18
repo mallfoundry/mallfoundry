@@ -27,12 +27,6 @@ mall:
     directory: D:/mall/data/storage/
     #    base-url: http://102.mallfoundry.com:${server.port}/static
     base-url: http://192.168.0.102:${server.port}/static
-  store:
-    product:
-      search:
-        type: lucene
-        lucene:
-          directory: D:/mall/data/indexes
   tracker:
     type: kdniao
     kdniao:
