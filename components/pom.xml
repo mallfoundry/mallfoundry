@@ -46,6 +46,9 @@
         <module>marketing</module>
         <module>spring-boot</module>
 
+        <!-- test modules -->
+        <module>test</module>
+
         <!-- rest modules-->
         <module>commons-rest</module>
         <module>catalog-rest</module>
