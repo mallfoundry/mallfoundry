@@ -13,6 +13,8 @@ public interface FollowProduct extends Serializable {
 
     String getImageUrl();
 
+    String getStoreId();
+
     ProductStatus getStatus();
 
     Date getFollowTime();

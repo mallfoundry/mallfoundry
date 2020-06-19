@@ -65,10 +65,8 @@ public interface JpaOrderRepository
 
     @Override
     default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
-
         Page<InternalOrder> page = this.findAll(this.createSpecification(orderQuery),
                 PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("createdTime"))));
-
         return PageList.of(page.getContent())
                 .page(page.getNumber())
                 .limit(orderQuery.getLimit())

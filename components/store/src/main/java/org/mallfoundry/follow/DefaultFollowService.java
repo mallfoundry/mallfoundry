@@ -70,6 +70,7 @@ public class DefaultFollowService implements FollowService {
         followProduct.setImageUrl(CollectionUtils.firstElement(product.getImageUrls()));
         followProduct.setName(product.getName());
         followProduct.setStatus(product.getStatus());
+        followProduct.setStoreId(product.getStoreId());
         return this.followProductRepository.save(followProduct);
     }
 

@@ -14,41 +14,56 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.browsing;
 
+import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
 @Service
 public class InternalBrowsingProductService implements BrowsingProductService {
 
+    private final ProductService productService;
+
     private final BrowsingProductRepository browsingProductRepository;
 
-    public InternalBrowsingProductService(BrowsingProductRepository browsingProductRepository) {
+    public InternalBrowsingProductService(ProductService productService,
+                                          BrowsingProductRepository browsingProductRepository) {
+        this.productService = productService;
         this.browsingProductRepository = browsingProductRepository;
     }
 
     @Override
-    public BrowsingProduct createBrowsingProduct(String id) {
-        return new InternalBrowsingProduct(id);
+    public BrowsingProduct createBrowsingProduct(String browserId, String productId) {
+        return new InternalBrowsingProduct(browserId, productId);
     }
 
     @Override
     public BrowsingProductQuery createBrowsingProductQuery() {
-//        var query = new InternalBrowsingProductQuery();
-//        query.setBrowserId(SecurityUserHolder.getUserId());
-//        return query;
         return new InternalBrowsingProductQuery();
+    }
+
+    private BrowsingProduct hitBrowsingProduct(BrowsingProduct browsingProduct) {
+        var product = this.productService.getProduct(browsingProduct.getId()).orElseThrow();
+        return browsingProduct.toBuilder().price(product.getPrice())
+                .name(product.getName())
+                .imageUrl(CollectionUtils.firstElement(product.getImageUrls()))
+                .hit()
+                .build();
     }
 
     @Transactional
     @Override
-    public BrowsingProduct addBrowsingProduct(BrowsingProduct browsingProduct) {
-        return this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
+    public BrowsingProduct addBrowsingProduct(String browserId, String productId) {
+        var browsingProduct = this.hitBrowsingProduct(
+                this.browsingProductRepository.findByIdAndBrowserId(productId, browserId)
+                        .orElseGet(() -> this.createBrowsingProduct(browserId, productId)));
+        return this.browsingProductRepository.save(browsingProduct);
     }
 
     @Override

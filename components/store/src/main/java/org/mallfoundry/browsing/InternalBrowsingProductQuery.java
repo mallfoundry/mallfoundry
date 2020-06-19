@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.browsing;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.PageableSupport;
 
 import java.util.Date;
 

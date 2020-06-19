@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.rest.customer;
+package org.mallfoundry.rest.browsing;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.mallfoundry.customer.BrowsingProduct;
-import org.mallfoundry.customer.BrowsingProductService;
+import org.mallfoundry.browsing.BrowsingProduct;
+import org.mallfoundry.browsing.BrowsingProductService;
 import org.mallfoundry.data.SliceList;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,12 +45,10 @@ public class BrowsingProductResourceV1 {
     }
 
     @Operation(summary = "添加一个顾客浏览的商品记录对象")
-    @PostMapping("customers/{customer_id}/browsing-products")
+    @PostMapping("customers/{customer_id}/browsing-products/{product_id}")
     public BrowsingProduct addBrowsingProduct(@PathVariable("customer_id") String customerId,
-                                              @RequestBody BrowsingProductRequest request) {
-        return this.browsingProductService.addBrowsingProduct(
-                this.browsingProductService.createBrowsingProduct(request.getId())
-                        .toBuilder().browserId(customerId).name(request.getName()).price(request.getPrice()).build());
+                                              @PathVariable("product_id") String productId) {
+        return this.browsingProductService.addBrowsingProduct(customerId, productId);
     }
 
     @Operation(summary = "获得顾客浏览的商品记录分页集合")
@@ -81,7 +79,7 @@ public class BrowsingProductResourceV1 {
         this.browsingProductService.deleteBrowsingProduct(customerId, id);
     }
 
-    @Operation(summary = "皮亮删除顾客浏览的商品记录")
+    @Operation(summary = "批量删除顾客浏览的商品记录")
     @DeleteMapping("customers/{customer_id}/browsing-products/batch")
     public void deleteBrowsingProducts(@PathVariable("customer_id") String customerId, @RequestBody List<String> ids) {
         this.browsingProductService.deleteBrowsingProducts(customerId, ids);

@@ -57,7 +57,7 @@ public class InternalCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public void updateCustomer(Customer customer) {
+    public Customer setCustomer(Customer customer) {
         var savedCustomer = this.customerRepository.findById(customer.getId()).orElseThrow();
         if (Objects.nonNull(customer.getGender())) {
             savedCustomer.setGender(customer.getGender());
@@ -65,7 +65,7 @@ public class InternalCustomerService implements CustomerService {
         if (Objects.nonNull(customer.getBirthday())) {
             savedCustomer.setBirthday(customer.getBirthday());
         }
-        this.customerRepository.save(savedCustomer);
+        return this.customerRepository.save(savedCustomer);
     }
 
     @Transactional

@@ -29,6 +29,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +60,7 @@ public class InternalCustomer implements Customer {
     @Column(name = "gender_")
     private Gender gender;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "birthday_")
     private Date birthday;
 

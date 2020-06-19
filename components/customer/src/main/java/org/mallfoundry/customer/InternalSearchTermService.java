@@ -16,7 +16,7 @@ public class InternalSearchTermService implements SearchTermService {
         this.searchTermRepository = searchTermRepository;
     }
 
-    private Supplier<InternalSearchTerm> addNewTerm(String customerId, String term) {
+    private Supplier<InternalSearchTerm> createNewTerm(String customerId, String term) {
         return () -> new InternalSearchTerm(customerId, term);
     }
 
@@ -25,7 +25,7 @@ public class InternalSearchTermService implements SearchTermService {
     public SearchTerm addTerm(String customerId, String termText) {
         var term = this.searchTermRepository
                 .findById(InternalSearchTermId.of(customerId, termText))
-                .orElseGet(addNewTerm(customerId, termText));
+                .orElseGet(createNewTerm(customerId, termText));
         term.hit();
         return this.searchTermRepository.save(term);
     }

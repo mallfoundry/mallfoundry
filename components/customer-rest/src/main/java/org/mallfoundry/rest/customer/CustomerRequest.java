@@ -16,6 +16,7 @@
 
 package org.mallfoundry.rest.customer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,9 +36,9 @@ public class CustomerRequest {
     @Schema(name = "avatar")
     private String avatar;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(name = "birthday")
     private Date birthday;
-
 
     public Customer assignToCustomer(Customer customer) {
         return customer.toBuilder()

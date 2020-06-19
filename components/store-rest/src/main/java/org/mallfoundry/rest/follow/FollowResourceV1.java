@@ -20,7 +20,6 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.follow.FollowProduct;
 import org.mallfoundry.follow.FollowService;
 import org.mallfoundry.follow.FollowStore;
-import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,31 +37,34 @@ public class FollowResourceV1 {
         this.followService = followService;
     }
 
-    @PostMapping("/customer/following-products/{product_id}")
-    public FollowProduct followingProduct(@PathVariable("product_id") String productId) {
-        return this.followService.followingProduct(SecurityUserHolder.getUserId(), productId);
+    @PostMapping("/customers/{customer_id}/following-products/{product_id}")
+    public FollowProduct followingProduct(@PathVariable("customer_id") String customerId,
+                                          @PathVariable("product_id") String productId) {
+        return this.followService.followingProduct(customerId, productId);
     }
 
-    @DeleteMapping("/customer/following-products/{product_id}")
-    public void unfollowingProduct(@PathVariable("product_id") String productId) {
-        this.followService.unfollowingProduct(SecurityUserHolder.getUserId(), productId);
+    @DeleteMapping("/customers/{customer_id}/following-products/{product_id}")
+    public void unfollowingProduct(@PathVariable("customer_id") String customerId,
+                                   @PathVariable("product_id") String productId) {
+        this.followService.unfollowingProduct(customerId, productId);
     }
 
-    @GetMapping("/customer/following-products/{product_id}")
-    public boolean checkFollowingProduct(@PathVariable("product_id") String productId) {
-        return this.followService.checkFollowingProduct(SecurityUserHolder.getUserId(), productId);
+    @GetMapping("/customers/{customer_id}/following-products/{product_id}")
+    public boolean checkFollowingProduct(@PathVariable("customer_id") String customerId,
+                                         @PathVariable("product_id") String productId) {
+        return this.followService.checkFollowingProduct(customerId, productId);
     }
 
-    @GetMapping("/customer/following-products")
-    public SliceList<FollowProduct> getFollowProducts() {
+    @GetMapping("/customers/{customer_id}/following-products")
+    public SliceList<FollowProduct> getFollowProducts(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingProducts(this.followService.createFollowProductQuery()
-                .toBuilder().followerId(SecurityUserHolder.getUserId()).build());
+                .toBuilder().followerId(customerId).build());
     }
 
-    @GetMapping("/customer/following-products/count")
-    public long getFollowingProductCount() {
+    @GetMapping("/customers/{customer_id}/following-products/count")
+    public long getFollowingProductCount(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingProductCount(this.followService.createFollowProductQuery()
-                .toBuilder().followerId(SecurityUserHolder.getUserId()).build());
+                .toBuilder().followerId(customerId).build());
     }
 
     @GetMapping("/products/{product_id}/followers/count")
@@ -70,31 +72,34 @@ public class FollowResourceV1 {
         return this.followService.getProductFollowerCount(productId);
     }
 
-    @PostMapping("/customer/following-stores/{store_id}")
-    public void followingStore(@PathVariable("store_id") String storeId) {
-        this.followService.followingStore(SecurityUserHolder.getUserId(), storeId);
+    @PostMapping("/customers/{customer_id}/following-stores/{store_id}")
+    public void followingStore(@PathVariable("customer_id") String customerId,
+                               @PathVariable("store_id") String storeId) {
+        this.followService.followingStore(customerId, storeId);
     }
 
-    @DeleteMapping("/customer/following-stores/{store_id}")
-    public void unfollowingStore(@PathVariable("store_id") String storeId) {
-        this.followService.unfollowingStore(SecurityUserHolder.getUserId(), storeId);
+    @DeleteMapping("/customers/{customer_id}/following-stores/{store_id}")
+    public void unfollowingStore(@PathVariable("customer_id") String customerId,
+                                 @PathVariable("store_id") String storeId) {
+        this.followService.unfollowingStore(customerId, storeId);
     }
 
-    @GetMapping("/customer/following-stores/{store_id}")
-    public boolean checkFollowingStore(@PathVariable("store_id") String storeId) {
-        return this.followService.checkFollowingStore(SecurityUserHolder.getUserId(), storeId);
+    @GetMapping("/customers/{customer_id}/following-stores/{store_id}")
+    public boolean checkFollowingStore(@PathVariable("customer_id") String customerId,
+                                       @PathVariable("store_id") String storeId) {
+        return this.followService.checkFollowingStore(customerId, storeId);
     }
 
-    @GetMapping("/customer/following-stores")
-    public SliceList<FollowStore> getFollowStores() {
+    @GetMapping("/customers/{customer_id}/following-stores")
+    public SliceList<FollowStore> getFollowStores(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingStores(this.followService.createFollowStoreQuery()
-                .toBuilder().followerId(SecurityUserHolder.getUserId()).build());
+                .toBuilder().followerId(customerId).build());
     }
 
-    @GetMapping("/customer/following-stores/count")
-    public long getFollowingStoreCount() {
+    @GetMapping("/customers/{customer_id}/following-stores/count")
+    public long getFollowingStoreCount(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingStoreCount(this.followService.createFollowStoreQuery()
-                .toBuilder().followerId(SecurityUserHolder.getUserId()).build());
+                .toBuilder().followerId(customerId).build());
     }
 
     @GetMapping("/stores/{store_id}/followers/count")

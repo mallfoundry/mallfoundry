@@ -17,10 +17,10 @@
 package org.mallfoundry.follow;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.mallfoundry.catalog.product.ProductStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.catalog.product.ProductStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,6 +53,9 @@ public class InternalFollowProduct implements FollowProduct {
 
     @Column(name = "image_url_")
     private String imageUrl;
+
+    @Column(name = "store_id_")
+    private String storeId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")

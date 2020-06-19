@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.browsing;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.browsing.repository.jpa.JpaBrowsingProductId;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,27 +34,36 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_customer_browsing_product")
+@Table(name = "mf_browsing_product")
+@IdClass(JpaBrowsingProductId.class)
 public class InternalBrowsingProduct implements BrowsingProduct {
 
     @Id
     @Column(name = "id_")
     private String id;
 
+    @Id
+    @Column(name = "browser_id_")
+    private String browserId;
+
     @Column(name = "name_")
     private String name;
+
+    @Column(name = "image_url_")
+    private String imageUrl;
 
     @Column(name = "price_")
     private BigDecimal price;
 
-    @Column(name = "browser_id_")
-    private String browserId;
+    @Column(name = "hits_")
+    private int hits;
 
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public InternalBrowsingProduct(String id) {
-        this.id = id;
+    public InternalBrowsingProduct(String browserId, String productId) {
+        this.browserId = browserId;
+        this.id = productId;
         this.browsingTime = new Date();
     }
 
@@ -63,5 +74,11 @@ public class InternalBrowsingProduct implements BrowsingProduct {
         var target = new InternalBrowsingProduct();
         BeanUtils.copyProperties(browsingProduct, target);
         return target;
+    }
+
+    @Override
+    public int hit() {
+        this.browsingTime = new Date();
+        return this.hits++;
     }
 }

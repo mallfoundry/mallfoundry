@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.browsing;
 
 import org.mallfoundry.data.SliceList;
 
@@ -23,17 +23,17 @@ import java.util.Optional;
 
 public interface BrowsingProductRepository {
 
-    InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
+    BrowsingProduct save(BrowsingProduct browsingProduct);
 
-    Optional<InternalBrowsingProduct> findByIdAndBrowserId(String id, String browserId);
+    Optional<BrowsingProduct> findByIdAndBrowserId(String id, String browserId);
 
-    List<InternalBrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId);
+    List<BrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId);
 
-    SliceList<InternalBrowsingProduct> findAll(BrowsingProductQuery query);
+    SliceList<BrowsingProduct> findAll(BrowsingProductQuery query);
 
-    void delete(InternalBrowsingProduct browsingProduct);
+    void delete(BrowsingProduct browsingProduct);
 
-    void deleteAll(Iterable<? extends InternalBrowsingProduct> browsingProducts);
+    void deleteAll(Iterable<? extends BrowsingProduct> browsingProducts);
 
     long count(BrowsingProductQuery query);
 }

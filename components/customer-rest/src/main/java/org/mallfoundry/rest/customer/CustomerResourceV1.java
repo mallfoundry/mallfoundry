@@ -19,8 +19,8 @@ package org.mallfoundry.rest.customer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.customer.Customer;
-import org.mallfoundry.customer.CustomerService;
 import org.mallfoundry.customer.CustomerAddress;
+import org.mallfoundry.customer.CustomerService;
 import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,11 +59,13 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "根据顾客标识更新顾客对象")
     @PatchMapping("/customers/{customer_id}")
-    public void setCustomer(@PathVariable("customer_id") String customerId,
-                            @RequestBody CustomerRequest request) {
-        this.customerService.updateCustomer(
-                request.assignToCustomer(
-                        this.customerService.createCustomer(customerId)));
+    public Optional<CustomerResponse> setCustomer(@PathVariable("customer_id") String customerId,
+                                                  @RequestBody CustomerRequest request) {
+        return Optional.ofNullable(
+                this.customerService.setCustomer(
+                        request.assignToCustomer(
+                                this.customerService.createCustomer(customerId))))
+                .map(CustomerResponse::new);
     }
 
     @Operation(summary = "添加一个顾客的收货地址对象")

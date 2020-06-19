@@ -1,4 +1,4 @@
-package org.mallfoundry.customer;
+package org.mallfoundry.browsing;
 
 import org.mallfoundry.data.Pageable;
 import org.mallfoundry.data.PageableBuilder;
