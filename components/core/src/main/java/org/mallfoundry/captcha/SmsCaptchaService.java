@@ -17,20 +17,16 @@ public class SmsCaptchaService extends AbstractCaptchaService {
     @Setter
     private String signature;
 
-    public SmsCaptchaService(CaptchaRepository repository, MessageService messageService) {
-        super(repository);
+    public SmsCaptchaService(CaptchaAntiSpamService captchaAntiSpamService,
+                             MessageService messageService,
+                             CaptchaRepository repository) {
+        super(captchaAntiSpamService, repository);
         this.messageService = messageService;
     }
 
     @Override
     protected void doGenerateCaptcha(Captcha captcha) throws CaptchaException {
         var mobile = captcha.getParameters().get("mobile");
-//        var existCaptcha = this.captchaRepository.findByMobile(mobile).orElse(null);
-
-        if (this.captchaRepository.findByMobile(mobile).isPresent()) {
-            throw new CaptchaException("");
-        }
-
         this.messageService.sendMessage(this.messageService.createMessage().toBuilder().mobile(mobile)
                 .signature(this.signature)
                 .template(this.template)

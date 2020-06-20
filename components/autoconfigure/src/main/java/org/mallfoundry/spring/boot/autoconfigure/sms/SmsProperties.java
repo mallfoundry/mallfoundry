@@ -25,11 +25,7 @@ public class SmsProperties {
 
         private String accessKeyId;
 
-        private String accessSecret;
-//
-//        private String signName;
-//
-//        private String templateCode;
+        private String accessKeySecret;
     }
 
 }

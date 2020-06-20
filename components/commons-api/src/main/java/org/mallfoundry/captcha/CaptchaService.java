@@ -12,7 +12,7 @@ public interface CaptchaService {
 
     Optional<Captcha> getCaptcha(String token);
 
-    Captcha generateCaptcha(CaptchaType type) throws CaptchaException;
+    Captcha generateCaptcha(Captcha captcha) throws CaptchaException;
 
     boolean checkCaptcha(String token, String code);
 }

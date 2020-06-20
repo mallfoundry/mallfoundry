@@ -1,6 +1,8 @@
 package org.mallfoundry.captcha.repository.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaSupport;
 import org.mallfoundry.captcha.CaptchaType;
@@ -11,54 +13,82 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_captcha")
 public class JpaCaptcha extends CaptchaSupport {
 
-    @Column(name = "type_")
-    @Override
-    public CaptchaType getType() {
-        return super.getType();
-    }
+    private CaptchaType type;
 
-    @Id
-    @Column(name = "token_")
-    @Override
-    public String getToken() {
-        return super.getToken();
-    }
+    private String token;
 
-    @Column(name = "code_")
-    @Override
-    public String getCode() {
-        return super.getCode();
-    }
+    private String code;
 
-    @Convert(converter = StringStringMapConverter.class)
-    @Column(name = "parameters_", length = 1024)
-    @Override
-    public Map<String, String> getParameters() {
-        return super.getParameters();
-    }
+    private Map<String, String> parameters = new HashMap<>();
 
+    private int expires;
+
+    private Date createdTime;
+
+    @JsonIgnore
     @Column(name = "mobile_", length = 20)
     public String getMobile() {
         return this.getParameters().getOrDefault("mobile", null);
     }
 
     public void setMobile(String mobile) {
-        if (Objects.nonNull(mobile)
-                && !super.getParameters().containsKey("mobile")) {
+        if (Objects.nonNull(mobile) && !this.getParameters().containsKey("mobile")) {
             this.getParameters().put("mobile", mobile);
         }
     }
 
+    @Column(name = "type_")
+    @Override
+    public CaptchaType getType() {
+        return type;
+    }
+
+    @Id
+    @Column(name = "token_")
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Column(name = "code_")
+    @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Convert(converter = StringStringMapConverter.class)
+    @Column(name = "parameters_", length = 1024)
+    @Override
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    @Column(name = "expires_")
+    @Override
+    public int getExpires() {
+        return expires;
+    }
+
+    @Column(name = "created_time_")
+    @Override
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
     public JpaCaptcha(CaptchaType type) {
         this.setType(type);
+        this.setCreatedTime(new Date());
     }
 
     public static JpaCaptcha of(Captcha captcha) {

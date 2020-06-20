@@ -3,6 +3,7 @@ package org.mallfoundry.captcha;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,6 +14,8 @@ public interface Captcha {
 
     String MOBILE_PARAMETER_NAME = "mobile";
 
+    String COUNTRY_CODE_PARAMETER_NAME = "country_code";
+
     CaptchaType getType();
 
     String getToken();
@@ -22,6 +25,8 @@ public interface Captcha {
     String getCode();
 
     void setCode(String code);
+
+    boolean checkCode(String code);
 
     Map<String, String> getParameters();
 
@@ -41,10 +46,14 @@ public interface Captcha {
     }
 
     interface Builder extends ObjectBuilder<Captcha> {
-        
+
         Builder token(String token);
 
         Builder code(String code);
+
+        Builder expires(int expires);
+
+        Builder parameters(Map<String, String> parameters);
     }
 
     class BuilderSupport implements Builder {
@@ -64,6 +73,18 @@ public interface Captcha {
         @Override
         public Builder code(String code) {
             this.captcha.setCode(code);
+            return this;
+        }
+
+        @Override
+        public Builder expires(int expires) {
+            this.captcha.setExpires(expires);
+            return this;
+        }
+
+        @Override
+        public Builder parameters(Map<String, String> parameters) {
+            this.captcha.setParameters(new HashMap<>(parameters));
             return this;
         }
 

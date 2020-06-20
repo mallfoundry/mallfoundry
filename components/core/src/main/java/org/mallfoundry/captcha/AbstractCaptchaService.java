@@ -3,19 +3,22 @@ package org.mallfoundry.captcha;
 import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public abstract class AbstractCaptchaService implements CaptchaService {
 
+    private final CaptchaAntiSpamService captchaAntiSpamService;
+
     protected final CaptchaRepository captchaRepository;
 
     @Setter
     private int codeLength = 6;
 
-    public AbstractCaptchaService(CaptchaRepository captchaRepository) {
+    public AbstractCaptchaService(CaptchaAntiSpamService captchaAntiSpamService,
+                                  CaptchaRepository captchaRepository) {
+        this.captchaAntiSpamService = captchaAntiSpamService;
         this.captchaRepository = captchaRepository;
     }
 
@@ -24,19 +27,32 @@ public abstract class AbstractCaptchaService implements CaptchaService {
         return this.captchaRepository.create(type);
     }
 
+    private void checkCaptcha(Captcha captcha) throws CaptchaException {
+        var checked = this.captchaAntiSpamService.checkCaptcha(captcha);
+        if (!checked) {
+            throw new CaptchaException("Too often");
+        }
+    }
+
     @Transactional
     @Override
-    public Captcha generateCaptcha(CaptchaType type) throws CaptchaException {
-        var captcha = this.captchaRepository.create(type).toBuilder().token(this.createToken()).code(this.generateCode()).build();
-        this.doGenerateCaptcha(captcha);
-        return this.captchaRepository.save(captcha);
+    public Captcha generateCaptcha(Captcha captcha) throws CaptchaException {
+        var codeCaptcha = captcha.toBuilder().token(this.createToken()).expires(60 * 1000).code(this.generateCode()).build();
+        this.checkCaptcha(codeCaptcha);
+        this.doGenerateCaptcha(codeCaptcha);
+        Captcha savedCaptcha = this.captchaRepository.save(codeCaptcha);
+        this.captchaAntiSpamService.forceCaptcha(savedCaptcha);
+        return savedCaptcha;
     }
 
     @Override
     public boolean checkCaptcha(String token, String code) {
-        var storedCaptcha = this.captchaRepository.findByToken(token).orElseThrow();
-        return (storedCaptcha.getCreatedTime().getTime() + storedCaptcha.getExpires()) < System.currentTimeMillis()
-                && Objects.equals(code, storedCaptcha.getCode());
+        var captcha = this.captchaRepository.findByToken(token).orElseThrow();
+        if (captcha.checkCode(code)) {
+            this.captchaRepository.deleteByToken(token);
+            return true;
+        }
+        return false;
     }
 
     protected abstract void doGenerateCaptcha(Captcha captcha) throws CaptchaException;
@@ -46,6 +62,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
     }
 
     protected String generateCode() {
-        return ThreadLocalRandom.current().ints(this.codeLength).mapToObj(Integer::toString).collect(Collectors.joining());
+        return ThreadLocalRandom.current().ints(this.codeLength, 0, 10)
+                .mapToObj(Integer::toString).collect(Collectors.joining());
     }
 }

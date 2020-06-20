@@ -3,28 +3,20 @@ package org.mallfoundry.captcha;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
 public abstract class CaptchaSupport implements Captcha {
 
-    protected CaptchaType type;
-
-    private String token;
-
-    private String code;
-
-    private Map<String, String> parameters = new HashMap<>();
-
-    private int expires;
-
-    private Date createdTime;
+    @Override
+    public boolean checkCode(String code) {
+        return (this.getCreatedTime().getTime() + this.getExpires()) < System.currentTimeMillis()
+                && Objects.equals(code, this.getCode());
+    }
 
     @Override
     public String getParameter(String name) {
-        return this.parameters.get(name);
+        return this.getParameters().get(name);
     }
 }

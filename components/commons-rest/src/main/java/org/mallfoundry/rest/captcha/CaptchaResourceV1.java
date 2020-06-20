@@ -21,7 +21,9 @@ public class CaptchaResourceV1 {
 
     @PostMapping("/captchas")
     public Captcha generateCaptcha(@RequestBody CaptchaRequest request) {
-        return this.captchaService.generateCaptcha(request.getType());
+        var captcha = request.assignToCaptcha(
+                this.captchaService.createCaptcha(request.getType()));
+        return this.captchaService.generateCaptcha(captcha);
     }
 
     @PostMapping("/captchas/{token}/check")
