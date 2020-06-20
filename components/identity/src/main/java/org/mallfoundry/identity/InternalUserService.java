@@ -78,7 +78,7 @@ public class InternalUserService implements UserService {
 
     @Transactional
     @Override
-    public User updateUser(User user) {
+    public User setUser(User user) {
         var savedUser = this.userRepository.findById(user.getId()).orElseThrow();
         if (!Objects.equals(user.getNickname(), savedUser.getNickname())) {
             savedUser.setNickname(savedUser.getNickname());
@@ -95,6 +95,12 @@ public class InternalUserService implements UserService {
         return this.passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
+    private void setPassword(InternalUser user, String password) {
+        user.changePassword(this.encodePassword(password));
+        this.eventPublisher.publishEvent(new InternalUserChangedEvent(user));
+        this.userRepository.save(user);
+    }
+
     @Transactional
     @Override
     public void changePassword(String username, String password, String originalPassword) throws UserException {
@@ -102,9 +108,13 @@ public class InternalUserService implements UserService {
         if (!this.matchesPassword(originalPassword, user.getPassword())) {
             throw new UserException("The original password is incorrect");
         }
-        user.changePassword(this.encodePassword(password));
-        this.eventPublisher.publishEvent(new InternalUserChangedEvent(user));
-        this.userRepository.save(user);
+        this.setPassword(user, password);
+    }
+
+    @Override
+    public void resetPassword(String username, String password) throws UserException {
+        var user = this.userRepository.findByUsername(username).orElseThrow();
+        this.setPassword(user, password);
     }
 
     @Transactional
@@ -126,7 +136,7 @@ public class InternalUserService implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByMobile(String mobile) {
+    public Optional<User> getUserByMobile(String countryCode, String mobile) {
         return CastUtils.cast(this.userRepository.findByMobile(mobile));
     }
 }

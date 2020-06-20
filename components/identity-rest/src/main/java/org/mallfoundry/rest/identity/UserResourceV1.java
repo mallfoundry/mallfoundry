@@ -18,9 +18,11 @@ package org.mallfoundry.rest.identity;
 
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,13 +39,23 @@ public class UserResourceV1 {
         this.userService = userService;
     }
 
+    @PostMapping("/users")
+    public User createUser(@RequestBody UserCreateRequest request) {
+        return this.userService.createUser(request);
+    }
+
     @GetMapping("/users/{id}")
     public Optional<User> getUser(@PathVariable("id") String id) {
         return this.userService.getUser(id);
     }
 
+    @GetMapping("/users/current")
+    public Optional<User> getCurrentUser() {
+        return this.userService.getUser(SecurityUserHolder.getUserId());
+    }
+
     @PatchMapping("/users/{id}")
-    public void updateUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
-        this.userService.updateUser(request.assignToUser(this.userService.createUser(id)));
+    public void setUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
+        this.userService.setUser(request.assignToUser(this.userService.createUser(id)));
     }
 }

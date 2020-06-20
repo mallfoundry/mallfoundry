@@ -72,7 +72,6 @@ public class DefaultSecurityUser implements SecurityUser {
 
     @Override
     public boolean isEnabled() {
-//        return this.user.getST();
         return true;
     }
 

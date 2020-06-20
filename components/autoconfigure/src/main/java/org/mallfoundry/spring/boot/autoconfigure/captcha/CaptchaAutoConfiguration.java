@@ -1,5 +1,6 @@
 package org.mallfoundry.spring.boot.autoconfigure.captcha;
 
+import org.mallfoundry.captcha.CaptchaAntiSpamService;
 import org.mallfoundry.captcha.CaptchaRepository;
 import org.mallfoundry.captcha.SmsCaptchaService;
 import org.mallfoundry.sms.MessageService;
@@ -15,10 +16,11 @@ public class CaptchaAutoConfiguration {
     @ConditionalOnProperty(prefix = "mall.captcha", name = "type", havingValue = "sms")
     @Bean
     public SmsCaptchaService smsCaptchaService(CaptchaProperties properties,
-                                               CaptchaRepository captchaRepository,
-                                               MessageService messageService) {
+                                               CaptchaAntiSpamService captchaAntiSpamService,
+                                               MessageService messageService,
+                                               CaptchaRepository captchaRepository) {
         var sms = properties.getSms();
-        var captchaService = new SmsCaptchaService(captchaRepository, messageService);
+        var captchaService = new SmsCaptchaService(captchaAntiSpamService, messageService, captchaRepository);
         captchaService.setCodeLength(properties.getCodeLength());
         captchaService.setSignature(sms.getSignature());
         captchaService.setTemplate(sms.getTemplate());

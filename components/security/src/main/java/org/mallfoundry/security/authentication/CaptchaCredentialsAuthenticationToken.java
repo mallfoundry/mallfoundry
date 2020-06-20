@@ -1,4 +1,4 @@
-package org.mallfoundry.security;
+package org.mallfoundry.security.authentication;
 
 
 import lombok.Getter;
@@ -7,13 +7,13 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 @Getter
 @Setter
-public class CaptchaCredentialsAuthentication extends AbstractAuthenticationToken {
+public class CaptchaCredentialsAuthenticationToken extends AbstractAuthenticationToken {
 
     private String token;
 
     private String code;
 
-    public CaptchaCredentialsAuthentication(String token, String code) {
+    public CaptchaCredentialsAuthenticationToken(String token, String code) {
         super(null);
         this.token = token;
         this.code = code;

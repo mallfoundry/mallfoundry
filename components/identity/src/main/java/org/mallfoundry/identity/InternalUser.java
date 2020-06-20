@@ -47,8 +47,14 @@ public class InternalUser implements User {
     @Column(name = "nickname_")
     private String nickname;
 
+    @Column(name = "country_code_")
+    private String countryCode;
+
     @Column(name = "mobile_")
     private String mobile;
+
+    @Column(name = "mail_")
+    private String mail;
 
     @Column(name = "password_")
     private String password;

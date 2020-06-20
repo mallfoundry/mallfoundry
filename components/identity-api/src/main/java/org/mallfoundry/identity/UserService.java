@@ -14,12 +14,14 @@ public interface UserService {
 
     void changePassword(String username, String password, String originalPassword) throws UserException;
 
-    User updateUser(User user);
+    void resetPassword(String username, String password) throws UserException;
+
+    User setUser(User user);
 
     Optional<User> getUser(String userId);
 
     Optional<User> getUserByUsername(String username);
 
-    Optional<User> getUserByMobile(String mobile);
+    Optional<User> getUserByMobile(String countryCode, String mobile);
 
 }

@@ -16,10 +16,13 @@
 
 package org.mallfoundry.security.token;
 
-import org.mallfoundry.security.CaptchaCredentials;
-import org.mallfoundry.security.Credentials;
-import org.mallfoundry.security.PasswordCredentials;
+import org.mallfoundry.security.authentication.CaptchaCredentials;
+import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationToken;
+import org.mallfoundry.security.authentication.Credentials;
+import org.mallfoundry.security.authentication.MobilePasswordCredentials;
+import org.mallfoundry.security.authentication.MobilePasswordCredentialsAuthenticationToken;
 import org.mallfoundry.security.SecurityUser;
+import org.mallfoundry.security.authentication.UsernamePasswordCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,13 +44,17 @@ public class AccessTokenAuthenticationManager {
 
     public AccessToken authenticate(Credentials credentials) throws AuthenticationException {
         Authentication authentication = null;
-        if (credentials instanceof PasswordCredentials) {
-            var passwordCredentials = (PasswordCredentials) credentials;
+        if (credentials instanceof UsernamePasswordCredentials) {
+            var passwordCredentials = (UsernamePasswordCredentials) credentials;
             authentication = new UsernamePasswordAuthenticationToken(passwordCredentials.getUsername(), passwordCredentials.getPassword());
 
+        } else if (credentials instanceof MobilePasswordCredentials) {
+            var mpCredentials = (MobilePasswordCredentials) credentials;
+            authentication = new MobilePasswordCredentialsAuthenticationToken(
+                    mpCredentials.getCountryCode(), mpCredentials.getMobile(), mpCredentials.getPassword());
         } else if (credentials instanceof CaptchaCredentials) {
             var captchaCredentials = (CaptchaCredentials) credentials;
-            authentication = new UsernamePasswordAuthenticationToken(captchaCredentials.getToken(), captchaCredentials.getCode());
+            authentication = new CaptchaCredentialsAuthenticationToken(captchaCredentials.getToken(), captchaCredentials.getCode());
         }
         authentication = this.authenticationManager.authenticate(authentication);
         var user = (SecurityUser) authentication.getPrincipal();

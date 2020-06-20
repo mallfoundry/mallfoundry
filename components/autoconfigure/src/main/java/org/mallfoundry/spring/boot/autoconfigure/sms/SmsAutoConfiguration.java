@@ -19,7 +19,7 @@ public class SmsAutoConfiguration {
     @Bean
     public AliyunMessageService aliyunMessageService(SmsProperties properties) {
         var aliyun = properties.getAliyun();
-        var profile = DefaultProfile.getProfile("", aliyun.getAccessKeyId(), aliyun.getAccessSecret());
+        var profile = DefaultProfile.getProfile("", aliyun.getAccessKeyId(), aliyun.getAccessKeySecret());
         var service = new AliyunMessageService(new DefaultAcsClient(profile));
 //        service.setSignName(aliyun.getSignName());
 //        service.setTemplateCode(aliyun.getTemplateCode());

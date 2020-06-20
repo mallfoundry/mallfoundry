@@ -24,7 +24,7 @@ public interface UserRegistration {
 
     String getParameter(String name);
 
-    void assignToUser(User user);
+    User assignToUser(User user);
 
     enum Mode {
         MAIL, MOBILE;

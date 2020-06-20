@@ -1,9 +1,10 @@
-package org.mallfoundry.security;
+package org.mallfoundry.security.authentication;
 
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.captcha.CaptchaType;
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.security.DefaultSecurityUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,8 +36,9 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
         if (!this.captchaService.checkCaptcha(token, code)) {
             throw new BadCredentialsException("Invalid captcha");
         }
+        var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
         var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
-        var user = this.userService.getUserByMobile(mobile)
+        var user = this.userService.getUserByMobile(countryCode, mobile)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s not found", mobile)));
         var securityUser = new DefaultSecurityUser(user);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
@@ -44,6 +46,6 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return CaptchaCredentialsAuthentication.class.isAssignableFrom(authentication);
+        return CaptchaCredentialsAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

@@ -18,10 +18,11 @@ package org.mallfoundry.security.token;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.http.ErrorMessage;
-import org.mallfoundry.security.Credentials;
-import org.mallfoundry.security.DefaultCaptchaCredentials;
-import org.mallfoundry.security.DefaultPasswordCredentials;
-import org.mallfoundry.security.GrantType;
+import org.mallfoundry.security.authentication.Credentials;
+import org.mallfoundry.security.authentication.DefaultCaptchaCredentials;
+import org.mallfoundry.security.authentication.DefaultMobilePasswordCredentials;
+import org.mallfoundry.security.authentication.DefaultUsernamePasswordCredentials;
+import org.mallfoundry.security.authentication.GrantType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,11 +50,16 @@ public class AccessTokenEndpointV1 {
 
     @PostMapping("/token")
     public ResponseEntity<?> authenticate(@RequestParam(name = "grant_type", required = false) String grantType,
-                                   HttpServletRequest request) {
+                                          HttpServletRequest request) {
         var type = GrantType.valueOf(StringUtils.upperCase(grantType));
         Credentials credentials = null;
-        if (type == GrantType.PASSWORD) {
-            credentials = new DefaultPasswordCredentials(request.getParameter("username"), request.getParameter("password"));
+        if (type == GrantType.USERNAME_PASSWORD) {
+            credentials = new DefaultUsernamePasswordCredentials(request.getParameter("username"), request.getParameter("password"));
+        } else if (type == GrantType.MOBILE_PASSWORD) {
+            credentials = new DefaultMobilePasswordCredentials(
+                    request.getParameter("country_code"),
+                    request.getParameter("mobile"),
+                    request.getParameter("password"));
         } else if (type == GrantType.CAPTCHA) {
             credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));
         }

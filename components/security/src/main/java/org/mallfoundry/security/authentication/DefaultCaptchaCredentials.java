@@ -1,4 +1,4 @@
-package org.mallfoundry.security;
+package org.mallfoundry.security.authentication;
 
 public class DefaultCaptchaCredentials extends CaptchaCredentialsSupport {
 

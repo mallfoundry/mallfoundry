@@ -16,6 +16,8 @@
 
 package org.mallfoundry.security;
 
+import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationProvider;
+import org.mallfoundry.security.authentication.MobilePasswordCredentialsAuthenticationProvider;
 import org.mallfoundry.security.token.AccessTokenAuthenticationFilter;
 import org.mallfoundry.security.token.AccessTokenAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
@@ -39,12 +41,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider;
 
+    private final MobilePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider;
+
     public SecurityConfiguration(SecurityUserService securityUserService,
                                  AccessTokenAuthenticationProvider tokenAuthenticationProvider,
-                                 CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider) {
+                                 CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider,
+                                 MobilePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider) {
         this.securityUserService = securityUserService;
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
         this.captchaCredentialsAuthenticationProvider = captchaCredentialsAuthenticationProvider;
+        this.mobilePasswordCredentialsAuthenticationProvider = mobilePasswordCredentialsAuthenticationProvider;
     }
 
     @Override
@@ -57,7 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.securityUserService);
         auth.authenticationProvider(this.tokenAuthenticationProvider)
-                .authenticationProvider(captchaCredentialsAuthenticationProvider);
+                .authenticationProvider(this.captchaCredentialsAuthenticationProvider)
+                .authenticationProvider(this.mobilePasswordCredentialsAuthenticationProvider);
 
     }
 

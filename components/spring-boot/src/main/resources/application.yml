@@ -13,7 +13,7 @@ spring:
       ignore-unknown: true
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
-    active: dev
+    active: dev,internal
   application:
     name: Mall-Foundry-APP
   cache:

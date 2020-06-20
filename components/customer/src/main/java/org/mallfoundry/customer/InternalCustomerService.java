@@ -59,6 +59,9 @@ public class InternalCustomerService implements CustomerService {
     @Override
     public Customer setCustomer(Customer customer) {
         var savedCustomer = this.customerRepository.findById(customer.getId()).orElseThrow();
+        if (Objects.nonNull(customer.getNickname())) {
+            savedCustomer.setNickname(customer.getNickname());
+        }
         if (Objects.nonNull(customer.getGender())) {
             savedCustomer.setGender(customer.getGender());
         }

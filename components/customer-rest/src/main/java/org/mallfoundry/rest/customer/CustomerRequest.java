@@ -30,11 +30,14 @@ import java.util.Date;
 @Schema
 public class CustomerRequest {
 
-    @Schema(name = "gender")
-    private Gender gender;
-
     @Schema(name = "avatar")
     private String avatar;
+
+    @Schema(name = "nickname")
+    private String nickname;
+
+    @Schema(name = "gender")
+    private Gender gender;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(name = "birthday")
@@ -43,6 +46,7 @@ public class CustomerRequest {
     public Customer assignToCustomer(Customer customer) {
         return customer.toBuilder()
                 .avatar(this.avatar)
+                .nickname(this.nickname)
                 .gender(this.gender)
                 .birthday(this.birthday)
                 .build();
