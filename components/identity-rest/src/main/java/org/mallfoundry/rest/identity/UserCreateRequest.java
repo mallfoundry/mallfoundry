@@ -11,12 +11,11 @@ import java.util.Map;
 @Getter
 @Setter
 public class UserCreateRequest implements UserRegistration {
-
     private String username;
     private String nickname;
     private String password;
     private String mobile;
-    private String mail;
+    private String email;
     private Mode mode;
     private Map<String, String> parameters = new HashMap<>();
 
@@ -36,7 +35,7 @@ public class UserCreateRequest implements UserRegistration {
                 .nickname(this.nickname)
                 .password(this.password)
                 .mobile(this.mobile)
-                .mail(this.mail)
+                .email(this.email)
                 .build();
     }
 }

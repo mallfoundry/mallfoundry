@@ -18,7 +18,7 @@ public class CaptchaAntiSpamService {
     private CaptchaSpam createCaptchaSpam(Captcha captcha) throws CaptchaException {
         if (Objects.equals(captcha.getType(), CaptchaType.SMS)) {
             var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
-            return new CaptchaSpam(mobile, captcha.getExpires(), captcha.getCreatedTime());
+            return new CaptchaSpam(mobile, captcha.getIntervals(), captcha.getCreatedTime());
         }
 
         throw new CaptchaException(String.format("This type(%s) of captcha is not supported", captcha.getType()));
@@ -29,13 +29,19 @@ public class CaptchaAntiSpamService {
         return this.captchaSpamRepository.findById(spam.getId());
     }
 
-    public boolean checkCaptcha(Captcha captcha) {
-        return this.getCaptchaSpam(captcha).map(CaptchaSpam::isExpired).orElse(true);
+    public boolean spamCaptcha(Captcha captcha) {
+        return this.getCaptchaSpam(captcha).map(CaptchaSpam::isSpam).orElse(false);
     }
 
     @Transactional
-    public void forceCaptcha(Captcha captcha) {
+    public void scoreCaptcha(Captcha captcha) {
         var spam = this.createCaptchaSpam(captcha);
         this.captchaSpamRepository.save(spam);
+    }
+
+    @Transactional
+    public void clearCaptcha(Captcha captcha) {
+        var spam = this.createCaptchaSpam(captcha);
+        this.captchaSpamRepository.deleteById(spam.getId());
     }
 }

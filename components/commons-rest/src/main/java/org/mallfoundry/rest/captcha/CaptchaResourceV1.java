@@ -1,7 +1,6 @@
 package org.mallfoundry.rest.captcha;
 
 
-import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +19,10 @@ public class CaptchaResourceV1 {
     }
 
     @PostMapping("/captchas")
-    public Captcha generateCaptcha(@RequestBody CaptchaRequest request) {
+    public CaptchaResponse generateCaptcha(@RequestBody CaptchaRequest request) {
         var captcha = request.assignToCaptcha(
                 this.captchaService.createCaptcha(request.getType()));
-        return this.captchaService.generateCaptcha(captcha);
+        return new CaptchaResponse(this.captchaService.generateCaptcha(captcha));
     }
 
     @PostMapping("/captchas/{token}/check")

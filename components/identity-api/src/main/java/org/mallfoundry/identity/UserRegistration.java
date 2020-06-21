@@ -1,18 +1,26 @@
 package org.mallfoundry.identity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Map;
 
 public interface UserRegistration {
 
     String getUsername();
 
+    void setUsername(String username);
+
     String getPassword();
+
+    void setPassword(String password);
 
     String getNickname();
 
+    void setNickname(String nickname);
+
     String getMobile();
 
-    String getMail();
+    String getEmail();
 
     Mode getMode();
 
@@ -27,6 +35,12 @@ public interface UserRegistration {
     User assignToUser(User user);
 
     enum Mode {
-        MAIL, MOBILE;
+        EMAIL, MOBILE;
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
     }
 }

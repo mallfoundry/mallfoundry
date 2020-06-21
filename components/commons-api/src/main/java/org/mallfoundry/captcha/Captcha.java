@@ -26,7 +26,7 @@ public interface Captcha {
 
     void setCode(String code);
 
-    boolean checkCode(String code);
+    boolean checkCode(String code) throws CaptchaException;
 
     Map<String, String> getParameters();
 
@@ -34,11 +34,17 @@ public interface Captcha {
 
     void setParameters(Map<String, String> parameters);
 
+    int getIntervals();
+
+    void setIntervals(int intervals);
+
     int getExpires();
 
     void setExpires(int expires);
 
     Date getCreatedTime();
+
+    void setCreatedTime(Date createdTime);
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {
@@ -51,9 +57,13 @@ public interface Captcha {
 
         Builder code(String code);
 
+        Builder parameters(Map<String, String> parameters);
+
         Builder expires(int expires);
 
-        Builder parameters(Map<String, String> parameters);
+        Builder intervals(int intervals);
+
+        Builder createdTime(Date createdTime);
     }
 
     class BuilderSupport implements Builder {
@@ -77,14 +87,26 @@ public interface Captcha {
         }
 
         @Override
+        public Builder parameters(Map<String, String> parameters) {
+            this.captcha.setParameters(new HashMap<>(parameters));
+            return this;
+        }
+
+        @Override
         public Builder expires(int expires) {
             this.captcha.setExpires(expires);
             return this;
         }
 
         @Override
-        public Builder parameters(Map<String, String> parameters) {
-            this.captcha.setParameters(new HashMap<>(parameters));
+        public Builder intervals(int intervals) {
+            this.captcha.setIntervals(intervals);
+            return this;
+        }
+
+        @Override
+        public Builder createdTime(Date createdTime) {
+            this.captcha.setCreatedTime(createdTime);
             return this;
         }
 

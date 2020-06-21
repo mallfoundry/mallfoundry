@@ -3,7 +3,6 @@ package org.mallfoundry.captcha;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.util.ObjectBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,22 +22,22 @@ public class CaptchaSpam {
     @Column(name = "id_")
     private String id;
 
-    @Column(name = "expires_")
-    private int expires;
+    @Column(name = "intervals_")
+    private int intervals;
 
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public CaptchaSpam(String id, int expires, Date createdTime) {
+    public CaptchaSpam(String id, int intervals, Date createdTime) {
         this.id = id;
-        this.expires = expires;
+        this.intervals = intervals;
         this.createdTime = Objects.nonNull(createdTime)
                 ? createdTime
                 : new Date();
     }
 
-    public boolean isExpired() {
+    public boolean isSpam() {
         var time = System.currentTimeMillis() - this.createdTime.getTime();
-        return time - expires > 0;
+        return time < this.getIntervals();
     }
 }

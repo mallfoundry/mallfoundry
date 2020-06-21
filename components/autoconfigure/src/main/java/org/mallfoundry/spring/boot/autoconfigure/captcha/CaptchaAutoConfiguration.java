@@ -1,8 +1,7 @@
 package org.mallfoundry.spring.boot.autoconfigure.captcha;
 
-import org.mallfoundry.captcha.CaptchaAntiSpamService;
 import org.mallfoundry.captcha.CaptchaRepository;
-import org.mallfoundry.captcha.SmsCaptchaService;
+import org.mallfoundry.captcha.SmsCaptchaProvider;
 import org.mallfoundry.sms.MessageService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,15 +14,14 @@ public class CaptchaAutoConfiguration {
 
     @ConditionalOnProperty(prefix = "mall.captcha", name = "type", havingValue = "sms")
     @Bean
-    public SmsCaptchaService smsCaptchaService(CaptchaProperties properties,
-                                               CaptchaAntiSpamService captchaAntiSpamService,
-                                               MessageService messageService,
-                                               CaptchaRepository captchaRepository) {
+    public SmsCaptchaProvider smsCaptchaService(CaptchaProperties properties, MessageService messageService,
+                                                CaptchaRepository captchaRepository) {
         var sms = properties.getSms();
-        var captchaService = new SmsCaptchaService(captchaAntiSpamService, messageService, captchaRepository);
-        captchaService.setCodeLength(properties.getCodeLength());
-        captchaService.setSignature(sms.getSignature());
-        captchaService.setTemplate(sms.getTemplate());
-        return captchaService;
+        var provider = new SmsCaptchaProvider(messageService, captchaRepository);
+        provider.setSignature(sms.getSignature());
+        provider.setTemplate(sms.getTemplate());
+        provider.setExpires(sms.getExpires());
+        provider.setIntervals(sms.getIntervals());
+        return provider;
     }
 }

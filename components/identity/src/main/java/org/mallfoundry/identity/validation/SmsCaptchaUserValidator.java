@@ -1,5 +1,6 @@
 package org.mallfoundry.identity.validation;
 
+import org.mallfoundry.captcha.CaptchaException;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.identity.UserRegistration;
 import org.mallfoundry.identity.UserValidator;
@@ -22,7 +23,7 @@ public class SmsCaptchaUserValidator implements UserValidator {
             var code = registration.getParameter("captcha_code");
             var checked = this.captchaService.checkCaptcha(token, code);
             if (!checked) {
-                throw new UserValidatorException("The captcha code error");
+                throw CaptchaException.INVALID_CAPTCHA;
             }
         }
     }

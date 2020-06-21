@@ -14,7 +14,7 @@ public class RegistrationModeUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        if (Objects.nonNull(registration.getMode())) {
+        if (Objects.isNull(registration.getMode())) {
             throw new UserValidatorException("The registration mode must not be null");
         }
     }

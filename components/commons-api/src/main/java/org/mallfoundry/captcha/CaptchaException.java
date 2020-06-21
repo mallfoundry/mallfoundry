@@ -13,4 +13,6 @@ public class CaptchaException extends RuntimeException {
     public CaptchaException(Throwable cause) {
         super(cause);
     }
+
+    public static final CaptchaException INVALID_CAPTCHA = new CaptchaException("Invalid captcha");
 }

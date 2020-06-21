@@ -23,5 +23,7 @@ public class RedisCaptcha extends CaptchaSupport {
 
     private int expires;
 
+    private int intervals;
+
     private Date createdTime;
 }

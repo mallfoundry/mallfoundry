@@ -23,8 +23,9 @@ public class CaptchaProperties {
     @Setter
     static class Sms {
         private String template;
-
         private String signature;
+        private int expires;
+        private int intervals;
     }
 
 }

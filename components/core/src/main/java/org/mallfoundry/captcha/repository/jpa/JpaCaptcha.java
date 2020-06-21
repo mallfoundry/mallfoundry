@@ -34,6 +34,8 @@ public class JpaCaptcha extends CaptchaSupport {
 
     private int expires;
 
+    private int intervals;
+
     private Date createdTime;
 
     @JsonIgnore
@@ -72,6 +74,12 @@ public class JpaCaptcha extends CaptchaSupport {
     @Override
     public Map<String, String> getParameters() {
         return parameters;
+    }
+
+    @Column(name = "intervals_")
+    @Override
+    public int getIntervals() {
+        return intervals;
     }
 
     @Column(name = "expires_")

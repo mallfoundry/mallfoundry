@@ -16,7 +16,6 @@
 
 package org.mallfoundry.rest.identity;
 
-import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.SecurityUserHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,18 +39,18 @@ public class UserResourceV1 {
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody UserCreateRequest request) {
-        return this.userService.createUser(request);
+    public UserResponse createUser(@RequestBody UserCreateRequest request) {
+        return UserResponse.of(this.userService.createUser(request));
     }
 
     @GetMapping("/users/{id}")
-    public Optional<User> getUser(@PathVariable("id") String id) {
-        return this.userService.getUser(id);
+    public Optional<UserResponse> getUser(@PathVariable("id") String id) {
+        return this.userService.getUser(id).map(UserResponse::of);
     }
 
     @GetMapping("/users/current")
-    public Optional<User> getCurrentUser() {
-        return this.userService.getUser(SecurityUserHolder.getUserId());
+    public Optional<UserResponse> getCurrentUser() {
+        return this.userService.getUser(SecurityUserHolder.getUserId()).map(UserResponse::of);
     }
 
     @PatchMapping("/users/{id}")

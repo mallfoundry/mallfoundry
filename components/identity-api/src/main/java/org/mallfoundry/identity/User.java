@@ -24,9 +24,9 @@ public interface User {
 
     void setMobile(String mobile);
 
-    String getMail();
+    String getEmail();
 
-    void setMail(String mail);
+    void setEmail(String email);
 
     String getPassword();
 
@@ -50,7 +50,7 @@ public interface User {
 
         Builder mobile(String mobile);
 
-        Builder mail(String mail);
+        Builder email(String mail);
 
         Builder password(String password);
 
@@ -89,8 +89,8 @@ public interface User {
         }
 
         @Override
-        public Builder mail(String mail) {
-            this.user.setMail(mail);
+        public Builder email(String email) {
+            this.user.setEmail(email);
             return this;
         }
 

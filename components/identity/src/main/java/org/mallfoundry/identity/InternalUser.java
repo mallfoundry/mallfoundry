@@ -50,16 +50,14 @@ public class InternalUser implements User {
     @Column(name = "country_code_")
     private String countryCode;
 
-    @Column(name = "mobile_")
+    @Column(name = "mobile_", unique = true)
     private String mobile;
 
-    @Column(name = "mail_")
-    private String mail;
 
     @Column(name = "password_")
     private String password;
 
-    @Column(name = "email_")
+    @Column(name = "email_", unique = true)
     private String email;
 
     @Column(name = "enabled_")

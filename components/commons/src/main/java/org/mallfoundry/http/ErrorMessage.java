@@ -16,7 +16,6 @@
 
 package org.mallfoundry.http;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,21 +25,22 @@ public class ErrorMessage {
 
     private String error;
 
-    @JsonProperty("error_description")
-    private String description;
+    private String message;
 
     private ErrorMessage(String error) {
         this.error = error;
     }
 
-    public static ErrorMessage error(String error, String description) {
-        ErrorMessage message = new ErrorMessage(error);
-        message.setDescription(description);
-        return message;
+    public ErrorMessage(String error, String message) {
+        this.error = error;
+        this.message = message;
     }
 
+    public static ErrorMessage error(String error, String message) {
+        return new ErrorMessage(error, message);
+    }
 
-    public static ErrorMessage description(String description) {
-        return error("error", description);
+    public static ErrorMessage message(String message) {
+        return error("error", message);
     }
 }

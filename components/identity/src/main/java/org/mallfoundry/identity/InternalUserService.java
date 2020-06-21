@@ -17,6 +17,7 @@
 package org.mallfoundry.identity;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
@@ -36,17 +37,20 @@ public class InternalUserService implements UserService {
 
     private final List<UserValidator> userValidators;
 
+    private final UsernameGenerator usernameGenerator;
+
     private final ApplicationEventPublisher eventPublisher;
 
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
-
     public InternalUserService(List<UserValidator> userValidators,
+                               UsernameGenerator usernameGenerator,
                                ApplicationEventPublisher eventPublisher,
                                UserRepository userRepository) {
         this.userValidators = userValidators;
+        this.usernameGenerator = usernameGenerator;
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -70,10 +74,12 @@ public class InternalUserService implements UserService {
         }
         var user = new InternalUser(PrimaryKeyHolder.next(USER_ID_VALUE_NAME));
         registration.assignToUser(user);
+        if (StringUtils.isBlank(user.getUsername())) {
+            user.setUsername(this.usernameGenerator.generate(user.getId()));
+        }
         user.changePassword(this.encodePassword(registration.getPassword()));
         this.eventPublisher.publishEvent(new InternalUserCreatedEvent(user));
-        this.userRepository.save(user);
-        return user;
+        return this.userRepository.save(user);
     }
 
     @Transactional
@@ -97,8 +103,8 @@ public class InternalUserService implements UserService {
 
     private void setPassword(InternalUser user, String password) {
         user.changePassword(this.encodePassword(password));
-        this.eventPublisher.publishEvent(new InternalUserChangedEvent(user));
-        this.userRepository.save(user);
+        var savedUser = this.userRepository.save(user);
+        this.eventPublisher.publishEvent(new InternalUserPasswordChangedEvent(savedUser));
     }
 
     @Transactional
@@ -111,6 +117,7 @@ public class InternalUserService implements UserService {
         this.setPassword(user, password);
     }
 
+    @Transactional
     @Override
     public void resetPassword(String username, String password) throws UserException {
         var user = this.userRepository.findByUsername(username).orElseThrow();
