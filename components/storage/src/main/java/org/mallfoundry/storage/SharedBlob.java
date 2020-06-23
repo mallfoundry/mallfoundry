@@ -16,7 +16,6 @@
 
 package org.mallfoundry.storage;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +26,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,7 +34,7 @@ import java.io.IOException;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_storage_shared_blob")
-public class SharedBlob implements AutoCloseable {
+public class SharedBlob {
 
     @Id
     @Column(name = "url_")
@@ -54,12 +52,7 @@ public class SharedBlob implements AutoCloseable {
     @Column(name = "crc32_")
     private String crc32;
 
-    @JsonIgnore
-    @Transient
-    private File file;
-
     public SharedBlob(File file) throws IOException {
-        this.file = file;
         this.size = file.length();
         this.md5 = md5Hex(file);
         this.crc32 = crc32Hex(file);
@@ -77,10 +70,5 @@ public class SharedBlob implements AutoCloseable {
 
     private static String crc32Hex(File file) throws IOException {
         return Long.toHexString(FileUtils.checksumCRC32(file));
-    }
-
-    @Override
-    public void close() throws IOException {
-        FileUtils.forceDelete(file);
     }
 }
