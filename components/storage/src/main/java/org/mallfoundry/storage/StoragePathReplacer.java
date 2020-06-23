@@ -39,10 +39,11 @@ public class StoragePathReplacer {
     }
 
     private String replace(List<Replacement> replacements, String path) {
+        var replacePath = path;
         for (var replacement : replacements) {
-            path = path.replaceAll(replacement.getName(), replacement.getValue());
+            replacePath = replacement.replace(replacePath);
         }
-        return path;
+        return replacePath;
     }
 
     private List<Replacement> createReplacements(File file) {
@@ -63,7 +64,11 @@ public class StoragePathReplacer {
     @Setter
     @AllArgsConstructor
     static class Replacement {
-        private String name;
-        private String value;
+        private String regex;
+        private String replacement;
+
+        public String replace(String path) {
+            return path.replaceAll(this.regex, this.replacement);
+        }
     }
 }
