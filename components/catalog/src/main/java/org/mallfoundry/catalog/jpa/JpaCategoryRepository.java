@@ -3,6 +3,7 @@ package org.mallfoundry.catalog.jpa;
 import org.mallfoundry.catalog.CategoryQuery;
 import org.mallfoundry.catalog.CategoryRepository;
 import org.mallfoundry.catalog.InternalCategory;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -28,6 +29,6 @@ public interface JpaCategoryRepository
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("parentId"), categoryQuery.getParentId()));
             }
             return predicate;
-        });
+        }, Sort.by(Sort.Order.asc("position")));
     }
 }

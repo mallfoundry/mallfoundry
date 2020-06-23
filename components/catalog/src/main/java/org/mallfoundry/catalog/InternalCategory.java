@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +50,7 @@ public class InternalCategory implements Category {
 
     @OneToMany(targetEntity = InternalCategory.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "parent_id_")
+    @OrderBy("position ASC")
     private List<Category> children;
 
     @Enumerated
