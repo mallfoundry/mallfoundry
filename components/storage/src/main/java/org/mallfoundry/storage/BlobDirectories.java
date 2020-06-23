@@ -17,40 +17,30 @@
 package org.mallfoundry.storage;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
 public abstract class BlobDirectories {
 
-    public static boolean isRootParent(Blob blob) {
-        return StringUtils.equals(PathUtils.getParentPath(blob.getPath()), PathUtils.ROOT_PATH);
-    }
-
     public static Blob getParent(Blob blob) {
         if (Objects.nonNull(blob.getParent())) {
             return blob.getParent();
         }
-
-        if (StringUtils.isEmpty(blob.getPath()) || StringUtils.equals(blob.getPath(), PathUtils.ROOT_PATH)) {
+        if (PathUtils.isRootPath(blob.getPath())) {
             return null;
         }
-
         String path =
                 blob.getPath().endsWith(PathUtils.PATH_SEPARATOR)
                         ? FilenameUtils.getFullPathNoEndSeparator(blob.getPath())
                         : blob.getPath();
 
         String parentPath = FilenameUtils.getFullPathNoEndSeparator(path);
-
-        if (StringUtils.equals(parentPath, PathUtils.ROOT_PATH)) {
+        if (PathUtils.isRootPath(parentPath)) {
             return null;
         }
-
         var parent = new InternalBlob();
         parent.setBlobId(new InternalBlobId(blob.getBucket(), parentPath));
         parent.createDirectory();
-
         return parent;
     }
 

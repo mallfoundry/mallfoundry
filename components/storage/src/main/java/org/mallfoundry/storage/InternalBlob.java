@@ -103,6 +103,10 @@ public class InternalBlob implements Blob {
     @Transient
     private File file;
 
+    @JsonIgnore
+    @Transient
+    private boolean temporaryFile;
+
     public InternalBlob(BlobId blobId) {
         this.setBlobId(InternalBlobId.of(blobId));
         this.createDirectory();
@@ -116,7 +120,7 @@ public class InternalBlob implements Blob {
 
     public InternalBlob(BlobId blobId, InputStream inputStream) throws IOException {
         this.setBlobId(InternalBlobId.of(blobId));
-        this.setFile(this.streamToFile(inputStream));
+        this.setFile(this.streamToTemporaryFile(inputStream));
         this.createFile();
     }
 
@@ -213,10 +217,10 @@ public class InternalBlob implements Blob {
 
     private File createUrlToTemporaryFile() throws IOException {
         var urlResource = new UrlResource(this.getUrl());
-        return streamToFile(urlResource.getInputStream());
+        return this.streamToTemporaryFile(urlResource.getInputStream());
     }
 
-    private File streamToFile(InputStream stream) throws IOException {
+    private File streamToTemporaryFile(InputStream stream) throws IOException {
         var temporaryFileSuffix = String.format(".%s", FilenameUtils.getExtension(this.getName()));
         File temporaryFile =
                 File.createTempFile(
@@ -225,6 +229,7 @@ public class InternalBlob implements Blob {
         try (stream) {
             FileUtils.copyToFile(stream, temporaryFile);
         }
+        this.temporaryFile = true;
         return temporaryFile;
     }
 
@@ -250,8 +255,8 @@ public class InternalBlob implements Blob {
 
     @Override
     public void close() throws IOException {
-        /*if (Objects.nonNull(this.file)) {
+        if (this.temporaryFile && this.file.exists()) {
             FileUtils.forceDelete(this.file);
-        }*/
+        }
     }
 }

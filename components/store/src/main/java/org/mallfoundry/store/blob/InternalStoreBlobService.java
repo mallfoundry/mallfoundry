@@ -72,13 +72,13 @@ public class InternalStoreBlobService implements StoreBlobService {
 
     @Override
     public Blob storeBlob(Blob blob) throws IOException, StoreBlobException {
-        try (blob) {
-            PathValidator.validate(blob.getPath());
-            if (Extensions.isImageExtension(blob) || blob.isDirectory()) {
+        PathValidator.validate(blob.getPath());
+        if (Extensions.isImageExtension(blob) || blob.isDirectory()) {
+            try (blob) {
                 return this.storageService.storeBlob(blob);
             }
-            throw new StoreBlobException("An unrecognized file extension");
         }
+        throw new StoreBlobException("An unrecognized file extension");
     }
 
     @Override

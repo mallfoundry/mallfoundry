@@ -110,27 +110,36 @@ public class InternalStorageService implements StorageService {
         }
     }
 
+    private boolean existsSharedBlob(SharedBlob sharedBlob) {
+        var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
+        if (Objects.isNull(existsSharedBlob)) {
+            return false;
+        }
+        sharedBlob.setUrl(existsSharedBlob.getUrl());
+        sharedBlob.setSize(existsSharedBlob.getSize());
+        return true;
+    }
+
     @Transactional
     @Override
     public Blob storeBlob(Blob blob) throws StorageException, IOException {
-        InternalBlob internalBlob = InternalBlob.of(blob);
-        makeDirectories(internalBlob);
-        if (internalBlob.isFile()) {
-            try (var sharedBlob = SharedBlob.of(internalBlob)) {
-                var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
-                if (Objects.isNull(existsSharedBlob)) {
+        try (InternalBlob internalBlob = InternalBlob.of(blob)) {
+            makeDirectories(internalBlob);
+            if (internalBlob.isFile()) {
+                var sharedBlob = SharedBlob.of(internalBlob);
+                if (this.existsSharedBlob(sharedBlob)) {
+                    internalBlob.setUrl(sharedBlob.getUrl());
+                    internalBlob.setSize(sharedBlob.getSize());
+                } else {
                     this.storageSystem.storeBlob(internalBlob);
                     sharedBlob.setUrl(internalBlob.getUrl());
                     sharedBlob.setPath(internalBlob.getPath());
                     this.sharedBlobRepository.save(sharedBlob);
-                } else {
-                    internalBlob.setUrl(existsSharedBlob.getUrl());
-                    internalBlob.setSize(existsSharedBlob.getSize());
                 }
             }
+            this.indexBlobService.buildIndexes(blob.getBucket(), blob.getPath());
+            return this.blobRepository.save(internalBlob);
         }
-        this.indexBlobService.buildIndexes(blob.getBucket(), blob.getPath());
-        return this.blobRepository.save(internalBlob);
     }
 
     @Transactional
