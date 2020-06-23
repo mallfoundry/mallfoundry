@@ -101,29 +101,36 @@ public class InternalBlob implements Blob {
 
     @JsonIgnore
     @Transient
-    private InputStream inputStream;
+    private File file;
 
     public InternalBlob(BlobId blobId) {
         this.setBlobId(InternalBlobId.of(blobId));
         this.createDirectory();
     }
 
-    public InternalBlob(BlobId blobId, File file) throws IOException {
-        this(blobId, FileUtils.openInputStream(file));
-    }
-
-    public InternalBlob(BlobId blobId, InputStream inputStream) {
+    public InternalBlob(BlobId blobId, File file) {
         this.setBlobId(InternalBlobId.of(blobId));
-        this.setInputStream(inputStream);
+        this.setFile(file);
         this.createFile();
     }
 
-    public static InternalBlob of(Blob blob) {
+    public InternalBlob(BlobId blobId, InputStream inputStream) throws IOException {
+        this.setBlobId(InternalBlobId.of(blobId));
+        this.setFile(this.streamToFile(inputStream));
+        this.createFile();
+    }
+
+    public static InternalBlob of(Blob blob) throws IOException {
+        if (blob instanceof InternalBlob) {
+            return (InternalBlob) blob;
+        }
+
         var internalBlob = new InternalBlob();
         if (blob.isDirectory()) {
-            BeanUtils.copyProperties(blob, internalBlob, "inputStream");
+            BeanUtils.copyProperties(blob, internalBlob, "file");
         } else {
             BeanUtils.copyProperties(blob, internalBlob);
+            internalBlob.setFile(blob.toFile());
         }
         return internalBlob;
     }
@@ -171,13 +178,13 @@ public class InternalBlob implements Blob {
     }
 
     @Override
-    public InputStream getInputStream() throws StorageException, IOException {
+    public InputStream openInputStream() throws StorageException, IOException {
         if (this.isDirectory()) {
             throw new StorageException("The blob is a directory");
         }
 
-        if (Objects.nonNull(this.inputStream)) {
-            return this.inputStream;
+        if (Objects.nonNull(this.file)) {
+            return FileUtils.openInputStream(this.file);
         }
 
         if (Objects.nonNull(this.url)) {
@@ -194,6 +201,31 @@ public class InternalBlob implements Blob {
                 .flatMap(MediaTypeFactory::getMediaType)
                 .map(MimeType::toString)
                 .orElse(null);
+    }
+
+    @Override
+    public File toFile() throws IOException {
+        if (Objects.isNull(this.file) && Objects.nonNull(this.url)) {
+            this.file = this.createUrlToTemporaryFile();
+        }
+        return this.file;
+    }
+
+    private File createUrlToTemporaryFile() throws IOException {
+        var urlResource = new UrlResource(this.getUrl());
+        return streamToFile(urlResource.getInputStream());
+    }
+
+    private File streamToFile(InputStream stream) throws IOException {
+        var temporaryFileSuffix = String.format(".%s", FilenameUtils.getExtension(this.getName()));
+        File temporaryFile =
+                File.createTempFile(
+                        String.format("%s_%s", System.currentTimeMillis(),
+                                FilenameUtils.getBaseName(this.getName())), temporaryFileSuffix);
+        try (stream) {
+            FileUtils.copyToFile(stream, temporaryFile);
+        }
+        return temporaryFile;
     }
 
     @Override
@@ -218,8 +250,8 @@ public class InternalBlob implements Blob {
 
     @Override
     public void close() throws IOException {
-        if (Objects.nonNull(this.inputStream)) {
-            this.inputStream.close();
-        }
+        /*if (Objects.nonNull(this.file)) {
+            FileUtils.forceDelete(this.file);
+        }*/
     }
 }
