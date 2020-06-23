@@ -50,7 +50,7 @@ public class InternalBucket implements Bucket {
     }
 
     @Override
-    public Blob createBlob(String path, File file) throws IOException {
+    public Blob createBlob(String path, File file) {
         return new InternalBlob(new InternalBlobId(this.getName(), path), file);
     }
 
@@ -61,7 +61,7 @@ public class InternalBucket implements Bucket {
     }
 
     @Override
-    public Blob createBlob(String path, InputStream inputStream) {
+    public Blob createBlob(String path, InputStream inputStream) throws IOException {
         return new InternalBlob(new InternalBlobId(this.getName(), path), inputStream);
     }
 
