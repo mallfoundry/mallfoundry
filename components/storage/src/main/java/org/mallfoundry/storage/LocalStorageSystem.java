@@ -32,14 +32,13 @@ public class LocalStorageSystem implements StorageSystem {
         this.baseUrl = baseUrl;
     }
 
-
     @Override
     public void storeBlob(Blob blob) throws IOException {
         if (blob.isFile()) {
             String path = PathUtils.concat(blob.getBucket(), blob.getPath());
             File storeFile = new File(PathUtils.concat(this.directory, path));
             FileUtils.touch(storeFile);
-            FileUtils.copyInputStreamToFile(blob.getInputStream(), storeFile);
+            FileUtils.copyFile(blob.toFile(), storeFile);
             blob.setUrl(this.getHttpUrl(path));
             blob.setSize(storeFile.length());
         }
