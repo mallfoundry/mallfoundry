@@ -30,10 +30,6 @@ abstract class PathUtils extends org.mallfoundry.util.PathUtils {
         return ROOT_PATH.equals(path) || Objects.isNull(path);
     }
 
-    public static String fullPath(String path) {
-        return path.endsWith(PATH_SEPARATOR) ? FilenameUtils.getFullPathNoEndSeparator(path) : path;
-    }
-
     static String getParentPath(String path) {
         return FilenameUtils.getFullPathNoEndSeparator(path);
     }
