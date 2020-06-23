@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,16 +66,7 @@ public class SharedBlob implements AutoCloseable {
     }
 
     public static SharedBlob of(Blob blob) throws IOException {
-        var temporaryFileSuffix = String.format(".%s", FilenameUtils.getExtension(blob.getName()));
-        File temporaryFile =
-                File.createTempFile(
-                        String.format("%s_%s", System.currentTimeMillis(),
-                                FilenameUtils.getBaseName(blob.getName())), temporaryFileSuffix);
-        // close resource.
-        try (var inputStream = blob.getInputStream()) {
-            FileUtils.copyToFile(inputStream, temporaryFile);
-        }
-        return new SharedBlob(temporaryFile);
+        return new SharedBlob(blob.toFile());
     }
 
     private static String md5Hex(File file) throws IOException {
