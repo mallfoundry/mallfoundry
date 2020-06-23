@@ -19,6 +19,7 @@ package org.mallfoundry.spring.boot.autoconfigure.storage;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @Getter
 @Setter
@@ -27,11 +28,41 @@ public class StorageProperties {
 
     private SystemType type;
 
-    private String directory;
-
     private String baseUrl;
 
+    @NestedConfigurationProperty
+    private Local local = new Local();
+
+    @NestedConfigurationProperty
+    private Aliyun aliyun = new Aliyun();
+
+    @NestedConfigurationProperty
+    private Output output = new Output();
+
     public enum SystemType {
-        LOCAL, FTP, ALI_CLOUD_OSS
+        LOCAL, FTP, ALIYUN
     }
+
+    @Getter
+    @Setter
+    static class Local {
+        private String directory;
+    }
+
+    @Getter
+    @Setter
+    static class Aliyun {
+        private String accessKeyId;
+        private String accessKeySecret;
+        private String endpoint;
+        private String bucketName;
+    }
+
+    @Getter
+    @Setter
+    static class Output {
+        private String path = "/{yyyy}/{MM}/{dd}";
+        private String filename = "{uuid}.{ext}";
+    }
+
 }

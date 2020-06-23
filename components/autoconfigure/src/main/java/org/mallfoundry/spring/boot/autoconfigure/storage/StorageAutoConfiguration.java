@@ -16,8 +16,12 @@
 
 package org.mallfoundry.spring.boot.autoconfigure.storage;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import org.mallfoundry.storage.LocalStorageSystem;
+import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
+import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,10 +37,26 @@ import org.springframework.web.servlet.resource.EncodedResourceResolver;
 public class StorageAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
+    public StoragePathReplacer storagePathReplacer(StorageProperties properties) {
+        var output = properties.getOutput();
+        return new StoragePathReplacer(output.getPath(), output.getFilename());
+    }
+
+    @Bean
     @ConditionalOnClass(LocalStorageSystem.class)
     @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
-    public StorageSystem storageSystem(StorageProperties properties) {
-        return new LocalStorageSystem(properties.getDirectory(), properties.getBaseUrl());
+    public LocalStorageSystem localStorageSystem(StorageProperties properties) {
+        var local = properties.getLocal();
+        return new LocalStorageSystem(local.getDirectory(), properties.getBaseUrl());
+    }
+
+    @Bean
+    @ConditionalOnClass(AliyunStorageSystem.class)
+    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "aliyun")
+    public StorageSystem storageSystem(StorageProperties properties, StoragePathReplacer pathReplacer) {
+        var aliyun = properties.getAliyun();
+        OSS client = new OSSClientBuilder().build(aliyun.getEndpoint(), aliyun.getAccessKeyId(), aliyun.getAccessKeySecret());
+        return new AliyunStorageSystem(client, aliyun.getBucketName(), properties.getBaseUrl(), pathReplacer);
     }
 
     @Configuration
@@ -52,7 +72,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler("/static/**")
-                    .addResourceLocations("file:" + properties.getDirectory())
+                    .addResourceLocations("file:" + properties.getLocal().getDirectory())
                     .setCachePeriod(3000)
                     .resourceChain(true)
                     .addResolver(new EncodedResourceResolver());
