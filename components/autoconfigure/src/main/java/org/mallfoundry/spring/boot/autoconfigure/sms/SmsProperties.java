@@ -16,7 +16,7 @@ public class SmsProperties {
     private Aliyun aliyun = new Aliyun();
 
     public enum SmsType {
-        Aliyun
+        ALIYUN
     }
 
     @Getter
