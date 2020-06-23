@@ -11,7 +11,9 @@ public abstract class PathUtils {
         return Optional.of(path)
                 .map(s -> FilenameUtils.normalize(s, true))
                 .map(s -> s.replaceAll("/+", "/"))
-                .map(s -> s.startsWith("/") ? s : "/" + s)
+                .map(s -> s.startsWith("/")
+                        ? s
+                        : "/" + s)
                 .orElseThrow();
     }
 

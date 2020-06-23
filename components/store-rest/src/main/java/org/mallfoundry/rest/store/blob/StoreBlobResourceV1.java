@@ -16,12 +16,12 @@
 
 package org.mallfoundry.rest.store.blob;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.store.StoreService;
-import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +67,9 @@ public class StoreBlobResourceV1 {
         if (Objects.nonNull(file)) {
             String blobPath = extractBlobPath(request, file.getOriginalFilename());
             storeBlob = bucket.createBlob(blobPath, file.getInputStream());
-            storeBlob.rename(StringUtils.isEmpty(name) ? file.getOriginalFilename() : name);
+            storeBlob.rename(StringUtils.isEmpty(name)
+                    ? file.getOriginalFilename()
+                    : name);
         } else {
             storeBlob = bucket.createBlob(extractBlobPath(request, name));
             if (StringUtils.isNotBlank(name)) {
@@ -103,7 +105,9 @@ public class StoreBlobResourceV1 {
         return this.storeBlobService.getBlobs(this.storeBlobService.createBlobQuery().toBuilder()
                 .page(page).limit(limit)
                 .bucket(bucketName)
-                .type(StringUtils.isEmpty(typeUpper) ? null : BlobType.valueOf(typeUpper))
+                .type(StringUtils.isEmpty(typeUpper)
+                        ? null
+                        : BlobType.valueOf(typeUpper))
                 .path(path).build());
     }
 
@@ -111,6 +115,8 @@ public class StoreBlobResourceV1 {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
         String blobPath = this.blobPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
-        return StringUtils.isNotEmpty(blobPath) ? blobPath : defaultPath;
+        return StringUtils.isNotEmpty(blobPath)
+                ? blobPath
+                : defaultPath;
     }
 }
