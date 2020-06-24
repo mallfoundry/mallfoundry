@@ -29,7 +29,7 @@ public class ProductRepositoryDelegate implements ProductRepository {
 
     @Override
     public Optional<Product> findById(String id) {
-        return this.searchProductRepository.findById(id);
+        return this.jdbcProductRepository.findById(id);
     }
 
     @Override

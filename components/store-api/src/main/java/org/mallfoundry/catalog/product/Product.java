@@ -142,6 +142,8 @@ public interface Product extends Serializable {
 
         Builder status(ProductStatus status);
 
+        Builder shippingOrigin(String shippingOrigin);
+
         Builder adjustTotalSales(long sales);
 
         Builder adjustMonthlySales(long sales);

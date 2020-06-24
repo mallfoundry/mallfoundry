@@ -88,6 +88,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"))
                 .imageUrl(resolveImageUrl("777b12adea1822f6.jpg"))
                 //
+                .shippingOrigin("山东 济南")
+                //
                 .adjustMonthlySales(10)
                 .adjustTotalSales(10)
                 //
@@ -148,6 +150,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("753768612ae90b4e.jpg"))
                 .imageUrl(resolveImageUrl("cd769d2bd022de2a.jpg"))
                 .imageUrl(resolveImageUrl("62edde5e1ef2fd85.jpg"))
+                //
+                .shippingOrigin("山东 潍坊")
                 //
                 .adjustMonthlySales(20)
                 .adjustTotalSales(20)
@@ -216,6 +220,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("0ad4ba55c20c6903.jpg"))
                 .imageUrl(resolveImageUrl("e523be52552921bf.jpg"))
                 .imageUrl(resolveImageUrl("6765a52c369741ec.jpg"))
+                //
+                .shippingOrigin("山东 青岛")
                 //
                 .adjustMonthlySales(30)
                 .adjustTotalSales(30)
@@ -325,6 +331,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("8bf9144ad8c26840.jpg"))
                 .imageUrl(resolveImageUrl("6f728a6562668d8f.jpg"))
                 //
+                .shippingOrigin("山东 日照")
+                //
                 .adjustMonthlySales(40)
                 .adjustTotalSales(40)
                 // options
@@ -409,6 +417,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("ec48ee3a1e78a5ce.jpg"))
                 .imageUrl(resolveImageUrl("178e05db88b4477e.jpg"))
                 //
+                .shippingOrigin("山东 济宁")
+                //
                 .adjustMonthlySales(50)
                 .adjustTotalSales(50)
                 // options
@@ -478,6 +488,8 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("5cdd0d93N3d7e0776.jpg"))
                 .imageUrl(resolveImageUrl("a95c82b7c278fe1a.jpg"))
                 .imageUrl(resolveImageUrl("3e4ee6b91564649d.jpg"))
+                //
+                .shippingOrigin("山东 东营")
                 //
                 .adjustMonthlySales(60)
                 .adjustTotalSales(60)

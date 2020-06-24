@@ -158,6 +158,11 @@ public abstract class ProductSupport implements MutableProduct {
             return this;
         }
 
+        public Builder shippingOrigin(String shippingOrigin) {
+            this.product.setShippingOrigin(shippingOrigin);
+            return this;
+        }
+
         @Override
         public Builder adjustTotalSales(long sales) {
             this.product.adjustTotalSales(sales);
