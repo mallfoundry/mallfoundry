@@ -23,8 +23,6 @@ public class DefaultAddress extends AddressSupport {
 
     private String zip;
 
-    private String address;
-
     private String provinceId;
 
     private String province;
@@ -36,4 +34,6 @@ public class DefaultAddress extends AddressSupport {
     private String countyId;
 
     private String county;
+
+    private String address;
 }
