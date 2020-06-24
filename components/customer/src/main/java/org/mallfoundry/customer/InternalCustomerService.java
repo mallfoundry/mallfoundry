@@ -17,6 +17,7 @@
 package org.mallfoundry.customer;
 
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,8 @@ import java.util.Optional;
 
 @Service
 public class InternalCustomerService implements CustomerService {
+
+    private static final String ADDRESS_ID_VALUE_NAME = "customer.address.id";
 
     private final UserService userService;
 
@@ -65,8 +68,8 @@ public class InternalCustomerService implements CustomerService {
         if (Objects.nonNull(customer.getGender())) {
             savedCustomer.setGender(customer.getGender());
         }
-        if (Objects.nonNull(customer.getBirthday())) {
-            savedCustomer.setBirthday(customer.getBirthday());
+        if (Objects.nonNull(customer.getBirthdate())) {
+            savedCustomer.setBirthdate(customer.getBirthdate());
         }
         return this.customerRepository.save(savedCustomer);
     }
@@ -80,6 +83,7 @@ public class InternalCustomerService implements CustomerService {
     @Transactional
     @Override
     public CustomerAddress addAddress(String customerId, CustomerAddress address) {
+        address.setId(PrimaryKeyHolder.next(ADDRESS_ID_VALUE_NAME));
         this.getCustomer(customerId).orElseThrow().addAddress(address);
         return address;
     }

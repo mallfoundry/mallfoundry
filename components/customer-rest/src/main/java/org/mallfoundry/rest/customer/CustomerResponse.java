@@ -18,6 +18,6 @@ public class CustomerResponse extends CustomerRequest {
         this.setAvatar(customer.getAvatar());
         this.setGender(customer.getGender());
         this.nickname = customer.getNickname();
-        this.setBirthday(customer.getBirthday());
+        this.setBirthdate(customer.getBirthdate());
     }
 }

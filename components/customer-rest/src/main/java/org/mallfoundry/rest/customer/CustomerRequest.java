@@ -40,15 +40,15 @@ public class CustomerRequest {
     private Gender gender;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Schema(name = "birthday")
-    private Date birthday;
+    @Schema(name = "birthdate_")
+    private Date birthdate;
 
     public Customer assignToCustomer(Customer customer) {
         return customer.toBuilder()
                 .avatar(this.avatar)
                 .nickname(this.nickname)
                 .gender(this.gender)
-                .birthday(this.birthday)
+                .birthdate(this.birthdate)
                 .build();
     }
 }

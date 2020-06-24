@@ -18,7 +18,6 @@ package org.mallfoundry.rest.customer;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.mallfoundry.customer.Customer;
 import org.mallfoundry.customer.CustomerAddress;
 import org.mallfoundry.customer.CustomerService;
 import org.mallfoundry.security.SecurityUserHolder;
@@ -53,8 +52,8 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "根据顾客标识获得顾客对象")
     @GetMapping("/customers/{customer_id}")
-    public Optional<Customer> getCustomer(@PathVariable("customer_id") String id) {
-        return this.customerService.getCustomer(id);
+    public Optional<CustomerResponse> getCustomer(@PathVariable("customer_id") String id) {
+        return this.customerService.getCustomer(id).map(CustomerResponse::new);
     }
 
     @Operation(summary = "根据顾客标识更新顾客对象")
@@ -74,7 +73,7 @@ public class CustomerResourceV1 {
                                       @RequestBody ShippingAddressRequest request) {
         return this.customerService.addAddress(customerId,
                 request.assignToAddress(
-                        this.customerService.getCustomer(customerId).orElseThrow().createAddress(null)));
+                        this.customerService.createCustomer(customerId).createAddress(null)));
     }
 
     @Operation(summary = "更新顾客的收货地址对象")
@@ -84,7 +83,7 @@ public class CustomerResourceV1 {
                            @RequestBody ShippingAddressRequest request) {
         this.customerService.setAddress(customerId,
                 request.assignToAddress(
-                        this.customerService.getCustomer(customerId).orElseThrow().createAddress(addressId)));
+                        this.customerService.createCustomer(customerId).createAddress(addressId)));
     }
 
     @Operation(summary = "删除顾客的收货地址对象")

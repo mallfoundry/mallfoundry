@@ -19,6 +19,7 @@ package org.mallfoundry.customer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -61,8 +62,8 @@ public class InternalCustomer implements Customer {
     private Gender gender;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "birthday_")
-    private Date birthday;
+    @Column(name = "birthdate_")
+    private Date birthdate;
 
     @OneToMany(targetEntity = InternalCustomerAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "customer_id_")
@@ -72,7 +73,7 @@ public class InternalCustomer implements Customer {
     public InternalCustomer(String userId) {
         this.id = userId;
         this.gender = Gender.UNKNOWN;
-        this.birthday = new Date();
+        this.birthdate = new Date();
     }
 
     public static InternalCustomer of(Customer customer) {
@@ -103,7 +104,10 @@ public class InternalCustomer implements Customer {
     public void addAddress(final CustomerAddress address) {
         this.addresses.remove(address);
         this.addresses.add(address);
-        // defaulted
+        this.switchDefaultAddress(address);
+    }
+
+    private void switchDefaultAddress(CustomerAddress address) {
         if (address.isDefaulted()) {
             this.getDefaultAddress()
                     .ifPresent(defaultAddress -> {
@@ -115,30 +119,75 @@ public class InternalCustomer implements Customer {
     }
 
     @Override
-    public void setAddress(CustomerAddress shippingAddress) {
+    public void setAddress(CustomerAddress address) {
+        var oldAddress = this.getAddress(address.getId()).orElseThrow();
 
+        var firstName = StringUtils.trim(address.getFirstName());
+        if (StringUtils.isNotEmpty(firstName)) {
+            oldAddress.setFirstName(firstName);
+        }
+
+        var lastName = StringUtils.trim(address.getLastName());
+        if (StringUtils.isNotEmpty(lastName)) {
+            oldAddress.setLastName(lastName);
+        }
+
+        var countryCode = StringUtils.trim(address.getCountryCode());
+        if (StringUtils.isNotEmpty(countryCode)) {
+            oldAddress.setCountryCode(countryCode);
+        }
+
+        var provinceId = StringUtils.trim(address.getProvinceId());
+        var province = StringUtils.trim(address.getProvince());
+        if (StringUtils.isNotEmpty(provinceId)
+                && StringUtils.isNotEmpty(province)) {
+            oldAddress.setProvinceId(provinceId);
+            oldAddress.setProvince(province);
+        }
+
+        var cityId = StringUtils.trim(address.getCityId());
+        var city = StringUtils.trim(address.getCity());
+        if (StringUtils.isNotEmpty(cityId)
+                && StringUtils.isNotEmpty(city)) {
+            oldAddress.setCityId(cityId);
+            oldAddress.setCity(city);
+        }
+
+        var countyId = StringUtils.trim(address.getCountyId());
+        var county = StringUtils.trim(address.getCounty());
+        if (StringUtils.isNotEmpty(countyId)
+                && StringUtils.isNotEmpty(county)) {
+            oldAddress.setCountyId(countyId);
+            oldAddress.setCounty(county);
+        }
+
+        var anAddress = StringUtils.trim(address.getAddress());
+        if (StringUtils.isNotEmpty(anAddress)) {
+            oldAddress.setAddress(anAddress);
+        }
+
+        var mobile = StringUtils.trim(address.getMobile());
+        if (StringUtils.isNotEmpty(mobile)) {
+            oldAddress.setMobile(mobile);
+        }
+
+        var tag = StringUtils.trim(address.getTag());
+        if (StringUtils.isNotEmpty(tag)) {
+            oldAddress.setTag(tag);
+        }
+        var zip = StringUtils.trim(address.getZip());
+        if (StringUtils.isNotEmpty(zip)) {
+            oldAddress.setZip(zip);
+        }
+
+        if (address.isDefaulted()) {
+            oldAddress.setDefaulted(true);
+            this.switchDefaultAddress(oldAddress);
+        }
     }
 
     @Override
     public void removeAddress(CustomerAddress address) {
         this.addresses.remove(address);
     }
-
-//    public void addSearchTerm(String text) {
-//        this.searchTerms
-//                .stream()
-//                .filter(term -> Objects.equals(term.getText(), text))
-//                .findFirst()
-//                .ifPresentOrElse(SearchTerm::nowTime,
-//                        () -> this.searchTerms.add(new SearchTerm(text)));
-//    }
-//
-//    public void removeSearchTerm(String text) {
-//        this.searchTerms.remove(new SearchTerm(text));
-//    }
-//
-//    public void clearSearchTerms() {
-//        this.searchTerms.clear();
-//    }
-
 }

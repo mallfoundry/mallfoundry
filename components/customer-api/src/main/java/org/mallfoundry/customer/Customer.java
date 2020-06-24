@@ -26,9 +26,9 @@ public interface Customer {
 
     void setGender(Gender gender);
 
-    Date getBirthday();
+    Date getBirthdate();
 
-    void setBirthday(Date birthday);
+    void setBirthdate(Date birthdate);
 
     CustomerAddress createAddress(String id);
 
@@ -59,7 +59,7 @@ public interface Customer {
 
         Builder gender(Gender gender);
 
-        Builder birthday(Date birthday);
+        Builder birthdate(Date birthdate);
     }
 
     class BuilderSupport implements Builder {
@@ -94,8 +94,8 @@ public interface Customer {
         }
 
         @Override
-        public Builder birthday(Date birthday) {
-            this.customer.setBirthday(birthday);
+        public Builder birthdate(Date birthdate) {
+            this.customer.setBirthdate(birthdate);
             return this;
         }
 
