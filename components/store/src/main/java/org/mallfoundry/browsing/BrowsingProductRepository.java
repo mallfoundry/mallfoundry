@@ -18,6 +18,7 @@ package org.mallfoundry.browsing;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +28,13 @@ public interface BrowsingProductRepository {
 
     Optional<BrowsingProduct> findByIdAndBrowserId(String id, String browserId);
 
-    List<BrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId);
+    List<BrowsingProduct> findAllByIdInAndBrowserId(Collection<String> ids, String browserId);
 
     SliceList<BrowsingProduct> findAll(BrowsingProductQuery query);
 
     void delete(BrowsingProduct browsingProduct);
 
-    void deleteAll(Iterable<? extends BrowsingProduct> browsingProducts);
+    void deleteAll(Collection<? extends BrowsingProduct> browsingProducts);
 
     long count(BrowsingProductQuery query);
 }
