@@ -32,4 +32,20 @@ public class RestDistrictService {
                 .map(province -> new ProvinceResponse(province, query.getScope()))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<CityResponse> getCities(DistrictQuery query) {
+        return this.districtService.getCities(query)
+                .stream()
+                .map(province -> new CityResponse(province, query.getScope()))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<CountyResponse> getCounties(DistrictQuery query) {
+        return this.districtService.getCounties(query)
+                .stream()
+                .map(CountyResponse::new)
+                .collect(Collectors.toList());
+    }
 }

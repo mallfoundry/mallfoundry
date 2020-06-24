@@ -23,7 +23,4 @@ public interface ProvinceRepository {
     InternalProvince save(InternalProvince province);
 
     List<InternalProvince> findAllByCountryId(String countryId);
-
-    int countByCountryId(String countryId);
-
 }

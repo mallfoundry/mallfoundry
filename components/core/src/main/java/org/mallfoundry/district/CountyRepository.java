@@ -1,12 +1,13 @@
 package org.mallfoundry.district;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CountyRepository {
 
     InternalCounty save(InternalCounty county);
 
-    int countByCityId(String cityId);
+    List<InternalCounty> findAll(DistrictQuery query);
 
-    List<InternalCounty> findAllByCityId(String cityId);
+    Optional<InternalCounty> findById(String id);
 }

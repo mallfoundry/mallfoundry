@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InternalDistrictService implements DistrictService {
@@ -107,26 +108,6 @@ public class InternalDistrictService implements DistrictService {
     }
 
     @Override
-    public Region updateRegion(Region region) {
-        return null;
-    }
-
-    @Override
-    public Province updateProvince(Province province) {
-        return null;
-    }
-
-    @Override
-    public City updateCity(City city) {
-        return null;
-    }
-
-    @Override
-    public County updateCounty(County county) {
-        return null;
-    }
-
-    @Override
     public List<Region> getRegions(DistrictQuery query) {
         return CastUtils.cast(this.regionRepository.findAllByCountryId(query.getCountryId()));
     }
@@ -137,12 +118,17 @@ public class InternalDistrictService implements DistrictService {
     }
 
     @Override
-    public List<City> getCities(String provinceId) {
-        return CastUtils.cast(this.cityRepository.findAllByProvinceId(provinceId));
+    public List<City> getCities(DistrictQuery query) {
+        return CastUtils.cast(this.cityRepository.findAllByProvinceId(query.getProvinceId()));
     }
 
     @Override
-    public List<County> getCounties(String cityId) {
-        return CastUtils.cast(this.countyRepository.findAllByCityId(cityId));
+    public List<County> getCounties(DistrictQuery query) {
+        return CastUtils.cast(this.countyRepository.findAll(query));
+    }
+
+    @Override
+    public Optional<County> getCounty(String id) {
+        return CastUtils.cast(this.countyRepository.findById(id));
     }
 }
