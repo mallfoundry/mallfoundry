@@ -1,6 +1,7 @@
 package org.mallfoundry.district;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DistrictService {
 
@@ -22,19 +23,13 @@ public interface DistrictService {
 
     County addCounty(County county);
 
-    Region updateRegion(Region region);
-
-    Province updateProvince(Province province);
-
-    City updateCity(City city);
-
-    County updateCounty(County county);
-
     List<Region> getRegions(DistrictQuery query);
 
     List<Province> getProvinces(DistrictQuery query);
 
-    List<City> getCities(String provinceId);
+    List<City> getCities(DistrictQuery query);
 
-    List<County> getCounties(String cityId);
+    List<County> getCounties(DistrictQuery query);
+
+    Optional<County> getCounty(String id);
 }
