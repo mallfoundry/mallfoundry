@@ -30,6 +30,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,7 +40,8 @@ public interface JpaBrowsingProductRepositoryDelegate
         extends JpaRepository<InternalBrowsingProduct, JpaBrowsingProductId>,
         JpaSpecificationExecutor<InternalBrowsingProduct> {
 
-    InternalBrowsingProduct save(InternalBrowsingProduct browsingProduct);
+    @Override
+    <S extends InternalBrowsingProduct> S save(S entity);
 
     Optional<InternalBrowsingProduct> findByIdAndBrowserId(String id, String browserId);
 
@@ -69,4 +71,5 @@ public interface JpaBrowsingProductRepositoryDelegate
         return this.count(this.createSpecification(query));
     }
 
+    void deleteAllByIdIn(Collection<JpaBrowsingProductId> ids);
 }

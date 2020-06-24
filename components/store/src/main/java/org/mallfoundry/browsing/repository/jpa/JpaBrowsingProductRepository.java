@@ -8,8 +8,10 @@ import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class JpaBrowsingProductRepository implements BrowsingProductRepository {
@@ -31,7 +33,7 @@ public class JpaBrowsingProductRepository implements BrowsingProductRepository {
     }
 
     @Override
-    public List<BrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId) {
+    public List<BrowsingProduct> findAllByIdInAndBrowserId(Collection<String> ids, String browserId) {
         return CastUtils.cast(this.browsingProductRepository.findAllByIdInAndBrowserId(ids, browserId));
     }
 
@@ -42,12 +44,15 @@ public class JpaBrowsingProductRepository implements BrowsingProductRepository {
 
     @Override
     public void delete(BrowsingProduct browsingProduct) {
-
+        this.browsingProductRepository.deleteById(
+                new JpaBrowsingProductId(browsingProduct.getBrowserId(), browsingProduct.getId()));
     }
 
     @Override
-    public void deleteAll(Iterable<? extends BrowsingProduct> browsingProducts) {
-
+    public void deleteAll(Collection<? extends BrowsingProduct> browsingProducts) {
+        var ids = browsingProducts.stream().map(product -> new JpaBrowsingProductId(product.getBrowserId(), product.getId()))
+                .collect(Collectors.toUnmodifiableList());
+        this.browsingProductRepository.deleteAllByIdIn(ids);
     }
 
     @Override
