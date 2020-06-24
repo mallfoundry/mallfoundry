@@ -1,5 +1,7 @@
 package org.mallfoundry.shipping;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -20,74 +22,72 @@ public interface Address extends Serializable {
 
     void setLastName(String lastName);
 
-    String getCountryCode();
-
-    void setCountryCode(String countryCode);
-
     String getMobile();
 
     void setMobile(String mobile);
 
-    String getZip();
+    String getCountryCode();
 
-    void setZip(String zip);
+    void setCountryCode(String countryCode);
 
-    String getLocation();
+    String getProvinceId();
 
-    void setLocation(String location);
+    void setProvinceId(String provinceId);
+
+    String getProvince();
+
+    void setProvince(String province);
+
+    String getCityId();
+
+    void setCityId(String cityId);
+
+    String getCity();
+
+    void setCity(String city);
+
+    String getCountyId();
+
+    void setCountyId(String countyId);
+
+    String getCounty();
+
+    void setCounty(String county);
 
     String getAddress();
 
     void setAddress(String address);
 
-    default Builder toBuilder() {
-        return new Builder(this);
-    }
+    String getZip();
 
-    class Builder {
-        private final Address address;
+    void setZip(String zip);
 
-        public Builder(Address address) {
-            this.address = address;
-        }
+    Builder toBuilder();
 
-        public Builder firstName(String firstName) {
-            this.address.setFirstName(firstName);
-            return this;
-        }
+    interface Builder extends ObjectBuilder<Address> {
 
-        public Builder lastName(String lastName) {
-            this.address.setLastName(lastName);
-            return this;
-        }
+        Builder firstName(String firstName);
 
-        public Builder countryCode(String countryCode) {
-            this.address.setCountryCode(countryCode);
-            return this;
-        }
+        Builder lastName(String lastName);
 
-        public Builder mobile(String mobile) {
-            this.address.setMobile(mobile);
-            return this;
-        }
+        Builder mobile(String mobile);
 
-        public Builder zip(String zip) {
-            this.address.setZip(zip);
-            return this;
-        }
+        Builder zip(String zip);
 
-        public Builder address(String address) {
-            this.address.setAddress(address);
-            return this;
-        }
+        Builder countryCode(String countryCode);
 
-        public Builder location(String location) {
-            this.address.setLocation(location);
-            return this;
-        }
+        Builder provinceId(String provinceId);
 
-        public Address build() {
-            return this.address;
-        }
+        Builder province(String province);
+
+        Builder cityId(String cityId);
+
+        Builder city(String city);
+
+        Builder countyId(String countyId);
+
+        Builder county(String county);
+
+        Builder address(String address);
     }
 }

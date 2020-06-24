@@ -15,15 +15,25 @@ public class AddressRequest {
 
     private String lastName;
 
-    private String countryCode;
-
     private String mobile;
 
     private String zip;
 
-    private String address;
+    private String countryCode;
 
-    private String location;
+    private String provinceId;
+
+    private String province;
+
+    private String cityId;
+
+    private String city;
+
+    private String countyId;
+
+    private String county;
+
+    private String address;
 
     public void assignToAddress(Address address) {
         BeanUtils.copyProperties(this, address);

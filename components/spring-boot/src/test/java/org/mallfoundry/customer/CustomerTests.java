@@ -39,7 +39,7 @@ public class CustomerTests {
         customer.setId("customer 1");
         customer.setGender(Gender.MALE);
         customer.setNickname("tang zhi");
-        customer.setBirthday(new Date());
+        customer.setBirthdate(new Date());
         customer.setUsername("tangzhi");
         customer.addAddress(
                 customer.createAddress("").toBuilder()
@@ -47,8 +47,8 @@ public class CustomerTests {
                         .mobile("1888888888")
                         .zip("2500000")
                         .countryCode("86")
-                        .location("001,220,3222,333")
-                        .address("山东省 济南市 历城区023号")
+//                        .location("001,220,3222,333")
+                        .address("历城区023号")
                         .defaulted()
                         .build());
         this.customerService.addCustomer(customer);

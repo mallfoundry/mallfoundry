@@ -57,8 +57,23 @@ public class InternalCustomerAddress implements CustomerAddress {
     @Column(name = "zip_")
     private String zip;
 
-    @Column(name = "location_")
-    private String location;
+    @Column(name = "province_id_")
+    private String provinceId;
+
+    @Column(name = "province_")
+    private String province;
+
+    @Column(name = "city_id_")
+    private String cityId;
+
+    @Column(name = "city_")
+    private String city;
+
+    @Column(name = "county_id_")
+    private String countyId;
+
+    @Column(name = "county_")
+    private String county;
 
     @Column(name = "address_")
     private String address;

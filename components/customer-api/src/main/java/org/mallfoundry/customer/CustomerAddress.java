@@ -8,6 +8,8 @@ public interface CustomerAddress {
 
     String getId();
 
+    void setId(String id);
+
     String getFirstName();
 
     void setFirstName(String firstName);
@@ -20,25 +22,45 @@ public interface CustomerAddress {
 
     void setTag(String tag);
 
-    String getCountryCode();
-
-    void setCountryCode(String countryCode);
-
     String getMobile();
 
     void setMobile(String mobile);
 
-    String getZip();
+    String getCountryCode();
 
-    void setZip(String zip);
+    void setCountryCode(String countryCode);
 
-    String getLocation();
+    String getProvinceId();
 
-    void setLocation(String location);
+    void setProvinceId(String provinceId);
+
+    String getProvince();
+
+    void setProvince(String province);
+
+    String getCityId();
+
+    void setCityId(String cityId);
+
+    String getCity();
+
+    void setCity(String city);
+
+    String getCountyId();
+
+    void setCountyId(String countyId);
+
+    String getCounty();
+
+    void setCounty(String county);
 
     String getAddress();
 
     void setAddress(String address);
+
+    String getZip();
+
+    void setZip(String zip);
 
     boolean isDefaulted();
 
@@ -63,7 +85,17 @@ public interface CustomerAddress {
 
         Builder zip(String zip);
 
-        Builder location(String location);
+        Builder provinceId(String provinceId);
+
+        Builder province(String province);
+
+        Builder cityId(String cityId);
+
+        Builder city(String city);
+
+        Builder countyId(String countyId);
+
+        Builder county(String county);
 
         Builder address(String address);
 
@@ -82,41 +114,79 @@ public interface CustomerAddress {
             this.address = address;
         }
 
+        @Override
         public Builder firstName(String firstName) {
             this.address.setFirstName(firstName);
             return this;
         }
 
+        @Override
         public Builder lastName(String lastName) {
             this.address.setLastName(lastName);
             return this;
         }
 
+        @Override
         public Builder countryCode(String countryCode) {
             this.address.setCountryCode(countryCode);
             return this;
         }
 
+        @Override
         public Builder mobile(String mobile) {
             this.address.setMobile(mobile);
             return this;
         }
 
+        @Override
         public Builder zip(String zip) {
             this.address.setZip(zip);
             return this;
         }
 
-        public Builder location(String location) {
-            this.address.setLocation(location);
+        @Override
+        public Builder provinceId(String provinceId) {
+            this.address.setProvinceId(provinceId);
             return this;
         }
 
+        @Override
+        public Builder province(String province) {
+            this.address.setProvince(province);
+            return this;
+        }
+
+        @Override
+        public Builder cityId(String cityId) {
+            this.address.setCityId(cityId);
+            return this;
+        }
+
+        @Override
+        public Builder city(String city) {
+            this.address.setCity(city);
+            return this;
+        }
+
+        @Override
+        public Builder countyId(String countyId) {
+            this.address.setCountyId(countyId);
+            return this;
+        }
+
+        @Override
+        public Builder county(String county) {
+            this.address.setCounty(county);
+            return this;
+        }
+
+        @Override
         public Builder address(String address) {
             this.address.setAddress(address);
             return this;
         }
 
+        @Override
         public Builder defaulted(boolean defaulted) {
             this.address.setDefaulted(defaulted);
             return this;

@@ -18,7 +18,17 @@ public class ShippingAddressRequest {
 
     private String zip;
 
-    private String location;
+    private String provinceId;
+
+    private String province;
+
+    private String cityId;
+
+    private String city;
+
+    private String countyId;
+
+    private String county;
 
     private String address;
 
@@ -28,8 +38,10 @@ public class ShippingAddressRequest {
         return address.toBuilder().firstName(this.firstName)
                 .lastName(this.lastName)
                 .countryCode(this.countryCode)
+                .provinceId(this.provinceId).province(this.province)
+                .cityId(this.cityId).city(this.city)
+                .countyId(this.countyId).county(this.county)
                 .address(this.address)
-                .location(this.location)
                 .mobile(this.mobile)
                 .zip(this.zip)
                 .defaulted(this.defaulted).build();
