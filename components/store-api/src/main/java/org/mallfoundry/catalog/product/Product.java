@@ -72,13 +72,17 @@ public interface Product extends Serializable {
 
     List<String> getVideoUrls();
 
-    String getShippingOrigin();
+    ProductShippingOrigin createShippingOrigin();
 
-    void setShippingOrigin(String shippingOrigin);
+    ProductShippingOrigin getShippingOrigin();
+
+    void setShippingOrigin(ProductShippingOrigin shippingOrigin);
 
     boolean isFreeShipping();
 
     void setFreeShipping(boolean freeShipping);
+
+    void freeShipping();
 
     BigDecimal getFixedShippingCost();
 
@@ -142,7 +146,15 @@ public interface Product extends Serializable {
 
         Builder status(ProductStatus status);
 
-        Builder shippingOrigin(String shippingOrigin);
+        Builder freeShipping();
+
+        Builder fixedShippingCost(BigDecimal fixedShippingCost);
+
+        Builder fixedShippingCost(double fixedShippingCost);
+
+        Builder shippingOrigin(ProductShippingOrigin shippingOrigin);
+
+        Builder shippingOrigin(Function<Product, ProductShippingOrigin> shippingOrigin);
 
         Builder adjustTotalSales(long sales);
 

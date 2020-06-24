@@ -8,11 +8,13 @@ import org.mallfoundry.catalog.product.DefaultProductAttribute;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
+import org.mallfoundry.catalog.product.ProductShippingOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
 import org.mallfoundry.catalog.product.repository.jpa.convert.ProductAttributeListConverter;
+import org.mallfoundry.catalog.product.repository.jpa.convert.ProductShippingOriginConverter;
 import org.mallfoundry.data.jpa.convert.StringListConverter;
 import org.mallfoundry.data.jpa.convert.StringSetConverter;
 import org.mallfoundry.inventory.InventoryStatus;
@@ -108,8 +110,9 @@ public class JpaProduct extends ProductSupport {
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
-    @Column(name = "shipping_origin_")
-    private String shippingOrigin;
+    @Column(name = "shipping_origin_", length = 512)
+    @Convert(converter = ProductShippingOriginConverter.class)
+    private ProductShippingOrigin shippingOrigin;
 
     @Column(name = "free_shipping_")
     private boolean freeShipping;

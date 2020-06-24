@@ -36,6 +36,16 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
+    public void freeShipping() {
+        this.setFreeShipping(true);
+    }
+
+    @Override
+    public ProductShippingOrigin createShippingOrigin() {
+        return new DefaultProductShippingOrigin();
+    }
+
+    @Override
     public void adjustTotalSales(long sales) {
         this.setTotalSales(this.getTotalSales() + sales);
     }
@@ -138,29 +148,56 @@ public abstract class ProductSupport implements MutableProduct {
             this.product = product;
         }
 
+        @Override
         public Builder storeId(String storeId) {
             this.product.setStoreId(storeId);
             return this;
         }
 
+        @Override
         public Builder name(String name) {
             this.product.setName(name);
             return this;
         }
 
+        @Override
         public Builder type(ProductType type) {
             this.product.setType(type);
             return this;
         }
 
+        @Override
         public Builder status(ProductStatus status) {
             this.product.setStatus(status);
             return this;
         }
 
-        public Builder shippingOrigin(String shippingOrigin) {
+        @Override
+        public Builder freeShipping() {
+            this.product.freeShipping();
+            return this;
+        }
+
+        @Override
+        public Builder fixedShippingCost(BigDecimal fixedShippingCost) {
+            this.product.setFixedShippingCost(fixedShippingCost);
+            return this;
+        }
+
+        @Override
+        public Builder fixedShippingCost(double fixedShippingCost) {
+            return this.fixedShippingCost(BigDecimal.valueOf(fixedShippingCost));
+        }
+
+        @Override
+        public Builder shippingOrigin(ProductShippingOrigin shippingOrigin) {
             this.product.setShippingOrigin(shippingOrigin);
             return this;
+        }
+
+        @Override
+        public Builder shippingOrigin(Function<Product, ProductShippingOrigin> shippingOrigin) {
+            return this.shippingOrigin(shippingOrigin.apply(this.product));
         }
 
         @Override
@@ -181,11 +218,13 @@ public abstract class ProductSupport implements MutableProduct {
             return this;
         }
 
+        @Override
         public Builder imageUrl(String image) {
             this.product.addImageUrl(image);
             return this;
         }
 
+        @Override
         public Builder videoUrl(String video) {
             this.product.addVideoUrl(video);
             return this;

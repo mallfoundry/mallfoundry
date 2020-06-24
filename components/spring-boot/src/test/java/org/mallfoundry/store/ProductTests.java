@@ -88,7 +88,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"))
                 .imageUrl(resolveImageUrl("777b12adea1822f6.jpg"))
                 //
-                .shippingOrigin("山东 济南")
+                .freeShipping()
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("90").province("山东省")
+                        .cityId("1427").city("济南市")
+                        .countyId("11191").county("槐荫区")
+                        .build())
                 //
                 .adjustMonthlySales(10)
                 .adjustTotalSales(10)
@@ -151,7 +157,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("cd769d2bd022de2a.jpg"))
                 .imageUrl(resolveImageUrl("62edde5e1ef2fd85.jpg"))
                 //
-                .shippingOrigin("山东 潍坊")
+                .fixedShippingCost(10.00)
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("82").province("广东省")
+                        .cityId("1353").city("深圳市")
+                        .countyId("10451").county("罗湖区")
+                        .build())
                 //
                 .adjustMonthlySales(20)
                 .adjustTotalSales(20)
@@ -221,7 +233,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("e523be52552921bf.jpg"))
                 .imageUrl(resolveImageUrl("6765a52c369741ec.jpg"))
                 //
-                .shippingOrigin("山东 青岛")
+                .fixedShippingCost(20.00)
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("82").province("广东省")
+                        .cityId("1354").city("珠海市")
+                        .countyId("10462").county("金湾区")
+                        .build())
                 //
                 .adjustMonthlySales(30)
                 .adjustTotalSales(30)
@@ -331,7 +349,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("8bf9144ad8c26840.jpg"))
                 .imageUrl(resolveImageUrl("6f728a6562668d8f.jpg"))
                 //
-                .shippingOrigin("山东 日照")
+                .freeShipping()
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("80").province("湖南省")
+                        .cityId("1330").city("湘潭市")
+                        .countyId("10241").county("雨湖区")
+                        .build())
                 //
                 .adjustMonthlySales(40)
                 .adjustTotalSales(40)
@@ -417,7 +441,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("ec48ee3a1e78a5ce.jpg"))
                 .imageUrl(resolveImageUrl("178e05db88b4477e.jpg"))
                 //
-                .shippingOrigin("山东 济宁")
+                .fixedShippingCost(30)
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("90").province("山东省")
+                        .cityId("1428").city("青岛市")
+                        .countyId("11202").county("市南区")
+                        .build())
                 //
                 .adjustMonthlySales(50)
                 .adjustTotalSales(50)
@@ -489,7 +519,13 @@ public class ProductTests {
                 .imageUrl(resolveImageUrl("a95c82b7c278fe1a.jpg"))
                 .imageUrl(resolveImageUrl("3e4ee6b91564649d.jpg"))
                 //
-                .shippingOrigin("山东 东营")
+                .freeShipping()
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("79").province("湖北省")
+                        .cityId("1314").city("武汉市")
+                        .countyId("10119").county("江岸区")
+                        .build())
                 //
                 .adjustMonthlySales(60)
                 .adjustTotalSales(60)
