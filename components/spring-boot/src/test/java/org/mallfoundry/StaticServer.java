@@ -18,5 +18,5 @@ package org.mallfoundry;
 
 public class StaticServer {
 
-    public static final String BASE_URL = "http://api.mallfoundry.org/static";
+    public static final String BASE_URL = "http://static.mallfoundry.org";
 }
