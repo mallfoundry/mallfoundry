@@ -16,12 +16,12 @@
 
 package org.mallfoundry.keygen;
 
-public abstract class AbstractSequencePrimaryKeyGenerator implements PrimaryKeyGenerator<Long> {
+public abstract class AbstractSequencePrimaryKeyGenerator implements PrimaryKeyGenerator {
 
     @Override
-    public Long nextVal(String keyName) {
-        return this.doNextVal(keyName);
+    public String next(String key) {
+        return String.valueOf(this.doNext(key));
     }
 
-    protected abstract Long doNextVal(String keyName);
+    protected abstract Long doNext(String key);
 }

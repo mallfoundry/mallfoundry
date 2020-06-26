@@ -16,15 +16,13 @@
 
 package org.mallfoundry.keygen;
 
-import org.springframework.stereotype.Component;
-
 import java.util.UUID;
 
-@Component
-public class UUIDPrimaryKeyGenerator implements PrimaryKeyGenerator<String> {
+//@Component
+public class UUIDPrimaryKeyGenerator implements PrimaryKeyGenerator {
 
     @Override
-    public String nextVal(String keyName) {
+    public String next(String key) {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

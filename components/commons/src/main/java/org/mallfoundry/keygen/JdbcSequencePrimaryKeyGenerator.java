@@ -38,13 +38,16 @@ public class JdbcSequencePrimaryKeyGenerator extends AbstractSequencePrimaryKeyG
 
     private static final String INSERT_KEY_VALUE_SQL = "INSERT INTO " + KEY_VALUE_TABLE_NAME + " (key_name_, current_value_, min_value_, max_value_, increment_value_) VALUES(?, ?, ?, ?, ?)";
 
+    @Setter
     private String selectKeyValueSql = SELECT_KEY_VALUE_SQL;
 
+    @Setter
     private String updateKeyValueSql = UPDATE_KEY_VALUE_SQL;
 
+    @Setter
     private String insertKeyValueSql = INSERT_KEY_VALUE_SQL;
 
-    private RowMapper<NextValue> nextValueRowMapper = BeanPropertyRowMapper.newInstance(NextValue.class);
+    private final RowMapper<NextValue> nextValueRowMapper = BeanPropertyRowMapper.newInstance(NextValue.class);
 
     public JdbcSequencePrimaryKeyGenerator(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -65,10 +68,10 @@ public class JdbcSequencePrimaryKeyGenerator extends AbstractSequencePrimaryKeyG
     }
 
     @Override
-    protected Long doNextVal(String keyName) {
-        NextValue nextValue = this.getNextValue(keyName);
+    protected Long doNext(String key) {
+        NextValue nextValue = this.getNextValue(key);
         if (Objects.isNull(nextValue)) {
-            nextValue = new NextValue(keyName);
+            nextValue = new NextValue(key);
             this.newNextValue(nextValue);
         } else {
             nextValue.currentValue = nextValue.currentValue + nextValue.incrementValue;

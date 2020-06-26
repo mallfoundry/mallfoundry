@@ -16,36 +16,15 @@
 
 package org.mallfoundry.keygen;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Configuration;
-
 public abstract class PrimaryKeyHolder {
 
-    private static ApplicationContext context;
+    private static PrimaryKeyGenerator keyGenerator;
 
-    private static Long sequence(String key) {
-        return factoryProxy().sequence().nextVal(key);
-    }
-
-    private static String uuid() {
-        return factoryProxy().uuid().nextVal("");
+    public static void setKeyGenerator(PrimaryKeyGenerator keyGenerator) {
+        PrimaryKeyHolder.keyGenerator = keyGenerator;
     }
 
     public static String next(String name) {
-        return String.valueOf(sequence(name));
-    }
-
-    private static PrimaryKeyFactory factoryProxy() {
-        return context.getBean(PrimaryKeyFactory.class);
-    }
-
-    @Configuration
-    static class ContextHolder implements ApplicationContextAware {
-        @Override
-        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            PrimaryKeyHolder.context = applicationContext;
-        }
+        return keyGenerator.next(name);
     }
 }

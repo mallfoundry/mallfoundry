@@ -16,7 +16,6 @@
 
 package org.mallfoundry.keygen;
 
-public interface PrimaryKeyGenerator<V> {
-
-    V nextVal(String keyName);
+public interface PrimaryKeyGenerator {
+    String next(String key);
 }
