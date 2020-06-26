@@ -22,7 +22,7 @@ import org.mallfoundry.storage.LocalStorageSystem;
 import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
-import org.mallfoundry.storage.ftp.FTPStorageSystem;
+import org.mallfoundry.storage.ftp.FtpStorageSystem;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -53,10 +53,10 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
 
 
     @Bean
-    @ConditionalOnClass(FTPStorageSystem.class)
+    @ConditionalOnClass(FtpStorageSystem.class)
     @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "ftp")
-    public FTPStorageSystem ftpStorageSystem(StorageProperties properties) {
-        return new FTPStorageSystem(properties.getFtp());
+    public FtpStorageSystem ftpStorageSystem(StorageProperties properties) {
+        return new FtpStorageSystem(properties.getFtp());
     }
 
 

@@ -18,7 +18,7 @@ package org.mallfoundry.spring.boot.autoconfigure.storage;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.storage.ftp.FTPConfiguration;
+import org.mallfoundry.storage.ftp.FtpConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -38,7 +38,7 @@ public class StorageProperties {
     private Aliyun aliyun = new Aliyun();
 
     @NestedConfigurationProperty
-    private FTPConfiguration ftp = new FTPConfiguration();
+    private FtpConfiguration ftp = new FtpConfiguration();
 
     @NestedConfigurationProperty
     private Output output = new Output();

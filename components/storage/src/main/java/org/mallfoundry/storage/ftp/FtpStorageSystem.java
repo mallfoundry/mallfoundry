@@ -10,13 +10,13 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
 
-public class FTPStorageSystem implements StorageSystem, InitializingBean, DisposableBean {
+public class FtpStorageSystem implements StorageSystem, InitializingBean, DisposableBean {
 
     private FTPClient ftpClient;
 
-    private final FTPConfiguration configuration;
+    private final FtpConfiguration configuration;
 
-    public FTPStorageSystem(FTPConfiguration configuration) {
+    public FtpStorageSystem(FtpConfiguration configuration) {
         this.configuration = configuration;
     }
 
