@@ -18,6 +18,7 @@ package org.mallfoundry.spring.boot.autoconfigure.keygen;
 
 import org.mallfoundry.keygen.JdbcSequencePrimaryKeyGenerator;
 import org.mallfoundry.keygen.PrimaryKeyGenerator;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,7 +27,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class PrimaryKeyGeneratorAutoConfiguration {
 
     @Bean
-    public PrimaryKeyGenerator<?> primaryKeyGenerator(JdbcTemplate jdbcTemplate) {
-        return new JdbcSequencePrimaryKeyGenerator(jdbcTemplate);
+    public PrimaryKeyGenerator primaryKeyGenerator(JdbcTemplate jdbcTemplate) {
+        var keyGenerator = new JdbcSequencePrimaryKeyGenerator(jdbcTemplate);
+        PrimaryKeyHolder.setKeyGenerator(keyGenerator);
+        return keyGenerator;
     }
 }
