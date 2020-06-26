@@ -19,7 +19,8 @@ spring:
   cache:
     type: simple
   messages:
-    basename: messages
+    basename: messages,org.mallfoundry.security.messages
+    always-use-message-format: true
   elasticsearch:
     rest:
       uris: http://localhost:9200
