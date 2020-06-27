@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FtpConfiguration {
+public class FtpClientConfiguration {
     private String hostname;
     private int port = 21;
     private String username;

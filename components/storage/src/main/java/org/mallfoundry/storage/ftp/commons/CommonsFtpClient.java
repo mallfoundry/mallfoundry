@@ -1,17 +1,25 @@
 package org.mallfoundry.storage.ftp.commons;
 
+import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTPClient;
 import org.mallfoundry.storage.ftp.FtpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 public class CommonsFtpClient implements FtpClient {
 
     private final FTPClient client;
 
-    public CommonsFtpClient(FTPClient client) {
-        this.client = client;
+    public CommonsFtpClient() {
+        this.client = new FTPClient();
+        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
+    }
+
+    @Override
+    public int getReplyCode() {
+        return this.client.getReplyCode();
     }
 
     @Override
@@ -42,5 +50,12 @@ public class CommonsFtpClient implements FtpClient {
     @Override
     public boolean makeDirectory(String pathname) throws IOException {
         return this.client.makeDirectory(pathname);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (!client.isConnected()) {
+            client.disconnect();
+        }
     }
 }

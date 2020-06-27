@@ -1,9 +1,12 @@
 package org.mallfoundry.storage.ftp;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface FtpClient {
+public interface FtpClient extends Closeable {
+
+    int getReplyCode();
 
     void connect(String hostname, int port) throws IOException;
 

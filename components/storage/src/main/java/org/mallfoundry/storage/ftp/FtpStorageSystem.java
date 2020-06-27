@@ -1,49 +1,55 @@
 package org.mallfoundry.storage.ftp;
 
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
+import lombok.Setter;
+import org.apache.commons.io.FilenameUtils;
+import org.mallfoundry.storage.AbstractStorageSystem;
 import org.mallfoundry.storage.Blob;
-import org.mallfoundry.storage.StorageException;
-import org.mallfoundry.storage.StorageSystem;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-public class FtpStorageSystem implements StorageSystem, InitializingBean, DisposableBean {
+public class FtpStorageSystem extends AbstractStorageSystem {
 
-    private FTPClient ftpClient;
+    @Setter
+    private String baseDirectory;
 
-    private final FtpConfiguration configuration;
+    @Setter
+    private String baseUrl;
 
-    public FtpStorageSystem(FtpConfiguration configuration) {
-        this.configuration = configuration;
+    private final FtpTemplate ftpTemplate;
+
+    public FtpStorageSystem(FtpTemplate ftpTemplate) {
+        this.ftpTemplate = ftpTemplate;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        this.ftpClient = new FTPClient();
-        if (!ftpClient.isConnected()) {
-            ftpClient.connect(this.configuration.getHostname(), this.configuration.getPort());
+    public void storeBlobToPath(Blob blob, String pathname) throws IOException {
+        var directory = FilenameUtils.getPathNoEndSeparator(pathname);
+        if (!this.changeWorkingDirectory(directory)) {
+            if (!this.ftpTemplate.makeDirectory(directory)) {
+                throw new IOException("Failed to create directory");
+            }
         }
-        ftpClient.login(this.configuration.getUsername(), this.configuration.getPassword());
-        int replyCode = ftpClient.getReplyCode();
-        if (!FTPReply.isPositiveCompletion(replyCode)) {
-            throw new StorageException("Connection failed");
+
+        try (var stream = blob.openInputStream()) {
+            if (!this.storeFile(pathname, stream)) {
+                throw new IOException("Upload failed");
+            }
         }
+        blob.setUrl(this.getAccessUrl(pathname));
     }
 
-    @Override
-    public void storeBlob(Blob blob) throws IOException {
-        // TODO
-        this.ftpClient.storeFile(blob.getName(), blob.openInputStream());
+    private boolean storeFile(String pathname, InputStream local) {
+        return this.ftpTemplate.storeFile(
+                FilenameUtils.concat(this.baseDirectory, pathname), local);
     }
 
-    @Override
-    public void destroy() throws Exception {
-        if (this.ftpClient.isConnected()) {
-            this.ftpClient.disconnect();
-        }
+    private boolean changeWorkingDirectory(String directory) {
+        return this.ftpTemplate.changeWorkingDirectory(
+                FilenameUtils.concat(this.baseDirectory, directory));
     }
 
+    private String getAccessUrl(String pathname) {
+        return this.baseUrl + pathname;
+    }
 }

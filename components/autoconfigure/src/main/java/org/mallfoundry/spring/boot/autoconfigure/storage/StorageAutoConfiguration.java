@@ -22,18 +22,19 @@ import org.mallfoundry.storage.LocalStorageSystem;
 import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
-import org.mallfoundry.storage.ftp.FtpStorageSystem;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.EncodedResourceResolver;
 
 
 @Configuration
+@Import(StorageFtpConfiguration.class)
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration implements WebMvcConfigurer {
 
@@ -50,15 +51,6 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
         var local = properties.getLocal();
         return new LocalStorageSystem(local.getDirectory(), properties.getBaseUrl());
     }
-
-
-    @Bean
-    @ConditionalOnClass(FtpStorageSystem.class)
-    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "ftp")
-    public FtpStorageSystem ftpStorageSystem(StorageProperties properties) {
-        return new FtpStorageSystem(properties.getFtp());
-    }
-
 
     @Bean
     @ConditionalOnClass(AliyunStorageSystem.class)
