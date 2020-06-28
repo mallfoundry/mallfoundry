@@ -1,10 +1,12 @@
 package org.mallfoundry.spring.boot.autoconfigure.storage;
 
+import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.ftp.FtpClientFactory;
 import org.mallfoundry.storage.ftp.FtpStorageSystem;
 import org.mallfoundry.storage.ftp.FtpTemplate;
 import org.mallfoundry.storage.ftp.pool2.factory.FtpClientPooledConfiguration;
 import org.mallfoundry.storage.ftp.pool2.factory.FtpClientPooledFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -42,8 +44,13 @@ public class StorageFtpConfiguration {
 
     @Bean
     @ConditionalOnClass(FtpStorageSystem.class)
-    public FtpStorageSystem ftpStorageSystem(FtpTemplate ftpTemplate) {
-        return new FtpStorageSystem(ftpTemplate);
+    public FtpStorageSystem ftpStorageSystem(FtpTemplate ftpTemplate, StorageProperties properties,
+                                             @Autowired(required = false) StoragePathReplacer pathReplacer) {
+        var fss = new FtpStorageSystem(properties.getBaseUrl());
+        fss.setFtpTemplate(ftpTemplate);
+        fss.setBaseDirectory(properties.getFtp().getBaseDirectory());
+        fss.setPathReplacer(pathReplacer);
+        return fss;
     }
 
 }

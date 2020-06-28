@@ -38,6 +38,16 @@ public class CommonsFtpClient implements FtpClient {
     }
 
     @Override
+    public void enterLocalPassiveMode() {
+        this.client.enterLocalPassiveMode();
+    }
+
+    @Override
+    public String printWorkingDirectory() throws IOException {
+        return this.client.printWorkingDirectory();
+    }
+
+    @Override
     public boolean changeWorkingDirectory(String pathname) throws IOException {
         return this.client.changeWorkingDirectory(pathname);
     }
@@ -45,6 +55,11 @@ public class CommonsFtpClient implements FtpClient {
     @Override
     public boolean storeFile(String name, InputStream local) throws IOException {
         return this.client.storeFile(name, local);
+    }
+
+    @Override
+    public boolean setFileType(int fileType) throws IOException {
+        return this.client.setFileType(fileType);
     }
 
     @Override

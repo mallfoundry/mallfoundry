@@ -22,6 +22,7 @@ import org.mallfoundry.storage.LocalStorageSystem;
 import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -55,10 +56,13 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     @Bean
     @ConditionalOnClass(AliyunStorageSystem.class)
     @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "aliyun")
-    public StorageSystem storageSystem(StorageProperties properties, StoragePathReplacer pathReplacer) {
+    public StorageSystem storageSystem(StorageProperties properties,
+                                       @Autowired(required = false) StoragePathReplacer pathReplacer) {
         var aliyun = properties.getAliyun();
         OSS client = new OSSClientBuilder().build(aliyun.getEndpoint(), aliyun.getAccessKeyId(), aliyun.getAccessKeySecret());
-        return new AliyunStorageSystem(client, aliyun.getBucketName(), properties.getBaseUrl(), pathReplacer);
+        var ass = new AliyunStorageSystem(client, aliyun.getBucketName(), properties.getBaseUrl());
+        ass.setPathReplacer(pathReplacer);
+        return ass;
     }
 
     @Configuration

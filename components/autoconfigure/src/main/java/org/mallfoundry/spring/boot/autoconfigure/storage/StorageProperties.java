@@ -76,6 +76,7 @@ public class StorageProperties {
         private String username;
         private String password;
         private String controlEncoding = "utf-8";
+        private String baseDirectory;
     }
 
 }

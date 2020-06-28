@@ -22,10 +22,6 @@ import java.util.Objects;
 
 abstract class PathUtils extends org.mallfoundry.util.PathUtils {
 
-    public static final String PATH_SEPARATOR = "/";
-
-    public static final String ROOT_PATH = PATH_SEPARATOR;
-
     public static boolean isRootPath(String path) {
         return ROOT_PATH.equals(path) || Objects.isNull(path);
     }

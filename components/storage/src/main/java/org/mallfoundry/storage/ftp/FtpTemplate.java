@@ -20,8 +20,26 @@ public class FtpTemplate implements FtpOperations {
     }
 
     @Override
+    public String printWorkingDirectory() throws FtpException {
+        return this.execute(FtpClient::printWorkingDirectory);
+    }
+
+    @Override
     public boolean changeWorkingDirectory(String pathname) throws FtpException {
         return this.execute(client -> client.changeWorkingDirectory(pathname));
+    }
+
+    @Override
+    public void enterLocalPassiveMode() {
+        this.execute(client -> {
+            client.enterLocalPassiveMode();
+            return null;
+        });
+    }
+
+    @Override
+    public boolean setFileType(int fileType) throws FtpException {
+        return this.execute(client -> client.setFileType(fileType));
     }
 
     @Override

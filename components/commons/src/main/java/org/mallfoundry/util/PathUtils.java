@@ -7,13 +7,15 @@ import java.util.stream.Stream;
 
 public abstract class PathUtils {
 
+    public static final String PATH_SEPARATOR = "/";
+
+    public static final String ROOT_PATH = PATH_SEPARATOR;
+
     public static String normalize(String path) {
         return Optional.of(path)
                 .map(s -> FilenameUtils.normalize(s, true))
                 .map(s -> s.replaceAll("/+", "/"))
-                .map(s -> s.startsWith("/")
-                        ? s
-                        : "/" + s)
+                .map(s -> s.startsWith("/") ? s : "/" + s)
                 .orElseThrow();
     }
 
@@ -27,5 +29,11 @@ public abstract class PathUtils {
                 .reduce((a, b) -> String.join("/", a, b))
                 .orElseThrow();
         return FilenameUtils.normalize(path, true);
+    }
+
+    public static String removePrefixSeparator(String path) {
+        return Optional.of(path).map(PathUtils::normalize)
+                .map(s -> s.startsWith("/") ? s.substring(1) : s)
+                .orElseThrow();
     }
 }
