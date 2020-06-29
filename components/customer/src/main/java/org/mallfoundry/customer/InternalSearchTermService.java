@@ -16,37 +16,40 @@ public class InternalSearchTermService implements SearchTermService {
         this.searchTermRepository = searchTermRepository;
     }
 
-    private Supplier<InternalSearchTerm> createNewTerm(String customerId, String term) {
+    private Supplier<InternalSearchTerm> createNewSearchTerm(String customerId, String term) {
         return () -> new InternalSearchTerm(customerId, term);
     }
 
     @Transactional
     @Override
-    public SearchTerm addTerm(String customerId, String termText) {
+    public SearchTerm addSearchTerm(String customerId, String termText) {
         var term = this.searchTermRepository
                 .findById(InternalSearchTermId.of(customerId, termText))
-                .orElseGet(createNewTerm(customerId, termText));
+                .orElseGet(createNewSearchTerm(customerId, termText));
         term.hit();
         return this.searchTermRepository.save(term);
     }
 
     @Override
-    public List<SearchTerm> getTerms(String customerId) {
+    public List<SearchTerm> getSearchTerms(String customerId) {
         return CastUtils.cast(this.searchTermRepository.findAllByCustomerId(customerId));
     }
 
+    @Transactional
     @Override
-    public void deleteTerm(String customerId, String term) {
-
+    public void deleteSearchTerm(String customerId, String term) {
+        this.searchTermRepository.deleteByCustomerIdAndTerm(customerId, term);
     }
 
+    @Transactional
     @Override
-    public void deleteTerms(String customerId, List<String> terms) {
-
+    public void deleteSearchTerms(String customerId, List<String> terms) {
+        this.searchTermRepository.deleteByCustomerIdAndTermIn(customerId, terms);
     }
 
+    @Transactional
     @Override
-    public void clearTerms(String customerId) {
-
+    public void clearSearchTerms(String customerId) {
+        this.searchTermRepository.deleteByCustomerId(customerId);
     }
 }
