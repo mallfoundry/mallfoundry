@@ -29,6 +29,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -50,6 +51,9 @@ public class InternalFollowProduct implements FollowProduct {
 
     @Column(name = "name_")
     private String name;
+
+    @Column(name = "price_")
+    private BigDecimal price;
 
     @Column(name = "image_url_")
     private String imageUrl;
