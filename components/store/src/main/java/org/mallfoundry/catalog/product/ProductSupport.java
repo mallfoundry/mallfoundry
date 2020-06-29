@@ -75,6 +75,7 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public void addVariant(ProductVariant variant) {
         this.getVariants().add(variant);
+        Positions.sort(this.getVariants());
     }
 
     @Override
