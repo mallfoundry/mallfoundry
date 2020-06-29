@@ -16,11 +16,18 @@
 
 package org.mallfoundry.app;
 
-import java.util.Optional;
+import org.mallfoundry.util.Positions;
 
-public interface MenuRepository {
+public abstract class MenuSupport implements Menu {
 
-    Menu save(Menu menu);
+    @Override
+    public void addMenu(Menu menu) {
+        this.getChildren().add(menu);
+        Positions.sort(this.getChildren());
+    }
 
-    Optional<Menu> findById(String menuId);
+    @Override
+    public void removeMenu(Menu menu) {
+        this.getChildren().remove(menu);
+    }
 }

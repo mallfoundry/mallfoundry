@@ -28,41 +28,11 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
 
-    private final MenuRepository menuRepository;
-
-    public ApplicationService(ApplicationRepository applicationRepository,
-                              MenuRepository menuRepository) {
+    public ApplicationService(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
-        this.menuRepository = menuRepository;
     }
 
     public Optional<Application> getApplication(String id) {
         return this.applicationRepository.findById(id);
-    }
-
-    @Transactional
-    public void createMenu(String appId, Menu menu) {
-        menu.maxPosition();
-        menu.setAppId(appId);
-        this.menuRepository.save(menu);
-        List<Menu> menus = this.menuRepository.findAllByAppId(menu.getAppId());
-        Positions.sort(menus);
-    }
-
-    @Transactional
-    public void addMenu(Integer parentId, Menu child) {
-        this.menuRepository
-                .findById(parentId)
-                .ifPresent(menu -> menu.addChildMenu(child));
-    }
-
-    public List<Menu> getMenus(String appId) {
-        return this.menuRepository.findAllByAppId(appId);
-    }
-
-
-    @Transactional
-    public Optional<Menu> getMenu(Integer menuId) {
-        return this.menuRepository.findById(menuId);
     }
 }

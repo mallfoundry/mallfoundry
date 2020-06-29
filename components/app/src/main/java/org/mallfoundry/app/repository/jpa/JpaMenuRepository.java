@@ -18,17 +18,27 @@ package org.mallfoundry.app.repository.jpa;
 
 import org.mallfoundry.app.Menu;
 import org.mallfoundry.app.MenuRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface JpaMenuRepository
-        extends MenuRepository, JpaRepository<Menu, Integer> {
+public class JpaMenuRepository implements MenuRepository {
 
-    @Query("from Menu where appId = ?1 and parent is null order by position asc")
+    private final JpaMenuRepositoryDelegate repository;
+
+    public JpaMenuRepository(JpaMenuRepositoryDelegate repository) {
+        this.repository = repository;
+    }
+
     @Override
-    List<Menu> findAllByAppId(String appId);
+    public Menu save(Menu menu) {
+        return this.repository.save(JpaMenu.of(menu));
+    }
+
+    @Override
+    public Optional<Menu> findById(String menuId) {
+        return CastUtils.cast(this.repository.findById(menuId));
+    }
 }

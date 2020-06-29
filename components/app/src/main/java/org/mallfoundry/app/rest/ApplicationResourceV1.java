@@ -17,13 +17,8 @@
 package org.mallfoundry.app.rest;
 
 import org.mallfoundry.app.ApplicationService;
-import org.mallfoundry.app.Menu;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -33,10 +28,5 @@ public class ApplicationResourceV1 {
 
     public ApplicationResourceV1(ApplicationService applicationService) {
         this.applicationService = applicationService;
-    }
-
-    @GetMapping("apps/{app_id}/menus")
-    public List<Menu> getMenus(@PathVariable("app_id") String appId) {
-        return this.applicationService.getMenus(appId);
     }
 }
