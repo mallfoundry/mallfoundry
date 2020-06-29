@@ -64,6 +64,10 @@ public class ProductTests {
         Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct2_1());
         Thread.sleep(1000 * 2);
+        productService.addProduct(this.newProduct2_redmi_k30());
+        Thread.sleep(1000 * 2);
+        productService.addProduct(this.newProduct2_redmi9());
+        Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct3());
         Thread.sleep(1000 * 2);
         productService.addProduct(this.newProduct4());
@@ -328,6 +332,260 @@ public class ProductTests {
                 .attribute(product -> product.createAttribute("产地", "中国"))
                 .attribute(product -> product.createAttribute("生成时间", "2018-10-11"))
                 .attribute(product -> product.createAttribute("颜色", "黑"))
+                .create()
+                .build();
+    }
+
+    private Product newProduct2_redmi_k30() {
+        double price = 0.18;
+        return this.productService.createProduct(null)
+                .toBuilder()
+                .storeId("mi")
+                .name("Redmi K30 Pro 5G先锋 骁龙865旗舰处理器 弹出式超光感全面屏 索尼6400万高清四摄 4700mAh长续航 33W闪充")
+                .type(ProductType.DIGITAL)
+                .status(ProductStatus.ACTIVE)
+                .imageUrl(resolveImageUrl("redmi_k30pro_1_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_1_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_1_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_1_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_2_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_2_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_2_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_2_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_2_4.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_3_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_3_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_3_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_3_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_3_4.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_4_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_4_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_4_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_4_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi_k30pro_4_3.jpg"))
+                //
+                .fixedShippingCost(10.00)
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("82").province("广东省")
+                        .cityId("1354").city("珠海市")
+                        .countyId("10462").county("金湾区")
+                        .build())
+                //
+                .adjustMonthlySales(30)
+                .adjustTotalSales(30)
+                //
+                // options
+                .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                        .name("颜色")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("太空灰").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("月慕白").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("天际蓝").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("星环紫").build())
+                        .build())
+                .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                        .toBuilder()
+                        .name("版本")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("标准版8GB+128GB").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("变焦版12GB+256GB").build())
+                        .build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_1_0.jpg"), resolveImageUrl("redmi_k30pro_1_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_1_2.jpg"), resolveImageUrl("redmi_k30pro_1_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "太空灰").orElseThrow(),
+                                        product.selectOption("版本", "标准版8GB+128GB").orElseThrow()))
+                                .position(0).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_1_0.jpg"), resolveImageUrl("redmi_k30pro_1_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_1_2.jpg"), resolveImageUrl("redmi_k30pro_1_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "太空灰").orElseThrow(),
+                                        product.selectOption("版本", "变焦版12GB+256GB").orElseThrow()))
+                                .position(1).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_2_0.jpg"), resolveImageUrl("redmi_k30pro_2_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_2_2.jpg"), resolveImageUrl("redmi_k30pro_2_3.jpg"), resolveImageUrl("redmi_k30pro_2_4.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "月慕白").orElseThrow(),
+                                        product.selectOption("版本", "标准版8GB+128GB").orElseThrow()))
+                                .position(2).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_2_0.jpg"), resolveImageUrl("redmi_k30pro_2_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_2_2.jpg"), resolveImageUrl("redmi_k30pro_2_3.jpg"), resolveImageUrl("redmi_k30pro_2_4.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "月慕白").orElseThrow(),
+                                        product.selectOption("版本", "变焦版12GB+256GB").orElseThrow()))
+                                .position(3).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_3_0.jpg"), resolveImageUrl("redmi_k30pro_3_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_3_2.jpg"), resolveImageUrl("redmi_k30pro_3_3.jpg"), resolveImageUrl("redmi_k30pro_3_4.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "天际蓝").orElseThrow(),
+                                        product.selectOption("版本", "标准版8GB+128GB").orElseThrow()))
+                                .position(4).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_3_0.jpg"), resolveImageUrl("redmi_k30pro_3_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_3_2.jpg"), resolveImageUrl("redmi_k30pro_3_3.jpg"), resolveImageUrl("redmi_k30pro_3_4.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "天际蓝").orElseThrow(),
+                                        product.selectOption("版本", "变焦版12GB+256GB").orElseThrow()))
+                                .position(5).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_4_0.jpg"), resolveImageUrl("redmi_k30pro_4_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_4_2.jpg"), resolveImageUrl("redmi_k30pro_4_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "星环紫").orElseThrow(),
+                                        product.selectOption("版本", "标准版8GB+128GB").orElseThrow()))
+                                .position(6).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi_k30pro_4_0.jpg"), resolveImageUrl("redmi_k30pro_4_1.jpg"),
+                                        resolveImageUrl("redmi_k30pro_4_2.jpg"), resolveImageUrl("redmi_k30pro_4_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "星环紫").orElseThrow(),
+                                        product.selectOption("版本", "变焦版12GB+256GB").orElseThrow()))
+                                .position(7).build())
+                //attributes
+                .attribute(product -> product.createAttribute("产地", "中国"))
+                .attribute(product -> product.createAttribute("生成时间", "2018-10-11"))
+                .attribute(product -> product.createAttribute("颜色", "黑"))
+                .create()
+                .build();
+    }
+
+    private Product newProduct2_redmi9() {
+        double price = 0.18;
+        return this.productService.createProduct(null)
+                .toBuilder()
+                .storeId("mi")
+                .name("Redmi 9 5020mAh大电量 1080P全高清大屏 大字体大音量大内存 全场景AI四摄 高性能游戏芯 游戏智能手机 小米 红米")
+                .type(ProductType.DIGITAL)
+                .status(ProductStatus.ACTIVE)
+                .imageUrl(resolveImageUrl("redmi9_1_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_1_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_1_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_1_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_2_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_2_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_2_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_2_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_3_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_3_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_3_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_3_3.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_4_0.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_4_1.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_4_2.jpg"))
+                .imageUrl(resolveImageUrl("redmi9_4_3.jpg"))
+                //
+                .fixedShippingCost(10.00)
+                //
+                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                        .provinceId("82").province("广东省")
+                        .cityId("1354").city("珠海市")
+                        .countyId("10462").county("金湾区")
+                        .build())
+                //
+                .adjustMonthlySales(30)
+                .adjustTotalSales(30)
+                //
+                // options
+                .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
+                        .name("颜色")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("碳素黑").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("墨黛青").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("霓虹蓝").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("藕荷粉").build())
+                        .build())
+                .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME))
+                        .toBuilder()
+                        .name("版本")
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("4GB+128GB").build())
+                        .value(option -> option.createValue(PrimaryKeyHolder.next(PRODUCT_OPTION_VALUE_ID_VALUE_NAME)).toBuilder().label("6GB+128GB").build())
+                        .build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_1_0.jpg"), resolveImageUrl("redmi9_1_1.jpg"),
+                                        resolveImageUrl("redmi9_1_2.jpg"), resolveImageUrl("redmi9_1_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "碳素黑").orElseThrow(),
+                                        product.selectOption("版本", "4GB+128GB").orElseThrow()))
+                                .position(0).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_1_0.jpg"), resolveImageUrl("redmi9_1_1.jpg"),
+                                        resolveImageUrl("redmi9_1_2.jpg"), resolveImageUrl("redmi9_1_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "碳素黑").orElseThrow(),
+                                        product.selectOption("版本", "6GB+128GB").orElseThrow()))
+                                .position(1).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_2_0.jpg"), resolveImageUrl("redmi9_2_1.jpg"),
+                                        resolveImageUrl("redmi9_2_2.jpg"), resolveImageUrl("redmi9_2_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "墨黛青").orElseThrow(),
+                                        product.selectOption("版本", "4GB+128GB").orElseThrow()))
+                                .position(0).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_2_0.jpg"), resolveImageUrl("redmi9_2_1.jpg"),
+                                        resolveImageUrl("redmi9_2_2.jpg"), resolveImageUrl("redmi9_2_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "墨黛青").orElseThrow(),
+                                        product.selectOption("版本", "6GB+128GB").orElseThrow()))
+                                .position(1).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_3_0.jpg"), resolveImageUrl("redmi9_3_1.jpg"),
+                                        resolveImageUrl("redmi9_3_2.jpg"), resolveImageUrl("redmi9_3_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "霓虹蓝").orElseThrow(),
+                                        product.selectOption("版本", "4GB+128GB").orElseThrow()))
+                                .position(0).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_3_0.jpg"), resolveImageUrl("redmi9_3_1.jpg"),
+                                        resolveImageUrl("redmi9_3_2.jpg"), resolveImageUrl("redmi9_3_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "霓虹蓝").orElseThrow(),
+                                        product.selectOption("版本", "6GB+128GB").orElseThrow()))
+                                .position(1).build())
+                //
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.1).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_4_0.jpg"), resolveImageUrl("redmi9_4_1.jpg"),
+                                        resolveImageUrl("redmi9_4_2.jpg"), resolveImageUrl("redmi9_4_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "藕荷粉").orElseThrow(),
+                                        product.selectOption("版本", "4GB+128GB").orElseThrow()))
+                                .position(0).build())
+                .variant(product ->
+                        product.createVariant(PrimaryKeyHolder.next(PRODUCT_VARIANT_ID_VALUE_NAME)).toBuilder().marketPrice(price).price(0.3).inventoryQuantity(100)
+                                .imageUrls(List.of(resolveImageUrl("redmi9_4_0.jpg"), resolveImageUrl("redmi9_4_1.jpg"),
+                                        resolveImageUrl("redmi9_4_2.jpg"), resolveImageUrl("redmi9_4_3.jpg")))
+                                .optionSelections(List.of(
+                                        product.selectOption("颜色", "藕荷粉").orElseThrow(),
+                                        product.selectOption("版本", "6GB+128GB").orElseThrow()))
+                                .position(1).build())
+                //attributes
+                .attribute(product -> product.createAttribute("产地", "中国"))
+                .attribute(product -> product.createAttribute("上市年份", "2020年"))
                 .create()
                 .build();
     }
