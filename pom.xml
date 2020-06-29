@@ -65,6 +65,12 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-app-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-catalog-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
@@ -236,6 +242,12 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-commons-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-app-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

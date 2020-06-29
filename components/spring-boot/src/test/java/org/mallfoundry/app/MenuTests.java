@@ -16,22 +16,25 @@
 
 package org.mallfoundry.app;
 
-import org.mallfoundry.StaticServer;
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.StaticServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-public class ApplicationTests {
+public class MenuTests {
 
     @Autowired
-    private ApplicationService applicationService;
+    private MenuService menuService;
 
-    public void createMenu(String title, String icon) {
+    public void createMenu(String name, String icon) {
         String iconUrl = String.format("%s/menus/%s", StaticServer.BASE_URL, icon);
-        this.applicationService.createMenu("mall-h5", new Menu(title, new MenuIcon(iconUrl)));
+        var menu = this.menuService.createMenu(null);
+        menu.setName(name);
+        menu.setIcon(iconUrl);
+        this.menuService.addMenu("1", menu);
     }
 
     @Transactional
@@ -48,13 +51,5 @@ public class ApplicationTests {
         this.createMenu("商城拼购", "08.png");
         this.createMenu("商城家电", "09.png");
         this.createMenu("签到有礼", "10.png");
-    }
-
-    @Transactional
-    @Rollback(false)
-    @Test
-    public void testGetMenu() {
-        this.applicationService.getMenu(3482)
-                .ifPresent(menu -> menu.addChildMenu(new Menu("二级子菜单2")));
     }
 }
