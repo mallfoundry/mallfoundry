@@ -23,7 +23,7 @@ public interface CategoryService {
 
     Category updateCategory(Category category);
 
-    Category addChildCategory(String id, Category category);
+    Category addCategory(String id, Category category);
 
     void deleteCategory(String categoryId);
 }

@@ -18,7 +18,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -74,27 +73,17 @@ public class InternalCategory implements Category {
     }
 
     @Override
-    public Category createChildCategory() {
+    public Category createCategory() {
         return new InternalCategory();
     }
 
     @Override
-    public Optional<Category> getChildCategory(String childId) {
-        return this.children.stream().filter(child -> Objects.equals(child.getId(), childId)).findFirst();
-    }
-
-    @Override
-    public void setChildCategory(Category category) {
-
-    }
-
-    @Override
-    public void addChildCategory(Category category) {
+    public void addCategory(Category category) {
         this.children.add(category);
     }
 
     @Override
-    public void removeChildCategory(Category category) {
+    public void removeCategory(Category category) {
         this.children.remove(category);
     }
 

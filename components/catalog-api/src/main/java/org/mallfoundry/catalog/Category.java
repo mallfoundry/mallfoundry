@@ -4,7 +4,6 @@ import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -37,15 +36,11 @@ public interface Category extends Position {
 
     List<Category> getChildren();
 
-    Category createChildCategory();
+    Category createCategory();
 
-    Optional<Category> getChildCategory(String childId);
+    void addCategory(Category category);
 
-    void setChildCategory(Category category);
-
-    void addChildCategory(Category category);
-
-    void removeChildCategory(Category category);
+    void removeCategory(Category category);
 
     CategoryVisibility getVisibility();
 

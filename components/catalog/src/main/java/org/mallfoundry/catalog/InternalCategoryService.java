@@ -63,8 +63,8 @@ public class InternalCategoryService implements CategoryService {
 
     @Transactional
     @Override
-    public Category addChildCategory(String id, Category category) {
-        this.getCategory(id).orElseThrow().addChildCategory(category);
+    public Category addCategory(String id, Category category) {
+        this.getCategory(id).orElseThrow().addCategory(category);
         return category;
     }
 

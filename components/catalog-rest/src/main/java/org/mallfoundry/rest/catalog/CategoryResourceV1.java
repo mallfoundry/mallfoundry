@@ -40,7 +40,7 @@ public class CategoryResourceV1 {
                     this.categoryService.addCategory(request.assignToCategory(this.categoryService.createCategory(null))));
         } else {
             return new CategoryResponse(
-                    this.categoryService.addChildCategory(request.getParentId(),
+                    this.categoryService.addCategory(request.getParentId(),
                             request.assignToCategory(this.categoryService.createCategory(null))));
         }
     }
