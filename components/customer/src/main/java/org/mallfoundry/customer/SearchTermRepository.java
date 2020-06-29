@@ -11,5 +11,9 @@ public interface SearchTermRepository {
 
     <S extends InternalSearchTerm> S save(S entity);
 
-    void delete(InternalSearchTerm entity);
+    void deleteByCustomerIdAndTerm(String customerId, String term);
+
+    void deleteByCustomerIdAndTermIn(String customerId, List<String> terms);
+
+    void deleteByCustomerId(String customerId);
 }

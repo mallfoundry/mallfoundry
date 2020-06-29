@@ -29,15 +29,15 @@ public class SearchTermResourceV1 {
 
     @Operation(description = "添加顾客的一个搜索词条对象")
     @PostMapping("/customers/{customer_id}/search-terms")
-    public SearchTermResponse addTerm(@PathVariable("customer_id") String customerId,
+    public SearchTermResponse addSearchTerm(@PathVariable("customer_id") String customerId,
                                       @RequestBody String term) {
-        return new SearchTermResponse(this.searchTermService.addTerm(customerId, term));
+        return new SearchTermResponse(this.searchTermService.addSearchTerm(customerId, term));
     }
 
     @Operation(description = "获得顾客的搜索词条对象集合")
     @GetMapping("/customers/{customer_id}/search-terms")
-    public List<SearchTermResponse> getTerms(@PathVariable("customer_id") String customerId) {
-        var terms = this.searchTermService.getTerms(customerId);
+    public List<SearchTermResponse> getSearchTerms(@PathVariable("customer_id") String customerId) {
+        var terms = this.searchTermService.getSearchTerms(customerId);
         return CollectionUtils.isEmpty(terms)
                 ? Collections.emptyList()
                 : terms.stream().map(SearchTermResponse::new).collect(Collectors.toUnmodifiableList());
@@ -45,22 +45,22 @@ public class SearchTermResourceV1 {
 
     @Operation(description = "删除指定顾客的搜索词条对象")
     @DeleteMapping("/customers/{customer_id}/search-terms/{term}")
-    public void deleteTerm(@PathVariable("customer_id") String customerId,
+    public void deleteSearchTerm(@PathVariable("customer_id") String customerId,
                            @PathVariable("term") String term) {
-        this.searchTermService.deleteTerm(customerId, term);
+        this.searchTermService.deleteSearchTerm(customerId, term);
     }
 
     @Operation(description = "批量删除顾客的搜索词条对象集合")
     @DeleteMapping("/customers/{customer_id}/search-terms/batch")
-    public void deleteTerms(@PathVariable("customer_id") String customerId,
+    public void deleteSearchTerms(@PathVariable("customer_id") String customerId,
                             @RequestBody List<String> terms) {
-        this.searchTermService.deleteTerms(customerId, terms);
+        this.searchTermService.deleteSearchTerms(customerId, terms);
     }
 
     @Operation(description = "清空顾客的搜索词条对象集合")
     @DeleteMapping("/customers/{customer_id}/search-terms/clear")
-    public void clearTerms(@PathVariable("customer_id") String customerId) {
-        this.searchTermService.clearTerms(customerId);
+    public void clearSearchTerms(@PathVariable("customer_id") String customerId) {
+        this.searchTermService.clearSearchTerms(customerId);
     }
 
 }
