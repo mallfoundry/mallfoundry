@@ -6,6 +6,7 @@ import org.mallfoundry.identity.UserValidator;
 import org.mallfoundry.identity.UserValidatorException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
@@ -26,6 +27,7 @@ public class RegistrationUserValidator implements UserValidator {
             this.userRepository.findByMobile(mobile).ifPresent(user -> {
                 throw new UserValidatorException(
                         message("identity.user.validation.mobileRegistered",
+                                List.of(mobile),
                                 "Mobile has been registered"));
             });
         }
