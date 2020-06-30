@@ -19,7 +19,7 @@ spring:
   cache:
     type: simple
   messages:
-    basename: messages,org.mallfoundry.security.messages
+    basename: messages,org.mallfoundry.security.messages,org.mallfoundry.identity.messages
     always-use-message-format: true
   elasticsearch:
     rest:
