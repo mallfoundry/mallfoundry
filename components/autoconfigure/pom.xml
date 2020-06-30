@@ -41,6 +41,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-customer</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-storage</artifactId>
             <scope>provided</scope>
         </dependency>
