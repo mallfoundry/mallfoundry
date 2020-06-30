@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class DefaultProductShippingOrigin implements ProductShippingOrigin {
@@ -27,6 +29,29 @@ public class DefaultProductShippingOrigin implements ProductShippingOrigin {
         var target = new DefaultProductShippingOrigin();
         BeanUtils.copyProperties(shippingOrigin, target);
         return target;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultProductShippingOrigin)) {
+            return false;
+        }
+        DefaultProductShippingOrigin that = (DefaultProductShippingOrigin) o;
+        return Objects.equals(provinceId, that.provinceId)
+                && Objects.equals(province, that.province)
+                && Objects.equals(cityId, that.cityId)
+                && Objects.equals(city, that.city)
+                && Objects.equals(countyId, that.countyId)
+                && Objects.equals(county, that.county);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(provinceId, province, cityId, city, countyId, county);
     }
 
     @Override
