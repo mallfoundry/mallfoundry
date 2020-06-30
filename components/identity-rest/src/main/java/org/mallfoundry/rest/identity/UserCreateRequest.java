@@ -11,7 +11,6 @@ import java.util.Map;
 @Getter
 @Setter
 public class UserCreateRequest implements UserRegistration {
-    private String username;
     private String nickname;
     private String password;
     private String mobile;
@@ -31,11 +30,7 @@ public class UserCreateRequest implements UserRegistration {
 
     @Override
     public User assignToUser(User user) {
-        return user.toBuilder().username(this.username)
-                .nickname(this.nickname)
-                .password(this.password)
-                .mobile(this.mobile)
-                .email(this.email)
-                .build();
+        return user.toBuilder().nickname(this.nickname).password(this.password)
+                .mobile(this.mobile).email(this.email).build();
     }
 }

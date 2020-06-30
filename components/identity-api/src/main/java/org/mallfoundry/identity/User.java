@@ -2,6 +2,7 @@ package org.mallfoundry.identity;
 
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
 import java.util.List;
 
 public interface User {
@@ -35,6 +36,10 @@ public interface User {
     List<String> getAuthorities();
 
     void setAuthorities(List<String> authorities);
+
+    Date getCreatedTime();
+
+    void create();
 
     default Builder toBuilder() {
         return new BuilderSupport(this);

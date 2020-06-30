@@ -6,10 +6,6 @@ import java.util.Map;
 
 public interface UserRegistration {
 
-    String getUsername();
-
-    void setUsername(String username);
-
     String getPassword();
 
     void setPassword(String password);

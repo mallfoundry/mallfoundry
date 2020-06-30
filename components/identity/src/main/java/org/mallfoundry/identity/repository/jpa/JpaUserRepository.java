@@ -17,19 +17,49 @@
 package org.mallfoundry.identity.repository.jpa;
 
 import org.mallfoundry.identity.InternalUser;
+import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface JpaUserRepository
-        extends UserRepository, JpaRepository<InternalUser, String> {
+public class JpaUserRepository implements UserRepository {
+
+    private final JpaRepositoryDelegate repository;
+
+    public JpaUserRepository(JpaRepositoryDelegate repository) {
+        this.repository = repository;
+    }
 
     @Override
-    void delete(InternalUser internalUser);
+    public User create(String id) {
+        return new InternalUser(id);
+    }
 
     @Override
-    Optional<InternalUser> findByUsername(String username);
+    public User save(User user) {
+        return this.repository.save(InternalUser.of(user));
+    }
+
+    @Override
+    public void delete(User user) {
+        this.repository.delete(InternalUser.of(user));
+    }
+
+    @Override
+    public Optional<User> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public Optional<User> findByMobile(String mobile) {
+        return CastUtils.cast(this.repository.findByMobile(mobile));
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return CastUtils.cast(this.repository.findByUsername(username));
+    }
 }

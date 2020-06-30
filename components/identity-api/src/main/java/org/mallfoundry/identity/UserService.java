@@ -10,17 +10,17 @@ public interface UserService {
 
     User createUser(UserRegistration registration) throws UserException;
 
-    void deleteUser(String username);
+    void deleteUser(String id);
 
-    void changePassword(String username, String password, String originalPassword) throws UserException;
+    void changePassword(String id, String password, String originalPassword) throws UserException;
 
-    void resetPassword(String username, String password) throws UserException;
+    void resetPassword(String id, String password) throws UserException;
 
     User setUser(User user);
 
     Optional<User> getUser(String userId);
 
-    Optional<User> getUserByUsername(String username);
+    Optional<User> getUserByUsername(String id);
 
     Optional<User> getUserByMobile(String countryCode, String mobile);
 

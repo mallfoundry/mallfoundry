@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+import static org.mallfoundry.i18n.MessageHolder.message;
+
 @Component
 public class RegistrationUserValidator implements UserValidator {
 
@@ -22,7 +24,9 @@ public class RegistrationUserValidator implements UserValidator {
         var mobile = registration.getMobile();
         if (Objects.nonNull(mobile)) {
             this.userRepository.findByMobile(mobile).ifPresent(user -> {
-                throw new UserValidatorException("The mobile has been registered");
+                throw new UserValidatorException(
+                        message("identity.user.validation.mobileRegistered",
+                                "Mobile has been registered"));
             });
         }
 

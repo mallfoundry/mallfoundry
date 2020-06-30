@@ -6,11 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InternalUserId implements UserId {
+public class ImmutableUserId implements UserId {
 
     private String identifier;
 
-    public InternalUserId(String identifier) {
+    public ImmutableUserId(String identifier) {
         this.identifier = identifier;
     }
 }

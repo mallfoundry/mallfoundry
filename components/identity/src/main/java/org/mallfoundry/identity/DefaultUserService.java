@@ -16,11 +16,10 @@
 
 package org.mallfoundry.identity;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.util.CastUtils;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,14 +29,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.mallfoundry.i18n.MessageHolder.message;
+
 @Service
-public class InternalUserService implements UserService {
+public class DefaultUserService implements UserService {
 
     private static final String USER_ID_VALUE_NAME = "identity.user.id";
 
-    private final List<UserValidator> userValidators;
+    private final UserConfiguration userConfiguration;
 
-    private final UsernameGenerator usernameGenerator;
+    private final List<UserValidator> userValidators;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -45,12 +46,12 @@ public class InternalUserService implements UserService {
 
     private final UserRepository userRepository;
 
-    public InternalUserService(List<UserValidator> userValidators,
-                               UsernameGenerator usernameGenerator,
-                               ApplicationEventPublisher eventPublisher,
-                               UserRepository userRepository) {
-        this.userValidators = userValidators;
-        this.usernameGenerator = usernameGenerator;
+    public DefaultUserService(UserConfiguration userConfiguration,
+                              List<UserValidator> userValidators,
+                              ApplicationEventPublisher eventPublisher,
+                              UserRepository userRepository) {
+        this.userConfiguration = userConfiguration;
+        this.userValidators = ListUtils.emptyIfNull(userValidators);
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -58,7 +59,7 @@ public class InternalUserService implements UserService {
 
     @Override
     public UserId createUserId(String userId) {
-        return new InternalUserId(userId);
+        return new ImmutableUserId(userId);
     }
 
     @Override
@@ -66,30 +67,44 @@ public class InternalUserService implements UserService {
         return new InternalUser(id);
     }
 
+    public void setDefaultUsername(User user) {
+        var defaultUsername = this.userConfiguration.getDefaultUsername();
+        user.setUsername(UserReplacer.replace(defaultUsername, user));
+    }
+
+    private void setDefaultNickname(User user) {
+        if (StringUtils.isBlank(user.getNickname())) {
+            var defaultNickname = this.userConfiguration.getDefaultNickname();
+            user.setNickname(UserReplacer.replace(defaultNickname, user));
+        }
+    }
+
     @Transactional
     @Override
     public User createUser(UserRegistration registration) {
-        if (CollectionUtils.isNotEmpty(this.userValidators)) {
-            this.userValidators.forEach(userValidator -> userValidator.validateCreateUser(registration));
-        }
-        var user = new InternalUser(PrimaryKeyHolder.next(USER_ID_VALUE_NAME));
-        registration.assignToUser(user);
-        if (StringUtils.isBlank(user.getUsername())) {
-            user.setUsername(this.usernameGenerator.generate(user.getId()));
-        }
+        this.userValidators.forEach(userValidator -> userValidator.validateCreateUser(registration));
+        var user = registration.assignToUser(this.userRepository.create(PrimaryKeyHolder.next(USER_ID_VALUE_NAME)));
+        this.setDefaultUsername(user);
+        this.setDefaultNickname(user);
         user.changePassword(this.encodePassword(registration.getPassword()));
-        this.eventPublisher.publishEvent(new InternalUserCreatedEvent(user));
-        return this.userRepository.save(user);
+        user.create();
+        var savedUser = this.userRepository.save(user);
+        this.eventPublisher.publishEvent(new ImmutableUserCreatedEvent(savedUser));
+        return savedUser;
+    }
+
+    private User getNonUser(String id) {
+        return this.userRepository.findById(id).orElseThrow(() -> UserExceptions.notExists(id));
     }
 
     @Transactional
     @Override
     public User setUser(User user) {
-        var savedUser = this.userRepository.findById(user.getId()).orElseThrow();
+        var savedUser = this.getNonUser(user.getId());
         if (!Objects.equals(user.getNickname(), savedUser.getNickname())) {
             savedUser.setNickname(savedUser.getNickname());
         }
-        this.eventPublisher.publishEvent(new InternalUserChangedEvent(savedUser));
+        this.eventPublisher.publishEvent(new ImmutableUserChangedEvent(savedUser));
         return this.userRepository.save(savedUser);
     }
 
@@ -101,49 +116,51 @@ public class InternalUserService implements UserService {
         return this.passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    private void setPassword(InternalUser user, String password) {
+    private void setPassword(User user, String password) {
         user.changePassword(this.encodePassword(password));
         var savedUser = this.userRepository.save(user);
-        this.eventPublisher.publishEvent(new InternalUserPasswordChangedEvent(savedUser));
+        this.eventPublisher.publishEvent(new ImmutableUserCredentialsChangedEvent(savedUser));
     }
 
     @Transactional
     @Override
-    public void changePassword(String username, String password, String originalPassword) throws UserException {
-        var user = this.userRepository.findByUsername(username).orElseThrow();
+    public void changePassword(String id, String password, String originalPassword) throws UserException {
+        var user = this.getNonUser(id);
         if (!this.matchesPassword(originalPassword, user.getPassword())) {
-            throw new UserException("The original password is incorrect");
+            throw new UserException(
+                    message("identity.user.originalPasswordIncorrect",
+                            "The original password is incorrect"));
         }
         this.setPassword(user, password);
     }
 
     @Transactional
     @Override
-    public void resetPassword(String username, String password) throws UserException {
-        var user = this.userRepository.findByUsername(username).orElseThrow();
+    public void resetPassword(String id, String password) throws UserException {
+        var user = this.getNonUser(id);
         this.setPassword(user, password);
     }
 
     @Transactional
     @Override
-    public void deleteUser(String username) {
-        var user = this.userRepository.findByUsername(username).orElseThrow();
-        this.eventPublisher.publishEvent(new InternalUserDeletedEvent(user));
+    public void deleteUser(String id) {
+        var user = this.getNonUser(id);
+        this.eventPublisher.publishEvent(new ImmutableUserDeletedEvent(user));
         this.userRepository.delete(user);
     }
 
     @Transactional
     public Optional<User> getUser(String userId) {
-        return CastUtils.cast(this.userRepository.findById(userId));
+        return this.userRepository.findById(userId);
     }
 
     @Override
     public Optional<User> getUserByUsername(String username) {
-        return CastUtils.cast(this.userRepository.findByUsername(username));
+        return this.userRepository.findByUsername(username);
     }
 
     @Override
     public Optional<User> getUserByMobile(String countryCode, String mobile) {
-        return CastUtils.cast(this.userRepository.findByMobile(mobile));
+        return this.userRepository.findByMobile(mobile);
     }
 }

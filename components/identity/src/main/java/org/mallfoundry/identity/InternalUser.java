@@ -28,6 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -53,7 +54,6 @@ public class InternalUser implements User {
     @Column(name = "mobile_", unique = true)
     private String mobile;
 
-
     @Column(name = "password_")
     private String password;
 
@@ -66,6 +66,9 @@ public class InternalUser implements User {
     @Convert(converter = StringListConverter.class)
     @Column(name = "authorities_")
     private List<String> authorities = new ArrayList<>();
+
+    @Column(name = "created_time_")
+    private Date createdTime;
 
     public InternalUser(String id) {
         this.id = id;
@@ -84,5 +87,10 @@ public class InternalUser implements User {
     @Override
     public void changePassword(String password) {
         this.setPassword(password);
+    }
+
+    @Override
+    public void create() {
+        this.createdTime = new Date();
     }
 }
