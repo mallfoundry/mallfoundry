@@ -3,6 +3,7 @@ package org.mallfoundry.catalog.product;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.inventory.InventoryException;
 import org.mallfoundry.inventory.InventoryStatus;
+import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 import java.io.Serializable;
@@ -19,9 +20,45 @@ public interface ProductVariant extends Serializable, Position {
 
     String getProductId();
 
+    BigDecimal getWeight();
+
+    void setWeight(BigDecimal weight);
+
+    BigDecimal getWidth();
+
+    void setWidth(BigDecimal width);
+
+    BigDecimal getHeight();
+
+    void setHeight(BigDecimal height);
+
+    BigDecimal getDepth();
+
+    void setDepth(BigDecimal depth);
+
+    String getBarcode();
+
+    void setBarcode(String barcode);
+
+    String getSku();
+
+    void setSku(String sku);
+
     BigDecimal getPrice();
 
     void setPrice(BigDecimal price);
+
+    BigDecimal getSalePrice();
+
+    void setSalePrice(BigDecimal salePrice);
+
+    BigDecimal getRetailPrice();
+
+    void setRetailPrice(BigDecimal retailPrice);
+
+    BigDecimal getCostPrice();
+
+    void setCostPrice(BigDecimal costPrice);
 
     List<OptionSelection> getOptionSelections();
 
@@ -31,62 +68,26 @@ public interface ProductVariant extends Serializable, Position {
 
     void setImageUrls(List<String> imageUrls);
 
-    BigDecimal getMarketPrice();
-
-    void setMarketPrice(BigDecimal marketPrice);
-
     int getInventoryQuantity();
-
-    void setInventoryQuantity(int inventoryQuantity) throws InventoryException;
 
     void adjustInventoryQuantity(int quantityDelta) throws InventoryException;
 
     InventoryStatus getInventoryStatus();
 
-    default Builder toBuilder() {
-        return new Builder(this);
-    }
+    Builder toBuilder();
 
-    class Builder {
+    interface Builder extends ObjectBuilder<ProductVariant> {
 
-        private final ProductVariant variant;
+        Builder price(double price);
 
-        public Builder(ProductVariant variant) {
-            this.variant = variant;
-        }
+        Builder retailPrice(double retailPrice);
 
-        public Builder price(double price) {
-            this.variant.setPrice(BigDecimal.valueOf(price));
-            return this;
-        }
+        Builder adjustInventoryQuantity(int quantityDelta);
 
-        public Builder marketPrice(double marketPrice) {
-            this.variant.setMarketPrice(BigDecimal.valueOf(marketPrice));
-            return this;
-        }
+        Builder position(int position);
 
-        public Builder inventoryQuantity(int inventoryQuantity) {
-            this.variant.setInventoryQuantity(inventoryQuantity);
-            return this;
-        }
+        Builder optionSelections(List<OptionSelection> optionSelections);
 
-        public Builder position(int position) {
-            this.variant.setPosition(position);
-            return this;
-        }
-
-        public Builder optionSelections(List<OptionSelection> optionSelections) {
-            this.variant.setOptionSelections(optionSelections);
-            return this;
-        }
-
-        public Builder imageUrls(List<String> imageUrls) {
-            this.variant.setImageUrls(imageUrls);
-            return this;
-        }
-
-        public ProductVariant build() {
-            return this.variant;
-        }
+        Builder imageUrls(List<String> imageUrls);
     }
 }

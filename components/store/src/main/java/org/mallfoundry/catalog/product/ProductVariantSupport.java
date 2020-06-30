@@ -17,10 +17,12 @@
 package org.mallfoundry.catalog.product;
 
 import lombok.NoArgsConstructor;
+import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.inventory.InventoryException;
 import org.mallfoundry.inventory.InventoryStatus;
 
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Each product can have multiple variations.
@@ -29,48 +31,74 @@ import java.util.Objects;
  * @author Zhi Tang
  */
 @NoArgsConstructor
-public abstract class ProductVariantSupport implements ProductVariant {
+public abstract class ProductVariantSupport implements MutableProductVariant {
 
     public ProductVariantSupport(String id) {
         this.setId(id);
     }
 
-    protected abstract void doSetInventoryQuantity(int quantity) throws InventoryException;
-
     @Override
-    public void setInventoryQuantity(int quantity) throws InventoryException {
+    public void adjustInventoryQuantity(int quantityDelta) throws InventoryException {
+        var quantity = this.getInventoryQuantity() + quantityDelta;
         if (quantity < 0) {
             throw new InventoryException("Inventory quantity cannot be less than zero");
         }
-        this.doSetInventoryQuantity(quantity);
+        this.setInventoryQuantity(quantity);
+        this.setInventoryStatus();
+    }
+
+    private void setInventoryStatus() {
+        this.setInventoryStatus(
+                this.getInventoryQuantity() == 0
+                        ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK);
     }
 
     @Override
-    public void adjustInventoryQuantity(int quantityDelta) throws InventoryException {
-        this.setInventoryQuantity(this.getInventoryQuantity() + quantityDelta);
+    public Builder toBuilder() {
+        return new BuilderSupport(this);
     }
 
-    @Override
-    public InventoryStatus getInventoryStatus() {
-        return this.getInventoryQuantity() == 0
-                ? InventoryStatus.OUT_OF_STOCK
-                : InventoryStatus.IN_STOCK;
-    }
+    protected static class BuilderSupport implements Builder {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+        private final ProductVariant variant;
+
+        protected BuilderSupport(ProductVariant variant) {
+            this.variant = variant;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+
+        public Builder price(double price) {
+            this.variant.setPrice(BigDecimal.valueOf(price));
+            return this;
         }
-        ProductVariantSupport that = (ProductVariantSupport) o;
-        return Objects.equals(this.getId(), that.getId());
+
+        public Builder retailPrice(double retailPrice) {
+            this.variant.setRetailPrice(BigDecimal.valueOf(retailPrice));
+            return this;
+        }
+
+        public Builder adjustInventoryQuantity(int quantityDelta) {
+            this.variant.adjustInventoryQuantity(quantityDelta);
+            return this;
+        }
+
+        public Builder position(int position) {
+            this.variant.setPosition(position);
+            return this;
+        }
+
+        public Builder optionSelections(List<OptionSelection> optionSelections) {
+            this.variant.setOptionSelections(optionSelections);
+            return this;
+        }
+
+        public Builder imageUrls(List<String> imageUrls) {
+            this.variant.setImageUrls(imageUrls);
+            return this;
+        }
+
+        public ProductVariant build() {
+            return this.variant;
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getId());
-    }
 }

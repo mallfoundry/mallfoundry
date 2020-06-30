@@ -82,7 +82,6 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private Date createdTime;
 
-
     public ElasticsearchProduct(String id) {
         super(id);
     }
