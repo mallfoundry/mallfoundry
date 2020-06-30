@@ -48,8 +48,7 @@ public class SmsCaptchaProvider implements CaptchaProvider {
     public void generateCaptcha(Captcha captcha) throws CaptchaException {
         var mobile = captcha.getParameters().get("mobile");
         this.setCaptchaIntervals(captcha);
-
-//        this.sendMessage(mobile, captcha.getCode());
+        this.sendMessage(mobile, captcha.getCode());
     }
 
     private Message createMessage(String mobile, String code) {
