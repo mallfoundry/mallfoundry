@@ -1,0 +1,5 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.mallfoundry.autoconfigure.keygen.PrimaryKeyGeneratorAutoConfiguration,\
+  org.mallfoundry.autoconfigure.i18n.MessageAutoConfiguration
+

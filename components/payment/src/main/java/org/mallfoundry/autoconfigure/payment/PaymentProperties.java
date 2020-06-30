@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-package org.mallfoundry;
+package org.mallfoundry.autoconfigure.payment;
 
-public class StaticServer {
-    public static final String BASE_URL = "http://static.mallfoundry.org";
+import org.mallfoundry.payment.alipay.AliPaymentProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
+@Getter
+@Setter
+@ConfigurationProperties("mall.payment")
+public class PaymentProperties {
+
+    @NestedConfigurationProperty
+    private AliPaymentProperties alipay = new AliPaymentProperties();
 }

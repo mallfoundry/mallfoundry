@@ -32,7 +32,7 @@ public class Acl2Tests {
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.createAccessControl(principal, userResource);
         accessControl.grant(principal2, read);
-        this.acService.saveAccessControl(accessControl);
+        this.acService.updateAccessControl(accessControl);
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class Acl2Tests {
         var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
         accessControl.grant(principal2, delete);
         accessControl.grant(principal3, write);
-        this.acService.saveAccessControl(accessControl);
+        this.acService.updateAccessControl(accessControl);
     }
 
 

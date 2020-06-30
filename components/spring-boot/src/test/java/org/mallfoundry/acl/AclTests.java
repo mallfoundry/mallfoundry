@@ -1,6 +1,6 @@
 package org.mallfoundry.acl;
 
-import org.mallfoundry.identity.InternalUser;
+import org.mallfoundry.identity.repository.jpa.JpaUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +30,7 @@ public class AclTests {
     @Test
     @WithUserDetails("tangzhi")
     public void testInsert() {
-        ObjectIdentity oi = new ObjectIdentityImpl(InternalUser.class, 1);
+        ObjectIdentity oi = new ObjectIdentityImpl(JpaUser.class, 1);
 //        MutableAcl acl = this.aclService.createAcl(oi);
         MutableAcl acl = (MutableAcl) this.aclService.readAclById(oi);
 
@@ -50,7 +50,7 @@ public class AclTests {
     @Test
     @WithUserDetails("tangzhi2")
     public void testInsert2() {
-        ObjectIdentity oi = new ObjectIdentityImpl(InternalUser.class, 1);
+        ObjectIdentity oi = new ObjectIdentityImpl(JpaUser.class, 1);
         MutableAcl acl = (MutableAcl) this.aclService.readAclById(oi);
         Sid sid = new PrincipalSid(SecurityContextHolder.getContext().getAuthentication());
         acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, sid, true);
@@ -66,7 +66,7 @@ public class AclTests {
     @Test
     @WithUserDetails("tangzhi")
     public void test() {
-        ObjectIdentity oi = new ObjectIdentityImpl(InternalUser.class, 1);
+        ObjectIdentity oi = new ObjectIdentityImpl(JpaUser.class, 1);
         MutableAcl acl = (MutableAcl) this.aclService.readAclById(oi);
         List<Sid> sids = List.of(new PrincipalSid(SecurityContextHolder.getContext().getAuthentication()));
         var granted = acl.isGranted(List.of(BasePermission.CREATE), sids, true);

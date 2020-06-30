@@ -29,11 +29,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-elasticsearch</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-storage-api</artifactId>
         </dependency>
@@ -55,7 +50,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity</artifactId>
+            <artifactId>mall-identity-api</artifactId>
         </dependency>
 
         <dependency>
@@ -70,6 +65,11 @@
 
         <dependency>
             <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
@@ -79,9 +79,44 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-storage</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-security</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-identity</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

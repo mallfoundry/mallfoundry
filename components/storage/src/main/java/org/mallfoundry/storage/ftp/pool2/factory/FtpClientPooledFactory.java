@@ -16,6 +16,8 @@ public class FtpClientPooledFactory implements FtpClientFactory {
         this.configuration = configuration;
         var factory = new FtpClientPooledObjectFactory(configuration);
         this.clientPool = new GenericObjectPool<>(factory);
+        this.clientPool.setMaxTotal(1);
+        this.clientPool.setMaxIdle(1);
     }
 
     @Override

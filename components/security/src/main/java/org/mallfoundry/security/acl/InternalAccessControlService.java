@@ -88,7 +88,7 @@ public class InternalAccessControlService implements AccessControlService {
 
     @Transactional
     @Override
-    public AccessControl saveAccessControl(AccessControl accessControl) {
+    public AccessControl updateAccessControl(AccessControl accessControl) {
         Assert.notNull(accessControl.getOwner(), "The owner must not be null");
         InternalAccessControl internalAcl = InternalAccessControl.of(accessControl);
         internalAcl.getEntries().stream()

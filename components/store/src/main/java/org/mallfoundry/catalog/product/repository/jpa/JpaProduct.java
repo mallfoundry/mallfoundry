@@ -17,7 +17,6 @@ import org.mallfoundry.catalog.product.repository.jpa.convert.ProductAttributeLi
 import org.mallfoundry.catalog.product.repository.jpa.convert.ProductShippingOriginConverter;
 import org.mallfoundry.data.jpa.convert.StringListConverter;
 import org.mallfoundry.data.jpa.convert.StringSetConverter;
-import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -148,18 +147,6 @@ public class JpaProduct extends ProductSupport {
     @Override
     public BigDecimal getPrice() {
         return super.getPrice();
-    }
-
-    @Transient
-    @Override
-    public int getInventoryQuantity() {
-        return super.getInventoryQuantity();
-    }
-
-    @Transient
-    @Override
-    public InventoryStatus getInventoryStatus() {
-        return super.getInventoryStatus();
     }
 
     @Override

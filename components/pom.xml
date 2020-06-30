@@ -11,7 +11,6 @@
     <artifactId>mall-components</artifactId>
     <packaging>pom</packaging>
 
-
     <modules>
         <!-- api modules -->
         <module>app-api</module>
@@ -32,7 +31,6 @@
         <module>analyze</module>
         <module>app</module>
         <module>commons</module>
-        <module>autoconfigure</module>
         <module>core</module>
         <module>identity</module>
         <module>security</module>

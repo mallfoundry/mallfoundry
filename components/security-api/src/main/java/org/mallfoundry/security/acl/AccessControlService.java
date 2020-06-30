@@ -20,6 +20,6 @@ public interface AccessControlService {
 
     Optional<AccessControl> getAccessControl(Resource resource, List<Principal> principals);
 
-    AccessControl saveAccessControl(AccessControl control);
+    AccessControl updateAccessControl(AccessControl control);
 
 }
