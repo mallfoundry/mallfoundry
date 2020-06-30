@@ -16,7 +16,7 @@
 
 package org.mallfoundry.security;
 
-import org.mallfoundry.identity.InternalUserService;
+import org.mallfoundry.identity.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,9 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SecurityUserService implements UserDetailsService {
 
-    private final InternalUserService userService;
+    private final UserService userService;
 
-    public SecurityUserService(InternalUserService userService) {
+    public SecurityUserService(UserService userService) {
         this.userService = userService;
     }
 

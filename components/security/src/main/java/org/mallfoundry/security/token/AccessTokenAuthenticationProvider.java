@@ -16,7 +16,7 @@
 
 package org.mallfoundry.security.token;
 
-import org.mallfoundry.identity.InternalUserService;
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.DefaultSecurityUser;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,10 +32,10 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
 
     private final AccessTokenService tokenService;
 
-    private final InternalUserService userService;
+    private final UserService userService;
 
     public AccessTokenAuthenticationProvider(AccessTokenService tokenService,
-                                             InternalUserService userService) {
+                                             UserService userService) {
         this.tokenService = tokenService;
         this.userService = userService;
     }
