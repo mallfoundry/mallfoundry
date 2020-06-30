@@ -16,7 +16,6 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.identity.UserService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -31,12 +30,9 @@ public class InternalCustomerService implements CustomerService {
 
     private static final String ADDRESS_ID_VALUE_NAME = "customer.address.id";
 
-    private final UserService userService;
-
     private final CustomerRepository customerRepository;
 
-    public InternalCustomerService(UserService userService, CustomerRepository customerRepository) {
-        this.userService = userService;
+    public InternalCustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
@@ -50,11 +46,9 @@ public class InternalCustomerService implements CustomerService {
         return CastUtils.cast(this.customerRepository.findById(customerId));
     }
 
+    @Transactional
     @Override
     public Customer addCustomer(Customer customer) {
-        var user = this.userService.getUser(customer.getId()).orElseThrow();
-        customer.setUsername(user.getUsername());
-        customer.setNickname(user.getNickname());
         return this.customerRepository.save(InternalCustomer.of(customer));
     }
 
