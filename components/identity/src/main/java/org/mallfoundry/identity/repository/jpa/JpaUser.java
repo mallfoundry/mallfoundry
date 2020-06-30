@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.mallfoundry.identity;
+package org.mallfoundry.identity.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.jpa.convert.StringListConverter;
+import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -36,7 +38,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_identity_user")
-public class InternalUser implements User {
+public class JpaUser extends UserSupport {
 
     @Id
     @Column(name = "id_")
@@ -70,27 +72,17 @@ public class InternalUser implements User {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalUser(String id) {
+    public JpaUser(String id) {
         this.id = id;
     }
 
-    public static InternalUser of(User user) {
-        if (user instanceof InternalUser) {
-            return (InternalUser) (user);
+    public static JpaUser of(User user) {
+        if (user instanceof JpaUser) {
+            return (JpaUser) (user);
         }
 
-        var target = new InternalUser();
+        var target = new JpaUser();
         BeanUtils.copyProperties(user, target);
         return target;
-    }
-
-    @Override
-    public void changePassword(String password) {
-        this.setPassword(password);
-    }
-
-    @Override
-    public void create() {
-        this.createdTime = new Date();
     }
 }

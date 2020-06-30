@@ -16,7 +16,6 @@
 
 package org.mallfoundry.identity.repository.jpa;
 
-import org.mallfoundry.identity.InternalUser;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserRepository;
 import org.springframework.data.util.CastUtils;
@@ -35,17 +34,17 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public User create(String id) {
-        return new InternalUser(id);
+        return new JpaUser(id);
     }
 
     @Override
     public User save(User user) {
-        return this.repository.save(InternalUser.of(user));
+        return this.repository.save(JpaUser.of(user));
     }
 
     @Override
     public void delete(User user) {
-        this.repository.delete(InternalUser.of(user));
+        this.repository.delete(JpaUser.of(user));
     }
 
     @Override
