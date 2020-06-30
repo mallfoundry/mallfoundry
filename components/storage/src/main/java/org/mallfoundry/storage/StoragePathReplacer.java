@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -25,10 +24,6 @@ public class StoragePathReplacer {
     public StoragePathReplacer(String path, String filename) {
         this.path = path;
         this.filename = filename;
-    }
-
-    public String replace(Path path) {
-        return this.replace(path.toFile());
     }
 
     public String replace(File file) {
