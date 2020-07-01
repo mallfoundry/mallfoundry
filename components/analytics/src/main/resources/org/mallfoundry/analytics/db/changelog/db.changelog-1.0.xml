@@ -4,8 +4,19 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet id="1.0.0" author="mallfoundry">
-        <createTable tableName="mf_dw_product">
+        <createTable tableName="mf_dw_date_dimension">
             <column name="id_" type="varchar(255)"/>
+            <column name="year_" type="varchar(255)"/>
+            <column name="month_" type="varchar(255)"/>
+            <column name="day_of_month_" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="mf_dw_product_fact">
+            <column name="store_id_" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="mf_dw_order_fact">
+            <column name="store_id_" type="varchar(255)"/>
+            <column name="date_id_" type="varchar(255)"/>
+            <column name="product_id_" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
