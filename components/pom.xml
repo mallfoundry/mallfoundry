@@ -14,6 +14,7 @@
     <modules>
         <!-- api modules -->
         <module>app-api</module>
+        <module>analytics-api</module>
         <module>commons-api</module>
         <module>catalog-api</module>
         <module>customer-api</module>
@@ -28,7 +29,7 @@
         <module>security-api</module>
         <module>marketing-api</module>
 
-        <module>analyze</module>
+        <module>analytics</module>
         <module>app</module>
         <module>commons</module>
         <module>core</module>
@@ -59,6 +60,8 @@
         <module>customer-rest</module>
         <module>marketing-rest</module>
         <module>app-rest</module>
+        <module>analytics-stream</module>
+        <module>analytics-rest</module>
     </modules>
 
 </project>

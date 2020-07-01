@@ -34,6 +34,16 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-analytics</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-analytics-stream</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-identity</artifactId>
         </dependency>
 
@@ -85,6 +95,11 @@
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-shipping</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-analytics-rest</artifactId>
         </dependency>
 
         <dependency>
@@ -199,12 +214,12 @@
         </dependency>
     </dependencies>
 
-    <!--<build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>-->
+    </build>
 </project>

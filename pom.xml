@@ -65,6 +65,12 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-analytics-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-app-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
@@ -145,6 +151,18 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-core</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-analytics</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-analytics-stream</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -236,6 +254,12 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-commons-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-analytics-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

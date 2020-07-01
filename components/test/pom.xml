@@ -9,6 +9,12 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>mall-test</artifactId>
+    <properties>
+
+    </properties>
+    <scm>
+        <connection>scm:git:https://gitee.com/mallfoundry/mall-dev-configs.git</connection>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -26,7 +32,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
@@ -48,5 +54,26 @@
             <artifactId>junit-platform-launcher</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.11.2</version>
+                <configuration>
+                    <connectionType>connection</connectionType>
+                    <checkoutDirectory>${project.build.directory}/classes</checkoutDirectory>
+                </configuration>
+               <executions>
+                   <execution>
+                      <goals>
+                          <goal>scm:checkout</goal>
+                      </goals>
+                   </execution>
+               </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
