@@ -26,10 +26,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories
 @EnableTransactionManagement
 @SpringBootApplication
-public class MallSpringBootApplication {
+public abstract class StandaloneSpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallSpringBootApplication.class, args);
+        SpringApplication.run(StandaloneSpringBootApplication.class, args);
     }
-
 }
