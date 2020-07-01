@@ -15,8 +15,8 @@ public class ObjectTypeTests {
     public void testAddProductType() {
         var productType = this.objectTypeManager.createObjectType("product")
                 .toBuilder().name("Product Type")
-                .addField(p -> p.createField("id").toBuilder().type("String").build())
-                .addField(p -> p.createField("name").toBuilder().type("String").build())
+                .addField(p -> p.createField("id").toBuilder().label("商品标识").type("String").build())
+                .addField(p -> p.createField("name").toBuilder().label("商品名称").type("String").build())
                 .build();
         objectTypeManager.addObjectType(productType);
     }

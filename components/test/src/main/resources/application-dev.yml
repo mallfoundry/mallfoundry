@@ -1,0 +1,15 @@
+logging:
+  level:
+    org.mallfoundry: debug
+    #    org.hibernate: debug
+    org.springframework.web: debug
+#    org.springframework: debug
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: true

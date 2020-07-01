@@ -9,13 +9,6 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>mall-test</artifactId>
-    <properties>
-
-    </properties>
-    <scm>
-        <connection>scm:git:https://gitee.com/mallfoundry/mall-dev-configs.git</connection>
-    </scm>
-
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
@@ -54,26 +47,4 @@
             <artifactId>junit-platform-launcher</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.11.2</version>
-                <configuration>
-                    <connectionType>connection</connectionType>
-                    <checkoutDirectory>${project.build.directory}/classes</checkoutDirectory>
-                </configuration>
-               <executions>
-                   <execution>
-                      <goals>
-                          <goal>scm:checkout</goal>
-                      </goals>
-                   </execution>
-               </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

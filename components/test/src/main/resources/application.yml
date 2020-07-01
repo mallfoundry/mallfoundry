@@ -13,7 +13,7 @@ spring:
       ignore-unknown: true
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
-    active: dev,internal
+    active: dev,test
   application:
     name: Mall-Foundry-APP
   cache:
@@ -24,20 +24,8 @@ spring:
   elasticsearch:
     rest:
       uris: http://localhost:9200
-  liquibase:
-    database-change-log-lock-table: mf_databasechangeloglock
-    database-change-log-table: mf_databasechangelog
-    change-log: classpath:/db/changelog/db.changelog-master.xml
 server:
   port: 8077
   error:
     include-message: always
   address: 0.0.0.0
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v1/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    display-request-duration: true
