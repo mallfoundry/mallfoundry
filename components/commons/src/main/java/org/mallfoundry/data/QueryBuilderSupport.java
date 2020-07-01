@@ -19,4 +19,9 @@ public abstract class QueryBuilderSupport<O extends Query, B extends QueryBuilde
         this.query.setSort(function.apply(new DefaultSort()));
         return (B) this;
     }
+
+    @Override
+    public O build() {
+        return this.query;
+    }
 }
