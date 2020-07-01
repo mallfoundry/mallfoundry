@@ -6,17 +6,21 @@
     <changeSet id="1.0.0" author="mallfoundry">
         <createTable tableName="mf_dw_date_dimension">
             <column name="id_" type="varchar(255)"/>
-            <column name="year_" type="varchar(255)"/>
-            <column name="month_" type="varchar(255)"/>
-            <column name="day_of_month_" type="varchar(255)"/>
+            <column name="year_" type="integer"/>
+            <column name="month_" type="integer"/>
+            <column name="day_of_month_" type="integer"/>
         </createTable>
         <createTable tableName="mf_dw_product_fact">
             <column name="store_id_" type="varchar(255)"/>
         </createTable>
-        <createTable tableName="mf_dw_order_fact">
+        <createTable tableName="mf_dw_order_quantity_fact">
             <column name="store_id_" type="varchar(255)"/>
             <column name="date_id_" type="varchar(255)"/>
             <column name="product_id_" type="varchar(255)"/>
+            <column name="customer_id_" type="varchar(255)"/>
+            <column name="awaiting_payment_quantity_" type="integer"/>
+            <column name="awaiting_shipment_quantity_" type="integer"/>
+            <column name="disputed_quantity_" type="integer"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
