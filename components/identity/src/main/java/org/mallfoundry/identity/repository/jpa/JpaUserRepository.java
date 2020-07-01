@@ -26,9 +26,9 @@ import java.util.Optional;
 @Repository
 public class JpaUserRepository implements UserRepository {
 
-    private final JpaRepositoryDelegate repository;
+    private final JpaUserRepositoryDelegate repository;
 
-    public JpaUserRepository(JpaRepositoryDelegate repository) {
+    public JpaUserRepository(JpaUserRepositoryDelegate repository) {
         this.repository = repository;
     }
 
