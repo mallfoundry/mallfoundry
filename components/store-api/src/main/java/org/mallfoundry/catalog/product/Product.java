@@ -12,6 +12,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * 商品对象是一个基本单元，它包含了基本属性和商品变体。
+ *
+ * @author Zhi Tang
+ */
 public interface Product extends Serializable {
 
     String getId();
@@ -40,99 +45,221 @@ public interface Product extends Serializable {
 
     BigDecimal getPrice();
 
-    void setPrice(BigDecimal price);
-
-    BigDecimal getMarketPrice();
-
-    void setMarketPrice(BigDecimal marketPrice);
-
+    /**
+     * 获得关联商品类目标识。
+     *
+     * @return 商品类目标识
+     */
     String getCategoryId();
 
     void setCategoryId(String categoryId);
 
+    /**
+     * 获得商品品牌。
+     *
+     * @return 商品品牌标识。
+     */
     String getBrandId();
 
     void setBrandId(String brandId);
 
+    /**
+     * 获得商家自定义的商品类目集合。
+     *
+     * @return 商家自定义的商品类目集合
+     */
     Set<String> getCollections();
 
     void setCollections(Set<String> collections);
 
+    /**
+     * 获得商品的总销售量。
+     *
+     * @return 商品的总销售量
+     */
     long getTotalSales();
 
-    void adjustTotalSales(long sales);
+    /**
+     * 调整商品的总销售量，参数可是是正数也可以是负数。
+     * 正数表示在此商品总销量的基础上增加给定参数的销量，负数则是在此商品总销量的基础上减少给定参数的销量。
+     *
+     * @param sales 需要调整的数量
+     * @throws ProductException 如果调整后的数量小于零
+     */
+    void adjustTotalSales(long sales) throws ProductException;
 
     long getMonthlySales();
 
-    void adjustMonthlySales(long sales);
+    /**
+     * 调整商品的月售量，参数可是是正数也可以是负数。
+     * 正数表示在此商品月销量的基础上增加给定参数的销量，负数则是在此商品月销量的基础上减少给定参数的销量。
+     *
+     * @param sales 需要调整的数量
+     * @throws ProductException 如果调整后的数量小于零
+     */
+    void adjustMonthlySales(long sales) throws ProductException;
 
-    List<ProductOption> getOptions();
+    /**
+     * 添加一个商品图片URL链接。
+     *
+     * @param imageUrl 商品图片URL
+     */
+    void addImageUrl(String imageUrl);
 
+    /**
+     * 获得商品图片URL链接集合。
+     *
+     * @return 商品图片URL链接集合
+     */
     List<String> getImageUrls();
+
+    /**
+     * 删除给定的商品图片URL链接。
+     *
+     * @param imageUrl 商品图片URL
+     */
+    void removeImageUrl(String imageUrl);
+
+    void addVideoUrl(String url);
 
     List<String> getVideoUrls();
 
+    void removeVideoUrl(String url);
+
+    /**
+     * 创建一个商品发货地址。
+     *
+     * @return 商品发货地址实例
+     */
     ProductShippingOrigin createShippingOrigin();
 
+    /**
+     * 获得商品关联的发货地址。
+     *
+     * @return 商品发货地址实例
+     */
     ProductShippingOrigin getShippingOrigin();
 
     void setShippingOrigin(ProductShippingOrigin shippingOrigin);
 
+    /**
+     * 获得商品是否包邮。
+     *
+     * @return {@code true} 表示包邮，{@code false} 表示不包邮
+     */
     boolean isFreeShipping();
 
-    void setFreeShipping(boolean freeShipping);
-
+    /**
+     * 设置商品包邮，调用此方法后 {@link #getFixedShippingCost()}
+     * 和 {@link #getShippingRateId()} 将被设置为 null。
+     */
     void freeShipping();
 
+    /**
+     * 获得固定运费。
+     *
+     * @return 固定运费
+     */
     BigDecimal getFixedShippingCost();
 
-    void setFixedShippingCost(BigDecimal fixedShippingCost);
+    /**
+     * 设置固定运费。
+     *
+     * @param fixedShippingCost 固定运费
+     * @throws ProductException 如果运费为 null
+     */
+    void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException;
 
+    /**
+     * 获得商品所关联的商家自定义的运费对象标识。
+     *
+     * @return 运费标识。
+     */
     String getShippingRateId();
 
-    void setShippingRateId(String shippingRateId);
+    /**
+     * 设置商家自定义的运费对象标识。
+     *
+     * @param shippingRateId 运费对象标识
+     * @throws ProductException 如果运费对象标识为 null
+     */
+    void setShippingRateId(String shippingRateId) throws ProductException;
 
+    /**
+     * 获得商品库存数量，商品库存数量并不是商品本身的数量，而是库存数量最少的商品变体的数量。
+     *
+     * @return 库存数量
+     */
     int getInventoryQuantity();
 
+    /**
+     * 调整商品变体的库存数量，参数可是是正数也可以是负数。
+     * 正数表示在此商品变体库存数量的基础上增加给定参数的销量，负数则是在此商品变体库存数量的基础上减少给定参数的销量。
+     *
+     * @param variantId     商品变体标识
+     * @param quantityDelta 需要调整的数量
+     * @throws ProductException 如果调整后的数量小于零
+     */
+    void adjustInventoryQuantity(String variantId, int quantityDelta) throws ProductException;
+
     InventoryStatus getInventoryStatus();
-
-    List<ProductVariant> getVariants();
-
-    Date getCreatedTime();
-
-    Optional<ProductVariant> getVariant(String variantId);
 
     ProductVariant createVariant(String id);
 
     void addVariant(ProductVariant variant);
 
-    void adjustInventoryQuantity(String variantId, int adjustQuantity);
+    List<ProductVariant> getVariants();
+
+    Optional<ProductVariant> getVariant(String variantId);
+
+    void updateVariant(ProductVariant variant);
+
+    void removeVariant(ProductVariant variant);
 
     ProductOption createOption(String id);
 
-    Optional<ProductOption> getOption(String name);
-
     void addOption(ProductOption option);
 
+    /**
+     * 获得商品的规格选项集合。
+     *
+     * @return 商品的规格选项集合
+     */
+    List<ProductOption> getOptions();
+
+    Optional<ProductOption> getOption(String name);
+
     Optional<OptionSelection> selectOption(String name, String label);
+
+    void setOption(ProductOption option);
+
+    void removeOption(ProductOption option);
 
     ProductAttribute createAttribute(String name, String value);
 
     ProductAttribute createAttribute(String namespace, String name, String value);
 
-    Optional<ProductAttribute> getAttribute(String namespace, String name);
-
     void addAttribute(ProductAttribute attribute);
+
+    Optional<ProductAttribute> getAttribute(String namespace, String name);
 
     List<ProductAttribute> getAttributes();
 
     void setAttributes(List<ProductAttribute> attributes);
 
-    void addImageUrl(String url);
+    void setAttribute(ProductAttribute attribute);
 
-    void addVideoUrl(String url);
+    void removeAttribute(ProductAttribute attribute);
 
-    void create();
+    void validate() throws ProductException;
+
+    Date getCreatedTime();
+
+    void create() throws ProductException;
+
+    long getVersion();
+
+    void update() throws ProductException;
 
     Builder toBuilder();
 
@@ -179,5 +306,7 @@ public interface Product extends Serializable {
         Builder attribute(Function<Product, ProductAttribute> attribute);
 
         Builder create();
+
+        Builder update();
     }
 }
