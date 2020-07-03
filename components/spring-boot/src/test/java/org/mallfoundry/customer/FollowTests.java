@@ -34,6 +34,6 @@ public class FollowTests {
     @Rollback(false)
     @Test
     public void testUnfollowProduct() {
-        followService.unfollowingProduct("111", "10000000000015");
+        followService.unfollowProduct("111", "10000000000015");
     }
 }

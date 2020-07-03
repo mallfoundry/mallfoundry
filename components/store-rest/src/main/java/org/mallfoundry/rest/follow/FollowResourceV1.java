@@ -38,15 +38,15 @@ public class FollowResourceV1 {
     }
 
     @PostMapping("/customers/{customer_id}/following-products/{product_id}")
-    public FollowProduct followingProduct(@PathVariable("customer_id") String customerId,
+    public FollowProduct followProduct(@PathVariable("customer_id") String customerId,
                                           @PathVariable("product_id") String productId) {
-        return this.followService.followingProduct(customerId, productId);
+        return this.followService.followProduct(customerId, productId);
     }
 
     @DeleteMapping("/customers/{customer_id}/following-products/{product_id}")
-    public void unfollowingProduct(@PathVariable("customer_id") String customerId,
+    public void unfollowProduct(@PathVariable("customer_id") String customerId,
                                    @PathVariable("product_id") String productId) {
-        this.followService.unfollowingProduct(customerId, productId);
+        this.followService.unfollowProduct(customerId, productId);
     }
 
     @GetMapping("/customers/{customer_id}/following-products/{product_id}")
@@ -73,15 +73,15 @@ public class FollowResourceV1 {
     }
 
     @PostMapping("/customers/{customer_id}/following-stores/{store_id}")
-    public void followingStore(@PathVariable("customer_id") String customerId,
+    public void followStore(@PathVariable("customer_id") String customerId,
                                @PathVariable("store_id") String storeId) {
-        this.followService.followingStore(customerId, storeId);
+        this.followService.followStore(customerId, storeId);
     }
 
     @DeleteMapping("/customers/{customer_id}/following-stores/{store_id}")
-    public void unfollowingStore(@PathVariable("customer_id") String customerId,
+    public void unfollowStore(@PathVariable("customer_id") String customerId,
                                  @PathVariable("store_id") String storeId) {
-        this.followService.unfollowingStore(customerId, storeId);
+        this.followService.unfollowStore(customerId, storeId);
     }
 
     @GetMapping("/customers/{customer_id}/following-stores/{store_id}")

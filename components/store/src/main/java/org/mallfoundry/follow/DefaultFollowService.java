@@ -60,7 +60,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public FollowProduct followingProduct(String followerId, String productId) {
+    public FollowProduct followProduct(String followerId, String productId) {
         var id = new InternalFollowProductId(followerId, productId);
         if (this.followProductRepository.existsById(id)) {
             throw new FollowException("The follower has followed to this product");
@@ -76,7 +76,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public void unfollowingProduct(String followerId, String productId) {
+    public void unfollowProduct(String followerId, String productId) {
         var id = new InternalFollowProductId(followerId, productId);
         var followProduct = this.followProductRepository.findById(id).orElseThrow();
         this.followProductRepository.delete(followProduct);
@@ -104,7 +104,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public void followingStore(String followerId, String storeId) {
+    public void followStore(String followerId, String storeId) {
         var id = new InternalFollowStoreId(followerId, storeId);
         if (this.followStoreRepository.existsById(id)) {
             throw new FollowException("The follower has followed to this store");
@@ -117,7 +117,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public void unfollowingStore(String followerId, String storeId) {
+    public void unfollowStore(String followerId, String storeId) {
         var id = new InternalFollowStoreId(followerId, storeId);
         var followStore = this.followStoreRepository.findById(id).orElseThrow();
         this.followStoreRepository.delete(followStore);
