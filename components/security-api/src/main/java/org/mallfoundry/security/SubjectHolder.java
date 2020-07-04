@@ -18,26 +18,42 @@ package org.mallfoundry.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Objects;
+
 /**
  * Gets the security user in the current context.
  *
- * @author Tang Zhi
+ * @author Zhi Tang
  */
-public abstract class SecurityUserHolder {
+public abstract class SubjectHolder {
 
-    private static SecurityUser getSecurityUser() {
-        return (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    private static SubjectAuthorizer authorizer;
+
+    public static boolean isAuthenticated() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        return Objects.nonNull(authentication) && authentication.isAuthenticated();
+    }
+
+    private static Subject requirePrincipal() {
+        if (!isAuthenticated()) {
+            throw new SecurityException();
+        }
+        return (Subject) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static String getUserId() {
-        return getSecurityUser().getId();
+        return requirePrincipal().getId();
     }
 
     public static String getUsername() {
-        return getSecurityUser().getUsername();
+        return requirePrincipal().getUsername();
     }
 
     public static String getNickname() {
-        return getSecurityUser().getNickname();
+        return requirePrincipal().getNickname();
     }
+/*
+    public static void checkPermission(Resource resource, String permission) {
+
+    }*/
 }

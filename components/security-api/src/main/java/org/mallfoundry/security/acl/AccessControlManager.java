@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface AccessControlService {
+public interface AccessControlManager {
 
     Principal createPrincipal(String type, String name);
 
@@ -20,6 +20,11 @@ public interface AccessControlService {
 
     Optional<AccessControl> getAccessControl(Resource resource, List<Principal> principals);
 
-    AccessControl updateAccessControl(AccessControl control);
+    void grantPermission(Permission permission, Resource resource, Principal principal);
 
+    void grantPermissions(List<Permission> permissions, Resource resource, Principal principal);
+
+    void revokePermission(Permission permission, Resource resource, Principal principal);
+
+    void revokePermissions(List<Permission> permissions, Resource resource, Principal principal);
 }
