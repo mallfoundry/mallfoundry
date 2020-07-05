@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.mallfoundry.security.acl.AccessControl;
 import org.mallfoundry.security.acl.AccessControlEntry;
 import org.mallfoundry.security.acl.AccessControlSupport;
-import org.mallfoundry.security.acl.InternalResource;
 import org.mallfoundry.security.acl.Permission;
 import org.mallfoundry.security.acl.Principal;
 import org.mallfoundry.security.acl.Resource;
@@ -36,7 +35,7 @@ public class JpaAccessControl extends AccessControlSupport {
     @Column(name = "id_")
     private String id;
 
-    @ManyToOne(targetEntity = InternalResource.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = JpaResource.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "resource_id_")
     private Resource resource;
 
@@ -87,47 +86,47 @@ public class JpaAccessControl extends AccessControlSupport {
     }
 
     @Override
-    public void grant(Principal principal, Permission permission) {
+    public void grant(Permission permission, Principal principal) {
         this.getEntry(principal).addPermission(permission);
     }
 
     @Override
-    public void grants(Principal principal, Set<Permission> permissions) {
+    public void grants(Set<Permission> permissions, Principal principal) {
         this.getEntry(principal).addPermissions(permissions);
     }
 
     @Override
-    public void revoke(Principal principal, Permission permission) {
+    public void revoke(Permission permission, Principal principal) {
         this.getEntry(principal).removePermission(permission);
     }
 
     @Override
-    public void revoke(Principal principal, Set<Permission> permissions) {
+    public void revoke(Set<Permission> permissions, Principal principal) {
         this.getEntry(principal).removePermissions(permissions);
     }
 
     @Override
-    public boolean granted(Principal principal, Permission permission) {
+    public boolean granted(Permission permission, Principal principal) {
         var entry = this.getEntryOrNull(principal);
         return !Objects.isNull(entry) && entry.checkPermission(permission);
     }
 
     @Override
-    public boolean granted(Principal principal, Set<Permission> permissions) {
+    public boolean granted(Set<Permission> permissions, Principal principal) {
         var entry = this.getEntryOrNull(principal);
         return !Objects.isNull(entry) && entry.checkAnyPermission(permissions);
     }
 
     @Override
-    public boolean granted(Set<Principal> principals, Set<Permission> permissions) {
+    public boolean granted(Set<Permission> permissions, Set<Principal> principals) {
         for (Principal principal : principals) {
-            if (this.granted(principal, permissions)) {
+            if (this.granted(permissions, principal)) {
                 return true;
             }
         }
 
         if (this.isInherit() && Objects.nonNull(this.getParent())) {
-            return this.getParent().granted(principals, permissions);
+            return this.getParent().granted(permissions, principals);
         }
 
         return false;

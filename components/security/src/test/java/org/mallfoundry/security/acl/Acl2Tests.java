@@ -28,8 +28,8 @@ public class Acl2Tests {
         Permission read = this.acService.createPermission("READ");
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.createAccessControl(principal, userResource);
-        accessControl.grant(principal2, read);
-       /* this.acService.updateAccessControl(accessControl);*/
+        accessControl.grant(read, principal2);
+        /* this.acService.updateAccessControl(accessControl);*/
     }
 
     @Transactional
@@ -43,9 +43,9 @@ public class Acl2Tests {
         Permission write = this.acService.createPermission("write");
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
-        accessControl.grant(principal2, delete);
-        accessControl.grant(principal3, write);
-    /*    this.acService.updateAccessControl(accessControl);*/
+        accessControl.grant(delete, principal2);
+        accessControl.grant(write, principal3);
+        /*    this.acService.updateAccessControl(accessControl);*/
     }
 
 
@@ -58,7 +58,7 @@ public class Acl2Tests {
         Permission read = this.acService.createPermission("read");
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.getAccessControl(userResource).orElseThrow();
-        var granted = accessControl.granted(principal2, read);
+        var granted = accessControl.granted(read, principal2);
         // this.acService.granted(principal2, read);
         System.out.println(granted);
     }
@@ -72,7 +72,7 @@ public class Acl2Tests {
         Permission read = this.acService.createPermission("read");
         Resource userResource = this.acService.createResource(new User("test_1"));
         var accessControl = this.acService.getAccessControl(userResource, Set.of(principal2)).orElseThrow();
-        var granted = accessControl.granted(principal2, read);
+        var granted = accessControl.granted(read, principal2);
         System.out.println(granted);
     }
 

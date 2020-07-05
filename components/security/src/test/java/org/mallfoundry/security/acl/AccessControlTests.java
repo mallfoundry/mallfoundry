@@ -78,7 +78,7 @@ public class AccessControlTests {
         var principal = this.manager.getPrincipal(Principal.USER_TYPE, "testUser").orElseThrow();
         var resource = this.manager.getResource(Resource.STORE_TYPE, "mi").orElseThrow();
         var ac = this.manager.getAccessControl(resource, Set.of(principal)).orElseThrow();
-        var readGranted = ac.granted(principal, p1);
+        var readGranted = ac.granted(p1, principal);
         Assert.assertTrue(readGranted);
     }
 }

@@ -1,8 +1,11 @@
-package org.mallfoundry.security.acl;
+package org.mallfoundry.security.acl.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.security.acl.MutableResource;
+import org.mallfoundry.security.acl.Resource;
+import org.mallfoundry.security.acl.ResourceUnavailableException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -20,25 +23,29 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_access_control_resource")
-public class InternalResource implements Resource {
+public class JpaResource implements MutableResource {
 
     @Id
     @Column(name = "id_")
     private String id;
 
-    @Column(name = "identifier_")
-    private String identifier;
-
     @Column(name = "type_")
     private String type;
 
-    public InternalResource(String id, String identifier, String type) {
+    @Column(name = "identifier_")
+    private String identifier;
+
+    public JpaResource(String id) {
         this.id = id;
-        this.identifier = identifier;
-        this.type = type;
     }
 
-    public InternalResource(String id, Object object) throws ResourceUnavailableException {
+    public JpaResource(String id, String type, String identifier) {
+        this.id = id;
+        this.type = type;
+        this.identifier = identifier;
+    }
+
+    public JpaResource(String id, Object object) throws ResourceUnavailableException {
         this.id = id;
         Class<?> typeClass = ClassUtils.getUserClass(object.getClass());
         this.type = typeClass.getName();
@@ -58,11 +65,11 @@ public class InternalResource implements Resource {
         this.identifier = String.valueOf(result);
     }
 
-    public static InternalResource of(Resource resource) {
-        if (resource instanceof InternalResource) {
-            return (InternalResource) resource;
+    public static JpaResource of(Resource resource) {
+        if (resource instanceof JpaResource) {
+            return (JpaResource) resource;
         }
-        var target = new InternalResource();
+        var target = new JpaResource();
         BeanUtils.copyProperties(resource, target);
         return target;
     }
@@ -75,7 +82,7 @@ public class InternalResource implements Resource {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalResource that = (InternalResource) o;
+        JpaResource that = (JpaResource) o;
         return Objects.equals(id, that.id);
     }
 

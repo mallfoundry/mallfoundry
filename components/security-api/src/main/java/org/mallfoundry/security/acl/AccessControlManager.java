@@ -18,6 +18,12 @@ public interface AccessControlManager {
 
     Resource createResource(String type, Serializable identifier);
 
+    Resource addResource(Object resource);
+
+    Resource addResource(Resource resource);
+
+    Resource addResource(String type, Serializable identifier);
+
     Optional<Resource> getResource(Object resource);
 
     Optional<Resource> getResource(String type, Serializable identifier);

@@ -34,7 +34,7 @@ public class SimpleAccessControlAuthorizer implements AccessControlAuthorizer {
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<Permission> permissions) {
         return this.manager.getAccessControl(resource, principals)
                 .orElseThrow()
-                .granted(principals, permissions);
+                .granted(permissions, principals);
     }
 
     @Override

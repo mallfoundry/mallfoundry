@@ -1,7 +1,6 @@
 package org.mallfoundry.security.acl;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.acl.repository.jpa.JpaAccessControl;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,13 +69,38 @@ public class DefaultAccessControlService implements AccessControlManager {
     @Override
     public Resource createResource(Object object) {
         Assert.notNull(object, "The object must not be null");
-        return new InternalResource(null, object);
+        return this.resourceRepository.create(null, object);
     }
 
     @Override
     public Resource createResource(String type, Serializable identifier) {
         Assert.notNull(identifier, "The Resource identifier must not be null");
-        return new InternalResource(null, type, String.valueOf(identifier));
+        return this.resourceRepository.create(null, type, String.valueOf(identifier));
+    }
+
+    @Override
+    public Resource addResource(Object resource) {
+        var mutableResource = (MutableResource) this.createResource(resource);
+        if (Objects.isNull(mutableResource.getId())) {
+            mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
+        }
+        return this.resourceRepository.save(mutableResource);
+    }
+
+    @Transactional
+    @Override
+    public Resource addResource(Resource resource) {
+        var mutableResource = (MutableResource) resource;
+        if (Objects.isNull(mutableResource.getId())) {
+            mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
+        }
+        return this.resourceRepository.save(mutableResource);
+    }
+
+    @Transactional
+    @Override
+    public Resource addResource(String type, Serializable identifier) {
+        return this.addResource(this.createResource(type, identifier));
     }
 
     @Override
@@ -99,7 +123,7 @@ public class DefaultAccessControlService implements AccessControlManager {
     public AccessControl createAccessControl(Principal owner, Resource resource) {
         var acl = (MutableAccessControl) this.accessControlRepository.create(null);
         acl.setOwner(owner);
-        acl.setResource(InternalResource.of(resource));
+        acl.setResource(resource);
         return acl;
     }
 
@@ -129,7 +153,7 @@ public class DefaultAccessControlService implements AccessControlManager {
     @Override
     public void grantPermission(Permission permission, Resource resource, Principal principal) {
         var accessControl = this.getAccessControl(resource).orElseThrow();
-        accessControl.grant(principal, permission);
+        accessControl.grant(permission, principal);
         this.updateAccessControl(accessControl);
     }
 
@@ -137,7 +161,7 @@ public class DefaultAccessControlService implements AccessControlManager {
     @Override
     public void grantPermissions(Set<Permission> permissions, Resource resource, Principal principal) {
         var accessControl = this.getAccessControl(resource).orElseThrow();
-        accessControl.grants(principal, permissions);
+        accessControl.grants(permissions, principal);
         this.updateAccessControl(accessControl);
     }
 
@@ -145,7 +169,7 @@ public class DefaultAccessControlService implements AccessControlManager {
     @Override
     public void revokePermission(Permission permission, Resource resource, Principal principal) {
         var accessControl = this.getAccessControl(resource).orElseThrow();
-        accessControl.revoke(principal, permission);
+        accessControl.revoke(permission, principal);
         this.updateAccessControl(accessControl);
     }
 
@@ -153,7 +177,7 @@ public class DefaultAccessControlService implements AccessControlManager {
     @Override
     public void revokePermissions(Set<Permission> permissions, Resource resource, Principal principal) {
         var accessControl = this.getAccessControl(resource).orElseThrow();
-        accessControl.revoke(principal, permissions);
+        accessControl.revoke(permissions, principal);
         this.updateAccessControl(accessControl);
     }
 
@@ -172,7 +196,7 @@ public class DefaultAccessControlService implements AccessControlManager {
         if (Objects.isNull(accessControl.getId())) {
             accessControl.setId(PrimaryKeyHolder.next(AC_ID_VALUE_NAME));
         }
-        var resource = InternalResource.of(accessControl.getResource());
+        var resource = (MutableResource) accessControl.getResource();
         if (Objects.isNull(resource.getId())) {
             resource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
             accessControl.setResource(resource);
