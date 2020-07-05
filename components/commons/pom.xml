@@ -65,6 +65,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
