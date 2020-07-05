@@ -6,7 +6,7 @@ import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
-import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.DefaultAddress;
 import org.mallfoundry.store.StoreService;
@@ -102,7 +102,7 @@ public class InternalCheckoutService implements CheckoutService {
     }
 
     private Address getCustomerDefaultAddress() {
-        var customerAddress = this.customerService.getDefaultAddress(SecurityUserHolder.getUserId()).orElseThrow();
+        var customerAddress = this.customerService.getDefaultAddress(SubjectHolder.getUserId()).orElseThrow();
         var address = new DefaultAddress();
         BeanUtils.copyProperties(customerAddress, address);
         return address;

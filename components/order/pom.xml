@@ -28,10 +28,14 @@
     <artifactId>mall-order</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-payment-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-shipping-api</artifactId>
         </dependency>
 
         <dependency>

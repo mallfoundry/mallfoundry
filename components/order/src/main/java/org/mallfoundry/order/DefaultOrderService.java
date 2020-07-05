@@ -19,7 +19,7 @@ package org.mallfoundry.order;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class InternalOrderService implements OrderService {
+public class DefaultOrderService implements OrderService {
 
     static final String ORDER_ID_VALUE_NAME = "order.id";
 
@@ -40,15 +40,19 @@ public class InternalOrderService implements OrderService {
 
     static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
 
+    private final List<OrderPlugin> plugins;
+
     private final OrderRepository orderRepository;
 
     private final OrderSplitter orderSplitter;
 
     private final CarrierService carrierService;
 
-    public InternalOrderService(OrderRepository orderRepository,
-                                OrderSplitter orderSplitter,
-                                CarrierService carrierService) {
+    public DefaultOrderService(List<OrderPlugin> plugins,
+                               OrderRepository orderRepository,
+                               OrderSplitter orderSplitter,
+                               CarrierService carrierService) {
+        this.plugins = plugins;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
@@ -61,7 +65,7 @@ public class InternalOrderService implements OrderService {
 
     @Override
     public Order createOrder(String id) {
-        return new InternalOrder(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
+        return new InternalOrder(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
     }
 
     @Transactional
@@ -80,7 +84,6 @@ public class InternalOrderService implements OrderService {
                 .peek(Order::place)
                 .collect(Collectors.toList());
         return CastUtils.cast(this.orderRepository.saveAll(placingOrders));
-//        return CastUtils.cast(placingOrders);
     }
 
     @Override
@@ -121,9 +124,14 @@ public class InternalOrderService implements OrderService {
         order.pickup();
     }
 
+    private Order processPreGetOrder(Order order) {
+        this.plugins.forEach(plugin -> plugin.preGetOrder(order));
+        return order;
+    }
+
     @Override
     public Optional<Order> getOrder(String orderId) {
-        return CastUtils.cast(this.orderRepository.findById(orderId));
+        return this.orderRepository.findById(orderId).map(this::processPreGetOrder);
     }
 
     @Override
@@ -144,9 +152,9 @@ public class InternalOrderService implements OrderService {
             shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
         }
         shipment.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ITEM_ID_VALUE_NAME)));
-        shipment.setConsignorId(SecurityUserHolder.getUserId());
+        shipment.setConsignorId(SubjectHolder.getUserId());
         if (StringUtils.isBlank(shipment.getConsignor())) {
-            shipment.setConsignor(SecurityUserHolder.getNickname());
+            shipment.setConsignor(SubjectHolder.getNickname());
         }
         // Set the tracking carrier name.
         if (StringUtils.isNotBlank(shipment.getTrackingNumber())

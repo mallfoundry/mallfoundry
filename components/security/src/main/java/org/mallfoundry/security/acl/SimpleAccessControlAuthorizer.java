@@ -2,6 +2,7 @@ package org.mallfoundry.security.acl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
@@ -32,9 +33,11 @@ public class SimpleAccessControlAuthorizer implements AccessControlAuthorizer {
 
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<Permission> permissions) {
-        return this.manager.getAccessControl(resource, principals)
-                .orElseThrow()
-                .granted(permissions, principals);
+        var accessControl = this.manager.getAccessControl(resource, principals).orElse(null);
+        if (Objects.isNull(accessControl)) {
+            return false;
+        }
+        return accessControl.granted(permissions, principals);
     }
 
     @Override
