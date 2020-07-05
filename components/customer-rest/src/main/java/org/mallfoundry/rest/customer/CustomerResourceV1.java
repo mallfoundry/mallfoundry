@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.customer.CustomerAddress;
 import org.mallfoundry.customer.CustomerService;
-import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -47,7 +47,7 @@ public class CustomerResourceV1 {
     @Operation(summary = "获得当前登录的顾客对象")
     @GetMapping("/customer")
     public Optional<CustomerResponse> getCustomer() {
-        return this.customerService.getCustomer(SecurityUserHolder.getUserId()).map(CustomerResponse::new);
+        return this.customerService.getCustomer(SubjectHolder.getUserId()).map(CustomerResponse::new);
     }
 
     @Operation(summary = "根据顾客标识获得顾客对象")
