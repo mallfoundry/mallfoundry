@@ -212,8 +212,6 @@ public interface Product extends Serializable {
 
     Optional<ProductVariant> getVariant(String variantId);
 
-    void updateVariant(ProductVariant variant);
-
     void removeVariant(ProductVariant variant);
 
     ProductOption createOption(String id);
@@ -231,8 +229,6 @@ public interface Product extends Serializable {
 
     Optional<OptionSelection> selectOption(String name, String label);
 
-    void setOption(ProductOption option);
-
     void removeOption(ProductOption option);
 
     ProductAttribute createAttribute(String name, String value);
@@ -247,19 +243,13 @@ public interface Product extends Serializable {
 
     void setAttributes(List<ProductAttribute> attributes);
 
-    void setAttribute(ProductAttribute attribute);
-
     void removeAttribute(ProductAttribute attribute);
-
-    void validate() throws ProductException;
 
     Date getCreatedTime();
 
     void create() throws ProductException;
 
     long getVersion();
-
-    void update() throws ProductException;
 
     Builder toBuilder();
 
@@ -306,7 +296,5 @@ public interface Product extends Serializable {
         Builder attribute(Function<Product, ProductAttribute> attribute);
 
         Builder create();
-
-        Builder update();
     }
 }

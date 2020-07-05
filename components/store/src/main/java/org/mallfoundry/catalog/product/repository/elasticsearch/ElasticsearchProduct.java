@@ -1,7 +1,6 @@
 package org.mallfoundry.catalog.product.repository.elasticsearch;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.mallfoundry.catalog.product.DefaultProductShippingOrigin;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
@@ -11,6 +10,7 @@ import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
+import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Getter
-@Setter
 @Document(indexName = "mf_catalog_product")
 public class ElasticsearchProduct extends ProductSupport {
 
@@ -61,6 +60,10 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private BigDecimal marketPrice;
 
+    private int inventoryQuantity;
+
+    private InventoryStatus inventoryStatus;
+
     private List<ElasticsearchProductOption> options = new ArrayList<>();
 
     @Field(type = FieldType.Nested)
@@ -82,8 +85,129 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private Date createdTime;
 
+    private long version;
+
     public ElasticsearchProduct(String id) {
         super(id);
+    }
+
+
+    @Override
+    protected void doSetId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    protected void doSetName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    protected void doSetFreeShipping(boolean freeShipping) {
+        this.freeShipping = freeShipping;
+    }
+
+    @Override
+    protected void doSetInventoryStatus(InventoryStatus status) {
+        this.inventoryStatus = status;
+    }
+
+    @Override
+    protected void doSetOptions(List<ProductOption> options) {
+        this.attributes = Objects.requireNonNullElseGet(attributes, (Supplier<List<ProductAttribute>>) ArrayList::new)
+                .stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
+    }
+
+    @Override
+    protected void doSetVariants(List<ProductVariant> variants) {
+        this.variants = Objects.requireNonNullElseGet(variants, (Supplier<List<ProductVariant>>) ArrayList::new)
+                .stream().map(ElasticsearchProductVariant::of).collect(Collectors.toList());
+    }
+
+    @Override
+    protected void doSetCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Override
+    protected void doSetStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    @Override
+    protected void doSetType(ProductType type) {
+        this.type = type;
+    }
+
+    @Override
+    protected void doSetStatus(ProductStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    protected void doSetDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    protected void doSetCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @Override
+    protected void doSetBrandId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @Override
+    protected void doSetCollections(Set<String> collections) {
+        this.collections = collections;
+    }
+
+    @Override
+    protected void doSetShippingOrigin(ProductShippingOrigin shippingOrigin) {
+        this.shippingOrigin = DefaultProductShippingOrigin.of(shippingOrigin);
+    }
+
+    @Override
+    protected void doSetFixedShippingCost(BigDecimal fixedShippingCost) {
+        this.fixedShippingCost = fixedShippingCost;
+    }
+
+    @Override
+    protected void doSetShippingRateId(String shippingRateId) {
+        this.shippingRateId = shippingRateId;
+    }
+
+    @Override
+    protected void doSetAttributes(List<ProductAttribute> attributes) {
+        this.attributes = Objects.requireNonNullElseGet(attributes, (Supplier<List<ProductAttribute>>) ArrayList::new)
+                .stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
+    }
+
+    @Override
+    protected void doSetTotalSales(long totalSales) {
+        this.totalSales = totalSales;
+    }
+
+    @Override
+    protected void doSetMonthlySales(long monthlySales) {
+        this.monthlySales = monthlySales;
+    }
+
+    @Override
+    protected void doSetImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    @Override
+    protected void doSetVideoUrls(List<String> videoUrls) {
+        this.videoUrls = videoUrls;
+    }
+
+    @Override
+    protected void doSetVersion(long version) {
+        this.version = version;
     }
 
     public static ElasticsearchProduct of(Product product) {
@@ -121,35 +245,12 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
-    public void setVariants(List<ProductVariant> variants) {
-        this.variants = Objects.requireNonNullElseGet(variants, (Supplier<List<ProductVariant>>) ArrayList::new)
-                .stream().map(ElasticsearchProductVariant::of).collect(Collectors.toList());
-    }
-
-    @Override
     public List<ProductOption> getOptions() {
         return CastUtils.cast(options);
     }
 
     @Override
-    public void setShippingOrigin(ProductShippingOrigin shippingOrigin) {
-        this.shippingOrigin = DefaultProductShippingOrigin.of(shippingOrigin);
-    }
-
-    @Override
-    public void setOptions(List<ProductOption> options) {
-        this.options = Objects.requireNonNullElseGet(options, (Supplier<List<ProductOption>>) ArrayList::new)
-                .stream().map(ElasticsearchProductOption::of).collect(Collectors.toList());
-    }
-
-    @Override
     public List<ProductAttribute> getAttributes() {
         return CastUtils.cast(this.attributes);
-    }
-
-    @Override
-    public void setAttributes(List<ProductAttribute> attributes) {
-        this.attributes = Objects.requireNonNullElseGet(attributes, (Supplier<List<ProductAttribute>>) ArrayList::new)
-                .stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
     }
 }

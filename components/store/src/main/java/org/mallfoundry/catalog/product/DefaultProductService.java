@@ -18,25 +18,28 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
-import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.plugins.PluginRegistry;
+import org.mallfoundry.plugins.Plugins;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class DefaultProductService implements ProductService {
 
-    private static final String PRODUCT_ID_VALUE_NAME = "catalog.product.id";
+    private final List<ProductPlugin> plugins;
 
     private final ProductRepository productRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public DefaultProductService(ProductRepository productRepository, ApplicationEventPublisher eventPublisher) {
+    public DefaultProductService(PluginRegistry pluginRegistry,
+                                 ProductRepository productRepository,
+                                 ApplicationEventPublisher eventPublisher) {
+        this.plugins = pluginRegistry.getPlugins(ProductPlugin.class);
         this.productRepository = productRepository;
         this.eventPublisher = eventPublisher;
     }
@@ -59,9 +62,7 @@ public class DefaultProductService implements ProductService {
     @Transactional
     @Override
     public Product addProduct(Product product) {
-        if (Objects.isNull(product.getId())) {
-            product.setId(PrimaryKeyHolder.next(PRODUCT_ID_VALUE_NAME));
-        }
+        Plugins.consumer(this.plugins).preAddProduct(product);
         var addedProduct = this.productRepository.save(product);
         this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
         return addedProduct;

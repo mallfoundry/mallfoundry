@@ -3,7 +3,7 @@ package org.mallfoundry.cart;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.SecurityUserHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,13 +31,13 @@ public class DefaultCartService implements CartService {
     }
 
     private InternalCart createEmptyCart(String id) {
-        var cart = (InternalCart) new InternalCart(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
+        var cart = (InternalCart) new InternalCart(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
         return this.cartRepository.save(cart);
     }
 
     @Override
     public Cart createCart(String id) {
-        return new InternalCart(id).toBuilder().customerId(SecurityUserHolder.getUserId()).build();
+        return new InternalCart(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
     }
 
 //    @Override

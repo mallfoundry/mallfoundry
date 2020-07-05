@@ -8,6 +8,7 @@ import org.mallfoundry.catalog.product.SearchProductRepository;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositoryDelegate;
+import org.mallfoundry.plugins.PluginRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -42,8 +43,9 @@ public class ProductAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(ProductRepositoryDelegate.class)
-    public DefaultProductService defaultProductService(ProductRepositoryDelegate productRepositoryDelegate,
+    public DefaultProductService defaultProductService(PluginRegistry pluginRegistry,
+                                                       ProductRepositoryDelegate repository,
                                                        ApplicationEventPublisher publisher) {
-        return new DefaultProductService(productRepositoryDelegate, publisher);
+        return new DefaultProductService(pluginRegistry, repository, publisher);
     }
 }

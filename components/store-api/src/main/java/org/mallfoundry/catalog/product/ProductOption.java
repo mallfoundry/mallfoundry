@@ -12,6 +12,8 @@ public interface ProductOption extends Serializable, Position {
 
     String getId();
 
+    void setId(String id);
+
     String getName();
 
     void setName(String name);
@@ -95,5 +97,4 @@ public interface ProductOption extends Serializable, Position {
             return this.option;
         }
     }
-
 }

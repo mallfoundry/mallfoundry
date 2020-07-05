@@ -9,6 +9,8 @@ public interface ProductOptionValue extends Serializable, Position {
 
     String getId();
 
+    void setId(String id);
+
     String getLabel();
 
     void setLabel(String label);
