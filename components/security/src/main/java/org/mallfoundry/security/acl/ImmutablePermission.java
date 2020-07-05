@@ -9,19 +9,19 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalPermission implements Permission {
+public class ImmutablePermission implements Permission {
 
     private String mask;
 
-    public InternalPermission(String mask) {
+    public ImmutablePermission(String mask) {
         this.mask = mask;
     }
 
-    public static InternalPermission of(Permission permission) {
-        if (permission instanceof InternalPermission) {
-            return (InternalPermission) permission;
+    public static ImmutablePermission of(Permission permission) {
+        if (permission instanceof ImmutablePermission) {
+            return (ImmutablePermission) permission;
         }
-        return new InternalPermission(permission.getMask());
+        return new ImmutablePermission(permission.getMask());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class InternalPermission implements Permission {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalPermission that = (InternalPermission) o;
+        ImmutablePermission that = (ImmutablePermission) o;
         return Objects.equals(mask, that.mask);
     }
 

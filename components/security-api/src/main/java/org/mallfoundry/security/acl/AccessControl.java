@@ -2,6 +2,7 @@ package org.mallfoundry.security.acl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public interface AccessControl extends Serializable {
 
@@ -19,11 +20,15 @@ public interface AccessControl extends Serializable {
 
     void grant(Principal principal, Permission permission);
 
+    void grants(Principal principal, Set<Permission> permissions);
+
     void revoke(Principal principal, Permission permission);
+
+    void revoke(Principal principal, Set<Permission> permissions);
 
     boolean granted(Principal principal, Permission permission);
 
-    boolean granted(Principal principal, List<Permission> permissions);
+    boolean granted(Principal principal, Set<Permission> permissions);
 
-    boolean granted(List<Principal> principals, List<Permission> permissions);
+    boolean granted(Set<Principal> principals, Set<Permission> permissions);
 }

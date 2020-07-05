@@ -32,10 +32,10 @@ public class InternalResource implements Resource {
     @Column(name = "type_")
     private String type;
 
-    public InternalResource(String id, String type, String identifier) {
+    public InternalResource(String id, String identifier, String type) {
         this.id = id;
-        this.type = type;
         this.identifier = identifier;
+        this.type = type;
     }
 
     public InternalResource(String id, Object object) throws ResourceUnavailableException {

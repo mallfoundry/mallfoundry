@@ -1,7 +1,9 @@
 package org.mallfoundry.security.acl;
 
+import org.mallfoundry.security.acl.repository.jpa.JpaAccessControlEntry;
+
 import java.util.List;
 
 public interface AccessControlEntryRepository {
-    List<InternalAccessControlEntry> findAllByPrincipalIn(List<Principal> principals);
+    List<JpaAccessControlEntry> findAllByPrincipalIn(List<Principal> principals);
 }

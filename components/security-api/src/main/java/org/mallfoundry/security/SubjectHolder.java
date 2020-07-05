@@ -20,14 +20,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Objects;
 
+import static org.mallfoundry.i18n.MessageHolder.message;
+
 /**
- * Gets the security user in the current context.
+ * 获得当前上下文中的用户对象。
  *
  * @author Zhi Tang
  */
 public abstract class SubjectHolder {
-
-//    private static SubjectAuthorizer authorizer;
 
     public static boolean isAuthenticated() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,7 +36,9 @@ public abstract class SubjectHolder {
 
     private static Subject requirePrincipal() {
         if (!isAuthenticated()) {
-            throw new SecurityException();
+            throw new SecurityException(
+                    message("security.subject.notAuthenticated",
+                            "The current user is not authenticated"));
         }
         return (Subject) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
@@ -52,8 +54,4 @@ public abstract class SubjectHolder {
     public static String getNickname() {
         return requirePrincipal().getNickname();
     }
-/*
-    public static void checkPermission(Resource resource, String permission) {
-
-    }*/
 }

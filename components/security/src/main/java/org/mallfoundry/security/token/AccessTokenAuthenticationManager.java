@@ -21,7 +21,7 @@ import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationT
 import org.mallfoundry.security.authentication.Credentials;
 import org.mallfoundry.security.authentication.MobilePasswordCredentials;
 import org.mallfoundry.security.authentication.MobilePasswordCredentialsAuthenticationToken;
-import org.mallfoundry.security.SecurityUser;
+import org.mallfoundry.security.Subject;
 import org.mallfoundry.security.authentication.UsernamePasswordCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,7 +57,7 @@ public class AccessTokenAuthenticationManager {
             authentication = new CaptchaCredentialsAuthenticationToken(captchaCredentials.getToken(), captchaCredentials.getCode());
         }
         authentication = this.authenticationManager.authenticate(authentication);
-        var user = (SecurityUser) authentication.getPrincipal();
+        var user = (Subject) authentication.getPrincipal();
         var username = user.getUsername();
         return tokenService.getAccessToken(username)
                 .orElseGet(() -> this.tokenService.storeAccessToken(this.tokenService.createToken(username)));

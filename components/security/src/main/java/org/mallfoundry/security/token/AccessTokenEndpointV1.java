@@ -22,7 +22,7 @@ import org.mallfoundry.security.authentication.Credentials;
 import org.mallfoundry.security.authentication.DefaultCaptchaCredentials;
 import org.mallfoundry.security.authentication.DefaultMobilePasswordCredentials;
 import org.mallfoundry.security.authentication.DefaultUsernamePasswordCredentials;
-import org.mallfoundry.security.authentication.GrantType;
+import org.mallfoundry.security.authentication.CredentialsType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,16 +51,16 @@ public class AccessTokenEndpointV1 {
     @PostMapping("/token")
     public ResponseEntity<?> authenticate(@RequestParam(name = "grant_type", required = false) String grantType,
                                           HttpServletRequest request) {
-        var type = GrantType.valueOf(StringUtils.upperCase(grantType));
+        var type = CredentialsType.valueOf(StringUtils.upperCase(grantType));
         Credentials credentials = null;
-        if (type == GrantType.USERNAME_PASSWORD) {
+        if (type == CredentialsType.USERNAME_PASSWORD) {
             credentials = new DefaultUsernamePasswordCredentials(request.getParameter("username"), request.getParameter("password"));
-        } else if (type == GrantType.MOBILE_PASSWORD) {
+        } else if (type == CredentialsType.MOBILE_PASSWORD) {
             credentials = new DefaultMobilePasswordCredentials(
                     request.getParameter("country_code"),
                     request.getParameter("mobile"),
                     request.getParameter("password"));
-        } else if (type == GrantType.CAPTCHA) {
+        } else if (type == CredentialsType.CAPTCHA) {
             credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));
         }
         try {

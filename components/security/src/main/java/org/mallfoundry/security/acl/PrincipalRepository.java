@@ -4,5 +4,9 @@ import java.util.Optional;
 
 public interface PrincipalRepository {
 
-    Optional<InternalPrincipal> findByTypeAndName(String type, String name);
+    MutablePrincipal create(String id);
+
+    Principal save(Principal principal);
+
+    Optional<Principal> findByTypeAndName(String type, String name);
 }

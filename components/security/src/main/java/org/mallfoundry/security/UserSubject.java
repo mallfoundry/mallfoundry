@@ -27,13 +27,13 @@ import java.util.List;
 /**
  * Use identity user to enhance user details to support extended properties of identity user.
  */
-public class DefaultSecurityUser implements SecurityUser {
+public class UserSubject implements Subject {
 
     private final User user;
 
     private final List<GrantedAuthority> authorities;
 
-    public DefaultSecurityUser(User user) {
+    public UserSubject(User user) {
         this.user = user;
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities())
                 ? AuthorityUtils.NO_AUTHORITIES

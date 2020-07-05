@@ -1,7 +1,7 @@
 package org.mallfoundry.security.authentication;
 
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.security.DefaultSecurityUser;
+import org.mallfoundry.security.UserSubject;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +32,7 @@ public class MobilePasswordCredentialsAuthenticationProvider implements Authenti
         String password = mpAuthentication.getPassword();
         var user = this.userService.getUserByMobile(countryCode, mobile)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s%s not found", countryCode, mobile)));
-        var securityUser = new DefaultSecurityUser(user);
+        var securityUser = new UserSubject(user);
         this.authenticationChecks(securityUser, mpAuthentication);
         return new UsernamePasswordAuthenticationToken(securityUser, password, securityUser.getAuthorities());
     }
