@@ -1,8 +1,6 @@
 package org.mallfoundry.i18n;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.Version;
-import org.springframework.util.Assert;
 
 /**
  * Simplify message code key that begins with the {@code org.mallfoundry} package name.
@@ -19,7 +17,9 @@ public abstract class Messages {
      * @throws IllegalArgumentException if null
      */
     public static String codeKey(String codeKey) throws IllegalArgumentException {
-        Assert.isTrue(StringUtils.isNotBlank(codeKey), "Code must not be empty");
+        if (codeKey == null || codeKey.isBlank()) {
+            throw new IllegalArgumentException("Code must not be empty");
+        }
         return String.format("%s.%s", Version.class.getPackageName(), codeKey);
     }
 }
