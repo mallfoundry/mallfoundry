@@ -263,6 +263,10 @@ public interface Product extends Serializable {
 
         Builder status(ProductStatus status);
 
+        Builder categoryId(String categoryId);
+
+        Builder brandId(String brandId);
+
         Builder freeShipping();
 
         Builder fixedShippingCost(BigDecimal fixedShippingCost);

@@ -19,16 +19,16 @@ package org.mallfoundry.catalog.product;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.test.StandaloneTest;
 import org.mallfoundry.test.StaticUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
-@SpringBootTest
+@StandaloneTest
 public class ProductTests {
 
     private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "store.product.variant.id";
@@ -88,6 +88,8 @@ public class ProductTests {
                 .name("华为 HUAWEI Mate 30 Pro 5G 麒麟990 OLED环幕屏双4000万徕卡电影四摄手机")
                 .type(ProductType.PHYSICAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 .imageUrl(resolveImageUrl("e070a0bc693efc85.jpg"))
                 .imageUrl(resolveImageUrl("cd96fb7761beeb9e.jpg"))
                 .imageUrl(resolveImageUrl("c78c80a4116ee57d.jpg"))
@@ -156,6 +158,8 @@ public class ProductTests {
                 .name("小米9 Pro 5G 骁龙855Plus 30W无线闪充手机")
                 .type(ProductType.PHYSICAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 .collections(Set.of("12236", "12243"))
                 .imageUrl(resolveImageUrl("da769739c0a75afb.jpg"))
                 .imageUrl(resolveImageUrl("753768612ae90b4e.jpg"))
@@ -230,6 +234,8 @@ public class ProductTests {
                 .name("【向往的生活同款】小米10 双模5G 骁龙865 1亿像素8K电影相机 对称式立体声")
                 .type(ProductType.DIGITAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 .collections(Set.of("12230", "12243"))
                 .imageUrl(resolveImageUrl("6626003a708ce8ef.jpg"))
                 .imageUrl(resolveImageUrl("df797544001e5ba3.jpg"))
@@ -342,6 +348,8 @@ public class ProductTests {
         return this.productService.createProduct(null)
                 .toBuilder()
                 .storeId("mi")
+                .categoryId("1")
+                .brandId("1")
                 .name("Redmi K30 Pro 5G先锋 骁龙865旗舰处理器 弹出式超光感全面屏 索尼6400万高清四摄 4700mAh长续航 33W闪充")
                 .type(ProductType.DIGITAL)
                 .status(ProductStatus.ACTIVE)
@@ -474,6 +482,8 @@ public class ProductTests {
                 .name("Redmi 9 5020mAh大电量 1080P全高清大屏 大字体大音量大内存 全场景AI四摄 高性能游戏芯 游戏智能手机 小米 红米")
                 .type(ProductType.DIGITAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 .imageUrl(resolveImageUrl("redmi9_1_0.jpg"))
                 .imageUrl(resolveImageUrl("redmi9_1_1.jpg"))
                 .imageUrl(resolveImageUrl("redmi9_1_2.jpg"))
@@ -592,15 +602,15 @@ public class ProductTests {
     }
 
     private Product newProduct3() {
-
         double price = 0.01;
-
         return this.productService.createProduct(null)
                 .toBuilder()
                 .storeId("oppo")
                 .name("OPPO Reno3 Pro 一体化双模5G 视频双防抖 骁龙765G 7.7mm轻薄机身手机")
                 .type(ProductType.PHYSICAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 .imageUrl(resolveImageUrl("0ea203c122fb3dae.jpg"))
                 .imageUrl(resolveImageUrl("7eac762ed4bcb66f.jpg"))
                 .imageUrl(resolveImageUrl("b72e95f6953e2f3c.jpg"))
@@ -694,6 +704,8 @@ public class ProductTests {
                 .name("vivo NEX3 无界瀑布屏 高通骁龙855Plus 6400万三摄5G全网通手机")
                 .type(ProductType.PHYSICAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 //
                 .imageUrl(resolveImageUrl("3c5048ac3b93dcca.png"))
                 .imageUrl(resolveImageUrl("3c5048ac3b93dccc.jpg"))
@@ -763,13 +775,14 @@ public class ProductTests {
 
     private Product newProduct5() {
         double price = 0.01;
-
         return this.productService.createProduct(null)
                 .toBuilder()
                 .storeId("one plus")
                 .name("一加 OnePlus 7 Pro 2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄手机")
                 .type(ProductType.PHYSICAL)
                 .status(ProductStatus.ACTIVE)
+                .categoryId("1")
+                .brandId("1")
                 //
                 .imageUrl(resolveImageUrl("47fdb0779e7dad8a.jpg"))
                 .imageUrl(resolveImageUrl("5cdd0ce2N5852750d.jpg"))

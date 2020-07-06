@@ -18,7 +18,11 @@ public interface ProductVariant extends Serializable, Position {
 
     String getStoreId();
 
+    void setStoreId(String storeId);
+
     String getProductId();
+
+    void setProductId(String productId);
 
     BigDecimal getWeight();
 

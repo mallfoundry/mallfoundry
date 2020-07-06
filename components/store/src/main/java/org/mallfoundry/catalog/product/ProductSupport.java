@@ -3,8 +3,6 @@ package org.mallfoundry.catalog.product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.inventory.InventoryStatus;
@@ -13,16 +11,11 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.trim;
 
 @Getter
 @Setter
@@ -34,142 +27,27 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void setId(String id) {
-        Assert.isTrue(isBlank(this.getId()), ProductMessages.empty("id"));
-        this.doSetId(trim(id));
-    }
-
-    @Override
-    public void setName(String name) {
-        Assert.isTrue(isNotBlank(name), ProductMessages.notEmpty("name"));
-        this.doSetName(StringUtils.trim(name));
-    }
-
-    @Override
     public void freeShipping() {
         this.setFreeShipping(true);
+        this.setFixedShippingCost(null);
+        this.setShippingRateId(null);
     }
 
-    @Override
-    public void setFreeShipping(boolean freeShipping) {
-        this.doSetFreeShipping(freeShipping);
-        if (this.isFreeShipping()) {
-            this.setFixedShippingCost(null);
-            this.setShippingRateId(null);
-        }
+    private void setMinPrice() {
+        double minPrice = this.getVariants().stream()
+                .map(ProductVariant::getPrice)
+                .mapToDouble(BigDecimal::doubleValue)
+                .min()
+                .orElseThrow();
+        this.setPrice(BigDecimal.valueOf(minPrice));
     }
 
-    @Override
-    public void setInventoryStatus(InventoryStatus status) {
-        Assert.notNull(status, ProductMessages.notEmpty("status"));
-        this.doSetInventoryStatus(status);
-    }
-
-    @Override
-    public void setOptions(List<ProductOption> options) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(options), ProductMessages.notEmpty("options"));
-        this.doSetOptions(options);
-    }
-
-    @Override
-    public void setVariants(List<ProductVariant> variants) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(variants), ProductMessages.notEmpty("variants"));
-        this.doSetVariants(variants);
-    }
-
-    @Override
-    public void setCreatedTime(Date createdTime) {
-        Assert.notNull(createdTime, ProductMessages.notEmpty("createdTime"));
-        this.doSetCreatedTime(createdTime);
-    }
-
-    @Override
-    public void setStoreId(String storeId) {
-        Assert.isTrue(isNotBlank(storeId), ProductMessages.notEmpty("storeId"));
-        this.doSetStoreId(trim(storeId));
-    }
-
-    @Override
-    public void setType(ProductType type) {
-        Assert.notNull(type, ProductMessages.notEmpty("storeId"));
-        this.doSetType(type);
-    }
-
-    @Override
-    public void setStatus(ProductStatus status) {
-        Assert.notNull(status, ProductMessages.notEmpty("status"));
-        this.doSetStatus(status);
-    }
-
-    @Override
-    public void setDescription(String description) {
-        Assert.isTrue(isNotBlank(description), ProductMessages.notEmpty("description"));
-        this.doSetDescription(trim(description));
-    }
-
-    @Override
-    public void setCategoryId(String categoryId) {
-        Assert.isTrue(isNotBlank(categoryId), ProductMessages.notEmpty("categoryId"));
-        this.doSetCategoryId(trim(categoryId));
-    }
-
-    @Override
-    public void setBrandId(String brandId) {
-        Assert.isTrue(isNotBlank(brandId), ProductMessages.notEmpty("brandId"));
-        this.doSetBrandId(trim(brandId));
-    }
-
-    @Override
-    public void setCollections(Set<String> collections) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(collections), ProductMessages.notEmpty("collections"));
-        this.doSetCollections(collections);
-    }
-
-    @Override
-    public void setShippingOrigin(ProductShippingOrigin shippingOrigin) {
-        Assert.notNull(shippingOrigin, ProductMessages.notEmpty("shippingOrigin"));
-        this.doSetShippingOrigin(shippingOrigin);
-    }
-
-    @Override
-    public void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException {
-        if (!this.isFreeShipping()) {
-            Assert.notNull(fixedShippingCost, ProductMessages.notEmpty("fixedShippingCost"));
-            this.setFreeShipping(false);
-        }
-        this.doSetFixedShippingCost(fixedShippingCost);
-    }
-
-    @Override
-    public void setShippingRateId(String shippingRateId) throws ProductException {
-        if (!this.isFreeShipping()) {
-            Assert.isTrue(isNotBlank(shippingRateId), ProductMessages.notEmpty("shippingRateId"));
-            this.setFreeShipping(false);
-        }
-        this.doSetShippingRateId(trim(shippingRateId));
-    }
-
-    @Override
-    public void setAttributes(List<ProductAttribute> attributes) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(attributes), ProductMessages.notEmpty("attributes"));
-        this.doSetAttributes(attributes);
-    }
-
-    @Override
-    public void setTotalSales(long sales) {
-        Assert.isTrue(sales >= 0, ProductMessages.greaterThanX("totalSales ", sales));
-        this.doSetTotalSales(sales);
-    }
-
-    @Override
-    public void setMonthlySales(long sales) {
-        Assert.isTrue(sales >= 0, ProductMessages.greaterThanX("monthlySales ", sales));
-        this.doSetMonthlySales(sales);
-    }
-
-    @Override
-    public void setVersion(long version) {
-        this.doSetVersion(version);
+    private void checkInventoryQuantity() {
+        this.setInventoryQuantity(
+                this.getVariants().stream().mapToInt(ProductVariant::getInventoryQuantity).sum());
+        this.setInventoryStatus(
+                this.getInventoryQuantity() == 0
+                        ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK);
     }
 
     @Override
@@ -189,8 +67,12 @@ public abstract class ProductSupport implements MutableProduct {
 
     @Override
     public void addVariant(ProductVariant variant) {
+        variant.setProductId(this.getId());
+        variant.setStoreId(this.getStoreId());
         this.getVariants().add(variant);
         Positions.sort(this.getVariants());
+        this.checkInventoryQuantity();
+        this.setMinPrice();
     }
 
     @Override
@@ -207,6 +89,8 @@ public abstract class ProductSupport implements MutableProduct {
                 Objects.requireNonNull(this.getVariants(), ProductMessages.notEmpty("variants"))
                         .remove(variant);
         Assert.isTrue(removed, ProductMessages.variantNotFound());
+        this.checkInventoryQuantity();
+        this.setMinPrice();
     }
 
     @Override
@@ -214,6 +98,7 @@ public abstract class ProductSupport implements MutableProduct {
         this.getVariant(variantId)
                 .orElseThrow(() -> new ProductException(ProductMessages.variantNotFound().get()))
                 .adjustInventoryQuantity(quantityDelta);
+        this.checkInventoryQuantity();
     }
 
     @Override
@@ -256,18 +141,6 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void setImageUrls(List<String> imageUrls) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(imageUrls), ProductMessages.notEmpty("imageUrls"));
-        this.doSetImageUrls(imageUrls);
-    }
-
-    @Override
-    public void setVideoUrls(List<String> videoUrls) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(videoUrls), ProductMessages.notEmpty("videoUrls"));
-        this.doSetVideoUrls(videoUrls);
-    }
-
-    @Override
     public void addImageUrl(String imageUrl) {
         this.getImageUrls().add(imageUrl);
     }
@@ -304,75 +177,6 @@ public abstract class ProductSupport implements MutableProduct {
         };
     }
 
-    protected void doSetId(String id) {
-    }
-
-    protected void doSetName(String name) {
-    }
-
-    protected void doSetFreeShipping(boolean freeShipping) {
-    }
-
-    protected void doSetInventoryStatus(InventoryStatus status) {
-    }
-
-    protected void doSetOptions(List<ProductOption> options) {
-    }
-
-    protected void doSetVariants(List<ProductVariant> variants) {
-    }
-
-    protected void doSetCreatedTime(Date createdTime) {
-    }
-
-    protected void doSetStoreId(String storeId) {
-    }
-
-    protected void doSetType(ProductType type) {
-    }
-
-    protected void doSetStatus(ProductStatus status) {
-    }
-
-    protected void doSetDescription(String description) {
-    }
-
-    protected void doSetCategoryId(String categoryId) {
-    }
-
-    protected void doSetBrandId(String categoryId) {
-    }
-
-    protected void doSetCollections(Set<String> collections) {
-    }
-
-    protected void doSetImageUrls(List<String> imageUrls) {
-    }
-
-    protected void doSetVideoUrls(List<String> videoUrls) {
-    }
-
-    protected void doSetShippingOrigin(ProductShippingOrigin shippingOrigin) {
-    }
-
-    protected void doSetFixedShippingCost(BigDecimal fixedShippingCost) {
-    }
-
-    protected void doSetShippingRateId(String shippingRateId) {
-    }
-
-    protected void doSetAttributes(List<ProductAttribute> attributes) {
-    }
-
-    protected void doSetTotalSales(long sales) {
-    }
-
-    protected void doSetMonthlySales(long sales) {
-    }
-
-    protected void doSetVersion(long version) {
-    }
-
     abstract static class BuilderSupport implements Builder {
 
         protected final Product product;
@@ -402,6 +206,18 @@ public abstract class ProductSupport implements MutableProduct {
         @Override
         public Builder status(ProductStatus status) {
             this.product.setStatus(status);
+            return this;
+        }
+
+        @Override
+        public Builder categoryId(String categoryId) {
+            this.product.setCategoryId(categoryId);
+            return this;
+        }
+
+        @Override
+        public Builder brandId(String brandId) {
+            this.product.setBrandId(brandId);
             return this;
         }
 

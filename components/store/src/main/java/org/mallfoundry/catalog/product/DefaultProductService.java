@@ -18,8 +18,6 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
-import org.mallfoundry.plugins.PluginRegistry;
-import org.mallfoundry.plugins.Plugins;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
@@ -30,16 +28,16 @@ import java.util.Optional;
 
 public class DefaultProductService implements ProductService {
 
-    private final List<ProductPlugin> plugins;
+    private final ProductProcessorsInvoker processorsInvoker;
 
     private final ProductRepository productRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public DefaultProductService(PluginRegistry pluginRegistry,
+    public DefaultProductService(ProductProcessorsInvoker processorsInvoker,
                                  ProductRepository productRepository,
                                  ApplicationEventPublisher eventPublisher) {
-        this.plugins = pluginRegistry.getPlugins(ProductPlugin.class);
+        this.processorsInvoker = processorsInvoker;
         this.productRepository = productRepository;
         this.eventPublisher = eventPublisher;
     }
@@ -62,8 +60,8 @@ public class DefaultProductService implements ProductService {
     @Transactional
     @Override
     public Product addProduct(Product product) {
-        Plugins.consumer(this.plugins).preAddProduct(product);
-        var addedProduct = this.productRepository.save(product);
+        var addedProduct = this.productRepository.save(
+                this.processorsInvoker.invokeProcessPreAddProduct(product));
         this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
         return addedProduct;
     }

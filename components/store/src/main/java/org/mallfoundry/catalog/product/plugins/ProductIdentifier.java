@@ -2,7 +2,7 @@ package org.mallfoundry.catalog.product.plugins;
 
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductPlugin;
+import org.mallfoundry.catalog.product.ProductProcessor;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Service
-public class ProductIdentifier implements ProductPlugin {
+public class ProductIdentifier implements ProductProcessor {
 
     /**
      * 商品对象标识值名称。
@@ -41,8 +41,9 @@ public class ProductIdentifier implements ProductPlugin {
     private static final String PRODUCT_OPTION_VALUE_ID_VALUE_NAME = "catalog.product.option.value.id";
 
     @Override
-    public void preAddProduct(Product product) {
+    public Product processPreAddProduct(Product product) {
         this.setProduct(product);
+        return product;
     }
 
     private void setProduct(Product product) {

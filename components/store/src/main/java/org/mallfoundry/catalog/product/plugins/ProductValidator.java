@@ -1,10 +1,9 @@
 package org.mallfoundry.catalog.product.plugins;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.Validate;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductMessages;
-import org.mallfoundry.catalog.product.ProductPlugin;
+import org.mallfoundry.catalog.product.ProductProcessor;
 import org.mallfoundry.catalog.product.ProductVariant;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -14,11 +13,12 @@ import java.util.Objects;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
-public class ProductValidator implements ProductPlugin {
+public class ProductValidator implements ProductProcessor {
 
     @Override
-    public void preAddProduct(Product product) {
+    public Product processPreAddProduct(Product product) {
         this.validate(product);
+        return product;
     }
 
     private void validate(Product product) {
@@ -34,8 +34,8 @@ public class ProductValidator implements ProductPlugin {
     }
 
     private void validateVariants(Product product) {
-        Validate.notEmpty(product.getVariants(), ProductMessages.notEmptyMessage("variants"))
-                .stream()
+        Assert.notEmpty(product.getVariants(), ProductMessages.notEmpty("variants"));
+        product.getVariants().stream()
                 .peek(this::validateVariant)
                 // 校验商品变体的规格选项集
                 .forEach(variant -> variant.getOptionSelections()

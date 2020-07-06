@@ -1,5 +1,6 @@
 package org.mallfoundry.catalog.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -49,6 +50,11 @@ public abstract class ProductMessages {
                         String.format(DEFAULT_EMPTY_MESSAGE_FORMAT, name));
     }
 
+    public static Supplier<String> greaterThanX(String name, BigDecimal number) {
+        return () ->
+                message(FIELD_GREATER_THAN_X_MESSAGE_CODE_KEY, List.of(resolveFieldName(name), number),
+                        String.format(DEFAULT_GREATER_THAN_X_MESSAGE_FORMAT, name, number));
+    }
 
     public static Supplier<String> greaterThanX(String name, long number) {
         return () ->
