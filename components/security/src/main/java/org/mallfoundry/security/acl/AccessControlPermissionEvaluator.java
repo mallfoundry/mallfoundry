@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,11 +32,8 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Object target, Object permission) {
-        Resource resource = this.manager.getResource(target).orElse(null);
-        if (Objects.isNull(resource)) {
-            return false;
-        }
-        return this.hasPermission(authentication, resource, permission);
+        var resource = this.manager.createResource(target);
+        return this.hasPermission(authentication, resource.getIdentifier(), resource.getType(), permission);
     }
 
     @Override

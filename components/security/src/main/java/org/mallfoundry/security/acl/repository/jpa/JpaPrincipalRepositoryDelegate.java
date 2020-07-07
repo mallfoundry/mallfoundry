@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface JpaPrincipalRepositoryDelegate extends JpaRepository<JpaPrincipal, String> {
+
     Optional<Principal> findByTypeAndName(String type, String name);
 }

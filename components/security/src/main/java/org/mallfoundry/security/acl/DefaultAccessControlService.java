@@ -44,14 +44,21 @@ public class DefaultAccessControlService implements AccessControlManager {
         return principal;
     }
 
-    @Override
-    public Principal addPrincipal(Principal principal) {
+    private Principal addNewPrincipal(Principal principal) {
         Assert.isInstanceOf(MutablePrincipal.class, principal);
         var mutablePrincipal = (MutablePrincipal) principal;
         if (Objects.isNull(mutablePrincipal.getId())) {
             mutablePrincipal.setId(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME));
         }
         return this.principalRepository.save(principal);
+    }
+
+    @Override
+    public Principal addPrincipal(Principal principal) {
+        return this.principalRepository
+                .findByTypeAndName(principal.getType(), principal.getName())
+                .orElseGet(() -> addNewPrincipal(principal));
+
     }
 
     @Override
@@ -78,9 +85,8 @@ public class DefaultAccessControlService implements AccessControlManager {
         return this.resourceRepository.create(null, type, String.valueOf(identifier));
     }
 
-    @Override
-    public Resource addResource(Object resource) {
-        var mutableResource = (MutableResource) this.createResource(resource);
+    private MutableResource addNewResource(Resource resource) {
+        var mutableResource = (MutableResource) resource;
         if (Objects.isNull(mutableResource.getId())) {
             mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
         }
@@ -89,12 +95,15 @@ public class DefaultAccessControlService implements AccessControlManager {
 
     @Transactional
     @Override
+    public Resource addResource(Object resource) {
+        return this.addResource(this.createResource(resource));
+    }
+
+    @Transactional
+    @Override
     public Resource addResource(Resource resource) {
-        var mutableResource = (MutableResource) resource;
-        if (Objects.isNull(mutableResource.getId())) {
-            mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
-        }
-        return this.resourceRepository.save(mutableResource);
+        return this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier())
+                .orElseGet(() -> this.addNewResource(resource));
     }
 
     @Transactional

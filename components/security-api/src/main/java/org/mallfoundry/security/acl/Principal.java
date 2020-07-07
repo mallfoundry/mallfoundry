@@ -5,7 +5,9 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.io.Serializable;
 
 /**
- * 访问控制列表中的 {@code Principal} 代表。
+ * 访问控制列表中的主体对象，主体对象可以是用户也可以是角色。
+ *
+ * @author Zhi Tang
  */
 public interface Principal extends Serializable {
 

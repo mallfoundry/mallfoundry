@@ -6,9 +6,8 @@ import java.util.Set;
 
 /**
  * 访问控制对象适用于访问控制列表({@code ACL})，提供了细粒度的鉴权功能。
- * 访问控制对象是以资源({@link Resource})对象为中心，
+ * 访问控制对象是以资源({@link Resource})对象为中心。
  * grant read,write on resource to principal{user|authority}
- * grant read,write on resource to role
  *
  * @author Zhi Tang
  */
