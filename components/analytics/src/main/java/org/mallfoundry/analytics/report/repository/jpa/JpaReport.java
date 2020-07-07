@@ -1,11 +1,11 @@
-package org.mallfoundry.analytics.repository.jpa;
+package org.mallfoundry.analytics.report.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.analytics.Report;
-import org.mallfoundry.analytics.ReportSupport;
-import org.mallfoundry.analytics.ReportStatementType;
+import org.mallfoundry.analytics.report.Report;
+import org.mallfoundry.analytics.report.ReportSupport;
+import org.mallfoundry.analytics.report.ReportStatementType;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;

@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics;
+package org.mallfoundry.analytics.report;
 
 import org.mallfoundry.analytics.schema.ObjectTypeManager;
 import org.springframework.jdbc.core.RowMapper;

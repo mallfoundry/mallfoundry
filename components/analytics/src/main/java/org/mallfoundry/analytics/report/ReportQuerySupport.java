@@ -1,6 +1,7 @@
-package org.mallfoundry.analytics;
+package org.mallfoundry.analytics.report;
 
 import org.apache.commons.collections4.MapUtils;
+import org.mallfoundry.analytics.report.ReportQuery;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 

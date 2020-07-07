@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics.repository.jpa;
+package org.mallfoundry.analytics.report.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

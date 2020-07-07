@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics;
+package org.mallfoundry.analytics.report;
 
 public abstract class ReportSupport implements Report {
 

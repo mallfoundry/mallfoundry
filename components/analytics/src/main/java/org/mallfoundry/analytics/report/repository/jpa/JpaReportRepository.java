@@ -1,7 +1,7 @@
-package org.mallfoundry.analytics.repository.jpa;
+package org.mallfoundry.analytics.report.repository.jpa;
 
-import org.mallfoundry.analytics.Report;
-import org.mallfoundry.analytics.ReportRepository;
+import org.mallfoundry.analytics.report.Report;
+import org.mallfoundry.analytics.report.ReportRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
