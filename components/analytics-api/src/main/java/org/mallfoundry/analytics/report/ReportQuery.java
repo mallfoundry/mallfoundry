@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics;
+package org.mallfoundry.analytics.report;
 
 import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
