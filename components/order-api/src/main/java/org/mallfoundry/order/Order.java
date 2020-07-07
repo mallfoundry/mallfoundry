@@ -30,6 +30,8 @@ public interface Order {
 
     void setStoreName(String name);
 
+    OrderStatus getStatus();
+
     String getStaffNotes();
 
     void setStaffNotes(String staffNotes);
