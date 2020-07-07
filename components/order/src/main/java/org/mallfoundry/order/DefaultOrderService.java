@@ -21,6 +21,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public class DefaultOrderService implements OrderService {
 
     static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
 
-    private final List<OrderPlugin> plugins;
+    private final OrderProcessorsInvoker processorsInvoker;
 
     private final OrderRepository orderRepository;
 
@@ -48,14 +49,18 @@ public class DefaultOrderService implements OrderService {
 
     private final CarrierService carrierService;
 
-    public DefaultOrderService(List<OrderPlugin> plugins,
+    private final ApplicationEventPublisher eventPublisher;
+
+    public DefaultOrderService(OrderProcessorsInvoker processorsInvoker,
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
-                               CarrierService carrierService) {
-        this.plugins = plugins;
+                               CarrierService carrierService,
+                               ApplicationEventPublisher eventPublisher) {
+        this.processorsInvoker = processorsInvoker;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -83,7 +88,9 @@ public class DefaultOrderService implements OrderService {
                 .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
                 .peek(Order::place)
                 .collect(Collectors.toList());
-        return CastUtils.cast(this.orderRepository.saveAll(placingOrders));
+        List<Order> placedOrders = CastUtils.cast(this.orderRepository.saveAll(placingOrders));
+        this.eventPublisher.publishEvent(new ImmutableOrdersPlacedEvent(placedOrders));
+        return placedOrders;
     }
 
     @Override
@@ -124,14 +131,9 @@ public class DefaultOrderService implements OrderService {
         order.pickup();
     }
 
-    private Order processPreGetOrder(Order order) {
-        this.plugins.forEach(plugin -> plugin.preGetOrder(order));
-        return order;
-    }
-
     @Override
     public Optional<Order> getOrder(String orderId) {
-        return this.orderRepository.findById(orderId).map(this::processPreGetOrder);
+        return this.orderRepository.findById(orderId).map(this.processorsInvoker::invokeProcessPostGetOrder);
     }
 
     @Override
