@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics;
+package org.mallfoundry.analytics.schema;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.analytics.schema.ObjectTypeManager;
