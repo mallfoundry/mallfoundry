@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.analytics.stream.product.repository.mybatis.MybatisProductQuantityFactRepository">
+    <sql id="insertValues">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{product.storeId},
+            #{product.brandId},
+            #{product.categoryId},
+            #{product.statusId},
+            #{product.quantity},
+        </trim>
+    </sql>
+
+    <insert id="saveAll">
+        insert into mf_dw_product_quantity_fact(store_id_, brand_id_, category_id_, status_id_, quantity_)
+        values
+        <foreach collection="products" item="product" separator=",">
+            <include refid="insertValues"/>
+        </foreach>
+    </insert>
+
+    <delete id="deleteByStoreId">
+        delete
+        from mf_dw_product_quantity_fact
+        where store_id_ = #{storeId}
+    </delete>
+</mapper>

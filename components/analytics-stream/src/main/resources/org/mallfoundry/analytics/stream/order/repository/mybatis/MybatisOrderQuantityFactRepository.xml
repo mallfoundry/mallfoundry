@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.analytics.stream.order.repository.mybatis.MybatisOrderQuantityFactRepository">
+
+    <delete id="deleteAll">
+        delete
+        from mf_dw_order_quantity_fact
+        where
+        <foreach collection="quantities" item="quantity" open="(" close=")" separator="or">
+            store_id_ = #{quantity.storeId}
+            and customer_id_ = #{quantity.customerId}
+            and product_id_ = #{quantity.productId}
+            and variant_id_ = #{quantity.variantId}
+        </foreach>
+    </delete>
+
+    <sql id="insertValues">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{quantity.storeId},
+            #{quantity.customerId},
+            #{quantity.productId},
+            #{quantity.variantId},
+            #{quantity.statusId},
+            #{quantity.quantity},
+        </trim>
+    </sql>
+
+    <insert id="saveAll">
+        insert into mf_dw_order_quantity_fact(
+        store_id_, customer_id_, product_id_, variant_id_, status_id_, quantity_)
+        values
+        <foreach collection="quantities" item="quantity" separator=",">
+            <include refid="insertValues"/>
+        </foreach>
+    </insert>
+</mapper>

@@ -1,11 +1,11 @@
 package org.mallfoundry.analytics.stream.order;
 
-import org.mallfoundry.analytics.stream.models.DateDimension;
-import org.mallfoundry.analytics.stream.models.OrderItemFact;
-import org.mallfoundry.analytics.stream.models.OrderStatusDimension;
+import org.mallfoundry.analytics.models.DateDimension;
+import org.mallfoundry.analytics.models.OrderItemFact;
+import org.mallfoundry.analytics.models.OrderStatusDimension;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
-import org.mallfoundry.order.OrdersPlacedEvent;
+import org.mallfoundry.order.OrderPlacedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,18 +53,14 @@ public class OrderEventStreams {
     }
 
     @Transactional
-    @EventListener(OrdersPlacedEvent.class)
-    public void handleOrderPlacedEvent(OrdersPlacedEvent event) {
-        var items = event.getOrders()
-                .stream()
-                .map(this::createFacts)
-                .flatMap(List::stream)
-                .collect(Collectors.toUnmodifiableList());
-        this.countOrderItemFacts(
-                this.orderItemFactRepository.saveAll(items));
+    @EventListener(OrderPlacedEvent.class)
+    public void handleOrderPlacedEvent(OrderPlacedEvent event) {
+        var items = this.createFacts(event.getOrder());
+        this.countOrderItemFacts(this.orderItemFactRepository.saveAll(items));
     }
 
     private void countOrderItemFacts(List<OrderItemFact> items) {
+        this.orderQuantityFactRepository.deleteAll(items);
         this.orderQuantityFactRepository.saveAll(
                 this.orderItemFactRepository.countAll(items));
     }

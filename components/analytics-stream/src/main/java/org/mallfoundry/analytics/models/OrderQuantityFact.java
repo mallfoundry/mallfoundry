@@ -1,38 +1,38 @@
-package org.mallfoundry.analytics.stream.order.repository.jpa;
+package org.mallfoundry.analytics.models;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaOrderQuantityFactId implements Serializable {
+public class OrderQuantityFact {
     private String storeId;
-    private String dateId;
+    private String customerId;
     private String productId;
     private String variantId;
-    private String customerId;
+    private String statusId;
+    private int quantity;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaOrderQuantityFactId)) {
+        if (!(object instanceof OrderQuantityFact)) {
             return false;
         }
-        JpaOrderQuantityFactId that = (JpaOrderQuantityFactId) object;
+        OrderQuantityFact that = (OrderQuantityFact) object;
         return Objects.equals(storeId, that.storeId)
-                && Objects.equals(dateId, that.dateId)
                 && Objects.equals(productId, that.productId)
                 && Objects.equals(variantId, that.variantId)
-                && Objects.equals(customerId, that.customerId);
+                && Objects.equals(customerId, that.customerId)
+                && Objects.equals(statusId, that.statusId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(storeId, dateId, productId, variantId, customerId);
+        return Objects.hash(storeId, productId, variantId, customerId, statusId);
     }
 }

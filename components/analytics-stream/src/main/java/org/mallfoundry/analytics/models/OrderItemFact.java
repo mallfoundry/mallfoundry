@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics.stream.models;
+package org.mallfoundry.analytics.models;
 
 import lombok.Getter;
 import lombok.Setter;

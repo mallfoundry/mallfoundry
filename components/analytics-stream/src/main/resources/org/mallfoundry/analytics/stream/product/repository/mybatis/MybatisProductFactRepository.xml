@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.analytics.stream.product.repository.mybatis.MybatisProductFactRepository">
+    <resultMap id="productFactResultMap" type="org.mallfoundry.analytics.models.ProductFact">
+        <id property="id" column="id_"/>
+        <result property="storeId" column="store_id_"/>
+        <result property="brandId" column="brand_id_"/>
+        <result property="categoryId" column="category_id_"/>
+        <result property="statusId" column="status_id_"/>
+    </resultMap>
+
+    <resultMap id="productQuantityFactResultMap" type="org.mallfoundry.analytics.models.ProductQuantityFact">
+        <id property="id" column="id_"/>
+        <result property="storeId" column="store_id_"/>
+        <result property="brandId" column="brand_id_"/>
+        <result property="categoryId" column="category_id_"/>
+        <result property="statusId" column="status_id_"/>
+        <result property="quantity" column="quantity_"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into mf_dw_product_fact(id_, store_id_, brand_id_, category_id_, status_id_)
+        values (#{product.id}, #{product.storeId}, #{product.brandId}, #{product.categoryId}, #{product.statusId})
+    </insert>
+
+    <update id="update">
+        update mf_dw_product_fact
+        set brand_id_ = #{product.brandId},
+        category_id_ = #{product.categoryId},
+        status_id_= #{product.statusId}
+        where id_ = #{product.id}
+        and store_id_ = #{product.storeId}
+    </update>
+
+    <select id="selectById" resultMap="productFactResultMap">
+        select id_,
+        store_id_,
+        brand_id_,
+        category_id_,
+        status_id_
+        from mf_dw_product_fact
+        where id_ = #{id}
+    </select>
+
+    <select id="countAll" resultMap="productQuantityFactResultMap">
+        select store_id_,
+        brand_id_,
+        category_id_,
+        status_id_,
+        count(id_) as quantity_
+        from mf_dw_product_fact
+        where store_id_ = #{product.storeId}
+        group by store_id_, brand_id_, category_id_, status_id_
+    </select>
+</mapper>

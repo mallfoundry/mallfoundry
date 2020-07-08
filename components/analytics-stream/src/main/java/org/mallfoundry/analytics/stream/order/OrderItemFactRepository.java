@@ -1,7 +1,7 @@
 package org.mallfoundry.analytics.stream.order;
 
-import org.mallfoundry.analytics.stream.models.OrderItemFact;
-import org.mallfoundry.analytics.stream.models.OrderQuantityFact;
+import org.mallfoundry.analytics.models.OrderItemFact;
+import org.mallfoundry.analytics.models.OrderQuantityFact;
 
 import java.util.Collection;
 import java.util.List;

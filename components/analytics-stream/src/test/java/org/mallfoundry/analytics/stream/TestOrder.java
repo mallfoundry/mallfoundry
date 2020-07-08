@@ -37,11 +37,13 @@ public class TestOrder implements Order {
     private int paymentExpires = 60 * 1000;
     private String cancelReason;
     private Date createdTime;
+    private Date placedTime;
     private Date paidTime;
     private Date shippedTime;
+    private Date fulfilledTime;
+    private Date signedTime;
+    private Date receivedTime;
     private Date cancelledTime;
-    private Date pickedTime;
-    private Date pickupTime;
 
     @Override
     public OrderItem createItem(String itemId) {
@@ -149,17 +151,23 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public void fulfil() throws OrderException {
+
+    }
+
+    @Override
     public void cancel(String reason) throws OrderException {
 
     }
 
     @Override
-    public void pack() throws OrderException {
+    public void sign() throws OrderException {
 
     }
 
     @Override
-    public void pickup() throws OrderException {
+    public void receipt() throws OrderException {
 
     }
+
 }

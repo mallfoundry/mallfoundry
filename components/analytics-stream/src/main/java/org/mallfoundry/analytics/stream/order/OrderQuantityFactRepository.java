@@ -1,10 +1,14 @@
 package org.mallfoundry.analytics.stream.order;
 
-import org.mallfoundry.analytics.stream.models.OrderQuantityFact;
+import org.mallfoundry.analytics.models.OrderItemFact;
+import org.mallfoundry.analytics.models.OrderQuantityFact;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface OrderQuantityFactRepository {
-    List<OrderQuantityFact> saveAll(Collection<OrderQuantityFact> facts);
+
+    void deleteAll(List<OrderItemFact> facts);
+
+    void saveAll(Collection<OrderQuantityFact> facts);
 }
