@@ -21,6 +21,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ public class DefaultOrderService implements OrderService {
 
     private final ApplicationEventPublisher eventPublisher;
 
+    /*@Autowired(required = false)*/
     public DefaultOrderService(OrderProcessorsInvoker processorsInvoker,
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
@@ -79,6 +81,7 @@ public class DefaultOrderService implements OrderService {
         return this.placeOrders(List.of(order));
     }
 
+
     @Transactional
     @Override
     public List<Order> placeOrders(List<Order> orders) {
@@ -89,7 +92,8 @@ public class DefaultOrderService implements OrderService {
                 .peek(Order::place)
                 .collect(Collectors.toList());
         List<Order> placedOrders = CastUtils.cast(this.orderRepository.saveAll(placingOrders));
-        this.eventPublisher.publishEvent(new ImmutableOrdersPlacedEvent(placedOrders));
+        placedOrders.forEach(order ->
+                this.eventPublisher.publishEvent(new ImmutableOrderPlacedEvent(order)));
         return placedOrders;
     }
 
@@ -107,7 +111,9 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public void payOrder(String orderId, PaymentDetails details) {
-        this.orderRepository.findById(orderId).orElseThrow().pay(details);
+        var order = this.orderRepository.findById(orderId).orElseThrow();
+        order.pay(details);
+        this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
     }
 
     @Transactional
@@ -117,7 +123,7 @@ public class DefaultOrderService implements OrderService {
         order.cancel(reason);
     }
 
-    @Transactional
+/*    @Transactional
     @Override
     public void packOrder(String orderId) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
@@ -129,7 +135,7 @@ public class DefaultOrderService implements OrderService {
     public void pickupOrder(String orderId) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         order.pickup();
-    }
+    }*/
 
     @Override
     public Optional<Order> getOrder(String orderId) {

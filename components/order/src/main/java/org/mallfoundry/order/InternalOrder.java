@@ -16,7 +16,6 @@
 
 package org.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -52,12 +51,15 @@ import java.util.stream.Collectors;
 
 import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
+import static org.mallfoundry.order.OrderStatus.AWAITING_PICKUP;
 import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
 import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
+import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
+import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
 
 @Getter
@@ -130,32 +132,29 @@ public class InternalOrder implements Order {
     @JsonProperty("cancel_reason")
     private String cancelReason;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "created_time_")
     private Date createdTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty(value = "paid_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "placed_time_")
+    private Date placedTime;
+
     @Column(name = "paid_time_")
     private Date paidTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty(value = "shipped_time", access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "fulfilled_time_")
+    private Date fulfilledTime;
+
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "signed_time_")
+    private Date signedTime;
+
+    @Column(name = "received_time_")
+    private Date receivedTime;
+
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "picked_time_")
-    private Date pickedTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "pickup_time_")
-    private Date pickupTime;
 
     public InternalOrder(String id) {
         this.setId(id);
@@ -259,7 +258,8 @@ public class InternalOrder implements Order {
 
     @Override
     public void addRefund(Refund refund) {
-
+        this.setStatus(PARTIALLY_REFUNDED);
+        this.setStatus(REFUNDED);
     }
 
     @Transient
@@ -347,6 +347,12 @@ public class InternalOrder implements Order {
     }
 
     @Override
+    public void fulfil() {
+        this.setStatus(AWAITING_SHIPMENT);
+        this.setFulfilledTime(new Date());
+    }
+
+    @Override
     public void cancel(String reason) throws OrderException {
         var status = this.getStatus();
         if (!Objects.equals(AWAITING_PAYMENT, status)
@@ -359,14 +365,14 @@ public class InternalOrder implements Order {
     }
 
     @Override
-    public void pack() throws OrderException {
-        this.setStatus(AWAITING_SHIPMENT);
-        this.setPickedTime(new Date());
+    public void sign() throws OrderException {
+        this.setStatus(AWAITING_PICKUP);
+        this.setSignedTime(new Date());
     }
 
     @Override
-    public void pickup() throws OrderException {
-        this.setPickupTime(new Date());
+    public void receipt() throws OrderException {
+        this.setReceivedTime(new Date());
         this.setStatus(COMPLETED);
     }
 }

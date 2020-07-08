@@ -32,7 +32,7 @@ public enum OrderStatus {
     PARTIALLY_REFUNDED /* 部分已退款 */,
     REFUNDED /* 已退款 */,
 
-    VERIFICATION_REQUIRED /* 需要人工验证 */,
+    /*MANUAL_VERIFICATION_REQUIRED *//* 人工已验证 *//*,*/
     DISPUTED /* 有争议的 */,
     CANCELLED /* 已取消 */,
     COMPLETED /* 完成 */,

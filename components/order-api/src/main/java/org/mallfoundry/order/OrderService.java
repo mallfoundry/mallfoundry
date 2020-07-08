@@ -29,9 +29,9 @@ public interface OrderService {
 
     void cancelOrder(String orderId, String reason);
 
-    void packOrder(String orderId);
+/*    void packOrder(String orderId);
 
-    void pickupOrder(String orderId);
+    void pickupOrder(String orderId);*/
 
     Shipment addOrderShipment(String orderId, Shipment shipment);
 

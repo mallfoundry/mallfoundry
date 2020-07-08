@@ -88,17 +88,30 @@ public interface Order {
 
     String getCancelReason();
 
+    /**
+     * 订单对象创建时间。
+     *
+     * @return
+     */
     Date getCreatedTime();
+
+    Date getPlacedTime();
 
     Date getPaidTime();
 
+    Date getFulfilledTime();
+
     Date getShippedTime();
+
+    Date getSignedTime();
+
+    Date getReceivedTime();
 
     Date getCancelledTime();
 
-    Date getPickedTime();
+    /*  String getSigner();*/
 
-    Date getPickupTime();
+    /*    String getSignMessage();*/
 
     void discounts(Map<String, BigDecimal> amounts);
 
@@ -108,11 +121,13 @@ public interface Order {
 
     void pay(PaymentDetails details) throws OrderException;
 
+    void fulfil() throws OrderException;
+
     void cancel(String reason) throws OrderException;
 
-    void pack() throws OrderException;
+    void sign() throws OrderException;
 
-    void pickup() throws OrderException;
+    void receipt() throws OrderException;
 
     default Builder toBuilder() {
         return new BuilderSupport(this);
