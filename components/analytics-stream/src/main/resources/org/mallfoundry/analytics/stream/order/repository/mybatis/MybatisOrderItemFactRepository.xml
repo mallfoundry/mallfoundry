@@ -66,14 +66,37 @@
         </trim>
     </sql>
 
-    <insert id="insertAll">
+    <insert id="insert">
         insert into mf_dw_order_item_fact
         (<include refid="columns"/>)
         values
-        <foreach collection="items" item="item" separator=",">
-            <include refid="insertValues"/>
-        </foreach>
+        <include refid="insertValues"/>
     </insert>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            order_id_ = #{item.orderId},
+            status_id_ = #{item.statusId},
+            customer_id_ = #{item.customerId},
+            store_id_ = #{item.storeId},
+            product_id_ = #{item.productId},
+            variant_id_ = #{item.variantId},
+            created_date_id_ = #{item.createdDateId},
+            quantity_ = #{item.quantity},
+            price_ = #{item.price},
+            shipping_cost_ = #{item.shippingCost},
+            subtotal_amount_ = #{item.subtotalAmount},
+            total_amount_ = #{item.totalAmount},
+        </trim>
+    </sql>
+
+    <update id="update">
+        update mf_dw_order_item_fact
+        <set>
+            <include refid="updateValues"/>
+        </set>
+        where id_ = #{item.id}
+    </update>
 
     <select id="findAllById" resultMap="itemResultMap">
         select

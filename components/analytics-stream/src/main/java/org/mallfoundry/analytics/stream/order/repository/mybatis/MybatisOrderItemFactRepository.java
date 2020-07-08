@@ -7,22 +7,29 @@ import org.mallfoundry.analytics.models.OrderQuantityFact;
 import org.mallfoundry.analytics.stream.order.OrderItemFactRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper
 @Repository
 public interface MybatisOrderItemFactRepository extends OrderItemFactRepository {
 
-    void insertAll(@Param("items") Collection<OrderItemFact> items);
+    void insert(@Param("item") OrderItemFact item);
+
+    int update(@Param("item") OrderItemFact item);
 
     List<OrderItemFact> findAllById(@Param("ids") Iterable<String> ids);
 
     @Override
     default List<OrderItemFact> saveAll(Collection<OrderItemFact> items) {
-        this.insertAll(items);
-        var ids = items.stream().map(OrderItemFact::getId).collect(Collectors.toUnmodifiableList());
+        List<String> ids = new ArrayList<>();
+        for (var item : items) {
+            if (this.update(item) == 0) {
+                this.insert(item);
+            }
+            ids.add(item.getId());
+        }
         return this.findAllById(ids);
     }
 
