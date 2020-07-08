@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DefaultStoreTotalOrderQuantity implements StoreTotalOrderQuantity {
-    private String storeId;
     private int pendingQuantity;
     private int awaitingPaymentQuantity;
     private int awaitingFulfillmentQuantity;

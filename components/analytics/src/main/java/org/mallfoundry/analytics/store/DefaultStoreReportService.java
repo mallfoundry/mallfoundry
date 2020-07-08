@@ -9,12 +9,21 @@ public class DefaultStoreReportService implements StoreReportService {
 
     private final StoreTotalOrderQuantityRepository storeTotalOrderQuantityRepository;
 
-    public DefaultStoreReportService(StoreTotalOrderQuantityRepository storeTotalOrderQuantityRepository) {
+    private final StoreTotalProductQuantityRepository storeTotalProductQuantityRepository;
+
+    public DefaultStoreReportService(StoreTotalOrderQuantityRepository storeTotalOrderQuantityRepository,
+                                     StoreTotalProductQuantityRepository storeTotalProductQuantityRepository) {
         this.storeTotalOrderQuantityRepository = storeTotalOrderQuantityRepository;
+        this.storeTotalProductQuantityRepository = storeTotalProductQuantityRepository;
     }
 
     @Override
     public Optional<StoreTotalOrderQuantity> countTotalOrderQuantity(String storeId) {
         return this.storeTotalOrderQuantityRepository.findByStoreId(storeId);
+    }
+
+    @Override
+    public Optional<StoreTotalProductQuantity> countTotalProductQuantity(String storeId) {
+        return this.storeTotalProductQuantityRepository.findByStoreId(storeId);
     }
 }

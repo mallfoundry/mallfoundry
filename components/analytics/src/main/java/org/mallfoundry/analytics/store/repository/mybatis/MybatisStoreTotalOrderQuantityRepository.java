@@ -1,22 +1,21 @@
 package org.mallfoundry.analytics.store.repository.mybatis;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.mallfoundry.analytics.store.StoreTotalOrderQuantity;
 import org.mallfoundry.analytics.store.StoreTotalOrderQuantityRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Mapper
 @Repository
-public class MybatisStoreTotalOrderQuantityRepository implements StoreTotalOrderQuantityRepository {
+public interface MybatisStoreTotalOrderQuantityRepository extends StoreTotalOrderQuantityRepository {
 
-    private final StoreTotalOrderQuantityMapper mapper;
-
-    public MybatisStoreTotalOrderQuantityRepository(StoreTotalOrderQuantityMapper mapper) {
-        this.mapper = mapper;
-    }
+    StoreTotalOrderQuantity selectByStoreId(@Param("storeId") String storeId);
 
     @Override
-    public Optional<StoreTotalOrderQuantity> findByStoreId(String storeId) {
-        return Optional.ofNullable(this.mapper.selectByStoreId(storeId));
+    default Optional<StoreTotalOrderQuantity> findByStoreId(String storeId) {
+        return Optional.ofNullable(this.selectByStoreId(storeId));
     }
 }

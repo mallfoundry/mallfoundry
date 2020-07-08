@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.analytics.store.repository.mybatis.MybatisStoreTotalProductQuantityRepository">
+    <resultMap id="quantityResultMap" type="org.mallfoundry.analytics.store.DefaultStoreTotalProductQuantity">
+        <result property="activeQuantity" column="active_quantity_"/>
+        <result property="archivedQuantity" column="archived_quantity_"/>
+        <result property="pendingQuantity" column="pending_quantity_"/>
+        <result property="disapprovedQuantity" column="disapproved_quantity_"/>
+    </resultMap>
+
+    <select id="selectByStoreId" resultMap="quantityResultMap">
+        select store_id_,
+        sum(active_quantity_) as active_quantity_,
+        sum(archived_quantity_) as archived_quantity_,
+        sum(pending_quantity_) as pending_quantity_,
+        sum(disapproved_quantity_) as disapproved_quantity_
+        from (select store_id_,
+        quantity_ as active_quantity_,
+        0 as archived_quantity_,
+        0 as pending_quantity_,
+        0 as disapproved_quantity_
+        from mf_dw_product_quantity_fact
+        where status_id_ = 'active'
+        and store_id_ = #{storeId}
+
+        union all
+
+        select store_id_,
+        0 as active_quantity_,
+        quantity_ as archived_quantity_,
+        0 as pending_quantity_,
+        0 as disapproved_quantity_
+        from mf_dw_product_quantity_fact
+        where status_id_ = 'archived'
+        and store_id_ = #{storeId}
+
+        union all
+
+        select store_id_,
+        0 as active_quantity_,
+        0 as archived_quantity_,
+        quantity_ as pending_quantity_,
+        0 as disapproved_quantity_
+        from mf_dw_product_quantity_fact
+        where status_id_ = 'pending'
+        and store_id_ = #{storeId}
+
+        union all
+
+        select store_id_,
+        0 as active_quantity_,
+        0 as archived_quantity_,
+        0 as pending_quantity_,
+        quantity_ as disapproved_quantity_
+        from mf_dw_product_quantity_fact
+        where status_id_ = 'disapproved'
+        and store_id_ = #{storeId}) quantity
+        group by store_id_
+    </select>
+
+</mapper>
