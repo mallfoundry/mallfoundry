@@ -2,8 +2,6 @@ package org.mallfoundry.analytics.store;
 
 public interface StoreTotalOrderQuantity {
 
-    String getStoreId();
-
     int getPendingQuantity();
 
     int getAwaitingPaymentQuantity();
