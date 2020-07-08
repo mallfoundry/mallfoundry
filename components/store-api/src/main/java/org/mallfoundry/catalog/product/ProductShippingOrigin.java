@@ -30,6 +30,12 @@ public interface ProductShippingOrigin {
 
     Builder toBuilder();
 
+    @Override
+    int hashCode();
+
+    @Override
+    boolean equals(Object o);
+
     interface Builder extends ObjectBuilder<ProductShippingOrigin> {
 
         Builder provinceId(String provinceId);

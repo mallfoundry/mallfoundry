@@ -131,9 +131,6 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    @Column(name = "version_")
-    private long version;
-
     public JpaProduct(String id) {
         super(id);
     }

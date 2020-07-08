@@ -20,7 +20,6 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.util.CastUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -66,6 +65,17 @@ public class DefaultProductService implements ProductService {
         return addedProduct;
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Product> getProduct(String id) {
+        return this.productRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public SliceList<Product> getProducts(ProductQuery query) {
+        return this.productRepository.findAll(query);
+    }
+
     @Transactional
     @Override
     public void updateProduct(Product product) {
@@ -87,16 +97,4 @@ public class DefaultProductService implements ProductService {
     public void adjustInventories(List<InventoryAdjustment> adjustments) {
         adjustments.forEach(this::adjustInventory);
     }
-
-    @Transactional(readOnly = true)
-    public Optional<Product> getProduct(String id) {
-        return CastUtils.cast(this.productRepository.findById(id));
-    }
-
-    @Override
-    public SliceList<Product> getProducts(ProductQuery query) {
-        return this.productRepository.findAll(query);
-    }
-
-
 }

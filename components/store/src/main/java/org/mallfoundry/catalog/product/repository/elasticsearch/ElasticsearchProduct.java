@@ -85,8 +85,6 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private Date createdTime;
 
-    private long version;
-
     public ElasticsearchProduct(String id) {
         super(id);
     }

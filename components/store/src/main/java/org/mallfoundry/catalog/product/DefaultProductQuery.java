@@ -30,6 +30,8 @@ import java.util.function.Supplier;
 @Setter
 public class DefaultProductQuery extends QuerySupport implements ProductQuery {
 
+    private Set<String> fields;
+
     private Set<String> ids;
 
     private String name;

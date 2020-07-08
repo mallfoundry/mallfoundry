@@ -10,6 +10,10 @@ import java.util.function.Supplier;
 
 public interface ProductQuery extends Query {
 
+    Set<String> getFields();
+
+    void setFields(Set<String> fields);
+
     Set<String> getIds();
 
     void setIds(Set<String> ids);

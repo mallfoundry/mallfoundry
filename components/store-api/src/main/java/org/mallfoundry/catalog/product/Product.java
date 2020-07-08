@@ -247,9 +247,9 @@ public interface Product extends Serializable {
 
     Date getCreatedTime();
 
-    void create() throws ProductException;
+    /*    Date getReleasedTime();*/
 
-    long getVersion();
+    void create() throws ProductException;
 
     Builder toBuilder();
 
