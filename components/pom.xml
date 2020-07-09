@@ -31,7 +31,7 @@
 
         <module>analytics</module>
         <module>analytics-stream</module>
-        <module>analytics-data-warehouse</module>
+        <module>data-warehouse</module>
         <module>app</module>
         <module>commons</module>
         <module>core</module>

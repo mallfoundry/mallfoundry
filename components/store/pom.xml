@@ -109,6 +109,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-analytics-stream</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-security</artifactId>
             <scope>test</scope>
         </dependency>

@@ -169,7 +169,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-analytics-data-warehouse</artifactId>
+                <artifactId>mall-data-warehouse</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
