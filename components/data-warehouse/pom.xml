@@ -11,4 +11,21 @@
 
     <artifactId>mall-data-warehouse</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-order-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-store-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mallfoundry.analytics.stream.order.repository.mybatis.MybatisOrderItemFactRepository">
 
-    <resultMap id="itemResultMap" type="org.mallfoundry.analytics.models.OrderItemFact">
+    <resultMap id="itemResultMap" type="org.mallfoundry.dw.OrderItemFact">
         <id property="id" column="id_"/>
         <result property="orderId" column="order_id_"/>
         <result property="statusId" column="status_id_"/>
@@ -20,7 +20,7 @@
         <result property="totalAmount" column="total_amount_"/>
     </resultMap>
 
-    <resultMap id="quantityFactResultMap" type="org.mallfoundry.analytics.models.OrderQuantityFact">
+    <resultMap id="quantityFactResultMap" type="org.mallfoundry.dw.OrderQuantityFact">
         <id property="storeId" column="store_id_"/>
         <id property="customerId" column="customer_id_"/>
         <id property="productId" column="product_id_"/>

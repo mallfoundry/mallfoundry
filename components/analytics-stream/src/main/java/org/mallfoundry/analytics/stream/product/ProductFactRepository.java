@@ -1,7 +1,7 @@
 package org.mallfoundry.analytics.stream.product;
 
-import org.mallfoundry.analytics.models.ProductFact;
-import org.mallfoundry.analytics.models.ProductQuantityFact;
+import org.mallfoundry.dw.ProductFact;
+import org.mallfoundry.dw.ProductQuantityFact;
 
 import java.util.List;
 

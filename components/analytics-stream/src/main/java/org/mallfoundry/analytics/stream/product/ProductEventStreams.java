@@ -1,7 +1,7 @@
 package org.mallfoundry.analytics.stream.product;
 
-import org.mallfoundry.analytics.models.ProductFact;
-import org.mallfoundry.analytics.models.ProductStatusDimension;
+import org.mallfoundry.dw.ProductFact;
+import org.mallfoundry.dw.ProductStatusDimension;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAddedEvent;
 import org.slf4j.Logger;

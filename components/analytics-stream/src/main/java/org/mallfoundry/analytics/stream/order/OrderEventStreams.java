@@ -1,8 +1,8 @@
 package org.mallfoundry.analytics.stream.order;
 
-import org.mallfoundry.analytics.models.DateDimension;
-import org.mallfoundry.analytics.models.OrderItemFact;
-import org.mallfoundry.analytics.models.OrderStatusDimension;
+import org.mallfoundry.dw.DateDimension;
+import org.mallfoundry.dw.OrderItemFact;
+import org.mallfoundry.dw.OrderStatusDimension;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaidEvent;

@@ -1,4 +1,4 @@
-package org.mallfoundry.analytics.models;
+package org.mallfoundry.dw;
 
 import lombok.Getter;
 import lombok.Setter;

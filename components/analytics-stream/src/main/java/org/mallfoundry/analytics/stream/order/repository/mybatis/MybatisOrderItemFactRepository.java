@@ -2,8 +2,8 @@ package org.mallfoundry.analytics.stream.order.repository.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.mallfoundry.analytics.models.OrderItemFact;
-import org.mallfoundry.analytics.models.OrderQuantityFact;
+import org.mallfoundry.dw.OrderItemFact;
+import org.mallfoundry.dw.OrderQuantityFact;
 import org.mallfoundry.analytics.stream.order.OrderItemFactRepository;
 import org.springframework.stereotype.Repository;
 
