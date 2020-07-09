@@ -2,6 +2,7 @@ package org.mallfoundry.analytics.stream;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.TestSpringBootApplication;
+import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderPlacedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +32,16 @@ public class StreamTests {
         item1.setQuantity(11);
         item1.setShippingCost(BigDecimal.valueOf(10));
         testOrder.setItems(List.of(item1));
-        this.eventPublisher.publishEvent((OrderPlacedEvent) () -> testOrder);
+        this.eventPublisher.publishEvent(new OrderPlacedEvent() {
+            @Override
+            public Order getOrder() {
+                return testOrder;
+            }
+
+            @Override
+            public long getTimestamp() {
+                return System.currentTimeMillis();
+            }
+        });
     }
 }
