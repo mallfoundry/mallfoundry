@@ -28,6 +28,7 @@ public class TestOrder implements Order {
     private String customerId;
     private String customerMessage;
     private String staffNotes;
+    private Integer staffStars;
     private Address shippingAddress;
     private List<OrderItem> items = new ArrayList<>();
     private List<Shipment> shipments = new ArrayList<>();

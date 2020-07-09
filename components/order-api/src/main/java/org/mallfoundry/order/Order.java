@@ -28,13 +28,17 @@ public interface Order {
 
     String getStoreName();
 
-    void setStoreName(String name);
+    void setStoreName(String storeName);
 
     OrderStatus getStatus();
 
     String getStaffNotes();
 
     void setStaffNotes(String staffNotes);
+
+    Integer getStaffStars();
+
+    void setStaffStars(Integer staffStars);
 
     List<OrderItem> getItems();
 
@@ -88,11 +92,6 @@ public interface Order {
 
     String getCancelReason();
 
-    /**
-     * 订单对象创建时间。
-     *
-     * @return
-     */
     Date getCreatedTime();
 
     Date getPlacedTime();
@@ -109,10 +108,6 @@ public interface Order {
 
     Date getCancelledTime();
 
-    /*  String getSigner();*/
-
-    /*    String getSignMessage();*/
-
     void discounts(Map<String, BigDecimal> amounts);
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
@@ -123,11 +118,11 @@ public interface Order {
 
     void fulfil() throws OrderException;
 
-    void cancel(String reason) throws OrderException;
-
     void sign() throws OrderException;
 
     void receipt() throws OrderException;
+
+    void cancel(String reason) throws OrderException;
 
     default Builder toBuilder() {
         return new BuilderSupport(this);

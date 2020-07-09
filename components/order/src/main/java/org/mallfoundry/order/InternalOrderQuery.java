@@ -19,18 +19,32 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.data.QuerySupport;
+import org.mallfoundry.payment.methods.PaymentMethod;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
 public class InternalOrderQuery extends QuerySupport implements OrderQuery {
 
+    private Set<String> ids;
+
     private String name;
 
-    private List<OrderStatus> statuses;
+    private Set<OrderStatus> statuses;
+
+    private Set<OrderType> types;
+
+    private Set<PaymentMethod> paymentMethods;
+
+    private Set<OrderSource> sources;
 
     private String storeId;
 
     private String customerId;
+
+    private Date minPlacedTime;
+
+    private Date maxPlacedTime;
 }

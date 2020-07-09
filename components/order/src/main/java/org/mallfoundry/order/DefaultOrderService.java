@@ -21,7 +21,6 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
@@ -116,26 +115,22 @@ public class DefaultOrderService implements OrderService {
         this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
     }
 
+    @Override
+    public void signOrder(String orderId) {
+
+    }
+
+    @Override
+    public void receiptOrder(String orderId) {
+
+    }
+
     @Transactional
     @Override
     public void cancelOrder(String orderId, String reason) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         order.cancel(reason);
     }
-
-/*    @Transactional
-    @Override
-    public void packOrder(String orderId) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.pack();
-    }
-
-    @Transactional
-    @Override
-    public void pickupOrder(String orderId) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.pickup();
-    }*/
 
     @Override
     public Optional<Order> getOrder(String orderId) {
@@ -150,6 +145,11 @@ public class DefaultOrderService implements OrderService {
     @Override
     public long getOrderCount(OrderQuery query) {
         return this.orderRepository.count(query);
+    }
+
+    @Override
+    public void fulfilOrder(String orderId) {
+
     }
 
     @Transactional

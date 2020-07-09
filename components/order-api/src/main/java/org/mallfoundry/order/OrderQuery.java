@@ -1,19 +1,29 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.data.Query;
+import org.mallfoundry.payment.methods.PaymentMethod;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public interface OrderQuery extends Query {
+
+    Set<String> getIds();
+
+    void setIds(Set<String> ids);
 
     String getName();
 
     void setName(String name);
 
-    List<OrderStatus> getStatuses();
+    Set<OrderStatus> getStatuses();
 
-    void setStatuses(List<OrderStatus> statuses);
+    void setStatuses(Set<OrderStatus> statuses);
+
+    Set<OrderType> getTypes();
+
+    void setTypes(Set<OrderType> types);
 
     String getStoreId();
 
@@ -22,6 +32,22 @@ public interface OrderQuery extends Query {
     String getCustomerId();
 
     void setCustomerId(String customerId);
+
+    Set<PaymentMethod> getPaymentMethods();
+
+    void setPaymentMethods(Set<PaymentMethod> methods);
+
+    Set<OrderSource> getSources();
+
+    void setSources(Set<OrderSource> sources);
+
+    Date getMinPlacedTime();
+
+    void setMinPlacedTime(Date time);
+
+    Date getMaxPlacedTime();
+
+    void setMaxPlacedTime(Date time);
 
     default Builder toBuilder() {
         return new Builder(this);
@@ -60,11 +86,11 @@ public interface OrderQuery extends Query {
             return this;
         }
 
-        public Builder statuses(Supplier<List<OrderStatus>> supplier) {
+        public Builder statuses(Supplier<Set<OrderStatus>> supplier) {
             return this.statuses(supplier.get());
         }
 
-        public Builder statuses(List<OrderStatus> statuses) {
+        public Builder statuses(Set<OrderStatus> statuses) {
             this.query.setStatuses(statuses);
             return this;
         }

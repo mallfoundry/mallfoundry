@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -92,34 +93,34 @@ public class OrderResourceV1 {
     public SliceList<Order> getOrders(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                       @RequestParam(name = "customer_id", required = false) String customerId,
-                                      @RequestParam(name = "statuses", required = false) List<String> statuses,
+                                      @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                       @RequestParam(name = "store_id", required = false) String storeId) {
         return this.orderService.getOrders(this.orderService.createOrderQuery().toBuilder()
                 .page(page).limit(limit)
                 .customerId(customerId)
                 // flat map -> filter is not empty -> upper case -> enum value of -> to list
                 .statuses(() -> Stream.ofNullable(statuses)
-                        .flatMap(List::stream)
+                        .flatMap(Set::stream)
                         .filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase)
                         .map(OrderStatus::valueOf)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toUnmodifiableSet()))
                 .storeId(storeId).build());
     }
 
     @GetMapping("/orders/count")
     public long getOrderCount(@RequestParam(name = "customer_id", required = false) String customerId,
-                              @RequestParam(name = "statuses", required = false) List<String> statuses,
+                              @RequestParam(name = "statuses", required = false) Set<String> statuses,
                               @RequestParam(name = "store_id", required = false) String storeId) {
         return this.orderService.getOrderCount(this.orderService.createOrderQuery().toBuilder()
                 .customerId(customerId)
                 // flat map -> filter is not empty -> upper case -> enum value of -> to list
                 .statuses(() -> Stream.ofNullable(statuses)
-                        .flatMap(List::stream)
+                        .flatMap(Set::stream)
                         .filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase)
                         .map(OrderStatus::valueOf)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toUnmodifiableSet()))
                 .storeId(storeId).build());
     }
 

@@ -15,5 +15,4 @@ public interface RefundItem {
     String getReason();
 
     void setReason(String reason);
-
 }

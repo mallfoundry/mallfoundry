@@ -25,13 +25,15 @@ public interface OrderService {
 
     long getOrderCount(OrderQuery query);
 
+    void fulfilOrder(String orderId);
+
     void payOrder(String orderId, PaymentDetails details);
 
+    void signOrder(String orderId);
+
+    void receiptOrder(String orderId);
+
     void cancelOrder(String orderId, String reason);
-
-/*    void packOrder(String orderId);
-
-    void pickupOrder(String orderId);*/
 
     Shipment addOrderShipment(String orderId, Shipment shipment);
 
@@ -44,5 +46,4 @@ public interface OrderService {
     void setOrderShipments(String orderId, List<Shipment> shipments);
 
     void removeOrderShipment(String orderId, String shipmentId);
-
 }

@@ -16,8 +16,6 @@
 
 package org.mallfoundry.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -74,7 +72,6 @@ public class InternalOrder implements Order {
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
@@ -84,19 +81,18 @@ public class InternalOrder implements Order {
     @Column(name = "store_name_")
     private String storeName;
 
-    @JsonProperty("customer_id")
     @Column(name = "customer_id_")
     private String customerId;
 
-    @JsonProperty("customer_message")
     @Column(name = "customer_message_")
     private String customerMessage;
 
-    @JsonProperty("staff_notes")
     @Column(name = "staff_notes_")
     private String staffNotes;
 
-    @JsonProperty("shipping_address")
+    @Column(name = "staff_stars_")
+    private Integer staffStars;
+
     @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
     private Address shippingAddress;
@@ -117,11 +113,9 @@ public class InternalOrder implements Order {
     @JoinColumn(name = "order_id_")
     private List<Refund> refunds = new ArrayList<>();
 
-    @JsonProperty(value = "shipped_items", access = JsonProperty.Access.READ_ONLY)
     @Column(name = "shipped_items_")
     private int shippedItems;
 
-    @JsonProperty("payment_details")
     @Embedded
     private InternalPaymentDetails paymentDetails;
 
@@ -129,7 +123,6 @@ public class InternalOrder implements Order {
     @Column(name = "payment_expires_")
     private int paymentExpires = 60 * 1000;
 
-    @JsonProperty("cancel_reason")
     private String cancelReason;
 
     @Column(name = "created_time_")
@@ -323,11 +316,6 @@ public class InternalOrder implements Order {
         return this.shipments;
     }
 
-    @JsonIgnore
-    public boolean isAwaitingPayment() {
-        return this.getStatus() == PENDING || this.getStatus() == AWAITING_PAYMENT;
-    }
-
     @Override
     public void place() throws OrderException {
         if (this.status != INCOMPLETE) {
@@ -340,7 +328,9 @@ public class InternalOrder implements Order {
     @Override
     public void pay(PaymentDetails details) throws OrderException {
         this.setPaymentDetails(InternalPaymentDetails.of(details));
-        if (details.getStatus() == PaymentStatus.CAPTURED) {
+        if (details.getStatus() == PaymentStatus.PENDING) {
+            this.setStatus(AWAITING_PAYMENT);
+        } else if (details.getStatus() == PaymentStatus.CAPTURED) {
             this.setStatus(AWAITING_FULFILLMENT);
             this.setPaidTime(new Date());
         }

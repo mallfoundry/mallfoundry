@@ -15,5 +15,4 @@ public interface Refund {
     BigDecimal getTotalAmount();
 
     Date getCreatedTime();
-
 }
