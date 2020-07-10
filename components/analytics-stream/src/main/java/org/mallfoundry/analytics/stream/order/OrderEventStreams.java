@@ -50,7 +50,7 @@ public class OrderEventStreams {
         // Set from order
         fact.setOrderId(order.getId());
         fact.setCustomerId(order.getCustomerId());
-        fact.setCreatedDateId(DateDimension.idOf(order.getCreatedTime()));
+        fact.setPlacedDateId(DateDimension.idOf(order.getPlacedTime()));
         fact.setStatusId(OrderStatusDimension.idOf(order.getStatus()));
         // Set from order item
         fact.setId(item.getId());
