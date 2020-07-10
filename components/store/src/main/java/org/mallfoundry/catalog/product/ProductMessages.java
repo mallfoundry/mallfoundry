@@ -58,10 +58,6 @@ public abstract class ProductMessages {
                         String.format(DEFAULT_NOT_EMPTY_MESSAGE_FORMAT, name));
     }
 
-    public static String notEmptyMessage(String name) {
-        return notEmpty(name).get();
-    }
-
     public static Supplier<String> empty(String name) {
         return () ->
                 message(FIELD_EMPTY_MESSAGE_CODE_KEY, List.of(resolveFieldName(name)),
