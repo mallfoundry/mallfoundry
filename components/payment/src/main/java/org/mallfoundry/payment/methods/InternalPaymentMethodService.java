@@ -34,7 +34,7 @@ public class InternalPaymentMethodService implements PaymentMethodService {
     }
 
     @Override
-    public PaymentMethod createPaymentMethod(String code) {
+    public PaymentMethodDescription createPaymentMethod(String code) {
         return new InternalPaymentMethod(code);
     }
 
@@ -44,22 +44,22 @@ public class InternalPaymentMethodService implements PaymentMethodService {
     }
 
     @Override
-    public PaymentMethod addPaymentMethod(PaymentMethod method) {
+    public PaymentMethodDescription addPaymentMethod(PaymentMethodDescription method) {
         return this.paymentMethodRepository.save(InternalPaymentMethod.of(method));
     }
 
     @Override
-    public PaymentMethod updatePaymentMethod(PaymentMethod method) {
+    public PaymentMethodDescription updatePaymentMethod(PaymentMethodDescription method) {
         return this.paymentMethodRepository.save(InternalPaymentMethod.of(method));
     }
 
     @Override
-    public List<PaymentMethod> getPaymentMethods(PaymentMethodQuery query) {
+    public List<PaymentMethodDescription> getPaymentMethods(PaymentMethodQuery query) {
         return CastUtils.cast(this.paymentMethodRepository.findAll(query));
     }
 
     @Override
-    public Optional<PaymentMethod> getPaymentMethod(String code) {
+    public Optional<PaymentMethodDescription> getPaymentMethod(String code) {
         return CastUtils.cast(this.paymentMethodRepository.findById(code));
     }
 

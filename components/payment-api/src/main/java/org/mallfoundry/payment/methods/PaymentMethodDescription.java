@@ -16,7 +16,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.search;
+package org.mallfoundry.payment.methods;
 
-public class LuceneOrderSearcher {
+import org.mallfoundry.util.Position;
+
+public interface PaymentMethodDescription extends Position {
+
+    String getCode();
+
+    void setCode(String code);
+
+    String getName();
+
+    void setName(String name);
+
+    String getLogo();
+
+    void setLogo(String logo);
+
+    String getColor();
+
+    void setColor(String color);
+
+    String getDescription();
+
+    void setDescription(String description);
+
+    boolean isEnabled();
+
+    void setEnabled(boolean enabled);
 }

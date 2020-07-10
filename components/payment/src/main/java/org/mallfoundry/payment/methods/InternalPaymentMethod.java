@@ -34,7 +34,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_payment_method")
-public class InternalPaymentMethod implements PaymentMethod {
+public class InternalPaymentMethod implements PaymentMethodDescription {
 
     @Id
     @Column(name = "code_")
@@ -62,7 +62,7 @@ public class InternalPaymentMethod implements PaymentMethod {
         this.code = code;
     }
 
-    public static InternalPaymentMethod of(PaymentMethod method) {
+    public static InternalPaymentMethod of(PaymentMethodDescription method) {
         if (method instanceof InternalPaymentMethod) {
             return (InternalPaymentMethod) method;
         }

@@ -21,6 +21,7 @@ package org.mallfoundry.rest.payment;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentMethod;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -47,12 +48,14 @@ public class PaymentRequest {
     }
 
     public Payment assignPayment(Payment payment) {
+
+
         return payment.toBuilder()
                 .amount(this.getAmount())
                 .returnUrl(this.getReturnUrl())
                 .reference(this.getReference())
                 .metadata(this.getMetadata())
-                .instrument(payment.createInstrument(this.getInstrument().getType()))
+                .instrument(payment.createInstrument(PaymentMethod.valueOf(this.getInstrument().getType().toUpperCase())))
                 .build();
     }
 }

@@ -32,6 +32,7 @@ import org.mallfoundry.payment.PaymentClient;
 import org.mallfoundry.payment.PaymentException;
 import org.mallfoundry.payment.PaymentNotification;
 import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.payment.PaymentMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
@@ -120,7 +121,7 @@ public class AliPaymentClient implements PaymentClient {
 
     @Override
     public boolean supportsPayment(Payment payment) {
-        return "alipay".equalsIgnoreCase(payment.getInstrument().getType());
+        return PaymentMethod.ALIPAY.equals(payment.getInstrument().getType());
     }
 
     @Override

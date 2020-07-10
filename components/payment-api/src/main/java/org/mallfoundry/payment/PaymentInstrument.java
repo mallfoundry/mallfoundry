@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 public interface PaymentInstrument extends Serializable {
 
-    String getType();
+    PaymentMethod getType();
 
-    void setType(String type);
+    void setType(PaymentMethod type);
 }

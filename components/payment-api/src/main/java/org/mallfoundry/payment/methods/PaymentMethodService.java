@@ -23,17 +23,17 @@ import java.util.Optional;
 
 public interface PaymentMethodService {
 
-    PaymentMethod createPaymentMethod(String code);
+    PaymentMethodDescription createPaymentMethod(String code);
 
     PaymentMethodQuery createPaymentMethodQuery();
 
-    PaymentMethod addPaymentMethod(PaymentMethod method);
+    PaymentMethodDescription addPaymentMethod(PaymentMethodDescription method);
 
-    PaymentMethod updatePaymentMethod(PaymentMethod method);
+    PaymentMethodDescription updatePaymentMethod(PaymentMethodDescription method);
 
-    List<PaymentMethod> getPaymentMethods(PaymentMethodQuery query);
+    List<PaymentMethodDescription> getPaymentMethods(PaymentMethodQuery query);
 
-    Optional<PaymentMethod> getPaymentMethod(String code);
+    Optional<PaymentMethodDescription> getPaymentMethod(String code);
 
     void deletePaymentMethod(String code);
 }

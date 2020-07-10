@@ -24,6 +24,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @Setter
@@ -31,10 +33,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class InternalInstrument implements PaymentInstrument {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "instrument_type_")
-    private String type;
+    private PaymentMethod type;
 
-    public InternalInstrument(String type) {
+    public InternalInstrument(PaymentMethod type) {
         this.type = type;
     }
 }

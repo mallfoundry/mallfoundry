@@ -91,12 +91,12 @@ public class InternalPayment implements Payment {
     }
 
     @Override
-    public PaymentInstrument createInstrument(String type) {
+    public PaymentInstrument createInstrument(PaymentMethod type) {
         return new InternalInstrument(type);
     }
 
     @Override
-    public void pending() {
+    public void start() {
         this.setStatus(PaymentStatus.PENDING);
         this.setCreatedTime(new Date());
     }

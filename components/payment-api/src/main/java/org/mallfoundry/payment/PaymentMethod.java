@@ -18,5 +18,6 @@
 
 package org.mallfoundry.payment;
 
-public interface PaymentPendingEvent extends PaymentEvent {
+public enum PaymentMethod {
+    ALIPAY, WXPAY
 }

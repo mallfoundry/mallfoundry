@@ -47,10 +47,7 @@ public class InternalPaymentService implements PaymentService {
 
     @Override
     public Payment createPayment(String id) {
-        var payment = new InternalPayment(id);
-        payment.pending();
-        this.eventPublisher.publishEvent(new InternalPaymentPendingEvent(payment));
-        return payment;
+        return new InternalPayment(id);
     }
 
     @Transactional
@@ -58,13 +55,19 @@ public class InternalPaymentService implements PaymentService {
     public Payment createPayment(Payment aPayment) {
         var payment = InternalPayment.of(aPayment);
         payment.setId(PrimaryKeyHolder.next(PAYMENT_ID_VALUE_NAME));
-        payment.pending();
+        payment.start();
+        this.eventPublisher.publishEvent(new InternalPaymentStartedEvent(payment));
         return this.paymentRepository.save(payment);
     }
 
     @Override
     public void capturePayment(String id) throws PaymentException {
 
+    }
+
+    private void capturePayment(Payment payment) throws PaymentException {
+        payment.capture();
+        this.eventPublisher.publishEvent(new InternalPaymentCapturedEvent(payment));
     }
 
     @Transactional
@@ -75,8 +78,7 @@ public class InternalPaymentService implements PaymentService {
         var notification = paymentClient.createPaymentNotification(parameters);
         paymentClient.validateNotification(notification);
         if (notification.isCaptured()) {
-            payment.capture();
-            this.eventPublisher.publishEvent(new InternalPaymentCapturedEvent(payment));
+            this.capturePayment(payment);
         }
         return notification;
     }

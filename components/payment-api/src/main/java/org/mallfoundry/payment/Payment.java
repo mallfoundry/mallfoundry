@@ -26,7 +26,7 @@ public interface Payment {
 
     String getId();
 
-    PaymentInstrument createInstrument(String type);
+    PaymentInstrument createInstrument(PaymentMethod type);
 
     PaymentInstrument getInstrument();
 
@@ -54,7 +54,7 @@ public interface Payment {
 
     Date getCreatedTime();
 
-    void pending();
+    void start();
 
     void capture();
 

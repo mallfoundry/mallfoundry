@@ -18,7 +18,7 @@
 
 package org.mallfoundry.rest.payment.methods;
 
-import org.mallfoundry.payment.methods.PaymentMethod;
+import org.mallfoundry.payment.methods.PaymentMethodDescription;
 import org.mallfoundry.payment.methods.PaymentMethodService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,7 @@ public class PaymentMethodResourceV1 {
     }
 
     @GetMapping("/payments/methods")
-    public List<PaymentMethod> getPaymentMethods() {
+    public List<PaymentMethodDescription> getPaymentMethods() {
         return this.paymentMethodService.getPaymentMethods(
                 this.paymentMethodService.createPaymentMethodQuery());
     }

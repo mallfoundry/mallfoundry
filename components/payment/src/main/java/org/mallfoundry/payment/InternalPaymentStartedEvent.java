@@ -16,33 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment.methods;
+package org.mallfoundry.payment;
 
-import org.mallfoundry.util.Position;
+public class InternalPaymentStartedEvent extends PaymentEventSupport implements PaymentStartedEvent {
 
-public interface PaymentMethod extends Position {
-
-    String getCode();
-
-    void setCode(String code);
-
-    String getName();
-
-    void setName(String name);
-
-    String getLogo();
-
-    void setLogo(String logo);
-
-    String getColor();
-
-    void setColor(String color);
-
-    String getDescription();
-
-    void setDescription(String description);
-
-    boolean isEnabled();
-
-    void setEnabled(boolean enabled);
+    public InternalPaymentStartedEvent(Payment payment) {
+        super(payment);
+    }
 }
