@@ -19,18 +19,17 @@
 package org.mallfoundry.analytics.stream;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.TestSpringBootApplication;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderPlacedEvent;
+import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@SpringBootTest(classes = TestSpringBootApplication.class)
+@StandaloneTest
 public class StreamTests {
 
     @Autowired
