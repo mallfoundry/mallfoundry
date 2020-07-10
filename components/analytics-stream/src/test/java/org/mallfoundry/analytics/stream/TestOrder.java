@@ -24,9 +24,11 @@ import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderStatus;
-import org.mallfoundry.order.PaymentDetails;
+import org.mallfoundry.order.PaymentInformation;
 import org.mallfoundry.order.Refund;
 import org.mallfoundry.order.Shipment;
+import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.shipping.Address;
 
 import java.math.BigDecimal;
@@ -52,7 +54,9 @@ public class TestOrder implements Order {
     private List<Shipment> shipments = new ArrayList<>();
     private List<Refund> refunds = new ArrayList<>();
     private int shippedItems;
-    private PaymentDetails paymentDetails;
+    private String paymentId;
+    private PaymentStatus paymentStatus;
+    private PaymentMethod paymentMethod;
     private int paymentExpires = 60 * 1000;
     private String cancelReason;
     private Date createdTime;
@@ -165,7 +169,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void pay(PaymentDetails details) throws OrderException {
+    public void pay(PaymentInformation details) throws OrderException {
 
     }
 
