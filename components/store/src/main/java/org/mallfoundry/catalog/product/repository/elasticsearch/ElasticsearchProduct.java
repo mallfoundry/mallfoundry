@@ -53,12 +53,16 @@ import java.util.stream.Collectors;
 public class ElasticsearchProduct extends ProductSupport {
 
     @Id
+    @Field(type = FieldType.Keyword)
     private String id;
 
+    @Field(type = FieldType.Keyword)
     private String storeId;
 
+    @Field(type = FieldType.Keyword)
     private ProductType type;
 
+    @Field(type = FieldType.Keyword)
     private ProductStatus status;
 
     @Field(type = FieldType.Text)
@@ -68,8 +72,10 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private BigDecimal price;
 
+    @Field(type = FieldType.Keyword)
     private String categoryId;
 
+    @Field(type = FieldType.Keyword)
     private String brandId;
 
     private Set<String> collections = new HashSet<>();
@@ -80,6 +86,7 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private int inventoryQuantity;
 
+    @Field(type = FieldType.Keyword)
     private InventoryStatus inventoryStatus;
 
     private List<ElasticsearchProductOption> options = new ArrayList<>();
@@ -99,6 +106,7 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private BigDecimal fixedShippingCost;
 
+    @Field(type = FieldType.Keyword)
     private String shippingRateId;
 
     private Date createdTime;

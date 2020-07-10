@@ -24,9 +24,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
 import org.mallfoundry.catalog.product.ProductRepository;
+import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.SearchProductRepository;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.inventory.InventoryStatus;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -78,11 +80,15 @@ public class ElasticsearchProductRepository
         }
 
         if (CollectionUtils.isNotEmpty(productQuery.getStatuses())) {
-            queryBuilder.must(QueryBuilders.termQuery("statuses", productQuery.getStatuses()));
+            var statuses = productQuery.getStatuses().stream()
+                    .map(ProductStatus::name).collect(Collectors.toUnmodifiableSet());
+            queryBuilder.must(QueryBuilders.termsQuery("status", statuses));
         }
 
         if (CollectionUtils.isNotEmpty(productQuery.getInventoryStatuses())) {
-            queryBuilder.must(QueryBuilders.termQuery("inventoryStatuses", productQuery.getInventoryStatuses()));
+            var inventoryStatuses = productQuery.getInventoryStatuses().stream()
+                    .map(InventoryStatus::name).collect(Collectors.toUnmodifiableSet());
+            queryBuilder.must(QueryBuilders.termsQuery("inventoryStatus", inventoryStatuses));
         }
 
         if (CollectionUtils.isNotEmpty(productQuery.getCollections())) {
