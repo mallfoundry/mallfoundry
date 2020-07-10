@@ -52,15 +52,30 @@ public interface JpaOrderRepository
             if (Objects.nonNull(orderQuery.getCustomerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
             }
-
-            if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
-            }
-
             if (Objects.nonNull(orderQuery.getStoreId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
             }
-
+            if (CollectionUtils.isNotEmpty(orderQuery.getIds())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("id")).value(orderQuery.getIds()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getTypes())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(orderQuery.getTypes()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getSources())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("source")).value(orderQuery.getSources()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getPaymentMethods())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(orderQuery.getPaymentMethods()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacedTimeMin())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMin()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacedTimeMax())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMax()));
+            }
             return predicate;
         };
     }
@@ -68,7 +83,7 @@ public interface JpaOrderRepository
     @Override
     default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
         Page<InternalOrder> page = this.findAll(this.createSpecification(orderQuery),
-                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("createdTime"))));
+                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("placedTime"))));
         return PageList.of(page.getContent())
                 .page(page.getNumber())
                 .limit(orderQuery.getLimit())

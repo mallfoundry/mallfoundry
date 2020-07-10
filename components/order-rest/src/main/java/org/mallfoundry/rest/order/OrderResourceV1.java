@@ -18,12 +18,17 @@
 
 package org.mallfoundry.rest.order;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
+import org.mallfoundry.order.OrderType;
 import org.mallfoundry.order.Shipment;
+import org.mallfoundry.payment.PaymentMethod;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,12 +39,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/v1")
@@ -94,20 +99,35 @@ public class OrderResourceV1 {
     @GetMapping("/orders")
     public SliceList<Order> getOrders(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                      @RequestParam(name = "ids", required = false) Set<String> ids,
                                       @RequestParam(name = "customer_id", required = false) String customerId,
+                                      @RequestParam(name = "store_id", required = false) String storeId,
                                       @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                                      @RequestParam(name = "store_id", required = false) String storeId) {
+                                      @RequestParam(name = "types", required = false) Set<String> types,
+                                      @RequestParam(name = "sources", required = false) Set<String> sources,
+                                      @RequestParam(name = "payment_methods", required = false) Set<String> paymentMethods,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                      @RequestParam(name = "placed_time_min", required = false) Date placeTimeMin,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                      @RequestParam(name = "placed_time_max", required = false) Date placedTimeMax) {
         return this.orderService.getOrders(this.orderService.createOrderQuery().toBuilder()
                 .page(page).limit(limit)
-                .customerId(customerId)
-                // flat map -> filter is not empty -> upper case -> enum value of -> to list
-                .statuses(() -> Stream.ofNullable(statuses)
-                        .flatMap(Set::stream)
-                        .filter(StringUtils::isNotEmpty)
-                        .map(StringUtils::upperCase)
-                        .map(OrderStatus::valueOf)
-                        .collect(Collectors.toUnmodifiableSet()))
-                .storeId(storeId).build());
+                .ids(ids)
+                .customerId(customerId).storeId(storeId)
+                .statuses(() ->
+                        CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .types(() ->
+                        CollectionUtils.emptyIfNull(types).stream().map(StringUtils::upperCase)
+                                .map(OrderType::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .sources(() ->
+                        CollectionUtils.emptyIfNull(sources).stream().map(StringUtils::upperCase)
+                                .map(OrderSource::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .paymentMethods(() ->
+                        CollectionUtils.emptyIfNull(paymentMethods).stream().map(StringUtils::upperCase)
+                                .map(PaymentMethod::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .placedTimeMin(placeTimeMin).placedTimeMax(placedTimeMax)
+                .build());
     }
 
     @GetMapping("/orders/count")
@@ -115,15 +135,11 @@ public class OrderResourceV1 {
                               @RequestParam(name = "statuses", required = false) Set<String> statuses,
                               @RequestParam(name = "store_id", required = false) String storeId) {
         return this.orderService.getOrderCount(this.orderService.createOrderQuery().toBuilder()
-                .customerId(customerId)
-                // flat map -> filter is not empty -> upper case -> enum value of -> to list
-                .statuses(() -> Stream.ofNullable(statuses)
-                        .flatMap(Set::stream)
-                        .filter(StringUtils::isNotEmpty)
-                        .map(StringUtils::upperCase)
-                        .map(OrderStatus::valueOf)
-                        .collect(Collectors.toUnmodifiableSet()))
-                .storeId(storeId).build());
+                .customerId(customerId).storeId(storeId)
+                .statuses(() ->
+                        CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .build());
     }
 
     @PostMapping("/orders/{order_id}/shipments")

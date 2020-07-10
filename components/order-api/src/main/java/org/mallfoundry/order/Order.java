@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.ObjectBuilder;
 
@@ -57,6 +59,14 @@ public interface Order {
     Integer getStaffStars();
 
     void setStaffStars(Integer staffStars);
+
+/*    String getSourceName();
+
+    void setSourceName(String sourceName);
+
+    OrderSource getSource();
+
+    void setSource(OrderSource source);*/
 
     List<OrderItem> getItems();
 
@@ -102,15 +112,23 @@ public interface Order {
 
     BigDecimal getSubtotalAmount();
 
-    PaymentDetails getPaymentDetails();
+    String getPaymentId();
+
+    void setPaymentId(String paymentId);
+
+    PaymentStatus getPaymentStatus();
+
+    void setPaymentStatus(PaymentStatus paymentStatus);
+
+    PaymentMethod getPaymentMethod();
+
+    void setPaymentMethod(PaymentMethod paymentMethod);
 
     int getPaymentExpires();
 
     void setPaymentExpires(int paymentExpires);
 
     String getCancelReason();
-
-    Date getCreatedTime();
 
     Date getPlacedTime();
 
@@ -132,7 +150,7 @@ public interface Order {
 
     void place() throws OrderException;
 
-    void pay(PaymentDetails details) throws OrderException;
+    void pay(PaymentInformation details) throws OrderException;
 
     void fulfil() throws OrderException;
 

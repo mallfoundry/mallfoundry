@@ -19,11 +19,13 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.data.Query;
-import org.mallfoundry.payment.methods.PaymentMethod;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.payment.PaymentMethod;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
+
 
 public interface OrderQuery extends Query {
 
@@ -35,14 +37,6 @@ public interface OrderQuery extends Query {
 
     void setName(String name);
 
-    Set<OrderStatus> getStatuses();
-
-    void setStatuses(Set<OrderStatus> statuses);
-
-    Set<OrderType> getTypes();
-
-    void setTypes(Set<OrderType> types);
-
     String getStoreId();
 
     void setStoreId(String storeId);
@@ -50,6 +44,14 @@ public interface OrderQuery extends Query {
     String getCustomerId();
 
     void setCustomerId(String customerId);
+
+    Set<OrderStatus> getStatuses();
+
+    void setStatuses(Set<OrderStatus> statuses);
+
+    Set<OrderType> getTypes();
+
+    void setTypes(Set<OrderType> types);
 
     Set<PaymentMethod> getPaymentMethods();
 
@@ -59,62 +61,44 @@ public interface OrderQuery extends Query {
 
     void setSources(Set<OrderSource> sources);
 
-    Date getMinPlacedTime();
+    Date getPlacedTimeMin();
 
-    void setMinPlacedTime(Date time);
+    void setPlacedTimeMin(Date time);
 
-    Date getMaxPlacedTime();
+    Date getPlacedTimeMax();
 
-    void setMaxPlacedTime(Date time);
+    void setPlacedTimeMax(Date time);
 
-    default Builder toBuilder() {
-        return new Builder(this);
-    }
+    Builder toBuilder();
 
-    class Builder {
+    interface Builder extends QueryBuilder<OrderQuery, Builder> {
 
-        private final OrderQuery query;
+        Builder ids(Set<String> ids);
 
-        public Builder(OrderQuery query) {
-            this.query = query;
-        }
+        Builder name(String name);
 
-        public Builder page(int page) {
-            this.query.setPage(page);
-            return this;
-        }
+        Builder customerId(String customerId);
 
-        public Builder limit(int limit) {
-            this.query.setLimit(limit);
-            return this;
-        }
+        Builder storeId(String storeId);
 
-        public Builder name(String name) {
-            this.query.setName(name);
-            return this;
-        }
+        Builder statuses(Supplier<Set<OrderStatus>> supplier);
 
-        public Builder customerId(String customerId) {
-            this.query.setCustomerId(customerId);
-            return this;
-        }
+        Builder statuses(Set<OrderStatus> statuses);
 
-        public Builder storeId(String storeId) {
-            this.query.setStoreId(storeId);
-            return this;
-        }
+        Builder sources(Set<OrderSource> sources);
 
-        public Builder statuses(Supplier<Set<OrderStatus>> supplier) {
-            return this.statuses(supplier.get());
-        }
+        Builder sources(Supplier<Set<OrderSource>> supplier);
 
-        public Builder statuses(Set<OrderStatus> statuses) {
-            this.query.setStatuses(statuses);
-            return this;
-        }
+        Builder types(Set<OrderType> types);
 
-        public OrderQuery build() {
-            return this.query;
-        }
+        Builder types(Supplier<Set<OrderType>> supplier);
+
+        Builder paymentMethods(Set<PaymentMethod> methods);
+
+        Builder paymentMethods(Supplier<Set<PaymentMethod>> supplier);
+
+        Builder placedTimeMin(Date time);
+
+        Builder placedTimeMax(Date time);
     }
 }

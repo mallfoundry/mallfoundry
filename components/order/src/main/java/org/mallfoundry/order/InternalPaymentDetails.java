@@ -18,40 +18,31 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.payment.PaymentStatus;
 import org.springframework.beans.BeanUtils;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
-public class InternalPaymentDetails implements PaymentDetails {
+public class InternalPaymentDetails implements PaymentInformation {
 
-    @Column(name = "payment_id_")
-    private String paymentId;
+    private String id;
 
-    @Column(name = "payment_provider_")
-    private String provider;
+    private PaymentMethod method;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status_")
     private PaymentStatus status;
 
-    public InternalPaymentDetails(String paymentId, String provider, PaymentStatus status) {
-        this.paymentId = paymentId;
-        this.provider = provider;
+    public InternalPaymentDetails(String id, PaymentMethod method, PaymentStatus status) {
+        this.id = id;
+        this.method = method;
         this.status = status;
     }
 
-    public static InternalPaymentDetails of(PaymentDetails details) {
+    public static InternalPaymentDetails of(PaymentInformation details) {
         if (details instanceof InternalPaymentDetails) {
             return (InternalPaymentDetails) details;
         }

@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
@@ -30,7 +31,6 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -118,17 +118,23 @@ public class InternalOrder implements Order {
     @Column(name = "shipped_items_")
     private int shippedItems;
 
-    @Embedded
-    private InternalPaymentDetails paymentDetails;
+    @Column(name = "payment_id_")
+    private String paymentId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status_")
+    private PaymentStatus paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method_")
+    private PaymentMethod paymentMethod;
 
     // Default is 60 * 1000 ms
     @Column(name = "payment_expires_")
     private int paymentExpires = 60 * 1000;
 
+    @Column(name = "cancel_reason_")
     private String cancelReason;
-
-    @Column(name = "created_time_")
-    private Date createdTime;
 
     @Column(name = "placed_time_")
     private Date placedTime;
@@ -324,15 +330,17 @@ public class InternalOrder implements Order {
             throw new OrderException("The current state of the order is not incomplete");
         }
         this.setStatus(OrderStatus.PENDING);
-        this.setCreatedTime(new Date());
+        this.setPlacedTime(new Date());
     }
 
     @Override
-    public void pay(PaymentDetails details) throws OrderException {
-        this.setPaymentDetails(InternalPaymentDetails.of(details));
-        if (details.getStatus() == PaymentStatus.PENDING) {
+    public void pay(PaymentInformation payment) throws OrderException {
+        this.setPaymentId(payment.getId());
+        this.setPaymentMethod(payment.getMethod());
+        this.setPaymentStatus(payment.getStatus());
+        if (payment.getStatus() == PaymentStatus.PENDING) {
             this.setStatus(AWAITING_PAYMENT);
-        } else if (details.getStatus() == PaymentStatus.CAPTURED) {
+        } else if (payment.getStatus() == PaymentStatus.CAPTURED) {
             this.setStatus(AWAITING_FULFILLMENT);
             this.setPaidTime(new Date());
         }

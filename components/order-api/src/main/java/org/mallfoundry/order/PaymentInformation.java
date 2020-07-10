@@ -18,10 +18,14 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 
-public interface PaymentDetails {
+public interface PaymentInformation {
+
+    String getId();
 
     PaymentStatus getStatus();
 
+    PaymentMethod getMethod();
 }

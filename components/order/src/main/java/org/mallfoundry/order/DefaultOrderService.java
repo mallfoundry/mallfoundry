@@ -111,7 +111,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrder(String orderId, PaymentDetails details) {
+    public void payOrder(String orderId, PaymentInformation details) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
         order.pay(details);
         this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
