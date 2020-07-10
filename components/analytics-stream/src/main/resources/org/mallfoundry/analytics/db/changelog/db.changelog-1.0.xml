@@ -37,7 +37,7 @@
             <column name="product_id_" type="varchar(255)"/>
             <column name="variant_id_" type="varchar(255)"/>
             <column name="status_id_" type="varchar(255)"/>
-            <column name="created_date_id_" type="varchar(255)"/>
+            <column name="placed_date_id_" type="varchar(255)"/>
             <column name="paid_date_id_" type="varchar(255)"/>
             <column name="shipped_date_id_" type="varchar(255)"/>
             <column name="cancelled_date_id_" type="varchar(255)"/>

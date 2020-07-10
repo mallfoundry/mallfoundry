@@ -33,7 +33,7 @@ public class OrderItemFact {
     private String productId;
     private String variantId;
     private String statusId;
-    private String createdDateId;
+    private String placedDateId;
     private int quantity;
     private BigDecimal price;
     private BigDecimal shippingCost;

@@ -30,7 +30,7 @@
         <result property="storeId" column="store_id_"/>
         <result property="productId" column="product_id_"/>
         <result property="variantId" column="variant_id_"/>
-        <result property="createdDateId" column="created_date_id_"/>
+        <result property="placedDateId" column="placed_date_id_"/>
         <result property="quantity" column="quantity_"/>
         <result property="price" column="price_"/>
         <result property="shippingCost" column="shipping_cost_"/>
@@ -57,7 +57,7 @@
             store_id_,
             product_id_,
             variant_id_,
-            created_date_id_,
+            placed_date_id_,
             quantity_,
             price_,
             shipping_cost_,
@@ -75,7 +75,7 @@
             #{item.storeId},
             #{item.productId},
             #{item.variantId},
-            #{item.createdDateId},
+            #{item.placedDateId},
             #{item.quantity},
             #{item.price},
             #{item.shippingCost},
@@ -99,7 +99,7 @@
             store_id_ = #{item.storeId},
             product_id_ = #{item.productId},
             variant_id_ = #{item.variantId},
-            created_date_id_ = #{item.createdDateId},
+            placed_date_id_ = #{item.placedDateId},
             quantity_ = #{item.quantity},
             price_ = #{item.price},
             shipping_cost_ = #{item.shippingCost},
