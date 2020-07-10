@@ -18,6 +18,13 @@
 
 package org.mallfoundry.order;
 
-public enum OrderSource {
-    BROWSER/*, WECHAT_MINA*/, ALIPAY, OTHER
+import static org.mallfoundry.i18n.MessageHolder.message;
+
+public abstract class OrderMessages {
+
+    private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.notFound";
+
+    public static String notFoundMessage() {
+        return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
+    }
 }

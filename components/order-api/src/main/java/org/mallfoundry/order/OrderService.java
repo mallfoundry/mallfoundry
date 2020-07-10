@@ -29,19 +29,19 @@ public interface OrderService {
 
     Order createOrder(String id);
 
+    List<Order> splitOrders(List<Order> orders);
+
     List<Order> placeOrder(Order order);
 
     List<Order> placeOrders(List<Order> orders);
-
-    List<Order> splitOrders(List<Order> orders);
-
-    Order updateOrder(Order order);
 
     Optional<Order> getOrder(String orderId);
 
     SliceList<Order> getOrders(OrderQuery query);
 
     long getOrderCount(OrderQuery query);
+
+    Order updateOrder(Order order);
 
     void fulfilOrder(String orderId);
 

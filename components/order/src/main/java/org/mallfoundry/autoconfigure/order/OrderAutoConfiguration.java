@@ -18,10 +18,27 @@
 
 package org.mallfoundry.autoconfigure.order;
 
+import org.mallfoundry.order.DefaultOrderService;
+import org.mallfoundry.order.OrderProcessorsInvoker;
+import org.mallfoundry.order.OrderRepository;
+import org.mallfoundry.order.OrderSplitter;
+import org.mallfoundry.shipping.CarrierService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OrderAutoConfiguration {
 
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultOrderService defaultOrderService(OrderProcessorsInvoker processorsInvoker,
+                                                   OrderRepository orderRepository,
+                                                   OrderSplitter orderSplitter,
+                                                   CarrierService carrierService,
+                                                   ApplicationEventPublisher eventPublisher) {
+        return new DefaultOrderService(processorsInvoker, orderRepository, orderSplitter, carrierService, eventPublisher);
+    }
 
 }

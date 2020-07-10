@@ -25,14 +25,12 @@ import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 public class DefaultOrderService implements OrderService {
 
     static final String ORDER_ID_VALUE_NAME = "order.id";
@@ -53,7 +51,6 @@ public class DefaultOrderService implements OrderService {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    /*@Autowired(required = false)*/
     public DefaultOrderService(OrderProcessorsInvoker processorsInvoker,
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
@@ -76,12 +73,16 @@ public class DefaultOrderService implements OrderService {
         return new InternalOrder(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
     }
 
+    @Override
+    public List<Order> splitOrders(List<Order> orders) {
+        return this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
+    }
+
     @Transactional
     @Override
     public List<Order> placeOrder(Order order) {
         return this.placeOrders(List.of(order));
     }
-
 
     @Transactional
     @Override
@@ -99,42 +100,6 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> splitOrders(List<Order> orders) {
-        return this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
-    }
-
-    @Transactional
-    @Override
-    public Order updateOrder(Order order) {
-        return this.orderRepository.save(InternalOrder.of(order));
-    }
-
-    @Transactional
-    @Override
-    public void payOrder(String orderId, PaymentInformation details) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.pay(details);
-        this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
-    }
-
-    @Override
-    public void signOrder(String orderId) {
-
-    }
-
-    @Override
-    public void receiptOrder(String orderId) {
-
-    }
-
-    @Transactional
-    @Override
-    public void cancelOrder(String orderId, String reason) {
-        var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.cancel(reason);
-    }
-
-    @Override
     public Optional<Order> getOrder(String orderId) {
         return this.orderRepository.findById(orderId).map(this.processorsInvoker::invokeProcessPostGetOrder);
     }
@@ -149,9 +114,50 @@ public class DefaultOrderService implements OrderService {
         return this.orderRepository.count(query);
     }
 
+    @Transactional
+    @Override
+    public Order updateOrder(Order order) {
+        return this.orderRepository.save(InternalOrder.of(order));
+    }
+
+    private Order getNonOrder(String orderId) {
+        return this.orderRepository.findById(orderId).orElseThrow(OrderExceptions::notFound);
+    }
+
+    @Transactional
+    @Override
+    public void payOrder(String orderId, PaymentInformation details) {
+        var order = getNonOrder(orderId);
+        order.pay(details);
+        this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
+    }
+
+    @Transactional
+    @Override
+    public void signOrder(String orderId) {
+        var order = getNonOrder(orderId);
+        order.sign();
+    }
+
+    @Transactional
+    @Override
+    public void receiptOrder(String orderId) {
+        var order = getNonOrder(orderId);
+        order.receipt();
+    }
+
+    @Transactional
+    @Override
+    public void cancelOrder(String orderId, String reason) {
+        var order = getNonOrder(orderId);
+        order.cancel(reason);
+    }
+
+    @Transactional
     @Override
     public void fulfilOrder(String orderId) {
-
+        var order = getNonOrder(orderId);
+        order.fulfil();
     }
 
     @Transactional

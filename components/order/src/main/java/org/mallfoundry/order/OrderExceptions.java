@@ -18,6 +18,9 @@
 
 package org.mallfoundry.order;
 
-public enum OrderSource {
-    BROWSER/*, WECHAT_MINA*/, ALIPAY, OTHER
+public abstract class OrderExceptions {
+
+    public static OrderException notFound() {
+        return new OrderException(OrderMessages.notFoundMessage());
+    }
 }
