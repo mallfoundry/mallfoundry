@@ -16,11 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.rest.cart;
 
-import org.mallfoundry.data.SliceList;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface OrderSearcher {
-
-    SliceList<InternalOrder> search(InternalOrderQuery query);
+@Getter
+@Setter
+public class CartItemAdjustProductRequest extends CartItemAdjustItemIdRequest {
+    private String productId;
+    private String variantId;
 }

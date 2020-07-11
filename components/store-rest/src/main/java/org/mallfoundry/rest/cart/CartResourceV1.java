@@ -71,11 +71,25 @@ public class CartResourceV1 {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    @PostMapping("/carts/{id}/items/{item_id}/quantity/adjust")
-    public void adjustCartItemQuantity(@PathVariable("id") String id,
-                                       @PathVariable("item_id") String itemId,
-                                       @RequestBody int quantityDelta) {
-        this.cartService.adjustCartItemQuantity(id, itemId, quantityDelta);
+    @PostMapping("/carts/{id}/items/{item_id}/adjust")
+    public void adjustCartItem(@PathVariable("id") String id,
+                               @PathVariable("item_id") String itemId,
+                               @RequestBody CartItemAdjustItemIdRequest request) {
+        this.cartService.adjustCartItem(id,
+                this.cartService.createCart((String) null)
+                        .createItemAdjustment(itemId).toBuilder()
+                        .quantityDelta(request.getQuantityDelta()).build());
+    }
+
+
+    @PostMapping("/carts/{id}/items/adjust")
+    public void adjustCartItem(@PathVariable("id") String id,
+                               @RequestBody CartItemAdjustProductRequest request) {
+        this.cartService.adjustCartItem(id,
+                this.cartService.createCart((String) null)
+                        .createItemAdjustment(null).toBuilder()
+                        .productId(request.getProductId()).variantId(request.getVariantId())
+                        .quantityDelta(request.getQuantityDelta()).build());
     }
 
     @PostMapping("/carts/{id}/items/{item_id}/check")
