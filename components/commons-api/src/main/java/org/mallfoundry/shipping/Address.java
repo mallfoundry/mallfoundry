@@ -40,13 +40,17 @@ public interface Address extends Serializable {
 
     void setLastName(String lastName);
 
+    String getCountryCode();
+
+    void setCountryCode(String countryCode);
+
     String getMobile();
 
     void setMobile(String mobile);
 
-    String getCountryCode();
+    String getZip();
 
-    void setCountryCode(String countryCode);
+    void setZip(String zip);
 
     String getProvinceId();
 
@@ -76,10 +80,6 @@ public interface Address extends Serializable {
 
     void setAddress(String address);
 
-    String getZip();
-
-    void setZip(String zip);
-
     Builder toBuilder();
 
     interface Builder extends ObjectBuilder<Address> {
@@ -88,11 +88,11 @@ public interface Address extends Serializable {
 
         Builder lastName(String lastName);
 
+        Builder countryCode(String countryCode);
+
         Builder mobile(String mobile);
 
         Builder zip(String zip);
-
-        Builder countryCode(String countryCode);
 
         Builder provinceId(String provinceId);
 
