@@ -19,15 +19,15 @@
 package org.mallfoundry.inventory;
 
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import lombok.Setter;
 
-public class InternalInventoryAdjustedEvent extends ApplicationEvent implements InventoryAdjustedEvent {
+@Getter
+@Setter
+public class DefaultInventoryAdjustment extends InventoryAdjustmentSupport {
 
-    @Getter
-    private final InventoryAdjustment inventoryAdjustment;
+    private String productId;
 
-    public InternalInventoryAdjustedEvent(InventoryAdjustment inventoryAdjustment) {
-        super(inventoryAdjustment);
-        this.inventoryAdjustment = inventoryAdjustment;
-    }
+    private String variantId;
+
+    private int quantityDelta;
 }

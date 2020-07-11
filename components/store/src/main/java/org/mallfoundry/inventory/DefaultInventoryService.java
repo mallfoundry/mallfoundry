@@ -39,18 +39,23 @@ public class DefaultInventoryService implements InventoryService {
 
     @Override
     public InventoryAdjustment createInventoryAdjustment() {
-        return new InternalInventoryAdjustment();
+        return new DefaultInventoryAdjustment();
+    }
+
+    private void publishInventoryAdjustedEvent(InventoryAdjustment adjustment) {
+        this.eventPublisher.publishEvent(new ImmutableInventoryAdjustedEvent(adjustment));
     }
 
     @Override
     public void adjustInventory(InventoryAdjustment adjustment) {
-        this.productService.adjustInventory(adjustment);
-        this.eventPublisher.publishEvent(new InternalInventoryAdjustedEvent(adjustment));
+        this.productService.adjustProductInventory(adjustment);
+        this.publishInventoryAdjustedEvent(adjustment);
     }
 
     @Override
     public void adjustInventories(List<InventoryAdjustment> adjustments) {
-
+        this.productService.adjustProductInventories(adjustments);
+        adjustments.forEach(this::publishInventoryAdjustedEvent);
     }
 
 }
