@@ -40,7 +40,7 @@ public interface ProductService {
 
     void updateProduct(Product product);
 
-    void adjustInventory(InventoryAdjustment adjustment);
+    void adjustProductInventory(InventoryAdjustment adjustment);
 
-    void adjustInventories(List<InventoryAdjustment> adjustments);
+    void adjustProductInventories(List<InventoryAdjustment> adjustments);
 }

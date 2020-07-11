@@ -89,14 +89,14 @@ public class DefaultProductService implements ProductService {
 
     @Transactional
     @Override
-    public void adjustInventory(InventoryAdjustment adjustment) {
+    public void adjustProductInventory(InventoryAdjustment adjustment) {
         var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
         product.adjustInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
     }
 
     @Transactional
     @Override
-    public void adjustInventories(List<InventoryAdjustment> adjustments) {
-        adjustments.forEach(this::adjustInventory);
+    public void adjustProductInventories(List<InventoryAdjustment> adjustments) {
+        adjustments.forEach(this::adjustProductInventory);
     }
 }
