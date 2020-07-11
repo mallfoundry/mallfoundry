@@ -16,7 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.staff;
 
-public interface Employee {
+public interface Staff {
+
+    void getStoreId();
+
+    void setStoreId(String storeId);
+
+    String getId();
+
+    void setId(String id);
+
+    StaffType getType();
+
+    void setType(StaffType type);
+
+    String getName();
+
+    void setName(String name);
+
+    String getAvatar();
+
+    void setAvatar(String avatar);
+
 }
