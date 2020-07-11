@@ -19,9 +19,16 @@
 package org.mallfoundry.util;
 
 /**
+ * 对象创造器，继承此接口必须要。
+ *
  * @author Tang Zhi
  * @since 1.0
  */
 public interface ObjectBuilder<O> {
+
     O build();
+
+    interface ToBuilder<T> {
+        T toBuilder();
+    }
 }

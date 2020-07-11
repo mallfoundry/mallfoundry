@@ -19,13 +19,12 @@
 package org.mallfoundry.analytics.schema;
 
 import org.mallfoundry.util.ObjectBuilder;
-import org.mallfoundry.util.ObjectToBuilder;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public interface ObjectType extends ObjectToBuilder<ObjectType.Builder> {
+public interface ObjectType extends ObjectBuilder.ToBuilder<ObjectType.Builder> {
 
     String getId();
 
