@@ -19,10 +19,8 @@
 package org.mallfoundry.catalog.product;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.catalog.product.plugins.ProductAuthorizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
