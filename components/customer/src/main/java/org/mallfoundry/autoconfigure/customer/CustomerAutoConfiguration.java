@@ -30,8 +30,6 @@ public class CustomerAutoConfiguration {
 
     @Bean
     public CustomerConfiguration customerConfiguration(CustomerProperties properties) {
-        var config = new DefaultCustomerConfiguration();
-        config.setDefaultAvatar(properties.getDefaultAvatar());
-        return config;
+        return new DefaultCustomerConfiguration();
     }
 }

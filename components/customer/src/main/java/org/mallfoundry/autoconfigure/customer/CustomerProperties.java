@@ -26,8 +26,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties("mall.customer")
 public class CustomerProperties {
-
-    private String defaultAvatar;
-
-    private String defaultNickname;
 }
