@@ -18,10 +18,6 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductProcessor;
-import org.mallfoundry.security.acl.Resource;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component

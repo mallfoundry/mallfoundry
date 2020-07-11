@@ -19,10 +19,6 @@
 package org.mallfoundry.catalog.product;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductMessages;
-import org.mallfoundry.catalog.product.ProductProcessor;
-import org.mallfoundry.catalog.product.ProductVariant;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 

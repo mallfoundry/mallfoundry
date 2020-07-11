@@ -18,9 +18,6 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductProcessor;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
