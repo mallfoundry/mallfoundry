@@ -94,7 +94,7 @@ public class InternalCartItem implements CartItem {
     @Override
     public void adjustQuantity(int quantityDelta) throws CartException {
         var adjustedQuantity = this.quantity + quantityDelta;
-        if (adjustedQuantity <= 0) {
+        if (adjustedQuantity < 0) {
             throw new CartException("The adjusted quantity cannot be less than zero");
         }
 
@@ -120,8 +120,7 @@ public class InternalCartItem implements CartItem {
             return false;
         }
         InternalCartItem that = (InternalCartItem) o;
-        return Objects.equals(productId, that.productId)
-                && Objects.equals(variantId, that.variantId);
+        return Objects.equals(productId, that.productId) && Objects.equals(variantId, that.variantId);
     }
 
     @Override

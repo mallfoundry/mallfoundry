@@ -72,8 +72,38 @@ public class InternalCart implements Cart {
     }
 
     @Override
+    public CartItemAdjustment createItemAdjustment(String itemId) {
+        return new DefaultCartItemAdjustment(itemId, 0);
+    }
+
+    @Override
+    public CartItem createItem(String id) {
+        return new InternalCartItem(id);
+    }
+
+    @Override
+    public void addItem(CartItem newItem) {
+        this.findItem(newItem.getProductId(), newItem.getVariantId())
+                .ifPresentOrElse(eItem -> this.adjustItem(newItem, eItem), () -> this.items.add(newItem));
+    }
+
+    @Override
+    public void addItems(Collection<CartItem> items) {
+        items.forEach(this::addItem);
+    }
+
+    @Override
     public Optional<CartItem> getItem(String itemId) {
         return this.items.stream().filter(item -> Objects.equals(item.getId(), itemId)).findFirst();
+    }
+
+    @Override
+    public Optional<CartItem> getItem(String productId, String variantId) {
+        return this.items.stream()
+                .filter(item ->
+                        Objects.equals(item.getProductId(), productId)
+                                && Objects.equals(item.getVariantId(), variantId))
+                .findFirst();
     }
 
     @Override
@@ -81,9 +111,20 @@ public class InternalCart implements Cart {
         return this.items.stream().filter(item -> itemIds.contains(item.getId())).collect(Collectors.toUnmodifiableList());
     }
 
+    private Optional<CartItem> getItem(CartItemAdjustment adjustment) {
+        if (Objects.nonNull(adjustment.getItemId())) {
+            return this.getItem(adjustment.getItemId());
+        }
+        return this.getItem(adjustment.getProductId(), adjustment.getVariantId());
+    }
+
     @Override
-    public void adjustItemQuantity(String itemId, int quantityDelta) throws CartException {
-        this.getItem(itemId).orElseThrow().adjustQuantity(quantityDelta);
+    public void adjustItem(CartItemAdjustment adjustment) throws CartException {
+        var item = this.getItem(adjustment).orElseThrow();
+        item.adjustQuantity(adjustment.getQuantityDelta());
+        if (item.getQuantity() == 0) {
+            this.removeItem(item);
+        }
     }
 
     @Override
@@ -116,11 +157,6 @@ public class InternalCart implements Cart {
         this.items.forEach(CartItem::uncheck);
     }
 
-    @Override
-    public CartItem createItem(String id) {
-        return new InternalCartItem(id);
-    }
-
     private void adjustItem(CartItem newItem, CartItem targetItem) {
         targetItem.adjustQuantity(newItem.getQuantity());
 
@@ -148,16 +184,6 @@ public class InternalCart implements Cart {
                 .findFirst();
     }
 
-    @Override
-    public void addItem(CartItem newItem) {
-        this.findItem(newItem.getProductId(), newItem.getVariantId())
-                .ifPresentOrElse(eItem -> this.adjustItem(newItem, eItem), () -> this.items.add(newItem));
-    }
-
-    @Override
-    public void addItems(Collection<CartItem> items) {
-        items.forEach(this::addItem);
-    }
 
     private void setItemSelf(CartItem newItem) {
         var item = this.getItem(newItem.getId()).orElseThrow(CartExceptions.itemNotExist());
@@ -181,7 +207,7 @@ public class InternalCart implements Cart {
     }
 
     @Override
-    public void setItem(CartItem newItem) {
+    public void updateItem(CartItem newItem) {
         var item = this.getItem(newItem.getId()).orElseThrow();
         var itemId = item.getId();
         this.findItem(newItem.getProductId(), newItem.getVariantId())

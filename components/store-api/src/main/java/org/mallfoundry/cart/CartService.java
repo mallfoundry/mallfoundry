@@ -28,19 +28,17 @@ public interface CartService {
 
     Cart createCart(Cart cart);
 
-    void deleteCart(String id);
-
     CartItem addCartItem(String id, CartItem item);
 
     List<CartItem> addCartItems(String id, Collection<CartItem> items);
 
+    Optional<Cart> getCart(String id);
+
     void updateCartItem(String id, CartItem item);
 
-    void removeCartItem(String id, String itemId);
+    void adjustCartItem(String id, CartItemAdjustment adjustment);
 
-    void removeCartItems(String id, Collection<String> itemIds);
-
-    void adjustCartItemQuantity(String id, String itemId, int quantityDelta);
+    void adjustCartItems(String id, List<CartItemAdjustment> adjustments);
 
     void checkCartItem(String id, String itemId);
 
@@ -54,6 +52,9 @@ public interface CartService {
 
     void uncheckAllCartItems(String id);
 
-    Optional<Cart> getCart(String id);
+    void removeCartItem(String id, String itemId);
 
+    void removeCartItems(String id, Collection<String> itemIds);
+
+    void deleteCart(String id);
 }

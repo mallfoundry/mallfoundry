@@ -18,12 +18,14 @@
 
 package org.mallfoundry.cart;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface Cart extends Serializable {
+public interface Cart extends Serializable, ObjectBuilder.ToBuilder<Cart.Builder> {
 
     String getId();
 
@@ -31,7 +33,7 @@ public interface Cart extends Serializable {
 
     void setCustomerId(String customerId);
 
-    List<CartItem> getItems();
+    CartItemAdjustment createItemAdjustment(String itemId);
 
     CartItem createItem(String id);
 
@@ -39,17 +41,17 @@ public interface Cart extends Serializable {
 
     void addItems(Collection<CartItem> items);
 
-    void setItem(CartItem item);
-
-    void removeItem(CartItem item);
-
-    void removeItems(Collection<CartItem> items);
-
     Optional<CartItem> getItem(String itemId);
+
+    Optional<CartItem> getItem(String productId, String variantId);
 
     List<CartItem> getItems(Collection<String> itemIds);
 
-    void adjustItemQuantity(String itemId, int quantityDelta) throws CartException;
+    List<CartItem> getItems();
+
+    void updateItem(CartItem item);
+
+    void adjustItem(CartItemAdjustment adjustment) throws CartException;
 
     void checkItem(String itemId);
 
@@ -63,6 +65,11 @@ public interface Cart extends Serializable {
 
     void uncheckAllItems();
 
+    void removeItem(CartItem item);
+
+    void removeItems(Collection<CartItem> items);
+
+    @Override
     default Builder toBuilder() {
         return new Builder(this);
     }

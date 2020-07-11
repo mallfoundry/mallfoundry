@@ -58,11 +58,6 @@ public class DefaultCartService implements CartService {
         return new InternalCart(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
     }
 
-//    @Override
-//    public CartItem createCartItem() {
-//        return new InternalCartItem(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME));
-//    }
-
     @Override
     public Cart createCart(Cart cart) {
         return this.cartRepository.save(InternalCart.of(cart));
@@ -131,11 +126,10 @@ public class DefaultCartService implements CartService {
     @Override
     public void updateCartItem(String id, CartItem newItem) {
         var cart = this.getInternalCart(id).orElseThrow();
-        if (Objects.nonNull(newItem.getProductId())
-                && Objects.nonNull(newItem.getVariantId())) {
+        if (Objects.nonNull(newItem.getProductId()) && Objects.nonNull(newItem.getVariantId())) {
             this.setCartItem(newItem);
         }
-        cart.setItem(newItem);
+        cart.updateItem(newItem);
     }
 
     @Transactional
@@ -154,9 +148,15 @@ public class DefaultCartService implements CartService {
 
     @Transactional
     @Override
-    public void adjustCartItemQuantity(String id, String itemId, int quantityDelta) {
+    public void adjustCartItem(String id, CartItemAdjustment adjustment) {
         var cart = this.getCart(id).orElseThrow();
-        cart.adjustItemQuantity(itemId, quantityDelta);
+        cart.adjustItem(adjustment);
+    }
+
+    @Override
+    public void adjustCartItems(String id, List<CartItemAdjustment> adjustments) {
+        var cart = this.getCart(id).orElseThrow();
+        adjustments.forEach(cart::adjustItem);
     }
 
     @Transactional
