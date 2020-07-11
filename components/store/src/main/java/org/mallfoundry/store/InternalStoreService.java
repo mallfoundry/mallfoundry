@@ -19,6 +19,7 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
@@ -81,6 +82,7 @@ public class InternalStoreService implements StoreService {
     @Transactional
     @Override
     public Store createStore(Store store) {
+        store.setOwnerId(SubjectHolder.getUserId());
         store.initialize();
         var savedStore = this.storeRepository.save(InternalStore.of(store));
         this.storeBlobService.initializeBucket(this.createStoreId(store.getId()));

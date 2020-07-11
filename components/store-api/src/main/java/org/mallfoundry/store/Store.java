@@ -52,6 +52,10 @@ public interface Store {
 
     void setDescription(String description);
 
+    StoreAddress getPrimaryAddress();
+
+    void setPrimaryAddress(StoreAddress address);
+
     Date getCreatedTime();
 
     void initialize();

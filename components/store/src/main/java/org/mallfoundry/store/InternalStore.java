@@ -18,8 +18,6 @@
 
 package org.mallfoundry.store;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +29,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Getter
@@ -54,11 +53,9 @@ public class InternalStore implements Store {
     @Column(name = "domain_")
     private String domain;
 
-    @JsonProperty("logo_url")
     @Column(name = "logo_url_")
     private String logoUrl;
 
-    @JsonProperty("owner_id")
     @Column(name = "owner_id_")
     private String ownerId;
 
@@ -68,8 +65,9 @@ public class InternalStore implements Store {
     @Column(name = "description_")
     private String description;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty(value = "created_time", access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    private StoreAddress primaryAddress;
+
     @Column(name = "created_time_")
     private Date createdTime;
 
