@@ -18,7 +18,6 @@
 
 package org.mallfoundry.security.acl;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +96,6 @@ public class AccessControlTests {
         var resource = this.manager.getResource(Resource.STORE_TYPE, "mi").orElseThrow();
         var ac = this.manager.getAccessControl(resource, Set.of(principal)).orElseThrow();
         var readGranted = ac.granted(p1, principal);
-        Assert.assertTrue(readGranted);
+        Assertions.assertTrue(readGranted);
     }
 }
