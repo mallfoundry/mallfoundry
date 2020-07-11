@@ -38,7 +38,7 @@ public class PaymentEventListener {
 
     private PaymentInformation createPaymentDetails(Payment payment) {
         var instrument = payment.getInstrument();
-        return new InternalPaymentDetails(payment.getId(), instrument.getType(), payment.getStatus());
+        return new DefaultPaymentInformation(payment.getId(), instrument.getType(), payment.getStatus());
     }
 
     @Transactional

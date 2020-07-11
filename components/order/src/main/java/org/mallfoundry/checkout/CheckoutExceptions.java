@@ -16,19 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.checkout;
 
-import lombok.Getter;
-import lombok.Setter;
+public abstract class CheckoutExceptions {
 
-import java.math.BigDecimal;
-
-@Getter
-@Setter
-public class InternalRefundItem implements RefundItem {
-    private String itemId;
-
-    private BigDecimal amount;
-
-    private String reason;
+    public static CheckoutException notFound() {
+        return new CheckoutException("");
+    }
 }

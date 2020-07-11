@@ -23,6 +23,11 @@ import org.mallfoundry.data.SliceList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 提供对订单对象的管理。
+ *
+ * @author Zhi Tang
+ */
 public interface OrderService {
 
     OrderQuery createOrderQuery();
@@ -59,9 +64,9 @@ public interface OrderService {
 
     List<Shipment> getOrderShipments(String orderId);
 
-    void setOrderShipment(String orderId, Shipment shipment);
+    void updateOrderShipment(String orderId, Shipment shipment);
 
-    void setOrderShipments(String orderId, List<Shipment> shipments);
+    void updateOrderShipments(String orderId, List<Shipment> shipments);
 
     void removeOrderShipment(String orderId, String shipmentId);
 }

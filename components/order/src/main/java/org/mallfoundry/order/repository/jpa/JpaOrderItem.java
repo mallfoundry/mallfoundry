@@ -16,13 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
+import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderItemSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -30,7 +32,6 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_order_item")
-public class InternalOrderItem implements OrderItem {
+public class JpaOrderItem extends OrderItemSupport {
 
     @Id
     @Column(name = "id_")
@@ -80,53 +81,32 @@ public class InternalOrderItem implements OrderItem {
     @Column(name = "discount_shipping_cost_")
     private BigDecimal discountShippingCost;
 
-    public InternalOrderItem(String itemId) {
+    public JpaOrderItem(String itemId) {
         this.id = itemId;
     }
 
-    public static InternalOrderItem of(OrderItem item) {
-        if (item instanceof InternalOrderItem) {
-            return (InternalOrderItem) item;
+    public static JpaOrderItem of(OrderItem item) {
+        if (item instanceof JpaOrderItem) {
+            return (JpaOrderItem) item;
         }
-        var target = new InternalOrderItem();
+        var target = new JpaOrderItem();
         BeanUtils.copyProperties(item, target);
         return target;
     }
 
+    @Override
     public BigDecimal getDiscountAmount() {
-        return Objects.isNull(this.discountAmount)
-                ? BigDecimal.ZERO
-                : this.discountAmount;
+        return Objects.isNull(this.discountAmount) ? BigDecimal.ZERO : this.discountAmount;
     }
 
+    @Override
     public BigDecimal getShippingCost() {
-        return Objects.isNull(this.shippingCost)
-                ? BigDecimal.ZERO
-                : this.shippingCost;
+        return Objects.isNull(this.shippingCost) ? BigDecimal.ZERO : this.shippingCost;
     }
 
+    @Override
     public BigDecimal getDiscountShippingCost() {
-        return Objects.isNull(this.discountShippingCost)
-                ? BigDecimal.ZERO
-                : this.discountShippingCost;
-    }
-
-    @Override
-    public BigDecimal getTotalPrice() {
-        return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
-    }
-
-    @Transient
-    @Override
-    public BigDecimal getSubtotalAmount() {
-        return this.getTotalPrice().add(this.getShippingCost());
-    }
-
-    @Override
-    public BigDecimal getTotalAmount() {
-        return this.getSubtotalAmount()
-                .add(this.getDiscountAmount())
-                .add(this.getDiscountShippingCost());
+        return Objects.isNull(this.discountShippingCost) ? BigDecimal.ZERO : this.discountShippingCost;
     }
 
     @Override
@@ -137,7 +117,7 @@ public class InternalOrderItem implements OrderItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalOrderItem that = (InternalOrderItem) o;
+        JpaOrderItem that = (JpaOrderItem) o;
         return Objects.equals(id, that.id);
     }
 

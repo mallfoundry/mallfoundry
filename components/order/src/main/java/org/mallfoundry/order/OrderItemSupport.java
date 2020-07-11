@@ -16,29 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa.convert;
+package org.mallfoundry.order;
 
-import org.mallfoundry.order.DefaultShipmentItem;
-import org.mallfoundry.order.ShipmentItem;
-import org.mallfoundry.util.JsonUtils;
+import java.math.BigDecimal;
 
-import javax.persistence.AttributeConverter;
-import java.util.List;
-import java.util.Objects;
-
-public class ShipmentItemListConverter implements AttributeConverter<List<ShipmentItem>, String> {
+public abstract class OrderItemSupport implements OrderItem {
 
     @Override
-    public String convertToDatabaseColumn(List<ShipmentItem> items) {
-        return Objects.isNull(items)
-                ? null
-                : JsonUtils.stringify(items);
+    public BigDecimal getTotalPrice() {
+        return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
     }
 
     @Override
-    public List<ShipmentItem> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData)
-                ? null
-                : JsonUtils.parse(dbData, List.class, DefaultShipmentItem.class);
+    public BigDecimal getSubtotalAmount() {
+        return this.getTotalPrice().add(this.getShippingCost());
+    }
+
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.getSubtotalAmount().add(this.getDiscountAmount()).add(this.getDiscountShippingCost());
     }
 }

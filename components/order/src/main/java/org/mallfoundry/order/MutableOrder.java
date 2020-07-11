@@ -18,22 +18,27 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.data.SliceList;
+import java.util.Date;
 
-import java.util.List;
-import java.util.Optional;
+public interface MutableOrder extends Order {
 
-public interface OrderRepository {
+    void setStatus(OrderStatus status);
 
-    Order create(String id);
+    void setShippedItems(int items);
 
-    Order save(Order order);
+    void setCancelReason(String cancelReason);
 
-    List<Order> saveAll(Iterable<Order> orders);
+    void setPlacedTime(Date placedTime);
 
-    Optional<Order> findById(String id);
+    void setPaidTime(Date paidTime);
 
-    SliceList<Order> findAll(OrderQuery query);
+    void setFulfilledTime(Date fulfilledTime);
 
-    long count(OrderQuery query);
+    void setShippedTime(Date shippedTime);
+
+    void setCancelledTime(Date cancelledTime);
+
+    void setSignedTime(Date signedTime);
+
+    void setReceivedTime(Date receivedTime);
 }

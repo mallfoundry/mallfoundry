@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class InternalOrderQuery extends QuerySupport implements OrderQuery {
+public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
 
     private Set<String> ids;
 

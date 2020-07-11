@@ -18,8 +18,8 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.ObjectBuilder;
 
@@ -33,6 +33,8 @@ import java.util.function.Function;
 public interface Order {
 
     String getId();
+
+    void setId(String id);
 
     Address getShippingAddress();
 
@@ -88,7 +90,7 @@ public interface Order {
 
     Optional<Shipment> getShipment(String id);
 
-    void setShipment(Shipment shipment);
+    void updateShipment(Shipment shipment);
 
     void removeShipment(Shipment shipment);
 

@@ -18,7 +18,7 @@
 
 package org.mallfoundry.order.repository.jpa.convert;
 
-import org.mallfoundry.order.InternalRefundItem;
+import org.mallfoundry.order.DefaultRefundItem;
 import org.mallfoundry.order.RefundItem;
 import org.mallfoundry.util.JsonUtils;
 
@@ -35,6 +35,6 @@ public class RefundItemListConverter implements AttributeConverter<List<RefundIt
 
     @Override
     public List<RefundItem> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, InternalRefundItem.class);
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, DefaultRefundItem.class);
     }
 }

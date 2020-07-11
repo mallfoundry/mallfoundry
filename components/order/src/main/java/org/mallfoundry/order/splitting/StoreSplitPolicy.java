@@ -18,9 +18,9 @@
 
 package org.mallfoundry.order.splitting;
 
-import org.mallfoundry.order.InternalOrder;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderSplitPolicy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -32,8 +32,14 @@ import java.util.stream.Collectors;
 @Component
 public class StoreSplitPolicy implements OrderSplitPolicy {
 
-    private Function<List<OrderItem>, Order> assign0(Order source) {
-        var order = new InternalOrder();
+    private final OrderRepository orderRepository;
+
+    public StoreSplitPolicy(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    private Function<List<OrderItem>, Order> assign(Order source) {
+        var order = this.orderRepository.create(null);
         BeanUtils.copyProperties(source, order, "items");
         return (items) -> {
             order.setItems(items);
@@ -47,8 +53,7 @@ public class StoreSplitPolicy implements OrderSplitPolicy {
                 .flatMap(order -> order.getItems().stream()
                         // group by store id
                         .collect(Collectors.groupingBy(OrderItem::getStoreId))
-                        .values().stream()
-                        .map(this.assign0(order))
+                        .values().stream().map(this.assign(order))
                 )
                 .collect(Collectors.toList());
     }

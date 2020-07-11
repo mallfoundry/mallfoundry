@@ -65,17 +65,17 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public OrderQuery createOrderQuery() {
-        return new InternalOrderQuery();
+        return new DefaultOrderQuery();
     }
 
     @Override
     public Order createOrder(String id) {
-        return new InternalOrder(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
+        return this.orderRepository.create(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
     }
 
     @Override
     public List<Order> splitOrders(List<Order> orders) {
-        return this.orderSplitter.splitting(orders).stream().map(InternalOrder::of).collect(Collectors.toList());
+        return this.orderSplitter.splitting(orders);
     }
 
     @Transactional
@@ -88,12 +88,11 @@ public class DefaultOrderService implements OrderService {
     @Override
     public List<Order> placeOrders(List<Order> orders) {
         var placingOrders = this.orderSplitter.splitting(orders).stream()
-                .map(InternalOrder::of)
                 .peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
                 .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
                 .peek(Order::place)
                 .collect(Collectors.toList());
-        List<Order> placedOrders = CastUtils.cast(this.orderRepository.saveAll(placingOrders));
+        List<Order> placedOrders = this.orderRepository.saveAll(placingOrders);
         placedOrders.forEach(order ->
                 this.eventPublisher.publishEvent(new ImmutableOrderPlacedEvent(order)));
         return placedOrders;
@@ -117,7 +116,7 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public Order updateOrder(Order order) {
-        return this.orderRepository.save(InternalOrder.of(order));
+        return this.orderRepository.save(order);
     }
 
     private Order getNonOrder(String orderId) {
@@ -194,16 +193,17 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void setOrderShipment(String orderId, Shipment shipment) {
+    public void updateOrderShipment(String orderId, Shipment shipment) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
-        order.setShipment(shipment);
+        order.updateShipment(shipment);
         this.orderRepository.save(order);
     }
 
+    @Transactional
     @Override
-    public void setOrderShipments(String orderId, List<Shipment> shipments) {
+    public void updateOrderShipments(String orderId, List<Shipment> shipments) {
         var order = this.orderRepository.findById(orderId).orElseThrow();
-        shipments.forEach(order::setShipment);
+        shipments.forEach(order::updateShipment);
     }
 
     @Transactional

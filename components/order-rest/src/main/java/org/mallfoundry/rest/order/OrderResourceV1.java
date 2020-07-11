@@ -165,7 +165,7 @@ public class OrderResourceV1 {
     public void setOrderShipment(@PathVariable("order_id") String orderId,
                                  @PathVariable("shipment_id") String shipmentId,
                                  @RequestBody ShipmentRequest request) {
-        this.orderService.setOrderShipment(orderId,
+        this.orderService.updateOrderShipment(orderId,
                 request.assignToShipment(
                         this.orderService.createOrder(orderId).createShipment(shipmentId)));
     }
@@ -178,7 +178,7 @@ public class OrderResourceV1 {
                 .map(request ->
                         request.assignToShipment(order.createShipment(request.getId())))
                 .collect(Collectors.toList());
-        this.orderService.setOrderShipments(orderId, shipments);
+        this.orderService.updateOrderShipments(orderId, shipments);
     }
 
     @DeleteMapping("/orders/{order_id}/shipments/{shipment_id}")

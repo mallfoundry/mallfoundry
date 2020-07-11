@@ -19,35 +19,17 @@
 package org.mallfoundry.order;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
-import org.springframework.beans.BeanUtils;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class InternalPaymentDetails implements PaymentInformation {
+public class DefaultRefundItem extends RefundItemSupport {
 
-    private String id;
+    private String itemId;
 
-    private PaymentMethod method;
+    private BigDecimal amount;
 
-    private PaymentStatus status;
-
-    public InternalPaymentDetails(String id, PaymentMethod method, PaymentStatus status) {
-        this.id = id;
-        this.method = method;
-        this.status = status;
-    }
-
-    public static InternalPaymentDetails of(PaymentInformation details) {
-        if (details instanceof InternalPaymentDetails) {
-            return (InternalPaymentDetails) details;
-        }
-        var target = new InternalPaymentDetails();
-        BeanUtils.copyProperties(details, target);
-        return target;
-    }
+    private String reason;
 }

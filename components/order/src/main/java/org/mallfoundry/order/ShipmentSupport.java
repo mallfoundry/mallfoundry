@@ -18,41 +18,34 @@
 
 package org.mallfoundry.order;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import java.util.Objects;
-
-@Getter
-@Setter
-public class InternalShipmentItem implements ShipmentItem {
-
-    private String id;
-
-    private String productId;
-
-    private String variantId;
-
-    private int quantity;
-
-    private String name;
-
-    private String imageUrl;
+public abstract class ShipmentSupport implements Shipment {
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof InternalShipmentItem)) {
-            return false;
-        }
-        InternalShipmentItem that = (InternalShipmentItem) o;
-        return Objects.equals(id, that.id);
+    public ShipmentItem createItem(String id) {
+        return new DefaultShipmentItem();
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void addItem(ShipmentItem item) {
+        this.getItems().add(item);
+    }
+
+    @Override
+    public Optional<ShipmentItem> getItem(String id) {
+        return this.getItems().stream().filter(item -> item.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public void removeItem(ShipmentItem item) {
+        this.getItems().remove(item);
+    }
+
+    @Override
+    public List<String> getImageUrls() {
+        return this.getItems().stream().map(ShipmentItem::getImageUrl).collect(Collectors.toUnmodifiableList());
     }
 }

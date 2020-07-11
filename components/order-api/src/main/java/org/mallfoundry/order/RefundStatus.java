@@ -18,22 +18,5 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.List;
-import java.util.Optional;
-
-public interface OrderRepository {
-
-    Order create(String id);
-
-    Order save(Order order);
-
-    List<Order> saveAll(Iterable<Order> orders);
-
-    Optional<Order> findById(String id);
-
-    SliceList<Order> findAll(OrderQuery query);
-
-    long count(OrderQuery query);
+public enum RefundStatus {
 }

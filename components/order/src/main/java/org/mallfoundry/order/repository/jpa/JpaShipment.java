@@ -16,12 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.order.Shipment;
+import org.mallfoundry.order.ShipmentItem;
+import org.mallfoundry.order.ShipmentSupport;
 import org.mallfoundry.order.repository.jpa.convert.ShipmentItemListConverter;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.CarrierCode;
@@ -35,20 +38,17 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_order_shipment")
-public class InternalShipment implements Shipment {
+public class JpaShipment extends ShipmentSupport {
 
     @Id
     @Getter
@@ -86,44 +86,18 @@ public class InternalShipment implements Shipment {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    public InternalShipment(String id) {
-        this.id = id;
+    public JpaShipment(String id) {
+        this.setId(id);
         this.setShippedTime(new Date());
     }
 
-    public static InternalShipment of(Shipment shipment) {
-        if (shipment instanceof InternalShipment) {
-            return (InternalShipment) shipment;
+    public static JpaShipment of(Shipment shipment) {
+        if (shipment instanceof JpaShipment) {
+            return (JpaShipment) shipment;
         }
-        var target = new InternalShipment();
+        var target = new JpaShipment();
         BeanUtils.copyProperties(shipment, target);
         return target;
-    }
-
-    @Transient
-    @Override
-    public List<String> getImageUrls() {
-        return this.items.stream().map(ShipmentItem::getImageUrl).collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
-    public ShipmentItem createItem(String id) {
-        return new InternalShipmentItem();
-    }
-
-    @Override
-    public Optional<ShipmentItem> getItem(String id) {
-        return this.getItems().stream().filter(item -> item.getId().equals(id)).findFirst();
-    }
-
-    @Override
-    public void addItem(ShipmentItem item) {
-        this.getItems().add(item);
-    }
-
-    @Override
-    public void removeItem(ShipmentItem item) {
-        this.getItems().remove(item);
     }
 
     @Override
@@ -134,7 +108,7 @@ public class InternalShipment implements Shipment {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalShipment that = (InternalShipment) o;
+        JpaShipment that = (JpaShipment) o;
         return Objects.equals(id, that.id);
     }
 

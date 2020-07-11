@@ -18,80 +18,52 @@
 
 package org.mallfoundry.order.repository.jpa;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.order.InternalOrder;
+import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderQuery;
 import org.mallfoundry.order.OrderRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.Predicate;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Repository
-public interface JpaOrderRepository
-        extends OrderRepository,
-        JpaRepository<InternalOrder, String>,
-        JpaSpecificationExecutor<InternalOrder> {
+public class JpaOrderRepository implements OrderRepository {
 
-    @Override
-    List<InternalOrder> findAllById(Iterable<String> iterable);
+    private final JpaOrderRepositoryDelegate repository;
 
-    default Specification<InternalOrder> createSpecification(OrderQuery orderQuery) {
-        return (Specification<InternalOrder>) (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
-
-            if (Objects.nonNull(orderQuery.getCustomerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
-            }
-            if (Objects.nonNull(orderQuery.getStoreId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
-            }
-            if (CollectionUtils.isNotEmpty(orderQuery.getIds())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("id")).value(orderQuery.getIds()));
-            }
-            if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
-            }
-            if (CollectionUtils.isNotEmpty(orderQuery.getTypes())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(orderQuery.getTypes()));
-            }
-            if (CollectionUtils.isNotEmpty(orderQuery.getSources())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("source")).value(orderQuery.getSources()));
-            }
-            if (CollectionUtils.isNotEmpty(orderQuery.getPaymentMethods())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(orderQuery.getPaymentMethods()));
-            }
-            if (Objects.nonNull(orderQuery.getPlacedTimeMin())) {
-                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMin()));
-            }
-            if (Objects.nonNull(orderQuery.getPlacedTimeMax())) {
-                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMax()));
-            }
-            return predicate;
-        };
+    public JpaOrderRepository(JpaOrderRepositoryDelegate repository) {
+        this.repository = repository;
     }
 
     @Override
-    default SliceList<InternalOrder> findAll(OrderQuery orderQuery) {
-        Page<InternalOrder> page = this.findAll(this.createSpecification(orderQuery),
-                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("placedTime"))));
-        return PageList.of(page.getContent())
-                .page(page.getNumber())
-                .limit(orderQuery.getLimit())
-                .totalSize(page.getTotalElements());
+    public Order create(String id) {
+        return new JpaOrder(id);
     }
 
     @Override
-    default long count(OrderQuery orderQuery) {
-        return this.count(this.createSpecification(orderQuery));
+    public Order save(Order order) {
+        return repository.save(JpaOrder.of(order));
+    }
+
+    @Override
+    public List<Order> saveAll(Iterable<Order> orders) {
+        return null;
+    }
+
+    @Override
+    public Optional<Order> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public SliceList<Order> findAll(OrderQuery query) {
+        return CastUtils.cast(this.repository.findAll(query));
+    }
+
+    @Override
+    public long count(OrderQuery query) {
+        return this.repository.count(query);
     }
 }

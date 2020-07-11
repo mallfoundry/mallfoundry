@@ -16,29 +16,43 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa.convert;
+package org.mallfoundry.order;
 
-import org.mallfoundry.order.DefaultShipmentItem;
-import org.mallfoundry.order.ShipmentItem;
-import org.mallfoundry.util.JsonUtils;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.AttributeConverter;
-import java.util.List;
 import java.util.Objects;
 
-public class ShipmentItemListConverter implements AttributeConverter<List<ShipmentItem>, String> {
+@Getter
+@Setter
+public class DefaultShipmentItem implements ShipmentItem {
+
+    private String id;
+
+    private String productId;
+
+    private String variantId;
+
+    private int quantity;
+
+    private String name;
+
+    private String imageUrl;
 
     @Override
-    public String convertToDatabaseColumn(List<ShipmentItem> items) {
-        return Objects.isNull(items)
-                ? null
-                : JsonUtils.stringify(items);
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultShipmentItem)) {
+            return false;
+        }
+        DefaultShipmentItem that = (DefaultShipmentItem) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
-    public List<ShipmentItem> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData)
-                ? null
-                : JsonUtils.parse(dbData, List.class, DefaultShipmentItem.class);
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
