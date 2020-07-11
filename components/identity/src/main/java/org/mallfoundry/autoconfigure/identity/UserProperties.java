@@ -28,4 +28,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class UserProperties {
     private String defaultUsername;
     private String defaultNickname;
+    private String defaultAvatar;
 }

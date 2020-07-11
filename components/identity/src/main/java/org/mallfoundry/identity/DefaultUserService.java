@@ -21,6 +21,7 @@ package org.mallfoundry.identity;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -149,6 +150,11 @@ public class DefaultUserService implements UserService {
         var user = this.getNonUser(id);
         this.eventPublisher.publishEvent(new ImmutableUserDeletedEvent(user));
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public Optional<User> getCurrentUser() {
+        return this.getUser(SubjectHolder.getUserId());
     }
 
     @Transactional

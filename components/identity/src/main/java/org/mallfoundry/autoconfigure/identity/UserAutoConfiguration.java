@@ -34,6 +34,7 @@ public class UserAutoConfiguration {
         var config = new DefaultUserConfiguration();
         config.setDefaultUsername(properties.getDefaultUsername());
         config.setDefaultNickname(properties.getDefaultNickname());
+        config.setDefaultAvatar(properties.getDefaultAvatar());
         return config;
     }
 }

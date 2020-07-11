@@ -24,6 +24,10 @@ public interface UserConfiguration {
 
     void setDefaultUsername(String defaultUsername);
 
+    String getDefaultAvatar();
+
+    void setDefaultAvatar(String avatar);
+
     String getDefaultNickname();
 
     void setDefaultNickname(String defaultNickname);

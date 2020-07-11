@@ -49,6 +49,9 @@ public class JpaUser extends UserSupport {
     @Column(name = "username_", unique = true)
     private String username;
 
+    @Column(name = "avatar_")
+    private String avatar;
+
     @Column(name = "nickname_")
     private String nickname;
 

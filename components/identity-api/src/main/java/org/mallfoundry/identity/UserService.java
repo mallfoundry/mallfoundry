@@ -36,6 +36,8 @@ public interface UserService {
 
     User setUser(User user);
 
+    Optional<User> getCurrentUser();
+
     Optional<User> getUser(String userId);
 
     Optional<User> getUserByUsername(String id);

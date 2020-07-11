@@ -31,6 +31,10 @@ public interface User {
 
     void setUsername(String username);
 
+    String getAvatar();
+
+    void setAvatar(String avatar);
+
     String getNickname();
 
     void setNickname(String nickname);

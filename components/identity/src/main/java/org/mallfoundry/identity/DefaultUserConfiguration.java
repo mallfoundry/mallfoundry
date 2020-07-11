@@ -25,5 +25,6 @@ import lombok.Setter;
 @Setter
 public class DefaultUserConfiguration implements UserConfiguration {
     private String defaultUsername;
+    private String defaultAvatar;
     private String defaultNickname;
 }

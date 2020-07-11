@@ -52,7 +52,7 @@ public class UserResourceV1 {
 
     @GetMapping("/users/current")
     public Optional<UserResponse> getCurrentUser() {
-        return this.userService.getUser(SubjectHolder.getUserId()).map(UserResponse::of);
+        return this.userService.getCurrentUser().map(UserResponse::of);
     }
 
     @PatchMapping("/users/{id}")
