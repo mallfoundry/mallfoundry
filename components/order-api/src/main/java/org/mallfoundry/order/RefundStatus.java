@@ -19,4 +19,5 @@
 package org.mallfoundry.order;
 
 public enum RefundStatus {
+    PENDING, SUCCEEDED, FAILED, CANCELED;
 }
