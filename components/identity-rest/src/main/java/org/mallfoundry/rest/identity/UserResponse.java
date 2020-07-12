@@ -40,6 +40,8 @@ public class UserResponse {
 
     private String mobile;
 
+    private String avatar;
+
     private String email;
 
     private List<String> authorities;
@@ -48,6 +50,7 @@ public class UserResponse {
         this.id = user.getId();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
+        this.avatar = user.getAvatar();
         this.countryCode = user.getCountryCode();
         this.mobile = user.getMobile();
         this.email = user.getEmail();
