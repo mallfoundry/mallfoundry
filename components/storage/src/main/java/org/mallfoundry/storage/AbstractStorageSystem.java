@@ -53,7 +53,14 @@ public abstract class AbstractStorageSystem implements StorageSystem {
 
     @Override
     public void storeBlob(Blob blob) throws IOException {
-        this.storeBlobToPath(blob, this.getStorePath(blob));
+        var pathname = this.getStorePath(blob);
+        this.storeBlobToPath(blob, pathname);
+        if (Objects.isNull(blob.getUrl())) {
+            blob.setUrl(this.concatAccessUrl(pathname));
+        }
+        if (blob.getSize() == 0) {
+            blob.setSize(blob.toFile().length());
+        }
     }
 
     protected String getStorePath(Blob blob) throws IOException {
