@@ -19,42 +19,47 @@
 package org.mallfoundry.storage.aliyun;
 
 import com.aliyun.oss.OSS;
-import org.apache.commons.lang3.StringUtils;
+import com.aliyun.oss.OSSClientBuilder;
+import lombok.Setter;
 import org.mallfoundry.storage.AbstractStorageSystem;
 import org.mallfoundry.storage.Blob;
-import org.mallfoundry.storage.StorageException;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class AliyunStorageSystem extends AbstractStorageSystem implements DisposableBean {
+public class AliyunStorageSystem extends AbstractStorageSystem implements InitializingBean, DisposableBean {
 
-    private final OSS client;
+    @Setter
+    private String accessKeyId;
 
+    @Setter
+    private String accessKeySecret;
+
+    @Setter
+    private String endpoint;
+
+    @Setter
     private String bucketName;
 
-    public AliyunStorageSystem(OSS client, String bucketName, String baseUrl) {
-        super(baseUrl);
-        this.client = client;
-        this.setBucketName(bucketName);
-    }
+    private OSS client;
 
-    public void setBucketName(String bucketName) {
-        if (StringUtils.isBlank(bucketName)) {
-            throw new StorageException("The bucket name must not be empty");
-        }
-        this.bucketName = StringUtils.trim(bucketName);
+    public AliyunStorageSystem(String baseUrl) {
+        super(baseUrl);
     }
 
     @Override
-    public void storeBlobToPath(Blob blob, String path) throws IOException {
+    public void afterPropertiesSet() {
+        this.client = new OSSClientBuilder().build(this.endpoint, this.accessKeyId, this.accessKeySecret);
+    }
+
+    @Override
+    public void storeBlobToPath(Blob blob, String pathname) throws IOException {
         if (blob.isFile()) {
             var file = blob.toFile();
-            this.client.putObject(this.bucketName, PathUtils.removePrefixSeparator(path), file);
-            blob.setUrl(this.concatAccessUrl(path));
-            blob.setSize(file.length());
+            this.client.putObject(this.bucketName, PathUtils.removePrefixSeparator(pathname), file);
         }
     }
 
@@ -64,4 +69,5 @@ public class AliyunStorageSystem extends AbstractStorageSystem implements Dispos
             this.client.shutdown();
         }
     }
+
 }
