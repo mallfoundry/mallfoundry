@@ -23,7 +23,7 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.util.Date;
 import java.util.List;
 
-public interface User {
+public interface User extends ObjectBuilder.ToBuilder<User.Builder> {
 
     String getId();
 
@@ -39,6 +39,10 @@ public interface User {
 
     void setNickname(String nickname);
 
+    Gender getGender();
+
+    void setGender(Gender gender);
+
     String getCountryCode();
 
     void setCountryCode(String countryCode);
@@ -50,6 +54,12 @@ public interface User {
     String getEmail();
 
     void setEmail(String email);
+
+    boolean isImmutable();
+
+    void mutable();
+
+    void immutable();
 
     String getPassword();
 
@@ -63,15 +73,15 @@ public interface User {
 
     void create();
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this);
-    }
-
     interface Builder extends ObjectBuilder<User> {
 
         Builder username(String username);
 
+        Builder avatar(String avatar);
+
         Builder nickname(String nickname);
+
+        Builder gender(Gender gender);
 
         Builder countryCode(String countryCode);
 
@@ -79,63 +89,12 @@ public interface User {
 
         Builder email(String mail);
 
+        Builder mutable();
+
+        Builder immutable();
+
         Builder password(String password);
 
         Builder authorities(List<String> authorities);
-    }
-
-    class BuilderSupport implements Builder {
-        private final User user;
-
-        public BuilderSupport(User user) {
-            this.user = user;
-        }
-
-        @Override
-        public Builder username(String username) {
-            this.user.setUsername(username);
-            return this;
-        }
-
-        @Override
-        public Builder nickname(String nickname) {
-            this.user.setNickname(nickname);
-            return this;
-        }
-
-        @Override
-        public Builder countryCode(String countryCode) {
-            this.user.setCountryCode(countryCode);
-            return this;
-        }
-
-        @Override
-        public Builder mobile(String mobile) {
-            this.user.setMobile(mobile);
-            return this;
-        }
-
-        @Override
-        public Builder email(String email) {
-            this.user.setEmail(email);
-            return this;
-        }
-
-        @Override
-        public Builder password(String password) {
-            this.user.changePassword(password);
-            return this;
-        }
-
-        @Override
-        public Builder authorities(List<String> authorities) {
-            this.user.setAuthorities(authorities);
-            return this;
-        }
-
-        @Override
-        public User build() {
-            return this.user;
-        }
     }
 }

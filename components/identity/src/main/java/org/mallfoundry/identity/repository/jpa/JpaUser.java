@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.jpa.convert.StringListConverter;
+import org.mallfoundry.identity.Gender;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserSupport;
 import org.springframework.beans.BeanUtils;
@@ -52,6 +53,9 @@ public class JpaUser extends UserSupport {
     @Column(name = "avatar_")
     private String avatar;
 
+    @Column(name = "gender_")
+    private Gender gender;
+
     @Column(name = "nickname_")
     private String nickname;
 
@@ -63,6 +67,9 @@ public class JpaUser extends UserSupport {
 
     @Column(name = "password_")
     private String password;
+
+    @Column(name = "immutable_")
+    private boolean immutable = false;
 
     @Column(name = "email_", unique = true)
     private String email;

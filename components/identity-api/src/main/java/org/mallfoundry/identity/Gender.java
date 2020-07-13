@@ -18,13 +18,16 @@
 
 package org.mallfoundry.identity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public interface MutableUser extends User {
+public enum Gender {
+    MALE,
+    FEMALE,
+    UNKNOWN;
 
-    void setPassword(String password);
-
-    void setImmutable(boolean immutable);
-
-    void setCreatedTime(Date createdTime);
+    @JsonValue
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
 }
