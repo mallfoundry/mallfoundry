@@ -104,7 +104,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void setShipment(Shipment shipment) {
+    public void updateShipment(Shipment shipment) {
 
     }
 
