@@ -26,16 +26,13 @@ import org.springframework.dao.DataAccessResourceFailureException;
 
 public class FtpClientPooledFactory implements FtpClientFactory {
 
-    private final FtpClientPooledConfiguration configuration;
-
     private final GenericObjectPool<FtpClient> clientPool;
 
-    public FtpClientPooledFactory(FtpClientPooledConfiguration configuration) {
-        this.configuration = configuration;
+    public FtpClientPooledFactory(FtpClientPooledConfiguration configuration) throws ClassNotFoundException {
         var factory = new FtpClientPooledObjectFactory(configuration);
         this.clientPool = new GenericObjectPool<>(factory);
-        this.clientPool.setMaxTotal(1);
-        this.clientPool.setMaxIdle(1);
+        this.clientPool.setMaxTotal(configuration.getMaxTotal());
+        this.clientPool.setMaxIdle(configuration.getMaxIdle());
     }
 
     @Override

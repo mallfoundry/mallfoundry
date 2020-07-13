@@ -22,4 +22,8 @@ public class FtpException extends RuntimeException {
     public FtpException(Throwable cause) {
         super(cause);
     }
+
+    public FtpException(String message) {
+        super(message);
+    }
 }

@@ -26,4 +26,6 @@ import org.mallfoundry.storage.ftp.FtpClientConfiguration;
 @Setter
 public class FtpClientPooledConfiguration extends FtpClientConfiguration {
     private String clientClassName;
+    private int maxTotal;
+    private int maxIdle;
 }

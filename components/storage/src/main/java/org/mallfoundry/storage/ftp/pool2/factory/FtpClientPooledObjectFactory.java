@@ -18,29 +18,30 @@
 
 package org.mallfoundry.storage.ftp.pool2.factory;
 
+import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.mallfoundry.storage.ftp.FtpClient;
-import org.mallfoundry.storage.ftp.commons.CommonsFtpClient;
+import org.mallfoundry.storage.ftp.FtpException;
 import org.mallfoundry.storage.ftp.pool2.DelegatingFtpClient;
 import org.springframework.beans.BeanUtils;
 
 public class FtpClientPooledObjectFactory extends BasePooledObjectFactory<FtpClient> {
 
-    //    private final Class<FtpClient> clientClass;
-//
+    private final Class<FtpClient> clientClass;
+
     private final FtpClientPooledConfiguration configuration;
 
     @SuppressWarnings("unchecked")
-    public FtpClientPooledObjectFactory(FtpClientPooledConfiguration configuration) {
+    public FtpClientPooledObjectFactory(FtpClientPooledConfiguration configuration) throws ClassNotFoundException {
         this.configuration = configuration;
-//        this.clientClass = (Class<FtpClient>) Class.forName(configuration.getClientClassName());
+        this.clientClass = (Class<FtpClient>) Class.forName(configuration.getClientClassName());
     }
 
     @Override
     public FtpClient create() throws Exception {
-        return BeanUtils.instantiateClass(CommonsFtpClient.class);
+        return BeanUtils.instantiateClass(this.clientClass);
     }
 
     @Override
@@ -71,19 +72,19 @@ public class FtpClientPooledObjectFactory extends BasePooledObjectFactory<FtpCli
             var hostname = this.configuration.getHostname();
             var port = this.configuration.getPort();
             client.connect(hostname, port);
-            /*int replyCode = client.getReplyCode();
+            int replyCode = client.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 // oops! The operation was not successful
                 // for some reasons, the server refuses or
                 // rejects requested operation
-                return;
-            }*/
+                throw new FtpException(String.format("Ftp %s:%s connection failed.", hostname, port));
+            }
         }
 
         var username = this.configuration.getUsername();
         var password = this.configuration.getPassword();
         if (!client.login(username, password)) {
-            System.out.println("login no");
+            throw new FtpException(String.format("Ftp user(%s) login failed", username));
         }
     }
 }

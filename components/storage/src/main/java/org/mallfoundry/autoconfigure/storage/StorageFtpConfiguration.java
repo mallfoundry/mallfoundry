@@ -48,7 +48,7 @@ public class StorageFtpConfiguration {
     @Bean
     @ConditionalOnMissingBean(FtpClientFactory.class)
     @ConditionalOnClass(FtpClientPooledFactory.class)
-    public FtpClientPooledFactory ftpClientPooledFactory(StorageProperties properties) {
+    public FtpClientPooledFactory ftpClientPooledFactory(StorageProperties properties) throws ClassNotFoundException {
         var config = this.createFtpClientPooledConfig(properties.getFtp());
         return new FtpClientPooledFactory(config);
     }

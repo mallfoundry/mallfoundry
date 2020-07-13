@@ -16,14 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.storage.ftp;
+package org.mallfoundry.store;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface FtpFile extends Serializable {
-    String getName();
-
-    boolean isDirectory();
-
-    boolean isFile();
+@Getter
+@Setter
+public class DefaultStoreConfiguration implements StoreConfiguration {
+    private String defaultLogo;
 }
