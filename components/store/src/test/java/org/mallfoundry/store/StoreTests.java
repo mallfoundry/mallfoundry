@@ -36,11 +36,11 @@ public class StoreTests {
     @Transactional
     @Test
     public void testSaveStores() {
-        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("小米官方旗舰店").logoUrl(ofLogoUrl("mi-logo")).build());
-        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("OPPO官方旗舰店").logoUrl(ofLogoUrl("oppo-logo")).build());
-        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("华为官方旗舰店").logoUrl(ofLogoUrl("huawei-logo")).build());
-        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("VIVO官方旗舰店").logoUrl(ofLogoUrl("vivo-logo")).build());
-        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("一加官方旗舰店").logoUrl(ofLogoUrl("oneplus-logo")).build());
+        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("小米官方旗舰店").logo(ofLogoUrl("mi-logo")).build());
+        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("OPPO官方旗舰店").logo(ofLogoUrl("oppo-logo")).build());
+        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("华为官方旗舰店").logo(ofLogoUrl("huawei-logo")).build());
+        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("VIVO官方旗舰店").logo(ofLogoUrl("vivo-logo")).build());
+        this.storeService.createStore(this.storeService.createStore("mi").toBuilder().name("一加官方旗舰店").logo(ofLogoUrl("oneplus-logo")).build());
     }
 
     private String ofLogoUrl(String name) {

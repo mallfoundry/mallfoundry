@@ -37,7 +37,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_store_custom_collection")
+@Table(name = "mf_store_collection")
 public class InternalCustomCollection implements CustomCollection {
 
     @Id

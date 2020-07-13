@@ -18,42 +18,46 @@
 
 package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.InternalStore;
+import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreQuery;
 import org.mallfoundry.store.StoreRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.Predicate;
-import java.util.Objects;
+import java.util.Optional;
 
 @Repository
-public interface JpaStoreRepository
-        extends StoreRepository,
-        JpaRepository<InternalStore, String>,
-        JpaSpecificationExecutor<InternalStore> {
+public class JpaStoreRepository implements StoreRepository {
+
+    private final JpaStoreRepositoryDelegate repository;
+
+    public JpaStoreRepository(JpaStoreRepositoryDelegate repository) {
+        this.repository = repository;
+    }
 
     @Override
-    default SliceList<InternalStore> findAll(StoreQuery storeQuery) {
-        Page<InternalStore> page = this.findAll((Specification<InternalStore>) (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
+    public Store create(String id) {
+        return new JpaStore(id);
+    }
 
-            if (Objects.nonNull(storeQuery.getOwnerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("ownerId"), storeQuery.getOwnerId()));
-            }
+    @Override
+    public Store save(Store store) {
+        return this.repository.save(JpaStore.of(store));
+    }
 
-            return predicate;
-        }, PageRequest.of(storeQuery.getPage() - 1, storeQuery.getLimit()));
+    @Override
+    public void delete(Store store) {
+        this.repository.delete(JpaStore.of(store));
+    }
 
-        return PageList.of(page.getContent())
-                .page(page.getNumber())
-                .limit(storeQuery.getLimit())
-                .totalSize(page.getTotalElements());
+    @Override
+    public Optional<Store> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public SliceList<Store> findAll(StoreQuery query) {
+        return CastUtils.cast(this.repository.findAll(query));
     }
 }

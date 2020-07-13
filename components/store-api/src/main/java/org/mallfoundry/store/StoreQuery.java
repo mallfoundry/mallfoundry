@@ -18,9 +18,9 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.data.Pageable;
+import org.mallfoundry.data.Query;
 
-public interface StoreQuery extends Pageable {
+public interface StoreQuery extends Query {
 
     String getOwnerId();
 

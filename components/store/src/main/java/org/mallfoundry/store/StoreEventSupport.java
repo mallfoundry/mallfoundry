@@ -18,38 +18,16 @@
 
 package org.mallfoundry.store;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-public class StoreMapConfiguration extends ConcurrentHashMap<String, String> implements StoreConfiguration {
+public abstract class StoreEventSupport extends ApplicationEvent implements StoreEvent {
 
-    public StoreMapConfiguration(Map<String, String> map) {
-        this.putAll(map);
-    }
+    @Getter
+    private final Store store;
 
-    @Override
-    public String get(String name) {
-        return this.get((Object) name);
-    }
-
-    @Override
-    public String get(String name, String defaultValue) {
-        return this.getOrDefault(name, defaultValue);
-    }
-
-    @Override
-    public void set(String name, String value) {
-        this.put(name, value);
-    }
-
-    @Override
-    public void remove(String name) {
-        this.remove((Object) name);
-    }
-
-    @Override
-    public Map<String, String> toMap() {
-        return Collections.unmodifiableMap(this);
+    protected StoreEventSupport(Store store) {
+        super(store);
+        this.store = store;
     }
 }

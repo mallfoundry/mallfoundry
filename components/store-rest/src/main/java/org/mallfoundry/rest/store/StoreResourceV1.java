@@ -26,14 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -46,41 +43,11 @@ public class StoreResourceV1 {
         this.storeService = storeService;
     }
 
-    @GetMapping("/stores/{store_id}/configuration")
-    public Map<String, String> getConfiguration(@PathVariable("store_id") String storeId) {
-        return this.storeService.getConfiguration(storeId).toMap();
-    }
-
-    @PutMapping("/stores/{store_id}/configuration")
-    public void saveConfiguration(@PathVariable("store_id") String storeId,
-                                  @RequestBody Map<String, String> map) {
-        if (Objects.nonNull(map)) {
-            var config = this.storeService.getConfiguration(storeId);
-            config.clear();
-            map.forEach(config::set);
-            this.storeService.saveConfiguration(storeId, config);
-        }
-    }
-
     @PostMapping("/stores")
     public Store createStore(@RequestBody StoreRequest request) {
-        var store = this.storeService.createStore(request.getId());
-        store.setName(request.getName());
-        store.setLogoUrl(request.getLogoUrl());
-        store.setDescription(request.getDescription());
-        return this.storeService.createStore(store);
-    }
-
-    @DeleteMapping("/stores/{store_id}")
-    public void cancelStore(@PathVariable("store_id") String storeId) {
-        this.storeService.cancelStore(storeId);
-    }
-
-    @PatchMapping("/stores/{store_id}")
-    public void updateStore(@PathVariable("store_id") String storeId,
-                            @RequestBody StoreRequest request) {
-        var store = this.storeService.createStore(storeId);
-        this.storeService.updateStore(request.assignToStore(store));
+        return this.storeService.createStore(
+                request.assignToStore(
+                        this.storeService.createStore(request.getId())));
     }
 
     @GetMapping("/stores/{id}")
@@ -88,11 +55,29 @@ public class StoreResourceV1 {
         return this.storeService.getStore(id);
     }
 
+    @GetMapping("/stores/{id}/exists")
+    public boolean existsStore(@PathVariable("id") String id) {
+        return this.storeService.existsStore(id);
+    }
+
     @GetMapping("/stores")
     public SliceList<Store> getStores(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                       @RequestParam(name = "owner_id") String ownerId) {
         return this.storeService.getStores(this.storeService.createStoreQuery().toBuilder().page(page).limit(limit).ownerId(ownerId).build());
+    }
+
+    @PatchMapping("/stores/{store_id}")
+    public Store updateStore(@PathVariable("store_id") String storeId,
+                             @RequestBody StoreRequest request) {
+        return this.storeService.updateStore(
+                request.assignToStore(
+                        this.storeService.createStore(storeId)));
+    }
+
+    @DeleteMapping("/stores/{store_id}")
+    public void cancelStore(@PathVariable("store_id") String storeId) {
+        this.storeService.cancelStore(storeId);
     }
 
 }

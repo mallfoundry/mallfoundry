@@ -18,8 +18,12 @@
 
 package org.mallfoundry.store;
 
-public interface LocationService {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.data.QuerySupport;
 
-
-
+@Getter
+@Setter
+public class DefaultStoreQuery extends QuerySupport implements StoreQuery {
+    private String ownerId;
 }

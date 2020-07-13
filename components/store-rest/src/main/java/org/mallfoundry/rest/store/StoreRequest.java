@@ -18,7 +18,6 @@
 
 package org.mallfoundry.rest.store;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.store.Store;
@@ -31,12 +30,43 @@ public class StoreRequest {
 
     private String name;
 
-    @JsonProperty("logo_url")
-    private String logoUrl;
+    private String domain;
+
+    private String logo;
+
+    private String industry;
 
     private String description;
 
+    private String countryCode;
+
+    private String mobile;
+
+    private String zip;
+
+    private String provinceId;
+
+    private String province;
+
+    private String cityId;
+
+    private String city;
+
+    private String countyId;
+
+    private String county;
+
+    private String address;
+
     public Store assignToStore(Store store) {
-        return store;
+        return store.toBuilder()
+                .id(this.id).name(this.name).logo(this.logo)
+                .industry(this.industry).description(this.description)
+                .countryCode(this.countryCode).mobile(this.mobile).zip(this.zip)
+                .provinceId(this.provinceId).province(this.province)
+                .cityId(this.cityId).city(this.city)
+                .countyId(this.countyId).county(this.county)
+                .address(this.address)
+                .build();
     }
 }

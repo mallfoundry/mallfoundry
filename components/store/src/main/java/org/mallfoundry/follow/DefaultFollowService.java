@@ -113,7 +113,7 @@ public class DefaultFollowService implements FollowService {
         }
         var store = this.storeService.getStore(storeId).orElseThrow();
         var followStore = new InternalFollowStore(followerId, storeId);
-        followStore.setLogoUrl(store.getLogoUrl());
+        followStore.setLogo(store.getLogo());
         followStore.setName(store.getName());
         this.followStoreRepository.save(followStore);
     }

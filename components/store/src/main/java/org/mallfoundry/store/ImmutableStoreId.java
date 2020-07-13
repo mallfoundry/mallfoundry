@@ -33,14 +33,14 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class InternalStoreId implements StoreId {
+public class ImmutableStoreId implements StoreId {
 
     @JsonValue
     @Column(name = "store_id_")
     private String identifier;
 
-    public static InternalStoreId of(String idString) {
-        return new InternalStoreId(idString);
+    public static ImmutableStoreId of(String idString) {
+        return new ImmutableStoreId(idString);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class InternalStoreId implements StoreId {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof InternalStoreId)) {
+        if (!(o instanceof ImmutableStoreId)) {
             return false;
         }
-        InternalStoreId that = (InternalStoreId) o;
+        ImmutableStoreId that = (ImmutableStoreId) o;
         return Objects.equals(identifier, that.identifier);
     }
 

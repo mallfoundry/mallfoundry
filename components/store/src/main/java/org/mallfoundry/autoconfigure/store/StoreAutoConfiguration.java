@@ -16,15 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.data.PageableSupport;
-import lombok.Getter;
-import lombok.Setter;
+import org.mallfoundry.store.DefaultStoreConfiguration;
+import org.mallfoundry.store.StoreConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Getter
-@Setter
-public class InternalStoreQuery extends PageableSupport implements StoreQuery {
+@EnableConfigurationProperties(StoreProperties.class)
+@Configuration
+public class StoreAutoConfiguration {
 
-    private String ownerId;
+    @Bean
+    public StoreConfiguration storeConfiguration(StoreProperties properties) {
+        var config = new DefaultStoreConfiguration();
+        config.setDefaultLogo(properties.getDefaultLogo());
+        return config;
+    }
 }

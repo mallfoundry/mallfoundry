@@ -18,16 +18,8 @@
 
 package org.mallfoundry.store;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import java.io.Serializable;
 
-public class InternalStoreCancelledEvent extends ApplicationEvent implements StoreCancelledEvent {
-
-    @Getter
-    private final InternalStore store;
-
-    public InternalStoreCancelledEvent(InternalStore source) {
-        super(source);
-        this.store = source;
-    }
+public interface StoreEvent extends Serializable {
+    Store getStore();
 }

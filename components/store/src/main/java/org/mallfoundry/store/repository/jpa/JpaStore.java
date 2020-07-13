@@ -16,11 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreStatus;
+import org.mallfoundry.store.StoreSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -29,7 +32,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.Date;
 
 @Getter
@@ -37,7 +39,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store")
-public class InternalStore implements Store {
+public class JpaStore extends StoreSupport {
 
     @Id
     @Column(name = "id_")
@@ -53,8 +55,8 @@ public class InternalStore implements Store {
     @Column(name = "domain_")
     private String domain;
 
-    @Column(name = "logo_url_")
-    private String logoUrl;
+    @Column(name = "logo_")
+    private String logo;
 
     @Column(name = "owner_id_")
     private String ownerId;
@@ -65,22 +67,49 @@ public class InternalStore implements Store {
     @Column(name = "description_")
     private String description;
 
-    @Transient
-    private StoreAddress primaryAddress;
+    @Column(name = "country_code_")
+    private String countryCode;
+
+    @Column(name = "mobile_")
+    private String mobile;
+
+    @Column(name = "zip_")
+    private String zip;
+
+    @Column(name = "province_id_")
+    private String provinceId;
+
+    @Column(name = "province_")
+    private String province;
+
+    @Column(name = "city_id_")
+    private String cityId;
+
+    @Column(name = "city_")
+    private String city;
+
+    @Column(name = "county_id_")
+    private String countyId;
+
+    @Column(name = "county_")
+    private String county;
+
+    @Column(name = "address_")
+    private String address;
 
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalStore(String id) {
+    public JpaStore(String id) {
         this.setId(id);
     }
 
-    public static InternalStore of(Store store) {
-        if (store instanceof InternalStore) {
-            return (InternalStore) store;
+    public static JpaStore of(Store store) {
+        if (store instanceof JpaStore) {
+            return (JpaStore) store;
         }
 
-        var target = new InternalStore();
+        var target = new JpaStore();
         BeanUtils.copyProperties(store, target);
         return target;
     }

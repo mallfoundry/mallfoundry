@@ -22,97 +22,90 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class InternalStoreService implements StoreService {
+public class DefaultStoreService implements StoreService {
+
+    private final StoreConfiguration storeConfiguration;
 
     private final StoreBlobService storeBlobService;
 
     private final StoreRepository storeRepository;
 
-    private final StoreConfigPropertyRepository storeConfigPropertyRepository;
-
     private final ApplicationEventPublisher eventPublisher;
 
-    public InternalStoreService(StoreBlobService storeBlobService,
-                                StoreRepository storeRepository,
-                                StoreConfigPropertyRepository storeConfigPropertyRepository,
-                                ApplicationEventPublisher eventPublisher) {
+    public DefaultStoreService(StoreConfiguration storeConfiguration,
+                               StoreBlobService storeBlobService,
+                               StoreRepository storeRepository,
+                               ApplicationEventPublisher eventPublisher) {
+        this.storeConfiguration = storeConfiguration;
         this.storeRepository = storeRepository;
-        this.storeConfigPropertyRepository = storeConfigPropertyRepository;
         this.eventPublisher = eventPublisher;
         this.storeBlobService = storeBlobService;
     }
 
     @Override
     public StoreQuery createStoreQuery() {
-        return new InternalStoreQuery();
+        return new DefaultStoreQuery();
     }
 
     @Override
     public StoreId createStoreId(String id) {
-        return new InternalStoreId(id);
+        return new ImmutableStoreId(id);
     }
 
     @Override
     public Store createStore(String id) {
-        return new InternalStore(id);
-    }
-
-    @Override
-    public StoreConfiguration getConfiguration(String storeId) {
-        var configProperties = this.storeConfigPropertyRepository.findAllByStoreId(storeId)
-                .stream().collect(Collectors.toMap(StoreConfigProperty::getName, StoreConfigProperty::getValue));
-        return new StoreMapConfiguration(configProperties);
-    }
-
-    @Transactional
-    @Override
-    public void saveConfiguration(String storeId, StoreConfiguration configuration) {
-        configuration.toMap().forEach((name, value) ->
-                this.storeConfigPropertyRepository.save(new StoreConfigProperty(storeId, name, value)));
+        return this.storeRepository.create(id);
     }
 
     @Transactional
     @Override
     public Store createStore(Store store) {
         store.setOwnerId(SubjectHolder.getUserId());
+        if (Objects.isNull(store.getLogo())) {
+            store.setLogo(storeConfiguration.getDefaultLogo());
+        }
         store.initialize();
-        var savedStore = this.storeRepository.save(InternalStore.of(store));
+        var savedStore = this.storeRepository.save(store);
         this.storeBlobService.initializeBucket(this.createStoreId(store.getId()));
-        this.eventPublisher.publishEvent(new InternalStoreInitializedEvent(store));
+        this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
         return savedStore;
     }
 
     @Transactional
     @Override
     public Store updateStore(Store store) {
-        return this.storeRepository.save(InternalStore.of(store));
+        return this.storeRepository.save(store);
     }
 
     @Transactional
     @Override
     public void cancelStore(String storeId) {
-        InternalStore store = this.storeRepository.findById(storeId).orElseThrow();
-        this.eventPublisher.publishEvent(new InternalStoreCancelledEvent(store));
+        var store = this.storeRepository.findById(storeId).orElseThrow();
+        this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
         this.storeRepository.delete(store);
+    }
+
+    @Override
+    public boolean existsStore(String id) {
+        return this.storeRepository.findById(id).isPresent();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<Store> getStore(String id) {
-        return CastUtils.cast(this.storeRepository.findById(id));
+        return this.storeRepository.findById(id);
     }
 
     @Override
     public SliceList<Store> getStores(StoreQuery query) {
-        return CastUtils.cast(this.storeRepository.findAll(query));
+        return this.storeRepository.findAll(query);
     }
 
 }

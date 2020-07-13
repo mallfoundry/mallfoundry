@@ -18,9 +18,11 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.util.Date;
 
-public interface Store {
+public interface Store extends ObjectBuilder.ToBuilder<Store.Builder> {
 
     String getId();
 
@@ -36,9 +38,9 @@ public interface Store {
 
     void setDomain(String domain);
 
-    String getLogoUrl();
+    String getLogo();
 
-    void setLogoUrl(String logoUrl);
+    void setLogo(String logo);
 
     String getOwnerId();
 
@@ -52,42 +54,82 @@ public interface Store {
 
     void setDescription(String description);
 
-    StoreAddress getPrimaryAddress();
+    String getCountryCode();
 
-    void setPrimaryAddress(StoreAddress address);
+    void setCountryCode(String countryCode);
+
+    String getMobile();
+
+    void setMobile(String mobile);
+
+    String getZip();
+
+    void setZip(String zip);
+
+    String getProvinceId();
+
+    void setProvinceId(String provinceId);
+
+    String getProvince();
+
+    void setProvince(String province);
+
+    String getCityId();
+
+    void setCityId(String cityId);
+
+    String getCity();
+
+    void setCity(String city);
+
+    String getCountyId();
+
+    void setCountyId(String countyId);
+
+    String getCounty();
+
+    void setCounty(String county);
+
+    String getAddress();
+
+    void setAddress(String address);
 
     Date getCreatedTime();
 
     void initialize();
 
-    default Builder toBuilder() {
-        return new Builder(this);
-    }
+    interface Builder extends ObjectBuilder<Store> {
 
-    class Builder {
-        private final Store store;
+        Builder id(String id);
 
-        public Builder(Store store) {
-            this.store = store;
-        }
+        Builder name(String name);
 
-        public Builder name(String name) {
-            this.store.setName(name);
-            return this;
-        }
+        Builder logo(String logo);
 
-        public Builder logoUrl(String logoUrl) {
-            this.store.setLogoUrl(logoUrl);
-            return this;
-        }
+        Builder ownerId(String ownerId);
 
-        public Builder ownerId(String ownerId) {
-            this.store.setOwnerId(ownerId);
-            return this;
-        }
+        Builder industry(String industry);
 
-        Store build() {
-            return this.store;
-        }
+        Builder description(String description);
+
+        Builder countryCode(String countryCode);
+
+        Builder mobile(String mobile);
+
+        Builder zip(String zip);
+
+        Builder provinceId(String provinceId);
+
+        Builder province(String province);
+
+        Builder cityId(String cityId);
+
+        Builder city(String city);
+
+        Builder countyId(String countyId);
+
+        Builder county(String county);
+
+        Builder address(String address);
     }
 }

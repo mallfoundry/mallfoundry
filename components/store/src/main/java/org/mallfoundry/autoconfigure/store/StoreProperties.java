@@ -16,18 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.autoconfigure.store;
 
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-public class InternalStoreInitializedEvent extends ApplicationEvent implements StoreInitializedEvent {
-
-    @Getter
-    private final Store store;
-
-    public InternalStoreInitializedEvent(Store source) {
-        super(source);
-        this.store = source;
-    }
+@Getter
+@Setter
+@ConfigurationProperties("mall.store")
+public class StoreProperties {
+    private String defaultLogo;
 }

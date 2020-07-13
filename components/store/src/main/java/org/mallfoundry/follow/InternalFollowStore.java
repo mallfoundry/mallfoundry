@@ -45,8 +45,8 @@ public class InternalFollowStore implements FollowStore {
     @Column(name = "id_")
     private String id;
 
-    @Column(name = "logo_url_")
-    private String logoUrl;
+    @Column(name = "logo_")
+    private String logo;
 
     @Column(name = "name_")
     private String name;

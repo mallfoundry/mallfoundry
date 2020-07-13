@@ -18,19 +18,10 @@
 
 package org.mallfoundry.store;
 
-import java.util.Map;
-
 public interface StoreConfiguration {
 
-    String get(String name);
+    String getDefaultLogo();
 
-    String get(String name, String defaultValue);
+    void setDefaultLogo(String defaultLogo);
 
-    void set(String name, String value);
-
-    void remove(String name);
-
-    void clear();
-
-    Map<String, String> toMap();
 }

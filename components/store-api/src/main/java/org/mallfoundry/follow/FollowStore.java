@@ -25,7 +25,7 @@ public interface FollowStore extends Serializable {
 
     String getId();
 
-    String getLogoUrl();
+    String getLogo();
 
     String getName();
 
