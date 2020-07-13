@@ -39,13 +39,16 @@ public class StorageProperties {
     private Aliyun aliyun = new Aliyun();
 
     @NestedConfigurationProperty
+    private Qiniu qiniu = new Qiniu();
+
+    @NestedConfigurationProperty
     private Ftp ftp = new Ftp();
 
     @NestedConfigurationProperty
     private Output output = new Output();
 
     public enum SystemType {
-        LOCAL, FTP, ALIYUN
+        LOCAL, FTP, ALIYUN, QINIU
     }
 
     @Getter
@@ -61,6 +64,15 @@ public class StorageProperties {
         private String accessKeySecret;
         private String endpoint;
         private String bucketName;
+    }
+
+    @Getter
+    @Setter
+    static class Qiniu {
+        private String accessKey;
+        private String secretKey;
+        private String region;
+        private String bucket;
     }
 
     @Getter

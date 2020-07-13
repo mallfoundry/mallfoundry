@@ -18,14 +18,14 @@
 
 package org.mallfoundry.autoconfigure.storage;
 
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
 import org.mallfoundry.storage.LocalStorageSystem;
 import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
+import org.mallfoundry.storage.qiniu.QiniuStorageSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +47,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
+    @ConditionalOnMissingBean(StorageSystem.class)
     @ConditionalOnClass(LocalStorageSystem.class)
     @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
     public LocalStorageSystem localStorageSystem(StorageProperties properties) {
@@ -55,15 +56,35 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
+    @ConditionalOnMissingBean(StorageSystem.class)
     @ConditionalOnClass(AliyunStorageSystem.class)
     @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "aliyun")
     public StorageSystem storageSystem(StorageProperties properties,
                                        @Autowired(required = false) StoragePathReplacer pathReplacer) {
         var aliyun = properties.getAliyun();
-        OSS client = new OSSClientBuilder().build(aliyun.getEndpoint(), aliyun.getAccessKeyId(), aliyun.getAccessKeySecret());
-        var ass = new AliyunStorageSystem(client, aliyun.getBucketName(), properties.getBaseUrl());
+        var ass = new AliyunStorageSystem(properties.getBaseUrl());
+        ass.setAccessKeyId(aliyun.getAccessKeyId());
+        ass.setAccessKeySecret(aliyun.getAccessKeySecret());
+        ass.setEndpoint(aliyun.getEndpoint());
+        ass.setBucketName(aliyun.getBucketName());
         ass.setPathReplacer(pathReplacer);
         return ass;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(StorageSystem.class)
+    @ConditionalOnClass(QiniuStorageSystem.class)
+    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "qiniu")
+    public StorageSystem qiniuStorageSystem(StorageProperties properties,
+                                            @Autowired(required = false) StoragePathReplacer pathReplacer) {
+        var qiniu = properties.getQiniu();
+        var qss = new QiniuStorageSystem(properties.getBaseUrl());
+        qss.setPathReplacer(pathReplacer);
+        qss.setAccessKey(qiniu.getAccessKey());
+        qss.setSecretKey(qiniu.getSecretKey());
+        qss.setBucket(qiniu.getBucket());
+        qss.setRegion(qiniu.getRegion());
+        return qss;
     }
 
     @Configuration

@@ -21,6 +21,7 @@ package org.mallfoundry.storage;
 import org.mallfoundry.data.SliceList;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 
-@SpringBootTest
+@StandaloneTest
 public class StorageServiceTests {
 
     @Autowired
