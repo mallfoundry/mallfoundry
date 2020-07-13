@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class InternalCity extends DistrictSupport implements City {
 
     @OneToMany(targetEntity = InternalCounty.class)
     @JoinColumn(name = "city_id_")
+    @OrderBy("position")
     private List<County> counties = new ArrayList<>();
 
     public InternalCity(String code, String name, String provinceId) {

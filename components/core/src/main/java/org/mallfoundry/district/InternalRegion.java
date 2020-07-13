@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,13 @@ import java.util.List;
 @Table(name = "mf_district_region")
 public class InternalRegion extends DistrictSupport implements Region {
 
-    @OneToMany(targetEntity = InternalProvince.class)
-    @JoinColumn(name = "region_id_")
-    private List<Province> provinces = new ArrayList<>();
-
     @Column(name = "country_id_")
     private String countryId;
+
+    @OneToMany(targetEntity = InternalProvince.class)
+    @JoinColumn(name = "region_id_")
+    @OrderBy("position")
+    private List<Province> provinces = new ArrayList<>();
 
     public InternalRegion(String code, String name, String countryId) {
         this.setCode(code);
