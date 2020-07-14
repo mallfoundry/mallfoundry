@@ -18,7 +18,9 @@
 
 package org.mallfoundry.catalog.product;
 
+import java.util.List;
+
 public interface MutableProductOption extends ProductOption {
 
-    void setId(String id);
+    void setValues(List<ProductOptionValue> values);
 }
