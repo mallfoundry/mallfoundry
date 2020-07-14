@@ -38,4 +38,12 @@ public class ProductProcessorsInvoker {
         }
         return result;
     }
+
+    public Product invokeProcessPreUpdateProduct(Product product) {
+        var result = product;
+        for (var processor : processors) {
+            result = processor.processPreUpdateProduct(result);
+        }
+        return result;
+    }
 }
