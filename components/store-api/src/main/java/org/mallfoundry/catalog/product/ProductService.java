@@ -23,23 +23,76 @@ import org.mallfoundry.inventory.InventoryAdjustment;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+/**
+ * 商品服务。
+ *
+ * @author Zhi Tang
+ */
 public interface ProductService {
 
+    /**
+     * 创建商品查询对象。
+     *
+     * @return 商品查询对象
+     */
     ProductQuery createProductQuery();
 
+    /**
+     * 创建一个商品标识对象。
+     *
+     * @param id 字符串类型的商品标识
+     * @return 商品标识对象
+     */
     ProductId createProductId(String id);
 
+    /**
+     * 创建一个商品对象。
+     *
+     * @param id 商品标识
+     * @return 商品对象
+     */
     Product createProduct(String id);
+
+    /**
+     * 添加一个商品对象。
+     *
+     * @param product 商品对象
+     * @return 添加后的商品对象
+     */
+    Product addProduct(Product product);
 
     Optional<Product> getProduct(String id);
 
     SliceList<Product> getProducts(ProductQuery query);
 
-    Product addProduct(Product product);
+    /**
+     * 更新商品对象。
+     *
+     * @param product 商品对象
+     * @return 更新后的商品对象
+     */
+    Product updateProduct(Product product);
 
-    void updateProduct(Product product);
+    /**
+     * 发布商品对象。
+     *
+     * @param id 商品标识
+     */
+    void publishProduct(String id) throws ProductException;
 
+    void publishProducts(Set<String> ids) throws ProductException;
+
+    void unpublishProduct(String id) throws ProductException;
+
+    void unpublishProducts(Set<String> ids) throws ProductException;
+
+    /**
+     * 调整商品库存。
+     *
+     * @param adjustment 库存调整对象。
+     */
     void adjustProductInventory(InventoryAdjustment adjustment);
 
     void adjustProductInventories(List<InventoryAdjustment> adjustments);
