@@ -31,9 +31,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(annotationClass = Mapper.class)
 @EnableCaching
 @EnableTransactionManagement
-@EnableElasticsearchRepositories(basePackageClasses = Version.class)
-@EnableJpaRepositories(basePackageClasses = Version.class)
-@SpringBootApplication(scanBasePackageClasses = Version.class)
+@EnableElasticsearchRepositories
+@EnableJpaRepositories
+@SpringBootApplication
 public abstract class TestSpringBootApplication {
 
     public static void main(String[] args) {
