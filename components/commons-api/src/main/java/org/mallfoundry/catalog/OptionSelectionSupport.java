@@ -36,4 +36,48 @@ public abstract class OptionSelectionSupport implements OptionSelection {
     private String valueId;
 
     private String value;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final OptionSelectionSupport selection;
+
+        public BuilderSupport(OptionSelectionSupport selection) {
+            this.selection = selection;
+        }
+
+        @Override
+        public Builder nameId(String nameId) {
+            this.selection.setNameId(nameId);
+            return this;
+        }
+
+        @Override
+        public Builder name(String name) {
+            this.selection.setNameId(name);
+            return this;
+        }
+
+        @Override
+        public Builder valueId(String valueId) {
+            this.selection.setValueId(valueId);
+            return this;
+        }
+
+        @Override
+        public Builder value(String value) {
+            this.selection.setValue(value);
+            return this;
+        }
+
+        @Override
+        public OptionSelection build() {
+            return this.selection;
+        }
+    }
 }

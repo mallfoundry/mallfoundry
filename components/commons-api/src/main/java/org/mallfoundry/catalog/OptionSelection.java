@@ -18,11 +18,15 @@
 
 package org.mallfoundry.catalog;
 
+import org.mallfoundry.util.ObjectBuilder;
+
+import java.io.Serializable;
+
 /**
  * @author Tang Zhi
  * @since 1.0
  */
-public interface OptionSelection {
+public interface OptionSelection extends Serializable, ObjectBuilder.ToBuilder<OptionSelection.Builder> {
 
     String getNameId();
 
@@ -39,4 +43,15 @@ public interface OptionSelection {
     String getValue();
 
     void setValue(String value);
+
+    interface Builder extends ObjectBuilder<OptionSelection> {
+
+        Builder nameId(String nameId);
+
+        Builder name(String name);
+
+        Builder valueId(String valueId);
+
+        Builder value(String value);
+    }
 }
