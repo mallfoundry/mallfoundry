@@ -36,4 +36,48 @@ public abstract class ProductAttributeSupport implements ProductAttribute {
         this(name, value);
         this.setNamespace(namespace);
     }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final ProductAttributeSupport attribute;
+
+        protected BuilderSupport(ProductAttributeSupport attribute) {
+            this.attribute = attribute;
+        }
+
+        @Override
+        public Builder namespace(String namespace) {
+            this.attribute.setNamespace(namespace);
+            return this;
+        }
+
+        @Override
+        public Builder name(String name) {
+            this.attribute.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder value(String value) {
+            this.attribute.setValue(value);
+            return this;
+        }
+
+        @Override
+        public Builder position(int position) {
+            this.attribute.setPosition(position);
+            return this;
+        }
+
+        @Override
+        public ProductAttribute build() {
+            return this.attribute;
+        }
+    }
 }
