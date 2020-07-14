@@ -38,6 +38,8 @@ public interface MutableProduct extends Product {
 
     void setVariants(List<ProductVariant> variants);
 
+    void setAttributes(List<ProductAttribute> attributes);
+
     void setTotalSales(long sales);
 
     void setMonthlySales(long sales);
@@ -45,6 +47,8 @@ public interface MutableProduct extends Product {
     void setImageUrls(List<String> imageUrls);
 
     void setVideoUrls(List<String> videoUrls);
+
+    void setPublishedTime(Date publishedTime);
 
     void setCreatedTime(Date createdTime);
 }
