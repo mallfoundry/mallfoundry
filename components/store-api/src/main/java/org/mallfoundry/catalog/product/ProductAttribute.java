@@ -18,11 +18,13 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
+import org.mallfoundry.util.PositionBuilder;
 
 import java.io.Serializable;
 
-public interface ProductAttribute extends Serializable, Position {
+public interface ProductAttribute extends Serializable, Position, ObjectBuilder.ToBuilder<ProductAttribute.Builder> {
 
     String getNamespace();
 
@@ -35,4 +37,13 @@ public interface ProductAttribute extends Serializable, Position {
     String getValue();
 
     void setValue(String value);
+
+    interface Builder extends PositionBuilder<Builder>, ObjectBuilder<ProductAttribute> {
+
+        Builder namespace(String namespace);
+
+        Builder name(String name);
+
+        Builder value(String value);
+    }
 }
