@@ -20,13 +20,15 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
+import org.mallfoundry.util.PositionBuilder;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-public interface ProductOption extends Serializable, Position {
+public interface ProductOption extends Serializable, Position, ObjectBuilder.ToBuilder<ProductOption.Builder> {
 
     String getId();
 
@@ -42,18 +44,17 @@ public interface ProductOption extends Serializable, Position {
 
     List<ProductOptionValue> getValues();
 
-    void setValues(List<ProductOptionValue> values);
-
     void addValue(ProductOptionValue value);
+
+    void addValues(List<ProductOptionValue> values);
 
     void removeValue(ProductOptionValue value);
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
+    void removeValues(List<ProductOptionValue> values);
 
-    interface Builder extends ObjectBuilder<ProductOption> {
+    interface Builder extends ObjectBuilder<ProductOption>, PositionBuilder<Builder> {
+
+        Builder id(String id);
 
         Builder name(String name);
 
@@ -65,54 +66,8 @@ public interface ProductOption extends Serializable, Position {
 
         Builder values(ProductOptionValue... values);
 
-        Builder values(Function<ProductOption, List<ProductOptionValue>> values);
+        Builder values(Function<ProductOption, List<ProductOptionValue>> function);
 
-    }
-
-    abstract class BuilderSupport implements Builder {
-
-        private final ProductOption option;
-
-        protected BuilderSupport(ProductOption option) {
-            this.option = option;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.option.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder value(ProductOptionValue value) {
-            this.option.addValue(value);
-            return this;
-        }
-
-        @Override
-        public Builder value(Function<ProductOption, ProductOptionValue> values) {
-            return this.value(values.apply(this.option));
-        }
-
-        @Override
-        public Builder values(List<ProductOptionValue> values) {
-            values.forEach(this::value);
-            return this;
-        }
-
-        @Override
-        public Builder values(ProductOptionValue... values) {
-            return this.values(List.of(values));
-        }
-
-        @Override
-        public Builder values(Function<ProductOption, List<ProductOptionValue>> values) {
-            return this.values(values.apply(this.option));
-        }
-
-        @Override
-        public ProductOption build() {
-            return this.option;
-        }
+        Builder values(Supplier<List<ProductOptionValue>> supplier);
     }
 }
