@@ -109,6 +109,8 @@ public class ElasticsearchProduct extends ProductSupport {
     @Field(type = FieldType.Keyword)
     private String shippingRateId;
 
+    private Date publishedTime;
+
     private Date createdTime;
 
     public ElasticsearchProduct(String id) {
@@ -122,6 +124,18 @@ public class ElasticsearchProduct extends ProductSupport {
         var target = new ElasticsearchProduct(product.getId());
         BeanUtils.copyProperties(product, target);
         return target;
+    }
+
+    public void setFixedShippingCost(BigDecimal fixedShippingCost) {
+        super.setFixedShippingCost(fixedShippingCost);
+        this.fixedShippingCost = fixedShippingCost;
+        this.shippingRateId = null;
+    }
+
+    public void setShippingRateId(String shippingRateId) {
+        super.setShippingRateId(shippingRateId);
+        this.shippingRateId = shippingRateId;
+        this.fixedShippingCost = null;
     }
 
     @Override
@@ -141,7 +155,6 @@ public class ElasticsearchProduct extends ProductSupport {
         this.shippingOrigin = DefaultProductShippingOrigin.of(shippingOrigin);
     }
 
-
     @Override
     public void setAttributes(List<ProductAttribute> attributes) {
         this.attributes = Objects.requireNonNullElseGet(attributes, (Supplier<List<ProductAttribute>>) ArrayList::new)
@@ -156,6 +169,11 @@ public class ElasticsearchProduct extends ProductSupport {
     @Override
     public ProductOption createOption(String id) {
         return new ElasticsearchProductOption(id);
+    }
+
+    @Override
+    public ProductAttribute createAttribute() {
+        return new ElasticsearchProductAttribute();
     }
 
     @Override

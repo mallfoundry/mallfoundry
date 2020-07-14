@@ -18,7 +18,6 @@
 
 package org.mallfoundry.catalog.product.repository.jpa;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +47,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -111,6 +111,7 @@ public class JpaProduct extends ProductSupport {
 
     @OneToMany(targetEntity = JpaProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
+    @OrderBy("position")
     @JsonDeserialize(contentAs = JpaProductOption.class)
     private List<ProductOption> options = new ArrayList<>();
 
@@ -120,8 +121,9 @@ public class JpaProduct extends ProductSupport {
     private List<ProductAttribute> attributes = new ArrayList<>();
 
     @OneToMany(targetEntity = JpaProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonDeserialize(contentAs = JpaProductVariant.class)
     @JoinColumn(name = "product_id_")
+    @OrderBy("position")
+    @JsonDeserialize(contentAs = JpaProductVariant.class)
     private List<ProductVariant> variants = new ArrayList<>();
 
     @Column(name = "image_urls_", length = 2048)
@@ -145,7 +147,9 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "shipping_rate_id_")
     private String shippingRateId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "published_time_")
+    private Date publishedTime;
+
     @Column(name = "created_time_")
     private Date createdTime;
 
@@ -162,7 +166,6 @@ public class JpaProduct extends ProductSupport {
         return target;
     }
 
-
     @Override
     public ProductVariant createVariant(String id) {
         return new JpaProductVariant(id);
@@ -174,6 +177,11 @@ public class JpaProduct extends ProductSupport {
     }
 
     @Override
+    public ProductAttribute createAttribute() {
+        return new DefaultProductAttribute();
+    }
+
+    @Override
     public ProductAttribute createAttribute(String name, String value) {
         return new DefaultProductAttribute(name, value);
     }
@@ -181,5 +189,17 @@ public class JpaProduct extends ProductSupport {
     @Override
     public ProductAttribute createAttribute(String namespace, String name, String value) {
         return new DefaultProductAttribute(namespace, name, value);
+    }
+
+    public void setFixedShippingCost(BigDecimal fixedShippingCost) {
+        super.setFixedShippingCost(fixedShippingCost);
+        this.fixedShippingCost = fixedShippingCost;
+        this.shippingRateId = null;
+    }
+
+    public void setShippingRateId(String shippingRateId) {
+        super.setShippingRateId(shippingRateId);
+        this.shippingRateId = shippingRateId;
+        this.fixedShippingCost = null;
     }
 }
