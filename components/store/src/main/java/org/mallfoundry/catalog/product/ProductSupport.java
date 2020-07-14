@@ -21,19 +21,24 @@ package org.mallfoundry.catalog.product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.catalog.OptionSelections;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.mallfoundry.util.Positions;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
@@ -51,6 +56,16 @@ public abstract class ProductSupport implements MutableProduct {
         this.setShippingRateId(null);
     }
 
+    @Override
+    public void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException {
+        this.setFreeShipping(Objects.isNull(fixedShippingCost) || BigDecimal.ZERO.equals(fixedShippingCost));
+    }
+
+    @Override
+    public void setShippingRateId(String shippingRateId) throws ProductException {
+        this.setFreeShipping(StringUtils.isEmpty(shippingRateId));
+    }
+
     private void setMinPrice() {
         double minPrice = this.getVariants().stream()
                 .map(ProductVariant::getPrice)
@@ -60,7 +75,7 @@ public abstract class ProductSupport implements MutableProduct {
         this.setPrice(BigDecimal.valueOf(minPrice));
     }
 
-    private void checkInventoryQuantity() {
+    private void checkInventory() {
         this.setInventoryQuantity(
                 this.getVariants().stream().mapToInt(ProductVariant::getInventoryQuantity).sum());
         this.setInventoryStatus(
@@ -83,14 +98,52 @@ public abstract class ProductSupport implements MutableProduct {
         this.setMonthlySales(this.getMonthlySales() + sales);
     }
 
+/*    private void validateOptionSelections(ProductVariant variant) {
+        var selections = variant.getOptionSelections();
+        if (selections.size() != this.getOptions().size()) {
+            throw new ProductException("Product options and Product variant options size are not consistent");
+        }
+        for (var selection : selections) {
+            this.selectOption(selection.getName(), selection.getValue())
+                    .orElseThrow(() ->
+                            new ProductException(
+                                    String.format("This option(%s:%s) does not exist",
+                                            selection.getName(), selection.getValue())));
+        }
+    }*/
+
+    private void updateVariants() {
+        Positions.sort(this.getVariants());
+        this.checkInventory();
+        this.setMinPrice();
+    }
+
     @Override
     public void addVariant(ProductVariant variant) {
         variant.setProductId(this.getId());
         variant.setStoreId(this.getStoreId());
         this.getVariants().add(variant);
-        Positions.sort(this.getVariants());
-        this.checkInventoryQuantity();
-        this.setMinPrice();
+        this.updateVariants();
+    }
+
+/*    private void setVariant(ProductVariant source, ProductVariant target) {
+
+        this.updateVariants();
+    }*/
+
+/*    private void addOrSetVariant(ProductVariant variant) {
+        this.validateOptionSelections(variant);
+        if (Objects.isNull(variant.getId())) {
+            this.addVariant(variant);
+        } else {
+            this.getVariant(variant.getId())
+                    .ifPresentOrElse(targetVariant -> setVariant(variant, targetVariant), () -> this.addVariant(variant));
+        }
+    }*/
+
+    @Override
+    public void addVariants(List<ProductVariant> variants) {
+        ListUtils.emptyIfNull(variants).forEach(this::addVariant);
     }
 
     @Override
@@ -102,13 +155,25 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
+    public Optional<ProductVariant> selectionVariant(List<OptionSelection> selections) {
+        return this.getVariants()
+                .stream()
+                .filter(variant -> OptionSelections.equals(selections, variant.getOptionSelections()))
+                .findFirst();
+    }
+
+    @Override
     public void removeVariant(ProductVariant variant) {
         var removed =
                 Objects.requireNonNull(this.getVariants(), ProductMessages.notEmpty("variants"))
                         .remove(variant);
         Assert.isTrue(removed, ProductMessages.variantNotFound());
-        this.checkInventoryQuantity();
-        this.setMinPrice();
+        this.updateVariants();
+    }
+
+    @Override
+    public void clearVariants() {
+        this.getVariants().clear();
     }
 
     @Override
@@ -116,13 +181,18 @@ public abstract class ProductSupport implements MutableProduct {
         this.getVariant(variantId)
                 .orElseThrow(() -> new ProductException(ProductMessages.variantNotFound().get()))
                 .adjustInventoryQuantity(quantityDelta);
-        this.checkInventoryQuantity();
+        this.checkInventory();
     }
 
     @Override
     public void addOption(ProductOption option) {
         this.getOptions().add(option);
         Positions.sort(this.getOptions());
+    }
+
+    @Override
+    public void addOptions(List<ProductOption> options) {
+        ListUtils.emptyIfNull(options).forEach(this::addOption);
     }
 
     @Override
@@ -144,6 +214,22 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
+    public void clearOptions() {
+        this.getOptions().clear();
+    }
+
+    @Override
+    public void addAttribute(ProductAttribute attribute) {
+        this.getAttributes().add(attribute);
+        Positions.sort(this.getAttributes());
+    }
+
+    @Override
+    public void addAttributes(List<ProductAttribute> attributes) {
+        ListUtils.emptyIfNull(attributes).forEach(this::addAttribute);
+    }
+
+    @Override
     public Optional<ProductAttribute> getAttribute(String namespace, String name) {
         return this.getAttributes()
                 .stream()
@@ -156,6 +242,11 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public void removeAttribute(ProductAttribute attribute) {
         this.getAttributes().remove(attribute);
+    }
+
+    @Override
+    public void clearAttributes() {
+        this.getAttributes().clear();
     }
 
     @Override
@@ -179,14 +270,26 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void addAttribute(ProductAttribute attribute) {
-        this.getAttributes().add(attribute);
-        Positions.sort(this.getAttributes());
+    public void create() {
+        this.setCreatedTime(new Date());
     }
 
     @Override
-    public void create() {
-        this.setCreatedTime(new Date());
+    public void publish() {
+        if (ProductStatus.ACTIVE.equals(this.getStatus())) {
+            throw new ProductException("The product has been published");
+        }
+        this.setPublishedTime(new Date());
+        this.setStatus(ProductStatus.ACTIVE);
+    }
+
+    @Override
+    public void unpublish() {
+        if (ProductStatus.ARCHIVED.equals(this.getStatus())) {
+            throw new ProductException("The product has been archived");
+        }
+        this.setPublishedTime(null);
+        this.setStatus(ProductStatus.ARCHIVED);
     }
 
     @Override
@@ -195,7 +298,7 @@ public abstract class ProductSupport implements MutableProduct {
         };
     }
 
-    abstract static class BuilderSupport implements Builder {
+    protected abstract static class BuilderSupport implements Builder {
 
         protected final Product product;
 
@@ -212,6 +315,12 @@ public abstract class ProductSupport implements MutableProduct {
         @Override
         public Builder name(String name) {
             this.product.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder description(String description) {
+            this.product.setDescription(description);
             return this;
         }
 
@@ -246,6 +355,14 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder freeShipping(Boolean freeShipping) {
+            if (Objects.nonNull(freeShipping) && freeShipping) {
+                this.freeShipping();
+            }
+            return this;
+        }
+
+        @Override
         public Builder fixedShippingCost(BigDecimal fixedShippingCost) {
             this.product.setFixedShippingCost(fixedShippingCost);
             return this;
@@ -257,6 +374,12 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder shippingRateId(String shippingRateId) {
+            this.product.setShippingRateId(shippingRateId);
+            return this;
+        }
+
+        @Override
         public Builder shippingOrigin(ProductShippingOrigin shippingOrigin) {
             this.product.setShippingOrigin(shippingOrigin);
             return this;
@@ -265,6 +388,11 @@ public abstract class ProductSupport implements MutableProduct {
         @Override
         public Builder shippingOrigin(Function<Product, ProductShippingOrigin> shippingOrigin) {
             return this.shippingOrigin(shippingOrigin.apply(this.product));
+        }
+
+        @Override
+        public Builder shippingOrigin(Supplier<ProductShippingOrigin> supplier) {
+            return this.shippingOrigin(supplier.get());
         }
 
         @Override
@@ -292,8 +420,20 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder imageUrls(List<String> images) {
+            this.product.setImageUrls(images);
+            return this;
+        }
+
+        @Override
         public Builder videoUrl(String video) {
             this.product.addVideoUrl(video);
+            return this;
+        }
+
+        @Override
+        public Builder videoUrls(List<String> videos) {
+            this.product.setVideoUrls(videos);
             return this;
         }
 
@@ -309,6 +449,17 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder options(List<ProductOption> options) {
+            this.product.addOptions(options);
+            return this;
+        }
+
+        @Override
+        public Builder options(Function<Product, List<ProductOption>> options) {
+            return this.options(options.apply(this.product));
+        }
+
+        @Override
         public Builder variant(ProductVariant variant) {
             this.product.addVariant(variant);
             return this;
@@ -317,6 +468,18 @@ public abstract class ProductSupport implements MutableProduct {
         @Override
         public Builder variant(Function<Product, ProductVariant> variant) {
             return this.variant(variant.apply(this.product));
+        }
+
+        @Override
+        public Builder variants(Function<Product, List<ProductVariant>> function) {
+            this.product.addVariants(function.apply(this.product));
+            return this;
+        }
+
+        @Override
+        public Builder variants(Supplier<List<ProductVariant>> supplier) {
+            this.product.addVariants(supplier.get());
+            return this;
         }
 
         @Override
@@ -331,8 +494,32 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder attributes(Function<Product, List<ProductAttribute>> attributes) {
+            this.product.addAttributes(attributes.apply(this.product));
+            return this;
+        }
+
+        @Override
+        public Builder attributes(Supplier<List<ProductAttribute>> attributes) {
+            this.product.addAttributes(attributes.get());
+            return this;
+        }
+
+        @Override
         public Builder create() {
             this.product.create();
+            return this;
+        }
+
+        @Override
+        public Builder publish() {
+            this.product.publish();
+            return this;
+        }
+
+        @Override
+        public Builder unpublish() {
+            this.product.unpublish();
             return this;
         }
 
