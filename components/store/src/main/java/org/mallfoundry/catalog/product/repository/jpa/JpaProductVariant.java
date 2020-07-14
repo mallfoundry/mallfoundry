@@ -109,4 +109,9 @@ public class JpaProductVariant extends ProductVariantSupport {
     public JpaProductVariant(String id) {
         super(id);
     }
+
+    public void setInventoryQuantity(int inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+        super.setInventoryQuantity(inventoryQuantity);
+    }
 }
