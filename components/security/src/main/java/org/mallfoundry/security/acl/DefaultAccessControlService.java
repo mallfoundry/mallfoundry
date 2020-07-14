@@ -130,12 +130,14 @@ public class DefaultAccessControlService implements AccessControlManager {
         return this.addResource(this.createResource(type, identifier));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Resource> getResource(Object object) {
         var resource = this.createResource(object);
         return this.getResource(resource.getType(), resource.getIdentifier());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Resource> getResource(String type, Serializable identifier) {
         return CastUtils.cast(this.resourceRepository.findByTypeAndIdentifier(type, Objects.toString(identifier)));
