@@ -18,14 +18,18 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class DefaultProductService implements ProductService {
 
@@ -78,19 +82,126 @@ public class DefaultProductService implements ProductService {
         return this.productRepository.findAll(query);
     }
 
+    private Product requiredProduct(String id) {
+        return this.productRepository.findById(id).orElseThrow();
+    }
+
     @Transactional
     @Override
-    public void updateProduct(Product product) {
-        var oldProduct = this.productRepository.findById(product.getId()).orElseThrow();
-        BeanUtils.copyProperties(product, oldProduct, "variants");
+    public Product updateProduct(Product product) {
+        var oldProduct = this.requiredProduct(product.getId());
+
+        if (Objects.nonNull(product.getName())
+                && ObjectUtils.notEqual(product.getName(), oldProduct.getName())) {
+            oldProduct.setName(product.getName());
+        }
+
+        if (Objects.nonNull(product.getImageUrls())
+                && !ListUtils.isEqualList(product.getImageUrls(), oldProduct.getImageUrls())) {
+            oldProduct.setImageUrls(product.getImageUrls());
+        }
+
+        if (Objects.nonNull(product.getBrandId())
+                && ObjectUtils.notEqual(product.getBrandId(), oldProduct.getBrandId())) {
+            oldProduct.setBrandId(product.getBrandId());
+        }
+
+        if (Objects.nonNull(product.getDescription())
+                && ObjectUtils.notEqual(product.getDescription(), oldProduct.getDescription())) {
+            oldProduct.setDescription(product.getDescription());
+        }
+
+        if (Objects.nonNull(product.getCollections())
+                && !CollectionUtils.isEqualCollection(product.getCollections(), oldProduct.getCollections())) {
+            oldProduct.setCollections(product.getCollections());
+        }
+
+        if (Objects.nonNull(product.getCategoryId())
+                && ObjectUtils.notEqual(product.getCategoryId(), oldProduct.getCategoryId())) {
+            oldProduct.setCategoryId(product.getCategoryId());
+        }
+
+        if (Objects.nonNull(product.getShippingOrigin())
+                && ObjectUtils.notEqual(product.getShippingOrigin(), oldProduct.getShippingOrigin())) {
+            oldProduct.setShippingOrigin(product.getShippingOrigin());
+        }
+
+        if (Objects.nonNull(product.getFixedShippingCost())
+                && ObjectUtils.notEqual(product.getFixedShippingCost(), oldProduct.getFixedShippingCost())) {
+            oldProduct.setFixedShippingCost(product.getFixedShippingCost());
+        }
+
+        if (Objects.nonNull(product.getShippingRateId())
+                && ObjectUtils.notEqual(product.getShippingRateId(), oldProduct.getShippingRateId())) {
+            oldProduct.setShippingRateId(product.getShippingRateId());
+        }
+
+        if (product.isFreeShipping() && !oldProduct.isFreeShipping()) {
+            oldProduct.freeShipping();
+        }
+
+        if (Objects.nonNull(product.getOptions())) {
+            oldProduct.clearOptions();
+            oldProduct.addOptions(product.getOptions());
+        }
+
+        if (Objects.nonNull(product.getVariants())) {
+            oldProduct.clearVariants();
+            oldProduct.addVariants(product.getVariants());
+        }
+
+        if (Objects.nonNull(product.getAttributes())) {
+            oldProduct.clearAttributes();
+            oldProduct.addAttributes(product.getAttributes());
+        }
+        oldProduct = this.processorsInvoker.invokeProcessPreUpdateProduct(oldProduct);
         var savedProduct = this.productRepository.save(oldProduct);
         this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(savedProduct));
+        return savedProduct;
+    }
+
+    @Transactional
+    @Override
+    public void publishProduct(String id) {
+        var product = this.requiredProduct(id);
+        product.publish();
+        this.productRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(product));
+    }
+
+    @Transactional
+    @Override
+    public void publishProducts(Set<String> ids) {
+        var products = this.productRepository.findAllById(ids);
+        products.forEach(Product::publish);
+        this.productRepository.saveAll(products);
+        ListUtils.emptyIfNull(products)
+                .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(product)));
+    }
+
+    @Transactional
+    @Override
+    public void unpublishProduct(String id) {
+        var product = this.requiredProduct(id);
+        product.unpublish();
+        this.productRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(product));
+    }
+
+    @Transactional
+    @Override
+    public void unpublishProducts(Set<String> ids) {
+        var products = this.productRepository.findAllById(ids);
+        products.forEach(Product::unpublish);
+        this.productRepository.saveAll(products);
+        ListUtils.emptyIfNull(products)
+                .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(product)));
     }
 
     @Transactional
     @Override
     public void adjustProductInventory(InventoryAdjustment adjustment) {
-        var product = this.productRepository.findById(adjustment.getProductId()).orElseThrow();
+        var product = this.requiredProduct(adjustment.getProductId());
         product.adjustInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
     }
 
