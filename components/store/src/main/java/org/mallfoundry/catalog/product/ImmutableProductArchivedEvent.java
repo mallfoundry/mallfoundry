@@ -18,8 +18,8 @@
 
 package org.mallfoundry.catalog.product;
 
-public class ImmutableProductReleasedEvent extends ProductEventSupport implements ProductEvent {
-    public ImmutableProductReleasedEvent(Product product) {
+public class ImmutableProductArchivedEvent extends ProductEventSupport implements ProductArchivedEvent {
+    public ImmutableProductArchivedEvent(Product product) {
         super(product);
     }
 }
