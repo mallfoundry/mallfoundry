@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface ProductVariant extends Serializable, Position {
+public interface ProductVariant extends Serializable, ObjectBuilder.ToBuilder<ProductVariant.Builder>, Position {
 
     String getId();
 
@@ -92,24 +92,46 @@ public interface ProductVariant extends Serializable, Position {
 
     int getInventoryQuantity();
 
+    void setInventoryQuantity(int inventoryQuantity) throws InventoryException;
+
     void adjustInventoryQuantity(int quantityDelta) throws InventoryException;
 
     InventoryStatus getInventoryStatus();
 
-    Builder toBuilder();
-
     interface Builder extends ObjectBuilder<ProductVariant> {
+
+        Builder weight(BigDecimal weight);
+
+        Builder width(BigDecimal width);
+
+        Builder height(BigDecimal height);
+
+        Builder depth(BigDecimal depth);
+
+        Builder barcode(String barcode);
+
+        Builder sku(String sku);
+
+        Builder price(BigDecimal price);
 
         Builder price(double price);
 
+        Builder salePrice(BigDecimal salePrice);
+
+        Builder retailPrice(BigDecimal retailPrice);
+
         Builder retailPrice(double retailPrice);
+
+        Builder costPrice(BigDecimal costPrice);
+
+        Builder inventoryQuantity(int quantity);
 
         Builder adjustInventoryQuantity(int quantityDelta);
 
-        Builder position(int position);
+        Builder imageUrls(List<String> imageUrls);
 
         Builder optionSelections(List<OptionSelection> optionSelections);
 
-        Builder imageUrls(List<String> imageUrls);
+        Builder position(int position);
     }
 }
