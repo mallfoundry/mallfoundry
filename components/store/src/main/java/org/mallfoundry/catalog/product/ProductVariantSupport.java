@@ -39,20 +39,21 @@ public abstract class ProductVariantSupport implements MutableProductVariant {
         this.setId(id);
     }
 
+    private void checkInventory(int quantity) {
+        this.setInventoryStatus(quantity == 0 ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK);
+    }
+
     @Override
     public void adjustInventoryQuantity(int quantityDelta) throws InventoryException {
-        var quantity = this.getInventoryQuantity() + quantityDelta;
+        this.setInventoryQuantity(this.getInventoryQuantity() + quantityDelta);
+    }
+
+    @Override
+    public void setInventoryQuantity(int quantity) throws InventoryException {
         if (quantity < 0) {
             throw new InventoryException("Inventory quantity cannot be less than zero");
         }
-        this.setInventoryQuantity(quantity);
-        this.setInventoryStatus();
-    }
-
-    private void setInventoryStatus() {
-        this.setInventoryStatus(
-                this.getInventoryQuantity() == 0
-                        ? InventoryStatus.OUT_OF_STOCK : InventoryStatus.IN_STOCK);
+        this.checkInventory(quantity);
     }
 
     @Override
@@ -68,6 +69,66 @@ public abstract class ProductVariantSupport implements MutableProductVariant {
             this.variant = variant;
         }
 
+        @Override
+        public Builder weight(BigDecimal weight) {
+            this.variant.setWeight(weight);
+            return this;
+        }
+
+        @Override
+        public Builder width(BigDecimal width) {
+            this.variant.setWidth(width);
+            return this;
+        }
+
+        @Override
+        public Builder height(BigDecimal height) {
+            this.variant.setHeight(height);
+            return this;
+        }
+
+        @Override
+        public Builder depth(BigDecimal depth) {
+            this.variant.setDepth(depth);
+            return this;
+        }
+
+        @Override
+        public Builder barcode(String barcode) {
+            this.variant.setBarcode(barcode);
+            return this;
+        }
+
+        @Override
+        public Builder sku(String sku) {
+            this.variant.setSku(sku);
+            return this;
+        }
+
+        @Override
+        public Builder price(BigDecimal price) {
+            this.variant.setPrice(price);
+            return this;
+        }
+
+        @Override
+        public Builder salePrice(BigDecimal salePrice) {
+            this.variant.setSalePrice(salePrice);
+            return this;
+        }
+
+        @Override
+        public Builder retailPrice(BigDecimal retailPrice) {
+            this.variant.setRetailPrice(retailPrice);
+            return this;
+        }
+
+        @Override
+        public Builder costPrice(BigDecimal costPrice) {
+            this.variant.setCostPrice(costPrice);
+            return this;
+        }
+
         public Builder price(double price) {
             this.variant.setPrice(BigDecimal.valueOf(price));
             return this;
@@ -75,6 +136,12 @@ public abstract class ProductVariantSupport implements MutableProductVariant {
 
         public Builder retailPrice(double retailPrice) {
             this.variant.setRetailPrice(BigDecimal.valueOf(retailPrice));
+            return this;
+        }
+
+        @Override
+        public Builder inventoryQuantity(int quantity) {
+            this.variant.setInventoryQuantity(quantity);
             return this;
         }
 
