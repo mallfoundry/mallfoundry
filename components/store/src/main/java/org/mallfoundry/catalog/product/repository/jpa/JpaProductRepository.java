@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.product.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.catalog.product.JdbcProductRepository;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
@@ -25,7 +26,10 @@ import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JpaProductRepository implements JdbcProductRepository {
 
@@ -46,8 +50,19 @@ public class JpaProductRepository implements JdbcProductRepository {
     }
 
     @Override
+    public List<Product> saveAll(Collection<Product> products) {
+        return CastUtils.cast(this.productRepository.saveAll(
+                CollectionUtils.emptyIfNull(products).stream().map(JpaProduct::of).collect(Collectors.toList())));
+    }
+
+    @Override
     public Optional<Product> findById(String id) {
         return CastUtils.cast(this.productRepository.findById(id));
+    }
+
+    @Override
+    public List<Product> findAllById(Collection<String> ids) {
+        return CastUtils.cast(this.productRepository.findAllById(ids));
     }
 
     @Override
