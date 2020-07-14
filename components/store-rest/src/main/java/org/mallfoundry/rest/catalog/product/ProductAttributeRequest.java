@@ -18,22 +18,22 @@
 
 package org.mallfoundry.rest.catalog.product;
 
-import org.mallfoundry.catalog.product.Product;
-import org.mallfoundry.catalog.product.ProductService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.catalog.product.ProductAttribute;
 
-@Service
-public class RestProductService {
+@Getter
+@Setter
+public class ProductAttributeRequest {
+    private String namespace;
+    private String name;
+    private String value;
+    private int position;
 
-    private final ProductService productService;
-
-    public RestProductService(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @Transactional
-    public Product getProduct(String id) {
-        return this.productService.getProduct(id).orElseThrow();
+    public ProductAttribute assignTo(ProductAttribute attribute) {
+        return attribute.toBuilder()
+                .namespace(this.namespace).name(this.name)
+                .value(this.value).position(this.position)
+                .build();
     }
 }

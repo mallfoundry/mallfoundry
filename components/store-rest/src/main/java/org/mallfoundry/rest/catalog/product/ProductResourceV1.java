@@ -82,13 +82,31 @@ public class ProductResourceV1 {
 
     @PostMapping("/products")
     public Product createProduct(@RequestBody ProductRequest request) {
-        var newProduct = this.productService.createProduct(null);
-        return this.productService.addProduct(newProduct);
+        return this.productService.addProduct(request.assignTo(this.productService.createProduct(null)));
     }
 
     @PatchMapping("/products/{id}")
-    public void updateProduct(@PathVariable("id") String id, @RequestBody ProductRequest request) {
-        var product = this.productService.createProduct(id);
-        this.productService.updateProduct(product);
+    public Product updateProduct(@PathVariable("id") String id, @RequestBody ProductRequest request) {
+        return this.productService.updateProduct(request.assignTo(this.productService.createProduct(id)));
+    }
+
+    @PostMapping("/products/{id}/publish")
+    public void publishProduct(@PathVariable("id") String id) {
+        this.productService.publishProduct(id);
+    }
+
+    @PostMapping("/products/publish/batch")
+    public void publishProducts(@RequestBody Set<String> ids) {
+        this.productService.publishProducts(ids);
+    }
+
+    @PostMapping("/products/{id}/unpublish")
+    public void unpublishProduct(@PathVariable("id") String id) {
+        this.productService.unpublishProduct(id);
+    }
+
+    @PostMapping("/products/unpublish/batch")
+    public void unpublishProducts(@RequestBody Set<String> ids) {
+        this.productService.unpublishProducts(ids);
     }
 }
