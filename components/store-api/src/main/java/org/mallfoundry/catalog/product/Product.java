@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 商品对象是一个基本单元，它包含了基本属性和商品变体。
@@ -131,6 +132,8 @@ public interface Product extends Serializable {
      */
     List<String> getImageUrls();
 
+    void setImageUrls(List<String> imageUrls);
+
     /**
      * 删除给定的商品图片URL链接。
      *
@@ -141,6 +144,8 @@ public interface Product extends Serializable {
     void addVideoUrl(String url);
 
     List<String> getVideoUrls();
+
+    void setVideoUrls(List<String> videoUrls);
 
     void removeVideoUrl(String url);
 
@@ -226,15 +231,23 @@ public interface Product extends Serializable {
 
     void addVariant(ProductVariant variant);
 
+    void addVariants(List<ProductVariant> variants);
+
     List<ProductVariant> getVariants();
 
     Optional<ProductVariant> getVariant(String variantId);
 
+    Optional<ProductVariant> selectionVariant(List<OptionSelection> selections);
+
     void removeVariant(ProductVariant variant);
+
+    void clearVariants();
 
     ProductOption createOption(String id);
 
     void addOption(ProductOption option);
+
+    void addOptions(List<ProductOption> options);
 
     /**
      * 获得商品的规格选项集合。
@@ -249,25 +262,44 @@ public interface Product extends Serializable {
 
     void removeOption(ProductOption option);
 
+    void clearOptions();
+
+    ProductAttribute createAttribute();
+
     ProductAttribute createAttribute(String name, String value);
 
     ProductAttribute createAttribute(String namespace, String name, String value);
 
     void addAttribute(ProductAttribute attribute);
 
+    void addAttributes(List<ProductAttribute> attributes);
+
     Optional<ProductAttribute> getAttribute(String namespace, String name);
 
     List<ProductAttribute> getAttributes();
 
-    void setAttributes(List<ProductAttribute> attributes);
-
     void removeAttribute(ProductAttribute attribute);
+
+    void clearAttributes();
 
     Date getCreatedTime();
 
-    /*    Date getReleasedTime();*/
+    Date getPublishedTime();
 
-    void create() throws ProductException;
+    /**
+     * 创建商品对象。
+     */
+    void create();
+
+    /**
+     * 发布商品对象。
+     */
+    void publish();
+
+    /**
+     * 取消发布对象。
+     */
+    void unpublish();
 
     Builder toBuilder();
 
@@ -276,6 +308,8 @@ public interface Product extends Serializable {
         Builder storeId(String storeId);
 
         Builder name(String name);
+
+        Builder description(String description);
 
         Builder type(ProductType type);
 
@@ -287,13 +321,19 @@ public interface Product extends Serializable {
 
         Builder freeShipping();
 
+        Builder freeShipping(Boolean freeShipping);
+
         Builder fixedShippingCost(BigDecimal fixedShippingCost);
 
         Builder fixedShippingCost(double fixedShippingCost);
 
+        Builder shippingRateId(String shippingRateId);
+
         Builder shippingOrigin(ProductShippingOrigin shippingOrigin);
 
-        Builder shippingOrigin(Function<Product, ProductShippingOrigin> shippingOrigin);
+        Builder shippingOrigin(Function<Product, ProductShippingOrigin> function);
+
+        Builder shippingOrigin(Supplier<ProductShippingOrigin> supplier);
 
         Builder adjustTotalSales(long sales);
 
@@ -303,20 +343,40 @@ public interface Product extends Serializable {
 
         Builder imageUrl(String image);
 
+        Builder imageUrls(List<String> images);
+
         Builder videoUrl(String video);
+
+        Builder videoUrls(List<String> videos);
 
         Builder option(ProductOption option);
 
-        Builder option(Function<Product, ProductOption> option);
+        Builder option(Function<Product, ProductOption> function);
+
+        Builder options(List<ProductOption> options);
+
+        Builder options(Function<Product, List<ProductOption>> function);
 
         Builder variant(ProductVariant variant);
 
         Builder variant(Function<Product, ProductVariant> variant);
 
+        Builder variants(Function<Product, List<ProductVariant>> function);
+
+        Builder variants(Supplier<List<ProductVariant>> supplier);
+
         Builder attribute(ProductAttribute attribute);
 
         Builder attribute(Function<Product, ProductAttribute> attribute);
 
+        Builder attributes(Function<Product, List<ProductAttribute>> function);
+
+        Builder attributes(Supplier<List<ProductAttribute>> supplier);
+
         Builder create();
+
+        Builder publish();
+
+        Builder unpublish();
     }
 }
