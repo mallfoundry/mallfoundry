@@ -84,4 +84,9 @@ public class ElasticsearchProductVariant extends ProductVariantSupport {
         BeanUtils.copyProperties(variant, target);
         return target;
     }
+
+    public void setInventoryQuantity(int inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+        super.setInventoryQuantity(inventoryQuantity);
+    }
 }
