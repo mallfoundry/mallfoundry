@@ -37,6 +37,9 @@ import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.data.util.CastUtils;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,7 +116,20 @@ public class ElasticsearchProductRepository
     }
 
     @Override
+    public List<Product> saveAll(Collection<Product> products) {
+        return CastUtils.cast(
+                this.elasticsearchOperations.save(
+                        products.stream().map(ElasticsearchProduct::of).collect(Collectors.toList())));
+    }
+
+    @Override
     public Optional<Product> findById(String id) {
         return Optional.ofNullable(this.elasticsearchOperations.get(id, ElasticsearchProduct.class));
+    }
+
+    @Override
+    public List<Product> findAllById(Collection<String> ids) {
+//        return CastUtils.cast(this.elasticsearchOperations.multiGet());
+        return Collections.emptyList();
     }
 }

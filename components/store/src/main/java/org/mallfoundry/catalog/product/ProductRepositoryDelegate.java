@@ -20,6 +20,8 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class ProductRepositoryDelegate implements ProductRepository {
@@ -46,8 +48,19 @@ public class ProductRepositoryDelegate implements ProductRepository {
     }
 
     @Override
+    public List<Product> saveAll(Collection<Product> products) {
+        this.searchProductRepository.saveAll(products);
+        return this.jdbcProductRepository.saveAll(products);
+    }
+
+    @Override
     public Optional<Product> findById(String id) {
         return this.jdbcProductRepository.findById(id);
+    }
+
+    @Override
+    public List<Product> findAllById(Collection<String> ids) {
+        return this.jdbcProductRepository.findAllById(ids);
     }
 
     @Override
