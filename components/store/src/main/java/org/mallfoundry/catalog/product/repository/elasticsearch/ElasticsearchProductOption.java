@@ -28,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -53,5 +54,22 @@ public class ElasticsearchProductOption extends ProductOptionSupport {
         var target = new ElasticsearchProductOption();
         BeanUtils.copyProperties(option, target);
         return target;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ElasticsearchProductOption)) {
+            return false;
+        }
+        ElasticsearchProductOption that = (ElasticsearchProductOption) object;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
