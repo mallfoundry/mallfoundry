@@ -56,10 +56,7 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        Resource resource = this.manager.getResource(targetType, targetId).orElse(null);
-        if (Objects.isNull(resource)) {
-            return false;
-        }
+        var resource = this.manager.createResource(targetType, targetId);
         return this.hasPermission(authentication, resource, permission);
     }
 
@@ -82,20 +79,18 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
 
     private Principal createPrimaryPrincipal(Object principal) {
         if (Objects.isNull(principal)) {
-            return this.manager.getPrincipal(Principal.USER_TYPE, "anonymousUser").orElse(null);
+            return this.manager.createPrincipal(Principal.USER_TYPE, "anonymousUser");
         } else if (principal instanceof Subject) {
-            return this.manager.getPrincipal(Principal.USER_TYPE, ((Subject) principal).getId()).orElse(null);
+            return this.manager.createPrincipal(Principal.USER_TYPE, ((Subject) principal).getId());
         } else if (principal instanceof UserDetails) {
-            return this.manager.getPrincipal(Principal.USER_TYPE, ((UserDetails) principal).getUsername()).orElse(null);
+            return this.manager.createPrincipal(Principal.USER_TYPE, ((UserDetails) principal).getUsername());
         }
-        return this.manager.getPrincipal(Principal.USER_TYPE, Objects.toString(principal)).orElse(null);
+        return this.manager.createPrincipal(Principal.USER_TYPE, Objects.toString(principal));
     }
 
     private <E extends GrantedAuthority> Set<Principal> createAuthorityPrincipals(Collection<E> authorities) {
         return authorities.stream()
-                .map(authority -> this.manager.getPrincipal(Principal.AUTHORITY_TYPE, authority.getAuthority()))
-                .map(op -> op.orElse(null))
-                .filter(Objects::nonNull)
+                .map(authority -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, authority.getAuthority()))
                 .collect(Collectors.toUnmodifiableSet());
     }
 }

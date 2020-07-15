@@ -18,10 +18,12 @@
 
 package org.mallfoundry.security.acl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
@@ -49,8 +51,21 @@ public class SimpleAccessControlAuthorizer implements AccessControlAuthorizer {
         return this.hasAnyPermissions(Set.of(principal), resource, permissions);
     }
 
+
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<Permission> permissions) {
+        resource = this.manager.getResource(resource.getType(), resource.getIdentifier()).orElse(null);
+        if (Objects.isNull(resource)) {
+            return false;
+        }
+        principals = principals.stream()
+                .map(principal -> this.manager.getPrincipal(principal.getType(), principal.getName()))
+                .map(op -> op.orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toUnmodifiableSet());
+        if (CollectionUtils.isEmpty(principals)) {
+            return false;
+        }
         var accessControl = this.manager.getAccessControl(resource, principals).orElse(null);
         if (Objects.isNull(accessControl)) {
             return false;
