@@ -20,13 +20,13 @@ package org.mallfoundry.catalog.product;
 
 public abstract class ProductAuthorities {
 
-    public static final String PRODUCT_SEARCH = "PRODUCT_SEARCH";
+    public static final String PRODUCT_WRITE = "product_write";
 
-    public static final String PRODUCT_READ = "PRODUCT_READ";
+    public static final String PRODUCT_PUBLISH = "product_publish";
 
-    public static final String PRODUCT_WRITE = "PRODUCT_WRITE";
+    public static final String PRODUCT_UNPUBLISH = "product_unpublish";
 
-    public static final String PRODUCT_DELETE = "PRODUCT_DELETE";
+    public static final String PRODUCT_DELETE = "product_delete";
 
-    public static final String PRODUCT_MANAGE = "PRODUCT_MANAGE";
+    public static final String PRODUCT_MANAGE = "product_manage";
 }

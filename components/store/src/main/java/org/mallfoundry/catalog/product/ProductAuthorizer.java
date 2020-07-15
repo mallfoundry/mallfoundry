@@ -18,15 +18,59 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.springframework.stereotype.Component;
+import org.mallfoundry.security.acl.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-@Component
+/**
+ * 评估操作者对商品对象是否有操作权限。
+ *
+ * @author Zhi Tang
+ */
 public class ProductAuthorizer implements ProductProcessor {
 
-    // hasPermission(#product.storeId, 'Store', 'product_add')
-//    @PostAuthorize("hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', 'product_add')")
+    // hasPermission(storeId, 'storeType', 'product_write,product_manage')
+    private static final String HAS_PERMISSION_WRITE = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_WRITE + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+
+    // hasPermission(storeId, 'storeType', 'product_delete,product_manage')
+    private static final String HAS_PERMISSION_DELETE = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_DELETE + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+
+    // hasPermission(storeId, 'storeType', 'product_publish,product_manage')
+    private static final String HAS_PERMISSION_PUBLISH = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_PUBLISH + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+
+    // hasPermission(storeId, 'storeType', 'product_unpublish,product_manage')
+    private static final String HAS_PERMISSION_UNPUBLISH = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_UNPUBLISH + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+
+    @PreAuthorize(HAS_PERMISSION_WRITE)
     @Override
     public Product processPreAddProduct(Product product) {
+        return product;
+    }
+
+    @PreAuthorize(HAS_PERMISSION_WRITE)
+    @Override
+    public Product processPreUpdateProduct(Product product) {
+        return product;
+    }
+
+    @PreAuthorize(HAS_PERMISSION_PUBLISH)
+    @Override
+    public Product processPrePublishProduct(Product product) {
+        return product;
+    }
+
+    @PreAuthorize(HAS_PERMISSION_UNPUBLISH)
+    @Override
+    public Product processPreUnpublishProduct(Product product) {
+        return product;
+    }
+
+    @PreAuthorize(HAS_PERMISSION_DELETE)
+    @Override
+    public Product processPreDeleteProduct(Product product) {
         return product;
     }
 }
