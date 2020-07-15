@@ -122,7 +122,13 @@ public class ElasticsearchProduct extends ProductSupport {
             return (ElasticsearchProduct) product;
         }
         var target = new ElasticsearchProduct(product.getId());
-        BeanUtils.copyProperties(product, target);
+        BeanUtils.copyProperties(product, target, "options", "attributes", "variants");
+        var options = product.getOptions().stream().map(ElasticsearchProductOption::of).collect(Collectors.toList());
+        target.setOptions(CastUtils.cast(options));
+        var attributes = product.getAttributes().stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
+        target.setAttributes(CastUtils.cast(attributes));
+        var variants = product.getVariants().stream().map(ElasticsearchProductVariant::of).collect(Collectors.toList());
+        target.setVariants(CastUtils.cast(variants));
         return target;
     }
 
