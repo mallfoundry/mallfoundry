@@ -18,5 +18,5 @@
 
 package org.mallfoundry.data.repository;
 
-public interface JdbcRepository extends Repository {
+public interface JpaRepository extends JdbcRepository {
 }
