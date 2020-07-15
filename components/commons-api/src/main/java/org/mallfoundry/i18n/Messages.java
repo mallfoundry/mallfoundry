@@ -27,6 +27,8 @@ import org.mallfoundry.Version;
  */
 public abstract class Messages {
 
+    private static final String BASE_PACKAGE = Version.class.getPackageName();
+
     /**
      * Get the message code key.
      *
@@ -38,6 +40,6 @@ public abstract class Messages {
         if (codeKey == null || codeKey.isBlank()) {
             throw new IllegalArgumentException("Code must not be empty");
         }
-        return String.format("%s.%s", Version.class.getPackageName(), codeKey);
+        return String.format("%s.%s", BASE_PACKAGE, codeKey);
     }
 }

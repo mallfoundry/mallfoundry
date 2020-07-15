@@ -18,5 +18,5 @@
 
 package org.mallfoundry.data.repository;
 
-public interface SearchRepository {
+public interface SearchRepository extends Repository {
 }
