@@ -58,7 +58,7 @@ public class JpaAccessControl extends AccessControlSupport {
     private Resource resource;
 
     @ManyToOne(targetEntity = JpaPrincipal.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "principal_id_")
+    @JoinColumn(name = "owner_id_")
     private Principal owner;
 
     @Column(name = "inherit_")
