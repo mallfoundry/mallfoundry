@@ -34,11 +34,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,10 +100,15 @@ public class ElasticsearchProductRepository
         }
 
         var query = new StringQuery(queryBuilder.toString(), page, sort);
-        var hits = elasticsearchOperations.search(query, ElasticsearchProduct.class);
+        var hits = this.elasticsearchOperations.search(query, ElasticsearchProduct.class);
         var list = hits.map(SearchHit::getContent).toList();
 
         return CastUtils.cast(PageList.of(list).totalSize(hits.getTotalHits()).page(productQuery.getPage()).limit(productQuery.getLimit()));
+    }
+
+    @Override
+    public void delete(Product product) {
+        this.elasticsearchOperations.delete(ElasticsearchProduct.of(product));
     }
 
     @Override
@@ -129,7 +135,8 @@ public class ElasticsearchProductRepository
 
     @Override
     public List<Product> findAllById(Collection<String> ids) {
-//        return CastUtils.cast(this.elasticsearchOperations.multiGet());
-        return Collections.emptyList();
+        var query = new CriteriaQuery(new Criteria("id").in(ids));
+        var hits = this.elasticsearchOperations.search(query, ElasticsearchProduct.class);
+        return CastUtils.cast(hits.map(SearchHit::getContent).toList());
     }
 }
