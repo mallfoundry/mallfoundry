@@ -126,13 +126,13 @@ public interface Order {
 
     void setPaymentMethod(PaymentMethod paymentMethod);
 
-    int getPaymentExpires();
-
-    void setPaymentExpires(int paymentExpires);
-
     String getCancelReason();
 
+    int getExpires();
+
     Date getPlacedTime();
+
+    Date getExpiredTime();
 
     Date getPaidTime();
 
@@ -150,7 +150,7 @@ public interface Order {
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
 
-    void place() throws OrderException;
+    void place(int expires) throws OrderException;
 
     void pay(PaymentInformation details) throws OrderException;
 
