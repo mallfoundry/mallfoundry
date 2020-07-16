@@ -18,27 +18,53 @@
 
 package org.mallfoundry.autoconfigure.order;
 
+import org.mallfoundry.order.DefaultOrderConfiguration;
 import org.mallfoundry.order.DefaultOrderService;
+import org.mallfoundry.order.OrderConfiguration;
 import org.mallfoundry.order.OrderProcessorsInvoker;
 import org.mallfoundry.order.OrderRepository;
+import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
+import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
+import org.mallfoundry.order.expires.OrderExpiredService;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@EnableConfigurationProperties(OrderProperties.class)
 @Configuration
 public class OrderAutoConfiguration {
 
+    @ConditionalOnMissingBean(OrderConfiguration.class)
     @Bean
-    @ConditionalOnMissingBean
-    public DefaultOrderService defaultOrderService(OrderProcessorsInvoker processorsInvoker,
+    public DefaultOrderConfiguration defaultOrderConfiguration(OrderProperties properties) {
+        var config = new DefaultOrderConfiguration();
+        config.setDefaultExpires(properties.getDefaultExpires());
+        return config;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(OrderService.class)
+    public DefaultOrderService defaultOrderService(OrderConfiguration orderConfiguration,
+                                                   OrderProcessorsInvoker processorsInvoker,
                                                    OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
                                                    ApplicationEventPublisher eventPublisher) {
-        return new DefaultOrderService(processorsInvoker, orderRepository, orderSplitter, carrierService, eventPublisher);
+        return new DefaultOrderService(orderConfiguration, processorsInvoker, orderRepository, orderSplitter, carrierService, eventPublisher);
     }
 
+    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "task")
+    @Bean
+    public OrderExpiredCancellationTask orderPaymentExpirationTask(OrderProperties properties,
+                                                                   OrderService orderService,
+                                                                   OrderExpiredService orderExpiredService) {
+        var task = new OrderExpiredCancellationTask(orderService, orderExpiredService);
+        task.setFetchSize(properties.getExpiredCancellation().getTask().getFetchSize());
+        return task;
+    }
 }
