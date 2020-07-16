@@ -117,15 +117,17 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "payment_method_")
     private PaymentMethod paymentMethod;
 
-    // Default is 60 * 1000 ms
-    @Column(name = "payment_expires_")
-    private int paymentExpires = 60 * 60 * 1000;
+    @Column(name = "expires_")
+    private int expires;
 
     @Column(name = "cancel_reason_")
     private String cancelReason;
 
     @Column(name = "placed_time_")
     private Date placedTime;
+
+    @Column(name = "expired_time_")
+    private Date expiredTime;
 
     @Column(name = "paid_time_")
     private Date paidTime;
