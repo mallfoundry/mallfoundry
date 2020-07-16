@@ -19,12 +19,13 @@
 package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.data.repository.Repository;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository {
+public interface ProductRepository extends Repository {
 
     Product create(String id);
 
@@ -37,4 +38,6 @@ public interface ProductRepository {
     List<Product> findAllById(Collection<String> ids);
 
     SliceList<Product> findAll(ProductQuery query);
+
+    void delete(Product product);
 }
