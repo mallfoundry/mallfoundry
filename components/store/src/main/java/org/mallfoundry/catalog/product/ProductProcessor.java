@@ -18,13 +18,46 @@
 
 package org.mallfoundry.catalog.product;
 
+/**
+ * 商品对象处理器，用于增强商品对象。
+ *
+ * @author Zhi Tang
+ */
 public interface ProductProcessor {
 
-    default Product processPreAddProduct(Product product) {
+    default Product postProcessGetProduct(Product product) {
         return product;
     }
 
-    default Product processPreUpdateProduct(Product product) {
+    default ProductQuery preProcessGetProducts(ProductQuery query) {
+        return query;
+    }
+
+    default Product preProcessAddProduct(Product product) {
+        return product;
+    }
+
+    default Product preProcessUpdateProduct(Product product) {
+        return product;
+    }
+
+    default Product postProcessUpdateProduct(Product product) {
+        return product;
+    }
+
+    default Product preProcessPublishProduct(Product product) {
+        return product;
+    }
+
+    default Product preProcessUnpublishProduct(Product product) {
+        return product;
+    }
+
+ /*   default Product preProcessAdjustProductInventory(Product product) {
+        return product;
+    }
+*/
+    default Product preProcessDeleteProduct(Product product) {
         return product;
     }
 }

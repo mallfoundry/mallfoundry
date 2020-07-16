@@ -21,6 +21,7 @@ package org.mallfoundry.catalog.product;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 @Component
 public class ProductProcessorsInvoker {
@@ -31,19 +32,55 @@ public class ProductProcessorsInvoker {
         this.processors = processors;
     }
 
-    public Product invokeProcessPreAddProduct(Product product) {
+    private Product invokeProcess(Product product, BiFunction<ProductProcessor, Product, Product> function) {
         var result = product;
         for (var processor : processors) {
-            result = processor.processPreAddProduct(result);
+            result = function.apply(processor, result);
         }
         return result;
     }
 
-    public Product invokeProcessPreUpdateProduct(Product product) {
-        var result = product;
+    private ProductQuery invokeProcess(ProductQuery query, BiFunction<ProductProcessor, ProductQuery, ProductQuery> function) {
+        var result = query;
         for (var processor : processors) {
-            result = processor.processPreUpdateProduct(result);
+            result = function.apply(processor, result);
         }
         return result;
+    }
+
+    public Product invokePostProcessGetProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::postProcessGetProduct);
+    }
+
+    public ProductQuery invokePreProcessGetProducts(ProductQuery query) {
+        return this.invokeProcess(query, ProductProcessor::preProcessGetProducts);
+    }
+
+    public Product invokePreProcessAddProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessAddProduct);
+    }
+
+    public Product invokePreProcessUpdateProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessUpdateProduct);
+    }
+
+    public Product invokePostProcessUpdateProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::postProcessUpdateProduct);
+    }
+
+    public Product invokePreProcessPublishProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessPublishProduct);
+    }
+
+    public Product invokePreProcessUnpublishProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessUnpublishProduct);
+    }
+
+/*    public Product invokePreProcessAdjustProductInventory(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessAdjustProductInventory);
+    }*/
+
+    public Product invokePreProcessDeleteProduct(Product product) {
+        return this.invokeProcess(product, ProductProcessor::preProcessDeleteProduct);
     }
 }
