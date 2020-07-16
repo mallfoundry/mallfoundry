@@ -21,7 +21,6 @@ package org.mallfoundry.catalog.product;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +31,6 @@ import java.util.Objects;
  * @author Zhi Tang
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Service
 public class ProductIdentifier implements ProductProcessor {
 
     /**
@@ -56,7 +54,13 @@ public class ProductIdentifier implements ProductProcessor {
     private static final String PRODUCT_OPTION_VALUE_ID_VALUE_NAME = "catalog.product.option.value.id";
 
     @Override
-    public Product processPreAddProduct(Product product) {
+    public Product preProcessAddProduct(Product product) {
+        this.setProduct(product);
+        return product;
+    }
+
+    @Override
+    public Product postProcessUpdateProduct(Product product) {
         this.setProduct(product);
         return product;
     }
