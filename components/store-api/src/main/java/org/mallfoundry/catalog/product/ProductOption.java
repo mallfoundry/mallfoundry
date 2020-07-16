@@ -52,6 +52,8 @@ public interface ProductOption extends Serializable, Position, ObjectBuilder.ToB
 
     void removeValues(List<ProductOptionValue> values);
 
+    void clearValues();
+
     interface Builder extends ObjectBuilder<ProductOption>, PositionBuilder<Builder> {
 
         Builder id(String id);
