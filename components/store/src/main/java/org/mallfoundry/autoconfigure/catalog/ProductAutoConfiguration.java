@@ -21,9 +21,13 @@ package org.mallfoundry.autoconfigure.catalog;
 
 import org.mallfoundry.catalog.product.DefaultProductService;
 import org.mallfoundry.catalog.product.JdbcProductRepository;
+import org.mallfoundry.catalog.product.ProductAuthorizer;
+import org.mallfoundry.catalog.product.ProductIdentifier;
 import org.mallfoundry.catalog.product.ProductProcessorsInvoker;
-import org.mallfoundry.catalog.product.ProductRepositoryDelegate;
+import org.mallfoundry.catalog.product.ProductService;
+import org.mallfoundry.catalog.product.ProductValidator;
 import org.mallfoundry.catalog.product.SearchProductRepository;
+import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductPersistEventListener;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositoryDelegate;
@@ -34,6 +38,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.validation.SmartValidator;
 
 @Configuration
 public class ProductAutoConfiguration {
@@ -53,17 +58,32 @@ public class ProductAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean({JdbcProductRepository.class, SearchProductRepository.class})
-    public ProductRepositoryDelegate productRepositoryDelegate(JdbcProductRepository jdbcProductRepository,
-                                                               SearchProductRepository searchProductRepository) {
-        return new ProductRepositoryDelegate(jdbcProductRepository, searchProductRepository);
+    @ConditionalOnBean(ElasticsearchProductRepository.class)
+    public ElasticsearchProductPersistEventListener elasticsearchProductPersistEventListener(ElasticsearchProductRepository repository) {
+        return new ElasticsearchProductPersistEventListener(repository);
     }
 
     @Bean
-    @ConditionalOnBean(ProductRepositoryDelegate.class)
+    public ProductAuthorizer productAuthorizer() {
+        return new ProductAuthorizer();
+    }
+
+    @Bean
+    public ProductValidator productValidator(SmartValidator validator) {
+        return new ProductValidator(validator);
+    }
+
+    @Bean
+    public ProductIdentifier productIdentifier() {
+        return new ProductIdentifier();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ProductService.class)
     public DefaultProductService defaultProductService(ProductProcessorsInvoker processorsInvoker,
-                                                       ProductRepositoryDelegate repository,
+                                                       JdbcProductRepository jdbcProductRepository,
+                                                       SearchProductRepository searchProductRepository,
                                                        ApplicationEventPublisher publisher) {
-        return new DefaultProductService(processorsInvoker, repository, publisher);
+        return new DefaultProductService(processorsInvoker, jdbcProductRepository, searchProductRepository, publisher);
     }
 }
