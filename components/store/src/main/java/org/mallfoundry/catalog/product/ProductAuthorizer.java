@@ -46,31 +46,31 @@ public class ProductAuthorizer implements ProductProcessor {
 
     @PreAuthorize(HAS_PERMISSION_WRITE)
     @Override
-    public Product processPreAddProduct(Product product) {
+    public Product preProcessAddProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_WRITE)
     @Override
-    public Product processPreUpdateProduct(Product product) {
+    public Product preProcessUpdateProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_PUBLISH)
     @Override
-    public Product processPrePublishProduct(Product product) {
+    public Product preProcessPublishProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_UNPUBLISH)
     @Override
-    public Product processPreUnpublishProduct(Product product) {
+    public Product preProcessUnpublishProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_DELETE)
     @Override
-    public Product processPreDeleteProduct(Product product) {
+    public Product preProcessDeleteProduct(Product product) {
         return product;
     }
 }
