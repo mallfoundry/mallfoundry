@@ -29,13 +29,15 @@ import java.util.Optional;
 @Service
 public class InternalDistrictService implements DistrictService {
 
-    private static final String REGION_ID_VALUE_NAME = "district.region.id";
+    private static final String DISTRICT_ID_VALUE_NAME = "district.id";
 
-    private static final String PROVINCE_ID_VALUE_NAME = "district.province.id";
+    private static final String REGION_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
 
-    private static final String CITY_ID_VALUE_NAME = "district.city.id";
+    private static final String PROVINCE_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
 
-    private static final String COUNTY_ID_VALUE_NAME = "district.county.id";
+    private static final String CITY_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
+
+    private static final String COUNTY_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
 
     private final RegionRepository regionRepository;
 
