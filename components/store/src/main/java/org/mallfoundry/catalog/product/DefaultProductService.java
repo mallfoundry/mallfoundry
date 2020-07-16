@@ -222,7 +222,7 @@ public class DefaultProductService implements ProductService {
     @Transactional
     @Override
     public void adjustProductInventory(InventoryAdjustment adjustment) {
-        // TODO 与订单模块自动化集成存在问题。
+        // TODO 与订单模块自动化集成存在问题。将在引入系统用户后解决这个问题。
         /*var product = this.invokeProcessProduct(this.requireProduct(adjustment.getProductId()),
                 ProductProcessorsInvoker::invokeProcessAdjustProductInventory);*/
         var product = this.requireProduct(adjustment.getProductId());
