@@ -36,6 +36,6 @@ public class ProductAuthorizerTests {
     @Test
     public void testPreAddProduct() {
         var product = this.productService.createProduct("1").toBuilder().storeId("mi").build();
-        this.productAuthorizer.processPreAddProduct(product);
+        this.productAuthorizer.preProcessAddProduct(product);
     }
 }
