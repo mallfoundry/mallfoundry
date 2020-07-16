@@ -52,6 +52,10 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
 
     private Date placedTimeMax;
 
+    private Date expiredTimeMin;
+
+    private Date expiredTimeMax;
+
     @Override
     public Builder toBuilder() {
         return new BuilderSupport(this);
@@ -138,6 +142,18 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
         @Override
         public Builder placedTimeMax(Date time) {
             this.query.setPlacedTimeMax(time);
+            return this;
+        }
+
+        @Override
+        public Builder expiredTimeMin(Date time) {
+            this.query.setExpiredTimeMin(time);
+            return this;
+        }
+
+        @Override
+        public Builder expiredTimeMax(Date time) {
+            this.query.setExpiredTimeMax(time);
             return this;
         }
 
