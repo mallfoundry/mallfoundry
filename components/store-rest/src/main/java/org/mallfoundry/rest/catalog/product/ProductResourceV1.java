@@ -25,6 +25,7 @@ import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,7 +82,7 @@ public class ProductResourceV1 {
     }
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody ProductRequest request) {
+    public Product addProduct(@RequestBody AddProductRequest request) {
         return this.productService.addProduct(request.assignTo(this.productService.createProduct(null)));
     }
 
@@ -100,12 +101,12 @@ public class ProductResourceV1 {
         this.productService.publishProducts(ids);
     }
 
-    @PostMapping("/products/{id}/unpublish")
+    @DeleteMapping("/products/{id}/publish")
     public void unpublishProduct(@PathVariable("id") String id) {
         this.productService.unpublishProduct(id);
     }
 
-    @PostMapping("/products/unpublish/batch")
+    @DeleteMapping("/products/publish/batch")
     public void unpublishProducts(@RequestBody Set<String> ids) {
         this.productService.unpublishProducts(ids);
     }
