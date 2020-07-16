@@ -57,10 +57,10 @@ public class TestOrder implements Order {
     private String paymentId;
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
-    private int paymentExpires = 60 * 1000;
+    private int expires = 60 * 1000;
     private String cancelReason;
-    private Date createdTime;
     private Date placedTime;
+    private Date expiredTime;
     private Date paidTime;
     private Date shippedTime;
     private Date fulfilledTime;
@@ -164,7 +164,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void place() throws OrderException {
+    public void place(int expires) throws OrderException {
 
     }
 

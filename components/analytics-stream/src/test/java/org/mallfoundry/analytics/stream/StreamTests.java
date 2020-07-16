@@ -41,7 +41,7 @@ public class StreamTests {
         var testOrder = new TestOrder();
         testOrder.setId("1");
         testOrder.setCustomerId("1");
-        testOrder.setCreatedTime(new Date());
+        testOrder.setPlacedTime(new Date());
 
         var item1 = new TestOrderItem();
         item1.setId("1");
