@@ -96,4 +96,6 @@ public interface ProductService {
     void adjustProductInventory(InventoryAdjustment adjustment);
 
     void adjustProductInventories(List<InventoryAdjustment> adjustments);
+
+    void deleteProduct(String id);
 }
