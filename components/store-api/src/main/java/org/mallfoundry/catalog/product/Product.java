@@ -241,6 +241,8 @@ public interface Product extends Serializable {
 
     void removeVariant(ProductVariant variant);
 
+    void removeVariants(List<ProductVariant> variants);
+
     void clearVariants();
 
     ProductOption createOption(String id);
