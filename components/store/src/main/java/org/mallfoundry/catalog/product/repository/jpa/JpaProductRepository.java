@@ -24,6 +24,7 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.data.repository.JpaRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collection;
@@ -31,12 +32,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class JpaProductRepository implements JdbcProductRepository {
+public class JpaProductRepository implements JdbcProductRepository, JpaRepository {
 
-    private final JpaProductRepositoryDelegate productRepository;
+    private final JpaProductRepositoryDelegate repository;
 
-    public JpaProductRepository(JpaProductRepositoryDelegate productRepository) {
-        this.productRepository = productRepository;
+    public JpaProductRepository(JpaProductRepositoryDelegate repository) {
+        this.repository = repository;
     }
 
     @Override
@@ -46,27 +47,32 @@ public class JpaProductRepository implements JdbcProductRepository {
 
     @Override
     public Product save(Product product) {
-        return this.productRepository.save(JpaProduct.of(product));
+        return this.repository.save(JpaProduct.of(product));
     }
 
     @Override
     public List<Product> saveAll(Collection<Product> products) {
-        return CastUtils.cast(this.productRepository.saveAll(
+        return CastUtils.cast(this.repository.saveAll(
                 CollectionUtils.emptyIfNull(products).stream().map(JpaProduct::of).collect(Collectors.toList())));
     }
 
     @Override
     public Optional<Product> findById(String id) {
-        return CastUtils.cast(this.productRepository.findById(id));
+        return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
     public List<Product> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.productRepository.findAllById(ids));
+        return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override
     public SliceList<Product> findAll(ProductQuery query) {
         return PageList.empty();
+    }
+
+    @Override
+    public void delete(Product product) {
+        this.repository.delete(JpaProduct.of(product));
     }
 }
