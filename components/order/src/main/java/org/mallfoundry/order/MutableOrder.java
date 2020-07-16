@@ -28,7 +28,11 @@ public interface MutableOrder extends Order {
 
     void setCancelReason(String cancelReason);
 
+    void setExpires(int expires);
+
     void setPlacedTime(Date placedTime);
+
+    void setExpiredTime(Date expiredTime);
 
     void setPaidTime(Date paidTime);
 
