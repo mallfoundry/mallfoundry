@@ -49,6 +49,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,10 +67,12 @@ import java.util.Set;
 @Table(name = "mf_catalog_product")
 public class JpaProduct extends ProductSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "store_id_")
     private String storeId;
 
@@ -78,15 +84,18 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "status_")
     private ProductStatus status;
 
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
     @Column(name = "description_")
     private String description;
 
+    @NotBlank
     @Column(name = "category_id_")
     private String categoryId;
 
+    @NotBlank
     @Column(name = "brand_id_")
     private String brandId;
 
@@ -109,6 +118,7 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "inventory_status_")
     private InventoryStatus inventoryStatus;
 
+    @Valid
     @OneToMany(targetEntity = JpaProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
     @OrderBy("position")
@@ -120,12 +130,14 @@ public class JpaProduct extends ProductSupport {
     @JsonDeserialize(contentAs = DefaultProductAttribute.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
+    @Valid
     @OneToMany(targetEntity = JpaProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
     @OrderBy("position")
     @JsonDeserialize(contentAs = JpaProductVariant.class)
     private List<ProductVariant> variants = new ArrayList<>();
 
+    @NotEmpty
     @Column(name = "image_urls_", length = 2048)
     @Convert(converter = StringListConverter.class)
     private List<String> imageUrls = new ArrayList<>();
@@ -134,6 +146,7 @@ public class JpaProduct extends ProductSupport {
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
+    @NotNull
     @Column(name = "shipping_origin_", length = 512)
     @Convert(converter = ProductShippingOriginConverter.class)
     private ProductShippingOrigin shippingOrigin;
@@ -150,6 +163,7 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "published_time_")
     private Date publishedTime;
 
+    @NotNull
     @Column(name = "created_time_")
     private Date createdTime;
 

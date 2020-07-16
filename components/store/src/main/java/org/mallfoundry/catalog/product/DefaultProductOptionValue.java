@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Getter
@@ -29,8 +30,10 @@ import java.util.Objects;
 @NoArgsConstructor
 public class DefaultProductOptionValue implements ProductOptionValue {
 
+    @NotBlank
     private String id;
 
+    @NotBlank
     private String label;
 
     private int position;
@@ -40,19 +43,19 @@ public class DefaultProductOptionValue implements ProductOptionValue {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(object instanceof DefaultProductOptionValue)) {
             return false;
         }
-        DefaultProductOptionValue that = (DefaultProductOptionValue) o;
-        return Objects.equals(label, that.label);
+        DefaultProductOptionValue that = (DefaultProductOptionValue) object;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(label);
+        return Objects.hash(id);
     }
 }

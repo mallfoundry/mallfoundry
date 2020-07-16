@@ -32,8 +32,11 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -42,13 +45,16 @@ import java.util.List;
 @Table(name = "mf_catalog_product_option")
 public class JpaProductOption extends ProductOptionSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
+    @Valid
     @Column(name = "values_", length = 1024)
     @Convert(converter = ProductOptionValueListConverter.class)
     @JsonDeserialize(contentAs = DefaultProductOptionValue.class)
@@ -59,5 +65,22 @@ public class JpaProductOption extends ProductOptionSupport {
 
     public JpaProductOption(String id) {
         super(id);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof JpaProductOption)) {
+            return false;
+        }
+        JpaProductOption that = (JpaProductOption) object;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
