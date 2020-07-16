@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -48,15 +50,30 @@ public abstract class ProductOptionSupport implements MutableProductOption {
         return this.getValues().stream().filter(value -> Objects.equals(value.getLabel(), label)).findFirst();
     }
 
+    private Optional<ProductOptionValue> obtainValue(String id) {
+        return this.getValues().stream()
+                .filter(value -> Objects.equals(value.getId(), id))
+                .findFirst();
+    }
+
+    private void setValue(ProductOptionValue source, ProductOptionValue target) {
+        target.setLabel(source.getLabel());
+    }
+
     @Override
     public void addValue(ProductOptionValue value) {
-        this.getValues().add(value);
+        if (Objects.isNull(value.getId())) {
+            this.getValues().add(value);
+        } else {
+            this.obtainValue(value.getId())
+                    .ifPresentOrElse(target -> setValue(value, target), () -> this.getValues().add(value));
+        }
         Positions.sort(this.getValues());
     }
 
     @Override
     public void addValues(List<ProductOptionValue> values) {
-
+        emptyIfNull(values).forEach(this::addValue);
     }
 
     @Override
@@ -66,7 +83,12 @@ public abstract class ProductOptionSupport implements MutableProductOption {
 
     @Override
     public void removeValues(List<ProductOptionValue> values) {
+        emptyIfNull(values).forEach(this::removeValue);
+    }
 
+    @Override
+    public void clearValues() {
+        emptyIfNull(this.getValues()).clear();
     }
 
     @Override
