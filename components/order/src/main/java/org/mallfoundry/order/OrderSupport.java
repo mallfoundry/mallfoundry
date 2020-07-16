@@ -137,12 +137,14 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void place() throws OrderException {
+    public void place(int expires) throws OrderException {
         if (this.getStatus() != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }
         this.setStatus(OrderStatus.PENDING);
+        this.setExpires(expires);
         this.setPlacedTime(new Date());
+        this.setExpiredTime(new Date(System.currentTimeMillis() + expires));
     }
 
     @Override
@@ -167,8 +169,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void cancel(String reason) throws OrderException {
         var status = this.getStatus();
-        if (!Objects.equals(AWAITING_PAYMENT, status)
-                || !Objects.equals(PENDING, status)) {
+        if (!(Objects.equals(PENDING, status) || Objects.equals(AWAITING_PAYMENT, status))) {
             throw new OrderException("The current order status must be awaiting payment or pending");
         }
         this.setStatus(CANCELLED);
