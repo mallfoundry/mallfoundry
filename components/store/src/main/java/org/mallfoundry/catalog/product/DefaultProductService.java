@@ -30,20 +30,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class DefaultProductService implements ProductService {
 
     private final ProductProcessorsInvoker processorsInvoker;
 
-    private final ProductRepository productRepository;
+    private final ProductRepository primaryRepository;
+
+    private final SearchProductRepository searchRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
     public DefaultProductService(ProductProcessorsInvoker processorsInvoker,
-                                 ProductRepository productRepository,
+                                 ProductRepository primaryRepository,
+                                 SearchProductRepository searchRepository,
                                  ApplicationEventPublisher eventPublisher) {
         this.processorsInvoker = processorsInvoker;
-        this.productRepository = productRepository;
+        this.primaryRepository = primaryRepository;
+        this.searchRepository = searchRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -59,37 +65,44 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public Product createProduct(String id) {
-        return this.productRepository.create(id);
+        return this.primaryRepository.create(id);
     }
 
     @Transactional
     @Override
     public Product addProduct(Product product) {
-        var addedProduct = this.productRepository.save(
-                this.processorsInvoker.invokeProcessPreAddProduct(product));
+        var addedProduct = this.primaryRepository.save(
+                this.processorsInvoker.invokePreProcessAddProduct(product));
         this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
         return addedProduct;
     }
 
     @Transactional(readOnly = true)
     public Optional<Product> getProduct(String id) {
-        return this.productRepository.findById(id);
+        return this.primaryRepository.findById(id)
+                .map(this.processorsInvoker::invokePostProcessGetProduct);
     }
 
     @Transactional(readOnly = true)
     @Override
     public SliceList<Product> getProducts(ProductQuery query) {
-        return this.productRepository.findAll(query);
+        return this.searchRepository.findAll(
+                this.processorsInvoker.invokePreProcessGetProducts(query));
     }
 
-    private Product requiredProduct(String id) {
-        return this.productRepository.findById(id).orElseThrow();
+    private Product requireProduct(String id) {
+        return this.primaryRepository.findById(id).orElseThrow();
+    }
+
+    private Product invokeProcessProduct(Product product, BiFunction<ProductProcessorsInvoker, Product, Product> function) {
+        return function.apply(this.processorsInvoker, product);
     }
 
     @Transactional
     @Override
     public Product updateProduct(Product product) {
-        var oldProduct = this.requiredProduct(product.getId());
+        var oldProduct = this.invokeProcessProduct(this.requireProduct(product.getId()),
+                ProductProcessorsInvoker::invokePreProcessUpdateProduct);
 
         if (Objects.nonNull(product.getName())
                 && ObjectUtils.notEqual(product.getName(), oldProduct.getName())) {
@@ -154,8 +167,10 @@ public class DefaultProductService implements ProductService {
             oldProduct.clearAttributes();
             oldProduct.addAttributes(product.getAttributes());
         }
-        oldProduct = this.processorsInvoker.invokeProcessPreUpdateProduct(oldProduct);
-        var savedProduct = this.productRepository.save(oldProduct);
+        var savedProduct =
+                this.primaryRepository.save(
+                        this.invokeProcessProduct(oldProduct,
+                                ProductProcessorsInvoker::invokePostProcessUpdateProduct));
         this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(savedProduct));
         return savedProduct;
     }
@@ -163,45 +178,54 @@ public class DefaultProductService implements ProductService {
     @Transactional
     @Override
     public void publishProduct(String id) {
-        var product = this.requiredProduct(id);
+        var product = this.invokeProcessProduct(this.requireProduct(id),
+                ProductProcessorsInvoker::invokePreProcessPublishProduct);
         product.publish();
-        this.productRepository.save(product);
-        this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(product));
+        var savedProduct = this.primaryRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(savedProduct));
     }
 
     @Transactional
     @Override
     public void publishProducts(Set<String> ids) {
-        var products = this.productRepository.findAllById(ids);
-        products.forEach(Product::publish);
-        this.productRepository.saveAll(products);
-        ListUtils.emptyIfNull(products)
+        var products = this.primaryRepository.findAllById(ids).stream()
+                .map(processorsInvoker::invokePreProcessPublishProduct)
+                .peek(Product::publish)
+                .collect(Collectors.toList());
+        var savedProducts = this.primaryRepository.saveAll(products);
+        ListUtils.emptyIfNull(savedProducts)
                 .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(product)));
     }
 
     @Transactional
     @Override
     public void unpublishProduct(String id) {
-        var product = this.requiredProduct(id);
+        var product = this.invokeProcessProduct(this.requireProduct(id),
+                ProductProcessorsInvoker::invokePreProcessUnpublishProduct);
         product.unpublish();
-        this.productRepository.save(product);
-        this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(product));
+        var savedProduct = this.primaryRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(savedProduct));
     }
 
     @Transactional
     @Override
     public void unpublishProducts(Set<String> ids) {
-        var products = this.productRepository.findAllById(ids);
-        products.forEach(Product::unpublish);
-        this.productRepository.saveAll(products);
-        ListUtils.emptyIfNull(products)
+        var products = this.primaryRepository.findAllById(ids).stream()
+                .map(processorsInvoker::invokePreProcessUnpublishProduct)
+                .peek(Product::unpublish)
+                .collect(Collectors.toList());
+        var savedProducts = this.primaryRepository.saveAll(products);
+        ListUtils.emptyIfNull(savedProducts)
                 .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(product)));
     }
 
     @Transactional
     @Override
     public void adjustProductInventory(InventoryAdjustment adjustment) {
-        var product = this.requiredProduct(adjustment.getProductId());
+        // TODO 与订单模块自动化集成存在问题。
+        /*var product = this.invokeProcessProduct(this.requireProduct(adjustment.getProductId()),
+                ProductProcessorsInvoker::invokeProcessAdjustProductInventory);*/
+        var product = this.requireProduct(adjustment.getProductId());
         product.adjustInventoryQuantity(adjustment.getVariantId(), adjustment.getQuantityDelta());
     }
 
@@ -209,5 +233,14 @@ public class DefaultProductService implements ProductService {
     @Override
     public void adjustProductInventories(List<InventoryAdjustment> adjustments) {
         adjustments.forEach(this::adjustProductInventory);
+    }
+
+    @Transactional
+    @Override
+    public void deleteProduct(String id) {
+        var product = this.invokeProcessProduct(this.requireProduct(id),
+                ProductProcessorsInvoker::invokePreProcessDeleteProduct);
+        this.primaryRepository.delete(product);
+        this.eventPublisher.publishEvent(new ImmutableProductDeletedEvent(product));
     }
 }
