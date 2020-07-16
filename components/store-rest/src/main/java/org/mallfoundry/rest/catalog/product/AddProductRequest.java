@@ -16,23 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.plugin;
+package org.mallfoundry.rest.catalog.product;
 
-import org.mallfoundry.plugins.Plugin;
-import org.mallfoundry.plugins.PluginRegistry;
-import org.mallfoundry.plugins.SimplePluginRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.catalog.product.Product;
 
-import java.util.List;
+@Getter
+@Setter
+public class AddProductRequest extends ProductRequest {
 
-@Configuration
-public class PluginAutoConfiguration {
+    private String storeId;
 
-    @Bean
-    @Autowired(required = false)
-    public PluginRegistry pluginRegistry(List<Plugin<?>> plugins) {
-        return new SimplePluginRegistry(plugins);
+    @Override
+    public Product assignTo(Product product) {
+        return super.assignTo(product).toBuilder().storeId(this.storeId).build();
     }
 }
