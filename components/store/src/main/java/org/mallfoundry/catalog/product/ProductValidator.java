@@ -18,51 +18,46 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+import org.mallfoundry.validation.BindRuntimeException;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.SmartValidator;
+import org.springframework.validation.ValidationUtils;
 
-import java.util.Objects;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-@Component
+/**
+ * 使用 Spring SmartValidator 校验商品对象。
+ *
+ * @author Zhi Tang
+ */
 public class ProductValidator implements ProductProcessor {
 
+    private final SmartValidator validator;
+
+    public ProductValidator(SmartValidator validator) {
+        this.validator = validator;
+    }
+
     @Override
-    public Product processPreAddProduct(Product product) {
+    public Product preProcessAddProduct(Product product) {
         this.validate(product);
         return product;
     }
 
+    @Override
+    public Product preProcessUpdateProduct(Product product) {
+        this.validate(product);
+        return product;
+    }
+
+    private BindingResult createError(Product product) {
+        return new BeanPropertyBindingResult(product, "product");
+    }
+
     private void validate(Product product) {
-        Assert.isTrue(isNotBlank(product.getId()), ProductMessages.notEmpty("id"));
-        Assert.isTrue(isNotBlank(product.getName()), ProductMessages.notEmpty("name"));
-        Assert.notNull(product.getStatus(), ProductMessages.notEmpty("status"));
-        this.validateOptions(product);
-        this.validateVariants(product);
-    }
-
-    private void validateOptions(Product product) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(product.getOptions()), ProductMessages.notEmpty("options"));
-    }
-
-    private void validateVariants(Product product) {
-        Assert.notEmpty(product.getVariants(), ProductMessages.notEmpty("variants"));
-        product.getVariants().stream()
-                .peek(this::validateVariant)
-                // 校验商品变体的规格选项集
-                .forEach(variant -> variant.getOptionSelections()
-                        .forEach(selection ->
-                                product.selectOption(selection.getName(), selection.getValue())
-                                        .orElseThrow()));
-    }
-
-    private void validateVariant(ProductVariant variant) {
-        Assert.isTrue(isNotBlank(variant.getId()), ProductMessages.variantNotEmpty("id"));
-        Assert.isTrue(isNotBlank(variant.getStoreId()), ProductMessages.variantNotEmpty("storeId"));
-        if (Objects.isNull(variant.getSalePrice())) {
-            Assert.notNull(variant.getPrice(), ProductMessages.variantNotEmpty("price"));
+        var error = this.createError(product);
+        ValidationUtils.invokeValidator(this.validator, product, error);
+        if (error.hasErrors()) {
+            throw new BindRuntimeException(error);
         }
     }
 }
