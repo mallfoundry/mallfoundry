@@ -41,6 +41,8 @@ public class DefaultOrderService implements OrderService {
 
     static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
 
+    private final OrderConfiguration orderConfiguration;
+
     private final OrderProcessorsInvoker processorsInvoker;
 
     private final OrderRepository orderRepository;
@@ -51,11 +53,13 @@ public class DefaultOrderService implements OrderService {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public DefaultOrderService(OrderProcessorsInvoker processorsInvoker,
+    public DefaultOrderService(OrderConfiguration orderConfiguration,
+                               OrderProcessorsInvoker processorsInvoker,
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
                                CarrierService carrierService,
                                ApplicationEventPublisher eventPublisher) {
+        this.orderConfiguration = orderConfiguration;
         this.processorsInvoker = processorsInvoker;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
@@ -90,7 +94,7 @@ public class DefaultOrderService implements OrderService {
         var placingOrders = this.orderSplitter.splitting(orders).stream()
                 .peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
                 .peek(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))))
-                .peek(Order::place)
+                .peek(order -> order.place(this.orderConfiguration.getDefaultExpires()))
                 .collect(Collectors.toList());
         List<Order> placedOrders = this.orderRepository.saveAll(placingOrders);
         placedOrders.forEach(order ->
