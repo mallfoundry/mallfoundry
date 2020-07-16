@@ -3,6 +3,7 @@ logging:
     org.mallfoundry: debug
     #    org.hibernate: debug
     org.springframework.web: debug
+#    org.hibernate: debug
 #    org.springframework: debug
 spring:
   jpa:

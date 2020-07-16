@@ -21,6 +21,7 @@ spring:
   messages:
     basename: >-
       messages,
+      org.mallfoundry.constraints.messages,
       org.mallfoundry.security.messages,
       org.mallfoundry.identity.messages,
       org.mallfoundry.store.messages,

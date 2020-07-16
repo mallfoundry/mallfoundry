@@ -32,6 +32,7 @@ server:
   port: 8077
   error:
     include-message: always
+    include-binding-errors: always
   address: 0.0.0.0
 springdoc:
   api-docs:
