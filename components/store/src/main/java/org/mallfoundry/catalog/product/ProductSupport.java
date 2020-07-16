@@ -98,52 +98,28 @@ public abstract class ProductSupport implements MutableProduct {
         this.setMonthlySales(this.getMonthlySales() + sales);
     }
 
-/*    private void validateOptionSelections(ProductVariant variant) {
-        var selections = variant.getOptionSelections();
-        if (selections.size() != this.getOptions().size()) {
-            throw new ProductException("Product options and Product variant options size are not consistent");
-        }
-        for (var selection : selections) {
-            this.selectOption(selection.getName(), selection.getValue())
-                    .orElseThrow(() ->
-                            new ProductException(
-                                    String.format("This option(%s:%s) does not exist",
-                                            selection.getName(), selection.getValue())));
-        }
-    }*/
-
-    private void updateVariants() {
+    private void effectVariants() {
         Positions.sort(this.getVariants());
         this.checkInventory();
         this.setMinPrice();
     }
 
-    @Override
-    public void addVariant(ProductVariant variant) {
+    private void addToVariants(ProductVariant variant) {
         variant.setProductId(this.getId());
         variant.setStoreId(this.getStoreId());
         this.getVariants().add(variant);
-        this.updateVariants();
     }
 
-/*    private void setVariant(ProductVariant source, ProductVariant target) {
-
-        this.updateVariants();
-    }*/
-
-/*    private void addOrSetVariant(ProductVariant variant) {
-        this.validateOptionSelections(variant);
-        if (Objects.isNull(variant.getId())) {
-            this.addVariant(variant);
-        } else {
-            this.getVariant(variant.getId())
-                    .ifPresentOrElse(targetVariant -> setVariant(variant, targetVariant), () -> this.addVariant(variant));
-        }
-    }*/
+    @Override
+    public void addVariant(ProductVariant variant) {
+        this.addToVariants(variant);
+        this.effectVariants();
+    }
 
     @Override
     public void addVariants(List<ProductVariant> variants) {
-        ListUtils.emptyIfNull(variants).forEach(this::addVariant);
+        ListUtils.emptyIfNull(variants).forEach(this::addToVariants);
+        this.effectVariants();
     }
 
     @Override
@@ -162,31 +138,56 @@ public abstract class ProductSupport implements MutableProduct {
                 .findFirst();
     }
 
+    private void removeFromVariants(ProductVariant variant) {
+        var removed = this.getVariants().remove(variant);
+        Assert.state(removed, ProductMessages.Variant::notFound);
+    }
+
     @Override
     public void removeVariant(ProductVariant variant) {
-        var removed =
-                Objects.requireNonNull(this.getVariants(), ProductMessages.notEmpty("variants"))
-                        .remove(variant);
-        Assert.isTrue(removed, ProductMessages.variantNotFound());
-        this.updateVariants();
+        this.removeFromVariants(variant);
+        this.effectVariants();
+    }
+
+    @Override
+    public void removeVariants(List<ProductVariant> variants) {
+        ListUtils.emptyIfNull(variants).forEach(this::removeFromVariants);
+        this.effectVariants();
     }
 
     @Override
     public void clearVariants() {
         this.getVariants().clear();
+        this.effectVariants();
     }
 
     @Override
     public void adjustInventoryQuantity(String variantId, int quantityDelta) {
         this.getVariant(variantId)
-                .orElseThrow(() -> new ProductException(ProductMessages.variantNotFound().get()))
+                .orElseThrow(() -> new ProductException(ProductMessages.Variant.notFound()))
                 .adjustInventoryQuantity(quantityDelta);
         this.checkInventory();
     }
 
+    private Optional<ProductOption> obtainOption(String id) {
+        return this.getOptions().stream()
+                .filter(option -> Objects.equals(option.getId(), id))
+                .findFirst();
+    }
+
+    private void setOption(ProductOption source, ProductOption target) {
+        target.setName(target.getName());
+        target.addValues(source.getValues());
+    }
+
     @Override
     public void addOption(ProductOption option) {
-        this.getOptions().add(option);
+        if (Objects.isNull(option.getId())) {
+            this.getOptions().add(option);
+        } else {
+            this.obtainOption(option.getId())
+                    .ifPresentOrElse(target -> setOption(option, target), () -> this.getOptions().add(option));
+        }
         Positions.sort(this.getOptions());
     }
 
@@ -210,7 +211,7 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public void removeOption(ProductOption option) {
         var removed = this.getOptions().remove(option);
-        Assert.isTrue(removed, ProductMessages.optionNotFound());
+        Assert.state(removed, ProductMessages.Option::notFound);
     }
 
     @Override
