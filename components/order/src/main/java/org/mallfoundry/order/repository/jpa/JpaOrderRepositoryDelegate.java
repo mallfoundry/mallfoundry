@@ -69,6 +69,12 @@ public interface JpaOrderRepositoryDelegate
             if (Objects.nonNull(orderQuery.getPlacedTimeMax())) {
                 predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMax()));
             }
+            if (Objects.nonNull(orderQuery.getExpiredTimeMin())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("expiredTime"), orderQuery.getExpiredTimeMin()));
+            }
+            if (Objects.nonNull(orderQuery.getExpiredTimeMax())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("expiredTime"), orderQuery.getExpiredTimeMax()));
+            }
             return predicate;
         };
     }
