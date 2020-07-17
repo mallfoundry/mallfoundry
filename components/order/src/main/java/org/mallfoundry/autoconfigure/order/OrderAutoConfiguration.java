@@ -20,11 +20,14 @@ package org.mallfoundry.autoconfigure.order;
 
 import org.mallfoundry.order.DefaultOrderConfiguration;
 import org.mallfoundry.order.DefaultOrderService;
+import org.mallfoundry.order.OrderAuthorizer;
 import org.mallfoundry.order.OrderConfiguration;
+import org.mallfoundry.order.OrderIdentifier;
 import org.mallfoundry.order.OrderProcessorsInvoker;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
+import org.mallfoundry.order.OrderValidator;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredService;
 import org.mallfoundry.shipping.CarrierService;
@@ -58,13 +61,31 @@ public class OrderAutoConfiguration {
         return new DefaultOrderService(orderConfiguration, processorsInvoker, orderRepository, orderSplitter, carrierService, eventPublisher);
     }
 
-    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "task")
     @Bean
+    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "task")
     public OrderExpiredCancellationTask orderPaymentExpirationTask(OrderProperties properties,
                                                                    OrderService orderService,
                                                                    OrderExpiredService orderExpiredService) {
         var task = new OrderExpiredCancellationTask(orderService, orderExpiredService);
         task.setFetchSize(properties.getExpiredCancellation().getTask().getFetchSize());
         return task;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OrderIdentifier orderIdentifier() {
+        return new OrderIdentifier();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OrderAuthorizer orderAuthorizer() {
+        return new OrderAuthorizer();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OrderValidator orderValidator() {
+        return new OrderValidator();
     }
 }
