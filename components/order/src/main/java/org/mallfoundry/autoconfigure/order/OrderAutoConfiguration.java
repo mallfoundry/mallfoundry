@@ -23,20 +23,26 @@ import org.mallfoundry.order.DefaultOrderService;
 import org.mallfoundry.order.OrderAuthorizer;
 import org.mallfoundry.order.OrderConfiguration;
 import org.mallfoundry.order.OrderIdentifier;
+import org.mallfoundry.order.OrderProcessor;
 import org.mallfoundry.order.OrderProcessorsInvoker;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
 import org.mallfoundry.order.OrderValidator;
+import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
-import org.mallfoundry.order.expires.OrderExpiredService;
+import org.mallfoundry.order.expires.OrderExpiredCanceller;
 import org.mallfoundry.shipping.CarrierService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @EnableConfigurationProperties(OrderProperties.class)
 @Configuration
@@ -62,13 +68,28 @@ public class OrderAutoConfiguration {
     }
 
     @Bean
+    public OrderExpiredCanceller orderExpiredCanceller(OrderService orderService) {
+        return new OrderExpiredCanceller(orderService);
+    }
+
+    @Bean
     @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "task")
-    public OrderExpiredCancellationTask orderPaymentExpirationTask(OrderProperties properties,
-                                                                   OrderService orderService,
-                                                                   OrderExpiredService orderExpiredService) {
-        var task = new OrderExpiredCancellationTask(orderService, orderExpiredService);
+    public OrderExpiredCancellationTask orderPaymentExpirationTask(OrderProperties properties, OrderExpiredCanceller canceller) {
+        var task = new OrderExpiredCancellationTask(canceller);
         task.setFetchSize(properties.getExpiredCancellation().getTask().getFetchSize());
         return task;
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "process")
+    public OrderExpiredCancellationProcessor orderExpiredCancellationProcessor(OrderExpiredCanceller canceller) {
+        return new OrderExpiredCancellationProcessor(canceller);
+    }
+
+    @Autowired(required = false)
+    @Bean
+    public OrderProcessorsInvoker orderProcessorsInvoker(@Lazy List<OrderProcessor> processors) {
+        return new OrderProcessorsInvoker(processors);
     }
 
     @Bean
@@ -77,7 +98,7 @@ public class OrderAutoConfiguration {
         return new OrderIdentifier();
     }
 
-    @Bean
+    //    @Bean
     @ConditionalOnMissingBean
     public OrderAuthorizer orderAuthorizer() {
         return new OrderAuthorizer();

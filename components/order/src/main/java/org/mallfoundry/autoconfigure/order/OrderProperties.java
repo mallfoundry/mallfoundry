@@ -33,7 +33,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties("mall.order")
 public class OrderProperties {
 
-    // 30分钟。
+    // 默认过期时间为 30 分钟。
     private int defaultExpires = 1000 * 60 * 30;
 
     @NestedConfigurationProperty
