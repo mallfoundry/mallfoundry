@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 public interface Order {
@@ -88,11 +89,17 @@ public interface Order {
 
     List<Shipment> getShipments();
 
-    Optional<Shipment> getShipment(String id);
+    Optional<Shipment> getShipment(String shipmentId);
+
+    List<Shipment> getShipments(Set<String> shipmentIds);
 
     void updateShipment(Shipment shipment);
 
+    void updateShipments(List<Shipment> shipments);
+
     void removeShipment(Shipment shipment);
+
+    void removeShipments(List<Shipment> shipments);
 
     List<Refund> getRefunds();
 
@@ -154,10 +161,27 @@ public interface Order {
 
     void pay(PaymentInformation details) throws OrderException;
 
+    /**
+     * 订单对象打包。
+     *
+     * @throws OrderException 订单对象已完成打包状态
+     */
     void fulfil() throws OrderException;
 
-    void sign() throws OrderException;
+    String getSignMessage();
 
+    /**
+     * 订单对象签收，sign 和 receipt 区别是签收可以是自签收也可以是他人代签收。
+     *
+     * @throws OrderException 订单对象已完成签收状态
+     */
+    void sign(String message) throws OrderException;
+
+    /**
+     * 确认收货。
+     *
+     * @throws OrderException 订单对象已完成确认收货状态
+     */
     void receipt() throws OrderException;
 
     void cancel(String reason) throws OrderException;
