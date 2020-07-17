@@ -111,11 +111,15 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public SliceList<Order> getOrders(OrderQuery query) {
-        return Function.<SliceList<Order>>identity()
-                .compose(this.processorsInvoker::invokePostProcessGetOrders)
-                .compose(this.orderRepository::findAll)
-                .compose(this.processorsInvoker::invokePreProcessGetOrders)
-                .apply(query);
+        try {
+            return Function.<SliceList<Order>>identity()
+                    .compose(this.processorsInvoker::invokePostProcessGetOrders)
+                    .compose(this.orderRepository::findAll)
+                    .compose(this.processorsInvoker::invokePreProcessGetOrders)
+                    .apply(query);
+        } finally {
+            this.processorsInvoker.invokeAfterProcessCompletion();
+        }
     }
 
     @Override
