@@ -22,6 +22,7 @@ import org.mallfoundry.data.SliceList;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * 提供对订单对象的管理。
@@ -48,11 +49,11 @@ public interface OrderService {
 
     Order updateOrder(Order order);
 
-    void fulfilOrder(String orderId);
-
     void payOrder(String orderId, PaymentInformation payment);
 
-    void signOrder(String orderId);
+    void fulfilOrder(String orderId);
+
+    void signOrder(String orderId, String message);
 
     void receiptOrder(String orderId);
 
@@ -69,4 +70,6 @@ public interface OrderService {
     void updateOrderShipments(String orderId, List<Shipment> shipments);
 
     void removeOrderShipment(String orderId, String shipmentId);
+
+    void removeOrderShipments(String orderId, Set<String> shipmentIds);
 }
