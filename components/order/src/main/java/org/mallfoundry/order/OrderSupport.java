@@ -19,16 +19,19 @@
 package org.mallfoundry.order;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.order.repository.jpa.JpaShipment;
 import org.mallfoundry.payment.PaymentStatus;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
@@ -114,8 +117,22 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
+    public List<Shipment> getShipments(Set<String> shipmentIds) {
+        return CollectionUtils.isEmpty(shipmentIds) ? Collections.emptyList()
+                : this.getShipments()
+                        .stream()
+                        .filter(shipment -> shipmentIds.contains(shipment.getId()))
+                        .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
     public void updateShipment(Shipment shipment) {
         BeanUtils.copyProperties(shipment, this.getShipment(shipment.getId()).orElseThrow());
+    }
+
+    @Override
+    public void updateShipments(List<Shipment> shipments) {
+        ListUtils.emptyIfNull(shipments).forEach(this::updateShipment);
     }
 
     @Override
@@ -123,6 +140,10 @@ public abstract class OrderSupport implements MutableOrder {
         this.getShipments().remove(shipment);
     }
 
+    @Override
+    public void removeShipments(List<Shipment> shipments) {
+        ListUtils.emptyIfNull(shipments).forEach(this::removeShipment);
+    }
 
     @Override
     public void discounts(Map<String, BigDecimal> amounts) {
@@ -178,7 +199,8 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void sign() throws OrderException {
+    public void sign(String message) throws OrderException {
+        this.setSignMessage(message);
         this.setStatus(AWAITING_PICKUP);
         this.setSignedTime(new Date());
     }
