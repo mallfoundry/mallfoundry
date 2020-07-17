@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.security.SubjectHolder;
@@ -185,6 +186,17 @@ public class DefaultOrderService implements OrderService {
         order.cancel(reason);
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderCancelledEvent(savedOrder));
+    }
+
+    @Transactional
+    @Override
+    public void cancelOrders(Set<String> orderIds, String reason) {
+        var orders = this.orderRepository.findAllById(orderIds);
+        if (CollectionUtils.isNotEmpty(orders)) {
+            orders.forEach(order -> order.cancel(this.processorsInvoker.invokePreProcessCancelOrder(order, reason)));
+            var savedOrders = this.orderRepository.saveAll(orders);
+            savedOrders.forEach(order -> this.eventPublisher.publishEvent(new ImmutableOrderCancelledEvent(order)));
+        }
     }
 
     @Transactional
