@@ -50,12 +50,18 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Object target, Object permission) {
+        if (Objects.isNull(target)) {
+            return false;
+        }
         var resource = this.manager.createResource(target);
         return this.hasPermission(authentication, resource.getIdentifier(), resource.getType(), permission);
     }
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+        if (Objects.isNull(targetId)) {
+            return false;
+        }
         var resource = this.manager.createResource(targetType, targetId);
         return this.hasPermission(authentication, resource, permission);
     }
