@@ -26,6 +26,8 @@ public interface MutableOrder extends Order {
 
     void setShippedItems(int items);
 
+    void setSignMessage(String signMessage);
+
     void setCancelReason(String cancelReason);
 
     void setExpires(int expires);
