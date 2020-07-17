@@ -98,7 +98,7 @@ public class OrderAutoConfiguration {
         return new OrderIdentifier();
     }
 
-    //    @Bean
+    @Bean
     @ConditionalOnMissingBean
     public OrderAuthorizer orderAuthorizer() {
         return new OrderAuthorizer();
