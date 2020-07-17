@@ -120,6 +120,9 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "expires_")
     private int expires;
 
+    @Column(name = "sign_message_")
+    private String signMessage;
+
     @Column(name = "cancel_reason_")
     private String cancelReason;
 
