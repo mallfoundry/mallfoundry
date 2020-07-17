@@ -26,7 +26,7 @@ public abstract class OrderEventSupport extends ApplicationEvent implements Orde
     @Getter
     private final Order order;
 
-    protected OrderEventSupport(Order order) {
+    public OrderEventSupport(Order order) {
         super(order);
         this.order = order;
     }

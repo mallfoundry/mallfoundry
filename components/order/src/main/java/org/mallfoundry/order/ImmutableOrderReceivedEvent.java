@@ -18,8 +18,8 @@
 
 package org.mallfoundry.order;
 
-public class ImmutableOrderPaidEvent extends OrderEventSupport implements OrderPaidEvent {
-    public ImmutableOrderPaidEvent(Order order) {
+public class ImmutableOrderReceivedEvent extends OrderEventSupport implements OrderReceivedEvent {
+    public ImmutableOrderReceivedEvent(Order order) {
         super(order);
     }
 }
