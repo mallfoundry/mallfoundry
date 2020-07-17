@@ -92,4 +92,7 @@ public interface OrderProcessor {
     default List<Shipment> preProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
         return shipments;
     }
+
+    default void afterProcessCompletion() {
+    }
 }

@@ -117,4 +117,8 @@ public class OrderProcessorsInvoker {
     public List<Shipment> invokePreProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
         return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
     }
+
+    public void invokeAfterProcessCompletion() {
+        ProcessorsInvoker.invokeProcessors(this.processors, OrderProcessor::afterProcessCompletion);
+    }
 }
