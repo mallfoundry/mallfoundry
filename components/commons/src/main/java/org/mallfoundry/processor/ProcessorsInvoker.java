@@ -20,6 +20,7 @@ package org.mallfoundry.processor;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public abstract class ProcessorsInvoker {
 
@@ -30,5 +31,11 @@ public abstract class ProcessorsInvoker {
             result = function.apply(processor, result);
         }
         return (R) result;
+    }
+
+    public static <T> void invokeProcessors(List<T> processors, Consumer<T> consumer) {
+        for (var processor : processors) {
+            consumer.accept(processor);
+        }
     }
 }
