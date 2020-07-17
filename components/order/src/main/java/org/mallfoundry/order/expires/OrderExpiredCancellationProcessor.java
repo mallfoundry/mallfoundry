@@ -24,10 +24,10 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderProcessor;
 import org.mallfoundry.order.OrderQuery;
-import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderStatus;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,17 +38,14 @@ import java.util.stream.Collectors;
  */
 public class OrderExpiredCancellationProcessor implements OrderProcessor {
 
-    private final OrderService orderService;
-
-    private final OrderExpiredService orderExpiredService;
+    private final OrderExpiredCanceller canceller;
 
     private final ThreadLocal<OrderQuery> queryFor = new ThreadLocal<>();
 
     private final Set<OrderStatus> conditionStatuses = Set.of(OrderStatus.PENDING, OrderStatus.AWAITING_PAYMENT);
 
-    public OrderExpiredCancellationProcessor(OrderService orderService, OrderExpiredService orderExpiredService) {
-        this.orderService = orderService;
-        this.orderExpiredService = orderExpiredService;
+    public OrderExpiredCancellationProcessor(OrderExpiredCanceller canceller) {
+        this.canceller = canceller;
     }
 
     // 判断订单对象是否为必须取消。
@@ -59,31 +56,35 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
     @Override
     public Order postProcessGetOrder(Order order) {
         if (this.mustCancel(order)) {
-            this.orderExpiredService.cancelOrders(List.of(order));
+            this.canceller.cancelOrders(List.of(order));
         }
         return order;
     }
 
     @Override
     public OrderQuery preProcessGetOrders(OrderQuery query) {
-        if (CollectionUtils.containsAny(query.getStatuses(), this.conditionStatuses)) {
-            queryFor.set(query);
-        }
+        queryFor.set(query);
         return query;
     }
 
+    private List<Order> getExpiredOrders(SliceList<Order> orders) {
+        return orders.getElements().stream()
+                .filter(this::mustCancel)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    // 如果存在过期订单，此流程将会执行两次。
+    // 第一次为正常流程，第二次为 canceller.getOrders(query)。
     @Override
     public SliceList<Order> postProcessGetOrders(SliceList<Order> orders) {
         if (CollectionUtils.isEmpty(orders.getElements())) {
             return orders;
         }
         var query = queryFor.get();
-        var cancelOrders = orders.getElements().stream()
-                .filter(this::mustCancel)
-                .collect(Collectors.toUnmodifiableList());
-        if (CollectionUtils.isNotEmpty(cancelOrders)) {
-            this.orderExpiredService.cancelOrders(cancelOrders);
-            return this.orderService.getOrders(query);
+        var expiredOrders = this.getExpiredOrders(orders);
+        if (CollectionUtils.isNotEmpty(expiredOrders)) {
+            this.canceller.cancelOrders(expiredOrders);
+            return this.canceller.getOrders(query);
         }
         return orders;
     }

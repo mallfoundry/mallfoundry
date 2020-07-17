@@ -19,37 +19,48 @@
 package org.mallfoundry.order.expires;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.i18n.MessageHolder;
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderQuery;
 import org.mallfoundry.order.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service
-public class OrderExpiredService {
+public class OrderExpiredCanceller {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderExpiredService.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrderExpiredCanceller.class);
 
     private final OrderService orderService;
 
-    public OrderExpiredService(OrderService orderService) {
+    public OrderExpiredCanceller(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    public OrderQuery createOrderQuery() {
+        return this.orderService.createOrderQuery();
+    }
+
+    public SliceList<Order> getOrders(OrderQuery query) {
+        return this.orderService.getOrders(query);
     }
 
     @Transactional
     public void cancelOrders(List<Order> orders) {
-        if (CollectionUtils.isNotEmpty(orders)) {
+        var orderIds = CollectionUtils.emptyIfNull(orders)
+                .stream()
+                .map(Order::getId)
+                .collect(Collectors.toUnmodifiableSet());
+        if (CollectionUtils.isNotEmpty(orderIds)) {
             var reason = this.getCancelReason();
-            orders.forEach(order -> {
-                this.orderService.cancelOrder(order.getId(), reason);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Automatically cancels the expired order({})", order.getId());
-                }
-            });
+            this.orderService.cancelOrders(orderIds, reason);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Automatically cancels the expired orders({})", orderIds);
+            }
         }
     }
 

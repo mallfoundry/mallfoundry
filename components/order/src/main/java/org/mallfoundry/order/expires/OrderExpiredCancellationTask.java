@@ -19,7 +19,6 @@
 package org.mallfoundry.order.expires;
 
 import org.mallfoundry.order.Order;
-import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderStatus;
 import org.springframework.util.Assert;
 
@@ -38,13 +37,10 @@ public class OrderExpiredCancellationTask implements Runnable {
 
     private int fetchSize = DEFAULT_FETCH_SIZE;
 
-    private final OrderService orderService;
+    private final OrderExpiredCanceller canceller;
 
-    private final OrderExpiredService orderExpiredService;
-
-    public OrderExpiredCancellationTask(OrderService orderService, OrderExpiredService orderExpiredService) {
-        this.orderService = orderService;
-        this.orderExpiredService = orderExpiredService;
+    public OrderExpiredCancellationTask(OrderExpiredCanceller canceller) {
+        this.canceller = canceller;
     }
 
     public void setFetchSize(int fetchSize) {
@@ -54,11 +50,11 @@ public class OrderExpiredCancellationTask implements Runnable {
 
     @Override
     public void run() {
-        this.orderExpiredService.cancelOrders(this.getExpiredOrders());
+        this.canceller.cancelOrders(this.getExpiredOrders());
     }
 
     private List<Order> getExpiredOrders() {
-        var sliceList = this.orderService.getOrders(this.orderService.createOrderQuery()
+        var sliceList = this.canceller.getOrders(this.canceller.createOrderQuery()
                 .toBuilder()
                 .statuses(Set.of(OrderStatus.PENDING, OrderStatus.AWAITING_PAYMENT))
                 .expiredTimeMax(new Date())
