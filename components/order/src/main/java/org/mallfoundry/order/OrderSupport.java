@@ -50,6 +50,11 @@ import static org.mallfoundry.order.OrderStatus.SHIPPED;
 public abstract class OrderSupport implements MutableOrder {
 
     @Override
+    public boolean isExpired() {
+        return System.currentTimeMillis() >= (this.getPlacedTime().getTime() + this.getExpires());
+    }
+
+    @Override
     public void addItem(OrderItem item) {
         this.getItems().add(item);
     }
@@ -78,7 +83,6 @@ public abstract class OrderSupport implements MutableOrder {
     public int getTotalItems() {
         return CollectionUtils.size(this.getItems());
     }
-
 
     @Override
     public void addShipment(Shipment newShipment) {

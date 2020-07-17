@@ -137,6 +137,8 @@ public interface Order {
 
     int getExpires();
 
+    boolean isExpired();
+
     Date getPlacedTime();
 
     Date getExpiredTime();
