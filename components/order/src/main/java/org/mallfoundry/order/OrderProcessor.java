@@ -18,19 +18,78 @@
 
 package org.mallfoundry.order;
 
-import org.springframework.data.domain.Slice;
+import org.mallfoundry.data.SliceList;
 
+import java.util.List;
+
+/**
+ * 订单对象处理器。
+ *
+ * @author Zhi Tang
+ */
 public interface OrderProcessor {
 
-    default Order processPostGetOrder(Order order) {
+    default Order postProcessGetOrder(Order order) {
         return order;
     }
 
-    default OrderQuery processPreGetOrders(OrderQuery query) {
+    default OrderQuery preProcessGetOrders(OrderQuery query) {
         return query;
     }
 
-    default Slice<Order> processPostGetOrders(Slice<Order> orders) {
+    default SliceList<Order> postProcessGetOrders(SliceList<Order> orders) {
         return orders;
+    }
+
+    default List<Order> preProcessPlaceOrders(List<Order> orders) {
+        return orders;
+    }
+
+    default Order preProcessUpdateOrder(Order order) {
+        return order;
+    }
+
+    default Order preProcessFulfilOrder(Order order) {
+        return order;
+    }
+
+    default String preProcessSignOrder(Order order, String message) {
+        return message;
+    }
+
+    default Order preProcessReceiptOrder(Order order) {
+        return order;
+    }
+
+    default String preProcessCancelOrder(Order order, String reason) {
+        return reason;
+    }
+
+    default Shipment preProcessAddOrderShipment(Order order, Shipment shipment) {
+        return shipment;
+    }
+
+    default Order preProcessGetOrderShipment(Order order) {
+        return order;
+    }
+
+    default Order preProcessGetOrderShipments(Order order) {
+        return order;
+    }
+
+    default Shipment preProcessUpdateOrderShipment(Order order, Shipment shipment) {
+        return shipment;
+    }
+
+    default List<Shipment> preProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
+        return shipments;
+    }
+
+    default Shipment preProcessRemoveOrderShipment(Order order, Shipment shipment) {
+        return shipment;
+    }
+
+    default List<Shipment> preProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
+        return shipments;
     }
 }

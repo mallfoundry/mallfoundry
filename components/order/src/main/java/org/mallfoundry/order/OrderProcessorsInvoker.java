@@ -19,11 +19,14 @@
 package org.mallfoundry.order;
 
 import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.ProcessorsInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 
 @Component
 public class OrderProcessorsInvoker {
@@ -35,11 +38,83 @@ public class OrderProcessorsInvoker {
         this.processors = Collections.unmodifiableList(ListUtils.emptyIfNull(processors));
     }
 
-    public Order invokeProcessPostGetOrder(Order order) {
-        var result = order;
-        for (var processor : this.processors) {
-            result = processor.processPostGetOrder(result);
-        }
-        return result;
+    private List<Order> invokeProcess(List<Order> orders, BiFunction<OrderProcessor, List<Order>, List<Order>> function) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, orders, function);
+    }
+
+    private Order invokeProcess(Order order, BiFunction<OrderProcessor, Order, Order> function) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, order, function);
+    }
+
+    private SliceList<Order> invokeProcess(SliceList<Order> orders, BiFunction<OrderProcessor, SliceList<Order>, SliceList<Order>> function) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, orders, function);
+    }
+
+    private OrderQuery invokeProcess(OrderQuery query, BiFunction<OrderProcessor, OrderQuery, OrderQuery> function) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, query, function);
+    }
+
+    public List<Order> invokePreProcessPlaceOrders(List<Order> orders) {
+        return this.invokeProcess(orders, OrderProcessor::preProcessPlaceOrders);
+    }
+
+    public Order invokePostProcessGetOrder(Order order) {
+        return this.invokeProcess(order, OrderProcessor::postProcessGetOrder);
+    }
+
+    public OrderQuery invokePreProcessGetOrders(OrderQuery query) {
+        return this.invokeProcess(query, OrderProcessor::preProcessGetOrders);
+    }
+
+    public SliceList<Order> invokePostProcessGetOrders(SliceList<Order> orders) {
+        return this.invokeProcess(orders, OrderProcessor::postProcessGetOrders);
+    }
+
+    public Order invokePreProcessUpdateOrder(Order order) {
+        return this.invokeProcess(order, OrderProcessor::preProcessUpdateOrder);
+    }
+
+    public Order invokePreProcessFulfilOrder(Order order) {
+        return this.invokeProcess(order, OrderProcessor::preProcessFulfilOrder);
+    }
+
+    public String invokePreProcessSignOrder(Order order, String message) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, message, (orderProcessor, identity) -> orderProcessor.preProcessSignOrder(order, identity));
+    }
+
+    public Order invokePreProcessReceiptOrder(Order order) {
+        return this.invokeProcess(order, OrderProcessor::preProcessReceiptOrder);
+    }
+
+    public String invokePreProcessCancelOrder(Order order, String reason) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, reason, (orderProcessor, identity) -> orderProcessor.preProcessCancelOrder(order, reason));
+    }
+
+    public Shipment invokePreProcessAddOrderShipment(Order order, Shipment shipment) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderShipment(order, identity));
+    }
+
+    public Order invokePreProcessGetOrderShipment(Order order) {
+        return this.invokeProcess(order, OrderProcessor::preProcessGetOrderShipment);
+    }
+
+    public Order invokePreProcessGetOrderShipments(Order order) {
+        return this.invokeProcess(order, OrderProcessor::preProcessGetOrderShipments);
+    }
+
+    public Shipment invokePreProcessUpdateOrderShipment(Order order, Shipment shipment) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipment(order, identity));
+    }
+
+    public List<Shipment> invokePreProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipments(order, identity));
+    }
+
+    public Shipment invokePreProcessRemoveOrderShipment(Order order, Shipment shipment) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipment(order, identity));
+    }
+
+    public List<Shipment> invokePreProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
+        return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
     }
 }
