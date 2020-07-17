@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.mallfoundry.processor.ProcessorsInvoker;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,19 +34,11 @@ public class ProductProcessorsInvoker {
     }
 
     private Product invokeProcess(Product product, BiFunction<ProductProcessor, Product, Product> function) {
-        var result = product;
-        for (var processor : processors) {
-            result = function.apply(processor, result);
-        }
-        return result;
+        return ProcessorsInvoker.invokeProcessors(this.processors, product, function);
     }
 
     private ProductQuery invokeProcess(ProductQuery query, BiFunction<ProductProcessor, ProductQuery, ProductQuery> function) {
-        var result = query;
-        for (var processor : processors) {
-            result = function.apply(processor, result);
-        }
-        return result;
+        return ProcessorsInvoker.invokeProcessors(this.processors, query, function);
     }
 
     public Product invokePostProcessGetProduct(Product product) {
