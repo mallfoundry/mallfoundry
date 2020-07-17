@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -57,6 +58,7 @@ public class TestOrder implements Order {
     private String paymentId;
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
+    private String signMessage;
     private int expires = 60 * 1000;
     private String cancelReason;
     private Date placedTime;
@@ -104,12 +106,27 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public List<Shipment> getShipments(Set<String> shipmentIds) {
+        return null;
+    }
+
+    @Override
     public void updateShipment(Shipment shipment) {
 
     }
 
     @Override
+    public void updateShipments(List<Shipment> shipments) {
+
+    }
+
+    @Override
     public void removeShipment(Shipment shipment) {
+
+    }
+
+    @Override
+    public void removeShipments(List<Shipment> shipments) {
 
     }
 
@@ -184,7 +201,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void sign() throws OrderException {
+    public void sign(String message) throws OrderException {
 
     }
 
