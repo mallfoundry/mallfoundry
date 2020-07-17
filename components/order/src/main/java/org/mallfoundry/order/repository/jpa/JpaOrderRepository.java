@@ -25,6 +25,7 @@ import org.mallfoundry.order.OrderRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,11 @@ public class JpaOrderRepository implements OrderRepository {
     @Override
     public Optional<Order> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public List<Order> findAllById(Collection<String> ids) {
+        return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override

@@ -20,6 +20,7 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public interface OrderRepository {
     List<Order> saveAll(Iterable<Order> orders);
 
     Optional<Order> findById(String id);
+
+    List<Order> findAllById(Collection<String> ids);
 
     SliceList<Order> findAll(OrderQuery query);
 
