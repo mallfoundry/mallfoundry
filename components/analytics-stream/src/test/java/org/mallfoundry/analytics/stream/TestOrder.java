@@ -27,8 +27,8 @@ import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.PaymentInformation;
 import org.mallfoundry.order.Refund;
 import org.mallfoundry.order.Shipment;
-import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 
 import java.math.BigDecimal;
@@ -69,6 +69,11 @@ public class TestOrder implements Order {
     private Date signedTime;
     private Date receivedTime;
     private Date cancelledTime;
+
+    @Override
+    public boolean isExpired() {
+        return false;
+    }
 
     @Override
     public OrderItem createItem(String itemId) {
