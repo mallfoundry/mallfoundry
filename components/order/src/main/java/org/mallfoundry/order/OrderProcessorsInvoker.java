@@ -21,21 +21,16 @@ package org.mallfoundry.order;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.ProcessorsInvoker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 
-@Component
 public class OrderProcessorsInvoker {
 
     private final List<OrderProcessor> processors;
 
-    @Autowired(required = false)
     public OrderProcessorsInvoker(List<OrderProcessor> processors) {
-        this.processors = Collections.unmodifiableList(ListUtils.emptyIfNull(processors));
+        this.processors = ListUtils.emptyIfNull(processors);
     }
 
     private List<Order> invokeProcess(List<Order> orders, BiFunction<OrderProcessor, List<Order>, List<Order>> function) {
@@ -121,4 +116,5 @@ public class OrderProcessorsInvoker {
     public void invokeAfterProcessCompletion() {
         ProcessorsInvoker.invokeProcessors(this.processors, OrderProcessor::afterProcessCompletion);
     }
+
 }
