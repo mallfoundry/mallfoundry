@@ -23,6 +23,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.order.repository.jpa.JpaShipment;
 import org.mallfoundry.payment.PaymentStatus;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -176,6 +177,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void place(int placingExpires) throws OrderException {
+        Assert.notNull(this.getSource(), OrderMessages.Source.notNull());
         if (this.getStatus() != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }
