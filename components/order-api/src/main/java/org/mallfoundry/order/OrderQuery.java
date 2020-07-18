@@ -69,13 +69,13 @@ public interface OrderQuery extends Query {
 
     void setPlacedTimeMax(Date time);
 
-    Date getExpiredTimeMin();
+    Date getPlacingExpiredTimeMin();
 
-    void setExpiredTimeMin(Date time);
+    void setPlacingExpiredTimeMin(Date time);
 
-    Date getExpiredTimeMax();
+    Date getPlacingExpiredTimeMax();
 
-    void setExpiredTimeMax(Date time);
+    void setPlacingExpiredTimeMax(Date time);
 
     Builder toBuilder();
 
@@ -109,8 +109,8 @@ public interface OrderQuery extends Query {
 
         Builder placedTimeMax(Date time);
 
-        Builder expiredTimeMin(Date time);
+        Builder placingExpiredTimeMin(Date time);
 
-        Builder expiredTimeMax(Date time);
+        Builder placingExpiredTimeMax(Date time);
     }
 }
