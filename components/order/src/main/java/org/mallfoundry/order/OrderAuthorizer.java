@@ -60,14 +60,14 @@ public class OrderAuthorizer implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_SIGN + "')")
+            + OrderAuthorities.ORDER_SIGN + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
     public String preProcessSignOrder(Order order, String message) {
         return message;
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_RECEIPT + "')")
+            + OrderAuthorities.ORDER_RECEIPT + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
     public Order preProcessReceiptOrder(Order order) {
         return order;
