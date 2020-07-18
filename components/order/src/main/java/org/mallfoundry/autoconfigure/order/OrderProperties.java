@@ -20,6 +20,7 @@ package org.mallfoundry.autoconfigure.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -34,7 +35,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class OrderProperties {
 
     // 默认过期时间为 30 分钟。
-    private int defaultExpires = 1000 * 60 * 30;
+    private int placingExpires = 1000 * 60 * 30;
+
+    private InventoryDeduction inventoryDeduction;
 
     @NestedConfigurationProperty
     private ExpiredCancellation expiredCancellation = new ExpiredCancellation();
