@@ -80,15 +80,20 @@ public class DefaultOrderService implements OrderService {
         return this.placeOrders(List.of(order));
     }
 
-    private <T, R> Function<List<T>, List<T>> publishEvent(Function<T, R> function) {
+    private <T, R> Function<List<T>, List<T>> publishOrdersEvent(Function<List<T>, R> function) {
         return (List<T> tt) -> {
-            tt.stream().map(function).forEach(this.eventPublisher::publishEvent);
+            this.eventPublisher.publishEvent(function.apply(tt));
             return tt;
         };
     }
 
     private List<Order> invokePlaceOrders(List<Order> orders) {
-        orders.forEach(order -> order.place(this.orderConfiguration.getDefaultExpires()));
+        orders.forEach(order -> {
+            // 设置订单对象的扣减库存方式。
+            // 当订单对象下单后或支付后，对订单所持有的库存判断其如何扣减或者归还。
+            order.setInventoryDeduction(this.orderConfiguration.getInventoryDeduction());
+            order.place(this.orderConfiguration.getPlacingExpires());
+        });
         return orders;
     }
 
@@ -96,7 +101,8 @@ public class DefaultOrderService implements OrderService {
     @Override
     public List<Order> placeOrders(List<Order> orders) {
         return Function.<List<Order>>identity()
-                .compose(this.publishEvent(ImmutableOrderPlacedEvent::new))
+                .compose(this.publishOrdersEvent(ImmutableOrdersPlacedEvent::new))
+                .compose(this.processorsInvoker::invokePostProcessPlaceOrders)
                 .compose(this.orderRepository::saveAll)
                 .compose(this.processorsInvoker::invokePreProcessPlaceOrders)
                 .compose(this::invokePlaceOrders)
@@ -119,7 +125,7 @@ public class DefaultOrderService implements OrderService {
                     .compose(this.processorsInvoker::invokePreProcessGetOrders)
                     .apply(query);
         } finally {
-            this.processorsInvoker.invokeAfterProcessCompletion();
+            this.processorsInvoker.invokePostProcessAfterCompletion();
         }
     }
 
