@@ -30,7 +30,7 @@ public interface OrderRepository {
 
     Order save(Order order);
 
-    List<Order> saveAll(Iterable<Order> orders);
+    List<Order> saveAll(Collection<Order> orders);
 
     Optional<Order> findById(String id);
 
