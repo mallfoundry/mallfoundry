@@ -20,9 +20,11 @@ package org.mallfoundry.analytics.stream;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.PaymentInformation;
 import org.mallfoundry.order.Refund;
@@ -46,6 +48,8 @@ public class TestOrder implements Order {
     private OrderStatus status;
     private String storeId;
     private String storeName;
+    private String sourceName;
+    private OrderSource source;
     private String customerId;
     private String customerMessage;
     private String staffNotes;
@@ -59,10 +63,11 @@ public class TestOrder implements Order {
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
     private String signMessage;
-    private int expires = 60 * 1000;
+    private InventoryDeduction inventoryDeduction;
     private String cancelReason;
     private Date placedTime;
-    private Date expiredTime;
+    private int placingExpires = 60 * 1000;
+    private Date placingExpiredTime;
     private Date paidTime;
     private Date shippedTime;
     private Date fulfilledTime;
@@ -71,7 +76,7 @@ public class TestOrder implements Order {
     private Date cancelledTime;
 
     @Override
-    public boolean isExpired() {
+    public boolean isPlacingExpired() {
         return false;
     }
 
@@ -173,6 +178,16 @@ public class TestOrder implements Order {
     @Override
     public BigDecimal getSubtotalAmount() {
         return null;
+    }
+
+    @Override
+    public boolean isPlaced() {
+        return false;
+    }
+
+    @Override
+    public boolean isPaid() {
+        return false;
     }
 
     @Override
