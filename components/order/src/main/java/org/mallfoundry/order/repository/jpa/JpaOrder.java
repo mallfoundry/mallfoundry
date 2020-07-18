@@ -21,8 +21,10 @@ package org.mallfoundry.order.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderSupport;
 import org.mallfoundry.order.Refund;
@@ -74,6 +76,12 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "customer_id_")
     private String customerId;
 
+    @Column(name = "source_name_")
+    private String sourceName;
+
+    @Column(name = "source_")
+    private OrderSource source;
+
     @Column(name = "customer_message_")
     private String customerMessage;
 
@@ -117,8 +125,8 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "payment_method_")
     private PaymentMethod paymentMethod;
 
-    @Column(name = "expires_")
-    private int expires;
+    @Column(name = "inventory_deduction_")
+    private InventoryDeduction inventoryDeduction;
 
     @Column(name = "sign_message_")
     private String signMessage;
@@ -129,8 +137,11 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "placed_time_")
     private Date placedTime;
 
-    @Column(name = "expired_time_")
-    private Date expiredTime;
+    @Column(name = "placing_expires_")
+    private int placingExpires;
+
+    @Column(name = "placing_expired_time_")
+    private Date placingExpiredTime;
 
     @Column(name = "paid_time_")
     private Date paidTime;
