@@ -46,6 +46,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,26 +63,31 @@ import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 @Table(name = "mf_order")
 public class JpaOrder extends OrderSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private OrderStatus status = INCOMPLETE;
 
+    @NotBlank
     @Column(name = "store_id_")
     private String storeId;
 
     @Column(name = "store_name_")
     private String storeName;
 
+    @NotBlank
     @Column(name = "customer_id_")
     private String customerId;
 
     @Column(name = "source_name_")
     private String sourceName;
 
+    @NotNull
     @Column(name = "source_")
     private OrderSource source;
 
@@ -91,16 +100,20 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "staff_stars_")
     private Integer staffStars;
 
+    @NotNull
     @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
     private Address shippingAddress;
 
+    @Valid
+    @NotEmpty
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = JpaOrderItem.class)
     @JoinColumn(name = "order_id_")
     @OrderBy("id ASC")
     private List<OrderItem> items = new ArrayList<>();
 
+    @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = JpaShipment.class)
     @JoinColumn(name = "order_id_")

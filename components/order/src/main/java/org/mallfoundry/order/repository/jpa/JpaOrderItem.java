@@ -32,6 +32,9 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -43,22 +46,28 @@ import java.util.Objects;
 @Table(name = "mf_order_item")
 public class JpaOrderItem extends OrderItemSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "store_id_")
     private String storeId;
 
+    @NotBlank
     @Column(name = "product_id_")
     private String productId;
 
+    @NotBlank
     @Column(name = "variant_id_")
     private String variantId;
 
+    @NotBlank
     @Column(name = "image_url_")
     private String imageUrl;
 
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
@@ -66,9 +75,12 @@ public class JpaOrderItem extends OrderItemSupport {
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
 
+    @Min(1)
     @Column(name = "quantity_")
     private int quantity;
 
+    @NotNull
+    @Min(0)
     @Column(name = "price_")
     private BigDecimal price;
 

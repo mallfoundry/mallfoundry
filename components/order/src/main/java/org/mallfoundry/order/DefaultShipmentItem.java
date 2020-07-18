@@ -21,22 +21,30 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Getter
 @Setter
 public class DefaultShipmentItem implements ShipmentItem {
 
+    @NotBlank
     private String id;
 
+    @NotBlank
     private String productId;
 
+    @NotBlank
     private String variantId;
 
+    @Min(1)
     private int quantity;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String imageUrl;
 
     @Override

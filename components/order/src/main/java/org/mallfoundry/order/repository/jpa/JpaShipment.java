@@ -38,6 +38,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,17 +54,20 @@ import java.util.Objects;
 @Table(name = "mf_order_shipment")
 public class JpaShipment extends ShipmentSupport {
 
+    @NotBlank
     @Id
-    @Getter
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "consignor_id_")
     private String consignorId;
 
+    @NotBlank
     @Column(name = "consignor_")
     private String consignor;
 
+    @NotNull
     @Convert(converter = AddressConverter.class)
     @Column(name = "shipping_address_")
     private Address shippingAddress;
@@ -78,6 +85,8 @@ public class JpaShipment extends ShipmentSupport {
     @Column(name = "tracking_number_")
     private String trackingNumber;
 
+    @Valid
+    @NotEmpty
     @Convert(converter = ShipmentItemListConverter.class)
     @Column(name = "items_", length = 1024 * 2)
     private List<ShipmentItem> items = new ArrayList<>();
