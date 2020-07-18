@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.checkout.repository.jpa.convert.CheckoutItemListConverter;
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +52,9 @@ public class InternalCheckout implements Checkout {
 
     @Column(name = "cart_id_")
     private String cartId;
+
+    @Column(name = "source_")
+    private OrderSource source;
 
     @Column(name = "shipping_address_", length = 512)
     @Convert(converter = AddressConverter.class)

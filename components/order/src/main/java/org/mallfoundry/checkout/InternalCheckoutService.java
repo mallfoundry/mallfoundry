@@ -91,6 +91,7 @@ public class InternalCheckoutService implements CheckoutService {
             var store = this.storeService.getStore(product.getStoreId()).orElseThrow();
             order.setStoreId(store.getId());
             order.setStoreName(store.getName());
+            order.setSource(checkout.getSource());
             order.addItem(order.createItem(null)
                     .toBuilder()
                     .storeId(product.getStoreId())
@@ -140,14 +141,14 @@ public class InternalCheckoutService implements CheckoutService {
         return createCheckout(InternalCheckout.of(checkout));
     }
 
-    private InternalCheckout getNonCheckout(String id) {
+    private InternalCheckout requiredCheckout(String id) {
         return this.checkoutRepository.findById(id).orElseThrow(CheckoutExceptions::notFound);
     }
 
 
     @Override
     public Optional<Checkout> getCheckout(String id) {
-        var checkout = this.getNonCheckout(id);
+        var checkout = this.requiredCheckout(id);
         this.setOrdersToCheckout(checkout);
         return Optional.of(checkout);
     }
@@ -155,7 +156,7 @@ public class InternalCheckoutService implements CheckoutService {
     @Transactional
     @Override
     public Checkout updateCheckout(Checkout checkout) {
-        var storedCheckout = this.getNonCheckout(checkout.getId());
+        var storedCheckout = this.requiredCheckout(checkout.getId());
         if (Objects.nonNull(checkout.getShippingAddress())) {
             storedCheckout.setShippingAddress(checkout.getShippingAddress());
         }
@@ -167,7 +168,7 @@ public class InternalCheckoutService implements CheckoutService {
     @Transactional
     @Override
     public void deleteCheckout(String id) {
-        var checkout = this.getNonCheckout(id);
+        var checkout = this.requiredCheckout(id);
         this.checkoutRepository.delete(checkout);
     }
 
@@ -191,7 +192,7 @@ public class InternalCheckoutService implements CheckoutService {
     @Override
     @Transactional
     public Checkout placeCheckout(String id) {
-        var checkout = this.getNonCheckout(id);
+        var checkout = this.requiredCheckout(id);
         this.setOrdersToCheckout(checkout);
         this.placeOrders(checkout);
         this.tryAdjustCart(checkout);

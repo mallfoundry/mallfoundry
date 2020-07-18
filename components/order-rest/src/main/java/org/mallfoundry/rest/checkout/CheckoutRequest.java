@@ -21,6 +21,7 @@ package org.mallfoundry.rest.checkout;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.checkout.Checkout;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.rest.shipping.AddressRequest;
 import org.mallfoundry.shipping.DefaultAddress;
 
@@ -30,12 +31,10 @@ import java.util.Objects;
 @Getter
 @Setter
 public class CheckoutRequest {
-
     private String cartId;
-
     private AddressRequest shippingAddress;
-
     private List<CheckoutItemRequest> items;
+    private OrderSource source;
 
     public Checkout assignToCheckout(Checkout checkout) {
         if (Objects.nonNull(this.shippingAddress)) {
@@ -44,6 +43,7 @@ public class CheckoutRequest {
             checkout.setShippingAddress(address);
         }
         checkout.setCartId(this.cartId);
+        checkout.setSource(this.source);
         if (Objects.nonNull(items)) {
             this.getItems()
                     .stream()

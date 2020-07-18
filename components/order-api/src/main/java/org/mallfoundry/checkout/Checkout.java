@@ -19,6 +19,7 @@
 package org.mallfoundry.checkout;
 
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.shipping.Address;
 
 import java.math.BigDecimal;
@@ -32,6 +33,10 @@ public interface Checkout {
     String getCartId();
 
     void setCartId(String cartId);
+
+    OrderSource getSource();
+
+    void setSource(OrderSource source);
 
     Address getShippingAddress();
 
