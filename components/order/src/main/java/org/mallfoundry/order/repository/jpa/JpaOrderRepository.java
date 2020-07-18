@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class JpaOrderRepository implements OrderRepository {
@@ -45,12 +46,14 @@ public class JpaOrderRepository implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        return repository.save(JpaOrder.of(order));
+        return this.repository.save(JpaOrder.of(order));
     }
 
     @Override
-    public List<Order> saveAll(Iterable<Order> orders) {
-        return null;
+    public List<Order> saveAll(Collection<Order> orders) {
+        return CastUtils.cast(
+                this.repository.saveAll(
+                        orders.stream().map(JpaOrder::of).collect(Collectors.toUnmodifiableList())));
     }
 
     @Override
