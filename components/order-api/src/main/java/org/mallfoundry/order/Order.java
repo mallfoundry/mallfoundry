@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -63,13 +64,13 @@ public interface Order {
 
     void setStaffStars(Integer staffStars);
 
-/*    String getSourceName();
+    String getSourceName();
 
     void setSourceName(String sourceName);
 
     OrderSource getSource();
 
-    void setSource(OrderSource source);*/
+    void setSource(OrderSource source);
 
     List<OrderItem> getItems();
 
@@ -135,13 +136,26 @@ public interface Order {
 
     String getCancelReason();
 
-    int getExpires();
+    /**
+     * 订单对象扣减库存时所使用的扣减模式。
+     *
+     * @return 所使用的扣减模式
+     */
+    InventoryDeduction getInventoryDeduction();
 
-    boolean isExpired();
+    void setInventoryDeduction(InventoryDeduction inventoryDeduction);
+
+    int getPlacingExpires();
+
+    boolean isPlaced();
+
+    boolean isPaid();
+
+    boolean isPlacingExpired();
 
     Date getPlacedTime();
 
-    Date getExpiredTime();
+    Date getPlacingExpiredTime();
 
     Date getPaidTime();
 
@@ -159,7 +173,7 @@ public interface Order {
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
 
-    void place(int expires) throws OrderException;
+    void place(int placingExpires) throws OrderException;
 
     void pay(PaymentInformation details) throws OrderException;
 
