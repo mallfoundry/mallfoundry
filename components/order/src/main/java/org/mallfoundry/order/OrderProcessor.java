@@ -45,6 +45,10 @@ public interface OrderProcessor {
         return orders;
     }
 
+    default List<Order> postProcessPlaceOrders(List<Order> orders) {
+        return orders;
+    }
+
     default Order preProcessUpdateOrder(Order order) {
         return order;
     }
@@ -93,6 +97,6 @@ public interface OrderProcessor {
         return shipments;
     }
 
-    default void afterProcessCompletion() {
+    default void postProcessAfterCompletion() {
     }
 }

@@ -53,6 +53,10 @@ public class OrderProcessorsInvoker {
         return this.invokeProcess(orders, OrderProcessor::preProcessPlaceOrders);
     }
 
+    public List<Order> invokePostProcessPlaceOrders(List<Order> orders) {
+        return this.invokeProcess(orders, OrderProcessor::postProcessPlaceOrders);
+    }
+
     public Order invokePostProcessGetOrder(Order order) {
         return this.invokeProcess(order, OrderProcessor::postProcessGetOrder);
     }
@@ -113,8 +117,8 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
     }
 
-    public void invokeAfterProcessCompletion() {
-        ProcessorsInvoker.invokeProcessors(this.processors, OrderProcessor::afterProcessCompletion);
+    public void invokePostProcessAfterCompletion() {
+        ProcessorsInvoker.invokeProcessors(this.processors, OrderProcessor::postProcessAfterCompletion);
     }
 
 }
