@@ -20,6 +20,8 @@ package org.mallfoundry.order;
 
 import java.util.List;
 
+
+// mall.order.split-policy=store,abc
 // mall.order.store-split-policy.enable=true
 public interface OrderSplitPolicy {
 
