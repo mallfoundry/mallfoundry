@@ -153,7 +153,16 @@ public class DefaultOrderService implements OrderService {
     public void payOrder(String orderId, PaymentInformation details) {
         var order = this.requiredOrder(orderId);
         order.pay(details);
+        this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(order));
+    }
+
+    @Override
+    public void payOrders(List<String> orderIds, PaymentInformation payment) {
+        var orders = this.orderRepository.findAllById(orderIds);
+        orders.forEach(order -> order.pay(payment));
+        this.orderRepository.saveAll(orders);
+        this.eventPublisher.publishEvent(new ImmutableOrdersPaidEvent(orders));
     }
 
     @Transactional
