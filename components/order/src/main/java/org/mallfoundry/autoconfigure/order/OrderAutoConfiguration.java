@@ -30,7 +30,7 @@ import org.mallfoundry.order.OrderProcessorsInvoker;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
-import org.mallfoundry.order.OrderValidator;
+import org.mallfoundry.order.SmartOrderValidator;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
@@ -43,6 +43,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.validation.SmartValidator;
 
 import java.util.List;
 
@@ -114,7 +115,7 @@ public class OrderAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public OrderValidator orderValidator() {
-        return new OrderValidator();
+    public SmartOrderValidator smartOrderValidator(SmartValidator validator) {
+        return new SmartOrderValidator(validator);
     }
 }
