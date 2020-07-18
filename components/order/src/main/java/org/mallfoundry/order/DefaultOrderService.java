@@ -211,7 +211,7 @@ public class DefaultOrderService implements OrderService {
         if (CollectionUtils.isNotEmpty(orders)) {
             orders.forEach(order -> order.cancel(this.processorsInvoker.invokePreProcessCancelOrder(order, reason)));
             var savedOrders = this.orderRepository.saveAll(orders);
-            savedOrders.forEach(order -> this.eventPublisher.publishEvent(new ImmutableOrderCancelledEvent(order)));
+            this.eventPublisher.publishEvent(new ImmutableOrdersCancelledEvent(savedOrders));
         }
     }
 
