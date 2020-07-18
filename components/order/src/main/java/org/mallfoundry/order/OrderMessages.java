@@ -24,7 +24,17 @@ public abstract class OrderMessages {
 
     private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.notFound";
 
-    public static String notFoundMessage() {
+    private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
+
+    public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
+    }
+
+    public abstract static class Source {
+
+        public static String notNull() {
+            return message(ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY, "Order does not exist");
+        }
+
     }
 }
