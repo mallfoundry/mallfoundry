@@ -27,7 +27,6 @@ import org.mallfoundry.order.OrderQuery;
 import org.mallfoundry.order.OrderStatus;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,7 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
 
     // 判断订单对象是否为必须取消。
     private boolean mustCancel(Order order) {
-        return order.isExpired() && this.conditionStatuses.contains(order.getStatus());
+        return order.isPlacingExpired() && this.conditionStatuses.contains(order.getStatus());
     }
 
     @Override
@@ -90,7 +89,7 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
     }
 
     @Override
-    public void afterProcessCompletion() {
+    public void postProcessAfterCompletion() {
         queryFor.remove();
     }
 }

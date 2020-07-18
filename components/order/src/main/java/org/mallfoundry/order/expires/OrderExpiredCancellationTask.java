@@ -57,7 +57,7 @@ public class OrderExpiredCancellationTask implements Runnable {
         var sliceList = this.canceller.getOrders(this.canceller.createOrderQuery()
                 .toBuilder()
                 .statuses(Set.of(OrderStatus.PENDING, OrderStatus.AWAITING_PAYMENT))
-                .expiredTimeMax(new Date())
+                .placingExpiredTimeMax(new Date())
                 .limit(this.fetchSize).build());
         return sliceList.getElements();
     }
