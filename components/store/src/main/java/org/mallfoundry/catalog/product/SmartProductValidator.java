@@ -29,11 +29,11 @@ import org.springframework.validation.ValidationUtils;
  *
  * @author Zhi Tang
  */
-public class ProductValidator implements ProductProcessor {
+public class SmartProductValidator implements ProductProcessor {
 
     private final SmartValidator validator;
 
-    public ProductValidator(SmartValidator validator) {
+    public SmartProductValidator(SmartValidator validator) {
         this.validator = validator;
     }
 
