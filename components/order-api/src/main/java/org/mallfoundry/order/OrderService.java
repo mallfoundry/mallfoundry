@@ -51,7 +51,7 @@ public interface OrderService {
 
     void payOrder(String orderId, PaymentInformation payment);
 
-    void payOrders(List<String> orderIds, PaymentInformation payment);
+    void payOrders(Set<String> orderIds, PaymentInformation payment);
 
     void fulfilOrder(String orderId);
 

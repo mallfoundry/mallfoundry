@@ -24,30 +24,27 @@ import org.mallfoundry.payment.PaymentEvent;
 import org.mallfoundry.payment.PaymentStartedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Configuration
-public class PaymentEventListener {
+public class OrderPaymentEventListener {
 
     private final OrderService orderService;
 
-    public PaymentEventListener(OrderService orderService) {
+    public OrderPaymentEventListener(OrderService orderService) {
         this.orderService = orderService;
     }
 
-    private PaymentInformation createPaymentDetails(Payment payment) {
+    private PaymentInformation createPaymentInformation(Payment payment) {
         var instrument = payment.getInstrument();
         return new DefaultPaymentInformation(payment.getId(), instrument.getType(), payment.getStatus());
     }
 
-    @Transactional
     @EventListener
     public void handlePending(PaymentStartedEvent event) {
         this.handlePaymentEvent(event);
     }
 
-    @Transactional
     @EventListener
     public void handleCaptured(PaymentCapturedEvent event) {
         this.handlePaymentEvent(event);
@@ -55,7 +52,8 @@ public class PaymentEventListener {
 
     private void handlePaymentEvent(PaymentEvent event) {
         var payment = event.getPayment();
-        StringUtils.commaDelimitedListToSet(payment.getReference())
-                .forEach(orderId -> this.orderService.payOrder(orderId, createPaymentDetails(payment)));
+        var paymentInformation = this.createPaymentInformation(payment);
+        var orderIds = StringUtils.commaDelimitedListToSet(payment.getReference());
+        this.orderService.payOrders(orderIds, paymentInformation);
     }
 }

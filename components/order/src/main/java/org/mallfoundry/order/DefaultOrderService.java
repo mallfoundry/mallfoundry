@@ -159,7 +159,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrders(List<String> orderIds, PaymentInformation payment) {
+    public void payOrders(Set<String> orderIds, PaymentInformation payment) {
         var orders = this.orderRepository.findAllById(orderIds);
         orders.forEach(order -> order.pay(payment));
         var savedOrders = this.orderRepository.saveAll(orders);
