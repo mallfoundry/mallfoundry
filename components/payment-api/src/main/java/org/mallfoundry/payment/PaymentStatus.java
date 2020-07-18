@@ -37,6 +37,14 @@ public enum PaymentStatus {
 //    public static final String CARD_VERIFIED = "Card Verified";
 //    public static final String CHARGEBACK = "Chargeback";
 
+    public boolean isPending() {
+        return this == PENDING;
+    }
+
+    public boolean isCaptured() {
+        return this == CAPTURED;
+    }
+
     @Override
     @JsonValue
     public String toString() {
