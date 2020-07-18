@@ -20,9 +20,13 @@ package org.mallfoundry.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.inventory.InventoryDeduction;
 
 @Getter
 @Setter
 public class DefaultOrderConfiguration implements OrderConfiguration {
-    private int defaultExpires;
+
+    private int placingExpires;
+
+    private InventoryDeduction inventoryDeduction;
 }
