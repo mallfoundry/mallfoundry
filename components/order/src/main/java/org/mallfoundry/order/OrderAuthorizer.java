@@ -26,7 +26,7 @@ import java.util.List;
 public class OrderAuthorizer implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#query.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_SEARCH + "') or "
+            + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
@@ -35,7 +35,7 @@ public class OrderAuthorizer implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_READ + "') or "
+            + OrderAuthorities.ORDER_READ + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_READ + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
@@ -44,7 +44,7 @@ public class OrderAuthorizer implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_WRITE + "') or "
+            + OrderAuthorities.ORDER_WRITE + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_WRITE + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
@@ -74,7 +74,7 @@ public class OrderAuthorizer implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + OrderAuthorities.ORDER_CANCEL + "') or "
+            + OrderAuthorities.ORDER_CANCEL + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_CANCEL + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
