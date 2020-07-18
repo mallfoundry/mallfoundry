@@ -24,11 +24,12 @@ import org.mallfoundry.dw.OrderStatusDimension;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaidEvent;
-import org.mallfoundry.order.OrderPlacedEvent;
+import org.mallfoundry.order.OrdersPlacedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,13 @@ public class OrderEventStreams {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    private List<OrderItemFact> createFacts(List<Order> orders) {
+        return orders.stream()
+                .map(this::createFacts)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     private void countOrderItemFacts(List<OrderItemFact> items) {
         this.orderQuantityFactRepository.deleteAll(items);
         this.orderQuantityFactRepository.saveAll(
@@ -79,8 +87,8 @@ public class OrderEventStreams {
 
     @Transactional
     @EventListener
-    public void handleOrderPlacedEvent(OrderPlacedEvent event) {
-        var items = this.createFacts(event.getOrder());
+    public void handleOrderPlacedEvent(OrdersPlacedEvent event) {
+        var items = this.createFacts(event.getOrders());
         this.countOrderItemFacts(this.orderItemFactRepository.saveAll(items));
     }
 
