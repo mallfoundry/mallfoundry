@@ -18,6 +18,12 @@
 
 package org.mallfoundry.order;
 
-public interface OrderConfiguration {
-    int getDefaultExpires();
+import org.mallfoundry.inventory.InventoryDeduction;
+import org.mallfoundry.util.Configuration;
+
+public interface OrderConfiguration extends Configuration {
+
+    int getPlacingExpires();
+
+    InventoryDeduction getInventoryDeduction();
 }
