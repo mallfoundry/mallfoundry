@@ -104,8 +104,8 @@ public class DefaultOrderService implements OrderService {
                 .compose(this.publishOrdersEvent(ImmutableOrdersPlacedEvent::new))
                 .compose(this.processorsInvoker::invokePostProcessPlaceOrders)
                 .compose(this.orderRepository::saveAll)
-                .compose(this.processorsInvoker::invokePreProcessPlaceOrders)
                 .compose(this::invokePlaceOrders)
+                .compose(this.processorsInvoker::invokePreProcessPlaceOrders)
                 .<List<Order>>compose(this.orderSplitter::splitting)
                 .apply(orders);
     }
