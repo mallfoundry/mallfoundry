@@ -18,8 +18,5 @@
 
 package org.mallfoundry.order;
 
-public class ImmutableOrderPlacedEvent extends OrderEventSupport implements OrderPlacedEvent {
-    public ImmutableOrderPlacedEvent(Order order) {
-        super(order);
-    }
+public interface OrdersCancelledEvent extends OrdersEvent {
 }
