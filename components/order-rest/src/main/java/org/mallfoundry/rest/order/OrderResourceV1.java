@@ -58,7 +58,7 @@ public class OrderResourceV1 {
 
     @PatchMapping("/orders/{order_id}")
     public Order updateOrder(@PathVariable("order_id") String orderId, @RequestBody OrderRequest request) {
-        var order = this.orderService.getOrder(orderId).orElseThrow();
+        var order = this.orderService.createOrder(orderId);
         if (Objects.nonNull(request.getStaffNotes())) {
             order.setStaffNotes(request.getStaffNotes());
         }
