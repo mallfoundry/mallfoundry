@@ -50,8 +50,9 @@ import static org.mallfoundry.order.OrderStatus.SHIPPED;
 public abstract class OrderSupport implements MutableOrder {
 
     @Override
-    public boolean isExpired() {
-        return System.currentTimeMillis() >= (this.getPlacedTime().getTime() + this.getExpires());
+    public boolean isPlacingExpired() {
+        return Objects.nonNull(this.getPlacedTime())
+                && System.currentTimeMillis() >= (this.getPlacedTime().getTime() + this.getPlacingExpires());
     }
 
     @Override
@@ -162,14 +163,26 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void place(int expires) throws OrderException {
+    public boolean isPlaced() {
+        return Objects.nonNull(this.getPlacedTime());
+    }
+
+    @Override
+    public boolean isPaid() {
+        return Objects.nonNull(this.getPaidTime())
+                && Objects.nonNull(this.getPaymentStatus())
+                && this.getPaymentStatus().isCaptured();
+    }
+
+    @Override
+    public void place(int placingExpires) throws OrderException {
         if (this.getStatus() != INCOMPLETE) {
             throw new OrderException("The current state of the order is not incomplete");
         }
         this.setStatus(OrderStatus.PENDING);
-        this.setExpires(expires);
+        this.setPlacingExpires(placingExpires);
         this.setPlacedTime(new Date());
-        this.setExpiredTime(new Date(System.currentTimeMillis() + expires));
+        this.setPlacingExpiredTime(new Date(System.currentTimeMillis() + placingExpires));
     }
 
     @Override
