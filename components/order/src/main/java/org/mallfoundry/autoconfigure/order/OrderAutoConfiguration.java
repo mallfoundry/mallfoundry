@@ -18,6 +18,8 @@
 
 package org.mallfoundry.autoconfigure.order;
 
+import org.mallfoundry.inventory.InventoryService;
+import org.mallfoundry.order.DeductingInventoryConnector;
 import org.mallfoundry.order.DefaultOrderConfiguration;
 import org.mallfoundry.order.DefaultOrderService;
 import org.mallfoundry.order.OrderAuthorizer;
@@ -52,7 +54,8 @@ public class OrderAutoConfiguration {
     @Bean
     public DefaultOrderConfiguration defaultOrderConfiguration(OrderProperties properties) {
         var config = new DefaultOrderConfiguration();
-        config.setDefaultExpires(properties.getDefaultExpires());
+        config.setPlacingExpires(properties.getPlacingExpires());
+        config.setInventoryDeduction(properties.getInventoryDeduction());
         return config;
     }
 
@@ -90,6 +93,11 @@ public class OrderAutoConfiguration {
     @Bean
     public OrderProcessorsInvoker orderProcessorsInvoker(@Lazy List<OrderProcessor> processors) {
         return new OrderProcessorsInvoker(processors);
+    }
+
+    @Bean
+    public DeductingInventoryConnector deductingInventoryConnector(InventoryService inventoryService) {
+        return new DeductingInventoryConnector(inventoryService);
     }
 
     @Bean
