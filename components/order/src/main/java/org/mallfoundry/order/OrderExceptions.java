@@ -21,6 +21,6 @@ package org.mallfoundry.order;
 public abstract class OrderExceptions {
 
     public static OrderException notFound() {
-        return new OrderException(OrderMessages.notFoundMessage());
+        return new OrderException(OrderMessages.notFound());
     }
 }
