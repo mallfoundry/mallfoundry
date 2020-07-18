@@ -25,7 +25,7 @@ import org.mallfoundry.catalog.product.ProductAuthorizer;
 import org.mallfoundry.catalog.product.ProductIdentifier;
 import org.mallfoundry.catalog.product.ProductProcessorsInvoker;
 import org.mallfoundry.catalog.product.ProductService;
-import org.mallfoundry.catalog.product.ProductValidator;
+import org.mallfoundry.catalog.product.SmartProductValidator;
 import org.mallfoundry.catalog.product.SearchProductRepository;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductPersistEventListener;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
@@ -69,8 +69,8 @@ public class ProductAutoConfiguration {
     }
 
     @Bean
-    public ProductValidator productValidator(SmartValidator validator) {
-        return new ProductValidator(validator);
+    public SmartProductValidator smartProductValidator(SmartValidator validator) {
+        return new SmartProductValidator(validator);
     }
 
     @Bean
