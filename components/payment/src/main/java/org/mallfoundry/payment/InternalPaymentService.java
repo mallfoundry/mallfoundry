@@ -65,6 +65,11 @@ public class InternalPaymentService implements PaymentService {
 
     }
 
+    @Override
+    public void refundPayment(String id, PaymentRefund refund) throws PaymentException {
+        //TODO
+    }
+
     private void capturePayment(Payment payment) throws PaymentException {
         payment.capture();
         this.eventPublisher.publishEvent(new InternalPaymentCapturedEvent(payment));
