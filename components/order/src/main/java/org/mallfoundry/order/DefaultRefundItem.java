@@ -22,14 +22,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
-public class DefaultRefundItem extends RefundItemSupport {
-
+public class DefaultRefundItem extends OrderRefundItemSupport {
+    private String id;
     private String itemId;
-
+    private ItemStatus itemStatus;
     private BigDecimal amount;
-
     private String reason;
+    private String note;
+    private List<String> imageUrls;
 }
