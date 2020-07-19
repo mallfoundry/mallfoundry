@@ -22,10 +22,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.order.repository.jpa.JpaShipment;
 import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.util.DecimalUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,10 +44,8 @@ import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
 import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
-import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
-import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
 
 public abstract class OrderSupport implements MutableOrder {
@@ -59,6 +59,10 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void addItem(OrderItem item) {
         this.getItems().add(item);
+    }
+
+    protected OrderItem requiredItem(String itemId) {
+        return this.getItem(itemId).orElseThrow(OrderExceptions.Item::notFound);
     }
 
     @Override
@@ -152,6 +156,81 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
+    public Optional<OrderRefund> getRefund(String refundId) {
+        return this.getRefunds().stream()
+                .filter(refund -> Objects.equals(refund.getId(), refundId))
+                .findFirst();
+    }
+
+    private BigDecimal calculateItemRefundAmount(String itemId, BigDecimal refundAmount) {
+        return this.getRefunds()
+                .stream()
+                .filter(OrderRefund::isApplying)
+                .filter(OrderRefund::isPending)
+                .filter(OrderRefund::isSucceeded)
+                .map(OrderRefund::getItems)
+                .flatMap(Collection::stream)
+                .filter(item -> Objects.equals(item.getItemId(), itemId))
+                .map(OrderRefundItem::getAmount)
+                .reduce(Objects.requireNonNullElse(refundAmount, BigDecimal.ZERO), BigDecimal::add);
+
+    }
+
+    private void setItemRefundAmount(String itemId, BigDecimal refundAmount) {
+        var item = this.requiredItem(itemId);
+        var newRefundAmount = this.calculateItemRefundAmount(itemId, refundAmount);
+        // 判断是否超额退款
+        if (DecimalUtils.greaterThan(newRefundAmount, item.getTotalAmount())) {
+            throw OrderExceptions.Refund.excess();
+        }
+        item.setRefundedAmount(newRefundAmount);
+    }
+
+    @Override
+    public void applyRefund(OrderRefund refund) {
+        refund.getItems().forEach(item -> this.setItemRefundAmount(item.getId(), item.getAmount()));
+        refund.apply();
+        this.getRefunds().add(refund);
+    }
+
+    private OrderRefund requiredRefund(String refundId) {
+        return this.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
+    }
+
+    @Override
+    public void approveRefund(String refundId) {
+        this.requiredRefund(refundId).approve();
+    }
+
+    @Override
+    public void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException {
+        this.requiredRefund(refundId).disapprove(disapprovedReason);
+    }
+
+    @Override
+    public void activeRefund(OrderRefund refund) throws OrderRefundException {
+        this.applyRefund(refund);
+        this.approveRefund(refund.getId());
+    }
+
+    @Override
+    public void cancelRefund(String refundId) throws OrderRefundException {
+        var refund = this.requiredRefund(refundId);
+        refund.cancel();
+        this.getRefunds().remove(refund);
+    }
+
+    @Override
+    public void succeedRefund(String refundId) throws OrderRefundException {
+        this.requiredRefund(refundId).succeed();
+    }
+
+    @Override
+    public void failRefund(String refundId, String failReason) throws OrderRefundException {
+        this.requiredRefund(refundId).fail(failReason);
+    }
+
+    @Override
     public void discounts(Map<String, BigDecimal> amounts) {
         amounts.forEach((itemId, discountAmount) ->
                 this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
@@ -188,7 +267,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void pay(PaymentInformation payment) throws OrderException {
+    public void pay(OrderPayment payment) throws OrderException {
         this.setPaymentId(payment.getId());
         this.setPaymentMethod(payment.getMethod());
         this.setPaymentStatus(payment.getStatus());
@@ -228,12 +307,6 @@ public abstract class OrderSupport implements MutableOrder {
     public void receipt() throws OrderException {
         this.setReceivedTime(new Date());
         this.setStatus(COMPLETED);
-    }
-
-    @Override
-    public void addRefund(Refund refund) {
-        this.setStatus(PARTIALLY_REFUNDED);
-        this.setStatus(REFUNDED);
     }
 
     @Override
