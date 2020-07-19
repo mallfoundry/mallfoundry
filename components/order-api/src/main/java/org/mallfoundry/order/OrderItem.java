@@ -78,13 +78,16 @@ public interface OrderItem {
 
     void setDiscountAmount(BigDecimal discountAmount);
 
+    BigDecimal getRefundedAmount();
+
+    void setRefundedAmount(BigDecimal refundedAmount);
+
     BigDecimal getTotalAmount();
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {
         };
     }
-
 
     interface Builder extends ObjectBuilder<OrderItem> {
 

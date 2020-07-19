@@ -93,6 +93,9 @@ public class JpaOrderItem extends OrderItemSupport {
     @Column(name = "discount_shipping_cost_")
     private BigDecimal discountShippingCost;
 
+    @Column(name = "refunded_amount_")
+    private BigDecimal refundedAmount;
+
     public JpaOrderItem(String itemId) {
         this.id = itemId;
     }
@@ -119,6 +122,11 @@ public class JpaOrderItem extends OrderItemSupport {
     @Override
     public BigDecimal getDiscountShippingCost() {
         return Objects.isNull(this.discountShippingCost) ? BigDecimal.ZERO : this.discountShippingCost;
+    }
+
+    @Override
+    public BigDecimal getRefundedAmount() {
+        return Objects.isNull(this.refundedAmount) ? BigDecimal.ZERO : this.refundedAmount;
     }
 
     @Override
