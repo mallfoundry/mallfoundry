@@ -32,6 +32,8 @@ public interface Shipment {
 
     void setId(String id);
 
+    String getOrderId();
+
     String getConsignorId();
 
     void setConsignorId(String consignorId);
