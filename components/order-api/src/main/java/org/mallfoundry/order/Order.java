@@ -32,12 +32,22 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * 订单对象。
+ *
+ * @author Zhi Tang
+ */
 public interface Order {
 
     String getId();
 
     void setId(String id);
 
+    /**
+     * 订单收货地址对象。
+     *
+     * @return 收货地址对象
+     */
     Address getShippingAddress();
 
     void setShippingAddress(Address shippingAddress);
@@ -56,6 +66,11 @@ public interface Order {
 
     OrderStatus getStatus();
 
+    /**
+     * 商家员工备注。
+     *
+     * @return 备注信息
+     */
     String getStaffNotes();
 
     void setStaffNotes(String staffNotes);
@@ -72,17 +87,19 @@ public interface Order {
 
     void setSource(OrderSource source);
 
-    List<OrderItem> getItems();
-
     OrderItem createItem(String itemId);
 
     void addItem(OrderItem item);
 
     Optional<OrderItem> getItem(String itemId);
 
+    List<OrderItem> getItems(List<String> itemIds);
+
+    List<OrderItem> getItems();
+
     void setItems(List<OrderItem> items);
 
-    List<OrderItem> getItems(List<String> itemIds);
+    int getTotalItems();
 
     Shipment createShipment(String shipmentId);
 
@@ -102,13 +119,88 @@ public interface Order {
 
     void removeShipments(List<Shipment> shipments);
 
-    List<Refund> getRefunds();
-
-    void addRefund(Refund refund);
-
-    int getTotalItems();
-
     int getShippedItems();
+
+    /**
+     * 创建一个订单退款对象。
+     *
+     * @param refundId 订单退款对象标识
+     * @return 一个新的订单退款对象
+     */
+    OrderRefund createRefund(String refundId);
+
+    /**
+     * 获得与此订单对象所关联的所有的订单退款对象集合。
+     *
+     * @return 订单退款对象集合
+     */
+    List<OrderRefund> getRefunds();
+
+    /**
+     * 根据订单退款对象标识获得订单退款对象。
+     *
+     * @param refundId 订单退款对象标识
+     * @return 订单退款对象
+     */
+    Optional<OrderRefund> getRefund(String refundId);
+
+    /**
+     * 申请订单退款。
+     *
+     * @param refund 订单退款对象
+     * @throws OrderRefundException 退款金额小于等于零，退款对象所关联的订单对象的订单项不存在，或者已全额退款
+     */
+    void applyRefund(OrderRefund refund) throws OrderRefundException;
+
+    /**
+     * 批准退款。
+     *
+     * @param refundId 订单退款对象标识
+     * @throws OrderRefundException 订单退款对象不存在
+     */
+    void approveRefund(String refundId) throws OrderRefundException;
+
+    /**
+     * 不批准退款。
+     *
+     * @param refundId          订单退款对象标识
+     * @param disapprovedReason 不批准的运用
+     * @throws OrderRefundException 订单退款对象不存在
+     */
+    void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException;
+
+    /**
+     * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(String)}
+     * 两个方法的组合。
+     *
+     * @param refund 订单退款对象
+     * @throws OrderRefundException 请查看 {@link #applyRefund(OrderRefund)} 异常原因
+     */
+    void activeRefund(OrderRefund refund) throws OrderRefundException;
+
+    /**
+     * 取消退款，取消退款后订单退款对象将被删除。
+     *
+     * @param refundId 订单退款对象标识
+     * @throws OrderRefundException 订单退款对象不存在，或者已经同意申请
+     */
+    void cancelRefund(String refundId) throws OrderRefundException;
+
+    /**
+     * 成功付款。
+     *
+     * @param refundId 订单退款对象标识
+     * @throws OrderRefundException 订单退款对象不存在
+     */
+    void succeedRefund(String refundId) throws OrderRefundException;
+
+    /**
+     * 付款失败。
+     *
+     * @param refundId 订单退款对象标识
+     * @throws OrderRefundException 订单退款对象不存在
+     */
+    void failRefund(String refundId, String failReason) throws OrderRefundException;
 
     BigDecimal getTotalDiscountAmount();
 
@@ -133,8 +225,6 @@ public interface Order {
     PaymentMethod getPaymentMethod();
 
     void setPaymentMethod(PaymentMethod paymentMethod);
-
-    String getCancelReason();
 
     /**
      * 订单对象扣减库存时所使用的扣减模式。
@@ -167,6 +257,8 @@ public interface Order {
 
     Date getReceivedTime();
 
+    String getCancelReason();
+
     Date getCancelledTime();
 
     void discounts(Map<String, BigDecimal> amounts);
@@ -175,7 +267,7 @@ public interface Order {
 
     void place(int placingExpires) throws OrderException;
 
-    void pay(PaymentInformation details) throws OrderException;
+    void pay(OrderPayment payment) throws OrderException;
 
     /**
      * 订单对象打包。
