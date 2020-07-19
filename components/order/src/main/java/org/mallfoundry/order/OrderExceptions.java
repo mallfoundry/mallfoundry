@@ -23,4 +23,33 @@ public abstract class OrderExceptions {
     public static OrderException notFound() {
         return new OrderException(OrderMessages.notFound());
     }
+
+    public abstract static class Item {
+        public static OrderException notFound() {
+            return new OrderException(OrderMessages.Item.notFound());
+        }
+    }
+
+    public abstract static class Refund {
+
+        public static OrderRefundException notFound() {
+            return new OrderRefundException(OrderMessages.Refund.notFound());
+        }
+
+        public static OrderRefundException applied() {
+            return new OrderRefundException(OrderMessages.Refund.applied());
+        }
+
+        public static OrderRefundException pending() {
+            return new OrderRefundException(OrderMessages.Refund.pending());
+        }
+
+        public static OrderRefundException completed() {
+            return new OrderRefundException(OrderMessages.Refund.completed());
+        }
+
+        public static OrderRefundException excess() {
+            return new OrderRefundException(OrderMessages.Refund.excess());
+        }
+    }
 }

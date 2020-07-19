@@ -22,19 +22,58 @@ import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class OrderMessages {
 
-    private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.notFound";
+    private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.Order.notFound";
+
+    private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
 
     private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
+
+    private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderRefund.notFound";
+
+    private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.OrderRefund.applied";
+
+    private static final String ORDER_REFUND_PENDING_MESSAGE_CODE_KEY = "order.OrderRefund.pending";
+
+    private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.OrderRefund.completed";
+
+    private static final String ORDER_REFUND_EXCESS_MESSAGE_CODE_KEY = "order.OrderRefund.excess";
 
     public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
     }
 
     public abstract static class Source {
-
         public static String notNull() {
             return message(ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY, "Order does not exist");
         }
+    }
 
+    public abstract static class Item {
+        public static String notFound() {
+            return message(ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY, "Order item does not exist");
+        }
+    }
+
+    public abstract static class Refund {
+
+        public static String notFound() {
+            return message(ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY, "Order refund does not exist");
+        }
+
+        public static String applied() {
+            return message(ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY, "Order refund has been applied");
+        }
+
+        public static String pending() {
+            return message(ORDER_REFUND_PENDING_MESSAGE_CODE_KEY, "Order refund is pending");
+        }
+
+        public static String completed() {
+            return message(ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY, "Order refund has been completed");
+        }
+
+        public static String excess() {
+            return message(ORDER_REFUND_EXCESS_MESSAGE_CODE_KEY, "Order refund is excessive");
+        }
     }
 }
