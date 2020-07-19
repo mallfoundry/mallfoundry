@@ -19,22 +19,22 @@
 package org.mallfoundry.order.repository.jpa.convert;
 
 import org.mallfoundry.order.DefaultRefundItem;
-import org.mallfoundry.order.RefundItem;
+import org.mallfoundry.order.OrderRefundItem;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
 import java.util.List;
 import java.util.Objects;
 
-public class RefundItemListConverter implements AttributeConverter<List<RefundItem>, String> {
+public class OrderRefundItemListConverter implements AttributeConverter<List<OrderRefundItem>, String> {
 
     @Override
-    public String convertToDatabaseColumn(List<RefundItem> items) {
+    public String convertToDatabaseColumn(List<OrderRefundItem> items) {
         return Objects.isNull(items) ? null : JsonUtils.stringify(items);
     }
 
     @Override
-    public List<RefundItem> convertToEntityAttribute(String dbData) {
+    public List<OrderRefundItem> convertToEntityAttribute(String dbData) {
         return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, DefaultRefundItem.class);
     }
 }

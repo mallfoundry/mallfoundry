@@ -25,7 +25,7 @@ import org.mallfoundry.order.OrderRefundItem;
 import org.mallfoundry.order.OrderRefundKind;
 import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderRefundSupport;
-import org.mallfoundry.order.repository.jpa.convert.RefundItemListConverter;
+import org.mallfoundry.order.repository.jpa.convert.OrderRefundItemListConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -63,7 +63,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "total_amount_")
     private BigDecimal totalAmount;
 
-    @Convert(converter = RefundItemListConverter.class)
+    @Convert(converter = OrderRefundItemListConverter.class)
     @Column(name = "items_")
     private List<OrderRefundItem> items;
 
