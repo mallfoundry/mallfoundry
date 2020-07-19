@@ -16,36 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.shipping.rate;
 
-import java.math.BigDecimal;
-import java.util.List;
+import org.mallfoundry.data.SliceList;
 
-public interface Rate {
+import java.util.Optional;
 
-    String getId();
+public interface RateService {
 
-    String getStoreId();
+    Rate createRate(String storeId);
 
-    String getName();
+    Zone createZone();
 
-    void setName(String name);
+    Rate saveRate(Rate rate);
 
-    RateMode getMode();
+    void deleteRate(String rateId);
 
-    void setMode(RateMode mode);
+    Optional<Rate> getRate(String rateId);
 
-    List<Zone> getZones();
-
-    void setZones(List<Zone> zones);
-
-    void addZone(Zone zone);
-
-    boolean isEnabled();
-
-    void setEnabled(boolean enabled);
-
-    BigDecimal getMinimumCost();
-
-    BigDecimal getMaximumCost();
+    SliceList<Rate> getRates();
 }

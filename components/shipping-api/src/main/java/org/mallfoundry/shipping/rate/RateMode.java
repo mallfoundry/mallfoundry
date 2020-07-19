@@ -16,23 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.shipping.rate;
 
-import org.mallfoundry.data.SliceList;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Optional;
+public enum RateMode {
+    PACKAGE,
+    WEIGHT;
 
-public interface RateService {
+    @JsonValue
+    private String lowercase() {
+        return this.name().toLowerCase();
+    }
 
-    Rate createRate(String storeId);
-
-    Zone createZone();
-
-    Rate saveRate(Rate rate);
-
-    void deleteRate(String rateId);
-
-    Optional<Rate> getRate(String rateId);
-
-    SliceList<Rate> getRates();
+    @Override
+    public String toString() {
+        return this.lowercase();
+    }
 }
