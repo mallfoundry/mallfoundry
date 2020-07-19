@@ -29,4 +29,6 @@ public class DefaultOrderConfiguration implements OrderConfiguration {
     private int placingExpires;
 
     private InventoryDeduction inventoryDeduction;
+
+    private boolean autoApprovalRefund;
 }
