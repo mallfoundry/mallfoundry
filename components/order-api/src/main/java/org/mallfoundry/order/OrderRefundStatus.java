@@ -31,7 +31,19 @@ public enum OrderRefundStatus {
         return Objects.equals(this, APPLYING);
     }
 
+    public boolean isDisapproved() {
+        return Objects.equals(this, DISAPPROVED);
+    }
+
     public boolean isPending() {
         return Objects.equals(this, PENDING);
+    }
+
+    public boolean isSucceeded() {
+        return Objects.equals(this, SUCCEEDED);
+    }
+
+    public boolean isFailed() {
+        return Objects.equals(this, FAILED);
     }
 }
