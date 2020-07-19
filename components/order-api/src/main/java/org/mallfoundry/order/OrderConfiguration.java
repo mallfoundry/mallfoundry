@@ -26,4 +26,6 @@ public interface OrderConfiguration extends Configuration {
     int getPlacingExpires();
 
     InventoryDeduction getInventoryDeduction();
+
+    boolean isAutoApprovalRefund();
 }
