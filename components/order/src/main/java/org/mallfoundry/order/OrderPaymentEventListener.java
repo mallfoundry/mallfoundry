@@ -37,7 +37,7 @@ public class OrderPaymentEventListener {
 
     private OrderPayment createPaymentInformation(Payment payment) {
         var instrument = payment.getInstrument();
-        return new DefaultPaymentInformation(payment.getId(), instrument.getType(), payment.getStatus());
+        return new DefaultOrderPayment(payment.getId(), instrument.getType(), payment.getStatus());
     }
 
     @EventListener
