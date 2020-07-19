@@ -59,6 +59,9 @@ public class JpaShipment extends ShipmentSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "order_id_")
+    private String orderId;
+
     @NotBlank
     @Column(name = "consignor_id_")
     private String consignorId;
