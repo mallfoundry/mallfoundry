@@ -16,21 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.payment;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
-public interface Refund {
+public interface PaymentRefund {
 
-    String getId();
+    BigDecimal getAmount();
 
-    String getOrderId();
-
-    List<RefundItem> getItems();
-
-    BigDecimal getTotalAmount();
-
-    Date getCreatedTime();
+    PaymentRefundStatus getStatus();
 }

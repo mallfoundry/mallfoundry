@@ -16,8 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.payment;
 
-public enum ShippingMode {
-    DELIVERY
+public enum PaymentRefundStatus {
+    PENDING /* 退款中 */,
+    SUCCEEDED  /* 退款成功 */,
+    FAILED  /* 退款失败 */,
+    CANCELED  /* 取消退款 */;
 }
