@@ -24,10 +24,10 @@ import lombok.Setter;
 import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderSupport;
-import org.mallfoundry.order.Refund;
 import org.mallfoundry.order.Shipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
@@ -120,9 +120,9 @@ public class JpaOrder extends OrderSupport {
     private List<Shipment> shipments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-            targetEntity = JpaRefund.class)
+            targetEntity = JpaOrderRefund.class)
     @JoinColumn(name = "order_id_")
-    private List<Refund> refunds = new ArrayList<>();
+    private List<OrderRefund> refunds = new ArrayList<>();
 
     @Column(name = "shipped_items_")
     private int shippedItems;
@@ -186,6 +186,11 @@ public class JpaOrder extends OrderSupport {
         var target = new JpaOrder();
         BeanUtils.copyProperties(order, target);
         return target;
+    }
+
+    @Override
+    public OrderRefund createRefund(String refundId) {
+        return new JpaOrderRefund(refundId);
     }
 
     @Override
