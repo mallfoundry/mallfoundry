@@ -18,19 +18,20 @@
 
 package org.mallfoundry.order;
 
-import java.math.BigDecimal;
+import java.util.Objects;
 
-public interface RefundItem {
+public enum OrderRefundStatus {
+    APPLYING /* 买家申请退款 */,
+    DISAPPROVED /* 退款未批准 */,
+    PENDING /* 退款中 */,
+    SUCCEEDED  /* 退款成功 */,
+    FAILED  /* 退款失败 */;
 
-    String getItemId();
+    public boolean isApplying() {
+        return Objects.equals(this, APPLYING);
+    }
 
-    void setItemId(String itemId);
-
-    BigDecimal getAmount();
-
-    void setAmount(BigDecimal amount);
-
-    String getReason();
-
-    void setReason(String reason);
+    public boolean isPending() {
+        return Objects.equals(this, PENDING);
+    }
 }

@@ -18,12 +18,57 @@
 
 package org.mallfoundry.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-public class OrderValidator implements OrderProcessor {
+/**
+ * 订单退款项。
+ *
+ * @author Zhi Tang
+ */
+public interface OrderRefundItem {
 
-    @Override
-    public List<Order> preProcessPlaceOrders(List<Order> orders) {
-        return orders;
+    String getId();
+
+    void setId(String id);
+
+    String getItemId();
+
+    void setItemId(String itemId);
+
+    ItemStatus getItemStatus();
+
+    void setItemStatus(ItemStatus itemStatus);
+
+    BigDecimal getAmount();
+
+    void setAmount(BigDecimal amount);
+
+    String getReason();
+
+    void setReason(String reason);
+
+    String getNote();
+
+    void setNote(String customerNote);
+
+    /**
+     * 订单退款项凭证图片。
+     *
+     * @return 图片集合
+     */
+    List<String> getImageUrls();
+
+    void setImageUrls(List<String> imageUrls);
+
+    enum ItemStatus {
+        /**
+         * 未收货。
+         */
+        NOT_RECEIVED,
+        /**
+         * 已收货。
+         */
+        RECEIVED
     }
 }

@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
-public enum RefundStatus {
-    PENDING, SUCCEEDED, FAILED, CANCELED;
+public class OrderRefundException extends OrderException {
+    public OrderRefundException(String message) {
+        super(message);
+    }
 }
