@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 
-public interface PaymentInformation {
+public interface OrderPayment {
 
     String getId();
 
