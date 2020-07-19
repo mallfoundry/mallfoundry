@@ -28,25 +28,22 @@ import org.springframework.beans.BeanUtils;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DefaultPaymentInformation implements PaymentInformation {
-
+public class DefaultOrderPayment implements OrderPayment {
     private String id;
-
     private PaymentMethod method;
-
     private PaymentStatus status;
 
-    public DefaultPaymentInformation(String id, PaymentMethod method, PaymentStatus status) {
+    public DefaultOrderPayment(String id, PaymentMethod method, PaymentStatus status) {
         this.id = id;
         this.method = method;
         this.status = status;
     }
 
-    public static DefaultPaymentInformation of(PaymentInformation details) {
-        if (details instanceof DefaultPaymentInformation) {
-            return (DefaultPaymentInformation) details;
+    public static DefaultOrderPayment of(OrderPayment details) {
+        if (details instanceof DefaultOrderPayment) {
+            return (DefaultOrderPayment) details;
         }
-        var target = new DefaultPaymentInformation();
+        var target = new DefaultOrderPayment();
         BeanUtils.copyProperties(details, target);
         return target;
     }
