@@ -150,16 +150,16 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrder(String orderId, PaymentInformation details) {
+    public void payOrder(String orderId, OrderPayment payment) {
         var order = this.requiredOrder(orderId);
-        order.pay(details);
+        order.pay(payment);
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(savedOrder));
     }
 
     @Transactional
     @Override
-    public void payOrders(Set<String> orderIds, PaymentInformation payment) {
+    public void payOrders(Set<String> orderIds, OrderPayment payment) {
         var orders = this.orderRepository.findAllById(orderIds);
         orders.forEach(order -> order.pay(payment));
         var savedOrders = this.orderRepository.saveAll(orders);
@@ -290,5 +290,25 @@ public class DefaultOrderService implements OrderService {
         var shipments = this.processorsInvoker.invokePreProcessRemoveOrderShipments(order, order.getShipments(shipmentIds));
         order.removeShipments(shipments);
         this.orderRepository.save(order);
+    }
+
+    @Override
+    public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
+        return null;
+    }
+
+    @Override
+    public void cancelOrderRefund(String orderId, String refundId) {
+
+    }
+
+    @Override
+    public void approveOrderRefund(String orderId, String refundId) {
+
+    }
+
+    @Override
+    public void updateOrderRefund(String orderId, OrderRefund refund) {
+
     }
 }
