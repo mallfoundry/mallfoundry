@@ -31,10 +31,27 @@ import java.util.Set;
  */
 public interface OrderService {
 
+    /**
+     * 创建一个订单查询对象。
+     *
+     * @return 新的订单查询对象
+     */
     OrderQuery createOrderQuery();
 
+    /**
+     * 创建一个订单对象。
+     *
+     * @param id 订单标识，可以为 null
+     * @return 订单对象
+     */
     Order createOrder(String id);
 
+    /**
+     * 拆分订单对象集合。
+     *
+     * @param orders 需要拆分的订单对象集合
+     * @return 拆分后的订单对象集合
+     */
     List<Order> splitOrders(List<Order> orders);
 
     List<Order> placeOrder(Order order);
@@ -49,10 +66,15 @@ public interface OrderService {
 
     Order updateOrder(Order order);
 
-    void payOrder(String orderId, PaymentInformation payment);
+    void payOrder(String orderId, OrderPayment payment);
 
-    void payOrders(Set<String> orderIds, PaymentInformation payment);
+    void payOrders(Set<String> orderIds, OrderPayment payment);
 
+    /**
+     * 打包订单对象。
+     *
+     * @param orderId 订单标识
+     */
     void fulfilOrder(String orderId);
 
     void signOrder(String orderId, String message);
@@ -76,4 +98,13 @@ public interface OrderService {
     void removeOrderShipment(String orderId, String shipmentId);
 
     void removeOrderShipments(String orderId, Set<String> shipmentIds);
+
+    OrderRefund applyOrderRefund(String orderId, OrderRefund refund);
+
+    void cancelOrderRefund(String orderId, String refundId);
+
+    void approveOrderRefund(String orderId, String refundId);
+
+    void updateOrderRefund(String orderId, OrderRefund refund);
+
 }
