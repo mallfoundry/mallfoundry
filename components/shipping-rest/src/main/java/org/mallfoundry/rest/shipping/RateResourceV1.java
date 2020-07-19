@@ -18,8 +18,8 @@
 
 package org.mallfoundry.rest.shipping;
 
-import org.mallfoundry.shipping.Rate;
-import org.mallfoundry.shipping.RateService;
+import org.mallfoundry.shipping.rate.Rate;
+import org.mallfoundry.shipping.rate.RateService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
