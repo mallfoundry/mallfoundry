@@ -24,10 +24,11 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderPayment;
+import org.mallfoundry.order.OrderRefund;
+import org.mallfoundry.order.OrderRefundException;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
-import org.mallfoundry.order.PaymentInformation;
-import org.mallfoundry.order.Refund;
 import org.mallfoundry.order.Shipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
@@ -57,7 +58,7 @@ public class TestOrder implements Order {
     private Address shippingAddress;
     private List<OrderItem> items = new ArrayList<>();
     private List<Shipment> shipments = new ArrayList<>();
-    private List<Refund> refunds = new ArrayList<>();
+    private List<OrderRefund> refunds = new ArrayList<>();
     private int shippedItems;
     private String paymentId;
     private PaymentStatus paymentStatus;
@@ -141,7 +142,47 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void addRefund(Refund refund) {
+    public OrderRefund createRefund(String refundId) {
+        return null;
+    }
+
+    @Override
+    public Optional<OrderRefund> getRefund(String refundId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void applyRefund(OrderRefund refund) {
+
+    }
+
+    @Override
+    public void approveRefund(String refundId) {
+
+    }
+
+    @Override
+    public void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException {
+
+    }
+
+    @Override
+    public void activeRefund(OrderRefund refund) throws OrderRefundException {
+
+    }
+
+    @Override
+    public void cancelRefund(String refundId) {
+
+    }
+
+    @Override
+    public void succeedRefund(String refundId) {
+
+    }
+
+    @Override
+    public void failRefund(String refundId, String failReason) throws OrderRefundException {
 
     }
 
@@ -206,7 +247,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void pay(PaymentInformation details) throws OrderException {
+    public void pay(OrderPayment details) throws OrderException {
 
     }
 
