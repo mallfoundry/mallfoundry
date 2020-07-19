@@ -21,6 +21,9 @@ package org.mallfoundry.shipping;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.shipping.rate.Rate;
+import org.mallfoundry.shipping.rate.RateMode;
+import org.mallfoundry.shipping.rate.Zone;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;

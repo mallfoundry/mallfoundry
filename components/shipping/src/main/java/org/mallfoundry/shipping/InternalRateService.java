@@ -20,6 +20,9 @@ package org.mallfoundry.shipping;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.shipping.rate.Rate;
+import org.mallfoundry.shipping.rate.RateService;
+import org.mallfoundry.shipping.rate.Zone;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 

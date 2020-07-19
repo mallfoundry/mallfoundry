@@ -22,6 +22,7 @@ import org.mallfoundry.data.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.shipping.rate.Zone;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
