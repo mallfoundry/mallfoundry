@@ -52,10 +52,25 @@ public interface OrderRefund {
 
     Date getFailedTime();
 
+    boolean isApplying();
+
+    boolean isDisapproved();
+
+    boolean isPending();
+
+    boolean isSucceeded();
+
+    boolean isFailed();
+
     /**
      * 申请退款。
      */
     void apply() throws OrderRefundException;
+
+    /**
+     * 取消退款申请。
+     */
+    void cancel() throws OrderRefundException;
 
     /**
      * 同意退款。
