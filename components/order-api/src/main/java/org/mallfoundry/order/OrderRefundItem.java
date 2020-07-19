@@ -50,7 +50,7 @@ public interface OrderRefundItem {
 
     String getNote();
 
-    void setNote(String customerNote);
+    void setNote(String note);
 
     /**
      * 订单退款项凭证图片。
