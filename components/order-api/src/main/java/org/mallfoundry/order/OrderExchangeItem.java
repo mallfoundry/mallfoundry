@@ -18,5 +18,5 @@
 
 package org.mallfoundry.order;
 
-public abstract class RefundSupport implements Refund {
+public interface OrderExchangeItem {
 }
