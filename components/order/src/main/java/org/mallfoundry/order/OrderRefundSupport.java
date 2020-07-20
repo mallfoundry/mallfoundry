@@ -21,6 +21,7 @@ package org.mallfoundry.order;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static org.mallfoundry.order.OrderRefundStatus.APPLYING;
 import static org.mallfoundry.order.OrderRefundStatus.DISAPPROVED;
@@ -30,33 +31,26 @@ import static org.mallfoundry.order.OrderRefundStatus.SUCCEEDED;
 
 public abstract class OrderRefundSupport implements MutableOrderRefund {
 
-    private boolean nonIncomplete() {
-        return Objects.nonNull(this.getStatus());
+    @Override
+    public OrderRefundItem createItem(String id) {
+        return new DefaultRefundItem(id);
     }
 
     @Override
-    public boolean isApplying() {
-        return this.nonIncomplete() && this.getStatus().isApplying();
+    public void addItem(OrderRefundItem item) {
+        this.getItems().add(item);
     }
 
-    @Override
-    public boolean isDisapproved() {
-        return this.nonIncomplete() && this.getStatus().isDisapproved();
+    public boolean nonIncomplete() {
+        return Objects.nonNull(this.getStatus()) && !this.getStatus().isIncomplete();
     }
 
-    @Override
-    public boolean isPending() {
-        return this.nonIncomplete() && this.getStatus().isPending();
+    public boolean nonApplying() {
+        return Objects.nonNull(this.getStatus()) && !this.getStatus().isApplying();
     }
 
-    @Override
-    public boolean isSucceeded() {
-        return this.nonIncomplete() && this.getStatus().isSucceeded();
-    }
-
-    @Override
-    public boolean isFailed() {
-        return this.nonIncomplete() && this.getStatus().isFailed();
+    public boolean nonPending() {
+        return Objects.nonNull(this.getStatus()) && !this.getStatus().isPending();
     }
 
     private void reduceSetTotalAmount() {
@@ -78,15 +72,15 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
 
     @Override
     public void cancel() throws OrderRefundException {
-        if (!this.isApplying()) {
-            throw OrderExceptions.Refund.pending();
+        if (this.nonApplying()) {
+            throw OrderExceptions.Refund.notCancel();
         }
     }
 
     @Override
     public void approve() throws OrderRefundException {
-        if (!this.isApplying()) {
-            throw OrderExceptions.Refund.pending();
+        if (this.nonApplying()) {
+            throw OrderExceptions.Refund.approvedOrDisapproved();
         }
         this.setStatus(PENDING);
         this.setApprovedTime(new Date());
@@ -94,8 +88,8 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
 
     @Override
     public void disapprove(String disapprovedReason) throws OrderRefundException {
-        if (!this.isApplying()) {
-            throw OrderExceptions.Refund.pending();
+        if (this.nonApplying()) {
+            throw OrderExceptions.Refund.approvedOrDisapproved();
         }
         this.setDisapprovedReason(disapprovedReason);
         this.setStatus(DISAPPROVED);
@@ -104,7 +98,7 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
 
     @Override
     public void succeed() throws OrderRefundException {
-        if (!this.isPending()) {
+        if (this.nonPending()) {
             throw OrderExceptions.Refund.completed();
         }
         this.setStatus(SUCCEEDED);
@@ -113,11 +107,43 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
 
     @Override
     public void fail(String failReason) throws OrderRefundException {
-        if (!this.isPending()) {
+        if (this.nonPending()) {
             throw OrderExceptions.Refund.completed();
         }
         this.setFailReason(failReason);
         this.setStatus(FAILED);
         this.setFailedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final OrderRefundSupport refund;
+
+        protected BuilderSupport(OrderRefundSupport refund) {
+            this.refund = refund;
+        }
+
+        @Override
+        public Builder item(OrderRefundItem item) {
+            this.refund.addItem(item);
+            return this;
+        }
+
+        @Override
+        public Builder item(Function<OrderRefund, OrderRefundItem> function) {
+            this.refund.addItem(function.apply(this.refund));
+            return this;
+        }
+
+        @Override
+        public OrderRefund build() {
+            return this.refund;
+        }
     }
 }
