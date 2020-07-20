@@ -21,7 +21,6 @@ package org.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OrderStatus {
-
     INCOMPLETE /* 准备下单 */,
     PENDING /* 开始结算流程 */,
     AWAITING_PAYMENT /* 等待付款 */,
@@ -39,6 +38,18 @@ public enum OrderStatus {
     CANCELLED /* 已取消 */,
     COMPLETED /* 完成 */,
     DECLINED /* 已拒绝 */;
+
+    public static boolean isIncomplete(OrderStatus status) {
+        return INCOMPLETE == status;
+    }
+
+    public static boolean isPending(OrderStatus status) {
+        return PENDING == status;
+    }
+
+    public static boolean isAwaitingPayment(OrderStatus status) {
+        return AWAITING_PAYMENT == status;
+    }
 
     @JsonValue
     @Override
