@@ -16,19 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.source;
 
-public interface OrderStatusDescription {
+import org.mallfoundry.order.OrderSource;
 
-    OrderStatus getStatus();
+public interface OrderSourceService {
 
-    void setStatus(OrderStatus status);
-
-    String getLabel();
-
-    void setLabel(String label);
-
-    String getLang();
-
-    void setLang(String lang);
+    String getSourceLabel(OrderSource source);
 }
