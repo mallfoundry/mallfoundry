@@ -111,22 +111,22 @@ public class JpaOrderItem extends OrderItemSupport {
 
     @Override
     public BigDecimal getDiscountAmount() {
-        return Objects.isNull(this.discountAmount) ? BigDecimal.ZERO : this.discountAmount;
+        return Objects.requireNonNullElse(this.discountAmount, BigDecimal.ZERO);
     }
 
     @Override
     public BigDecimal getShippingCost() {
-        return Objects.isNull(this.shippingCost) ? BigDecimal.ZERO : this.shippingCost;
+        return Objects.requireNonNullElse(this.shippingCost, BigDecimal.ZERO);
     }
 
     @Override
     public BigDecimal getDiscountShippingCost() {
-        return Objects.isNull(this.discountShippingCost) ? BigDecimal.ZERO : this.discountShippingCost;
+        return Objects.requireNonNullElse(this.discountShippingCost, BigDecimal.ZERO);
     }
 
     @Override
     public BigDecimal getRefundedAmount() {
-        return Objects.isNull(this.refundedAmount) ? BigDecimal.ZERO : this.refundedAmount;
+        return Objects.requireNonNullElse(this.refundedAmount, BigDecimal.ZERO);
     }
 
     @Override
