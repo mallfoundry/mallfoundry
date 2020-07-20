@@ -24,6 +24,10 @@ public abstract class OrderExceptions {
         return new OrderException(OrderMessages.notFound());
     }
 
+    public static OrderException unpaid() {
+        return new OrderException(OrderMessages.unpaid());
+    }
+
     public abstract static class Item {
         public static OrderException notFound() {
             return new OrderException(OrderMessages.Item.notFound());
@@ -40,8 +44,12 @@ public abstract class OrderExceptions {
             return new OrderRefundException(OrderMessages.Refund.applied());
         }
 
-        public static OrderRefundException pending() {
-            return new OrderRefundException(OrderMessages.Refund.pending());
+        public static OrderRefundException notCancel() {
+            return new OrderRefundException(OrderMessages.Refund.notCancel());
+        }
+
+        public static OrderRefundException approvedOrDisapproved() {
+            return new OrderRefundException(OrderMessages.Refund.approvedOrDisapproved());
         }
 
         public static OrderRefundException completed() {

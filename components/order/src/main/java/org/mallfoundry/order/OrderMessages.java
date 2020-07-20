@@ -24,6 +24,8 @@ public abstract class OrderMessages {
 
     private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.Order.notFound";
 
+    private static final String ORDER_UNPAID_MESSAGE_CODE_KEY = "order.Order.unpaid";
+
     private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
 
     private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
@@ -32,7 +34,9 @@ public abstract class OrderMessages {
 
     private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.OrderRefund.applied";
 
-    private static final String ORDER_REFUND_PENDING_MESSAGE_CODE_KEY = "order.OrderRefund.pending";
+    private static final String ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY = "order.OrderRefund.approvedOrDisapproved";
+
+    private static final String ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY = "order.OrderRefund.notCancel";
 
     private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.OrderRefund.completed";
 
@@ -40,6 +44,10 @@ public abstract class OrderMessages {
 
     public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
+    }
+
+    public static String unpaid() {
+        return message(ORDER_UNPAID_MESSAGE_CODE_KEY, "Order is unpaid");
     }
 
     public abstract static class Source {
@@ -64,8 +72,12 @@ public abstract class OrderMessages {
             return message(ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY, "Order refund has been applied");
         }
 
-        public static String pending() {
-            return message(ORDER_REFUND_PENDING_MESSAGE_CODE_KEY, "Order refund is pending");
+        public static String approvedOrDisapproved() {
+            return message(ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY, "Order refund has been approved or disapproved");
+        }
+
+        public static String notCancel() {
+            return message(ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY, "Order refunds cannot be cancelled");
         }
 
         public static String completed() {
