@@ -18,11 +18,14 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
-public interface OrderRefund {
+public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
     String getId();
 
@@ -33,6 +36,10 @@ public interface OrderRefund {
     OrderRefundKind getKind();
 
     OrderRefundStatus getStatus();
+
+    OrderRefundItem createItem(String id);
+
+    void addItem(OrderRefundItem item);
 
     List<OrderRefundItem> getItems();
 
@@ -51,16 +58,6 @@ public interface OrderRefund {
     Date getSucceededTime();
 
     Date getFailedTime();
-
-    boolean isApplying();
-
-    boolean isDisapproved();
-
-    boolean isPending();
-
-    boolean isSucceeded();
-
-    boolean isFailed();
 
     /**
      * 申请退款。
@@ -88,4 +85,11 @@ public interface OrderRefund {
      * 退款失败。
      */
     void fail(String failReason) throws OrderRefundException;
+
+    interface Builder extends ObjectBuilder<OrderRefund> {
+
+        Builder item(OrderRefundItem item);
+
+        Builder item(Function<OrderRefund, OrderRefundItem> function);
+    }
 }
