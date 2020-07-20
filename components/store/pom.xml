@@ -42,17 +42,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-security-api</artifactId>
+            <artifactId>mall-keystone-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity-api</artifactId>
         </dependency>
 
         <dependency>
@@ -123,13 +118,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-security</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity</artifactId>
+            <artifactId>mall-keystone</artifactId>
             <scope>test</scope>
         </dependency>
 

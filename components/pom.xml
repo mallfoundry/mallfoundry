@@ -41,10 +41,9 @@
         <module>order-api</module>
         <module>shipping-api</module>
         <module>payment-api</module>
-        <module>identity-api</module>
+        <module>keystone-api</module>
         <module>district-api</module>
         <module>dom-api</module>
-        <module>security-api</module>
         <module>marketing-api</module>
 
         <module>analytics</module>
@@ -53,8 +52,7 @@
         <module>app</module>
         <module>commons</module>
         <module>core</module>
-        <module>identity</module>
-        <module>security</module>
+        <module>keystone</module>
         <module>storage</module>
         <module>store</module>
         <module>catalog</module>
@@ -76,7 +74,7 @@
         <module>payment-rest</module>
         <module>shipping-rest</module>
         <module>order-rest</module>
-        <module>identity-rest</module>
+        <module>keystone-rest</module>
         <module>customer-rest</module>
         <module>marketing-rest</module>
         <module>app-rest</module>

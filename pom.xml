@@ -132,13 +132,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-security-api</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-identity-api</artifactId>
+                <artifactId>mall-keystone-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -187,13 +181,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-identity</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-security</artifactId>
+                <artifactId>mall-keystone</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -296,7 +284,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-identity-rest</artifactId>
+                <artifactId>mall-keystone-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

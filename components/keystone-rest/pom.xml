@@ -27,19 +27,23 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall-security-api</artifactId>
+    <artifactId>mall-keystone-rest</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-commons-api</artifactId>
+            <artifactId>mall-commons</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-keystone-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

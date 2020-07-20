@@ -31,7 +31,7 @@
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-security-api</artifactId>
+            <artifactId>mall-keystone-api</artifactId>
         </dependency>
 
         <dependency>

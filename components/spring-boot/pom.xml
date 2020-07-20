@@ -46,12 +46,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-security</artifactId>
+            <artifactId>mall-keystone</artifactId>
         </dependency>
 
         <dependency>
@@ -141,7 +136,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity-rest</artifactId>
+            <artifactId>mall-keystone-rest</artifactId>
         </dependency>
 
         <dependency>

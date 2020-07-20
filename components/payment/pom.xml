@@ -47,12 +47,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-identity</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-security-api</artifactId>
+            <artifactId>mall-keystone</artifactId>
         </dependency>
 
         <dependency>
