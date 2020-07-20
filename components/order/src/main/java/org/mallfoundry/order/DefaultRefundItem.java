@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class DefaultRefundItem extends OrderRefundItemSupport {
     private String id;
     private String itemId;
@@ -34,4 +36,8 @@ public class DefaultRefundItem extends OrderRefundItemSupport {
     private String reason;
     private String note;
     private List<String> imageUrls;
+
+    public DefaultRefundItem(String id) {
+        this.id = id;
+    }
 }
