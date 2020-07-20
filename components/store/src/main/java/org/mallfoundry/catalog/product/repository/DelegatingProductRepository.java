@@ -16,63 +16,63 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.repository.jpa;
+package org.mallfoundry.catalog.product.repository;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.catalog.product.repository.JdbcProductRepository;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
-import org.mallfoundry.data.PageList;
+import org.mallfoundry.catalog.product.ProductRepository;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.data.repository.JpaRepository;
-import org.springframework.data.util.CastUtils;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class JpaProductRepository implements JdbcProductRepository, JpaRepository {
+public class DelegatingProductRepository implements ProductRepository {
 
-    private final JpaProductRepositoryDelegate repository;
+    private final ProductRepository primaryRepository;
 
-    public JpaProductRepository(JpaProductRepositoryDelegate repository) {
-        this.repository = repository;
+    private final ProductRepository searchRepository;
+
+    public DelegatingProductRepository(ProductRepository primaryRepository, ProductRepository searchRepository) {
+        Assert.notNull(primaryRepository, "Property 'primaryRepository' is required");
+        this.primaryRepository = primaryRepository;
+        this.searchRepository = Objects.requireNonNullElse(searchRepository, primaryRepository);
     }
 
     @Override
     public Product create(String id) {
-        return new JpaProduct(id);
+        return this.primaryRepository.create(id);
     }
 
     @Override
     public Product save(Product product) {
-        return this.repository.save(JpaProduct.of(product));
+        return this.primaryRepository.save(product);
     }
 
     @Override
     public List<Product> saveAll(Collection<Product> products) {
-        return CastUtils.cast(this.repository.saveAll(
-                CollectionUtils.emptyIfNull(products).stream().map(JpaProduct::of).collect(Collectors.toList())));
+        return this.primaryRepository.saveAll(products);
     }
 
     @Override
     public Optional<Product> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
+        return this.primaryRepository.findById(id);
     }
 
     @Override
     public List<Product> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
+        return this.primaryRepository.findAllById(ids);
     }
 
     @Override
     public SliceList<Product> findAll(ProductQuery query) {
-        return PageList.empty();
+        return this.searchRepository.findAll(query);
     }
 
     @Override
     public void delete(Product product) {
-        this.repository.delete(JpaProduct.of(product));
+        this.primaryRepository.delete(product);
     }
 }

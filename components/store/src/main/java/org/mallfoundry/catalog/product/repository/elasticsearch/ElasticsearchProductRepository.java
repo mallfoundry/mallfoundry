@@ -25,7 +25,7 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
 import org.mallfoundry.catalog.product.ProductRepository;
 import org.mallfoundry.catalog.product.ProductStatus;
-import org.mallfoundry.catalog.product.SearchProductRepository;
+import org.mallfoundry.catalog.product.repository.SearchProductRepository;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryStatus;

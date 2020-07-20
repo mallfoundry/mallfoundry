@@ -37,19 +37,15 @@ public class DefaultProductService implements ProductService {
 
     private final ProductProcessorsInvoker processorsInvoker;
 
-    private final ProductRepository primaryRepository;
-
-    private final SearchProductRepository searchRepository;
+    private final ProductRepository productRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
     public DefaultProductService(ProductProcessorsInvoker processorsInvoker,
-                                 ProductRepository primaryRepository,
-                                 SearchProductRepository searchRepository,
+                                 ProductRepository productRepository,
                                  ApplicationEventPublisher eventPublisher) {
         this.processorsInvoker = processorsInvoker;
-        this.primaryRepository = primaryRepository;
-        this.searchRepository = searchRepository;
+        this.productRepository = productRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -65,13 +61,13 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public Product createProduct(String id) {
-        return this.primaryRepository.create(id);
+        return this.productRepository.create(id);
     }
 
     @Transactional
     @Override
     public Product addProduct(Product product) {
-        var addedProduct = this.primaryRepository.save(
+        var addedProduct = this.productRepository.save(
                 this.processorsInvoker.invokePreProcessAddProduct(product));
         this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
         return addedProduct;
@@ -79,19 +75,19 @@ public class DefaultProductService implements ProductService {
 
     @Transactional(readOnly = true)
     public Optional<Product> getProduct(String id) {
-        return this.primaryRepository.findById(id)
+        return this.productRepository.findById(id)
                 .map(this.processorsInvoker::invokePostProcessGetProduct);
     }
 
     @Transactional(readOnly = true)
     @Override
     public SliceList<Product> getProducts(ProductQuery query) {
-        return this.searchRepository.findAll(
+        return this.productRepository.findAll(
                 this.processorsInvoker.invokePreProcessGetProducts(query));
     }
 
     private Product requireProduct(String id) {
-        return this.primaryRepository.findById(id).orElseThrow();
+        return this.productRepository.findById(id).orElseThrow();
     }
 
     private Product invokeProcessProduct(Product product, BiFunction<ProductProcessorsInvoker, Product, Product> function) {
@@ -168,7 +164,7 @@ public class DefaultProductService implements ProductService {
             oldProduct.addAttributes(product.getAttributes());
         }
         var savedProduct =
-                this.primaryRepository.save(
+                this.productRepository.save(
                         this.invokeProcessProduct(oldProduct,
                                 ProductProcessorsInvoker::invokePostProcessUpdateProduct));
         this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(savedProduct));
@@ -181,18 +177,18 @@ public class DefaultProductService implements ProductService {
         var product = this.invokeProcessProduct(this.requireProduct(id),
                 ProductProcessorsInvoker::invokePreProcessPublishProduct);
         product.publish();
-        var savedProduct = this.primaryRepository.save(product);
+        var savedProduct = this.productRepository.save(product);
         this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(savedProduct));
     }
 
     @Transactional
     @Override
     public void publishProducts(Set<String> ids) {
-        var products = this.primaryRepository.findAllById(ids).stream()
+        var products = this.productRepository.findAllById(ids).stream()
                 .map(processorsInvoker::invokePreProcessPublishProduct)
                 .peek(Product::publish)
                 .collect(Collectors.toList());
-        var savedProducts = this.primaryRepository.saveAll(products);
+        var savedProducts = this.productRepository.saveAll(products);
         ListUtils.emptyIfNull(savedProducts)
                 .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductPublishedEvent(product)));
     }
@@ -203,18 +199,18 @@ public class DefaultProductService implements ProductService {
         var product = this.invokeProcessProduct(this.requireProduct(id),
                 ProductProcessorsInvoker::invokePreProcessUnpublishProduct);
         product.unpublish();
-        var savedProduct = this.primaryRepository.save(product);
+        var savedProduct = this.productRepository.save(product);
         this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(savedProduct));
     }
 
     @Transactional
     @Override
     public void unpublishProducts(Set<String> ids) {
-        var products = this.primaryRepository.findAllById(ids).stream()
+        var products = this.productRepository.findAllById(ids).stream()
                 .map(processorsInvoker::invokePreProcessUnpublishProduct)
                 .peek(Product::unpublish)
                 .collect(Collectors.toList());
-        var savedProducts = this.primaryRepository.saveAll(products);
+        var savedProducts = this.productRepository.saveAll(products);
         ListUtils.emptyIfNull(savedProducts)
                 .forEach(product -> this.eventPublisher.publishEvent(new ImmutableProductArchivedEvent(product)));
     }
@@ -240,7 +236,7 @@ public class DefaultProductService implements ProductService {
     public void deleteProduct(String id) {
         var product = this.invokeProcessProduct(this.requireProduct(id),
                 ProductProcessorsInvoker::invokePreProcessDeleteProduct);
-        this.primaryRepository.delete(product);
+        this.productRepository.delete(product);
         this.eventPublisher.publishEvent(new ImmutableProductDeletedEvent(product));
     }
 }

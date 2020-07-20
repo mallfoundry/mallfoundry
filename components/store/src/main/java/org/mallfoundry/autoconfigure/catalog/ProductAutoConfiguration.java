@@ -20,17 +20,19 @@ package org.mallfoundry.autoconfigure.catalog;
 
 
 import org.mallfoundry.catalog.product.DefaultProductService;
-import org.mallfoundry.catalog.product.JdbcProductRepository;
 import org.mallfoundry.catalog.product.ProductAuthorizer;
 import org.mallfoundry.catalog.product.ProductIdentifier;
 import org.mallfoundry.catalog.product.ProductProcessorsInvoker;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.catalog.product.SmartProductValidator;
-import org.mallfoundry.catalog.product.SearchProductRepository;
+import org.mallfoundry.catalog.product.repository.DelegatingProductRepository;
+import org.mallfoundry.catalog.product.repository.JdbcProductRepository;
+import org.mallfoundry.catalog.product.repository.SearchProductRepository;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductPersistEventListener;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositoryDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -63,6 +65,13 @@ public class ProductAutoConfiguration {
         return new ElasticsearchProductPersistEventListener(repository);
     }
 
+    @Autowired(required = false)
+    @Bean
+    public DelegatingProductRepository delegatingProductRepository(JpaProductRepository primaryRepository,
+                                                                   SearchProductRepository searchRepository) {
+        return new DelegatingProductRepository(primaryRepository, searchRepository);
+    }
+
     @Bean
     public ProductAuthorizer productAuthorizer() {
         return new ProductAuthorizer();
@@ -81,9 +90,8 @@ public class ProductAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ProductService.class)
     public DefaultProductService defaultProductService(ProductProcessorsInvoker processorsInvoker,
-                                                       JdbcProductRepository jdbcProductRepository,
-                                                       SearchProductRepository searchProductRepository,
+                                                       DelegatingProductRepository delegatingProductRepository,
                                                        ApplicationEventPublisher publisher) {
-        return new DefaultProductService(processorsInvoker, jdbcProductRepository, searchProductRepository, publisher);
+        return new DefaultProductService(processorsInvoker, delegatingProductRepository, publisher);
     }
 }
