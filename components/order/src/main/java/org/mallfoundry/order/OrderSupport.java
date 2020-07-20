@@ -27,7 +27,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +46,9 @@ import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
+import static org.mallfoundry.order.OrderStatus.isAwaitingPayment;
+import static org.mallfoundry.order.OrderStatus.isIncomplete;
+import static org.mallfoundry.order.OrderStatus.isPending;
 
 public abstract class OrderSupport implements MutableOrder {
 
@@ -162,23 +164,9 @@ public abstract class OrderSupport implements MutableOrder {
                 .findFirst();
     }
 
-    private BigDecimal calculateItemRefundAmount(String itemId, BigDecimal refundAmount) {
-        return this.getRefunds()
-                .stream()
-                .filter(OrderRefund::isApplying)
-                .filter(OrderRefund::isPending)
-                .filter(OrderRefund::isSucceeded)
-                .map(OrderRefund::getItems)
-                .flatMap(Collection::stream)
-                .filter(item -> Objects.equals(item.getItemId(), itemId))
-                .map(OrderRefundItem::getAmount)
-                .reduce(Objects.requireNonNullElse(refundAmount, BigDecimal.ZERO), BigDecimal::add);
-
-    }
-
     private void setItemRefundAmount(String itemId, BigDecimal refundAmount) {
         var item = this.requiredItem(itemId);
-        var newRefundAmount = this.calculateItemRefundAmount(itemId, refundAmount);
+        var newRefundAmount = this.requiredItem(itemId).getRefundedAmount().add(refundAmount);
         // 判断是否超额退款
         if (DecimalUtils.greaterThan(newRefundAmount, item.getTotalAmount())) {
             throw OrderExceptions.Refund.excess();
@@ -186,9 +174,21 @@ public abstract class OrderSupport implements MutableOrder {
         item.setRefundedAmount(newRefundAmount);
     }
 
+    /**
+     * 判断当前订单对象是否未付款。
+     *
+     * @return true 表示未付款，false 表示已付款。
+     */
+    private boolean unpaid() {
+        return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
+    }
+
     @Override
-    public void applyRefund(OrderRefund refund) {
-        refund.getItems().forEach(item -> this.setItemRefundAmount(item.getId(), item.getAmount()));
+    public void applyRefund(OrderRefund refund) throws OrderRefundException {
+        if (this.unpaid()) {
+            throw OrderExceptions.unpaid();
+        }
+        refund.getItems().forEach(item -> this.setItemRefundAmount(item.getItemId(), item.getAmount()));
         refund.apply();
         this.getRefunds().add(refund);
     }
