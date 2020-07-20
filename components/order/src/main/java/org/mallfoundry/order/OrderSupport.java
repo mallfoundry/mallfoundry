@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.order.repository.jpa.JpaShipment;
 import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.DecimalUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
@@ -349,5 +351,54 @@ public abstract class OrderSupport implements MutableOrder {
         return this.getItems().stream()
                 .map(OrderItem::getSubtotalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final OrderSupport order;
+
+        public BuilderSupport(OrderSupport order) {
+            this.order = order;
+        }
+
+        @Override
+        public Builder customerId(String customerId) {
+            this.order.setCustomerId(customerId);
+            return this;
+        }
+
+        @Override
+        public Builder shippingAddress(Address shippingAddress) {
+            this.order.setShippingAddress(shippingAddress);
+            return this;
+        }
+
+        @Override
+        public Builder pay(OrderPayment payment) {
+            this.order.pay(payment);
+            return this;
+        }
+
+        @Override
+        public Builder item(OrderItem item) {
+            this.order.addItem(item);
+            return this;
+        }
+
+        @Override
+        public Builder item(Function<Order, OrderItem> item) {
+            return this.item(item.apply(this.order));
+        }
+
+        @Override
+        public Order build() {
+            return this.order;
+        }
     }
 }

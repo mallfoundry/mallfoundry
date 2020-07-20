@@ -37,7 +37,7 @@ import java.util.function.Function;
  *
  * @author Zhi Tang
  */
-public interface Order {
+public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     String getId();
 
@@ -294,10 +294,6 @@ public interface Order {
 
     void cancel(String reason) throws OrderException;
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this);
-    }
-
     interface Builder extends ObjectBuilder<Order> {
 
         Builder customerId(String customerId);
@@ -309,48 +305,5 @@ public interface Order {
         Builder item(OrderItem item);
 
         Builder item(Function<Order, OrderItem> item);
-    }
-
-    class BuilderSupport implements Builder {
-
-        private final Order order;
-
-        public BuilderSupport(Order order) {
-            this.order = order;
-        }
-
-        @Override
-        public Builder customerId(String customerId) {
-            this.order.setCustomerId(customerId);
-            return this;
-        }
-
-        @Override
-        public Builder shippingAddress(Address shippingAddress) {
-            this.order.setShippingAddress(shippingAddress);
-            return this;
-        }
-
-        @Override
-        public Builder pay(OrderPayment payment) {
-            this.order.pay(payment);
-            return this;
-        }
-
-        @Override
-        public Builder item(OrderItem item) {
-            this.order.addItem(item);
-            return this;
-        }
-
-        @Override
-        public Builder item(Function<Order, OrderItem> item) {
-            return this.item(item.apply(this.order));
-        }
-
-        @Override
-        public Order build() {
-            return this.order;
-        }
     }
 }
