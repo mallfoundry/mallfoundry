@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -26,7 +28,7 @@ import java.util.List;
  *
  * @author Zhi Tang
  */
-public interface OrderRefundItem {
+public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem.Builder> {
 
     String getId();
 
@@ -61,6 +63,10 @@ public interface OrderRefundItem {
 
     void setImageUrls(List<String> imageUrls);
 
+    void itemNotReceive();
+
+    void itemReceive();
+
     enum ItemStatus {
         /**
          * 未收货。
@@ -70,5 +76,22 @@ public interface OrderRefundItem {
          * 已收货。
          */
         RECEIVED
+    }
+
+    interface Builder extends ObjectBuilder<OrderRefundItem> {
+
+        Builder itemId(String itemId);
+
+        Builder itemNotReceive();
+
+        Builder itemReceive();
+
+        Builder itemStatus(ItemStatus status);
+
+        Builder amount(BigDecimal amount);
+
+        Builder reason(String reason);
+
+        Builder note(String note);
     }
 }
