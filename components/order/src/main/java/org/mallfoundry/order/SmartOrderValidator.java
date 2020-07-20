@@ -38,12 +38,6 @@ public class SmartOrderValidator implements OrderProcessor {
         this.validator = validator;
     }
 
-    @Override
-    public List<Order> preProcessPlaceOrders(List<Order> orders) {
-        this.validate(orders);
-        return orders;
-    }
-
     private BindingResult createError(PlaceOrders orders) {
         return new BeanPropertyBindingResult(orders, "place");
     }
@@ -55,6 +49,12 @@ public class SmartOrderValidator implements OrderProcessor {
         if (error.hasErrors()) {
             throw new BindRuntimeException(error);
         }
+    }
+
+    @Override
+    public List<Order> preProcessPlaceOrders(List<Order> orders) {
+        this.validate(orders);
+        return orders;
     }
 
     @Getter
