@@ -35,6 +35,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Convert(converter = OrderRefundItemListConverter.class)
     @Column(name = "items_")
-    private List<OrderRefundItem> items;
+    private List<OrderRefundItem> items = new ArrayList<>();
 
     @Column(name = "disapproved_reason_")
     private String disapprovedReason;
