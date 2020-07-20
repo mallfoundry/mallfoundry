@@ -20,6 +20,21 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.util.Position;
 
+import java.math.BigDecimal;
+
 public interface OrderTransaction extends Position {
 
+    String getId();
+
+    String getOrderId();
+
+    TransactionEvent getEvent();
+
+    BigDecimal getAmount();
+
+    long getTimestamp();
+
+    enum TransactionEvent {
+        PURCHASE
+    }
 }
