@@ -18,5 +18,79 @@
 
 package org.mallfoundry.order;
 
+import java.math.BigDecimal;
+
 public abstract class OrderRefundItemSupport implements OrderRefundItem {
+
+    @Override
+    public void itemNotReceive() {
+        this.setItemStatus(ItemStatus.NOT_RECEIVED);
+    }
+
+    @Override
+    public void itemReceive() {
+        this.setItemStatus(ItemStatus.RECEIVED);
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final OrderRefundItemSupport item;
+
+        public BuilderSupport(OrderRefundItemSupport item) {
+            this.item = item;
+        }
+
+        @Override
+        public Builder itemId(String itemId) {
+            this.item.setItemId(itemId);
+            return this;
+        }
+
+        @Override
+        public Builder itemNotReceive() {
+            this.item.itemNotReceive();
+            return this;
+        }
+
+        @Override
+        public Builder itemReceive() {
+            this.item.itemReceive();
+            return this;
+        }
+
+        @Override
+        public Builder itemStatus(ItemStatus status) {
+            this.item.setItemStatus(status);
+            return this;
+        }
+
+        @Override
+        public Builder amount(BigDecimal amount) {
+            this.item.setAmount(amount);
+            return this;
+        }
+
+        @Override
+        public Builder reason(String reason) {
+            this.item.setReason(reason);
+            return this;
+        }
+
+        @Override
+        public Builder note(String note) {
+            this.item.setNote(note);
+            return this;
+        }
+
+        @Override
+        public OrderRefundItem build() {
+            return this.item;
+        }
+    }
 }
