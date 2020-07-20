@@ -50,6 +50,16 @@ public class TestOrderItem implements OrderItem {
                 : this.discountAmount;
     }
 
+    @Override
+    public BigDecimal getRefundedAmount() {
+        return null;
+    }
+
+    @Override
+    public void setRefundedAmount(BigDecimal refundedAmount) {
+
+    }
+
     public BigDecimal getShippingCost() {
         return Objects.isNull(this.shippingCost)
                 ? BigDecimal.ZERO

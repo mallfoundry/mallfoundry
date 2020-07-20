@@ -152,8 +152,8 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void applyRefund(OrderRefund refund) {
-
+    public OrderRefund applyRefund(OrderRefund refund) {
+        return refund;
     }
 
     @Override
@@ -271,4 +271,8 @@ public class TestOrder implements Order {
 
     }
 
+    @Override
+    public Builder toBuilder() {
+        return null;
+    }
 }
