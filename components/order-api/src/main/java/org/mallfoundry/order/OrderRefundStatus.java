@@ -21,11 +21,16 @@ package org.mallfoundry.order;
 import java.util.Objects;
 
 public enum OrderRefundStatus {
+    INCOMPLETE /* 空状态 */,
     APPLYING /* 买家申请退款 */,
     DISAPPROVED /* 退款未批准 */,
     PENDING /* 退款中 */,
     SUCCEEDED  /* 退款成功 */,
     FAILED  /* 退款失败 */;
+
+    public boolean isIncomplete() {
+        return Objects.equals(this, INCOMPLETE);
+    }
 
     public boolean isApplying() {
         return Objects.equals(this, APPLYING);
