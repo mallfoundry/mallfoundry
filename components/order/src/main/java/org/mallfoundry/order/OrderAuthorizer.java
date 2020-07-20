@@ -144,4 +144,59 @@ public class OrderAuthorizer implements OrderProcessor {
     public List<Shipment> preProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
         return shipments;
     }
+
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_APPLY + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public OrderRefund preProcessApplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_CANCEL + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public void preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_APPROVE + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public void preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_DISAPPROVE + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public String preProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
+        return disapprovedReason;
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_ACTIVE + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    @Override
+    public void preProcessSucceedOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    @Override
+    public String preProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
+        return failReason;
+    }
 }

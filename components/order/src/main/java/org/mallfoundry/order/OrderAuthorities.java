@@ -45,4 +45,20 @@ public abstract class OrderAuthorities {
     public static final String ORDER_SHIPMENT_REMOVE = "order_shipment_remove";
 
     public static final String ORDER_SHIPMENT_MANAGE = "order_shipment_manage";
+
+    public static final String ORDER_REFUND_APPLY = "order_refund_apply";
+
+    public static final String ORDER_REFUND_CANCEL = "order_refund_cancel";
+
+    public static final String ORDER_REFUND_ACTIVE = "order_refund_active";
+
+    public static final String ORDER_REFUND_APPROVE = "order_refund_approve";
+
+    public static final String ORDER_REFUND_DISAPPROVE = "order_refund_disapprove";
+
+    public static final String ORDER_REFUND_SUCCEED = "order_refund_succeed";
+
+    public static final String ORDER_REFUND_FAIL = "order_refund_fail";
+
+    public static final String ORDER_REFUND_MANAGE = "order_refund_manage";
 }
