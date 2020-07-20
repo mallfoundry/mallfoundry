@@ -19,13 +19,14 @@
 package org.mallfoundry.processor;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public abstract class ProcessorsInvoker {
 
     @SuppressWarnings("unchecked")
-    public static <T, U, R extends U> R invokeProcessors(List<T> processors, U product, BiFunction<T, U, R> function) {
+    public static <T, U, R extends U> R invokeBiFunctionProcessors(List<T> processors, U product, BiFunction<T, U, R> function) {
         U result = product;
         for (var processor : processors) {
             result = function.apply(processor, result);
@@ -33,7 +34,13 @@ public abstract class ProcessorsInvoker {
         return (R) result;
     }
 
-    public static <T> void invokeProcessors(List<T> processors, Consumer<T> consumer) {
+    public static <T, U> void invokeBiConsumerProcessors(List<T> processors, U product, BiConsumer<T, U> consumer) {
+        for (var processor : processors) {
+            consumer.accept(processor, product);
+        }
+    }
+
+    public static <T> void invokeConsumerProcessors(List<T> processors, Consumer<T> consumer) {
         for (var processor : processors) {
             consumer.accept(processor);
         }
