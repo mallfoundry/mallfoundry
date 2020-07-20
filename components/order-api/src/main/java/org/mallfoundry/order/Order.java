@@ -304,6 +304,8 @@ public interface Order {
 
         Builder shippingAddress(Address shippingAddress);
 
+        Builder pay(OrderPayment payment);
+
         Builder item(OrderItem item);
 
         Builder item(Function<Order, OrderItem> item);
@@ -326,6 +328,12 @@ public interface Order {
         @Override
         public Builder shippingAddress(Address shippingAddress) {
             this.order.setShippingAddress(shippingAddress);
+            return this;
+        }
+
+        @Override
+        public Builder pay(OrderPayment payment) {
+            this.order.pay(payment);
             return this;
         }
 
