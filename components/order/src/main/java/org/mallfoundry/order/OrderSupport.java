@@ -186,16 +186,17 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void applyRefund(OrderRefund refund) throws OrderRefundException {
+    public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
         if (this.unpaid()) {
             throw OrderExceptions.unpaid();
         }
         refund.getItems().forEach(item -> this.setItemRefundAmount(item.getItemId(), item.getAmount()));
         refund.apply();
         this.getRefunds().add(refund);
+        return refund;
     }
 
-    private OrderRefund requiredRefund(String refundId) {
+    protected OrderRefund requiredRefund(String refundId) {
         return this.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
     }
 

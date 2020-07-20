@@ -150,7 +150,7 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      * @param refund 订单退款对象
      * @throws OrderRefundException 退款金额小于等于零，退款对象所关联的订单对象的订单项不存在，或者已全额退款
      */
-    void applyRefund(OrderRefund refund) throws OrderRefundException;
+    OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException;
 
     /**
      * 批准退款。
