@@ -34,11 +34,11 @@ public class ProductProcessorsInvoker {
     }
 
     private Product invokeProcess(Product product, BiFunction<ProductProcessor, Product, Product> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, product, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, product, function);
     }
 
     private ProductQuery invokeProcess(ProductQuery query, BiFunction<ProductProcessor, ProductQuery, ProductQuery> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, query, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, query, function);
     }
 
     public Product invokePostProcessGetProduct(Product product) {
