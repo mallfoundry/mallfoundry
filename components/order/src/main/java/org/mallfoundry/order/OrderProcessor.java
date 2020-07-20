@@ -97,6 +97,34 @@ public interface OrderProcessor {
         return shipments;
     }
 
+    default OrderRefund preProcessApplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default void preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    default void preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    default String preProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
+        return disapprovedReason;
+    }
+
+    default OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default void preProcessSucceedOrderRefund(Order order, OrderRefund refund) {
+
+    }
+
+    default String preProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
+        return failReason;
+    }
+
     default void postProcessAfterCompletion() {
     }
 }

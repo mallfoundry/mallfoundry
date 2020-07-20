@@ -34,19 +34,19 @@ public class OrderProcessorsInvoker {
     }
 
     private List<Order> invokeProcess(List<Order> orders, BiFunction<OrderProcessor, List<Order>, List<Order>> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, orders, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, orders, function);
     }
 
     private Order invokeProcess(Order order, BiFunction<OrderProcessor, Order, Order> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, order, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, order, function);
     }
 
     private SliceList<Order> invokeProcess(SliceList<Order> orders, BiFunction<OrderProcessor, SliceList<Order>, SliceList<Order>> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, orders, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, orders, function);
     }
 
     private OrderQuery invokeProcess(OrderQuery query, BiFunction<OrderProcessor, OrderQuery, OrderQuery> function) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, query, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, query, function);
     }
 
     public List<Order> invokePreProcessPlaceOrders(List<Order> orders) {
@@ -78,7 +78,8 @@ public class OrderProcessorsInvoker {
     }
 
     public String invokePreProcessSignOrder(Order order, String message) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, message, (orderProcessor, identity) -> orderProcessor.preProcessSignOrder(order, identity));
+        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessSignOrder(order, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, message, function);
     }
 
     public Order invokePreProcessReceiptOrder(Order order) {
@@ -86,11 +87,12 @@ public class OrderProcessorsInvoker {
     }
 
     public String invokePreProcessCancelOrder(Order order, String reason) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, reason, (orderProcessor, identity) -> orderProcessor.preProcessCancelOrder(order, reason));
+        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessCancelOrder(order, reason);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reason, function);
     }
 
     public Shipment invokePreProcessAddOrderShipment(Order order, Shipment shipment) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderShipment(order, identity));
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderShipment(order, identity));
     }
 
     public Order invokePreProcessGetOrderShipment(Order order) {
@@ -102,23 +104,52 @@ public class OrderProcessorsInvoker {
     }
 
     public Shipment invokePreProcessUpdateOrderShipment(Order order, Shipment shipment) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipment(order, identity));
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipment(order, identity));
     }
 
     public List<Shipment> invokePreProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipments(order, identity));
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipments(order, identity));
     }
 
     public Shipment invokePreProcessRemoveOrderShipment(Order order, Shipment shipment) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipment(order, identity));
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipment(order, identity));
     }
 
     public List<Shipment> invokePreProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
-        return ProcessorsInvoker.invokeProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
+    }
+
+    public OrderRefund invokePreProcessApplyOrderRefund(Order order, OrderRefund refund) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessApplyOrderRefund(order, identity));
+    }
+
+    public void invokePreProcessCancelOrderRefund(Order order, OrderRefund refund) {
+        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessCancelOrderRefund(order, identity));
+    }
+
+    public void invokePreProcessApproveOrderRefund(Order order, OrderRefund refund) {
+        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderRefund(order, identity));
+    }
+
+    public String invokePreProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
+        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderRefund(order, refund, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, disapprovedReason, function);
+    }
+
+    public OrderRefund invokePreProcessActiveOrderRefund(Order order, OrderRefund refund) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessActiveOrderRefund(order, identity));
+    }
+
+    public void invokePreProcessSucceedOrderRefund(Order order, OrderRefund refund) {
+        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessSucceedOrderRefund(order, identity));
+    }
+
+    public String invokePreProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
+        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessFailOrderRefund(order, refund, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, failReason, function);
     }
 
     public void invokePostProcessAfterCompletion() {
-        ProcessorsInvoker.invokeProcessors(this.processors, OrderProcessor::postProcessAfterCompletion);
+        ProcessorsInvoker.invokeConsumerProcessors(this.processors, OrderProcessor::postProcessAfterCompletion);
     }
-
 }
