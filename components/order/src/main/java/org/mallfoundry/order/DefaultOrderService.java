@@ -292,23 +292,76 @@ public class DefaultOrderService implements OrderService {
         this.orderRepository.save(order);
     }
 
+    @Transactional
     @Override
     public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
-        return null;
+        var order = this.requiredOrder(orderId);
+        refund = this.processorsInvoker.invokePreProcessApplyOrderRefund(order, refund);
+        refund = order.applyRefund(refund);
+        this.orderRepository.save(order);
+        return refund;
     }
 
+    private OrderRefund requiredOrderRefund(Order order, String refundId) {
+        return order.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
+    }
+
+    @Transactional
     @Override
     public void cancelOrderRefund(String orderId, String refundId) {
-
+        var order = this.requiredOrder(orderId);
+        var refund = this.requiredOrderRefund(order, refundId);
+        this.processorsInvoker.invokePreProcessCancelOrderRefund(order, refund);
+        order.cancelRefund(refundId);
+        this.orderRepository.save(order);
     }
 
+    @Transactional
     @Override
     public void approveOrderRefund(String orderId, String refundId) {
-
+        var order = this.requiredOrder(orderId);
+        var refund = this.requiredOrderRefund(order, refundId);
+        this.processorsInvoker.invokePreProcessApproveOrderRefund(order, refund);
+        order.approveRefund(refundId);
+        this.orderRepository.save(order);
     }
 
+    @Transactional
     @Override
-    public void updateOrderRefund(String orderId, OrderRefund refund) {
+    public void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason) {
+        var order = this.requiredOrder(orderId);
+        var refund = this.requiredOrderRefund(order, refundId);
+        disapprovedReason = this.processorsInvoker.invokePreProcessDisapproveOrderRefund(order, refund, disapprovedReason);
+        order.disapproveRefund(refundId, disapprovedReason);
+        this.orderRepository.save(order);
+    }
 
+    @Transactional
+    @Override
+    public void activeOrderRefund(String orderId, OrderRefund refund) {
+        var order = this.requiredOrder(orderId);
+        refund = this.processorsInvoker.invokePreProcessActiveOrderRefund(order, refund);
+        order.activeRefund(refund);
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void succeedOrderRefund(String orderId, String refundId) {
+        var order = this.requiredOrder(orderId);
+        var refund = this.requiredOrderRefund(order, refundId);
+        this.processorsInvoker.invokePreProcessSucceedOrderRefund(order, refund);
+        order.succeedRefund(refundId);
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void failOrderRefund(String orderId, String refundId, String failReason) {
+        var order = this.requiredOrder(orderId);
+        var refund = this.requiredOrderRefund(order, refundId);
+        failReason = this.processorsInvoker.invokePreProcessFailOrderRefund(order, refund, failReason);
+        order.failRefund(refundId, failReason);
+        this.orderRepository.save(order);
     }
 }

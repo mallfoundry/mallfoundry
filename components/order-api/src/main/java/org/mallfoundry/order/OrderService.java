@@ -105,6 +105,11 @@ public interface OrderService {
 
     void approveOrderRefund(String orderId, String refundId);
 
-    void updateOrderRefund(String orderId, OrderRefund refund);
+    void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason);
 
+    void activeOrderRefund(String orderId, OrderRefund refund);
+
+    void succeedOrderRefund(String orderId, String refundId);
+
+    void failOrderRefund(String orderId, String refundId, String failReason);
 }
