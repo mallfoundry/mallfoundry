@@ -77,23 +77,23 @@ public interface OrderService {
      */
     void fulfilOrder(String orderId);
 
-    void signOrder(String orderId, String message);
+    void signOrder(String orderId, String signMessage);
 
     void receiptOrder(String orderId);
 
-    void cancelOrder(String orderId, String reason);
+    void cancelOrder(String orderId, String cancelReason);
 
-    void cancelOrders(Set<String> orderIds, String reason);
+    void cancelOrders(Set<String> orderIds, String cancelReason);
 
-    Shipment addOrderShipment(String orderId, Shipment shipment);
+    OrderShipment addOrderShipment(String orderId, OrderShipment shipment);
 
-    Optional<Shipment> getOrderShipment(String orderId, String shipmentId);
+    Optional<OrderShipment> getOrderShipment(String orderId, String shipmentId);
 
-    List<Shipment> getOrderShipments(String orderId);
+    List<OrderShipment> getOrderShipments(String orderId);
 
-    void updateOrderShipment(String orderId, Shipment shipment);
+    void updateOrderShipment(String orderId, OrderShipment shipment);
 
-    void updateOrderShipments(String orderId, List<Shipment> shipments);
+    void updateOrderShipments(String orderId, List<OrderShipment> shipments);
 
     void removeOrderShipment(String orderId, String shipmentId);
 

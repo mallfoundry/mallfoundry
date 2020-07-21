@@ -101,23 +101,23 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     int getTotalItems();
 
-    Shipment createShipment(String shipmentId);
+    OrderShipment createShipment(String shipmentId);
 
-    void addShipment(Shipment shipment);
+    void addShipment(OrderShipment shipment);
 
-    List<Shipment> getShipments();
+    List<OrderShipment> getShipments();
 
-    Optional<Shipment> getShipment(String shipmentId);
+    Optional<OrderShipment> getShipment(String shipmentId);
 
-    List<Shipment> getShipments(Set<String> shipmentIds);
+    List<OrderShipment> getShipments(Set<String> shipmentIds);
 
-    void updateShipment(Shipment shipment);
+    void updateShipment(OrderShipment shipment);
 
-    void updateShipments(List<Shipment> shipments);
+    void updateShipments(List<OrderShipment> shipments);
 
-    void removeShipment(Shipment shipment);
+    void removeShipment(OrderShipment shipment);
 
-    void removeShipments(List<Shipment> shipments);
+    void removeShipments(List<OrderShipment> shipments);
 
     int getShippedItems();
 

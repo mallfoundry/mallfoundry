@@ -20,11 +20,26 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.util.ObjectBuilder;
 
-public interface ShipmentItem {
+/**
+ * 订单物流信息项对象，此对象与订单项对象进行关联，主要描述对订单项的发货物流信息。
+ *
+ * @author Zhi Tang
+ */
+public interface OrderShipmentItem extends ObjectBuilder.ToBuilder<OrderShipmentItem.Builder> {
 
+    /**
+     * 返回物流信息项标识。
+     */
     String getId();
 
     void setId(String id);
+
+    /**
+     * 返回订单项标识。
+     */
+    String getItemId();
+
+    void setItemId(String itemId);
 
     String getProductId();
 
@@ -46,12 +61,9 @@ public interface ShipmentItem {
 
     void setImageUrl(String imageUrl);
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
+    interface Builder extends ObjectBuilder<OrderShipmentItem> {
 
-    interface Builder extends ObjectBuilder<ShipmentItem> {
+        Builder itemId(String itemId);
 
         Builder productId(String productId);
 
@@ -62,49 +74,5 @@ public interface ShipmentItem {
         Builder name(String name);
 
         Builder imageUrl(String imageUrl);
-    }
-
-    abstract class BuilderSupport implements Builder {
-
-        protected final ShipmentItem item;
-
-        public BuilderSupport(ShipmentItem item) {
-            this.item = item;
-        }
-
-        @Override
-        public Builder productId(String productId) {
-            this.item.setProductId(productId);
-            return this;
-        }
-
-        @Override
-        public Builder variantId(String variantId) {
-            this.item.setVariantId(variantId);
-            return this;
-        }
-
-        @Override
-        public Builder quantity(int quantity) {
-            this.item.setQuantity(quantity);
-            return this;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.item.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder imageUrl(String imageUrl) {
-            this.item.setImageUrl(imageUrl);
-            return this;
-        }
-
-        @Override
-        public ShipmentItem build() {
-            return this.item;
-        }
     }
 }
