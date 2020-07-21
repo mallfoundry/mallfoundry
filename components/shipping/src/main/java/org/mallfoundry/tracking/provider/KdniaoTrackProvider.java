@@ -25,12 +25,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Tracker;
+import org.mallfoundry.shipping.Track;
 import org.mallfoundry.shipping.TrackingEvent;
 import org.mallfoundry.shipping.TrackingStatus;
-import org.mallfoundry.tracking.InternalTracker;
+import org.mallfoundry.tracking.InternalTrack;
 import org.mallfoundry.tracking.InternalTrackingEvent;
-import org.mallfoundry.tracking.TrackerProvider;
+import org.mallfoundry.tracking.TrackProvider;
 import org.mallfoundry.util.JsonUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class KdniaoTrackerProvider implements TrackerProvider {
+public class KdniaoTrackProvider implements TrackProvider {
 
 //    private static final String trackUrl = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 //    private static final String trackUrl = "http://sandboxapi.kdniao.com:8080/kdniaosandbox/gateway/exterfaceInvoke.json";
@@ -76,7 +76,7 @@ public class KdniaoTrackerProvider implements TrackerProvider {
     private final String eBusinessId;
     private final String trackUrl;
 
-    public KdniaoTrackerProvider(String url, String apiKey, String eBusinessId) {
+    public KdniaoTrackProvider(String url, String apiKey, String eBusinessId) {
         this.apiKey = apiKey;
         this.eBusinessId = eBusinessId;
         this.trackUrl = resolveUrl(url, "/Ebusiness/EbusinessOrderHandle.aspx");
@@ -87,7 +87,7 @@ public class KdniaoTrackerProvider implements TrackerProvider {
     }
 
     @Override
-    public Tracker getTracker(CarrierCode carrier, String trackingNumber) {
+    public Track getTracker(CarrierCode carrier, String trackingNumber) {
         String requestData = "{'OrderCode':'','ShipperCode':'" + shipperCode(carrier) + "','LogisticCode':'" + trackingNumber + "'}";
         var restTemplate = new RestTemplate();
         var params = new LinkedMultiValueMap<String, String>();
@@ -174,8 +174,8 @@ public class KdniaoTrackerProvider implements TrackerProvider {
         }
 
 
-        public Tracker toTracker() {
-            var tracker = new InternalTracker();
+        public Track toTracker() {
+            var tracker = new InternalTrack();
             tracker.setCarrierCode(carrierCode(this.shipperCode));
             tracker.setTrackingNumber(this.getLogisticCode());
             tracker.setTrackingStatus(trackingStatus(this.state));

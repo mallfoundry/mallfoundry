@@ -16,7 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking.provider;
+package org.mallfoundry.tracking;
 
-public class Kuaidi100TrackingProvider {
+import org.mallfoundry.shipping.CarrierCode;
+import org.mallfoundry.shipping.Track;
+
+public interface TrackProvider {
+
+    Track getTracker(CarrierCode carrier, String trackingNumber);
 }

@@ -19,29 +19,29 @@
 package org.mallfoundry.tracking;
 
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Tracker;
-import org.mallfoundry.shipping.TrackerService;
+import org.mallfoundry.shipping.Track;
+import org.mallfoundry.shipping.TrackService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
-public class InternalTrackerService implements TrackerService {
-    private final TrackerRepository trackRepository;
-    private final TrackerProvider trackProvider;
+public class DefaultTrackService implements TrackService {
+    private final TrackRepository trackRepository;
+    private final TrackProvider trackProvider;
 
-    public InternalTrackerService(TrackerRepository trackRepository,
-                                  TrackerProvider trackProvider) {
+    public DefaultTrackService(TrackRepository trackRepository,
+                               TrackProvider trackProvider) {
         this.trackRepository = trackRepository;
         this.trackProvider = trackProvider;
     }
 
     @Override
-    public Tracker getTracker(CarrierCode carrier, String trackingNumber) {
-        var oldTrack = this.trackRepository.findById(InternalTrackerId.of(carrier, trackingNumber)).orElse(null);
+    public Track getTrack(CarrierCode carrier, String trackingNumber) {
+        var oldTrack = this.trackRepository.findById(InternalTrackId.of(carrier, trackingNumber)).orElse(null);
         if (Objects.isNull(oldTrack) || oldTrack.isExpired()) {
             var track = this.trackProvider.getTracker(carrier, trackingNumber);
-            var newTrack = InternalTracker.of(track);
+            var newTrack = InternalTrack.of(track);
             newTrack.setExpires(System.currentTimeMillis() + 1000 * 60 * 10); // 10 minutes
             return this.trackRepository.save(newTrack);
         }

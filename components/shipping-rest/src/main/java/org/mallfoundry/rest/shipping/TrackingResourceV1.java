@@ -20,8 +20,8 @@ package org.mallfoundry.rest.shipping;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Tracker;
-import org.mallfoundry.shipping.TrackerService;
+import org.mallfoundry.shipping.Track;
+import org.mallfoundry.shipping.TrackService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,15 +31,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TrackingResourceV1 {
 
-    private final TrackerService trackingService;
+    private final TrackService trackService;
 
-    public TrackingResourceV1(TrackerService trackingService) {
-        this.trackingService = trackingService;
+    public TrackingResourceV1(TrackService trackService) {
+        this.trackService = trackService;
     }
 
-    @GetMapping("/carriers/{carrier_code}/trackers/{tracking_number}")
-    public Tracker getTracker(@PathVariable("carrier_code") String carrierCode,
-                              @PathVariable("tracking_number") String trackingNumber) {
-        return this.trackingService.getTracker(CarrierCode.valueOf(StringUtils.upperCase(carrierCode)), trackingNumber);
+    @GetMapping("/carriers/{carrier_code}/tracks/{tracking_number}")
+    public Track getTrack(@PathVariable("carrier_code") String carrierCode,
+                            @PathVariable("tracking_number") String trackingNumber) {
+        return this.trackService.getTrack(CarrierCode.valueOf(StringUtils.upperCase(carrierCode)), trackingNumber);
     }
 }

@@ -16,14 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.tracking.repository.jpa;
 
-import java.util.Optional;
+import org.mallfoundry.tracking.InternalTrack;
+import org.mallfoundry.tracking.InternalTrackId;
+import org.mallfoundry.tracking.TrackRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TrackerRepository {
-
-    Optional<InternalTracker> findById(InternalTrackerId id);
-
-    InternalTracker save(InternalTracker tracker);
-
+@Repository
+public interface JpaTrackRepository
+        extends JpaRepository<InternalTrack, InternalTrackId>,
+        TrackRepository {
 }

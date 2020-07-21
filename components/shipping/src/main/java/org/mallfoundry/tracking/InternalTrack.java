@@ -18,12 +18,10 @@
 
 package org.mallfoundry.tracking;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Tracker;
+import org.mallfoundry.shipping.Track;
 import org.mallfoundry.shipping.TrackingEvent;
 import org.mallfoundry.shipping.TrackingStatus;
 import org.mallfoundry.tracking.repository.jpa.convert.TrackingEventListConverter;
@@ -36,48 +34,42 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "mf_shipping_tracker")
-@IdClass(InternalTrackerId.class)
-public class InternalTracker implements Tracker {
+@Table(name = "mf_shipping_track")
+@IdClass(InternalTrackId.class)
+public class InternalTrack implements Track {
 
-    @JsonProperty("carrier_code")
     @Id
     @Enumerated(EnumType.STRING)
     @Column(name = "carrier_code_")
     private CarrierCode carrierCode;
 
-    @JsonProperty("tracking_number")
     @Id
     @Column(name = "tracking_number_")
     private String trackingNumber;
 
-    @JsonProperty("tracking_status")
     @Enumerated(EnumType.STRING)
     @Column(name = "tracking_status_")
     private TrackingStatus trackingStatus;
 
-    @Lob
     @Convert(converter = TrackingEventListConverter.class)
-    @Column(name = "events_")
+    @Column(name = "events_", length = 1024 * 8)
     private List<TrackingEvent> events;
 
-    @JsonIgnore
     @Column(name = "expires_")
     private long expires;
 
-    public static InternalTracker of(Tracker track) {
-        if (track instanceof InternalTracker) {
-            return (InternalTracker) track;
+    public static InternalTrack of(Track track) {
+        if (track instanceof InternalTrack) {
+            return (InternalTrack) track;
         }
 
-        var target = new InternalTracker();
+        var target = new InternalTrack();
         BeanUtils.copyProperties(track, target);
         return target;
     }

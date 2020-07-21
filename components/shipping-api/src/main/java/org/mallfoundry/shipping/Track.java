@@ -16,12 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping;
 
-import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Tracker;
+import java.io.Serializable;
+import java.util.List;
 
-public interface TrackerProvider {
+public interface Track extends Serializable {
 
-    Tracker getTracker(CarrierCode carrier, String trackingNumber);
+   /* String getStoreId();
+
+    String getCustomerId();*/
+
+    CarrierCode getCarrierCode();
+
+    String getTrackingNumber();
+
+    TrackingStatus getTrackingStatus();
+
+    List<TrackingEvent> getEvents();
 }
