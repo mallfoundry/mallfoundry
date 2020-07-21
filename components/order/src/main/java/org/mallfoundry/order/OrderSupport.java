@@ -20,11 +20,10 @@ package org.mallfoundry.order;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.order.repository.jpa.JpaShipment;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.DecimalUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
@@ -69,6 +68,10 @@ public abstract class OrderSupport implements MutableOrder {
         return this.getItem(itemId).orElseThrow(OrderExceptions.Item::notFound);
     }
 
+    protected OrderItem requiredItem(String productId, String variantId) {
+        return this.getItem(productId, variantId).orElseThrow(OrderExceptions.Item::notFound);
+    }
+
     @Override
     public Optional<OrderItem> getItem(String itemId) {
         return this.getItems().stream()
@@ -94,16 +97,17 @@ public abstract class OrderSupport implements MutableOrder {
         return CollectionUtils.size(this.getItems());
     }
 
-    @Override
-    public void addShipment(Shipment newShipment) {
-        var shipment = JpaShipment.of(newShipment);
+    protected OrderShipment requiredShipment(String shipmentId) {
+        return this.getShipment(shipmentId).orElseThrow(OrderExceptions.Shipment::notFound);
+    }
 
+    @Override
+    public void addShipment(OrderShipment shipment) {
         if (Objects.isNull(shipment.getShippingAddress())) {
             shipment.setShippingAddress(this.getShippingAddress());
         }
-
         shipment.getItems().forEach(item -> {
-            var orderItem = this.getItem(item.getProductId(), item.getVariantId()).orElseThrow();
+            var orderItem = this.requiredItem(item.getProductId(), item.getVariantId());
             if (Objects.isNull(item.getName())) {
                 item.setName(orderItem.getName());
             }
@@ -123,7 +127,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public Optional<Shipment> getShipment(String shipmentId) {
+    public Optional<OrderShipment> getShipment(String shipmentId) {
         return this.getShipments()
                 .stream()
                 .filter(shipment -> Objects.equals(shipment.getId(), shipmentId))
@@ -131,7 +135,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public List<Shipment> getShipments(Set<String> shipmentIds) {
+    public List<OrderShipment> getShipments(Set<String> shipmentIds) {
         return CollectionUtils.isEmpty(shipmentIds) ? Collections.emptyList()
                 : this.getShipments()
                         .stream()
@@ -140,22 +144,37 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void updateShipment(Shipment shipment) {
-        BeanUtils.copyProperties(shipment, this.getShipment(shipment.getId()).orElseThrow());
+    public void updateShipment(OrderShipment newShipment) {
+        var shipment = this.requiredShipment(newShipment.getId());
+        if (StringUtils.isNotBlank(newShipment.getShippingMethod())) {
+            shipment.setShippingMethod(newShipment.getShippingMethod());
+        }
+        if (Objects.nonNull(newShipment.getShippingProvider())) {
+            shipment.setShippingProvider(newShipment.getShippingProvider());
+        }
+        if (Objects.nonNull(newShipment.getTrackingCarrier())) {
+            shipment.setTrackingCarrier(newShipment.getTrackingCarrier());
+        }
+        if (StringUtils.isNotBlank(newShipment.getTrackingNumber())) {
+            shipment.setTrackingNumber(newShipment.getTrackingNumber());
+        }
     }
 
     @Override
-    public void updateShipments(List<Shipment> shipments) {
+    public void updateShipments(List<OrderShipment> shipments) {
         ListUtils.emptyIfNull(shipments).forEach(this::updateShipment);
     }
 
     @Override
-    public void removeShipment(Shipment shipment) {
-        this.getShipments().remove(shipment);
+    public void removeShipment(OrderShipment shipment) {
+        var removed = this.getShipments().remove(shipment);
+        if (!removed) {
+            throw OrderExceptions.Shipment.notFound();
+        }
     }
 
     @Override
-    public void removeShipments(List<Shipment> shipments) {
+    public void removeShipments(List<OrderShipment> shipments) {
         ListUtils.emptyIfNull(shipments).forEach(this::removeShipment);
     }
 
@@ -235,14 +254,12 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void discounts(Map<String, BigDecimal> amounts) {
-        amounts.forEach((itemId, discountAmount) ->
-                this.getItem(itemId).orElseThrow().setDiscountAmount(discountAmount));
+        amounts.forEach((itemId, discountAmount) -> this.requiredItem(itemId).setDiscountAmount(discountAmount));
     }
 
     @Override
     public void discountShippingCosts(Map<String, BigDecimal> shippingCosts) {
-        shippingCosts.forEach((itemId, discountCost) ->
-                this.getItem(itemId).orElseThrow().setDiscountShippingCost(discountCost));
+        shippingCosts.forEach((itemId, discountCost) -> this.requiredItem(itemId).setDiscountShippingCost(discountCost));
     }
 
     @Override
