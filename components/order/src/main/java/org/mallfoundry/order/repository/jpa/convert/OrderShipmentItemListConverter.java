@@ -18,27 +18,27 @@
 
 package org.mallfoundry.order.repository.jpa.convert;
 
-import org.mallfoundry.order.DefaultShipmentItem;
-import org.mallfoundry.order.ShipmentItem;
+import org.mallfoundry.order.DefaultOrderShipmentItem;
+import org.mallfoundry.order.OrderShipmentItem;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
 import java.util.List;
 import java.util.Objects;
 
-public class ShipmentItemListConverter implements AttributeConverter<List<ShipmentItem>, String> {
+public class OrderShipmentItemListConverter implements AttributeConverter<List<OrderShipmentItem>, String> {
 
     @Override
-    public String convertToDatabaseColumn(List<ShipmentItem> items) {
+    public String convertToDatabaseColumn(List<OrderShipmentItem> items) {
         return Objects.isNull(items)
                 ? null
                 : JsonUtils.stringify(items);
     }
 
     @Override
-    public List<ShipmentItem> convertToEntityAttribute(String dbData) {
+    public List<OrderShipmentItem> convertToEntityAttribute(String dbData) {
         return Objects.isNull(dbData)
                 ? null
-                : JsonUtils.parse(dbData, List.class, DefaultShipmentItem.class);
+                : JsonUtils.parse(dbData, List.class, DefaultOrderShipmentItem.class);
     }
 }
