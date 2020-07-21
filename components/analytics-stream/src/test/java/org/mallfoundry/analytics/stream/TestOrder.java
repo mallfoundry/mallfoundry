@@ -29,7 +29,7 @@ import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefundException;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
-import org.mallfoundry.order.Shipment;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -57,7 +57,7 @@ public class TestOrder implements Order {
     private Integer staffStars;
     private Address shippingAddress;
     private List<OrderItem> items = new ArrayList<>();
-    private List<Shipment> shipments = new ArrayList<>();
+    private List<OrderShipment> shipments = new ArrayList<>();
     private List<OrderRefund> refunds = new ArrayList<>();
     private int shippedItems;
     private String paymentId;
@@ -102,42 +102,42 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public Shipment createShipment(String shipmentId) {
+    public OrderShipment createShipment(String shipmentId) {
         return null;
     }
 
     @Override
-    public void addShipment(Shipment shipment) {
+    public void addShipment(OrderShipment shipment) {
 
     }
 
     @Override
-    public Optional<Shipment> getShipment(String id) {
+    public Optional<OrderShipment> getShipment(String id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Shipment> getShipments(Set<String> shipmentIds) {
+    public List<OrderShipment> getShipments(Set<String> shipmentIds) {
         return null;
     }
 
     @Override
-    public void updateShipment(Shipment shipment) {
+    public void updateShipment(OrderShipment shipment) {
 
     }
 
     @Override
-    public void updateShipments(List<Shipment> shipments) {
+    public void updateShipments(List<OrderShipment> shipments) {
 
     }
 
     @Override
-    public void removeShipment(Shipment shipment) {
+    public void removeShipment(OrderShipment shipment) {
 
     }
 
     @Override
-    public void removeShipments(List<Shipment> shipments) {
+    public void removeShipments(List<OrderShipment> shipments) {
 
     }
 
