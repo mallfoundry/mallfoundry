@@ -45,7 +45,7 @@ public class OrderIdentifier implements OrderProcessor {
     }
 
     @Override
-    public Shipment preProcessAddOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
         if (StringUtils.isBlank(shipment.getId())) {
             shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
         }
