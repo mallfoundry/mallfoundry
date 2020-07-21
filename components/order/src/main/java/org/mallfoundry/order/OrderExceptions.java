@@ -34,6 +34,12 @@ public abstract class OrderExceptions {
         }
     }
 
+    public abstract static class Shipment {
+        public static OrderShipmentException notFound() {
+            return new OrderShipmentException(OrderMessages.Shipment.notFound());
+        }
+    }
+
     public abstract static class Refund {
 
         public static OrderRefundException notFound() {

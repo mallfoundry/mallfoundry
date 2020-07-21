@@ -30,6 +30,8 @@ public abstract class OrderMessages {
 
     private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
 
+    private static final String ORDER_SHIPMENT_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderShipment.notFound";
+
     private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderRefund.notFound";
 
     private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.OrderRefund.applied";
@@ -59,6 +61,13 @@ public abstract class OrderMessages {
     public abstract static class Item {
         public static String notFound() {
             return message(ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY, "Order item does not exist");
+        }
+    }
+
+    public abstract static class Shipment {
+
+        public static String notFound() {
+            return message(ORDER_SHIPMENT_NOT_FOUND_MESSAGE_CODE_KEY, "Order shipment does not exist");
         }
     }
 
