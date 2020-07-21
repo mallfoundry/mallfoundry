@@ -21,7 +21,6 @@ package org.mallfoundry.security.authentication;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.security.authentication.MobilePasswordCredentials;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
