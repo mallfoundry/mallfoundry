@@ -81,6 +81,12 @@ public class OrderRequest {
     @Getter
     @Setter
     public static class CancelRequest {
-        private String reason;
+        private String cancelReason;
+    }
+
+    @Getter
+    @Setter
+    public static class SignRequest {
+        private String signMessage;
     }
 }
