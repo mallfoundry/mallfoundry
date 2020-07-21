@@ -87,7 +87,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Shipment preProcessAddOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -97,7 +97,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
     public Order preProcessGetOrderShipment(Order order) {
-        return null;
+        return order;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -106,7 +106,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
     public Order preProcessGetOrderShipments(Order order) {
-        return null;
+        return order;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -114,7 +114,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Shipment preProcessUpdateOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment preProcessUpdateOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -123,7 +123,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public List<Shipment> preProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
+    public List<OrderShipment> preProcessUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
@@ -132,7 +132,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Shipment preProcessRemoveOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment preProcessRemoveOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -141,7 +141,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public List<Shipment> preProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
+    public List<OrderShipment> preProcessRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
