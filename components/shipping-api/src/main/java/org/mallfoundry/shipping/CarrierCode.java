@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.Serializable;
 
 public enum CarrierCode implements Serializable {
-
     SF, // 顺丰
     ZTO, // 中通
     STO, // 申通
