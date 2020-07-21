@@ -28,7 +28,7 @@ import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderSupport;
-import org.mallfoundry.order.Shipment;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -115,9 +115,9 @@ public class JpaOrder extends OrderSupport {
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-            targetEntity = JpaShipment.class)
+            targetEntity = JpaOrderShipment.class)
     @JoinColumn(name = "order_id_")
-    private List<Shipment> shipments = new ArrayList<>();
+    private List<OrderShipment> shipments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = JpaOrderRefund.class)
@@ -199,7 +199,7 @@ public class JpaOrder extends OrderSupport {
     }
 
     @Override
-    public Shipment createShipment(String shipmentId) {
-        return new JpaShipment(shipmentId).toBuilder().shippingAddress(this.getShippingAddress()).build();
+    public OrderShipment createShipment(String shipmentId) {
+        return new JpaOrderShipment(shipmentId).toBuilder().shippingAddress(this.getShippingAddress()).build();
     }
 }
