@@ -60,7 +60,7 @@ public class PaymentResourceV1 {
 
     @GetMapping("/payments/{id}/return")
     public void sendPaymentReturn(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.paymentService.validatePayment(id, request.getParameterMap());
+        this.paymentService.notifyPayment(id, request.getParameterMap());
         var payment = this.paymentService.getPayment(id).orElseThrow();
         if (Objects.nonNull(payment.getReturnUrl())) {
             var returnUrl = UriComponentsBuilder
@@ -70,9 +70,9 @@ public class PaymentResourceV1 {
         }
     }
 
-    @PostMapping("/payments/{id}/validate")
-    public void validatePayment(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var notification = this.paymentService.validatePayment(id, request.getParameterMap());
+    @PostMapping("/payments/{id}/notify")
+    public void notifyPayment(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var notification = this.paymentService.notifyPayment(id, request.getParameterMap());
         if (notification.hasResult()) {
             try (var output = response.getOutputStream()) {
                 output.write(notification.getResult());

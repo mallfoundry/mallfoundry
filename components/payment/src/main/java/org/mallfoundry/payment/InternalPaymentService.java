@@ -77,7 +77,7 @@ public class InternalPaymentService implements PaymentService {
 
     @Transactional
     @Override
-    public PaymentNotification validatePayment(String id, Object parameters) throws PaymentException {
+    public PaymentNotification notifyPayment(String id, Object parameters) throws PaymentException {
         var payment = this.paymentRepository.findById(id).orElseThrow();
         var paymentClient = this.paymentClientFactory.getClient(payment).orElseThrow();
         var notification = paymentClient.createPaymentNotification(parameters);

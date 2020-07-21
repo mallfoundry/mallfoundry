@@ -30,7 +30,7 @@ public interface PaymentService {
 
     void refundPayment(String id, PaymentRefund refund) throws PaymentException;
 
-    PaymentNotification validatePayment(String id, Object parameters) throws PaymentException;
+    PaymentNotification notifyPayment(String id, Object parameters) throws PaymentException;
 
     Optional<Payment> getPayment(String id);
 
