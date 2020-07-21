@@ -18,13 +18,11 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.data.SliceList;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
