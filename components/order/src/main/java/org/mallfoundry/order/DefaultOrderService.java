@@ -31,6 +31,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.trim;
+
 public class DefaultOrderService implements OrderService {
 
     private final OrderConfiguration orderConfiguration;
@@ -74,17 +78,24 @@ public class DefaultOrderService implements OrderService {
         return this.orderSplitter.splitting(orders);
     }
 
+    private <T, R> Function<List<T>, List<T>> publishOrdersEvent(Function<List<T>, R> function) {
+        return ts -> {
+            this.eventPublisher.publishEvent(function.apply(ts));
+            return ts;
+        };
+    }
+
+    private <T, R> Function<T, T> publishOrderEvent(Function<T, R> function) {
+        return t -> {
+            this.eventPublisher.publishEvent(function.apply(t));
+            return t;
+        };
+    }
+
     @Transactional
     @Override
     public List<Order> placeOrder(Order order) {
         return this.placeOrders(List.of(order));
-    }
-
-    private <T, R> Function<List<T>, List<T>> publishOrdersEvent(Function<List<T>, R> function) {
-        return (List<T> tt) -> {
-            this.eventPublisher.publishEvent(function.apply(tt));
-            return tt;
-        };
     }
 
     private List<Order> invokePlaceOrders(List<Order> orders) {
@@ -134,23 +145,30 @@ public class DefaultOrderService implements OrderService {
         return this.orderRepository.count(query);
     }
 
-    @Transactional
-    @Override
-    public Order updateOrder(Order order) {
-
-
-        // TODO 需要修改
-        /*return Function.<Order>identity()
-                .compose(this.orderRepository::save)
-                .compose(this.processorsInvoker::invokePreProcessUpdateOrder)
-                .apply(order);*/
-
-        return order;
+    private Order requiredOrder(String orderId) {
+        return this.orderRepository.findById(orderId).orElseThrow(OrderExceptions::notFound);
     }
 
-    private Order requiredOrder(String orderId) {
-        return this.orderRepository.findById(orderId)
-                .orElseThrow(OrderExceptions::notFound);
+    private Order copyOrder(final Order source, final Order target) {
+        if (isNotBlank(source.getStaffNotes())) {
+            target.setStaffNotes(trim(source.getStaffNotes()));
+        }
+        if (nonNull(source.getStaffStars())) {
+            target.setStaffStars(source.getStaffStars());
+        }
+        return target;
+    }
+
+    @Transactional
+    @Override
+    public Order updateOrder(final Order source) {
+        return Function.<Order>identity()
+                .compose(this.publishOrderEvent(ImmutableOrderChangedEvent::new))
+                .compose(this.orderRepository::save)
+                .<Order>compose(target -> copyOrder(source, target))
+                .compose(this.processorsInvoker::invokePreProcessUpdateOrder)
+                .compose(this::requiredOrder)
+                .apply(source.getId());
     }
 
     @Transactional
@@ -230,7 +248,7 @@ public class DefaultOrderService implements OrderService {
             shipment.setConsignor(SubjectHolder.getNickname());
         }
         // Set the tracking carrier name.
-        if (StringUtils.isNotBlank(shipment.getTrackingNumber())
+        if (isNotBlank(shipment.getTrackingNumber())
                 && StringUtils.isBlank(shipment.getTrackingCarrier())) {
             var carrier = this.carrierService.getCarrier(shipment.getShippingProvider()).orElseThrow();
             shipment.setTrackingCarrier(carrier.getName());
