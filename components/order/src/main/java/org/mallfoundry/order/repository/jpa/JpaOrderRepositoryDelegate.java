@@ -82,10 +82,7 @@ public interface JpaOrderRepositoryDelegate
     default SliceList<JpaOrder> findAll(OrderQuery orderQuery) {
         Page<JpaOrder> page = this.findAll(this.createSpecification(orderQuery),
                 PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("placedTime"))));
-        return PageList.of(page.getContent())
-                .page(page.getNumber())
-                .limit(orderQuery.getLimit())
-                .totalSize(page.getTotalElements());
+        return PageList.of(page.getContent()).page(orderQuery.getPage()).limit(orderQuery.getLimit()).totalSize(page.getTotalElements());
     }
 
     default long count(OrderQuery orderQuery) {
