@@ -27,10 +27,13 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class DefaultShipmentItem implements ShipmentItem {
+public class DefaultOrderShipmentItem extends OrderShipmentItemSupport {
 
     @NotBlank
     private String id;
+
+    @NotBlank
+    private String itemId;
 
     @NotBlank
     private String productId;
@@ -52,10 +55,10 @@ public class DefaultShipmentItem implements ShipmentItem {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultShipmentItem)) {
+        if (!(o instanceof DefaultOrderShipmentItem)) {
             return false;
         }
-        DefaultShipmentItem that = (DefaultShipmentItem) o;
+        DefaultOrderShipmentItem that = (DefaultOrderShipmentItem) o;
         return Objects.equals(id, that.id);
     }
 

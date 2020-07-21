@@ -22,10 +22,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.order.Shipment;
-import org.mallfoundry.order.ShipmentItem;
-import org.mallfoundry.order.ShipmentSupport;
-import org.mallfoundry.order.repository.jpa.convert.ShipmentItemListConverter;
+import org.mallfoundry.order.OrderShipment;
+import org.mallfoundry.order.OrderShipmentItem;
+import org.mallfoundry.order.OrderShipmentSupport;
+import org.mallfoundry.order.repository.jpa.convert.OrderShipmentItemListConverter;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.CarrierCode;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
@@ -52,7 +52,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_order_shipment")
-public class JpaShipment extends ShipmentSupport {
+public class JpaOrderShipment extends OrderShipmentSupport {
 
     @NotBlank
     @Id
@@ -90,24 +90,24 @@ public class JpaShipment extends ShipmentSupport {
 
     @Valid
     @NotEmpty
-    @Convert(converter = ShipmentItemListConverter.class)
+    @Convert(converter = OrderShipmentItemListConverter.class)
     @Column(name = "items_", length = 1024 * 2)
-    private List<ShipmentItem> items = new ArrayList<>();
+    private List<OrderShipmentItem> items = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
-    public JpaShipment(String id) {
+    public JpaOrderShipment(String id) {
         this.setId(id);
         this.setShippedTime(new Date());
     }
 
-    public static JpaShipment of(Shipment shipment) {
-        if (shipment instanceof JpaShipment) {
-            return (JpaShipment) shipment;
+    public static JpaOrderShipment of(OrderShipment shipment) {
+        if (shipment instanceof JpaOrderShipment) {
+            return (JpaOrderShipment) shipment;
         }
-        var target = new JpaShipment();
+        var target = new JpaOrderShipment();
         BeanUtils.copyProperties(shipment, target);
         return target;
     }
@@ -120,7 +120,7 @@ public class JpaShipment extends ShipmentSupport {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JpaShipment that = (JpaShipment) o;
+        JpaOrderShipment that = (JpaOrderShipment) o;
         return Objects.equals(id, that.id);
     }
 
