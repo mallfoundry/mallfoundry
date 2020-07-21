@@ -69,7 +69,7 @@ public interface OrderProcessor {
         return reason;
     }
 
-    default Shipment preProcessAddOrderShipment(Order order, Shipment shipment) {
+    default OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -81,19 +81,19 @@ public interface OrderProcessor {
         return order;
     }
 
-    default Shipment preProcessUpdateOrderShipment(Order order, Shipment shipment) {
+    default OrderShipment preProcessUpdateOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
-    default List<Shipment> preProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
+    default List<OrderShipment> preProcessUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
-    default Shipment preProcessRemoveOrderShipment(Order order, Shipment shipment) {
+    default OrderShipment preProcessRemoveOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
-    default List<Shipment> preProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
+    default List<OrderShipment> preProcessRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 

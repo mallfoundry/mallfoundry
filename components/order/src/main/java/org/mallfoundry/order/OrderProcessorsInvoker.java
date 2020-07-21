@@ -91,7 +91,7 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reason, function);
     }
 
-    public Shipment invokePreProcessAddOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment invokePreProcessAddOrderShipment(Order order, OrderShipment shipment) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderShipment(order, identity));
     }
 
@@ -103,19 +103,19 @@ public class OrderProcessorsInvoker {
         return this.invokeProcess(order, OrderProcessor::preProcessGetOrderShipments);
     }
 
-    public Shipment invokePreProcessUpdateOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment invokePreProcessUpdateOrderShipment(Order order, OrderShipment shipment) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipment(order, identity));
     }
 
-    public List<Shipment> invokePreProcessUpdateOrderShipments(Order order, List<Shipment> shipments) {
+    public List<OrderShipment> invokePreProcessUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessUpdateOrderShipments(order, identity));
     }
 
-    public Shipment invokePreProcessRemoveOrderShipment(Order order, Shipment shipment) {
+    public OrderShipment invokePreProcessRemoveOrderShipment(Order order, OrderShipment shipment) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipment, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipment(order, identity));
     }
 
-    public List<Shipment> invokePreProcessRemoveOrderShipments(Order order, List<Shipment> shipments) {
+    public List<OrderShipment> invokePreProcessRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, shipments, (orderProcessor, identity) -> orderProcessor.preProcessRemoveOrderShipments(order, identity));
     }
 
