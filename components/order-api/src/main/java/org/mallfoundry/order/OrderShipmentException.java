@@ -18,34 +18,13 @@
 
 package org.mallfoundry.order;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-public abstract class ShipmentSupport implements Shipment {
-
-    @Override
-    public ShipmentItem createItem(String id) {
-        return new DefaultShipmentItem();
-    }
-
-    @Override
-    public void addItem(ShipmentItem item) {
-        this.getItems().add(item);
-    }
-
-    @Override
-    public Optional<ShipmentItem> getItem(String id) {
-        return this.getItems().stream().filter(item -> item.getId().equals(id)).findFirst();
-    }
-
-    @Override
-    public void removeItem(ShipmentItem item) {
-        this.getItems().remove(item);
-    }
-
-    @Override
-    public List<String> getImageUrls() {
-        return this.getItems().stream().map(ShipmentItem::getImageUrl).collect(Collectors.toUnmodifiableList());
+/**
+ * 订单物流信息异常对象。
+ *
+ * @author Zhi Tang
+ */
+public class OrderShipmentException extends OrderException {
+    public OrderShipmentException(String message) {
+        super(message);
     }
 }
