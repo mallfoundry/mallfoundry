@@ -26,7 +26,7 @@ import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
-import org.mallfoundry.order.Shipment;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,20 +76,19 @@ public class OrderResourceV1 {
     @PostMapping("/orders/{order_id}/cancel")
     public void cancelOrder(@PathVariable("order_id") String orderId,
                             @RequestBody OrderRequest.CancelRequest request) {
-        this.orderService.cancelOrder(orderId, request.getReason());
+        this.orderService.cancelOrder(orderId, request.getCancelReason());
     }
 
-/*    @PostMapping("/orders/{order_id}/pack")
-    public void packOrder(@PathVariable("order_id") String orderId) {
-        this.orderService.packOrder(orderId);
-    }*/
-
-/*
-    @PostMapping("/orders/{order_id}/pickup")
-    public void pickupOrder(@PathVariable("order_id") String orderId) {
-        this.orderService.pickupOrder(orderId);
+    @PostMapping("/orders/{order_id}/sign")
+    public void signOrder(@PathVariable("order_id") String orderId,
+                          @RequestBody OrderRequest.SignRequest request) {
+        this.orderService.signOrder(orderId, request.getSignMessage());
     }
-*/
+
+    @PostMapping("/orders/{order_id}/receipt")
+    public void receiptOrder(@PathVariable("order_id") String orderId) {
+        this.orderService.receiptOrder(orderId);
+    }
 
     @GetMapping("/orders/{order_id}")
     public Optional<Order> getOrder(@PathVariable("order_id") String orderId) {
@@ -143,21 +142,21 @@ public class OrderResourceV1 {
     }
 
     @PostMapping("/orders/{order_id}/shipments")
-    public Shipment addOrderShipment(@PathVariable("order_id") String orderId,
-                                     @RequestBody AddShipmentRequest request) {
+    public OrderShipment addOrderShipment(@PathVariable("order_id") String orderId,
+                                          @RequestBody AddShipmentRequest request) {
         return this.orderService.addOrderShipment(orderId,
                 request.assignToShipment(
                         this.orderService.createOrder(orderId).createShipment(null)));
     }
 
     @GetMapping("/orders/{order_id}/shipments")
-    public List<Shipment> getOrderShipments(@PathVariable("order_id") String orderId) {
+    public List<OrderShipment> getOrderShipments(@PathVariable("order_id") String orderId) {
         return this.orderService.getOrderShipments(orderId);
     }
 
     @GetMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public Optional<Shipment> getOrderShipment(@PathVariable("order_id") String orderId,
-                                               @PathVariable("shipment_id") String shipmentId) {
+    public Optional<OrderShipment> getOrderShipment(@PathVariable("order_id") String orderId,
+                                                    @PathVariable("shipment_id") String shipmentId) {
         return this.orderService.getOrderShipment(orderId, shipmentId);
     }
 
