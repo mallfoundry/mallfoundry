@@ -20,7 +20,7 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.order.Shipment;
+import org.mallfoundry.order.OrderShipment;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +32,7 @@ public class AddShipmentRequest extends ShipmentRequest {
     private List<ShipmentItemRequest> items;
 
     @Override
-    public Shipment assignToShipment(Shipment shipment) {
+    public OrderShipment assignToShipment(OrderShipment shipment) {
         var items = this.items.stream()
                 .map(request ->
                         shipment.createItem(null).toBuilder()
