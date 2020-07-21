@@ -137,11 +137,15 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public Order updateOrder(Order order) {
+
+
         // TODO 需要修改
-        return Function.<Order>identity()
+        /*return Function.<Order>identity()
                 .compose(this.orderRepository::save)
                 .compose(this.processorsInvoker::invokePreProcessUpdateOrder)
-                .apply(order);
+                .apply(order);*/
+
+        return order;
     }
 
     private Order requiredOrder(String orderId) {
@@ -218,7 +222,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public Shipment addOrderShipment(String orderId, Shipment shipment) {
+    public OrderShipment addOrderShipment(String orderId, OrderShipment shipment) {
         var order = this.requiredOrder(orderId);
         shipment = this.processorsInvoker.invokePreProcessAddOrderShipment(order, shipment);
         shipment.setConsignorId(SubjectHolder.getUserId());
@@ -236,8 +240,8 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public Optional<Shipment> getOrderShipment(String orderId, String shipmentId) {
-        return Function.<Optional<Shipment>>identity()
+    public Optional<OrderShipment> getOrderShipment(String orderId, String shipmentId) {
+        return Function.<Optional<OrderShipment>>identity()
                 .<Order>compose(order -> order.getShipment(shipmentId))
                 .compose(this.processorsInvoker::invokePreProcessGetOrderShipment)
                 .compose(this::requiredOrder)
@@ -245,8 +249,8 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public List<Shipment> getOrderShipments(String orderId) {
-        return Function.<List<Shipment>>identity()
+    public List<OrderShipment> getOrderShipments(String orderId) {
+        return Function.<List<OrderShipment>>identity()
                 .<Order>compose(Order::getShipments)
                 .compose(this.processorsInvoker::invokePreProcessGetOrderShipments)
                 .compose(this::requiredOrder)
@@ -255,7 +259,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void updateOrderShipment(String orderId, Shipment shipment) {
+    public void updateOrderShipment(String orderId, OrderShipment shipment) {
         var order = this.requiredOrder(orderId);
         shipment = this.processorsInvoker.invokePreProcessUpdateOrderShipment(order, shipment);
         order.updateShipment(shipment);
@@ -264,14 +268,14 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void updateOrderShipments(String orderId, List<Shipment> shipments) {
+    public void updateOrderShipments(String orderId, List<OrderShipment> shipments) {
         var order = this.requiredOrder(orderId);
         shipments = this.processorsInvoker.invokePreProcessUpdateOrderShipments(order, shipments);
         order.updateShipments(shipments);
         this.orderRepository.save(order);
     }
 
-    private Shipment requiredOrderShipment(Order order, String shipmentId) {
+    private OrderShipment requiredOrderShipment(Order order, String shipmentId) {
         return order.getShipment(shipmentId).orElseThrow();
     }
 
