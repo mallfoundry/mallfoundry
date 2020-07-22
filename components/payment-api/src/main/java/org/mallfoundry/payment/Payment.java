@@ -18,13 +18,34 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public interface Payment {
+/**
+ * 支付对象对第三方支付网关所涉及的支付对象进行抽象，使得可以使用同一个支付对象来对接第三方支付。
+ * <p>支付对象支持合并付款，当需要合并付款的时候就添加多个支付订单。
+ *
+ * @author Zhi Tang
+ */
+public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     String getId();
+
+    void setId(String id);
+
+    String getPayerId();
+
+    void setPayerId(String payerId);
+
+    String getPayer();
+
+    void setPayer(String payer);
 
     PaymentInstrument createInstrument(PaymentMethod type);
 
@@ -32,9 +53,15 @@ public interface Payment {
 
     void setInstrument(PaymentInstrument instrument);
 
-    String getReference();
+    PaymentOrder createOrder(String orderId);
 
-    void setReference(String reference);
+    void addOrder(PaymentOrder order);
+
+    void addOrders(List<PaymentOrder> orders);
+
+    Optional<PaymentOrder> getOrder(String orderId);
+
+    List<PaymentOrder> getOrders();
 
     String getReturnUrl();
 
@@ -42,59 +69,52 @@ public interface Payment {
 
     PaymentStatus getStatus();
 
-    BigDecimal getAmount();
+    BigDecimal getTotalAmount();
 
-    void setAmount(BigDecimal amount);
+    String getSourceId();
 
-    Map<String, String> getMetadata();
+    void setSourceId(String sourceId);
 
-    void setMetadata(Map<String, String> metadata);
+    Date getStartedTime();
 
     Date getCapturedTime();
-
-    Date getCreatedTime();
 
     void start();
 
     void capture();
 
-    Builder toBuilder();
+    PaymentRefund createRefund(String refundId);
 
-    class Builder {
+    List<PaymentRefund> getRefunds();
 
-        private final Payment payment;
+    Optional<PaymentRefund> getRefund(String refundId);
 
-        public Builder(Payment payment) {
-            this.payment = payment;
-        }
+    void applyRefund(PaymentRefund refund);
 
-        public Builder amount(BigDecimal amount) {
-            this.payment.setAmount(amount);
-            return this;
-        }
+    void succeedRefund(String refundId);
 
-        public Builder returnUrl(String returnUrl) {
-            this.payment.setReturnUrl(returnUrl);
-            return this;
-        }
+    void failRefund(String refundId, String failReason);
 
-        public Builder reference(String reference) {
-            this.payment.setReference(reference);
-            return this;
-        }
+    interface Builder extends ObjectBuilder<Payment> {
 
-        public Builder metadata(Map<String, String> metadata) {
-            this.payment.setMetadata(metadata);
-            return this;
-        }
+        Builder payerId(String payerId);
 
-        public Builder instrument(PaymentInstrument instrument) {
-            this.payment.setInstrument(instrument);
-            return this;
-        }
+        Builder payer(String payer);
 
-        public Payment build() {
-            return this.payment;
-        }
+        Builder returnUrl(String returnUrl);
+
+        Builder instrument(PaymentInstrument instrument);
+
+        Builder instrument(Consumer<PaymentInstrument> consumer);
+
+        Builder instrument(Function<Payment, PaymentInstrument> function);
+
+        Builder sourceId(String sourceId);
+
+        Builder order(PaymentOrder order);
+
+        Builder order(Consumer<PaymentOrder> consumer);
+
+        Builder order(Function<Payment, PaymentOrder> function);
     }
 }

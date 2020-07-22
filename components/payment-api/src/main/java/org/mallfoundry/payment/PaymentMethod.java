@@ -19,5 +19,5 @@
 package org.mallfoundry.payment;
 
 public enum PaymentMethod {
-    ALIPAY, WXPAY
+    ALIPAY, WECHAT_PAY
 }

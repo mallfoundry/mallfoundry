@@ -21,55 +21,39 @@ package org.mallfoundry.payment;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public interface PaymentRefund extends ObjectBuilder.ToBuilder<PaymentRefund.Builder> {
+/**
+ * 支付订单对象是对上层系统业务订单的简化，使其只需要设置用于支付的属性。
+ *
+ * @author Zhi Tang
+ */
+public interface PaymentOrder extends ObjectBuilder.ToBuilder<PaymentOrder.Builder> {
 
     String getId();
 
     void setId(String id);
 
-    String getPaymentId();
-
     String getStoreId();
 
     void setStoreId(String storeId);
-
-    String getOrderId();
-
-    void setOrderId(String orderId);
 
     BigDecimal getAmount();
 
     void setAmount(BigDecimal amount);
 
-    PaymentRefundStatus getStatus();
+    BigDecimal getRefundedAmount();
 
-    String getReason();
+    BigDecimal getRefundingAmount();
 
-    void setReason(String reason);
+    void applyRefund(BigDecimal refundAmount) throws PaymentRefundException;
 
-    String getFailReason();
+    void succeedRefund(BigDecimal succeedAmount) throws PaymentRefundException;
 
-    Date getAppliedTime();
+    void failRefund(BigDecimal failAmount) throws PaymentRefundException;
 
-    Date getSucceededTime();
-
-    Date getFailedTime();
-
-    void apply();
-
-    void succeed();
-
-    void fail(String failReason);
-
-    interface Builder extends ObjectBuilder<PaymentRefund> {
+    interface Builder extends ObjectBuilder<PaymentOrder> {
 
         Builder id(String id);
-
-        Builder paymentId(String paymentId);
-
-        Builder orderId(String orderId);
 
         Builder storeId(String storeId);
 
@@ -78,7 +62,5 @@ public interface PaymentRefund extends ObjectBuilder.ToBuilder<PaymentRefund.Bui
         Builder amount(double amount);
 
         Builder amount(BigDecimal amount);
-
-        Builder reason(String reason);
     }
 }

@@ -18,17 +18,12 @@
 
 package org.mallfoundry.payment;
 
-import org.mallfoundry.util.ObjectBuilder;
+public class PaymentRefundException extends PaymentException {
+    public PaymentRefundException(Throwable cause) {
+        super(cause);
+    }
 
-import java.io.Serializable;
-
-public interface PaymentInstrument extends Serializable, ObjectBuilder.ToBuilder<PaymentInstrument.Builder> {
-
-    PaymentMethod getType();
-
-    void setType(PaymentMethod type);
-
-    interface Builder extends ObjectBuilder<PaymentInstrument> {
-        Builder type(PaymentMethod type);
+    public PaymentRefundException(String message) {
+        super(message);
     }
 }

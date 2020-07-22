@@ -18,17 +18,8 @@
 
 package org.mallfoundry.payment;
 
-import org.mallfoundry.util.ObjectBuilder;
-
-import java.io.Serializable;
-
-public interface PaymentInstrument extends Serializable, ObjectBuilder.ToBuilder<PaymentInstrument.Builder> {
-
-    PaymentMethod getType();
-
-    void setType(PaymentMethod type);
-
-    interface Builder extends ObjectBuilder<PaymentInstrument> {
-        Builder type(PaymentMethod type);
+public class PaymentOrderException extends PaymentException {
+    public PaymentOrderException(String message) {
+        super(message);
     }
 }

@@ -24,7 +24,7 @@ public interface PaymentService {
 
     Payment createPayment(String id);
 
-    Payment createPayment(Payment payment);
+    Payment startPayment(Payment payment);
 
     void capturePayment(String id) throws PaymentException;
 
