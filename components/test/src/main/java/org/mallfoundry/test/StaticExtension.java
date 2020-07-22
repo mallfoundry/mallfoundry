@@ -41,10 +41,10 @@ public class StaticExtension implements BeforeAllCallback {
 
     private static final String BASE_PACKAGE_NAME = TestMarker.class.getPackageName();
 
-    private static final String MESSAGE_HOLDER_CLASS_NAME = "org.mallfoundry.i18n.MessageHolder";
+    private static final String MESSAGE_HOLDER_CLASS_NAME = BASE_PACKAGE_NAME + ".i18n.MessageHolder";
 
     private MessageSourceAccessor createMessageSourceAccessor() {
-        var basenames = List.of("order")
+        var basenames = List.of("order", "payment")
                 .stream()
                 .map(basename -> String.format("%s.%s.messages", BASE_PACKAGE_NAME, basename))
                 .toArray(String[]::new);
@@ -66,6 +66,9 @@ public class StaticExtension implements BeforeAllCallback {
                 logger.debug("MessageHolder successfully set up messages");
             }
         } catch (ClassNotFoundException ex) {
+            if (logger.isErrorEnabled()) {
+                logger.error("MessageHolder class not found");
+            }
             ex.printStackTrace();
         }
     }
