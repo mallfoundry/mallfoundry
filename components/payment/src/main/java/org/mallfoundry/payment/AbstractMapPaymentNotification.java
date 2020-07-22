@@ -20,23 +20,34 @@ package org.mallfoundry.payment;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.util.CastUtils;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class InternalPaymentNotification implements PaymentNotification {
+public abstract class AbstractMapPaymentNotification implements PaymentNotification {
 
-    private Map<String, String> parameters;
+    protected final Map<String, String> parameters;
 
-    private Map<String, String[]> parameterMap;
+    protected PaymentStatus status;
 
-    private PaymentStatus status;
+    protected byte[] result;
 
-    private byte[] result;
+    @Override
+    public String getParameter(String name) {
+        return this.parameters.get(name);
+    }
+
+    @Override
+    public void pending() {
+        this.setStatus(PaymentStatus.PENDING);
+    }
+
+    @Override
+    public void capture() {
+        this.setStatus(PaymentStatus.CAPTURED);
+    }
 
     @Override
     public boolean isPending() {
@@ -53,21 +64,7 @@ public class InternalPaymentNotification implements PaymentNotification {
         return Objects.nonNull(this.result);
     }
 
-    public InternalPaymentNotification(Object parameterObject) throws PaymentException {
-        if (parameterObject instanceof Map) {
-            this.parameterMap = CastUtils.cast(parameterObject);
-            Map<String, ?> parameterMap = CastUtils.cast(parameterObject);
-            this.parameters =
-                    parameterMap.entrySet().stream().map(entry -> {
-                        if (entry.getValue() instanceof String[]) {
-                            String[] values = (String[]) entry.getValue();
-                            return Map.entry(entry.getKey(), values[0]);
-                        } else {
-                            return Map.entry(entry.getKey(), (String) entry.getValue());
-                        }
-                    }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        } else {
-            throw new PaymentException("");
-        }
+    public AbstractMapPaymentNotification(Map<String, String> parameters) throws PaymentException {
+        this.parameters = parameters;
     }
 }

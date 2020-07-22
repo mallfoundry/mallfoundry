@@ -18,28 +18,19 @@
 
 package org.mallfoundry.payment.alipay;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.mallfoundry.payment.AbstractMapPaymentNotification;
+import org.mallfoundry.payment.PaymentException;
 
-@Getter
-@Setter
-public class AliPaymentProperties {
+import java.util.Map;
 
-    private String serverUrl;
+public class AliPaymentNotification extends AbstractMapPaymentNotification {
 
-    private String appId;
+    public AliPaymentNotification(Map<String, String> parameters) throws PaymentException {
+        super(parameters);
+    }
 
-    private String alipayPublicKey;
-
-    private String appPrivateKey;
-
-    private String charset = "UTF-8";
-
-    private String format = "json";
-
-    private String signType = "RSA2";
-
-    private String returnUrl;
-
-    private String notifyUrl;
+    @Override
+    public String getSourceId() {
+        return this.getParameter("trade_no");
+    }
 }
