@@ -30,4 +30,5 @@ public interface PaymentClient extends Ordered {
 
     void validateNotification(PaymentNotification notification);
 
+    void refundPayment(Payment payment, PaymentRefund refund) throws PaymentRefundException;
 }
