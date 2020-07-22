@@ -24,11 +24,15 @@ public interface PaymentNotification {
 
     Map<String, String> getParameters();
 
-    Map<String, String[]> getParameterMap();
+    String getParameter(String name);
 
     PaymentStatus getStatus();
 
-    void setStatus(PaymentStatus status);
+    String getSourceId();
+
+    void pending();
+
+    void capture();
 
     boolean isPending();
 
