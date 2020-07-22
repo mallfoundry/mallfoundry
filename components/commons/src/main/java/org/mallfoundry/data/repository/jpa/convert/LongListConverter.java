@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.data.jpa.convert;
+package org.mallfoundry.data.repository.jpa.convert;
 
 import org.mallfoundry.util.JsonUtils;
 import org.springframework.util.StringUtils;
@@ -26,14 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class IntListConverter implements AttributeConverter<List<Integer>, String> {
+public class LongListConverter implements AttributeConverter<List<Long>, String> {
+
     @Override
-    public String convertToDatabaseColumn(List<Integer> attribute) {
+    public String convertToDatabaseColumn(List<Long> attribute) {
         return Objects.isNull(attribute) ? null : JsonUtils.stringify(attribute);
     }
 
     @Override
-    public List<Integer> convertToEntityAttribute(String dbData) {
-        return StringUtils.isEmpty(dbData) ? new ArrayList<>() : JsonUtils.parse(dbData, List.class, Integer.class);
+    public List<Long> convertToEntityAttribute(String dbData) {
+        return StringUtils.isEmpty(dbData) ? new ArrayList<>() : JsonUtils.parse(dbData, List.class, Long.class);
     }
 }

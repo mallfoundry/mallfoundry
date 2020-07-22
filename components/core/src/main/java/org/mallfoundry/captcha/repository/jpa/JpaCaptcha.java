@@ -24,7 +24,7 @@ import lombok.Setter;
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaSupport;
 import org.mallfoundry.captcha.CaptchaType;
-import org.mallfoundry.data.jpa.convert.StringStringMapConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringStringMapConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

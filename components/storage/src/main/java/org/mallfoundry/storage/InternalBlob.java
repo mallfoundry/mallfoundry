@@ -29,7 +29,7 @@ import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.data.jpa.convert.StringStringMapConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringStringMapConverter;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.UrlResource;

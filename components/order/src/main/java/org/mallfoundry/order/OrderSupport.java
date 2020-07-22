@@ -50,6 +50,7 @@ import static org.mallfoundry.order.OrderStatus.SHIPPED;
 import static org.mallfoundry.order.OrderStatus.isAwaitingPayment;
 import static org.mallfoundry.order.OrderStatus.isIncomplete;
 import static org.mallfoundry.order.OrderStatus.isPending;
+import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 
 public abstract class OrderSupport implements MutableOrder {
 
@@ -269,9 +270,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public boolean isPaid() {
-        return Objects.nonNull(this.getPaidTime())
-                && Objects.nonNull(this.getPaymentStatus())
-                && this.getPaymentStatus().isCaptured();
+        return Objects.nonNull(this.getPaidTime()) && isCaptured(this.getPaymentStatus());
     }
 
     @Override

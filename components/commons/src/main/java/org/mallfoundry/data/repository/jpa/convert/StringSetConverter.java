@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.data.jpa.convert;
+package org.mallfoundry.data.repository.jpa.convert;
 
 import org.mallfoundry.util.JsonUtils;
 import org.springframework.util.StringUtils;

@@ -21,7 +21,7 @@ package org.mallfoundry.identity.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.jpa.convert.StringListConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.identity.Gender;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserSupport;

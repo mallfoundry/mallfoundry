@@ -33,8 +33,8 @@ import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
 import org.mallfoundry.catalog.product.repository.jpa.convert.ProductAttributeListConverter;
 import org.mallfoundry.catalog.product.repository.jpa.convert.ProductShippingOriginConverter;
-import org.mallfoundry.data.jpa.convert.StringListConverter;
-import org.mallfoundry.data.jpa.convert.StringSetConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.beans.BeanUtils;
 

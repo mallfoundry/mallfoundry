@@ -18,7 +18,7 @@
 
 package org.mallfoundry.shipping;
 
-import org.mallfoundry.data.jpa.convert.StringListConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

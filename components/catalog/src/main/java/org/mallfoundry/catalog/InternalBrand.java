@@ -21,7 +21,7 @@ package org.mallfoundry.catalog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.jpa.convert.StringSetConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CollectionTable;
