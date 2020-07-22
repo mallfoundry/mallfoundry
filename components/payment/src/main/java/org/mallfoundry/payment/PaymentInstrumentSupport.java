@@ -18,26 +18,30 @@
 
 package org.mallfoundry.payment;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public abstract class PaymentInstrumentSupport implements PaymentInstrument {
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Embeddable
-public class InternalInstrument implements PaymentInstrument {
+    protected abstract static class BuilderSupport implements Builder {
+        protected final PaymentInstrumentSupport instrument;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "instrument_type_")
-    private PaymentMethod type;
+        protected BuilderSupport(PaymentInstrumentSupport instrument) {
+            this.instrument = instrument;
+        }
 
-    public InternalInstrument(PaymentMethod type) {
-        this.type = type;
+        @Override
+        public Builder type(PaymentMethod type) {
+            this.instrument.setType(type);
+            return this;
+        }
+
+        @Override
+        public PaymentInstrument build() {
+            return this.instrument;
+        }
     }
 }
