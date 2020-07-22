@@ -35,7 +35,7 @@ public class OrderRefundObjectTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         refund.apply();
     }
@@ -47,7 +47,7 @@ public class OrderRefundObjectTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         try {
             refund.approve();
@@ -63,7 +63,7 @@ public class OrderRefundObjectTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         refund.cancel();
     }
@@ -75,7 +75,7 @@ public class OrderRefundObjectTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         try {
             refund.apply();

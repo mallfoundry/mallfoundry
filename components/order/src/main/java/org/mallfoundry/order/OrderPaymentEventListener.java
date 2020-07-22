@@ -35,7 +35,7 @@ public class OrderPaymentEventListener {
         this.orderService = orderService;
     }
 
-    private OrderPayment createPaymentInformation(Payment payment) {
+    private OrderPayment createOrderPayment(Payment payment) {
         var instrument = payment.getInstrument();
         return new DefaultOrderPayment(payment.getId(), instrument.getType(), payment.getStatus());
     }
@@ -52,8 +52,8 @@ public class OrderPaymentEventListener {
 
     private void handlePaymentEvent(PaymentEvent event) {
         var payment = event.getPayment();
-        var paymentInformation = this.createPaymentInformation(payment);
-        var orderIds = StringUtils.commaDelimitedListToSet(payment.getReference());
-        this.orderService.payOrders(orderIds, paymentInformation);
+        var orderPayment = this.createOrderPayment(payment);
+        /*var orderIds = StringUtils.commaDelimitedListToSet(payment.getReference());
+        this.orderService.payOrders(orderIds, orderPayment);*/
     }
 }

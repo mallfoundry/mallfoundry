@@ -46,10 +46,6 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
     void setAmount(BigDecimal amount);
 
-    String getReason();
-
-    void setReason(String reason);
-
     String getNote();
 
     void setNote(String note);
@@ -89,8 +85,6 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
         Builder itemStatus(ItemStatus status);
 
         Builder amount(BigDecimal amount);
-
-        Builder reason(String reason);
 
         Builder note(String note);
     }

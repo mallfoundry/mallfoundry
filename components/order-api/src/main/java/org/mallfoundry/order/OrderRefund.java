@@ -45,6 +45,10 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
 
     BigDecimal getTotalAmount();
 
+    String getReason();
+
+    void setReason(String reason);
+
     String getDisapprovedReason();
 
     String getFailReason();
@@ -87,6 +91,8 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
     void fail(String failReason) throws OrderRefundException;
 
     interface Builder extends ObjectBuilder<OrderRefund> {
+
+        Builder reason(String reason);
 
         Builder item(OrderRefundItem item);
 

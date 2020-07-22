@@ -77,12 +77,6 @@ public abstract class OrderRefundItemSupport implements OrderRefundItem {
         }
 
         @Override
-        public Builder reason(String reason) {
-            this.item.setReason(reason);
-            return this;
-        }
-
-        @Override
         public Builder note(String note) {
             this.item.setNote(note);
             return this;

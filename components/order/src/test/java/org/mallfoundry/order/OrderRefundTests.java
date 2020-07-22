@@ -40,7 +40,7 @@ public class OrderRefundTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
@@ -57,7 +57,7 @@ public class OrderRefundTests {
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
         item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        item.setReason("Open");
+//        item.setReason("Open");
         refund.addItem(item);
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
@@ -76,7 +76,7 @@ public class OrderRefundTests {
         refundItem.setAmount(BigDecimal.valueOf(10));
         refundItem.setItemId("12");
         refundItem.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-        refundItem.setReason("Open");
+//        refundItem.setReason("Open");
         refund.addItem(refundItem);
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))

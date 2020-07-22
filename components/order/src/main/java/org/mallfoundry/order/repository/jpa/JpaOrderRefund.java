@@ -68,6 +68,9 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "items_")
     private List<OrderRefundItem> items = new ArrayList<>();
 
+    @Column(name = "reason_")
+    private String reason;
+
     @Column(name = "disapproved_reason_")
     private String disapprovedReason;
 
