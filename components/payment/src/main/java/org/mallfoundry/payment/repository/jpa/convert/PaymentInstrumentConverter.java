@@ -18,14 +18,15 @@
 
 package org.mallfoundry.payment.repository.jpa.convert;
 
-import org.mallfoundry.payment.InternalInstrument;
+import org.mallfoundry.payment.DefaultInstrument;
 import org.mallfoundry.payment.PaymentInstrument;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
 import java.util.Objects;
 
-public class PaymentSourceConverter implements AttributeConverter<PaymentInstrument, String> {
+public class PaymentInstrumentConverter implements AttributeConverter<PaymentInstrument, String> {
+
     @Override
     public String convertToDatabaseColumn(PaymentInstrument attribute) {
         return Objects.isNull(attribute) ? null : JsonUtils.stringify(attribute);
@@ -33,6 +34,6 @@ public class PaymentSourceConverter implements AttributeConverter<PaymentInstrum
 
     @Override
     public PaymentInstrument convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, InternalInstrument.class);
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, DefaultInstrument.class);
     }
 }
