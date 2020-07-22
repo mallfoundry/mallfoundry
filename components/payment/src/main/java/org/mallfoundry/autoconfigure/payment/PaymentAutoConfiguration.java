@@ -46,7 +46,18 @@ public class PaymentAutoConfiguration {
             name = {"server-url", "app-id", "alipay-public-key", "app-private-key"})
     @Bean
     public AliPaymentClient aliPaymentClient() {
-        return new AliPaymentClient(this.properties.getAlipay());
+        var alipay = this.properties.getAlipay();
+        var client = new AliPaymentClient();
+        client.setAppId(alipay.getAppId());
+        client.setAlipayPublicKey(alipay.getAlipayPublicKey());
+        client.setAppPrivateKey(alipay.getAppPrivateKey());
+        client.setCharset(alipay.getCharset());
+        client.setFormat(alipay.getFormat());
+        client.setSignType(alipay.getSignType());
+        client.setNotifyUrl(alipay.getNotifyUrl());
+        client.setServerUrl(alipay.getServerUrl());
+        client.setReturnUrl(alipay.getReturnUrl());
+        return client;
     }
 
     @Bean

@@ -18,7 +18,6 @@
 
 package org.mallfoundry.autoconfigure.payment;
 
-import org.mallfoundry.payment.alipay.AliPaymentProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,5 +29,28 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class PaymentProperties {
 
     @NestedConfigurationProperty
-    private AliPaymentProperties alipay = new AliPaymentProperties();
+    private Alipay alipay = new Alipay();
+
+    @Getter
+    @Setter
+    static class Alipay {
+
+        private String serverUrl;
+
+        private String appId;
+
+        private String alipayPublicKey;
+
+        private String appPrivateKey;
+
+        private String charset = "UTF-8";
+
+        private String format = "json";
+
+        private String signType = "RSA2";
+
+        private String returnUrl;
+
+        private String notifyUrl;
+    }
 }
