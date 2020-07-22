@@ -67,8 +67,6 @@ public interface PaymentRefund extends ObjectBuilder.ToBuilder<PaymentRefund.Bui
 
         Builder id(String id);
 
-        Builder paymentId(String paymentId);
-
         Builder orderId(String orderId);
 
         Builder storeId(String storeId);
