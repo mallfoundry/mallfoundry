@@ -18,9 +18,8 @@
 
 package org.mallfoundry.payment;
 
-public class InternalPaymentStartedEvent extends PaymentEventSupport implements PaymentStartedEvent {
-
-    public InternalPaymentStartedEvent(Payment payment) {
-        super(payment);
+public class ImmutablePaymentRefundFailedEvent extends PaymentRefundEventSupport implements PaymentRefundFailedEvent {
+    public ImmutablePaymentRefundFailedEvent(PaymentRefund paymentRefund) {
+        super(paymentRefund);
     }
 }

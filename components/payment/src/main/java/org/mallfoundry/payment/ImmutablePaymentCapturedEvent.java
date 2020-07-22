@@ -18,16 +18,9 @@
 
 package org.mallfoundry.payment;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+public class ImmutablePaymentCapturedEvent extends PaymentEventSupport implements PaymentCapturedEvent {
 
-public abstract class PaymentEventSupport extends ApplicationEvent implements PaymentEvent {
-
-    @Getter
-    private final Payment payment;
-
-    public PaymentEventSupport(Payment payment) {
+    public ImmutablePaymentCapturedEvent(Payment payment) {
         super(payment);
-        this.payment = payment;
     }
 }

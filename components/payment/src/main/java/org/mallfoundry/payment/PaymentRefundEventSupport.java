@@ -18,16 +18,19 @@
 
 package org.mallfoundry.payment;
 
-import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-public abstract class PaymentEventSupport extends ApplicationEvent implements PaymentEvent {
+public abstract class PaymentRefundEventSupport extends ApplicationEvent implements PaymentRefundEvent {
 
-    @Getter
-    private final Payment payment;
+    private final PaymentRefund paymentRefund;
 
-    public PaymentEventSupport(Payment payment) {
-        super(payment);
-        this.payment = payment;
+    public PaymentRefundEventSupport(PaymentRefund paymentRefund) {
+        super(paymentRefund);
+        this.paymentRefund = paymentRefund;
+    }
+
+    @Override
+    public PaymentRefund getPaymentRefund() {
+        return this.paymentRefund;
     }
 }
