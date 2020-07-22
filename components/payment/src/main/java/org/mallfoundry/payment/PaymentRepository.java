@@ -22,7 +22,9 @@ import java.util.Optional;
 
 public interface PaymentRepository {
 
-    <S extends InternalPayment> S save(S s);
+    Payment create(String id);
 
-    Optional<InternalPayment> findById(String id);
+    Payment save(Payment payment);
+
+    Optional<Payment> findById(String id);
 }
