@@ -45,6 +45,10 @@ public interface PaymentRefund extends ObjectBuilder.ToBuilder<PaymentRefund.Bui
 
     PaymentRefundStatus getStatus();
 
+    String getSourceId();
+
+    void setSourceId(String sourceId);
+
     String getReason();
 
     void setReason(String reason);
@@ -56,6 +60,10 @@ public interface PaymentRefund extends ObjectBuilder.ToBuilder<PaymentRefund.Bui
     Date getSucceededTime();
 
     Date getFailedTime();
+
+    boolean isSucceeded();
+
+    boolean isFailed();
 
     void apply();
 
