@@ -3,7 +3,8 @@ logging:
     org.mallfoundry: debug
     #    org.hibernate: debug
     org.springframework.web: debug
-#    org.springframework: debug
+    org.springframework.jdbc: debug
+    org.springframework.transaction: debug
 spring:
   jpa:
     hibernate:
