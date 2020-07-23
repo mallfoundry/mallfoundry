@@ -34,6 +34,7 @@ import org.mallfoundry.order.SmartOrderValidator;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
+import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -67,8 +68,9 @@ public class OrderAutoConfiguration {
                                                    OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
+                                                   PaymentService paymentService,
                                                    ApplicationEventPublisher eventPublisher) {
-        return new DefaultOrderService(orderConfiguration, processorsInvoker, orderRepository, orderSplitter, carrierService, eventPublisher);
+        return new DefaultOrderService(orderConfiguration, processorsInvoker, orderRepository, orderSplitter, carrierService, paymentService, eventPublisher);
     }
 
     @Bean
