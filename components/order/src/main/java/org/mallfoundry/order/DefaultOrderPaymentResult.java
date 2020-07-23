@@ -25,26 +25,39 @@ import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.springframework.beans.BeanUtils;
 
+import static org.mallfoundry.payment.PaymentStatus.CAPTURED;
+import static org.mallfoundry.payment.PaymentStatus.PENDING;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class DefaultOrderPayment implements OrderPayment {
+public class DefaultOrderPaymentResult implements OrderPaymentResult {
     private String id;
     private PaymentMethod method;
     private PaymentStatus status;
 
-    public DefaultOrderPayment(String id, PaymentMethod method, PaymentStatus status) {
+    public DefaultOrderPaymentResult(String id, PaymentMethod method, PaymentStatus status) {
         this.id = id;
         this.method = method;
         this.status = status;
     }
 
-    public static DefaultOrderPayment of(OrderPayment details) {
-        if (details instanceof DefaultOrderPayment) {
-            return (DefaultOrderPayment) details;
+    public static DefaultOrderPaymentResult of(OrderPaymentResult details) {
+        if (details instanceof DefaultOrderPaymentResult) {
+            return (DefaultOrderPaymentResult) details;
         }
-        var target = new DefaultOrderPayment();
+        var target = new DefaultOrderPaymentResult();
         BeanUtils.copyProperties(details, target);
         return target;
+    }
+
+    @Override
+    public boolean isPending() {
+        return PENDING == this.status;
+    }
+
+    @Override
+    public boolean isCaptured() {
+        return CAPTURED == this.status;
     }
 }
