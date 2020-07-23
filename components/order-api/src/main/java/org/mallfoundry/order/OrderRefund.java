@@ -23,7 +23,9 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
@@ -35,11 +37,15 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
 
     OrderRefundKind getKind();
 
+    void setKind(OrderRefundKind kind);
+
     OrderRefundStatus getStatus();
 
     OrderRefundItem createItem(String id);
 
     void addItem(OrderRefundItem item);
+
+    void addItems(List<OrderRefundItem> items);
 
     List<OrderRefundItem> getItems();
 
@@ -92,10 +98,18 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
 
     interface Builder extends ObjectBuilder<OrderRefund> {
 
+        Builder kind(OrderRefundKind kind);
+
         Builder reason(String reason);
 
         Builder item(OrderRefundItem item);
 
         Builder item(Function<OrderRefund, OrderRefundItem> function);
+
+        Builder items(List<OrderRefundItem> items);
+
+        Builder items(Function<OrderRefund, List<OrderRefundItem>> function);
+
+        Builder items(Supplier<List<OrderRefundItem>> supplier);
     }
 }

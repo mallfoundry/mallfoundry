@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
@@ -197,5 +198,38 @@ public class OrderResourceV1 {
                 .compose(this.orderService::startOrderPayment)
                 .compose(request::assignTo)
                 .apply(this.orderService.createOrderPayment());
+    }
+
+    @PostMapping("/orders/{order_id}/refunds")
+    public OrderRefund applyOrderRefund(@PathVariable("order_id") String orderId,
+                                        @RequestBody OrderRefundRequest request) {
+        var refund = request.assignTo(this.orderService.createOrder(orderId).createRefund(null));
+        return this.orderService.applyOrderRefund(orderId, refund);
+    }
+
+    @DeleteMapping("/orders/{order_id}/refunds/{refund_id}")
+    public void cancelOrderRefund(@PathVariable("order_id") String orderId,
+                                  @PathVariable("refund_id") String refundId) {
+        this.orderService.cancelOrderRefund(orderId, refundId);
+    }
+
+    @PatchMapping("/orders/{order_id}/refunds/{refund_id}/approve")
+    public void approveOrderRefund(@PathVariable("order_id") String orderId,
+                                   @PathVariable("refund_id") String refundId) {
+        this.orderService.approveOrderRefund(orderId, refundId);
+    }
+
+    @PatchMapping("/orders/{order_id}/refunds/{refund_id}/disapprove")
+    public void disapproveOrderRefund(@PathVariable("order_id") String orderId,
+                                      @PathVariable("refund_id") String refundId,
+                                      @RequestBody OrderRefundRequest.Disapprove request) {
+        this.orderService.disapproveOrderRefund(orderId, refundId, request.getDisapprovedReason());
+    }
+
+    @PostMapping("/orders/{order_id}/refunds/active")
+    public void activeOrderRefund(@PathVariable("order_id") String orderId,
+                                  @RequestBody OrderRefundRequest request) {
+        var refund = request.assignTo(this.orderService.createOrder(orderId).createRefund(null));
+        this.orderService.activeOrderRefund(orderId, refund);
     }
 }

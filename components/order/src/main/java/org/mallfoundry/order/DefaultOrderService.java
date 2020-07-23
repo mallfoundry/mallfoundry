@@ -21,12 +21,15 @@ package org.mallfoundry.order;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -47,6 +50,8 @@ public class DefaultOrderService implements OrderService {
 
     private final CarrierService carrierService;
 
+    private final PaymentService paymentService;
+
     private final ApplicationEventPublisher eventPublisher;
 
     public DefaultOrderService(OrderConfiguration orderConfiguration,
@@ -54,12 +59,14 @@ public class DefaultOrderService implements OrderService {
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
                                CarrierService carrierService,
+                               PaymentService paymentService,
                                ApplicationEventPublisher eventPublisher) {
         this.orderConfiguration = orderConfiguration;
         this.processorsInvoker = processorsInvoker;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
+        this.paymentService = paymentService;
         this.eventPublisher = eventPublisher;
     }
 
@@ -71,6 +78,11 @@ public class DefaultOrderService implements OrderService {
     @Override
     public Order createOrder(String id) {
         return this.orderRepository.create(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
+    }
+
+    @Override
+    public OrderPayment createOrderPayment() {
+        return new DelegatingOrderPayment(this.paymentService.createPayment(null));
     }
 
     @Override
@@ -173,7 +185,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrder(String orderId, OrderPayment payment) {
+    public void payOrder(String orderId, OrderPaymentResult payment) {
         var order = this.requiredOrder(orderId);
         order.pay(payment);
         var savedOrder = this.orderRepository.save(order);
@@ -182,7 +194,7 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void payOrders(Set<String> orderIds, OrderPayment payment) {
+    public void payOrders(Set<String> orderIds, OrderPaymentResult payment) {
         var orders = this.orderRepository.findAllById(orderIds);
         orders.forEach(order -> order.pay(payment));
         var savedOrders = this.orderRepository.saveAll(orders);
@@ -315,6 +327,36 @@ public class DefaultOrderService implements OrderService {
         this.orderRepository.save(order);
     }
 
+    @Override
+    public Payment startOrderPayment(OrderPayment orderPayment) throws OrderException {
+        var payment = orderPayment.toPayment().toBuilder()
+                .payerId(SubjectHolder.getUserId()).payer(SubjectHolder.getNickname()).build();
+        var orders = this.orderRepository.findAllById(orderPayment.getOrderIds());
+        String firstCustomerId = null;
+        for (var order : orders) {
+            if (!order.canPay()) {
+                // 订单下单时间过期
+                if (order.isPlacingExpired()) {
+                    throw OrderExceptions.placingExpired();
+                }
+                throw OrderExceptions.notPay();
+            }
+            if (Objects.isNull(firstCustomerId)) {
+                firstCustomerId = order.getCustomerId();
+            }
+            // 不允许一次支付不同顾客的订单
+            if (!Objects.equals(order.getCustomerId(), firstCustomerId)) {
+                throw OrderExceptions.notSameCustomer();
+            }
+            payment.addOrder(
+                    payment.createOrder(order.getId())
+                            .toBuilder()
+                            .storeId(order.getStoreId()).amount(order.getTotalAmount())
+                            .build());
+        }
+        return this.paymentService.startPayment(payment);
+    }
+
     @Transactional
     @Override
     public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
@@ -339,6 +381,18 @@ public class DefaultOrderService implements OrderService {
         this.orderRepository.save(order);
     }
 
+    private void refundOrderPayment(Order order, OrderRefund refund) {
+        var payRefund = this.paymentService.refundPayment(order.getPaymentId(),
+                this.paymentService.createPayment(order.getPaymentId()).createRefund(refund.getId())
+                        .toBuilder().orderId(order.getId()).amount(refund.getTotalAmount()).build())
+                .orElseThrow();
+        if (payRefund.isSucceeded()) {
+            refund.succeed();
+        } else if (payRefund.isFailed()) {
+            refund.fail(payRefund.getFailReason());
+        }
+    }
+
     @Transactional
     @Override
     public void approveOrderRefund(String orderId, String refundId) {
@@ -346,6 +400,7 @@ public class DefaultOrderService implements OrderService {
         var refund = this.requiredOrderRefund(order, refundId);
         this.processorsInvoker.invokePreProcessApproveOrderRefund(order, refund);
         order.approveRefund(refundId);
+        this.refundOrderPayment(order, refund);
         this.orderRepository.save(order);
     }
 
@@ -365,26 +420,9 @@ public class DefaultOrderService implements OrderService {
         var order = this.requiredOrder(orderId);
         refund = this.processorsInvoker.invokePreProcessActiveOrderRefund(order, refund);
         order.activeRefund(refund);
-        this.orderRepository.save(order);
-    }
-
-    @Transactional
-    @Override
-    public void succeedOrderRefund(String orderId, String refundId) {
-        var order = this.requiredOrder(orderId);
-        var refund = this.requiredOrderRefund(order, refundId);
-        this.processorsInvoker.invokePreProcessSucceedOrderRefund(order, refund);
-        order.succeedRefund(refundId);
-        this.orderRepository.save(order);
-    }
-
-    @Transactional
-    @Override
-    public void failOrderRefund(String orderId, String refundId, String failReason) {
-        var order = this.requiredOrder(orderId);
-        var refund = this.requiredOrderRefund(order, refundId);
-        failReason = this.processorsInvoker.invokePreProcessFailOrderRefund(order, refund, failReason);
-        order.failRefund(refundId, failReason);
+        // 获得退款对象，用以更新退款状态。
+        var fetchRefund = this.requiredOrderRefund(order, refund.getId());
+        this.refundOrderPayment(order, fetchRefund);
         this.orderRepository.save(order);
     }
 }

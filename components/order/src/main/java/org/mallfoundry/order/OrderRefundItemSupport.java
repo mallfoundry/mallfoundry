@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public abstract class OrderRefundItemSupport implements OrderRefundItem {
 
@@ -77,8 +78,14 @@ public abstract class OrderRefundItemSupport implements OrderRefundItem {
         }
 
         @Override
-        public Builder note(String note) {
-            this.item.setNote(note);
+        public Builder notes(String notes) {
+            this.item.setNotes(notes);
+            return this;
+        }
+
+        @Override
+        public Builder imageUrls(List<String> imageUrls) {
+            this.item.setImageUrls(imageUrls);
             return this;
         }
 

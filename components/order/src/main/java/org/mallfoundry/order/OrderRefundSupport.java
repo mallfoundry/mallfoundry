@@ -18,10 +18,14 @@
 
 package org.mallfoundry.order;
 
+import org.apache.commons.collections4.ListUtils;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.mallfoundry.order.OrderRefundStatus.APPLYING;
 import static org.mallfoundry.order.OrderRefundStatus.DISAPPROVED;
@@ -39,6 +43,11 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
     @Override
     public void addItem(OrderRefundItem item) {
         this.getItems().add(item);
+    }
+
+    @Override
+    public void addItems(List<OrderRefundItem> items) {
+        ListUtils.emptyIfNull(items).forEach(this::addItem);
     }
 
     public boolean nonIncomplete() {
@@ -130,6 +139,12 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
+        public Builder kind(OrderRefundKind kind) {
+            this.refund.setKind(kind);
+            return this;
+        }
+
+        @Override
         public Builder reason(String reason) {
             this.refund.setReason(reason);
             return this;
@@ -145,6 +160,22 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         public Builder item(Function<OrderRefund, OrderRefundItem> function) {
             this.refund.addItem(function.apply(this.refund));
             return this;
+        }
+
+        @Override
+        public Builder items(List<OrderRefundItem> items) {
+            this.refund.addItems(items);
+            return this;
+        }
+
+        @Override
+        public Builder items(Function<OrderRefund, List<OrderRefundItem>> function) {
+            return this.items(function.apply(this.refund));
+        }
+
+        @Override
+        public Builder items(Supplier<List<OrderRefundItem>> supplier) {
+            return this.items(supplier.get());
         }
 
         @Override

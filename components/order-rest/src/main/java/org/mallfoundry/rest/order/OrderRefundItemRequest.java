@@ -16,27 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.rest.order;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.order.OrderRefundItem;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class DefaultRefundItem extends OrderRefundItemSupport {
-    private String id;
+public class OrderRefundItemRequest {
     private String itemId;
-    private ItemStatus itemStatus;
+    private OrderRefundItem.ItemStatus itemStatus;
     private BigDecimal amount;
     private String notes;
     private List<String> imageUrls;
 
-    public DefaultRefundItem(String id) {
-        this.id = id;
+    public OrderRefundItem assignTo(OrderRefundItem item) {
+        return item.toBuilder()
+                .itemId(this.itemId)
+                .itemStatus(this.itemStatus)
+                .amount(this.amount)
+                .notes(this.notes)
+                .imageUrls(this.imageUrls)
+                .build();
     }
 }

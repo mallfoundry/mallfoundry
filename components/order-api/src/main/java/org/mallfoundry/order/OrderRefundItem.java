@@ -46,9 +46,9 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
     void setAmount(BigDecimal amount);
 
-    String getNote();
+    String getNotes();
 
-    void setNote(String note);
+    void setNotes(String notes);
 
     /**
      * 订单退款项凭证图片。
@@ -86,6 +86,8 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
         Builder amount(BigDecimal amount);
 
-        Builder note(String note);
+        Builder notes(String notes);
+
+        Builder imageUrls(List<String> imageUrls);
     }
 }
