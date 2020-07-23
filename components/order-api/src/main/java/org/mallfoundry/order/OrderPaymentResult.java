@@ -16,7 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.order;
 
-public interface PaymentRefundSucceededEvent extends PaymentRefundEvent {
+import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.payment.PaymentStatus;
+
+public interface OrderPaymentResult {
+
+    String getId();
+
+    PaymentStatus getStatus();
+
+    PaymentMethod getMethod();
+
+    boolean isPending();
+
+    boolean isCaptured();
 }
