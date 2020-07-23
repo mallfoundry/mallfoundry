@@ -31,8 +31,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-payment-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
@@ -41,15 +46,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-payment-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

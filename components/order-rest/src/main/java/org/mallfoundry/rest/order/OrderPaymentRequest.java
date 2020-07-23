@@ -16,46 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.payment;
+package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.payment.Payment;
+import org.apache.commons.lang3.Functions;
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.order.OrderPayment;
+import org.mallfoundry.payment.PaymentInstrument;
 import org.mallfoundry.payment.PaymentMethod;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-public class PaymentRequest {
-
-    private PaymentInstrumentRequest instrument = new PaymentInstrumentRequest();
-
+public class OrderPaymentRequest {
+    private Set<String> orderIds = new HashSet<>();
     private String returnUrl;
-
-    private BigDecimal amount;
-
-    private String reference;
-
-    private Map<String, String> metadata = new HashMap<>();
+    private InstrumentRequest instrument = new InstrumentRequest();
 
     @Getter
     @Setter
-    static class PaymentInstrumentRequest {
-        private String type;
+    static class InstrumentRequest {
+        private PaymentMethod type;
+
+        public PaymentInstrument assignTo(PaymentInstrument aInstrument) {
+            return aInstrument.toBuilder().type(this.type).build();
+        }
     }
 
-    public Payment assignPayment(Payment payment) {
-
-
+    public OrderPayment assignTo(OrderPayment payment) {
         return payment.toBuilder()
-                .amount(this.getAmount())
-                .returnUrl(this.getReturnUrl())
-                .reference(this.getReference())
-                .metadata(this.getMetadata())
-                .instrument(payment.createInstrument(PaymentMethod.valueOf(this.getInstrument().getType().toUpperCase())))
+                .orderIds(this.orderIds)
+                .instrument(Functions.asFunction(this.instrument::assignTo))
+                .returnUrl(this.returnUrl)
                 .build();
     }
 }

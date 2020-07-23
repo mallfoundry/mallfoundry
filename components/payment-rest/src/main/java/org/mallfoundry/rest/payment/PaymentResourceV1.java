@@ -18,22 +18,20 @@
 
 package org.mallfoundry.rest.payment;
 
+import org.apache.commons.lang3.Functions;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -46,11 +44,9 @@ public class PaymentResourceV1 {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/payments")
-    public Payment createPayment(@RequestBody PaymentRequest request) {
-        return this.paymentService.createPayment(
-                request.assignPayment(
-                        this.paymentService.createPayment((String) null)));
+    @GetMapping("/payments/{id}")
+    public Optional<Payment> getPayment(@PathVariable("id") String id) {
+        return this.paymentService.getPayment(id);
     }
 
     @GetMapping("/payments/{id}/redirect-url")
@@ -58,36 +54,38 @@ public class PaymentResourceV1 {
         return this.paymentService.getPaymentRedirectUrl(id);
     }
 
+    @GetMapping("/payments/{id}/redirect")
+    public void redirectPayment(@PathVariable("id") String id, HttpServletResponse response) {
+        this.paymentService.getPaymentRedirectUrl(id).ifPresent(Functions.asConsumer(response::sendRedirect));
+    }
+
+    @GetMapping("/payments/{id}/return-url")
+    public Optional<String> getPaymentReturnUrl(@PathVariable("id") String id) {
+        return this.paymentService.getPaymentReturnUrl(id);
+    }
+
     @GetMapping("/payments/{id}/return")
-    public void sendPaymentReturn(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.paymentService.notifyPayment(id, request.getParameterMap());
-        var payment = this.paymentService.getPayment(id).orElseThrow();
-        if (Objects.nonNull(payment.getReturnUrl())) {
-            var returnUrl = UriComponentsBuilder
-                    .fromHttpUrl(payment.getReturnUrl())
-                    .build(Map.of("payment_id", payment.getId())).toString();
-            response.sendRedirect(returnUrl);
+    public void sendPaymentReturn(@PathVariable("id") String id, HttpServletResponse response) {
+        this.paymentService.getPaymentReturnUrl(id).ifPresent(Functions.asConsumer(response::sendRedirect));
+    }
+
+    private Map<String, String> createSingleValueParameters(HttpServletRequest request) {
+        var map = new LinkedHashMap<String, String>();
+        var names = request.getParameterNames();
+        while (names.hasMoreElements()) {
+            var name = names.nextElement();
+            map.put(name, request.getParameter(name));
         }
+        return map;
     }
 
     @PostMapping("/payments/{id}/notify")
     public void notifyPayment(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var notification = this.paymentService.notifyPayment(id, request.getParameterMap());
+        var notification = this.paymentService.notifyPayment(id, this.createSingleValueParameters(request));
         if (notification.hasResult()) {
             try (var output = response.getOutputStream()) {
                 output.write(notification.getResult());
             }
         }
     }
-
-    @PatchMapping("/payments/{id}")
-    public Payment savePayment(@PathVariable("id") String id, @RequestBody PaymentPatchRequest request) {
-        return this.paymentService.getPayment(id).orElseThrow();
-    }
-
-    @GetMapping("/payments/{id}")
-    public Payment getPayment(@PathVariable("id") String id) {
-        return this.paymentService.getPayment(id).orElseThrow();
-    }
-
 }
