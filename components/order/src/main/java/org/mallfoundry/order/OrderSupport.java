@@ -21,7 +21,6 @@ package org.mallfoundry.order;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.DecimalUtils;
 import org.springframework.util.Assert;
@@ -269,6 +268,12 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
+    public boolean canPay() {
+        // 已下单、未支付、已下单状态、下单未过期
+        return this.isPlaced() && !this.isPaid() && isPending(this.getStatus()) && !this.isPlacingExpired();
+    }
+
+    @Override
     public boolean isPaid() {
         return Objects.nonNull(this.getPaidTime()) && isCaptured(this.getPaymentStatus());
     }
@@ -286,13 +291,13 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void pay(OrderPayment payment) throws OrderException {
-        this.setPaymentId(payment.getId());
-        this.setPaymentMethod(payment.getMethod());
-        this.setPaymentStatus(payment.getStatus());
-        if (payment.getStatus() == PaymentStatus.PENDING) {
+    public void pay(OrderPaymentResult result) throws OrderException {
+        this.setPaymentId(result.getId());
+        this.setPaymentMethod(result.getMethod());
+        this.setPaymentStatus(result.getStatus());
+        if (result.isPending()) {
             this.setStatus(AWAITING_PAYMENT);
-        } else if (payment.getStatus() == PaymentStatus.CAPTURED) {
+        } else if (result.isCaptured()) {
             this.setStatus(AWAITING_FULFILLMENT);
             this.setPaidTime(new Date());
         }
@@ -397,7 +402,7 @@ public abstract class OrderSupport implements MutableOrder {
         }
 
         @Override
-        public Builder pay(OrderPayment payment) {
+        public Builder pay(OrderPaymentResult payment) {
             this.order.pay(payment);
             return this;
         }
