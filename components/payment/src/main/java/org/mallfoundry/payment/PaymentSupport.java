@@ -30,11 +30,20 @@ import java.util.function.Function;
 
 import static org.mallfoundry.payment.PaymentStatus.CAPTURED;
 import static org.mallfoundry.payment.PaymentStatus.PENDING;
-import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 import static org.mallfoundry.payment.PaymentStatus.isNew;
 import static org.mallfoundry.payment.PaymentStatus.isPending;
 
 public abstract class PaymentSupport implements MutablePayment {
+
+    @Override
+    public boolean isStarted() {
+        return Objects.nonNull(this.getStatus()) && this.getStatus().isPending();
+    }
+
+    @Override
+    public boolean isCaptured() {
+        return Objects.nonNull(this.getStatus()) && this.getStatus().isCaptured();
+    }
 
     @Override
     public void start() {
@@ -101,7 +110,7 @@ public abstract class PaymentSupport implements MutablePayment {
 
     @Override
     public void applyRefund(PaymentRefund refund) {
-        if (!isCaptured(this.getStatus())) {
+        if (!isCaptured()) {
             throw PaymentExceptions.cannotApplyRefund();
         }
         if (this.existsRefund(refund.getId())) {
