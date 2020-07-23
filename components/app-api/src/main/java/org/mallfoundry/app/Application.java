@@ -16,8 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment.wxpay;
+package org.mallfoundry.app;
 
-public class TenpayClient /*implements PaymentClient*/ {
+public interface Application {
 
+    String getId();
+
+    void setId(String id);
+
+    String getUrl();
+
+    void setUrl(String url);
 }

@@ -54,6 +54,9 @@ public class JpaPaymentRefund extends PaymentRefundSupport {
     @Column(name = "status_")
     private PaymentRefundStatus status;
 
+    @Column(name = "source_id_")
+    private String sourceId;
+
     @Column(name = "amount_")
     private BigDecimal amount;
 
