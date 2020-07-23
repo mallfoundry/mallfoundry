@@ -21,102 +21,146 @@ package org.mallfoundry.payment.alipay;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeWapPayResponse;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.payment.InternalPaymentNotification;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentClient;
 import org.mallfoundry.payment.PaymentException;
-import org.mallfoundry.payment.PaymentNotification;
-import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.payment.PaymentNotification;
+import org.mallfoundry.payment.PaymentRefund;
+import org.mallfoundry.payment.PaymentRefundException;
+import org.mallfoundry.payment.PaymentRefundResult;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.data.util.CastUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
+import java.util.Objects;
 
-public class AliPaymentClient implements PaymentClient {
+@Setter
+@Getter
+public class AliPaymentClient implements PaymentClient, InitializingBean {
 
-    private final AliPaymentProperties properties;
+    private String serverUrl;
 
-    private final AlipayClient alipayClient;
+    private String appId;
 
-    public AliPaymentClient(AliPaymentProperties properties) {
-        this.properties = properties;
-        this.alipayClient =
-                new DefaultAlipayClient(properties.getServerUrl(),
-                        properties.getAppId(),
-                        properties.getAppPrivateKey(),
-                        properties.getFormat(),
-                        properties.getCharset(),
-                        properties.getAlipayPublicKey(),
-                        properties.getSignType());
+    private String alipayPublicKey;
+
+    private String appPrivateKey;
+
+    private String charset;
+
+    private String format;
+
+    private String signType;
+
+    private String returnUrl;
+
+    private String notifyUrl;
+
+    private AlipayClient client;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (Objects.isNull(this.client)) {
+            this.client =
+                    new DefaultAlipayClient(this.getServerUrl(),
+                            this.getAppId(),
+                            this.getAppPrivateKey(),
+                            this.getFormat(),
+                            this.getCharset(),
+                            this.getAlipayPublicKey(),
+                            this.getSignType());
+        }
     }
 
     @Override
     public String createPaymentRedirectUrl(Payment payment) throws PaymentException {
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
-
-        if (StringUtils.isNotBlank(this.properties.getReturnUrl())) {
+        if (StringUtils.isNotBlank(this.getReturnUrl())) {
             request.setReturnUrl(UriComponentsBuilder
-                    .fromHttpUrl(this.properties.getReturnUrl())
+                    .fromHttpUrl(this.getReturnUrl())
                     .build(Map.of("payment_id", payment.getId())).toString());
         }
 
-        if (StringUtils.isNotBlank(this.properties.getNotifyUrl())) {
+        if (StringUtils.isNotBlank(this.getNotifyUrl())) {
             request.setNotifyUrl(UriComponentsBuilder
-                    .fromHttpUrl(this.properties.getNotifyUrl())
+                    .fromHttpUrl(this.getNotifyUrl())
                     .build(Map.of("payment_id", payment.getId())).toString());
         }
-
         AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
         model.setOutTradeNo(String.valueOf(payment.getId()));
         model.setSubject("Mall-Foundry-APP");
-        model.setTotalAmount(String.valueOf(payment.getAmount()));
+        model.setTotalAmount(String.valueOf(payment.getTotalAmount()));
         model.setProductCode("QUICK_WAP_WAY");
         model.setTimeoutExpress("20m");
         // Set biz model.
         request.setBizModel(model);
         try {
-            AlipayTradeWapPayResponse response = alipayClient.pageExecute(request, "get");
+            AlipayTradeWapPayResponse response = this.client.pageExecute(request, "get");
             return response.getBody();
         } catch (AlipayApiException e) {
             throw new PaymentException(e);
         }
     }
 
-    @Override
     public PaymentNotification createPaymentNotification(Object parameterObject) throws PaymentException {
-        return new InternalPaymentNotification(parameterObject);
+        return new AliPaymentNotification(CastUtils.cast(parameterObject));
     }
 
     @Override
-    public void validateNotification(PaymentNotification notification) {
-        Map<String, String> parameters = notification.getParameters();
+    public PaymentNotification validateNotification(Object parameters) {
+        var notification = this.createPaymentNotification(parameters);
         try {
-            boolean signVerified = AlipaySignature.rsaCheckV1(parameters,
-                    this.properties.getAlipayPublicKey(),
-                    this.properties.getCharset(),
-                    this.properties.getSignType());
-
+            boolean signVerified = AlipaySignature.rsaCheckV1(notification.getParameters(),
+                    this.getAlipayPublicKey(), this.getCharset(), this.getSignType());
             if (!signVerified) {
-                throw new PaymentException("Call alipay SDK to verify the signature is bad.");
+                throw new PaymentException("Call alipay SDK to verify the signature is bad");
             }
-
-            String tradeStatus = parameters.get("trade_status");
+            String tradeStatus = notification.getParameter("trade_status");
             if ("WAIT_BUYER_PAY".equals(tradeStatus)) {
-                notification.setStatus(PaymentStatus.PENDING);
-            } else if ("TRADE_SUCCESS".equals(tradeStatus)
-                    || "TRADE_FINISHED".equals(tradeStatus)) {
-                notification.setStatus(PaymentStatus.CAPTURED);
+                notification.pending();
+            } else if ("TRADE_SUCCESS".equals(tradeStatus) || "TRADE_FINISHED".equals(tradeStatus)) {
+                notification.capture();
             }
             notification.setResult("success".getBytes());
         } catch (Exception e) {
             e.printStackTrace();
             notification.setResult("fail".getBytes());
         }
+        return notification;
+    }
+
+    @Override
+    public PaymentRefund refundPayment(Payment payment, PaymentRefund refund) {
+        var request = new AlipayTradeRefundRequest();
+        var model = new AlipayTradeRefundModel();
+        model.setTradeNo(payment.getSourceId());
+        model.setOutTradeNo(payment.getId());
+        model.setRefundAmount(String.valueOf(refund.getAmount()));
+        model.setRefundReason(refund.getReason());
+        model.setOutRequestNo(refund.getId());
+        request.setBizModel(model);
+        var result = new PaymentRefundResult(refund.getId());
+        try {
+            var response = this.client.execute(request);
+            if (Objects.equals("20000", response.getCode())) {
+                throw new PaymentRefundException(String.format("%s: %s", response.getSubCode(), response.getSubMsg()));
+            }
+            result.succeed();
+        } catch (Exception e) {
+            result.fail(e.getMessage());
+        }
+        return result;
     }
 
     @Override
@@ -128,4 +172,5 @@ public class AliPaymentClient implements PaymentClient {
     public int getOrder() {
         return 0;
     }
+
 }
