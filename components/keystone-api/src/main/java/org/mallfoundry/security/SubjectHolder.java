@@ -36,7 +36,7 @@ public abstract class SubjectHolder {
         return Objects.nonNull(authentication) && authentication.isAuthenticated();
     }
 
-    private static Subject requirePrincipal() {
+    private static Subject requiredPrincipal() {
         if (!isAuthenticated()) {
             throw new SecurityException(
                     message("security.subject.notAuthenticated",
@@ -46,14 +46,14 @@ public abstract class SubjectHolder {
     }
 
     public static String getUserId() {
-        return requirePrincipal().getId();
+        return requiredPrincipal().getId();
     }
 
     public static String getUsername() {
-        return requirePrincipal().getUsername();
+        return requiredPrincipal().getUsername();
     }
 
     public static String getNickname() {
-        return requirePrincipal().getNickname();
+        return requiredPrincipal().getNickname();
     }
 }
