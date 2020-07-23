@@ -239,6 +239,8 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     boolean isPlaced();
 
+    boolean canPay();
+
     boolean isPaid();
 
     boolean isPlacingExpired();
@@ -267,7 +269,7 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     void place(int placingExpires) throws OrderException;
 
-    void pay(OrderPayment payment) throws OrderException;
+    void pay(OrderPaymentResult result) throws OrderException;
 
     /**
      * 订单对象打包。
@@ -300,7 +302,7 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
         Builder shippingAddress(Address shippingAddress);
 
-        Builder pay(OrderPayment payment);
+        Builder pay(OrderPaymentResult payment);
 
         Builder item(OrderItem item);
 
