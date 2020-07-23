@@ -23,10 +23,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderService;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
-import org.mallfoundry.order.OrderShipment;
+import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +45,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/v1")
@@ -143,10 +146,12 @@ public class OrderResourceV1 {
 
     @PostMapping("/orders/{order_id}/shipments")
     public OrderShipment addOrderShipment(@PathVariable("order_id") String orderId,
-                                          @RequestBody AddShipmentRequest request) {
-        return this.orderService.addOrderShipment(orderId,
-                request.assignToShipment(
-                        this.orderService.createOrder(orderId).createShipment(null)));
+                                          @RequestBody OrderShipmentRequest.AddOrderShipmentRequest request) {
+        var order = this.orderService.createOrder(orderId);
+        return Function.<OrderShipment>identity()
+                .<OrderShipment>compose(shipment -> this.orderService.addOrderShipment(orderId, shipment))
+                .compose(request::assignTo)
+                .apply(order.createShipment(null));
     }
 
     @GetMapping("/orders/{order_id}/shipments")
@@ -161,21 +166,21 @@ public class OrderResourceV1 {
     }
 
     @PatchMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public void setOrderShipment(@PathVariable("order_id") String orderId,
-                                 @PathVariable("shipment_id") String shipmentId,
-                                 @RequestBody ShipmentRequest request) {
+    public void updateOrderShipment(@PathVariable("order_id") String orderId,
+                                    @PathVariable("shipment_id") String shipmentId,
+                                    @RequestBody OrderShipmentRequest request) {
         this.orderService.updateOrderShipment(orderId,
-                request.assignToShipment(
+                request.assignTo(
                         this.orderService.createOrder(orderId).createShipment(shipmentId)));
     }
 
     @PatchMapping("/orders/{order_id}/shipments/batch")
-    public void setOrderShipments(@PathVariable("order_id") String orderId,
-                                  @RequestBody List<BatchShipmentRequest> requests) {
-        var order = this.orderService.getOrder(orderId).orElseThrow();
+    public void updateOrderShipments(@PathVariable("order_id") String orderId,
+                                     @RequestBody List<BatchShipmentRequest> requests) {
+        var order = this.orderService.createOrder(orderId);
         var shipments = requests.stream()
                 .map(request ->
-                        request.assignToShipment(order.createShipment(request.getId())))
+                        request.assignTo(order.createShipment(request.getId())))
                 .collect(Collectors.toList());
         this.orderService.updateOrderShipments(orderId, shipments);
     }
@@ -184,5 +189,13 @@ public class OrderResourceV1 {
     public void removeOrderShipment(@PathVariable("order_id") String orderId,
                                     @PathVariable("shipment_id") String shipmentId) {
         this.orderService.removeOrderShipment(orderId, shipmentId);
+    }
+
+    @PostMapping("/orders/payments")
+    public Payment startOrderPayment(@RequestBody OrderPaymentRequest request) {
+        return Function.<Payment>identity()
+                .compose(this.orderService::startOrderPayment)
+                .compose(request::assignTo)
+                .apply(this.orderService.createOrderPayment());
     }
 }

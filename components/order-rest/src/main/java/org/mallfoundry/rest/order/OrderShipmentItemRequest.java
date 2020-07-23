@@ -23,6 +23,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BatchShipmentRequest extends OrderShipmentRequest {
-    private String id;
+public class OrderShipmentItemRequest {
+    private String productId;
+    private String variantId;
+    private int quantity;
+    private String name;
+    private String imageUrl;
 }

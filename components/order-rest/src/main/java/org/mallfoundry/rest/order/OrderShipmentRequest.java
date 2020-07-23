@@ -18,29 +18,45 @@
 
 package org.mallfoundry.rest.order;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.shipping.CarrierCode;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
-public class ShipmentRequest {
-
-    @JsonProperty("shipping_provider")
+public class OrderShipmentRequest {
     private CarrierCode shippingProvider;
-
-    @JsonProperty("shipping_method")
     private String shippingMethod;
-
-    @JsonProperty("tracking_number")
     private String trackingNumber;
 
-    public OrderShipment assignToShipment(OrderShipment shipment) {
+    public OrderShipment assignTo(OrderShipment shipment) {
         return shipment.toBuilder()
                 .shippingProvider(this.shippingProvider)
                 .shippingMethod(this.shippingMethod)
                 .trackingNumber(this.trackingNumber).build();
+    }
+
+    @Getter
+    @Setter
+    public static class AddOrderShipmentRequest extends OrderShipmentRequest {
+        private List<OrderShipmentItemRequest> items;
+
+        @Override
+        public OrderShipment assignTo(OrderShipment shipment) {
+            var items = this.items.stream()
+                    .map(request ->
+                            shipment.createItem(null).toBuilder()
+                                    .productId(request.getProductId())
+                                    .variantId(request.getVariantId())
+                                    .quantity(request.getQuantity())
+                                    .name(request.getName())
+                                    .imageUrl(request.getImageUrl()).build())
+                    .collect(Collectors.toUnmodifiableList());
+            return super.assignTo(shipment).toBuilder().items(items).build();
+        }
     }
 }
