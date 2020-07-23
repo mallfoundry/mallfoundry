@@ -51,7 +51,7 @@ public class OrderRefundTests {
     @Test
     public void testPaidAndItemNotFoundThenApplyRefund() {
         var order = new JpaOrder();
-        order.pay(new DefaultOrderPayment("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED));
+        order.pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED));
         var refund = order.createRefund("1");
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
@@ -69,7 +69,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
-                .pay(new DefaultOrderPayment("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1");
         var refundItem = refund.createItem("1");
@@ -88,7 +88,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
-                .pay(new DefaultOrderPayment("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1")
                 .toBuilder()
@@ -103,7 +103,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
-                .pay(new DefaultOrderPayment("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1")
                 .toBuilder()
