@@ -109,7 +109,7 @@ public abstract class PaymentSupport implements MutablePayment {
     }
 
     @Override
-    public void applyRefund(PaymentRefund refund) {
+    public PaymentRefund applyRefund(PaymentRefund refund) {
         if (!isCaptured()) {
             throw PaymentExceptions.cannotApplyRefund();
         }
@@ -122,6 +122,7 @@ public abstract class PaymentSupport implements MutablePayment {
         order.applyRefund(refund.getAmount());
         refund.apply();
         this.getRefunds().add(refund);
+        return refund;
     }
 
     @Override

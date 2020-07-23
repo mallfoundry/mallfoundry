@@ -70,16 +70,13 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
     private AlipayClient client;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (Objects.isNull(this.client)) {
             this.client =
                     new DefaultAlipayClient(this.getServerUrl(),
-                            this.getAppId(),
-                            this.getAppPrivateKey(),
-                            this.getFormat(),
-                            this.getCharset(),
-                            this.getAlipayPublicKey(),
-                            this.getSignType());
+                            this.getAppId(), this.getAppPrivateKey(),
+                            this.getFormat(), this.getCharset(),
+                            this.getAlipayPublicKey(), this.getSignType());
         }
     }
 
@@ -134,8 +131,8 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
             }
             notification.setResult("success".getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
             notification.setResult("fail".getBytes());
+            e.printStackTrace();
         }
         return notification;
     }
@@ -159,6 +156,7 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
             result.succeed();
         } catch (Exception e) {
             result.fail(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }

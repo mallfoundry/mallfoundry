@@ -82,21 +82,21 @@ public class DefaultPaymentService implements PaymentService {
 
     @Transactional
     @Override
-    public Optional<PaymentRefund> refundPayment(String id, PaymentRefund refund) {
+    public PaymentRefund refundPayment(String id, PaymentRefund newRefund) {
         var payment = this.requiredPayment(id);
-        payment.applyRefund(refund);
-        var result = this.requiredPaymentClient(payment).refundPayment(payment, refund);
+        var appliedRefund = payment.applyRefund(newRefund);
+        var result = this.requiredPaymentClient(payment).refundPayment(payment, appliedRefund);
         // 如果不为空，设置退款交易号
         if (StringUtils.isNotBlank(result.getSourceId())) {
-            refund.setSourceId(result.getSourceId());
+            appliedRefund.setSourceId(result.getSourceId());
         }
         if (result.isSucceeded()) {
-            refund.succeed();
+            appliedRefund.succeed();
         } else if (result.isFailed()) {
-            refund.fail(refund.getFailReason());
+            appliedRefund.fail(appliedRefund.getFailReason());
         }
-        var savedPayment = this.paymentRepository.save(payment);
-        return savedPayment.getRefund(refund.getId());
+        this.paymentRepository.save(payment);
+        return appliedRefund;
     }
 
     private PaymentClient requiredPaymentClient(Payment payment) {

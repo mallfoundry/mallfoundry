@@ -93,7 +93,7 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     Optional<PaymentRefund> getRefund(String refundId);
 
-    void applyRefund(PaymentRefund refund);
+    PaymentRefund applyRefund(PaymentRefund refund);
 
     void succeedRefund(String refundId);
 

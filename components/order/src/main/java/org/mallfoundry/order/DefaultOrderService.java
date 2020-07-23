@@ -384,8 +384,7 @@ public class DefaultOrderService implements OrderService {
     private void refundOrderPayment(Order order, OrderRefund refund) {
         var payRefund = this.paymentService.refundPayment(order.getPaymentId(),
                 this.paymentService.createPayment(order.getPaymentId()).createRefund(refund.getId())
-                        .toBuilder().orderId(order.getId()).amount(refund.getTotalAmount()).build())
-                .orElseThrow();
+                        .toBuilder().orderId(order.getId()).amount(refund.getTotalAmount()).build());
         if (payRefund.isSucceeded()) {
             refund.succeed();
         } else if (payRefund.isFailed()) {

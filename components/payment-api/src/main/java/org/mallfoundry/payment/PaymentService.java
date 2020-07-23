@@ -28,7 +28,7 @@ public interface PaymentService {
 
     void capturePayment(String id) throws PaymentException;
 
-    Optional<PaymentRefund> refundPayment(String id, PaymentRefund refund);
+    PaymentRefund refundPayment(String id, PaymentRefund refund);
 
     PaymentNotification notifyPayment(String id, Object parameters);
 
