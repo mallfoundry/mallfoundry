@@ -28,11 +28,13 @@ public interface PaymentService {
 
     void capturePayment(String id) throws PaymentException;
 
-    void refundPayment(String id, PaymentRefund refund) throws PaymentException;
+    Optional<PaymentRefund> refundPayment(String id, PaymentRefund refund);
 
-    PaymentNotification notifyPayment(String id, Object parameters) throws PaymentException;
+    PaymentNotification notifyPayment(String id, Object parameters);
 
     Optional<Payment> getPayment(String id);
 
     Optional<String> getPaymentRedirectUrl(String id);
+
+    Optional<String> getPaymentReturnUrl(String id);
 }
