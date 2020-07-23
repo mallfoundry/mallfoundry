@@ -20,7 +20,6 @@ package org.mallfoundry.rest.store;
 
 import org.mallfoundry.store.CollectionService;
 import org.mallfoundry.store.CustomCollection;
-import org.mallfoundry.store.StoreService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,24 +35,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 public class CollectionResourceV1 {
-
-    private final StoreService storeService;
-
     private final CollectionService collectionService;
 
-    public CollectionResourceV1(StoreService storeService, CollectionService collectionService) {
-        this.storeService = storeService;
+    public CollectionResourceV1(CollectionService collectionService) {
         this.collectionService = collectionService;
     }
 
-    @PostMapping("/stores/{store_id}/custom-collections")
+    @PostMapping("/stores/{store_id}/collections")
     public CustomCollection addCollection(@PathVariable("store_id") String storeId,
                                           @RequestBody CollectionRequest request) {
         var newCollection = this.collectionService.createCollection(storeId, request.getName());
         return this.collectionService.addCollection(newCollection);
     }
 
-    @PutMapping("/stores/{store_id}/custom-collections/{collection_id}")
+    @PutMapping("/stores/{store_id}/collections/{collection_id}")
     public void updateCollection(@PathVariable("store_id") String storeId,
                                  @PathVariable("collection_id") String collectionId,
                                  @RequestBody CollectionRequest request) {
@@ -65,16 +60,16 @@ public class CollectionResourceV1 {
     }
 
 
-    @DeleteMapping("/stores/{store_id}/custom-collections/{collection_id}")
+    @DeleteMapping("/stores/{store_id}/collections/{collection_id}")
     public void deleteCollection(@PathVariable("store_id") String storeId,
                                  @PathVariable("collection_id") String id) {
         Assert.notNull(storeId, "Store id must not be null");
         this.collectionService.deleteCollection(id);
     }
 
-    @GetMapping("/stores/{store_id}/custom-collections")
+    @GetMapping("/stores/{store_id}/collections")
     public List<CustomCollection> getCollections(@PathVariable("store_id") String storeId) {
-        return this.collectionService.getCollections(this.storeService.createStoreId(storeId));
+        return this.collectionService.getCollections(storeId);
     }
 
 }

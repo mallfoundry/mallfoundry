@@ -35,6 +35,6 @@ public interface CollectionService {
 
     Optional<CustomCollection> getCollection(String id);
 
-    List<CustomCollection> getCollections(StoreId storeId);
+    List<CustomCollection> getCollections(String storeId);
 
 }

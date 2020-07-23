@@ -71,8 +71,7 @@ public class InternalCollectionService implements CollectionService {
         return CastUtils.cast(this.customCollectionRepository.findById(id));
     }
 
-    public List<CustomCollection> getCollections(StoreId storeId) {
-        return CastUtils.cast(this.customCollectionRepository.findAllByStoreId(storeId.getIdentifier()));
+    public List<CustomCollection> getCollections(String storeId) {
+        return CastUtils.cast(this.customCollectionRepository.findAllByStoreId(storeId));
     }
-
 }
