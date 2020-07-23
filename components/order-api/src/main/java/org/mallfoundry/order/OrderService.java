@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.payment.Payment;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,8 @@ public interface OrderService {
      */
     Order createOrder(String id);
 
+    OrderPayment createOrderPayment();
+
     /**
      * 拆分订单对象集合。
      *
@@ -66,9 +69,9 @@ public interface OrderService {
 
     Order updateOrder(Order order);
 
-    void payOrder(String orderId, OrderPayment payment);
+    void payOrder(String orderId, OrderPaymentResult payment);
 
-    void payOrders(Set<String> orderIds, OrderPayment payment);
+    void payOrders(Set<String> orderIds, OrderPaymentResult payment);
 
     /**
      * 打包订单对象。
@@ -99,6 +102,8 @@ public interface OrderService {
 
     void removeOrderShipments(String orderId, Set<String> shipmentIds);
 
+    Payment startOrderPayment(OrderPayment orderPayment) throws OrderException;
+
     OrderRefund applyOrderRefund(String orderId, OrderRefund refund);
 
     void cancelOrderRefund(String orderId, String refundId);
@@ -108,8 +113,4 @@ public interface OrderService {
     void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason);
 
     void activeOrderRefund(String orderId, OrderRefund refund);
-
-    void succeedOrderRefund(String orderId, String refundId);
-
-    void failOrderRefund(String orderId, String refundId, String failReason);
 }
