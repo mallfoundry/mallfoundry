@@ -28,6 +28,16 @@ import static org.mallfoundry.payment.PaymentRefundStatus.SUCCEEDED;
 public abstract class PaymentRefundSupport implements MutablePaymentRefund {
 
     @Override
+    public boolean isSucceeded() {
+        return SUCCEEDED == this.getStatus();
+    }
+
+    @Override
+    public boolean isFailed() {
+        return FAILED == this.getStatus();
+    }
+
+    @Override
     public void apply() {
         this.setAppliedTime(new Date());
         this.setStatus(PENDING);
