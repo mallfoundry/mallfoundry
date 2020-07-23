@@ -40,7 +40,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class InternalCheckoutService implements CheckoutService {
+public class DefaultCheckoutService implements CheckoutService {
 
     static final String CHECKOUT_ID_VALUE_NAME = "checkout.id";
 
@@ -56,12 +56,12 @@ public class InternalCheckoutService implements CheckoutService {
 
     private final CheckoutRepository checkoutRepository;
 
-    public InternalCheckoutService(CustomerService customerService,
-                                   StoreService storeService,
-                                   CartService cartService,
-                                   ProductService productService,
-                                   OrderService orderService,
-                                   CheckoutRepository checkoutRepository) {
+    public DefaultCheckoutService(CustomerService customerService,
+                                  StoreService storeService,
+                                  CartService cartService,
+                                  ProductService productService,
+                                  OrderService orderService,
+                                  CheckoutRepository checkoutRepository) {
         this.customerService = customerService;
         this.storeService = storeService;
         this.cartService = cartService;

@@ -19,7 +19,7 @@
 package org.mallfoundry.checkout.repository.jpa.convert;
 
 import org.mallfoundry.checkout.CheckoutItem;
-import org.mallfoundry.checkout.InternalCheckoutItem;
+import org.mallfoundry.checkout.DefaultCheckoutItem;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
@@ -39,6 +39,6 @@ public class CheckoutItemListConverter implements AttributeConverter<List<Checko
     public List<CheckoutItem> convertToEntityAttribute(String dbData) {
         return Objects.isNull(dbData)
                 ? null
-                : JsonUtils.parse(dbData, List.class, InternalCheckoutItem.class);
+                : JsonUtils.parse(dbData, List.class, DefaultCheckoutItem.class);
     }
 }

@@ -85,7 +85,7 @@ public class InternalCheckout implements Checkout {
 
     @Override
     public CheckoutItem createItem() {
-        return new InternalCheckoutItem();
+        return new DefaultCheckoutItem();
     }
 
     @Override

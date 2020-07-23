@@ -26,7 +26,7 @@ import org.springframework.beans.BeanUtils;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalCheckoutItem implements CheckoutItem {
+public class DefaultCheckoutItem implements CheckoutItem {
 
     private String productId;
 
@@ -34,14 +34,12 @@ public class InternalCheckoutItem implements CheckoutItem {
 
     private int quantity;
 
-    public static InternalCheckoutItem of(CheckoutItem item) {
-        if (item instanceof InternalCheckoutItem) {
-            return (InternalCheckoutItem) item;
+    public static DefaultCheckoutItem of(CheckoutItem item) {
+        if (item instanceof DefaultCheckoutItem) {
+            return (DefaultCheckoutItem) item;
         }
-
-        var target = new InternalCheckoutItem();
+        var target = new DefaultCheckoutItem();
         BeanUtils.copyProperties(item, target);
         return target;
     }
-
 }
