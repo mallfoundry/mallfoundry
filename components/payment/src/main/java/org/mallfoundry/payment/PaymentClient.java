@@ -26,9 +26,7 @@ public interface PaymentClient extends Ordered {
 
     String createPaymentRedirectUrl(Payment payment) throws PaymentException;
 
-    PaymentNotification createPaymentNotification(Object parameters) throws PaymentException;
+    PaymentNotification validateNotification(Object parameters);
 
-    void validateNotification(PaymentNotification notification);
-
-    void refundPayment(Payment payment, PaymentRefund refund) throws PaymentRefundException;
+    PaymentRefund refundPayment(Payment payment, PaymentRefund refund);
 }
