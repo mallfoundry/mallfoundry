@@ -24,7 +24,7 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderItem;
-import org.mallfoundry.order.OrderPayment;
+import org.mallfoundry.order.OrderPaymentResult;
 import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefundException;
 import org.mallfoundry.order.OrderSource;
@@ -227,6 +227,11 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public boolean canPay() {
+        return false;
+    }
+
+    @Override
     public boolean isPaid() {
         return false;
     }
@@ -247,7 +252,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void pay(OrderPayment details) throws OrderException {
+    public void pay(OrderPaymentResult details) throws OrderException {
 
     }
 
