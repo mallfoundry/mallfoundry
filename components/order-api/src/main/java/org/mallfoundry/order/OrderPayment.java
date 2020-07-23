@@ -18,14 +18,47 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentInstrument;
 import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface OrderPayment {
+import java.util.Set;
+import java.util.function.Function;
 
-    String getId();
+public interface OrderPayment extends ObjectBuilder.ToBuilder<OrderPayment.Builder> {
 
-    PaymentStatus getStatus();
+    PaymentInstrument createInstrument(PaymentMethod type);
 
-    PaymentMethod getMethod();
+    PaymentInstrument getInstrument();
+
+    void setInstrument(PaymentInstrument instrument);
+
+    Set<String> getOrderIds();
+
+    void setOrderIds(Set<String> orderIds);
+
+    String getReturnUrl();
+
+    void setReturnUrl(String returnUrl);
+
+    Payment toPayment();
+
+    interface Builder extends ObjectBuilder<OrderPayment> {
+
+        Builder orderIds(Set<String> orderIds);
+
+        Builder returnUrl(String returnUrl);
+
+        Builder instrument(PaymentInstrument instrument);
+
+        Builder instrument(InstrumentFunction function);
+
+        Builder instrument(Function<PaymentInstrument, PaymentInstrument> function);
+
+        @FunctionalInterface
+        interface InstrumentFunction extends Function<OrderPayment, PaymentInstrument> {
+
+        }
+    }
 }
