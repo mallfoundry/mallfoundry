@@ -21,10 +21,12 @@ package org.mallfoundry.order;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentCapturedEvent;
 import org.mallfoundry.payment.PaymentEvent;
+import org.mallfoundry.payment.PaymentOrder;
 import org.mallfoundry.payment.PaymentStartedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.util.StringUtils;
+
+import java.util.stream.Collectors;
 
 @Configuration
 public class OrderPaymentEventListener {
@@ -35,9 +37,9 @@ public class OrderPaymentEventListener {
         this.orderService = orderService;
     }
 
-    private OrderPayment createOrderPayment(Payment payment) {
+    private OrderPaymentResult createPaymentResult(Payment payment) {
         var instrument = payment.getInstrument();
-        return new DefaultOrderPayment(payment.getId(), instrument.getType(), payment.getStatus());
+        return new DefaultOrderPaymentResult(payment.getId(), instrument.getType(), payment.getStatus());
     }
 
     @EventListener
@@ -52,8 +54,8 @@ public class OrderPaymentEventListener {
 
     private void handlePaymentEvent(PaymentEvent event) {
         var payment = event.getPayment();
-        var orderPayment = this.createOrderPayment(payment);
-        /*var orderIds = StringUtils.commaDelimitedListToSet(payment.getReference());
-        this.orderService.payOrders(orderIds, orderPayment);*/
+        var orderIds = payment.getOrders().stream().map(PaymentOrder::getId).collect(Collectors.toUnmodifiableSet());
+        var paymentResult = this.createPaymentResult(payment);
+        this.orderService.payOrders(orderIds, paymentResult);
     }
 }
