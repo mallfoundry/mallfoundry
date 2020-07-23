@@ -26,6 +26,12 @@ public abstract class OrderMessages {
 
     private static final String ORDER_UNPAID_MESSAGE_CODE_KEY = "order.Order.unpaid";
 
+    private static final String ORDER_PLACING_EXPIRED_MESSAGE_CODE_KEY = "order.Order.placingExpired";
+
+    private static final String ORDER_NOT_PAY_MESSAGE_CODE_KEY = "order.Order.notPay";
+
+    private static final String ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY = "order.Order.notSameCustomer";
+
     private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
 
     private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
@@ -50,6 +56,18 @@ public abstract class OrderMessages {
 
     public static String unpaid() {
         return message(ORDER_UNPAID_MESSAGE_CODE_KEY, "Order is unpaid");
+    }
+
+    public static String notPay() {
+        return message(ORDER_NOT_PAY_MESSAGE_CODE_KEY, "The order is not payable");
+    }
+
+    public static String placingExpired() {
+        return message(ORDER_PLACING_EXPIRED_MESSAGE_CODE_KEY, "The order time expired");
+    }
+
+    public static String notSameCustomer() {
+        return message(ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY, "Not a collection of orders from the same customer");
     }
 
     public abstract static class Source {

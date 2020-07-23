@@ -28,6 +28,18 @@ public abstract class OrderExceptions {
         return new OrderException(OrderMessages.unpaid());
     }
 
+    public static OrderException notSameCustomer() {
+        return new OrderException(OrderMessages.notSameCustomer());
+    }
+
+    public static OrderException placingExpired() {
+        return new OrderException(OrderMessages.placingExpired());
+    }
+
+    public static OrderException notPay() {
+        return new OrderException(OrderMessages.notPay());
+    }
+
     public abstract static class Item {
         public static OrderException notFound() {
             return new OrderException(OrderMessages.Item.notFound());
