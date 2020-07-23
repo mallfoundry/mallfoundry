@@ -79,6 +79,10 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     Date getCapturedTime();
 
+    boolean isStarted();
+
+    boolean isCaptured();
+
     void start();
 
     void capture();
