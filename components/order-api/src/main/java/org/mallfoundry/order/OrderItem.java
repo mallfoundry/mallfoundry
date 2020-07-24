@@ -84,7 +84,11 @@ public interface OrderItem {
 
     void applyRefund(BigDecimal refundAmount);
 
+    void cancelRefund(BigDecimal failAmount);
+
     void succeedRefund(BigDecimal succeedAmount);
+
+    void disapproveRefund(BigDecimal failAmount);
 
     void failRefund(BigDecimal failAmount);
 
