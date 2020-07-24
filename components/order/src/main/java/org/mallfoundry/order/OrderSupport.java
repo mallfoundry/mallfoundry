@@ -198,6 +198,23 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
+    @Override
+    public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
+        if (this.unpaid()) {
+            throw OrderExceptions.unpaid();
+        }
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).applyRefund(item.getAmount()));
+        refund.apply();
+        this.getRefunds().add(refund);
+        // 设置订单状态为等待退款。
+        this.setRefundStatus(AWAITING_REFUND);
+        return refund;
+    }
+
+    protected OrderRefund requiredRefund(String refundId) {
+        return this.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
+    }
+
     /**
      * 更新订单退款状态。
      * <p>如果是部分退款则更新为部分已退款状态。
@@ -225,23 +242,6 @@ public abstract class OrderSupport implements MutableOrder {
         } else if (DecimalUtils.equals(zero, totalRefundingAmount)) {
             this.setRefundStatus(PARTIALLY_REFUNDED);
         }
-    }
-
-    @Override
-    public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
-        if (this.unpaid()) {
-            throw OrderExceptions.unpaid();
-        }
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).applyRefund(item.getAmount()));
-        refund.apply();
-        this.getRefunds().add(refund);
-        // 设置订单状态为等待退款。
-        this.setRefundStatus(AWAITING_REFUND);
-        return refund;
-    }
-
-    protected OrderRefund requiredRefund(String refundId) {
-        return this.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
     }
 
     @Override
