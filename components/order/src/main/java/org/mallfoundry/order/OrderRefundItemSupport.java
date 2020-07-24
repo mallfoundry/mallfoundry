@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import java.math.BigDecimal;
 import java.util.List;
 
-public abstract class OrderRefundItemSupport implements OrderRefundItem {
+public abstract class OrderRefundItemSupport implements MutableOrderRefundItem {
 
     @Override
     public void itemNotReceive() {
@@ -72,8 +72,20 @@ public abstract class OrderRefundItemSupport implements OrderRefundItem {
         }
 
         @Override
+        public Builder name(String name) {
+            this.item.setName(name);
+            return this;
+        }
+
+        @Override
         public Builder amount(BigDecimal amount) {
             this.item.setAmount(amount);
+            return this;
+        }
+
+        @Override
+        public Builder reason(String reason) {
+            this.item.setReason(reason);
             return this;
         }
 
@@ -84,8 +96,14 @@ public abstract class OrderRefundItemSupport implements OrderRefundItem {
         }
 
         @Override
-        public Builder imageUrls(List<String> imageUrls) {
-            this.item.setImageUrls(imageUrls);
+        public Builder imageUrl(String imageUrl) {
+            this.item.setImageUrl(imageUrl);
+            return this;
+        }
+
+        @Override
+        public Builder attachments(List<String> attachments) {
+            this.item.setAttachments(attachments);
             return this;
         }
 
