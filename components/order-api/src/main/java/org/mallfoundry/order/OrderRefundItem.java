@@ -40,28 +40,33 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
     ItemStatus getItemStatus();
 
-    void setItemStatus(ItemStatus itemStatus);
+    void itemNotReceive();
+
+    void itemReceive();
+
+    String getName();
+
+    void setName(String name);
+
+    String getImageUrl();
+
+    void setImageUrl(String imageUrl);
 
     BigDecimal getAmount();
 
     void setAmount(BigDecimal amount);
 
+    String getReason();
+
+    void setReason(String reason);
+
     String getNotes();
 
     void setNotes(String notes);
 
-    /**
-     * 订单退款项凭证图片。
-     *
-     * @return 图片集合
-     */
-    List<String> getImageUrls();
+    List<String> getAttachments();
 
-    void setImageUrls(List<String> imageUrls);
-
-    void itemNotReceive();
-
-    void itemReceive();
+    void setAttachments(List<String> attachments);
 
     enum ItemStatus {
         /**
@@ -84,10 +89,16 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
         Builder itemStatus(ItemStatus status);
 
+        Builder name(String name);
+
         Builder amount(BigDecimal amount);
+
+        Builder reason(String reason);
 
         Builder notes(String notes);
 
-        Builder imageUrls(List<String> imageUrls);
+        Builder imageUrl(String imageUrl);
+
+        Builder attachments(List<String> attachments);
     }
 }
