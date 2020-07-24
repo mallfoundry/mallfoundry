@@ -39,7 +39,7 @@ public class OrderRefundTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
+        item.itemReceive();
 //        item.setReason("Open");
         refund.addItem(item);
         assertThatExceptionOfType(OrderException.class)
@@ -56,7 +56,7 @@ public class OrderRefundTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
+        item.itemReceive();
 //        item.setReason("Open");
         refund.addItem(item);
         assertThatExceptionOfType(OrderException.class)
@@ -75,12 +75,11 @@ public class OrderRefundTests {
         var refundItem = refund.createItem("1");
         refundItem.setAmount(BigDecimal.valueOf(10));
         refundItem.setItemId("12");
-        refundItem.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-//        refundItem.setReason("Open");
+        refundItem.itemReceive();
         refund.addItem(refundItem);
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
-                .withMessage(OrderExceptions.Refund.excess().getMessage());
+                .withMessage(OrderExceptions.Refund.overApply().getMessage());
     }
 
     @Test
@@ -112,7 +111,7 @@ public class OrderRefundTests {
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
-                .withMessage(OrderExceptions.Refund.excess().getMessage());
+                .withMessage(OrderExceptions.Refund.overApply().getMessage());
     }
 
 }

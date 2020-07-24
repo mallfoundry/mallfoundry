@@ -34,8 +34,7 @@ public class OrderRefundObjectTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-//        item.setReason("Open");
+        item.itemNotReceive();
         refund.addItem(item);
         refund.apply();
     }
@@ -46,8 +45,7 @@ public class OrderRefundObjectTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-//        item.setReason("Open");
+        item.itemReceive();
         refund.addItem(item);
         try {
             refund.approve();
@@ -62,8 +60,7 @@ public class OrderRefundObjectTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-//        item.setReason("Open");
+        item.itemReceive();
         refund.addItem(item);
         refund.cancel();
     }
@@ -74,8 +71,7 @@ public class OrderRefundObjectTests {
         var item = refund.createItem("1");
         item.setAmount(BigDecimal.valueOf(10));
         item.setItemId("12");
-        item.setItemStatus(OrderRefundItem.ItemStatus.NOT_RECEIVED);
-//        item.setReason("Open");
+        item.itemReceive();
         refund.addItem(item);
         try {
             refund.apply();
