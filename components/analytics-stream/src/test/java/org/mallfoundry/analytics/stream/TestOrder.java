@@ -27,9 +27,9 @@ import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaymentResult;
 import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefundException;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
-import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -60,12 +60,14 @@ public class TestOrder implements Order {
     private List<OrderShipment> shipments = new ArrayList<>();
     private List<OrderRefund> refunds = new ArrayList<>();
     private int shippedItems;
+    private OrderStatus refundStatus;
     private String paymentId;
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
     private String signMessage;
     private InventoryDeduction inventoryDeduction;
     private String cancelReason;
+    private String closeReason;
     private Date placedTime;
     private int placingExpires = 60 * 1000;
     private Date placingExpiredTime;
@@ -75,6 +77,7 @@ public class TestOrder implements Order {
     private Date signedTime;
     private Date receivedTime;
     private Date cancelledTime;
+    private Date closedTime;
 
     @Override
     public boolean isPlacingExpired() {
@@ -263,6 +266,11 @@ public class TestOrder implements Order {
 
     @Override
     public void cancel(String reason) throws OrderException {
+
+    }
+
+    @Override
+    public void close(String closeReason) throws OrderException {
 
     }
 
