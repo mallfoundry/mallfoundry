@@ -32,9 +32,12 @@ public class DefaultRefundItem extends OrderRefundItemSupport {
     private String id;
     private String itemId;
     private ItemStatus itemStatus;
+    private String name;
     private BigDecimal amount;
     private String notes;
-    private List<String> imageUrls;
+    private String reason;
+    private String imageUrl;
+    private List<String> attachments;
 
     public DefaultRefundItem(String id) {
         this.id = id;
