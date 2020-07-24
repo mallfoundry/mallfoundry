@@ -38,11 +38,12 @@ public class TestOrderItem implements OrderItem {
     private String name;
     private List<OptionSelection> optionSelections;
     private int quantity;
+    private BigDecimal refundedAmount;
+    private BigDecimal refundingAmount;
     private BigDecimal price;
     private BigDecimal discountAmount;
     private BigDecimal shippingCost;
     private BigDecimal discountShippingCost;
-
 
     public BigDecimal getDiscountAmount() {
         return Objects.isNull(this.discountAmount)
@@ -51,12 +52,17 @@ public class TestOrderItem implements OrderItem {
     }
 
     @Override
-    public BigDecimal getRefundedAmount() {
-        return null;
+    public void applyRefund(BigDecimal refundAmount) {
+
     }
 
     @Override
-    public void setRefundedAmount(BigDecimal refundedAmount) {
+    public void succeedRefund(BigDecimal succeedAmount) {
+
+    }
+
+    @Override
+    public void failRefund(BigDecimal failAmount) {
 
     }
 
@@ -71,6 +77,7 @@ public class TestOrderItem implements OrderItem {
                 ? BigDecimal.ZERO
                 : this.discountShippingCost;
     }
+
     @Override
     public BigDecimal getTotalPrice() {
         return this.getPrice().multiply(BigDecimal.valueOf(this.getQuantity()));
