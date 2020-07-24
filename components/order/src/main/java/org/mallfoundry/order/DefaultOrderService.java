@@ -28,6 +28,7 @@ import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -381,14 +382,14 @@ public class DefaultOrderService implements OrderService {
         this.orderRepository.save(order);
     }
 
-    private void refundOrderPayment(Order order, OrderRefund refund) {
+    private void refundOrderPayment(Order order, String refundId, BigDecimal refundAmount) {
         var payRefund = this.paymentService.refundPayment(order.getPaymentId(),
-                this.paymentService.createPayment(order.getPaymentId()).createRefund(refund.getId())
-                        .toBuilder().orderId(order.getId()).amount(refund.getTotalAmount()).build());
+                this.paymentService.createPayment(order.getPaymentId()).createRefund(refundId)
+                        .toBuilder().orderId(order.getId()).amount(refundAmount).build());
         if (payRefund.isSucceeded()) {
-            refund.succeed();
+            order.succeedRefund(refundId);
         } else if (payRefund.isFailed()) {
-            refund.fail(payRefund.getFailReason());
+            order.failRefund(refundId, payRefund.getFailReason());
         }
     }
 
@@ -399,7 +400,7 @@ public class DefaultOrderService implements OrderService {
         var refund = this.requiredOrderRefund(order, refundId);
         this.processorsInvoker.invokePreProcessApproveOrderRefund(order, refund);
         order.approveRefund(refundId);
-        this.refundOrderPayment(order, refund);
+        this.refundOrderPayment(order, refund.getId(), refund.getTotalAmount());
         this.orderRepository.save(order);
     }
 
@@ -421,7 +422,7 @@ public class DefaultOrderService implements OrderService {
         order.activeRefund(refund);
         // 获得退款对象，用以更新退款状态。
         var fetchRefund = this.requiredOrderRefund(order, refund.getId());
-        this.refundOrderPayment(order, fetchRefund);
+        this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getTotalAmount());
         this.orderRepository.save(order);
     }
 }
