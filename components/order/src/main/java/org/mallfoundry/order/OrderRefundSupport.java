@@ -144,11 +144,6 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
             return this;
         }
 
-        @Override
-        public Builder reason(String reason) {
-            this.refund.setReason(reason);
-            return this;
-        }
 
         @Override
         public Builder item(OrderRefundItem item) {
