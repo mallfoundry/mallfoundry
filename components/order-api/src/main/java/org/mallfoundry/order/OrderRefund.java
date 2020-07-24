@@ -50,7 +50,7 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
 
     BigDecimal getTotalAmount();
 
-    String getDisapprovedReason();
+    String getDisapprovalReason();
 
     String getFailReason();
 
@@ -79,7 +79,7 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
      */
     void approve() throws OrderRefundException;
 
-    void disapprove(String disapprovedReason) throws OrderRefundException;
+    void disapprove(String disapprovalReason) throws OrderRefundException;
 
     /**
      * 退款成功。

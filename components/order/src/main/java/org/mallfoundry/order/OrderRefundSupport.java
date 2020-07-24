@@ -96,11 +96,11 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
     }
 
     @Override
-    public void disapprove(String disapprovedReason) throws OrderRefundException {
+    public void disapprove(String disapprovalReason) throws OrderRefundException {
         if (this.nonApplying()) {
             throw OrderExceptions.Refund.approvedOrDisapproved();
         }
-        this.setDisapprovedReason(disapprovedReason);
+        this.setDisapprovalReason(disapprovalReason);
         this.setStatus(DISAPPROVED);
         this.setDisapprovedTime(new Date());
     }

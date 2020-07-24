@@ -27,7 +27,7 @@ public interface MutableOrderRefund extends OrderRefund {
 
     void setStatus(OrderRefundStatus status);
 
-    void setDisapprovedReason(String disapprovedReason);
+    void setDisapprovalReason(String disapprovalReason);
 
     void setFailReason(String failReason);
 
