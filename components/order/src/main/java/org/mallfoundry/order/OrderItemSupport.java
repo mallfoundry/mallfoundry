@@ -18,9 +18,11 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.util.DecimalUtils;
+
 import java.math.BigDecimal;
 
-public abstract class OrderItemSupport implements OrderItem {
+public abstract class OrderItemSupport implements MutableOrderItem {
 
     @Override
     public BigDecimal getTotalPrice() {
@@ -35,5 +37,40 @@ public abstract class OrderItemSupport implements OrderItem {
     @Override
     public BigDecimal getTotalAmount() {
         return this.getSubtotalAmount().add(this.getDiscountAmount()).add(this.getDiscountShippingCost());
+    }
+
+    private void addRefundingAmount(BigDecimal deltaAmount) {
+        this.setRefundingAmount(this.getRefundingAmount().add(deltaAmount));
+    }
+
+    private void addRefundedAmount(BigDecimal deltaAmount) {
+        this.setRefundedAmount(this.getRefundedAmount().add(deltaAmount));
+    }
+
+    /**
+     * 判断是否可以申请退款。
+     */
+    private boolean overApplyRefund(BigDecimal refundAmount) {
+        var newRefundAmount = this.getRefundedAmount().add(this.getRefundingAmount()).add(refundAmount);
+        return DecimalUtils.greaterThan(newRefundAmount, this.getTotalAmount());
+    }
+
+    @Override
+    public void applyRefund(BigDecimal refundAmount) {
+        if (this.overApplyRefund(refundAmount)) {
+            throw OrderExceptions.Refund.overApply();
+        }
+        this.addRefundingAmount(refundAmount);
+    }
+
+    @Override
+    public void succeedRefund(BigDecimal succeedAmount) {
+        this.addRefundingAmount(BigDecimal.ZERO.subtract(succeedAmount));
+        this.addRefundedAmount(succeedAmount);
+    }
+
+    @Override
+    public void failRefund(BigDecimal failAmount) {
+        this.addRefundingAmount(BigDecimal.ZERO.subtract(failAmount));
     }
 }
