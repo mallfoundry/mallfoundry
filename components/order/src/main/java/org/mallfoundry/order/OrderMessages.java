@@ -30,6 +30,8 @@ public abstract class OrderMessages {
 
     private static final String ORDER_NOT_PAY_MESSAGE_CODE_KEY = "order.Order.notPay";
 
+    private static final String ORDER_FULL_REFUND_REASON_MESSAGE_CODE_KEY = "order.Order.fullRefundReason";
+
     private static final String ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY = "order.Order.notSameCustomer";
 
     private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
@@ -60,6 +62,10 @@ public abstract class OrderMessages {
 
     public static String notPay() {
         return message(ORDER_NOT_PAY_MESSAGE_CODE_KEY, "The order is not payable");
+    }
+
+    public static String fullRefundReason() {
+        return message(ORDER_FULL_REFUND_REASON_MESSAGE_CODE_KEY, "A full refund on the order");
     }
 
     public static String placingExpired() {
