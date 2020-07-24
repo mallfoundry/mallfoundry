@@ -33,9 +33,9 @@ public class OrderIdentifier implements OrderProcessor {
 
     private static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
 
-    private static final String ORDER_REFUND_ID_VALUE_NAME = "order.shipment.id";
+    private static final String ORDER_REFUND_ID_VALUE_NAME = "order.refund.id";
 
-    private static final String ORDER_REFUND_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
+    private static final String ORDER_REFUND_ITEM_ID_VALUE_NAME = "order.refund.item.id";
 
     @Override
     public List<Order> preProcessPlaceOrders(List<Order> orders) {
