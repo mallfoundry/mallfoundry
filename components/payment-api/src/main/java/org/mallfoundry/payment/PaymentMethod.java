@@ -18,6 +18,14 @@
 
 package org.mallfoundry.payment;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum PaymentMethod {
-    ALIPAY, WECHAT_PAY
+    ALIPAY, WECHAT_PAY;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

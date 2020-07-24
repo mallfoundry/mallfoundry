@@ -18,7 +18,15 @@
 
 package org.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OrderRefundKind {
     ONLY_REFUND /* 仅退款 */,
-    RETURN_REFUND /* 退货退款 */
+    RETURN_REFUND /* 退货退款 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

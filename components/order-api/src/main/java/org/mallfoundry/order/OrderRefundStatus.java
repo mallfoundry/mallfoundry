@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Objects;
 
 public enum OrderRefundStatus {
@@ -50,5 +52,11 @@ public enum OrderRefundStatus {
 
     public boolean isFailed() {
         return Objects.equals(this, FAILED);
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }
