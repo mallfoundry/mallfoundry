@@ -65,11 +65,8 @@ public class JpaOrderRefund extends OrderRefundSupport {
     private BigDecimal totalAmount;
 
     @Convert(converter = OrderRefundItemListConverter.class)
-    @Column(name = "items_")
+    @Column(name = "items_", length = 1024 * 32)
     private List<OrderRefundItem> items = new ArrayList<>();
-
-    @Column(name = "reason_")
-    private String reason;
 
     @Column(name = "disapproved_reason_")
     private String disapprovedReason;
