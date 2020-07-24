@@ -24,9 +24,13 @@ public interface MutableOrder extends Order {
 
     void setStatus(OrderStatus status);
 
+    void setRefundStatus(OrderStatus refundStatus);
+
     void setShippedItems(int items);
 
     void setSignMessage(String signMessage);
+
+    void setCloseReason(String closeReason);
 
     void setCancelReason(String cancelReason);
 
@@ -43,6 +47,8 @@ public interface MutableOrder extends Order {
     void setShippedTime(Date shippedTime);
 
     void setCancelledTime(Date cancelledTime);
+
+    void setClosedTime(Date closedTime);
 
     void setSignedTime(Date signedTime);
 

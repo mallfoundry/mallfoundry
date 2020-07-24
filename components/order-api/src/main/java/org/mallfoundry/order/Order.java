@@ -121,6 +121,8 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     int getShippedItems();
 
+    OrderStatus getRefundStatus();
+
     /**
      * 创建一个订单退款对象。
      *
@@ -164,10 +166,10 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      * 不批准退款。
      *
      * @param refundId          订单退款对象标识
-     * @param disapprovedReason 不批准的运用
+     * @param disapprovalReason 不批准的运用
      * @throws OrderRefundException 订单退款对象不存在
      */
-    void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException;
+    void disapproveRefund(String refundId, String disapprovalReason) throws OrderRefundException;
 
     /**
      * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(String)}
@@ -263,6 +265,10 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     Date getCancelledTime();
 
+    String getCloseReason();
+
+    Date getClosedTime();
+
     void discounts(Map<String, BigDecimal> amounts);
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
@@ -294,7 +300,9 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      */
     void receipt() throws OrderException;
 
-    void cancel(String reason) throws OrderException;
+    void cancel(String cancelReason) throws OrderException;
+
+    void close(String closeReason) throws OrderException;
 
     interface Builder extends ObjectBuilder<Order> {
 
