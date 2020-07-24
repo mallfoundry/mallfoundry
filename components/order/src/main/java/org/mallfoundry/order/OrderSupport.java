@@ -22,7 +22,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.shipping.Address;
-import org.mallfoundry.util.DecimalUtils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
@@ -185,16 +184,6 @@ public abstract class OrderSupport implements MutableOrder {
                 .findFirst();
     }
 
-    private void setItemRefundAmount(String itemId, BigDecimal refundAmount) {
-        var item = this.requiredItem(itemId);
-        var newRefundAmount = this.requiredItem(itemId).getRefundedAmount().add(refundAmount);
-        // 判断是否超额退款
-        if (DecimalUtils.greaterThan(newRefundAmount, item.getTotalAmount())) {
-            throw OrderExceptions.Refund.excess();
-        }
-        item.setRefundedAmount(newRefundAmount);
-    }
-
     /**
      * 判断当前订单对象是否未付款。
      *
@@ -209,7 +198,7 @@ public abstract class OrderSupport implements MutableOrder {
         if (this.unpaid()) {
             throw OrderExceptions.unpaid();
         }
-        refund.getItems().forEach(item -> this.setItemRefundAmount(item.getItemId(), item.getAmount()));
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).applyRefund(item.getAmount()));
         refund.apply();
         this.getRefunds().add(refund);
         return refund;
@@ -244,12 +233,16 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void succeedRefund(String refundId) throws OrderRefundException {
-        this.requiredRefund(refundId).succeed();
+        var refund = this.requiredRefund(refundId);
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).succeedRefund(item.getAmount()));
+        refund.succeed();
     }
 
     @Override
     public void failRefund(String refundId, String failReason) throws OrderRefundException {
-        this.requiredRefund(refundId).fail(failReason);
+        var refund = this.requiredRefund(refundId);
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).failRefund(item.getAmount()));
+        refund.fail(failReason);
     }
 
     @Override
@@ -270,7 +263,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public boolean canPay() {
         // 已下单、未支付、已下单状态、下单未过期
-        return this.isPlaced() && !this.isPaid() && isPending(this.getStatus()) && !this.isPlacingExpired();
+        return this.isPlaced() && !this.isPaid() && (isPending(this.getStatus()) || isAwaitingPayment(this.getStatus())) && !this.isPlacingExpired();
     }
 
     @Override
