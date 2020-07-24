@@ -106,6 +106,7 @@ public class OrderResourceV1 {
                                       @RequestParam(name = "customer_id", required = false) String customerId,
                                       @RequestParam(name = "store_id", required = false) String storeId,
                                       @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                      @RequestParam(name = "refund_statuses", required = false) Set<String> refundStatuses,
                                       @RequestParam(name = "types", required = false) Set<String> types,
                                       @RequestParam(name = "sources", required = false) Set<String> sources,
                                       @RequestParam(name = "payment_methods", required = false) Set<String> paymentMethods,
@@ -119,6 +120,9 @@ public class OrderResourceV1 {
                 .customerId(customerId).storeId(storeId)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .refundStatuses(() ->
+                        CollectionUtils.emptyIfNull(refundStatuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .types(() ->
                         CollectionUtils.emptyIfNull(types).stream().map(StringUtils::upperCase)
@@ -136,11 +140,15 @@ public class OrderResourceV1 {
     @GetMapping("/orders/count")
     public long getOrderCount(@RequestParam(name = "customer_id", required = false) String customerId,
                               @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                              @RequestParam(name = "refund_statuses", required = false) Set<String> refundStatuses,
                               @RequestParam(name = "store_id", required = false) String storeId) {
         return this.orderService.getOrderCount(this.orderService.createOrderQuery().toBuilder()
                 .customerId(customerId).storeId(storeId)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .refundStatuses(() ->
+                        CollectionUtils.emptyIfNull(refundStatuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .build());
     }

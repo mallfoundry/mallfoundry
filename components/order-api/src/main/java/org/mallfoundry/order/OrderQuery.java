@@ -49,6 +49,10 @@ public interface OrderQuery extends Query {
 
     void setStatuses(Set<OrderStatus> statuses);
 
+    Set<OrderStatus> getRefundStatuses();
+
+    void setRefundStatuses(Set<OrderStatus> statuses);
+
     Set<OrderType> getTypes();
 
     void setTypes(Set<OrderType> types);
@@ -92,6 +96,10 @@ public interface OrderQuery extends Query {
         Builder statuses(Supplier<Set<OrderStatus>> supplier);
 
         Builder statuses(Set<OrderStatus> statuses);
+
+        Builder refundStatuses(Supplier<Set<OrderStatus>> supplier);
+
+        Builder refundStatuses(Set<OrderStatus> statuses);
 
         Builder sources(Set<OrderSource> sources);
 

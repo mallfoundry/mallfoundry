@@ -25,10 +25,10 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderRefund;
+import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderSupport;
-import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -119,6 +119,10 @@ public class JpaOrder extends OrderSupport {
     @JoinColumn(name = "order_id_")
     private List<OrderShipment> shipments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "refund_status_")
+    private OrderStatus refundStatus;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = JpaOrderRefund.class)
     @JoinColumn(name = "order_id_")
@@ -147,6 +151,9 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "cancel_reason_")
     private String cancelReason;
 
+    @Column(name = "close_reason_")
+    private String closeReason;
+
     @Column(name = "placed_time_")
     private Date placedTime;
 
@@ -173,6 +180,9 @@ public class JpaOrder extends OrderSupport {
 
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
+
+    @Column(name = "closed_time_")
+    private Date closedTime;
 
     public JpaOrder(String id) {
         this.setId(id);
