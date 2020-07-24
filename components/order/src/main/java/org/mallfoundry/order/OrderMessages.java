@@ -48,7 +48,7 @@ public abstract class OrderMessages {
 
     private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.OrderRefund.completed";
 
-    private static final String ORDER_REFUND_EXCESS_MESSAGE_CODE_KEY = "order.OrderRefund.excess";
+    private static final String ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY = "order.OrderRefund.overApply";
 
     public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
@@ -111,8 +111,8 @@ public abstract class OrderMessages {
             return message(ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY, "Order refund has been completed");
         }
 
-        public static String excess() {
-            return message(ORDER_REFUND_EXCESS_MESSAGE_CODE_KEY, "Order refund is excessive");
+        public static String overApply() {
+            return message(ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY, "Order refund applications were oversubscribed");
         }
     }
 }

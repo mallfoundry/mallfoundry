@@ -74,8 +74,8 @@ public abstract class OrderExceptions {
             return new OrderRefundException(OrderMessages.Refund.completed());
         }
 
-        public static OrderRefundException excess() {
-            return new OrderRefundException(OrderMessages.Refund.excess());
+        public static OrderRefundException overApply() {
+            return new OrderRefundException(OrderMessages.Refund.overApply());
         }
     }
 }
