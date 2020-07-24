@@ -80,7 +80,13 @@ public interface OrderItem {
 
     BigDecimal getRefundedAmount();
 
-    void setRefundedAmount(BigDecimal refundedAmount);
+    BigDecimal getRefundingAmount();
+
+    void applyRefund(BigDecimal refundAmount);
+
+    void succeedRefund(BigDecimal succeedAmount);
+
+    void failRefund(BigDecimal failAmount);
 
     BigDecimal getTotalAmount();
 
