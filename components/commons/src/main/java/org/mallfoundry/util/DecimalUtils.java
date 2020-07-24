@@ -21,12 +21,11 @@ package org.mallfoundry.util;
 import org.apache.commons.lang3.compare.ComparableUtils;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public abstract class DecimalUtils {
 
     public static boolean equals(BigDecimal a, BigDecimal b) {
-        return Objects.equals(a, b);
+        return ComparableUtils.is(a).equalTo(b);
     }
 
     public static boolean lessThan(BigDecimal a, BigDecimal b) {
