@@ -32,10 +32,9 @@ import java.util.stream.Collectors;
 public class OrderRefundRequest {
     private OrderRefundKind kind;
     private List<OrderRefundItemRequest> items = new ArrayList<>();
-    private String reason;
 
     public OrderRefund assignTo(OrderRefund refund) {
-        return refund.toBuilder().kind(this.kind).reason(this.reason)
+        return refund.toBuilder().kind(this.kind)
                 .items(() -> this.items.stream().map(item -> item.assignTo(refund.createItem(null))).collect(Collectors.toList()))
                 .build();
     }

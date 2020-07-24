@@ -30,17 +30,23 @@ import java.util.List;
 public class OrderRefundItemRequest {
     private String itemId;
     private OrderRefundItem.ItemStatus itemStatus;
+    private String imageUrl;
+    private String name;
     private BigDecimal amount;
+    private String reason;
     private String notes;
-    private List<String> imageUrls;
+    private List<String> attachments;
 
     public OrderRefundItem assignTo(OrderRefundItem item) {
         return item.toBuilder()
                 .itemId(this.itemId)
                 .itemStatus(this.itemStatus)
+                .imageUrl(this.imageUrl)
+                .name(this.name)
                 .amount(this.amount)
+                .reason(this.reason)
                 .notes(this.notes)
-                .imageUrls(this.imageUrls)
+                .attachments(this.attachments)
                 .build();
     }
 }
