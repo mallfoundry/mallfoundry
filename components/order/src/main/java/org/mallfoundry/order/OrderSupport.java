@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.shipping.Address;
+import org.mallfoundry.util.DecimalUtils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
@@ -38,12 +39,16 @@ import java.util.stream.Collectors;
 import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PICKUP;
+import static org.mallfoundry.order.OrderStatus.AWAITING_REFUND;
 import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
+import static org.mallfoundry.order.OrderStatus.CLOSED;
 import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
+import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
+import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
 import static org.mallfoundry.order.OrderStatus.isAwaitingPayment;
 import static org.mallfoundry.order.OrderStatus.isIncomplete;
@@ -193,6 +198,35 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
+    /**
+     * 更新订单退款状态。
+     * <p>如果是部分退款则更新为部分已退款状态。
+     * <p>如果订单项中正在退款金额不为零，则更新为退款中。
+     * <p>如果是第一次申请退款又取消退款，则还原无退款操作。
+     * <p>如果是全额退款将关闭订单。
+     */
+    private void updateRefundStatus() {
+        final var zero = BigDecimal.ZERO;
+        var totalAmount = this.getTotalAmount();
+        var totalRefundingAmount = BigDecimal.ZERO;
+        var totalRefundedAmount = BigDecimal.ZERO;
+        for (var item : this.getItems()) {
+            totalRefundingAmount = totalRefundingAmount.add(item.getRefundingAmount());
+            totalRefundedAmount = totalRefundedAmount.add(item.getRefundedAmount());
+        }
+        var totalRefundAmount = totalRefundingAmount.add(totalRefundedAmount);
+        if (DecimalUtils.equals(zero, totalRefundAmount)) {
+            this.setRefundStatus(null);
+        } else if (DecimalUtils.lessThan(zero, totalRefundingAmount)) {
+            this.setRefundStatus(AWAITING_REFUND);
+        } else if (DecimalUtils.equals(totalAmount, totalRefundAmount)) {
+            this.setRefundStatus(REFUNDED);
+            this.close(OrderMessages.fullRefundReason());
+        } else if (DecimalUtils.equals(zero, totalRefundingAmount)) {
+            this.setRefundStatus(PARTIALLY_REFUNDED);
+        }
+    }
+
     @Override
     public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
         if (this.unpaid()) {
@@ -201,6 +235,8 @@ public abstract class OrderSupport implements MutableOrder {
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).applyRefund(item.getAmount()));
         refund.apply();
         this.getRefunds().add(refund);
+        // 设置订单状态为等待退款。
+        this.setRefundStatus(AWAITING_REFUND);
         return refund;
     }
 
@@ -209,26 +245,32 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
+    public void cancelRefund(String refundId) throws OrderRefundException {
+        var refund = this.requiredRefund(refundId);
+        refund.cancel();
+        this.getRefunds().remove(refund);
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).cancelRefund(item.getAmount()));
+        this.updateRefundStatus();
+    }
+
+    @Override
     public void approveRefund(String refundId) {
         this.requiredRefund(refundId).approve();
     }
 
     @Override
-    public void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException {
-        this.requiredRefund(refundId).disapprove(disapprovedReason);
+    public void disapproveRefund(String refundId, String disapprovalReason) throws OrderRefundException {
+        var refund = this.requiredRefund(refundId);
+        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).disapproveRefund(item.getAmount()));
+        refund.disapprove(disapprovalReason);
+        this.updateRefundStatus();
     }
 
     @Override
     public void activeRefund(OrderRefund refund) throws OrderRefundException {
         this.applyRefund(refund);
         this.approveRefund(refund.getId());
-    }
-
-    @Override
-    public void cancelRefund(String refundId) throws OrderRefundException {
-        var refund = this.requiredRefund(refundId);
-        refund.cancel();
-        this.getRefunds().remove(refund);
+        this.updateRefundStatus();
     }
 
     @Override
@@ -236,6 +278,7 @@ public abstract class OrderSupport implements MutableOrder {
         var refund = this.requiredRefund(refundId);
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).succeedRefund(item.getAmount()));
         refund.succeed();
+        this.updateRefundStatus();
     }
 
     @Override
@@ -243,6 +286,7 @@ public abstract class OrderSupport implements MutableOrder {
         var refund = this.requiredRefund(refundId);
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).failRefund(item.getAmount()));
         refund.fail(failReason);
+        this.updateRefundStatus();
     }
 
     @Override
@@ -303,14 +347,21 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void cancel(String reason) throws OrderException {
+    public void cancel(String cancelReason) throws OrderException {
         var status = this.getStatus();
         if (!(Objects.equals(PENDING, status) || Objects.equals(AWAITING_PAYMENT, status))) {
             throw new OrderException("The current order status must be awaiting payment or pending");
         }
         this.setStatus(CANCELLED);
+        this.setCancelReason(cancelReason);
         this.setCancelledTime(new Date());
-        this.setCancelReason(reason);
+    }
+
+    @Override
+    public void close(String closeReason) throws OrderException {
+        this.setStatus(CLOSED);
+        this.setCloseReason(closeReason);
+        this.setClosedTime(new Date());
     }
 
     @Override
