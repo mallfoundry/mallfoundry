@@ -30,6 +30,7 @@ public enum OrderStatus {
     SHIPPED /* 已发货 */,
     AWAITING_PICKUP /* 等待收货 */,
 
+    AWAITING_REFUND /* 等待退款 */,
     PARTIALLY_REFUNDED /* 部分已退款 */,
     REFUNDED /* 已退款 */,
 
@@ -37,7 +38,8 @@ public enum OrderStatus {
     DISPUTED /* 有争议的 */,
     CANCELLED /* 已取消 */,
     COMPLETED /* 完成 */,
-    DECLINED /* 已拒绝 */;
+    DECLINED /* 已拒绝 */,
+    CLOSED /* 关闭的 */;
 
     public static boolean isIncomplete(OrderStatus status) {
         return INCOMPLETE == status;

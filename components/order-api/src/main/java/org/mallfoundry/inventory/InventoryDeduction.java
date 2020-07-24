@@ -18,6 +18,8 @@
 
 package org.mallfoundry.inventory;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum InventoryDeduction {
     PLACED, PAID;
 
@@ -27,5 +29,11 @@ public enum InventoryDeduction {
 
     public boolean isPaid() {
         return this == PAID;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }
