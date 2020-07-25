@@ -218,6 +218,7 @@ public abstract class OrderSupport implements MutableOrder {
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。
         this.setRefundStatus(AWAITING_REFUND);
+        this.setRefundedTime(new Date());
         return refund;
     }
 
@@ -252,6 +253,7 @@ public abstract class OrderSupport implements MutableOrder {
         } else if (DecimalUtils.equals(zero, totalRefundingAmount)) {
             this.setRefundStatus(PARTIALLY_REFUNDED);
         }
+        this.setRefundedTime(DecimalUtils.equals(zero, totalRefundAmount) ? null : new Date());
     }
 
     @Override

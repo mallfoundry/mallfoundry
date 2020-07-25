@@ -269,6 +269,8 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     Date getClosedTime();
 
+    Date getRefundedTime();
+
     void discounts(Map<String, BigDecimal> amounts);
 
     void discountShippingCosts(Map<String, BigDecimal> shippingCosts);

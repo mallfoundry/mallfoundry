@@ -53,4 +53,6 @@ public interface MutableOrder extends Order {
     void setSignedTime(Date signedTime);
 
     void setReceivedTime(Date receivedTime);
+
+    void setRefundedTime(Date refundedTime);
 }
