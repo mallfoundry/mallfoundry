@@ -34,6 +34,14 @@ public interface OrderRefundItem extends ObjectBuilder.ToBuilder<OrderRefundItem
 
     void setId(String id);
 
+    String getProductId();
+
+    void setProductId(String productId);
+
+    String getVariantId();
+
+    void setVariantId(String variantId);
+
     String getItemId();
 
     void setItemId(String itemId);

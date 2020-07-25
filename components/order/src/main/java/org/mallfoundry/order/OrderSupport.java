@@ -198,12 +198,22 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
+    /**
+     * 申请商品订单项退款，设置退款订单项的商品和商品变体标识。
+     */
+    private void applyItemRefund(OrderRefundItem item) {
+        var oItem = this.requiredItem(item.getItemId());
+        item.setProductId(oItem.getProductId());
+        item.setVariantId(oItem.getVariantId());
+        oItem.applyRefund(item.getAmount());
+    }
+
     @Override
     public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
         if (this.unpaid()) {
             throw OrderExceptions.unpaid();
         }
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).applyRefund(item.getAmount()));
+        refund.getItems().forEach(this::applyItemRefund);
         refund.apply();
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。

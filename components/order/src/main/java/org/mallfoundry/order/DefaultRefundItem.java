@@ -30,6 +30,8 @@ import java.util.List;
 @NoArgsConstructor
 public class DefaultRefundItem extends OrderRefundItemSupport {
     private String id;
+    private String productId;
+    private String variantId;
     private String itemId;
     private ItemStatus itemStatus;
     private String name;
