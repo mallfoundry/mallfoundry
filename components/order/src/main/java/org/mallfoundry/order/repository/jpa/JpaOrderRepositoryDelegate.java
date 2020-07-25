@@ -83,8 +83,17 @@ public interface JpaOrderRepositoryDelegate
     }
 
     default SliceList<JpaOrder> findAll(OrderQuery orderQuery) {
+        var sort = Objects.nonNull(orderQuery.getSort())
+                ? Sort.by(
+                orderQuery.getSort().getOrders().stream()
+                        .map(aOrder -> aOrder.isAscending()
+                                ? Sort.Order.asc(aOrder.getProperty())
+                                : Sort.Order.desc(aOrder.getProperty()))
+                        .toArray(Sort.Order[]::new))
+                : Sort.by(Sort.Order.desc("placedTime"));
+
         Page<JpaOrder> page = this.findAll(this.createSpecification(orderQuery),
-                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), Sort.by(Sort.Order.desc("placedTime"))));
+                PageRequest.of(orderQuery.getPage() - 1, orderQuery.getLimit(), sort));
         return PageList.of(page.getContent()).page(orderQuery.getPage()).limit(orderQuery.getLimit()).totalSize(page.getTotalElements());
     }
 

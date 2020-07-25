@@ -113,9 +113,10 @@ public class OrderResourceV1 {
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                       @RequestParam(name = "placed_time_min", required = false) Date placeTimeMin,
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                      @RequestParam(name = "placed_time_max", required = false) Date placedTimeMax) {
+                                      @RequestParam(name = "placed_time_max", required = false) Date placedTimeMax,
+                                      @RequestParam(name = "sort", required = false) String sort) {
         return this.orderService.getOrders(this.orderService.createOrderQuery().toBuilder()
-                .page(page).limit(limit)
+                .page(page).limit(limit).sort(aSort -> aSort.from(sort))
                 .ids(ids)
                 .customerId(customerId).storeId(storeId)
                 .statuses(() ->
