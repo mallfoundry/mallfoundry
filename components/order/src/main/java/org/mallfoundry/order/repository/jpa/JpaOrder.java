@@ -184,6 +184,9 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "closed_time_")
     private Date closedTime;
 
+    @Column(name = "refunded_time_")
+    private Date refundedTime;
+
     public JpaOrder(String id) {
         this.setId(id);
     }
