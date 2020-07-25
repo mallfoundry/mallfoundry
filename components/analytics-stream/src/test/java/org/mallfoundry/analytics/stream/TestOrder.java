@@ -78,6 +78,7 @@ public class TestOrder implements Order {
     private Date receivedTime;
     private Date cancelledTime;
     private Date closedTime;
+    private Date refundedTime;
 
     @Override
     public boolean isPlacingExpired() {
