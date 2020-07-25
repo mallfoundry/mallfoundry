@@ -50,6 +50,10 @@ public interface Sort {
         void setProperty(String property);
 
         Direction getDirection();
+
+        boolean isAscending();
+
+        boolean isDescending();
     }
 
 }

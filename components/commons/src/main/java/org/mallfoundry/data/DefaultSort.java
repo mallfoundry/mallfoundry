@@ -20,6 +20,7 @@ package org.mallfoundry.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.util.CaseUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,9 +41,9 @@ public class DefaultSort implements Sort {
                     if (str.contains(":")) {
                         var propertyAndDirection = str.split(":");
                         var direction = Direction.valueOf(propertyAndDirection[1].toUpperCase());
-                        return new DefaultOrder(propertyAndDirection[0], direction);
+                        return new DefaultOrder(CaseUtils.camelCase(propertyAndDirection[0]), direction);
                     } else {
-                        return new DefaultOrder(str, Direction.ASC);
+                        return new DefaultOrder(CaseUtils.camelCase(str), Direction.ASC);
                     }
                 })
                 .forEach(this.orders::add);
@@ -88,6 +89,15 @@ public class DefaultSort implements Sort {
         public String toString() {
             return String.format("%s %s", property, direction);
         }
-    }
 
+        @Override
+        public boolean isAscending() {
+            return Direction.ASC.equals(this.direction);
+        }
+
+        @Override
+        public boolean isDescending() {
+            return Direction.DESC.equals(this.direction);
+        }
+    }
 }
