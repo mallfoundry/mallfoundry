@@ -22,6 +22,11 @@ import org.mallfoundry.util.Position;
 
 import java.math.BigDecimal;
 
+/**
+ * 商品订单事务对象，用于记录商品订单的操作日志。比如：支付相关的流程、退款相关的流程等。
+ *
+ * @author Zhi Tang
+ */
 public interface OrderTransaction extends Position {
 
     String getId();
@@ -31,6 +36,12 @@ public interface OrderTransaction extends Position {
     TransactionEvent getEvent();
 
     BigDecimal getAmount();
+
+    String getMessage();
+
+    String getOperator();
+
+    String getOperatorId();
 
     long getTimestamp();
 
