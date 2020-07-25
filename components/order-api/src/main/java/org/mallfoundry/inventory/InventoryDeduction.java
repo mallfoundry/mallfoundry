@@ -20,8 +20,20 @@ package org.mallfoundry.inventory;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * 商品库存扣减方式，用于订单模块与商品模块集成时扣减商品库存数量的方式。
+ *
+ * @author Zhi Tang
+ */
 public enum InventoryDeduction {
-    PLACED, PAID;
+    /**
+     * 下单后扣减商品库存。
+     */
+    PLACED,
+    /**
+     * 支付后扣减商品库存。
+     */
+    PAID;
 
     public boolean isPlaced() {
         return this == PLACED;
