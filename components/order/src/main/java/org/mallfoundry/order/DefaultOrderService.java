@@ -425,4 +425,9 @@ public class DefaultOrderService implements OrderService {
         this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getTotalAmount());
         this.orderRepository.save(order);
     }
+
+    @Override
+    public Optional<OrderRefund> getOrderRefund(String orderId, String refundId) {
+        return this.requiredOrder(orderId).getRefund(refundId);
+    }
 }

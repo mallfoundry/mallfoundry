@@ -241,4 +241,10 @@ public class OrderResourceV1 {
         var refund = request.assignTo(this.orderService.createOrder(orderId).createRefund(null));
         this.orderService.activeOrderRefund(orderId, refund);
     }
+
+    @GetMapping("/orders/{order_id}/refunds/{refund_id}")
+    public Optional<OrderRefund> getOrderRefund(@PathVariable("order_id") String orderId,
+                                                @PathVariable("refund_id") String refundId) {
+        return this.orderService.getOrderRefund(orderId, refundId);
+    }
 }

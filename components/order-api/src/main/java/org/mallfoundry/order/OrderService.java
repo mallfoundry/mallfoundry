@@ -113,4 +113,6 @@ public interface OrderService {
     void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason);
 
     void activeOrderRefund(String orderId, OrderRefund refund);
+
+    Optional<OrderRefund> getOrderRefund(String orderId, String refundId);
 }
