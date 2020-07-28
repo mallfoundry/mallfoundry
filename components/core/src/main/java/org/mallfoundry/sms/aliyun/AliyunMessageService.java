@@ -19,25 +19,40 @@
 package org.mallfoundry.sms.aliyun;
 
 import com.aliyuncs.CommonRequest;
-import com.aliyuncs.CommonResponse;
+import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
+import com.aliyuncs.profile.DefaultProfile;
+import lombok.Setter;
 import org.mallfoundry.sms.AbstractMessageService;
 import org.mallfoundry.sms.Message;
 import org.mallfoundry.sms.MessageException;
 import org.mallfoundry.util.JsonUtils;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class AliyunMessageService extends AbstractMessageService {
+public class AliyunMessageService extends AbstractMessageService implements InitializingBean {
+    @Setter
+    private String accessKeyId;
+    @Setter
+    private String accessKeySecret;
+    @Setter
+    private String sysDomain;
+    @Setter
+    private String sysVersion;
+    @Setter
+    private String regionId;
 
-    private final IAcsClient client;
+    private IAcsClient client;
 
-    public AliyunMessageService(IAcsClient client) {
-        this.client = client;
+    @Override
+    public void afterPropertiesSet() {
+        var profile = DefaultProfile.getProfile(this.regionId, this.accessKeyId, this.accessKeySecret);
+        this.client = new DefaultAcsClient(profile);
     }
 
     @Override
@@ -45,9 +60,10 @@ public class AliyunMessageService extends AbstractMessageService {
 
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
-        request.setSysDomain("dysmsapi.aliyuncs.com");
-        request.setSysVersion("2017-05-25");
+        request.setSysDomain(this.sysDomain);
+        request.setSysVersion(this.sysVersion);
         request.setSysAction("SendSms");
+        request.putQueryParameter("RegionId", this.regionId);
         request.putQueryParameter("PhoneNumbers", message.getMobile());
 
         if (Objects.nonNull(message.getTemplate())) {
@@ -69,8 +85,7 @@ public class AliyunMessageService extends AbstractMessageService {
         }
 
         try {
-            CommonResponse response = this.client.getCommonResponse(request);
-            System.out.println(response.getData());
+            this.client.getCommonResponse(request);
         } catch (ClientException e) {
             throw new MessageException(e);
         }

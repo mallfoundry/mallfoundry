@@ -40,10 +40,11 @@ public class SmsProperties {
     @Getter
     @Setter
     static class Aliyun {
-
         private String accessKeyId;
-
         private String accessKeySecret;
+        private String regionId;
+        private String sysDomain = "dysmsapi.aliyuncs.com";
+        private String sysVersion = "2017-05-25";
     }
 
 }

@@ -18,11 +18,7 @@
 
 package org.mallfoundry.autoconfigure.sms;
 
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.profile.DefaultProfile;
 import org.mallfoundry.sms.aliyun.AliyunMessageService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -32,12 +28,16 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(SmsProperties.class)
 public class SmsAutoConfiguration {
 
-    @ConditionalOnClass(IAcsClient.class)
     @ConditionalOnProperty(prefix = "mall.sms", name = "type", havingValue = "aliyun")
     @Bean
     public AliyunMessageService aliyunMessageService(SmsProperties properties) {
         var aliyun = properties.getAliyun();
-        var profile = DefaultProfile.getProfile("", aliyun.getAccessKeyId(), aliyun.getAccessKeySecret());
-        return new AliyunMessageService(new DefaultAcsClient(profile));
+        var service = new AliyunMessageService();
+        service.setAccessKeyId(aliyun.getAccessKeyId());
+        service.setAccessKeySecret(aliyun.getAccessKeySecret());
+        service.setRegionId(aliyun.getRegionId());
+        service.setSysDomain(aliyun.getSysDomain());
+        service.setSysVersion(aliyun.getSysVersion());
+        return service;
     }
 }
