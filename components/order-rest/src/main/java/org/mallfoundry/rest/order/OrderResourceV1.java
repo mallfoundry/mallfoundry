@@ -216,7 +216,7 @@ public class OrderResourceV1 {
         return this.orderService.applyOrderRefund(orderId, refund);
     }
 
-    @DeleteMapping("/orders/{order_id}/refunds/{refund_id}")
+    @DeleteMapping("/orders/{order_id}/refunds/{refund_id}/cancel")
     public void cancelOrderRefund(@PathVariable("order_id") String orderId,
                                   @PathVariable("refund_id") String refundId) {
         this.orderService.cancelOrderRefund(orderId, refundId);
