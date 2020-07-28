@@ -111,12 +111,24 @@ public abstract class OrderSupport implements MutableOrder {
             shipment.setShippingAddress(this.getShippingAddress());
         }
         shipment.getItems().forEach(item -> {
-            var orderItem = this.requiredItem(item.getProductId(), item.getVariantId());
+            var oItem =
+                    Objects.isNull(item.getItemId())
+                            ? this.requiredItem(item.getProductId(), item.getVariantId())
+                            : this.requiredItem(item.getItemId());
             if (Objects.isNull(item.getName())) {
-                item.setName(orderItem.getName());
+                item.setName(oItem.getName());
             }
             if (Objects.isNull(item.getImageUrl())) {
-                item.setImageUrl(orderItem.getImageUrl());
+                item.setImageUrl(oItem.getImageUrl());
+            }
+            if (Objects.isNull(item.getItemId())) {
+                item.setItemId(oItem.getId());
+            }
+            if (Objects.isNull(item.getProductId())) {
+                item.setProductId(oItem.getProductId());
+            }
+            if (Objects.isNull(item.getVariantId())) {
+                item.setVariantId(oItem.getVariantId());
             }
         });
 
