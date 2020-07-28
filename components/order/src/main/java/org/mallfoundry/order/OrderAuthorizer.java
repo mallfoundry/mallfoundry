@@ -190,13 +190,16 @@ public class OrderAuthorizer implements OrderProcessor {
         return refund;
     }
 
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_READ + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "') or "
+            + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REFUND_READ + ","
+            + OrderAuthorities.ORDER_REFUND_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public void preProcessSucceedOrderRefund(Order order, OrderRefund refund) {
-
-    }
-
-    @Override
-    public String preProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
-        return failReason;
+    public OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
+        return refund;
     }
 }

@@ -125,6 +125,11 @@ public interface OrderProcessor {
         return failReason;
     }
 
+    default OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+
     default void postProcessAfterCompletion() {
     }
 }

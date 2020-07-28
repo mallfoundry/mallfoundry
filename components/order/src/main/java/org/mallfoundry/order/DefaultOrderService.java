@@ -428,6 +428,8 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public Optional<OrderRefund> getOrderRefund(String orderId, String refundId) {
-        return this.requiredOrder(orderId).getRefund(refundId);
+        var order = this.requiredOrder(orderId);
+        return order.getRefund(refundId)
+                .map(refund -> this.processorsInvoker.invokePostProcessGetOrderRefund(order, refund));
     }
 }

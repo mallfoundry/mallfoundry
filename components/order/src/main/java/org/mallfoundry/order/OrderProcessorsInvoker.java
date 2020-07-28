@@ -149,6 +149,11 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, failReason, function);
     }
 
+    public OrderRefund invokePostProcessGetOrderRefund(Order order, OrderRefund refund) {
+        BiFunction<OrderProcessor, OrderRefund, OrderRefund> function = (orderProcessor, identity) -> orderProcessor.postProcessGetOrderRefund(order, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, function);
+    }
+
     public void invokePostProcessAfterCompletion() {
         ProcessorsInvoker.invokeConsumerProcessors(this.processors, OrderProcessor::postProcessAfterCompletion);
     }
