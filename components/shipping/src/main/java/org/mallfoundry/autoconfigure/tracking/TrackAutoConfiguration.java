@@ -27,12 +27,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(TrackerProperties.class)
-public class TrackerAutoConfiguration {
+@EnableConfigurationProperties(TrackProperties.class)
+public class TrackAutoConfiguration {
 
-    private final TrackerProperties properties;
+    private final TrackProperties properties;
 
-    public TrackerAutoConfiguration(TrackerProperties properties) {
+    public TrackAutoConfiguration(TrackProperties properties) {
         this.properties = properties;
     }
 

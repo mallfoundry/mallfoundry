@@ -16,40 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.tracking;
+package org.mallfoundry.shipping.rate;
 
+public interface RateProcessor {
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
-
-// mall.tracker.kdniao.e-business-id
-// mall.tracker.kdniao.api-key
-// mall.tracker.kdniao.url
-// mall.tracker.kuaidi100.customer-id
-// mall.tracker.kuaidi100.api-key
-// mall.tracker.kuaidi100.url
-//
-@Getter
-@Setter
-@ConfigurationProperties("mall.tracker")
-public class TrackerProperties {
-
-    TrackingType type;
-
-    @NestedConfigurationProperty
-    private Kdniao kdniao;
-
-    @Getter
-    @Setter
-    static class Kdniao {
-        private String url;
-        private String eBusinessId;
-        private String apiKey;
+    default Rate preProcessAddRate(Rate rate) {
+        return rate;
     }
 
-    enum TrackingType {
-        KDNIAO
+    default Rate preProcessUpdateRate(Rate rate) {
+        return rate;
+    }
+
+    default Rate preProcessDeleteRate(Rate rate) {
+        return rate;
+    }
+
+    default Rate postProcessGetRate(Rate rate) {
+        return rate;
+    }
+
+    default RateQuery preProcessGetRates(RateQuery query) {
+        return query;
     }
 }

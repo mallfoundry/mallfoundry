@@ -23,16 +23,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class DefaultRateService implements RateService {
 
-//    private static final String RATE_ID_VALUE_NAME = "shipping.rate.id";
-//    private static final String ZONE_ID_VALUE_NAME = "shipping.zone.id";
+    private final RateProcessorsInvoker processorsInvoker;
 
     private final RateRepository rateRepository;
 
-    public DefaultRateService(RateRepository rateRepository) {
+    public DefaultRateService(RateProcessorsInvoker processorsInvoker, RateRepository rateRepository) {
+        this.processorsInvoker = processorsInvoker;
         this.rateRepository = rateRepository;
     }
 
@@ -49,22 +50,33 @@ public class DefaultRateService implements RateService {
     @Transactional
     @Override
     public Rate addRate(Rate rate) {
-        return this.rateRepository.save(rate);
+        return Function.<Rate>identity()
+                .compose(this.rateRepository::save)
+                .compose(this.processorsInvoker::invokePreProcessAddRate)
+                .apply(rate);
     }
 
+    @Transactional
     @Override
     public Rate updateRate(Rate rate) {
-        return this.rateRepository.save(rate);
+        return Function.<Rate>identity()
+                .compose(this.rateRepository::save)
+                .compose(this.processorsInvoker::invokePreProcessUpdateRate)
+                .apply(rate);
     }
 
     @Override
     public Optional<Rate> getRate(String rateId) {
-        return this.rateRepository.findById(rateId);
+        return this.rateRepository.findById(rateId)
+                .map(this.processorsInvoker::invokePostProcessGetRate);
     }
 
     @Override
     public SliceList<Rate> getRates(RateQuery query) {
-        return this.rateRepository.findAll(query);
+        return Function.<SliceList<Rate>>identity()
+                .compose(this.rateRepository::findAll)
+                .compose(this.processorsInvoker::invokePreProcessGetRates)
+                .apply(query);
     }
 
     private Rate requiredRate(String rateId) {
@@ -74,7 +86,10 @@ public class DefaultRateService implements RateService {
     @Transactional
     @Override
     public void deleteRate(String rateId) {
-        var rate = this.requiredRate(rateId);
+        var rate = Function.<Rate>identity()
+                .compose(this.processorsInvoker::invokePreProcessDeleteRate)
+                .compose(this::requiredRate)
+                .apply(rateId);
         this.rateRepository.delete(rate);
     }
 }
