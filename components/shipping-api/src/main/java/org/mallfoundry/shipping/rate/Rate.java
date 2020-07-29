@@ -18,9 +18,17 @@
 
 package org.mallfoundry.shipping.rate;
 
+import org.mallfoundry.shipping.Address;
+
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * 运费价格对象，用于计算不同地区，不同数量的商品价格。
+ *
+ * @author Zhi Tang
+ */
 public interface Rate {
 
     String getId();
@@ -35,6 +43,10 @@ public interface Rate {
 
     void setMode(RateMode mode);
 
+    Zone createZone(String zoneId);
+
+    Optional<Zone> getZone(String zoneId);
+
     List<Zone> getZones();
 
     void setZones(List<Zone> zones);
@@ -48,4 +60,13 @@ public interface Rate {
     BigDecimal getMinimumCost();
 
     BigDecimal getMaximumCost();
+
+    /**
+     * 根据发货地址和数额计算报价。
+     *
+     * @param address 地址对象
+     * @param amount  数额
+     * @return 报价
+     */
+    BigDecimal calculateQuote(Address address, BigDecimal amount);
 }

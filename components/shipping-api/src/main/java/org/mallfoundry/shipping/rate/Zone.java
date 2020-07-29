@@ -18,10 +18,12 @@
 
 package org.mallfoundry.shipping.rate;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface Zone {
+public interface Zone extends ObjectBuilder.ToBuilder<Zone.Builder> {
 
     String getId();
 
@@ -33,19 +35,46 @@ public interface Zone {
 
     void setLocations(List<String> locations);
 
+    boolean containsLocation(String location);
+
     BigDecimal getFirstCost();
 
-    void setFirstCost(BigDecimal cost);
+    void setFirstCost(BigDecimal firstCost);
 
     BigDecimal getFirst();
 
     void setFirst(BigDecimal amount);
 
+    BigDecimal getAdditional();
+
+    void setAdditional(BigDecimal amount);
+
     BigDecimal getAdditionalCost();
 
     void setAdditionalCost(BigDecimal cost);
 
-    BigDecimal getAdditional();
+    BigDecimal calculateCost(BigDecimal amount);
 
-    void setAdditional(BigDecimal amount);
+    interface Builder extends ObjectBuilder<Zone> {
+
+        Builder name(String name);
+
+        Builder locations(List<String> locations);
+
+        Builder first(BigDecimal firstAmount);
+
+        Builder firstCost(BigDecimal firstCost);
+
+        Builder additional(BigDecimal additionalAmount);
+
+        Builder additionalCost(BigDecimal additionalCost);
+
+        Builder first(double firstAmount);
+
+        Builder firstCost(double firstCost);
+
+        Builder additional(double additionalAmount);
+
+        Builder additionalCost(double additionalCost);
+    }
 }

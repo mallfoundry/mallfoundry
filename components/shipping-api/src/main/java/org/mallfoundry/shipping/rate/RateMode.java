@@ -20,8 +20,19 @@ package org.mallfoundry.shipping.rate;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * 运费计价方式。
+ *
+ * @author Zhi Tang
+ */
 public enum RateMode {
+    /**
+     * 按件计价。
+     */
     PACKAGE,
+    /**
+     * 按重量计价。
+     */
     WEIGHT;
 
     @JsonValue
