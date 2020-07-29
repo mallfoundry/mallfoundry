@@ -20,8 +20,8 @@ package org.mallfoundry.rest.shipping;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
-import org.mallfoundry.shipping.TrackService;
+import org.mallfoundry.shipping.tracking.Track;
+import org.mallfoundry.shipping.tracking.TrackService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
