@@ -37,4 +37,6 @@ public interface RateService {
     SliceList<Rate> getRates(RateQuery query);
 
     void deleteRate(String rateId);
+
+//    BigDecimal calculateQuote(String rateId, Address address, BigDecimal amount);
 }

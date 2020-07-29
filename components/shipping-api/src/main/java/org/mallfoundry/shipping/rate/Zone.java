@@ -27,6 +27,8 @@ public interface Zone extends ObjectBuilder.ToBuilder<Zone.Builder> {
 
     String getId();
 
+    void setId(String id);
+
     String getName();
 
     void setName(String name);
