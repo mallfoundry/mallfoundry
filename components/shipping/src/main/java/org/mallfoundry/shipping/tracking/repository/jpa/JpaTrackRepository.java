@@ -16,12 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping.tracking.repository.jpa;
 
-import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
+import org.mallfoundry.shipping.tracking.TrackRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TrackProvider {
-
-    Track getTracker(CarrierCode carrier, String trackingNumber);
+@Repository
+public interface JpaTrackRepository
+        extends JpaRepository<InternalTrack, InternalTrackId>,
+        TrackRepository {
 }

@@ -16,19 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.shipping.rate.repository.jpa;
 
-import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.shipping.rate.Zone;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
+import org.mallfoundry.shipping.rate.ZoneSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_shipping_zone")
-public class InternalZone implements Zone {
+public class JpaZone extends ZoneSupport {
     @Id
     @Column(name = "id_")
     private String id;
@@ -46,9 +45,8 @@ public class InternalZone implements Zone {
     @Column(name = "name_")
     private String name;
 
-    @Lob
     @Convert(converter = StringListConverter.class)
-    @Column(name = "locations_")
+    @Column(name = "locations_", length = 1024 * 2)
     private List<String> locations;
 
     @Column(name = "first_cost_")
@@ -63,7 +61,7 @@ public class InternalZone implements Zone {
     @Column(name = "additional_")
     private BigDecimal additional;
 
-    public InternalZone(String id) {
+    public JpaZone(String id) {
         this.id = id;
     }
 }

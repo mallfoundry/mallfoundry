@@ -16,7 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking.provider;
+package org.mallfoundry.shipping.tracking;
 
-public class Kuaidi100TrackProvider {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.shipping.tracking.TrackingEvent;
+import org.mallfoundry.shipping.tracking.TrackingStatus;
+
+import java.util.Date;
+
+@Getter
+@Setter
+public class DefaultTrackingEvent implements TrackingEvent {
+    private TrackingStatus status;
+    private String message;
+    private Date occurredTime;
+
+    @Override
+    public int compareTo(TrackingEvent o) {
+        return this.getOccurredTime().compareTo(o.getOccurredTime());
+    }
 }

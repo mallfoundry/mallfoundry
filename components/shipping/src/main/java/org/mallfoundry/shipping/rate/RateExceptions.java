@@ -16,14 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.shipping.rate;
 
-import java.util.Optional;
-
-public interface RateRepository {
-
-    InternalRate save(InternalRate rate);
-
-    Optional<InternalRate> findById(String id);
-
+public abstract class RateExceptions {
+    public static RateException notFound() {
+        return new RateException(RateMessages.notFound());
+    }
 }

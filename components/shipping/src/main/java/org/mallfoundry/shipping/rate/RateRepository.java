@@ -16,14 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping.rate;
+
+import org.mallfoundry.data.SliceList;
 
 import java.util.Optional;
 
-public interface TrackRepository {
+public interface RateRepository {
 
-    Optional<InternalTrack> findById(InternalTrackId id);
+    Rate create(String id);
 
-    InternalTrack save(InternalTrack tracker);
+    Rate save(Rate rate);
 
+    Optional<Rate> findById(String id);
+
+    SliceList<Rate> findAll(RateQuery query);
+
+    void delete(Rate rate);
 }

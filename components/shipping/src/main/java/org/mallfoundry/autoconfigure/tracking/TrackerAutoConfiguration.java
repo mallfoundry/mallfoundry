@@ -18,8 +18,8 @@
 
 package org.mallfoundry.autoconfigure.tracking;
 
-import org.mallfoundry.tracking.TrackProvider;
-import org.mallfoundry.tracking.provider.KdniaoTrackProvider;
+import org.mallfoundry.shipping.tracking.TrackProvider;
+import org.mallfoundry.shipping.tracking.provider.KdniaoTrackProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

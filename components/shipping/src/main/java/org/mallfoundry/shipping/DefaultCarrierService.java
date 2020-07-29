@@ -16,18 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.carrier;
+package org.mallfoundry.shipping;
 
-import org.mallfoundry.shipping.Carrier;
-import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.CarrierService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class InternalCarrierService implements CarrierService {
+public class DefaultCarrierService implements CarrierService {
 
     @Override
     public Carrier createCarrier(String code, String name) {
@@ -37,9 +34,9 @@ public class InternalCarrierService implements CarrierService {
     @Override
     public List<Carrier> getCarriers() {
         return List.of(
-                new InternalCarrier("申通快递", CarrierCode.STO),
-                new InternalCarrier("中通快递", CarrierCode.ZTO),
-                new InternalCarrier("圆通快递", CarrierCode.YTO));
+                new DefaultCarrier("申通快递", CarrierCode.STO),
+                new DefaultCarrier("中通快递", CarrierCode.ZTO),
+                new DefaultCarrier("圆通快递", CarrierCode.YTO));
     }
 
     @Override

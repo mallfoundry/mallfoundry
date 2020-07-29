@@ -16,13 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.shipping.rate.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.shipping.rate.Rate;
 import org.mallfoundry.shipping.rate.RateMode;
+import org.mallfoundry.shipping.rate.RateSupport;
 import org.mallfoundry.shipping.rate.Zone;
 import org.springframework.beans.BeanUtils;
 
@@ -43,7 +44,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_shipping_rate")
-public class InternalRate implements Rate {
+public class JpaRate extends RateSupport {
 
     @Id
     @Column(name = "id_")
@@ -58,47 +59,38 @@ public class InternalRate implements Rate {
     @Column(name = "mode_")
     private RateMode mode;
 
-    @OneToMany(targetEntity = InternalZone.class,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = JpaZone.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "rate_id_")
     private List<Zone> zones = new ArrayList<>();
 
     @Column(name = "enabled_")
     private boolean enabled;
 
-    public InternalRate(String id, String storeId) {
+    public JpaRate(String id) {
         this.id = id;
-        this.storeId = storeId;
     }
 
-    public static InternalRate of(Rate rate) {
-        if (rate instanceof InternalRate) {
-            return (InternalRate) rate;
+    public static JpaRate of(Rate rate) {
+        if (rate instanceof JpaRate) {
+            return (JpaRate) rate;
         }
-        var target = new InternalRate();
+        var target = new JpaRate();
         BeanUtils.copyProperties(rate, target);
         return target;
     }
 
     @Override
     public BigDecimal getMinimumCost() {
-        return this.getZones().stream()
-                .map(Zone::getFirstCost)
-                .min(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
+        return this.getZones().stream().map(Zone::getFirstCost).min(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
     }
 
     @Override
     public BigDecimal getMaximumCost() {
-        return this.getZones().stream()
-                .map(Zone::getFirstCost)
-                .max(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
+        return this.getZones().stream().map(Zone::getFirstCost).max(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
     }
 
     @Override
-    public void addZone(Zone zone) {
-        this.getZones().add(zone);
+    public Zone createZone(String zoneId) {
+        return new JpaZone(zoneId);
     }
 }

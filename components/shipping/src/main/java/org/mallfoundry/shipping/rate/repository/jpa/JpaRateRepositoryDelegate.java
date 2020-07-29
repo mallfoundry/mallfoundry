@@ -16,25 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.carrier;
+package org.mallfoundry.shipping.rate.repository.jpa;
 
-import org.mallfoundry.shipping.Carrier;
-import org.mallfoundry.shipping.CarrierCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class InternalCarrier implements Carrier {
-
-    private String name;
-
-    private CarrierCode code;
-
-    public InternalCarrier(String name, CarrierCode code) {
-        this.name = name;
-        this.code = code;
-    }
+@Repository
+public interface JpaRateRepositoryDelegate extends JpaRepository<JpaRate, String> {
 }

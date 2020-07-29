@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping.tracking.repository.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
-import org.mallfoundry.shipping.TrackingEvent;
-import org.mallfoundry.shipping.TrackingStatus;
-import org.mallfoundry.tracking.repository.jpa.convert.TrackingEventListConverter;
+import org.mallfoundry.shipping.tracking.Track;
+import org.mallfoundry.shipping.tracking.TrackingEvent;
+import org.mallfoundry.shipping.tracking.TrackingStatus;
+import org.mallfoundry.shipping.tracking.repository.jpa.convert.TrackingEventListConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -43,6 +43,14 @@ import java.util.List;
 @Table(name = "mf_shipping_track")
 @IdClass(InternalTrackId.class)
 public class InternalTrack implements Track {
+
+/*    @Id
+    @Column(name = "store_id_")
+    private String storeId;
+
+    @Id
+    @Column(name = "customer_id_")
+    private String customerId;*/
 
     @Id
     @Enumerated(EnumType.STRING)

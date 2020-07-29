@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking.provider;
+package org.mallfoundry.shipping.tracking.provider;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -25,12 +25,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
-import org.mallfoundry.shipping.TrackingEvent;
-import org.mallfoundry.shipping.TrackingStatus;
-import org.mallfoundry.tracking.InternalTrack;
-import org.mallfoundry.tracking.InternalTrackingEvent;
-import org.mallfoundry.tracking.TrackProvider;
+import org.mallfoundry.shipping.tracking.Track;
+import org.mallfoundry.shipping.tracking.TrackingEvent;
+import org.mallfoundry.shipping.tracking.TrackingStatus;
+import org.mallfoundry.shipping.tracking.repository.jpa.InternalTrack;
+import org.mallfoundry.shipping.tracking.DefaultTrackingEvent;
+import org.mallfoundry.shipping.tracking.TrackProvider;
 import org.mallfoundry.util.JsonUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -162,7 +162,7 @@ public class KdniaoTrackProvider implements TrackProvider {
             private String remark;
 
             public TrackingEvent toEvent() {
-                var event = new InternalTrackingEvent();
+                var event = new DefaultTrackingEvent();
                 try {
                     event.setOccurredTime(DateUtils.parseDate(this.acceptTime, "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
                 } catch (ParseException e) {

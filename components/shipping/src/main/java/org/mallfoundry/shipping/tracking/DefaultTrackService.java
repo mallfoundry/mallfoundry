@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping.tracking;
 
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.Track;
-import org.mallfoundry.shipping.TrackService;
+import org.mallfoundry.shipping.tracking.repository.jpa.InternalTrack;
+import org.mallfoundry.shipping.tracking.repository.jpa.InternalTrackId;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -34,6 +34,16 @@ public class DefaultTrackService implements TrackService {
                                TrackProvider trackProvider) {
         this.trackRepository = trackRepository;
         this.trackProvider = trackProvider;
+    }
+
+    @Override
+    public Track createTrack() {
+        return null;
+    }
+
+    @Override
+    public void addTrack(Track track) {
+
     }
 
     @Override

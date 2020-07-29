@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking;
+package org.mallfoundry.shipping.tracking.repository.jpa;
 
 
 import lombok.Getter;
@@ -31,9 +31,9 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 public class InternalTrackId implements Serializable {
-
+ /*   private String storeId;
+    private String customerId;*/
     private CarrierCode carrierCode;
-
     private String trackingNumber;
 
     public InternalTrackId(CarrierCode carrierCode, String trackingNumber) {

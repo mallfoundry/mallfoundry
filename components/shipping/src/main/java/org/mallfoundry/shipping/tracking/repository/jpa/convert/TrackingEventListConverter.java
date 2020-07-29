@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.tracking.repository.jpa.convert;
+package org.mallfoundry.shipping.tracking.repository.jpa.convert;
 
-import org.mallfoundry.tracking.InternalTrackingEvent;
-import org.mallfoundry.shipping.TrackingEvent;
+import org.mallfoundry.shipping.tracking.DefaultTrackingEvent;
+import org.mallfoundry.shipping.tracking.TrackingEvent;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;
@@ -34,6 +34,6 @@ public class TrackingEventListConverter implements AttributeConverter<List<Track
 
     @Override
     public List<TrackingEvent> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, InternalTrackingEvent.class);
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, DefaultTrackingEvent.class);
     }
 }
