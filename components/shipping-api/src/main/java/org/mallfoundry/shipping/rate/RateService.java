@@ -24,9 +24,13 @@ import java.util.Optional;
 
 public interface RateService {
 
+    RateQuery createRateQuery();
+
     Rate createRate(String rateId);
 
-    Rate saveRate(Rate rate);
+    Rate addRate(Rate rate);
+
+    Rate updateRate(Rate rate);
 
     Optional<Rate> getRate(String rateId);
 
