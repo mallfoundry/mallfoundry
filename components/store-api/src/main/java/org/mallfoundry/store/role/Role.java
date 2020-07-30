@@ -16,10 +16,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.role;
 
-import org.mallfoundry.util.UniqueIdentifier;
+import java.util.List;
 
-public interface StoreId extends UniqueIdentifier<String> {
+/**
+ * 店铺角色对象。
+ *
+ * @author Zhi Tang
+ */
+public interface Role {
 
+    String getId();
+
+    void setId(String id);
+
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
+    void getName();
+
+    void setName(String name);
+
+    List<String> getAuthorities();
+
+    void setAuthorities(List<String> authorities);
 }
