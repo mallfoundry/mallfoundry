@@ -28,20 +28,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class CollectionTests {
 
     @Autowired
-    private CollectionService collectionService;
+    private StoreCollectionService collectionService;
+
+    private StoreCollection createCollection(String storeId, String name) {
+        return this.collectionService.createCollection(null).toBuilder().storeId(storeId).name(name).build();
+    }
 
     @Transactional
     @Rollback(false)
     @Test
     public void testAdd() {
         var storeId = "mi";
-        collectionService.addCollection(collectionService.createCollection(storeId, "手机"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "电视/盒子"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "笔记本/路由"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "智能家电"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "儿童智能"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "耳机/音箱"));
-        collectionService.addCollection(collectionService.createCollection(storeId, "生活/箱包"));
+        collectionService.addCollection(this.createCollection(storeId, "手机"));
+        collectionService.addCollection(this.createCollection(storeId, "电视/盒子"));
+        collectionService.addCollection(this.createCollection(storeId, "笔记本/路由"));
+        collectionService.addCollection(this.createCollection(storeId, "智能家电"));
+        collectionService.addCollection(this.createCollection(storeId, "儿童智能"));
+        collectionService.addCollection(this.createCollection(storeId, "耳机/音箱"));
+        collectionService.addCollection(this.createCollection(storeId, "生活/箱包"));
     }
 
     @Test

@@ -16,43 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.util.ObjectBuilder;
-import org.mallfoundry.util.Position;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.util.List;
 
-public interface StoreCollection extends Position, ObjectBuilder.ToBuilder<StoreCollection.Builder> {
-
-    String getId();
-
-    void setId(String id);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    String getName();
-
-    void setName(String name);
-
-    int getProducts();
-
-    void setProducts(int products);
-
-    Date getCreatedTime();
-
-    void create();
-
-    interface Builder extends ObjectBuilder<StoreCollection> {
-
-        Builder id(String id);
-
-        Builder storeId(String storeId);
-
-        Builder name(String name);
-
-        Builder products(int products);
-    }
+@Repository
+public interface JpaStoreCollectionRepositoryDelegate extends JpaRepository<JpaStoreCollection, String> {
+    List<JpaStoreCollection> findAllByStoreId(String storeId);
 }

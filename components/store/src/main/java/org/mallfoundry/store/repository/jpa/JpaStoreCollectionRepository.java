@@ -18,16 +18,45 @@
 
 package org.mallfoundry.store.repository.jpa;
 
+import org.mallfoundry.store.StoreCollection;
 import org.mallfoundry.store.StoreCollectionRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface JpaStoreCollectionRepository
-        extends StoreCollectionRepository, JpaRepository<JpaStoreCollection, String> {
+public class JpaStoreCollectionRepository implements StoreCollectionRepository {
+
+    private final JpaStoreCollectionRepositoryDelegate repository;
+
+    public JpaStoreCollectionRepository(JpaStoreCollectionRepositoryDelegate repository) {
+        this.repository = repository;
+    }
 
     @Override
-    List<JpaStoreCollection> findAllByStoreId(String storeId);
+    public StoreCollection create(String id) {
+        return new JpaStoreCollection(id);
+    }
+
+    @Override
+    public StoreCollection save(StoreCollection collection) {
+        return this.repository.save(JpaStoreCollection.of(collection));
+    }
+
+    @Override
+    public void delete(StoreCollection collection) {
+        this.repository.delete(JpaStoreCollection.of(collection));
+    }
+
+    @Override
+    public Optional<StoreCollection> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public List<StoreCollection> findAllByStoreId(String storeId) {
+        return CastUtils.cast(this.repository.findAllByStoreId(storeId));
+    }
 }

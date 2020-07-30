@@ -19,8 +19,6 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.store.repository.jpa.JpaStoreCollection;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,46 +31,47 @@ public class DefaultStoreCollectionService implements StoreCollectionService {
 
     private static final String COLLECTION_ID_VALUE_NAME = "store.collection.id";
 
-    private final StoreCollectionRepository customCollectionRepository;
+    private final StoreCollectionRepository collectionRepository;
 
-    public DefaultStoreCollectionService(StoreCollectionRepository customCollectionRepository) {
-        this.customCollectionRepository = customCollectionRepository;
+    public DefaultStoreCollectionService(StoreCollectionRepository collectionRepository) {
+        this.collectionRepository = collectionRepository;
     }
 
     @Override
     public StoreCollection createCollection(String id) {
-        return new JpaStoreCollection(id);
-    }
-
-    public StoreCollection createCollection(String storeId, String name) {
-        return new JpaStoreCollection(storeId, name);
+        return this.collectionRepository.create(id);
     }
 
     @Transactional
     public StoreCollection addCollection(StoreCollection collection) {
         collection.setId(PrimaryKeyHolder.next(COLLECTION_ID_VALUE_NAME));
-        return this.customCollectionRepository.save(JpaStoreCollection.of(collection));
+        return this.collectionRepository.save(collection);
     }
 
     @Override
     public StoreCollection updateCollection(StoreCollection collection) {
-        var storedCollection = this.customCollectionRepository.findById(collection.getId()).orElseThrow();
+        var storedCollection = this.requiredCollection(collection.getId());
         if (Objects.nonNull(collection.getName())) {
             storedCollection.setName(collection.getName());
         }
-        return this.customCollectionRepository.save(storedCollection);
+        return this.collectionRepository.save(storedCollection);
+    }
+
+    private StoreCollection requiredCollection(String id) {
+        return this.collectionRepository.findById(id).orElseThrow();
     }
 
     @Transactional
     public void deleteCollection(String id) {
-        this.customCollectionRepository.deleteById(id);
+        var collection = this.requiredCollection(id);
+        this.collectionRepository.delete(collection);
     }
 
     public Optional<StoreCollection> getCollection(String id) {
-        return CastUtils.cast(this.customCollectionRepository.findById(id));
+        return this.collectionRepository.findById(id);
     }
 
     public List<StoreCollection> getCollections(String storeId) {
-        return CastUtils.cast(this.customCollectionRepository.findAllByStoreId(storeId));
+        return this.collectionRepository.findAllByStoreId(storeId);
     }
 }

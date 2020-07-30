@@ -18,8 +18,8 @@
 
 package org.mallfoundry.rest.store;
 
-import org.mallfoundry.store.CollectionService;
-import org.mallfoundry.store.CustomCollection;
+import org.mallfoundry.store.StoreCollection;
+import org.mallfoundry.store.StoreCollectionService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,17 +35,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 public class CollectionResourceV1 {
-    private final CollectionService collectionService;
+    private final StoreCollectionService collectionService;
 
-    public CollectionResourceV1(CollectionService collectionService) {
+    public CollectionResourceV1(StoreCollectionService collectionService) {
         this.collectionService = collectionService;
     }
 
     @PostMapping("/stores/{store_id}/collections")
-    public CustomCollection addCollection(@PathVariable("store_id") String storeId,
-                                          @RequestBody CollectionRequest request) {
-        var newCollection = this.collectionService.createCollection(storeId, request.getName());
-        return this.collectionService.addCollection(newCollection);
+    public StoreCollection addCollection(@PathVariable("store_id") String storeId,
+                                         @RequestBody CollectionRequest request) {
+        return this.collectionService.addCollection(
+                request.assignToCollection(
+                        this.collectionService.createCollection(null).toBuilder().storeId(storeId).build()));
     }
 
     @PutMapping("/stores/{store_id}/collections/{collection_id}")
@@ -68,7 +69,7 @@ public class CollectionResourceV1 {
     }
 
     @GetMapping("/stores/{store_id}/collections")
-    public List<CustomCollection> getCollections(@PathVariable("store_id") String storeId) {
+    public List<StoreCollection> getCollections(@PathVariable("store_id") String storeId) {
         return this.collectionService.getCollections(storeId);
     }
 

@@ -25,8 +25,6 @@ public interface StoreCollectionService {
 
     StoreCollection createCollection(String id);
 
-    StoreCollection createCollection(String storeId, String name);
-
     StoreCollection addCollection(StoreCollection collection);
 
     StoreCollection updateCollection(StoreCollection collection);
@@ -36,5 +34,4 @@ public interface StoreCollectionService {
     Optional<StoreCollection> getCollection(String id);
 
     List<StoreCollection> getCollections(String storeId);
-
 }

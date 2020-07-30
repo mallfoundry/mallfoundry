@@ -18,18 +18,18 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.store.repository.jpa.JpaStoreCollection;
-
 import java.util.List;
 import java.util.Optional;
 
 public interface StoreCollectionRepository {
 
-    JpaStoreCollection save(JpaStoreCollection collection);
+    StoreCollection create(String id);
 
-    void deleteById(String id);
+    StoreCollection save(StoreCollection collection);
 
-    Optional<JpaStoreCollection> findById(String id);
+    void delete(StoreCollection collection);
 
-    List<JpaStoreCollection> findAllByStoreId(String storeId);
+    Optional<StoreCollection> findById(String id);
+
+    List<StoreCollection> findAllByStoreId(String storeId);
 }

@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.store.StoreCollection;
+import org.mallfoundry.store.StoreCollectionSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store_collection")
-public class JpaStoreCollection implements StoreCollection {
+public class JpaStoreCollection extends StoreCollectionSupport {
 
     @Id
     @Column(name = "id_")
