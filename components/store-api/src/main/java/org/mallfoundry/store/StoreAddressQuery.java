@@ -18,11 +18,5 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.data.Query;
-
-public interface StoreAddressQuery extends Query {
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
+public interface StoreAddressQuery extends StoreQueryBase {
 }

@@ -18,11 +18,7 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.data.Query;
+import org.mallfoundry.store.StoreQueryBase;
 
-public interface StoreRoleQuery extends Query {
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
+public interface StoreRoleQuery extends StoreQueryBase {
 }

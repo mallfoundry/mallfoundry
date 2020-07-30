@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store.customer;
 
 import org.mallfoundry.store.StoreQueryBase;
 
-public interface StaffQuery extends StoreQueryBase {
+public interface StoreCustomerQuery extends StoreQueryBase {
 }
