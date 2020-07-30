@@ -34,6 +34,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -43,26 +46,31 @@ import java.util.List;
 @Table(name = "mf_store_staff")
 public class JpaStaff extends StaffSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "store_d_")
     private String storeId;
 
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
+    @NotBlank
     @Column(name = "avatar_")
     private String avatar;
 
+    @NotNull
     @OneToMany(targetEntity = JpaStoreRole.class)
     @JoinTable(name = "mf_store_staff_role",
             joinColumns =
             @JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
             inverseJoinColumns =
             @JoinColumn(name = "role_id_", referencedColumnName = "id_"))
-    private List<StoreRole> roles;
+    private List<StoreRole> roles = new ArrayList<>();
 
     public JpaStaff(String id) {
         this.id = id;
