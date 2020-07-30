@@ -20,7 +20,7 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.data.Query;
 
-public interface RoleQuery extends Query {
+public interface StoreRoleQuery extends Query {
 
     String getStoreId();
 

@@ -18,28 +18,23 @@
 
 package org.mallfoundry.store.role;
 
-import java.util.List;
+import org.mallfoundry.data.SliceList;
 
-/**
- * 店铺角色对象。
- *
- * @author Zhi Tang
- */
-public interface Role {
+import java.util.Optional;
 
-    String getId();
+public interface StoreRoleService {
 
-    void setId(String id);
+    StoreRoleQuery createRoleQuery();
 
-    String getStoreId();
+    StoreRole createRole(String roleId);
 
-    void setStoreId(String storeId);
+    StoreRole addRole(StoreRole role);
 
-    void getName();
+    StoreRole updateRole(StoreRole role);
 
-    void setName(String name);
+    void deleteRole(String roleId);
 
-    List<String> getAuthorities();
+    Optional<StoreRole> getRole(String roleId);
 
-    void setAuthorities(List<String> authorities);
+    SliceList<StoreRole> getRoles(StoreRoleQuery query);
 }
