@@ -18,38 +18,11 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.shipping.Address;
+import org.mallfoundry.data.Query;
 
-/**
- * 商家地址，包括退货地址、发货地址等。
- *
- * @author Zhi Tang
- */
-public interface StoreAddress extends Address {
+public interface StoreAddressQuery extends Query {
 
-    AddressType getType();
+    String getStoreId();
 
-    void setType(AddressType type);
-
-    boolean isPrimary();
-
-    void setPrimary(boolean primary);
-
-    boolean isActive();
-
-    void setActive(boolean active);
-
-    /**
-     * 商家地址类型。
-     */
-    enum AddressType {
-        /**
-         * 退货地址。
-         */
-        RETURN,
-        /**
-         * 发货地址。
-         */
-        SHIP
-    }
+    void setStoreId(String storeId);
 }

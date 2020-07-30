@@ -18,38 +18,23 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.shipping.Address;
+import org.mallfoundry.data.SliceList;
 
-/**
- * 商家地址，包括退货地址、发货地址等。
- *
- * @author Zhi Tang
- */
-public interface StoreAddress extends Address {
+import java.util.Optional;
 
-    AddressType getType();
+public interface StoreAddressService {
 
-    void setType(AddressType type);
+    StoreAddressQuery createAddressQuery();
 
-    boolean isPrimary();
+    StoreAddress createAddress(String addressId);
 
-    void setPrimary(boolean primary);
+    StoreAddress addAddress(StoreAddress address);
 
-    boolean isActive();
+    StoreAddress updateAddress(StoreAddress address);
 
-    void setActive(boolean active);
+    void deleteAddress(String addressId);
 
-    /**
-     * 商家地址类型。
-     */
-    enum AddressType {
-        /**
-         * 退货地址。
-         */
-        RETURN,
-        /**
-         * 发货地址。
-         */
-        SHIP
-    }
+    Optional<StoreAddress> getAddress(String addressId);
+
+    SliceList<StoreAddress> getAddresses(StoreAddressQuery query);
 }
