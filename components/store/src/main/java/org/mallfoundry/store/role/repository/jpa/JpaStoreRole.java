@@ -30,6 +30,9 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -39,19 +42,23 @@ import java.util.List;
 @Table(name = "mf_store_role")
 public class JpaStoreRole implements StoreRole {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "store_d_")
     private String storeId;
 
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
+    @NotEmpty
     @Convert(converter = StringListConverter.class)
     @Column(name = "authorities_", length = 1024 * 2)
-    private List<String> authorities;
+    private List<String> authorities = new ArrayList<>();
 
     public JpaStoreRole(String id) {
         this.id = id;
