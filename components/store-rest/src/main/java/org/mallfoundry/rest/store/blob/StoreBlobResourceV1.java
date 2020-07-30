@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobType;
-import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,22 +46,18 @@ public class StoreBlobResourceV1 {
 
     private final AntPathMatcher blobPathMatcher = new AntPathMatcher();
 
-    private final StoreService storeService;
-
     private final StoreBlobService storeBlobService;
 
-    public StoreBlobResourceV1(StoreService storeService, StoreBlobService storeBlobService) {
-        this.storeService = storeService;
+    public StoreBlobResourceV1(StoreBlobService storeBlobService) {
         this.storeBlobService = storeBlobService;
     }
 
     @PostMapping("/{store_id}/blobs/**")
     public Blob storeBlob(
-            @PathVariable("store_id") String storeIdString,
+            @PathVariable("store_id") String storeId,
             @RequestParam(required = false) String name,
             @RequestParam(name = "file", required = false) MultipartFile file,
             HttpServletRequest request) throws IOException {
-        var storeId = this.storeService.createStoreId(storeIdString);
         var bucket = this.storeBlobService.getBucket(storeId).orElseThrow();
 
         Blob storeBlob;
@@ -83,16 +78,14 @@ public class StoreBlobResourceV1 {
 
 
     @DeleteMapping("/{store_id}/blobs/**")
-    public void deleteBlob(@PathVariable("store_id") String storeIdString,
+    public void deleteBlob(@PathVariable("store_id") String storeId,
                            HttpServletRequest request) {
-        var storeId = this.storeService.createStoreId(storeIdString);
         this.storeBlobService.deleteBlob(storeId, extractBlobPath(request, null));
     }
 
     @DeleteMapping("/{store_id}/blobs/batch")
-    public void deleteBlobs(@PathVariable("store_id") String storeIdString,
+    public void deleteBlobs(@PathVariable("store_id") String storeId,
                             @RequestBody List<String> paths) {
-        var storeId = this.storeService.createStoreId(storeIdString);
         this.storeBlobService.deleteBlobs(storeId, paths);
     }
 
@@ -103,7 +96,7 @@ public class StoreBlobResourceV1 {
             @RequestParam(name = "limit", defaultValue = "20") Integer limit,
             String type, String path) {
         var typeUpper = StringUtils.upperCase(type);
-        var bucketName = this.storeBlobService.getBucketName(this.storeService.createStoreId(storeId));
+        var bucketName = this.storeBlobService.getBucketName(storeId);
         return this.storeBlobService.getBlobs(this.storeBlobService.createBlobQuery().toBuilder()
                 .page(page).limit(limit)
                 .bucket(bucketName)
