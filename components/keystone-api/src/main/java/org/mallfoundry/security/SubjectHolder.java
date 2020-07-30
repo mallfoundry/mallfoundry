@@ -56,4 +56,11 @@ public abstract class SubjectHolder {
     public static String getNickname() {
         return requiredPrincipal().getNickname();
     }
+
+    /**
+     * 切换到系统用户。
+     */
+    public static SystemUser switchToSystemUser() {
+        return SystemUsers.switcher().switchTo();
+    }
 }

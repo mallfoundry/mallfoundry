@@ -18,18 +18,16 @@
 
 package org.mallfoundry.security;
 
-import java.util.concurrent.Callable;
+import lombok.Getter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
-/**
- * 系统用户，用于系统级别的操作。使得当前上下文具有系统级别的权限。
- * 为了安全起见，系统用户的权限只存在于 {@link #doRun(Runnable)} 和 {@link #doCall(Callable)} 两个方法内。
- * 如果你需要执行系统级别的操作，需要在这两方法内完成。
- *
- * @author Zhi Tang
- */
-public interface SystemUser extends Subject {
+public class SystemUserAuthentication extends UsernamePasswordAuthenticationToken {
+    @Getter
+    private final Authentication suspended;
 
-    void doRun(Runnable runnable);
-
-    <V> V doCall(Callable<V> callable) throws RuntimeException;
+    public SystemUserAuthentication(Authentication suspended, SystemUser systemUser) {
+        super(systemUser, systemUser.getPassword());
+        this.suspended = suspended;
+    }
 }

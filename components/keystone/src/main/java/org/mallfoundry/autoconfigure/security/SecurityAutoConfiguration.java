@@ -16,20 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security;
+package org.mallfoundry.autoconfigure.security;
 
-import java.util.concurrent.Callable;
+import org.mallfoundry.security.SecurityContextSystemUserSwitcher;
+import org.mallfoundry.security.SystemUsers;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-/**
- * 系统用户，用于系统级别的操作。使得当前上下文具有系统级别的权限。
- * 为了安全起见，系统用户的权限只存在于 {@link #doRun(Runnable)} 和 {@link #doCall(Callable)} 两个方法内。
- * 如果你需要执行系统级别的操作，需要在这两方法内完成。
- *
- * @author Zhi Tang
- */
-public interface SystemUser extends Subject {
+@Configuration
+public class SecurityAutoConfiguration {
 
-    void doRun(Runnable runnable);
-
-    <V> V doCall(Callable<V> callable) throws RuntimeException;
+    @Bean
+    public SecurityContextSystemUserSwitcher securityContextSystemUserSwitcher() {
+        var switcher = new SecurityContextSystemUserSwitcher();
+        SystemUsers.setSwitcher(switcher);
+        return switcher;
+    }
 }
