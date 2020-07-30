@@ -20,7 +20,9 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface StoreRoleService {
 
@@ -35,6 +37,8 @@ public interface StoreRoleService {
     void deleteRole(String roleId);
 
     Optional<StoreRole> getRole(String roleId);
+
+    List<StoreRole> getRoles(Set<String> roleIds);
 
     SliceList<StoreRole> getRoles(StoreRoleQuery query);
 }

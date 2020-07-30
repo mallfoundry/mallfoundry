@@ -21,6 +21,7 @@ package org.mallfoundry.store.staff;
 import org.mallfoundry.data.SliceList;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface StaffService {
 
@@ -37,4 +38,12 @@ public interface StaffService {
     Optional<Staff> getStaff(String staffId);
 
     SliceList<Staff> getStaffs(StaffQuery query);
+
+    void addStaffRole(String staffId, String roleId);
+
+    void addStaffRoles(String staffId, Set<String> roleIds);
+
+    void removeStaffRole(String staffId, String roleId);
+
+    void removeStaffRoles(String staffId, Set<String> roleIds);
 }
