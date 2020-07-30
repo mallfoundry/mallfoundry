@@ -18,9 +18,38 @@
 
 package org.mallfoundry.store.customer;
 
+import org.mallfoundry.identity.Gender;
+
+import java.util.Date;
+import java.util.List;
+
 public interface StoreCustomer {
 
     String getId();
 
     String getStoreId();
+
+    String getCountryCode();
+
+    void setCountryCode(String countryCode);
+
+    String getMobile();
+
+    void setMobile(String mobile);
+
+    Gender getGender();
+
+    void setGender(Gender gender);
+
+    Date getBirthdate();
+
+    void setBirthdate(Date birthdate);
+
+    List<String> getTags();
+
+    void setTags(List<String> tags);
+
+    String getNotes();
+
+    void setNotes(String notes);
 }
