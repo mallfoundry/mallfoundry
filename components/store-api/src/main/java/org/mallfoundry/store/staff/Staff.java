@@ -28,7 +28,7 @@ public interface Staff {
 
     void setId(String id);
 
-    void getStoreId();
+    String getStoreId();
 
     void setStoreId(String storeId);
 

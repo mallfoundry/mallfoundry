@@ -35,7 +35,7 @@ public interface StoreRole {
 
     void setStoreId(String storeId);
 
-    void getName();
+    String getName();
 
     void setName(String name);
 
