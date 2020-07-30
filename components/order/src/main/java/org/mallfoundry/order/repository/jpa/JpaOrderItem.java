@@ -99,6 +99,9 @@ public class JpaOrderItem extends OrderItemSupport {
     @Column(name = "refunding_amount_")
     private BigDecimal refundingAmount;
 
+    @Column(name = "reviewed_")
+    private boolean reviewed;
+
     public JpaOrderItem(String itemId) {
         this.id = itemId;
     }

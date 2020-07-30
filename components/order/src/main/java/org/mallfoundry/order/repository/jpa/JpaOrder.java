@@ -25,6 +25,7 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderRefund;
+import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
@@ -114,8 +115,7 @@ public class JpaOrder extends OrderSupport {
     private List<OrderItem> items = new ArrayList<>();
 
     @Valid
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-            targetEntity = JpaOrderShipment.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderShipment.class)
     @JoinColumn(name = "order_id_")
     private List<OrderShipment> shipments = new ArrayList<>();
 
@@ -123,10 +123,17 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "refund_status_")
     private OrderStatus refundStatus;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-            targetEntity = JpaOrderRefund.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderRefund.class)
     @JoinColumn(name = "order_id_")
     private List<OrderRefund> refunds = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_status_")
+    private OrderStatus reviewStatus;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderReview.class)
+    @JoinColumn(name = "order_id_")
+    private List<OrderReview> reviews = new ArrayList<>();
 
     @Column(name = "shipped_items_")
     private int shippedItems;
@@ -202,11 +209,6 @@ public class JpaOrder extends OrderSupport {
     }
 
     @Override
-    public OrderRefund createRefund(String refundId) {
-        return new JpaOrderRefund(refundId);
-    }
-
-    @Override
     public OrderItem createItem(String itemId) {
         return new JpaOrderItem(itemId);
     }
@@ -214,5 +216,15 @@ public class JpaOrder extends OrderSupport {
     @Override
     public OrderShipment createShipment(String shipmentId) {
         return new JpaOrderShipment(shipmentId).toBuilder().shippingAddress(this.getShippingAddress()).build();
+    }
+
+    @Override
+    public OrderRefund createRefund(String refundId) {
+        return new JpaOrderRefund(refundId);
+    }
+
+    @Override
+    public OrderReview createReview(String reviewId) {
+        return new JpaOrderReview(reviewId);
     }
 }
