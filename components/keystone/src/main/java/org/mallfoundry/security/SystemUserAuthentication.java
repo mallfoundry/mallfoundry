@@ -23,11 +23,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 public class SystemUserAuthentication extends UsernamePasswordAuthenticationToken {
+
     @Getter
     private final Authentication suspended;
 
     public SystemUserAuthentication(Authentication suspended, SystemUser systemUser) {
-        super(systemUser, systemUser.getPassword());
+        super(systemUser, systemUser.getPassword(), systemUser.getAuthorities());
         this.suspended = suspended;
     }
 }
