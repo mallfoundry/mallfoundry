@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import java.util.List;
+
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class OrderMessages {
@@ -35,6 +37,8 @@ public abstract class OrderMessages {
     private static final String ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY = "order.Order.notSameCustomer";
 
     private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
+
+    private static final String ORDER_ITEM_REVIEWED_MESSAGE_CODE_KEY = "order.OrderItem.reviewed";
 
     private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
 
@@ -85,6 +89,11 @@ public abstract class OrderMessages {
     public abstract static class Item {
         public static String notFound() {
             return message(ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY, "Order item does not exist");
+        }
+
+        public static String reviewed(String itemId) {
+            return message(ORDER_ITEM_REVIEWED_MESSAGE_CODE_KEY, List.of(itemId),
+                    String.format("Order item(%s) has been reviewed", itemId));
         }
     }
 

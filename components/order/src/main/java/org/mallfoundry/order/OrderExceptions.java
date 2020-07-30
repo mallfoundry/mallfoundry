@@ -44,6 +44,10 @@ public abstract class OrderExceptions {
         public static OrderException notFound() {
             return new OrderException(OrderMessages.Item.notFound());
         }
+
+        public static OrderReviewException reviewed(String itemId) {
+            return new OrderReviewException(OrderMessages.Item.reviewed(itemId));
+        }
     }
 
     public abstract static class Shipment {
@@ -76,6 +80,12 @@ public abstract class OrderExceptions {
 
         public static OrderRefundException overApply() {
             return new OrderRefundException(OrderMessages.Refund.overApply());
+        }
+    }
+
+    public abstract static class Review {
+        public static OrderReviewException notFound() {
+            return new OrderReviewException("");
         }
     }
 }
