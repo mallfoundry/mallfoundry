@@ -28,9 +28,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 public class ProductAuthorizer implements ProductProcessor {
 
-    // hasPermission(storeId, 'storeType', 'product_write,product_manage')
-    private static final String HAS_PERMISSION_WRITE = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
-            + ProductAuthorities.PRODUCT_WRITE + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+    // hasPermission(storeId, 'storeType', 'product_add,product_manage')
+    private static final String HAS_PERMISSION_ADD = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_ADD + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
+
+    // hasPermission(storeId, 'storeType', 'product_update,product_manage')
+    private static final String HAS_PERMISSION_UPDATE = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
+            + ProductAuthorities.PRODUCT_UPDATE + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
 
     // hasPermission(storeId, 'storeType', 'product_delete,product_manage')
     private static final String HAS_PERMISSION_DELETE = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -44,13 +48,13 @@ public class ProductAuthorizer implements ProductProcessor {
     private static final String HAS_PERMISSION_UNPUBLISH = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
             + ProductAuthorities.PRODUCT_UNPUBLISH + "," + ProductAuthorities.PRODUCT_MANAGE + "')";
 
-    @PreAuthorize(HAS_PERMISSION_WRITE)
+    @PreAuthorize(HAS_PERMISSION_ADD)
     @Override
     public Product preProcessAddProduct(Product product) {
         return product;
     }
 
-    @PreAuthorize(HAS_PERMISSION_WRITE)
+    @PreAuthorize(HAS_PERMISSION_UPDATE)
     @Override
     public Product preProcessUpdateProduct(Product product) {
         return product;

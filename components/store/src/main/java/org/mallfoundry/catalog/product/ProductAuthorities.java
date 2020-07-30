@@ -20,7 +20,9 @@ package org.mallfoundry.catalog.product;
 
 public abstract class ProductAuthorities {
 
-    public static final String PRODUCT_WRITE = "product_write";
+    public static final String PRODUCT_ADD = "product_add";
+
+    public static final String PRODUCT_UPDATE = "product_update";
 
     public static final String PRODUCT_PUBLISH = "product_publish";
 
