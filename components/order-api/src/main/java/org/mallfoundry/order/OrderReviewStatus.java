@@ -16,46 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.review;
+package org.mallfoundry.order;
 
-import java.util.Date;
-
-/**
- * 订单评价对象，当客户完成订单以后可以对订单进行评价操作。
- *
- * @author Zhi Tang
- */
-public interface OrderReview {
-
-    String getOrderId();
-
-    String getItemId();
-
-    String getProductId();
-
-    String getVariantId();
-
-    int getRating();
-
-    ReviewStatus getStatus();
-
-    boolean isAnonymous();
-
-    void anonymous();
-
-    String getReviewer();
-
-    String getReviewerId();
-
-    Date getReviewedTime();
-
-    void create();
-
-    void approve();
-
-    void disapprove();
-
-    enum ReviewStatus {
-        PENDING, APPROVED, DISAPPROVED
-    }
+public enum OrderReviewStatus {
+    PENDING, APPROVED, DISAPPROVED
 }
