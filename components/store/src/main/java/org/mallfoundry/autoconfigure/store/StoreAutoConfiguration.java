@@ -29,18 +29,32 @@ import org.mallfoundry.store.repository.jpa.JpaStoreAddressRepositoryDelegate;
 import org.mallfoundry.store.repository.jpa.JpaStoreCollectionRepository;
 import org.mallfoundry.store.repository.jpa.JpaStoreCollectionRepositoryDelegate;
 import org.mallfoundry.store.role.DefaultStoreRoleService;
+import org.mallfoundry.store.role.SmartStoreRoleValidator;
+import org.mallfoundry.store.role.StoreRoleAuthorizer;
+import org.mallfoundry.store.role.StoreRoleIdentifier;
+import org.mallfoundry.store.role.StoreRoleProcessor;
+import org.mallfoundry.store.role.StoreRoleProcessorsInvoker;
 import org.mallfoundry.store.role.StoreRoleRepository;
 import org.mallfoundry.store.role.StoreRoleService;
 import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepository;
 import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepositoryDelegate;
 import org.mallfoundry.store.staff.DefaultStaffService;
+import org.mallfoundry.store.staff.SmartStaffValidator;
+import org.mallfoundry.store.staff.StaffAuthorizer;
+import org.mallfoundry.store.staff.StaffIdentifier;
+import org.mallfoundry.store.staff.StaffProcessor;
+import org.mallfoundry.store.staff.StaffProcessorsInvoker;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepositoryDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.validation.SmartValidator;
+
+import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties(StoreProperties.class)
@@ -59,8 +73,15 @@ public class StoreAutoConfiguration {
     }
 
     @Bean
-    public DefaultStoreRoleService defaultStoreRoleService(StoreRoleRepository repository) {
-        return new DefaultStoreRoleService(repository);
+    @Autowired(required = false)
+    public StoreRoleProcessorsInvoker storeRoleProcessorsInvoker(@Lazy List<StoreRoleProcessor> processors) {
+        return new StoreRoleProcessorsInvoker(processors);
+    }
+
+    @Bean
+    public DefaultStoreRoleService defaultStoreRoleService(StoreRoleProcessorsInvoker processorsInvoker,
+                                                           StoreRoleRepository repository) {
+        return new DefaultStoreRoleService(processorsInvoker, repository);
     }
 
     @Bean
@@ -69,8 +90,16 @@ public class StoreAutoConfiguration {
     }
 
     @Bean
-    public DefaultStaffService defaultStaffService(StaffRepository repository, @Lazy StoreRoleService storeRoleService) {
-        return new DefaultStaffService(repository, storeRoleService);
+    @Autowired(required = false)
+    public StaffProcessorsInvoker staffProcessorsInvoker(@Lazy List<StaffProcessor> processors) {
+        return new StaffProcessorsInvoker(processors);
+    }
+
+    @Bean
+    public DefaultStaffService defaultStaffService(StaffProcessorsInvoker processorInvoker,
+                                                   @Lazy StoreRoleService storeRoleService,
+                                                   StaffRepository repository) {
+        return new DefaultStaffService(processorInvoker, storeRoleService, repository);
     }
 
     @Bean
@@ -91,5 +120,35 @@ public class StoreAutoConfiguration {
     @Bean
     public DefaultStoreCollectionService defaultStoreCollectionService(StoreCollectionRepository repository) {
         return new DefaultStoreCollectionService(repository);
+    }
+
+    @Bean
+    public StoreRoleIdentifier storeRoleIdentifier() {
+        return new StoreRoleIdentifier();
+    }
+
+    @Bean
+    public StoreRoleAuthorizer storeRoleAuthorizer() {
+        return new StoreRoleAuthorizer();
+    }
+
+    @Bean
+    public SmartStoreRoleValidator smartStoreRoleValidator(SmartValidator validator) {
+        return new SmartStoreRoleValidator(validator);
+    }
+
+    @Bean
+    public StaffIdentifier staffIdentifier() {
+        return new StaffIdentifier();
+    }
+
+    @Bean
+    public StaffAuthorizer staffAuthorizer() {
+        return new StaffAuthorizer();
+    }
+
+    @Bean
+    public SmartStaffValidator smartStaffValidator(SmartValidator validator) {
+        return new SmartStaffValidator(validator);
     }
 }
