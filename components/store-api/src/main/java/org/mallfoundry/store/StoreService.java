@@ -26,8 +26,6 @@ public interface StoreService {
 
     StoreQuery createStoreQuery();
 
-    StoreId createStoreId(String id);
-
     Store createStore(String id);
 
     Store createStore(Store store);
