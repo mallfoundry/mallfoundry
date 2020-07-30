@@ -25,4 +25,6 @@ public interface MutableOrderItem extends OrderItem {
     void setRefundedAmount(BigDecimal refundedAmount);
 
     void setRefundingAmount(BigDecimal refundingAmount);
+
+    void setReviewed(boolean reviewed);
 }
