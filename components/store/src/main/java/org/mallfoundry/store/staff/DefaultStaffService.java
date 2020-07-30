@@ -24,16 +24,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class DefaultStaffService implements StaffService {
 
-    private final StaffRepository staffRepository;
+    private final StaffProcessorsInvoker processorsInvoker;
 
     private final StoreRoleService storeRoleService;
 
-    public DefaultStaffService(StaffRepository staffRepository, StoreRoleService storeRoleService) {
-        this.staffRepository = staffRepository;
+    private final StaffRepository staffRepository;
+
+    public DefaultStaffService(StaffProcessorsInvoker processorsInvoker,
+                               StoreRoleService storeRoleService,
+                               StaffRepository staffRepository) {
+        this.processorsInvoker = processorsInvoker;
         this.storeRoleService = storeRoleService;
+        this.staffRepository = staffRepository;
     }
 
     @Override
@@ -49,13 +57,30 @@ public class DefaultStaffService implements StaffService {
     @Transactional
     @Override
     public Staff addStaff(Staff staff) {
-        return this.staffRepository.save(staff);
+        return Function.<Staff>identity()
+                .compose(this.processorsInvoker::invokePostProcessAddStaff)
+                .compose(this.staffRepository::save)
+                .compose(this.processorsInvoker::invokePreProcessAddStaff)
+                .apply(staff);
+    }
+
+    private Staff copyFrom(Staff source, Staff target) {
+        if (isNotBlank(source.getName())) {
+            target.setName(source.getName());
+        }
+        return target;
     }
 
     @Transactional
     @Override
-    public Staff updateStaff(Staff staff) {
-        return this.staffRepository.save(staff);
+    public Staff updateStaff(Staff newStaff) {
+        return Function.<Staff>identity()
+                .compose(this.processorsInvoker::invokePostProcessUpdateStaff)
+                .compose(this.staffRepository::save)
+                .<Staff>compose(target -> this.copyFrom(newStaff, target))
+                .compose(this.processorsInvoker::invokePreProcessUpdateStaff)
+                .compose(this::requiredStaff)
+                .apply(newStaff.getId());
     }
 
     private Staff requiredStaff(String staffId) {
@@ -65,7 +90,10 @@ public class DefaultStaffService implements StaffService {
     @Transactional
     @Override
     public void deleteStaff(String staffId) {
-        var staff = this.requiredStaff(staffId);
+        var staff = Function.<Staff>identity()
+                .compose(this.processorsInvoker::invokePreProcessDeleteStaff)
+                .compose(this::requiredStaff)
+                .apply(staffId);
         this.staffRepository.delete(staff);
     }
 
