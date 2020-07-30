@@ -19,42 +19,91 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.role.StoreRoleService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 public class DefaultStaffService implements StaffService {
+
+    private final StaffRepository staffRepository;
+
+    private final StoreRoleService storeRoleService;
+
+    public DefaultStaffService(StaffRepository staffRepository, StoreRoleService storeRoleService) {
+        this.staffRepository = staffRepository;
+        this.storeRoleService = storeRoleService;
+    }
+
     @Override
     public StaffQuery createStaffQuery() {
-        return null;
+        return new DefaultStaffQuery();
     }
 
     @Override
     public Staff createStaff(String staffId) {
-        return null;
+        return this.staffRepository.create(staffId);
     }
 
+    @Transactional
     @Override
     public Staff addStaff(Staff staff) {
-        return null;
+        return this.staffRepository.save(staff);
     }
 
+    @Transactional
     @Override
     public Staff updateStaff(Staff staff) {
-        return null;
+        return this.staffRepository.save(staff);
     }
 
+    private Staff requiredStaff(String staffId) {
+        return this.getStaff(staffId).orElseThrow();
+    }
+
+    @Transactional
     @Override
     public void deleteStaff(String staffId) {
-
+        var staff = this.requiredStaff(staffId);
+        this.staffRepository.delete(staff);
     }
 
     @Override
     public Optional<Staff> getStaff(String staffId) {
-        return Optional.empty();
+        return this.staffRepository.findById(staffId);
     }
 
     @Override
     public SliceList<Staff> getStaffs(StaffQuery query) {
-        return null;
+        return this.staffRepository.findAll(query);
+    }
+
+    @Transactional
+    @Override
+    public void addStaffRole(String staffId, String roleId) {
+        this.addStaffRoles(staffId, Set.of(roleId));
+    }
+
+    @Transactional
+    @Override
+    public void addStaffRoles(String staffId, Set<String> roleIds) {
+        var staff = this.requiredStaff(staffId);
+        var roles = this.storeRoleService.getRoles(roleIds);
+        staff.addRoles(roles);
+    }
+
+    @Transactional
+    @Override
+    public void removeStaffRole(String staffId, String roleId) {
+        this.removeStaffRoles(staffId, Set.of(roleId));
+    }
+
+    @Transactional
+    @Override
+    public void removeStaffRoles(String staffId, Set<String> roleIds) {
+        var staff = this.requiredStaff(staffId);
+        var roles = this.storeRoleService.getRoles(roleIds);
+        staff.removeRoles(roles);
     }
 }

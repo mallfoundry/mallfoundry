@@ -18,5 +18,12 @@
 
 package org.mallfoundry.store.staff;
 
-public class DefaultStaffQuery {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.data.QuerySupport;
+
+@Getter
+@Setter
+public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
+    private String storeId;
 }

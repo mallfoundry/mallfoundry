@@ -25,6 +25,8 @@ import org.mallfoundry.store.role.StoreRoleQuery;
 import org.mallfoundry.store.role.StoreRoleRepository;
 import org.springframework.data.util.CastUtils;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class JpaStoreRoleRepository implements StoreRoleRepository {
@@ -48,6 +50,11 @@ public class JpaStoreRoleRepository implements StoreRoleRepository {
     @Override
     public Optional<StoreRole> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public List<StoreRole> findAllById(Collection<String> ids) {
+        return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override

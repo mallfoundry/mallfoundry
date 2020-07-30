@@ -19,14 +19,12 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
 public class DefaultStoreCollectionService implements StoreCollectionService {
 
     private static final String COLLECTION_ID_VALUE_NAME = "store.collection.id";

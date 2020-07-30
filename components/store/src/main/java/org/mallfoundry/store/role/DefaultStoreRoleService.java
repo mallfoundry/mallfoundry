@@ -19,8 +19,11 @@
 package org.mallfoundry.store.role;
 
 import org.mallfoundry.data.SliceList;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class DefaultStoreRoleService implements StoreRoleService {
 
@@ -40,11 +43,13 @@ public class DefaultStoreRoleService implements StoreRoleService {
         return this.roleRepository.create(roleId);
     }
 
+    @Transactional
     @Override
     public StoreRole addRole(StoreRole role) {
         return this.roleRepository.save(role);
     }
 
+    @Transactional
     @Override
     public StoreRole updateRole(StoreRole role) {
         return this.roleRepository.save(role);
@@ -54,6 +59,7 @@ public class DefaultStoreRoleService implements StoreRoleService {
         return this.getRole(roleId).orElseThrow();
     }
 
+    @Transactional
     @Override
     public void deleteRole(String roleId) {
         var role = this.requiredRole(roleId);
@@ -63,6 +69,11 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Override
     public Optional<StoreRole> getRole(String roleId) {
         return this.roleRepository.findById(roleId);
+    }
+
+    @Override
+    public List<StoreRole> getRoles(Set<String> roleIds) {
+        return this.roleRepository.findAllById(roleIds);
     }
 
     @Override

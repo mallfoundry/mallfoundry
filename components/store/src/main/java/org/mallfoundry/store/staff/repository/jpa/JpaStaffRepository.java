@@ -24,11 +24,9 @@ import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffQuery;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class JpaStaffRepository implements StaffRepository {
 
     private final JpaStaffRepositoryDelegate repository;

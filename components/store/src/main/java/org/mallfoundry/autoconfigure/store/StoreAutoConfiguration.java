@@ -18,14 +18,32 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.store.DefaultStoreAddressService;
+import org.mallfoundry.store.DefaultStoreCollectionService;
 import org.mallfoundry.store.DefaultStoreConfiguration;
+import org.mallfoundry.store.StoreAddressRepository;
+import org.mallfoundry.store.StoreCollectionRepository;
 import org.mallfoundry.store.StoreConfiguration;
+import org.mallfoundry.store.repository.jpa.JpaStoreAddressRepository;
+import org.mallfoundry.store.repository.jpa.JpaStoreAddressRepositoryDelegate;
+import org.mallfoundry.store.repository.jpa.JpaStoreCollectionRepository;
+import org.mallfoundry.store.repository.jpa.JpaStoreCollectionRepositoryDelegate;
+import org.mallfoundry.store.role.DefaultStoreRoleService;
+import org.mallfoundry.store.role.StoreRoleRepository;
+import org.mallfoundry.store.role.StoreRoleService;
+import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepository;
+import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepositoryDelegate;
+import org.mallfoundry.store.staff.DefaultStaffService;
+import org.mallfoundry.store.staff.StaffRepository;
+import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
+import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepositoryDelegate;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
-@EnableConfigurationProperties(StoreProperties.class)
 @Configuration
+@EnableConfigurationProperties(StoreProperties.class)
 public class StoreAutoConfiguration {
 
     @Bean
@@ -33,5 +51,45 @@ public class StoreAutoConfiguration {
         var config = new DefaultStoreConfiguration();
         config.setDefaultLogo(properties.getDefaultLogo());
         return config;
+    }
+
+    @Bean
+    public JpaStoreRoleRepository jpaStoreRoleRepository(JpaStoreRoleRepositoryDelegate roleRepositoryDelegate) {
+        return new JpaStoreRoleRepository(roleRepositoryDelegate);
+    }
+
+    @Bean
+    public DefaultStoreRoleService defaultStoreRoleService(StoreRoleRepository repository) {
+        return new DefaultStoreRoleService(repository);
+    }
+
+    @Bean
+    public JpaStaffRepository jpaStaffRepository(JpaStaffRepositoryDelegate repositoryDelegate) {
+        return new JpaStaffRepository(repositoryDelegate);
+    }
+
+    @Bean
+    public DefaultStaffService defaultStaffService(StaffRepository repository, @Lazy StoreRoleService storeRoleService) {
+        return new DefaultStaffService(repository, storeRoleService);
+    }
+
+    @Bean
+    public JpaStoreAddressRepository jpaStoreAddressRepository(JpaStoreAddressRepositoryDelegate repositoryDelegate) {
+        return new JpaStoreAddressRepository(repositoryDelegate);
+    }
+
+    @Bean
+    public DefaultStoreAddressService defaultStoreAddressService(StoreAddressRepository repository) {
+        return new DefaultStoreAddressService(repository);
+    }
+
+    @Bean
+    public JpaStoreCollectionRepository jpaStoreCollectionRepository(JpaStoreCollectionRepositoryDelegate repositoryDelegate) {
+        return new JpaStoreCollectionRepository(repositoryDelegate);
+    }
+
+    @Bean
+    public DefaultStoreCollectionService defaultStoreCollectionService(StoreCollectionRepository repository) {
+        return new DefaultStoreCollectionService(repository);
     }
 }

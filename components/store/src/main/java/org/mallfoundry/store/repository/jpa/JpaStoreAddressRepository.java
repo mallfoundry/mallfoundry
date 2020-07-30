@@ -23,11 +23,9 @@ import org.mallfoundry.store.StoreAddress;
 import org.mallfoundry.store.StoreAddressQuery;
 import org.mallfoundry.store.StoreAddressRepository;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class JpaStoreAddressRepository implements StoreAddressRepository {
 
     private final JpaStoreAddressRepositoryDelegate repository;

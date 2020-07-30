@@ -20,6 +20,8 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface StoreRoleRepository {
@@ -29,6 +31,8 @@ public interface StoreRoleRepository {
     StoreRole save(StoreRole role);
 
     Optional<StoreRole> findById(String id);
+
+    List<StoreRole> findAllById(Collection<String> ids);
 
     SliceList<StoreRole> findAll(StoreRoleQuery query);
 

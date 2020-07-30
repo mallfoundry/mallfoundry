@@ -21,12 +21,10 @@ package org.mallfoundry.store.repository.jpa;
 import org.mallfoundry.store.StoreCollection;
 import org.mallfoundry.store.StoreCollectionRepository;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class JpaStoreCollectionRepository implements StoreCollectionRepository {
 
     private final JpaStoreCollectionRepositoryDelegate repository;
