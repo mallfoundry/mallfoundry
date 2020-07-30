@@ -18,19 +18,19 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.role.StoreRole;
 
 import java.util.List;
 
 public interface Staff {
 
-    void getStoreId();
-
-    void setStoreId(String storeId);
-
     String getId();
 
     void setId(String id);
+
+    void getStoreId();
+
+    void setStoreId(String storeId);
 
     StaffType getType();
 
@@ -44,13 +44,13 @@ public interface Staff {
 
     void setAvatar(String avatar);
 
-    List<Role> getRoles();
+    List<StoreRole> getRoles();
 
-    void addRole(Role role);
+    void addRole(StoreRole role);
 
-    void removeRole(Role role);
+    void removeRole(StoreRole role);
 
-    void addRoles(List<Role> roles);
+    void addRoles(List<StoreRole> roles);
 
-    void removeRoles(List<Role> roles);
+    void removeRoles(List<StoreRole> roles);
 }
