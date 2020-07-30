@@ -24,6 +24,7 @@ import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.test.StandaloneTest;
 import org.mallfoundry.test.StaticUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +58,7 @@ public class ProductTests {
         this.newProduct4();
     }
 
+    @WithUserDetails("mf_1")
     @Test
     @Rollback(false)
     @Transactional
