@@ -7,6 +7,8 @@ target/
 ### Config files ###
 application-internal.yml
 application-test.yml
+application-beta.yml
+application-remote.yml
 
 ### STS ###
 .apt_generated
