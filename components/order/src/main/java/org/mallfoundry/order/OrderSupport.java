@@ -314,6 +314,58 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
+    public boolean canReview() {
+        return this.getItems().stream().anyMatch(item -> !item.isReviewed());
+    }
+
+    @Override
+    public void addReview(OrderReview review) throws OrderReviewException {
+        var item = this.requiredItem(review.getItemId());
+        if (item.isReviewed()) {
+            throw OrderExceptions.Item.reviewed(review.getItemId());
+        }
+        item.review();
+        review.setProductId(item.getProductId());
+        review.setVariantId(item.getVariantId());
+        review.create();
+        this.getReviews().add(review);
+    }
+
+    @Override
+    public void addReviews(List<OrderReview> reviews) throws OrderReviewException {
+        reviews.forEach(this::addReview);
+    }
+
+    @Override
+    public Optional<OrderReview> getReview(String reviewId) {
+        return this.getReviews().stream().filter(review -> Objects.equals(review.getId(), reviewId)).findFirst();
+    }
+
+    public OrderReview requiredReview(String reviewId) throws OrderReviewException {
+        return this.getReview(reviewId).orElseThrow(OrderExceptions.Review::notFound);
+    }
+
+    @Override
+    public void approveReview(String reviewId) throws OrderReviewException {
+        this.requiredReview(reviewId).approve();
+    }
+
+    @Override
+    public void disapproveReview(String reviewId) throws OrderReviewException {
+        this.requiredReview(reviewId).disapprove();
+    }
+
+    @Override
+    public void approveReviews(Set<String> reviewIds) throws OrderReviewException {
+        reviewIds.forEach(this::approveReview);
+    }
+
+    @Override
+    public void disapproveReviews(Set<String> reviewIds) throws OrderReviewException {
+        reviewIds.forEach(this::disapproveReview);
+    }
+
+    @Override
     public void discounts(Map<String, BigDecimal> amounts) {
         amounts.forEach((itemId, discountAmount) -> this.requiredItem(itemId).setDiscountAmount(discountAmount));
     }
