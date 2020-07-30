@@ -18,11 +18,13 @@
 
 package org.mallfoundry.security.acl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.SetUtils;
 import org.mallfoundry.security.Subject;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
@@ -67,6 +69,10 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean hasPermission(Authentication authentication, Resource resource, Object permission) {
+        if (CollectionUtils.containsAny(authentication.getAuthorities(), AuthorityUtils.createAuthorityList("ADMIN"))) {
+            return true;
+        }
+
         var principals = this.getPrincipals(authentication);
         return this.authorizer.hasAnyPermissions(principals, resource, this.createPermissions(permission));
     }

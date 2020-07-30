@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/mall
   jackson:
     time-zone: GMT+8
     property-naming-strategy: SNAKE_CASE
@@ -13,7 +8,7 @@ spring:
       ignore-unknown: true
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
-    active: dev,internal
+    active: dev,internal,local
   application:
     name: Mall-Foundry-APP
   cache:
@@ -27,9 +22,6 @@ spring:
       org.mallfoundry.order.messages,
       org.mallfoundry.catalog.product.messages
     always-use-message-format: true
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
   liquibase:
     database-change-log-lock-table: mf_databasechangeloglock
     database-change-log-table: mf_databasechangelog
