@@ -18,39 +18,11 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.Role;
+import org.mallfoundry.data.Query;
 
-import java.util.List;
+public interface StaffQuery extends Query {
 
-public interface Staff {
-
-    void getStoreId();
+    String getStoreId();
 
     void setStoreId(String storeId);
-
-    String getId();
-
-    void setId(String id);
-
-    StaffType getType();
-
-    void setType(StaffType type);
-
-    String getName();
-
-    void setName(String name);
-
-    String getAvatar();
-
-    void setAvatar(String avatar);
-
-    List<Role> getRoles();
-
-    void addRole(Role role);
-
-    void removeRole(Role role);
-
-    void addRoles(List<Role> roles);
-
-    void removeRoles(List<Role> roles);
 }

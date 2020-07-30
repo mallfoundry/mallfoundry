@@ -18,39 +18,23 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.Role;
+import org.mallfoundry.data.SliceList;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface Staff {
+public interface StaffService {
 
-    void getStoreId();
+    StaffQuery createStaffQuery();
 
-    void setStoreId(String storeId);
+    Staff createStaff(String staffId);
 
-    String getId();
+    Staff addStaff(Staff staff);
 
-    void setId(String id);
+    Staff updateStaff(Staff staff);
 
-    StaffType getType();
+    void deleteStaff(String staffId);
 
-    void setType(StaffType type);
+    Optional<Staff> getStaff(String staffId);
 
-    String getName();
-
-    void setName(String name);
-
-    String getAvatar();
-
-    void setAvatar(String avatar);
-
-    List<Role> getRoles();
-
-    void addRole(Role role);
-
-    void removeRole(Role role);
-
-    void addRoles(List<Role> roles);
-
-    void removeRoles(List<Role> roles);
+    SliceList<Staff> getStaffs(StaffQuery query);
 }
