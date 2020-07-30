@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * 订单对象。
+ * 商品订单对象。
  *
  * @author Zhi Tang
  */
@@ -203,6 +203,46 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      * @throws OrderRefundException 订单退款对象不存在
      */
     void failRefund(String refundId, String failReason) throws OrderRefundException;
+
+    OrderStatus getReviewStatus();
+
+    /**
+     * 获得订单是否还可以评价。
+     */
+    boolean canReview();
+
+    /**
+     * 创建一个新的订单评价对象。
+     */
+    OrderReview createReview(String reviewId);
+
+    /**
+     * 添加商品订单评价。
+     *
+     * @param review 订单评价对象
+     * @throws OrderReviewException 订单已被评论
+     */
+    void addReview(OrderReview review) throws OrderReviewException;
+
+    /**
+     * 批量添加商品订单评价。
+     *
+     * @param reviews 订单评价对象集合
+     * @throws OrderReviewException 订单已被评论
+     */
+    void addReviews(List<OrderReview> reviews) throws OrderReviewException;
+
+    Optional<OrderReview> getReview(String reviewId);
+
+    List<OrderReview> getReviews();
+
+    void approveReview(String reviewId) throws OrderReviewException;
+
+    void disapproveReview(String reviewId) throws OrderReviewException;
+
+    void approveReviews(Set<String> reviewIds) throws OrderReviewException;
+
+    void disapproveReviews(Set<String> reviewIds) throws OrderReviewException;
 
     BigDecimal getTotalDiscountAmount();
 
