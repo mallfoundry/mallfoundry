@@ -32,10 +32,6 @@ public interface Staff {
 
     void setStoreId(String storeId);
 
-    StaffType getType();
-
-    void setType(StaffType type);
-
     String getName();
 
     void setName(String name);

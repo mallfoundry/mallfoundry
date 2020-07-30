@@ -25,7 +25,6 @@ import org.mallfoundry.store.role.StoreRole;
 import org.mallfoundry.store.role.repository.jpa.JpaStoreRole;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffSupport;
-import org.mallfoundry.store.staff.StaffType;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -53,9 +52,6 @@ public class JpaStaff extends StaffSupport {
 
     @Column(name = "name_")
     private String name;
-
-    @Column(name = "type_")
-    private StaffType type;
 
     @Column(name = "avatar_")
     private String avatar;
