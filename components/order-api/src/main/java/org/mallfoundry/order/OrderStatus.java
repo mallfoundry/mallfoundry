@@ -25,14 +25,20 @@ public enum OrderStatus {
     PENDING /* 开始结算流程 */,
     AWAITING_PAYMENT /* 等待付款 */,
     AWAITING_FULFILLMENT /* 等待打包 */,
+
     AWAITING_SHIPMENT /* 等待揽收 */,
     PARTIALLY_SHIPPED /* 部分已发货 */,
     SHIPPED /* 已发货 */,
+
     AWAITING_PICKUP /* 等待收货 */,
 
     AWAITING_REFUND /* 等待退款 */,
     PARTIALLY_REFUNDED /* 部分已退款 */,
     REFUNDED /* 已退款 */,
+
+    AWAITING_REVIEW /* 等待评论 */,
+    PARTIALLY_REVIEWED /* 部分已评论 */,
+    REVIEWED /* 已评论 */,
 
     /*MANUAL_VERIFICATION_REQUIRED *//* 人工已验证 *//*,*/
     DISPUTED /* 有争议的 */,
