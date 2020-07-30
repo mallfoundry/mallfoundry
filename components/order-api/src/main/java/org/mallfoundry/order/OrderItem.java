@@ -92,6 +92,10 @@ public interface OrderItem {
 
     void failRefund(BigDecimal failAmount);
 
+    boolean isReviewed();
+
+    void review();
+
     BigDecimal getTotalAmount();
 
     default Builder toBuilder() {
