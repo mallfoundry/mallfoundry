@@ -16,37 +16,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.store.role.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.StoreQuery;
+import org.mallfoundry.store.role.StoreRoleQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
-@Repository
-public interface JpaStoreRepositoryDelegate
-        extends JpaRepository<JpaStore, String>, JpaSpecificationExecutor<JpaStore> {
+public interface JpaStoreRoleRepositoryDelegate extends JpaRepository<JpaStoreRole, String>, JpaSpecificationExecutor<JpaStoreRole> {
 
-    default SliceList<JpaStore> findAll(StoreQuery storeQuery) {
-        Page<JpaStore> page = this.findAll((Specification<JpaStore>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaStoreRole> createSpecification(StoreRoleQuery staffQuery) {
+        return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
-            if (Objects.nonNull(storeQuery.getOwnerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("ownerId"), storeQuery.getOwnerId()));
+            if (Objects.nonNull(staffQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
             }
 
             return predicate;
-        }, PageRequest.of(storeQuery.getPage() - 1, storeQuery.getLimit(), Sort.by("createdTime").ascending()));
+        };
+    }
 
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(storeQuery.getLimit()).totalSize(page.getTotalElements());
+    default Page<JpaStoreRole> findAll(StoreRoleQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 }

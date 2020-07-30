@@ -25,7 +25,6 @@ import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
-import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,19 +54,19 @@ public class InternalStoreBlobService implements StoreBlobService {
     }
 
     @Override
-    public String getBucketName(StoreId storeId) {
-        return STORE_BUCKET_PREFIX + storeId.getIdentifier();
+    public String getBucketName(String storeId) {
+        return STORE_BUCKET_PREFIX + storeId;
     }
 
     @Override
-    public Optional<Bucket> getBucket(StoreId storeId) {
+    public Optional<Bucket> getBucket(String storeId) {
         return this.storageService.getBucket(this.getBucketName(storeId));
     }
 
     @Transactional
     @Override
-    public void initializeBucket(StoreId storeId) {
-        var owner = this.storageService.createOwner(STORE_OWNER_TYPE, storeId.getIdentifier());
+    public void initializeBucket(String storeId) {
+        var owner = this.storageService.createOwner(STORE_OWNER_TYPE, storeId);
         var bucket = this.storageService.createBucket(this.getBucketName(storeId), owner);
         this.storageService.addBucket(bucket);
     }
@@ -84,12 +83,12 @@ public class InternalStoreBlobService implements StoreBlobService {
     }
 
     @Override
-    public void deleteBlob(StoreId storeId, String path) {
+    public void deleteBlob(String storeId, String path) {
         this.storageService.deleteBlob(getBucketName(storeId), PathUtils.normalize(path));
     }
 
     @Override
-    public void deleteBlobs(StoreId storeId, List<String> paths) {
+    public void deleteBlobs(String storeId, List<String> paths) {
         this.storageService.deleteBlobs(getBucketName(storeId),
                 paths.stream().map(PathUtils::normalize).collect(Collectors.toList()));
     }

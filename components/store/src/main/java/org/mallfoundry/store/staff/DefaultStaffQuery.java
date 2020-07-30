@@ -16,19 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.CustomCollectionRepository;
-import org.mallfoundry.store.InternalCustomCollection;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-@Repository
-public interface JpaCustomCollectionRepository
-        extends CustomCollectionRepository, JpaRepository<InternalCustomCollection, String> {
-
-    @Override
-    List<InternalCustomCollection> findAllByStoreId(String storeId);
+public class DefaultStaffQuery {
 }

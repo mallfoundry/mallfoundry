@@ -20,10 +20,9 @@ package org.mallfoundry.store.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.StoreQuery;
+import org.mallfoundry.store.StoreAddressQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -33,20 +32,24 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaStoreRepositoryDelegate
-        extends JpaRepository<JpaStore, String>, JpaSpecificationExecutor<JpaStore> {
+public interface JpaStoreAddressRepositoryDelegate
+        extends JpaRepository<JpaStoreAddress, String>, JpaSpecificationExecutor<JpaStoreAddress> {
 
-    default SliceList<JpaStore> findAll(StoreQuery storeQuery) {
-        Page<JpaStore> page = this.findAll((Specification<JpaStore>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaStoreAddress> createSpecification(StoreAddressQuery addressQuery) {
+        return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
-            if (Objects.nonNull(storeQuery.getOwnerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("ownerId"), storeQuery.getOwnerId()));
+            if (Objects.nonNull(addressQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), addressQuery.getStoreId()));
             }
 
             return predicate;
-        }, PageRequest.of(storeQuery.getPage() - 1, storeQuery.getLimit(), Sort.by("createdTime").ascending()));
+        };
+    }
 
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(storeQuery.getLimit()).totalSize(page.getTotalElements());
+    default SliceList<JpaStoreAddress> findAll(StoreAddressQuery query) {
+        Page<JpaStoreAddress> page = this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit()));
+        return PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
     }
 }

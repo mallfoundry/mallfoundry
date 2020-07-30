@@ -19,6 +19,7 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.store.repository.jpa.JpaStoreCollection;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,33 +29,33 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class InternalCollectionService implements CollectionService {
+public class DefaultStoreCollectionService implements StoreCollectionService {
 
     private static final String COLLECTION_ID_VALUE_NAME = "store.collection.id";
 
-    private final CustomCollectionRepository customCollectionRepository;
+    private final StoreCollectionRepository customCollectionRepository;
 
-    public InternalCollectionService(CustomCollectionRepository customCollectionRepository) {
+    public DefaultStoreCollectionService(StoreCollectionRepository customCollectionRepository) {
         this.customCollectionRepository = customCollectionRepository;
     }
 
     @Override
-    public CustomCollection createCollection(String id) {
-        return new InternalCustomCollection(id);
+    public StoreCollection createCollection(String id) {
+        return new JpaStoreCollection(id);
     }
 
-    public CustomCollection createCollection(String storeId, String name) {
-        return new InternalCustomCollection(storeId, name);
+    public StoreCollection createCollection(String storeId, String name) {
+        return new JpaStoreCollection(storeId, name);
     }
 
     @Transactional
-    public CustomCollection addCollection(CustomCollection collection) {
+    public StoreCollection addCollection(StoreCollection collection) {
         collection.setId(PrimaryKeyHolder.next(COLLECTION_ID_VALUE_NAME));
-        return this.customCollectionRepository.save(InternalCustomCollection.of(collection));
+        return this.customCollectionRepository.save(JpaStoreCollection.of(collection));
     }
 
     @Override
-    public CustomCollection updateCollection(CustomCollection collection) {
+    public StoreCollection updateCollection(StoreCollection collection) {
         var storedCollection = this.customCollectionRepository.findById(collection.getId()).orElseThrow();
         if (Objects.nonNull(collection.getName())) {
             storedCollection.setName(collection.getName());
@@ -67,11 +68,11 @@ public class InternalCollectionService implements CollectionService {
         this.customCollectionRepository.deleteById(id);
     }
 
-    public Optional<CustomCollection> getCollection(String id) {
+    public Optional<StoreCollection> getCollection(String id) {
         return CastUtils.cast(this.customCollectionRepository.findById(id));
     }
 
-    public List<CustomCollection> getCollections(String storeId) {
+    public List<StoreCollection> getCollections(String storeId) {
         return CastUtils.cast(this.customCollectionRepository.findAllByStoreId(storeId));
     }
 }

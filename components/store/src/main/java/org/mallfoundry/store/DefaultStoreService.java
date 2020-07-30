@@ -55,11 +55,6 @@ public class DefaultStoreService implements StoreService {
     }
 
     @Override
-    public StoreId createStoreId(String id) {
-        return new ImmutableStoreId(id);
-    }
-
-    @Override
     public Store createStore(String id) {
         return this.storeRepository.create(id);
     }
@@ -73,7 +68,7 @@ public class DefaultStoreService implements StoreService {
         }
         store.initialize();
         var savedStore = this.storeRepository.save(store);
-        this.storeBlobService.initializeBucket(this.createStoreId(store.getId()));
+        this.storeBlobService.initializeBucket(store.getId());
         this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
         return savedStore;
     }

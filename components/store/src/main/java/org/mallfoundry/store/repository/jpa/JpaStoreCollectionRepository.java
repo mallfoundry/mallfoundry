@@ -16,18 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
+
+import org.mallfoundry.store.StoreCollectionRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface CustomCollectionRepository {
+@Repository
+public interface JpaStoreCollectionRepository
+        extends StoreCollectionRepository, JpaRepository<JpaStoreCollection, String> {
 
-    InternalCustomCollection save(InternalCustomCollection collection);
-
-    void deleteById(String id);
-
-    Optional<InternalCustomCollection> findById(String id);
-
-    List<InternalCustomCollection> findAllByStoreId(String storeId);
+    @Override
+    List<JpaStoreCollection> findAllByStoreId(String storeId);
 }

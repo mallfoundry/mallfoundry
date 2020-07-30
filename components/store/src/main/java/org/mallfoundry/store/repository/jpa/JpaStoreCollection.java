@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.store.StoreCollection;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store_collection")
-public class InternalCustomCollection implements CustomCollection {
+public class JpaStoreCollection implements StoreCollection {
 
     @Id
     @Column(name = "id_")
@@ -63,21 +64,21 @@ public class InternalCustomCollection implements CustomCollection {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalCustomCollection(String id) {
+    public JpaStoreCollection(String id) {
         this.id = id;
     }
 
-    public InternalCustomCollection(String storeId, String name) {
+    public JpaStoreCollection(String storeId, String name) {
         this.storeId = storeId;
         this.name = name;
         this.setCreatedTime(new Date());
     }
 
-    public static InternalCustomCollection of(CustomCollection collection) {
-        if (collection instanceof InternalCustomCollection) {
-            return (InternalCustomCollection) collection;
+    public static JpaStoreCollection of(StoreCollection collection) {
+        if (collection instanceof JpaStoreCollection) {
+            return (JpaStoreCollection) collection;
         }
-        var target = new InternalCustomCollection();
+        var target = new JpaStoreCollection();
         BeanUtils.copyProperties(collection, target);
         return target;
     }
@@ -90,7 +91,7 @@ public class InternalCustomCollection implements CustomCollection {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalCustomCollection that = (InternalCustomCollection) o;
+        JpaStoreCollection that = (JpaStoreCollection) o;
         return Objects.equals(id, that.id);
     }
 
