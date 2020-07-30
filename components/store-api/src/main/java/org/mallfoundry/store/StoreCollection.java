@@ -18,23 +18,21 @@
 
 package org.mallfoundry.store;
 
-import java.util.List;
-import java.util.Optional;
+import org.mallfoundry.util.Position;
 
-public interface CollectionService {
+import java.util.Date;
 
-    CustomCollection createCollection(String id);
+public interface StoreCollection extends Position {
 
-    CustomCollection createCollection(String storeId, String name);
+    String getId();
 
-    CustomCollection addCollection(CustomCollection collection);
+    void setId(String id);
 
-    CustomCollection updateCollection(CustomCollection collection);
+    String getName();
 
-    void deleteCollection(String id);
+    void setName(String name);
 
-    Optional<CustomCollection> getCollection(String id);
+    int getProducts();
 
-    List<CustomCollection> getCollections(String storeId);
-
+    Date getCreatedTime();
 }
