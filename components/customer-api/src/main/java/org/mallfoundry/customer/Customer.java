@@ -18,6 +18,7 @@
 
 package org.mallfoundry.customer;
 
+import org.mallfoundry.identity.Gender;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;

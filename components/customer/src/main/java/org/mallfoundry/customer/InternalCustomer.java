@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.identity.Gender;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
