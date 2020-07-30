@@ -24,12 +24,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 public class DefaultStoreRoleService implements StoreRoleService {
 
+    private final StoreRoleProcessorsInvoker processorsInvoker;
+
     private final StoreRoleRepository roleRepository;
 
-    public DefaultStoreRoleService(StoreRoleRepository roleRepository) {
+    public DefaultStoreRoleService(StoreRoleProcessorsInvoker processorsInvoker, StoreRoleRepository roleRepository) {
+        this.processorsInvoker = processorsInvoker;
         this.roleRepository = roleRepository;
     }
 
@@ -46,13 +50,28 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Transactional
     @Override
     public StoreRole addRole(StoreRole role) {
-        return this.roleRepository.save(role);
+        return Function.<StoreRole>identity()
+                .compose(this.processorsInvoker::invokePostProcessAddRole)
+                .compose(this.roleRepository::save)
+                .compose(this.processorsInvoker::invokePreProcessAddRole)
+                .apply(role);
+    }
+
+    private StoreRole copyFrom(StoreRole source, StoreRole target) {
+
+        return target;
     }
 
     @Transactional
     @Override
     public StoreRole updateRole(StoreRole role) {
-        return this.roleRepository.save(role);
+        return Function.<StoreRole>identity()
+                .compose(this.processorsInvoker::invokePostProcessUpdateRole)
+                .compose(this.roleRepository::save)
+                .<StoreRole>compose(target -> this.copyFrom(role, target))
+                .compose(this.processorsInvoker::invokePreProcessUpdateRole)
+                .compose(this::requiredRole)
+                .apply(role.getId());
     }
 
     private StoreRole requiredRole(String roleId) {
@@ -62,7 +81,10 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Transactional
     @Override
     public void deleteRole(String roleId) {
-        var role = this.requiredRole(roleId);
+        var role = Function.<StoreRole>identity()
+                .compose(this.processorsInvoker::invokePreProcessDeleteRole)
+                .compose(this::requiredRole)
+                .apply(roleId);
         this.roleRepository.delete(role);
     }
 
