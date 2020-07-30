@@ -27,6 +27,10 @@ import java.util.Date;
  */
 public interface OrderReview {
 
+    String getId();
+
+    void setId(String id);
+
     String getOrderId();
 
     String getItemId();
@@ -49,6 +53,9 @@ public interface OrderReview {
 
     boolean isAnonymous();
 
+    /**
+     * 匿名评价。
+     */
     void anonymous();
 
     String getReviewer();
@@ -61,9 +68,11 @@ public interface OrderReview {
 
     Date getReviewedTime();
 
-    void create();
+    Date getCreatedTime();
 
-    void approve();
+    void create() throws OrderReviewException;
 
-    void disapprove();
+    void approve() throws OrderReviewException;
+
+    void disapprove() throws OrderReviewException;
 }
