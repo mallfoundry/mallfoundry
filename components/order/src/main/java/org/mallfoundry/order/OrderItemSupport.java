@@ -83,4 +83,9 @@ public abstract class OrderItemSupport implements MutableOrderItem {
     public void failRefund(BigDecimal failAmount) {
         this.addRefundingAmount(BigDecimal.ZERO.subtract(failAmount));
     }
+
+    @Override
+    public void review() {
+        this.setReviewed(true);
+    }
 }
