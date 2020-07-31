@@ -39,7 +39,7 @@ public class CustomerEventListener {
                 .username(user.getUsername())
                 .avatar(user.getAvatar())
                 .nickname(user.getNickname())
-                .gender(Gender.UNKNOWN).build();
+                .gender(user.getGender()).build();
         this.customerService.addCustomer(customer);
     }
 
