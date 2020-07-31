@@ -146,17 +146,27 @@ public class OrderProcessorsInvoker {
     }
 
     public OrderReview invokePreProcessAddOrderReview(Order order, OrderReview review) {
-        BiFunction<OrderProcessor, OrderReview, OrderReview> function = (orderProcessor, identity) -> orderProcessor.preProcessAddOrderReview(order, identity);
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, function);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderReview(order, identity));
     }
 
-    public void invokePostProcessApproveOrderReview(Order order, OrderReview review) {
-        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.postProcessApproveOrderReview(order, identity));
-
+    public List<OrderReview> invokePreProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderReviews(order, identity));
     }
 
-    public void invokePostProcessDisapproveOrderReview(Order order, OrderReview review) {
-        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.postProcessDisapproveOrderReview(order, identity));
+    public OrderReview invokePreProcessApproveOrderReview(Order order, OrderReview review) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderReview(order, identity));
+    }
+
+    public List<OrderReview> invokePreProcessApproveOrderReviews(Order order, List<OrderReview> reviews) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderReviews(order, identity));
+    }
+
+    public OrderReview invokePreProcessDisapproveOrderReview(Order order, OrderReview review) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderReview(order, identity));
+    }
+
+    public List<OrderReview> invokePreProcessDisapproveOrderReviews(Order order, List<OrderReview> reviews) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderReviews(order, identity));
     }
 
     public void invokePostProcessAfterCompletion() {

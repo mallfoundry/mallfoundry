@@ -127,12 +127,24 @@ public interface OrderProcessor {
         return review;
     }
 
-    default void postProcessApproveOrderReview(Order order, OrderReview review) {
-
+    default List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+        return reviews;
     }
 
-    default void postProcessDisapproveOrderReview(Order order, OrderReview review) {
+    default OrderReview preProcessApproveOrderReview(Order order, OrderReview review) {
+        return review;
+    }
 
+    default List<OrderReview> preProcessApproveOrderReviews(Order order, List<OrderReview> reviews) {
+        return reviews;
+    }
+
+    default OrderReview preProcessDisapproveOrderReview(Order order, OrderReview review) {
+        return review;
+    }
+
+    default List<OrderReview> preProcessDisapproveOrderReviews(Order order, List<OrderReview> reviews) {
+        return reviews;
     }
 
     default void postProcessAfterCompletion() {
