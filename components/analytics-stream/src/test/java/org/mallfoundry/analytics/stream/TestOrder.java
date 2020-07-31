@@ -209,13 +209,13 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void addReview(OrderReview review) throws OrderReviewException {
-
+    public OrderReview addReview(OrderReview review) throws OrderReviewException {
+        return null;
     }
 
     @Override
-    public void addReviews(List<OrderReview> reviews) throws OrderReviewException {
-
+    public List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException {
+        return null;
     }
 
     @Override
@@ -229,22 +229,22 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public OrderReview approveReview(OrderReview review) throws OrderReviewException {
-        return null;
-    }
-
-    @Override
-    public OrderReview disapproveReview(OrderReview review) throws OrderReviewException {
-        return null;
-    }
-
-    @Override
-    public void approveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+    public void approveReview(OrderReview review) throws OrderReviewException {
 
     }
 
     @Override
-    public void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+    public void approveReviews(List<OrderReview> reviews) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void disapproveReview(OrderReview review) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException {
 
     }
 
