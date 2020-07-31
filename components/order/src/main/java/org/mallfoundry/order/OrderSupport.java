@@ -321,7 +321,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void addReview(OrderReview review) throws OrderReviewException {
+    public OrderReview addReview(OrderReview review) throws OrderReviewException {
         if (!this.canReview()) {
             throw OrderExceptions.notReview();
 
@@ -335,11 +335,12 @@ public abstract class OrderSupport implements MutableOrder {
         review.setVariantId(item.getVariantId());
         review.create();
         this.getReviews().add(review);
+        return review;
     }
 
     @Override
-    public void addReviews(List<OrderReview> reviews) throws OrderReviewException {
-        reviews.forEach(this::addReview);
+    public List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException {
+        return reviews.stream().map(this::addReview).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -352,26 +353,24 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public OrderReview approveReview(OrderReview args) throws OrderReviewException {
+    public void approveReview(OrderReview args) throws OrderReviewException {
         var review = this.requiredReview(args.getId());
         review.approve();
-        return review;
     }
 
     @Override
-    public OrderReview disapproveReview(OrderReview args) throws OrderReviewException {
-        var review = this.requiredReview(args.getId());
-        review.disapprove();
-        return review;
-    }
-
-    @Override
-    public void approveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+    public void approveReviews(List<OrderReview> reviews) throws OrderReviewException {
         reviews.forEach(this::approveReview);
     }
 
     @Override
-    public void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+    public void disapproveReview(OrderReview args) throws OrderReviewException {
+        var review = this.requiredReview(args.getId());
+        review.disapprove();
+    }
+
+    @Override
+    public void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException {
         reviews.forEach(this::disapproveReview);
     }
 

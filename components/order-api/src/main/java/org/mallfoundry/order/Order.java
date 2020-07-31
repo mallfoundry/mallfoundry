@@ -191,7 +191,7 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      * @param review 订单评论对象
      * @throws OrderReviewException 订单项重复评论
      */
-    void addReview(OrderReview review) throws OrderReviewException;
+    OrderReview addReview(OrderReview review) throws OrderReviewException;
 
     /**
      * 批量添加商品订单评价。
@@ -199,19 +199,19 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      * @param reviews 订单评论对象集合
      * @throws OrderReviewException 订单项重复评论
      */
-    void addReviews(List<OrderReview> reviews) throws OrderReviewException;
+    List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException;
 
     Optional<OrderReview> getReview(String reviewId);
 
     List<OrderReview> getReviews();
 
-    OrderReview approveReview(OrderReview review) throws OrderReviewException;
+    void approveReview(OrderReview review) throws OrderReviewException;
 
-    OrderReview disapproveReview(OrderReview review) throws OrderReviewException;
+    void approveReviews(List<OrderReview> reviews) throws OrderReviewException;
 
-    void approveReviews(Set<OrderReview> reviews) throws OrderReviewException;
+    void disapproveReview(OrderReview review) throws OrderReviewException;
 
-    void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException;
+    void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException;
 
     BigDecimal getTotalDiscountAmount();
 
