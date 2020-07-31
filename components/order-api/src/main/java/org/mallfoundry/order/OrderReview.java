@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.review.ReviewBodyType;
 import org.mallfoundry.util.ObjectBuilder;
 
@@ -48,6 +49,10 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
     String getVariantId();
 
     void setVariantId(String variantId);
+
+    List<OptionSelection> getOptionSelections();
+
+    void setOptionSelections(List<OptionSelection> optionSelections);
 
     int getRating();
 
