@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface MutableOrderReview extends OrderReview {
 
+    void setStatus(OrderReviewStatus status);
+
     void setAnonymous(boolean anonymous);
 
     void setReviewedTime(Date reviewedTime);
