@@ -104,5 +104,9 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
         Builder items(Function<OrderRefund, List<OrderRefundItem>> function);
 
         Builder items(Supplier<List<OrderRefundItem>> supplier);
+
+        Builder disapprovalReason(String disapprovalReason);
+
+        Builder failReason(String failReason);
     }
 }
