@@ -98,9 +98,6 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "reviewed_time_")
     private Date reviewedTime;
 
-    @Column(name = "created_time_")
-    private Date createdTime;
-
     public JpaOrderReview(String id) {
         this.id = id;
     }

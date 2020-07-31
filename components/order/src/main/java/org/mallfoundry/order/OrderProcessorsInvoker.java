@@ -153,22 +153,6 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessAddOrderReviews(order, identity));
     }
 
-    public OrderReview invokePreProcessApproveOrderReview(Order order, OrderReview review) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderReview(order, identity));
-    }
-
-    public List<OrderReview> invokePreProcessApproveOrderReviews(Order order, List<OrderReview> reviews) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderReviews(order, identity));
-    }
-
-    public OrderReview invokePreProcessDisapproveOrderReview(Order order, OrderReview review) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderReview(order, identity));
-    }
-
-    public List<OrderReview> invokePreProcessDisapproveOrderReviews(Order order, List<OrderReview> reviews) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderReviews(order, identity));
-    }
-
     public void invokePostProcessAfterCompletion() {
         ProcessorsInvoker.invokeConsumerProcessors(this.processors, OrderProcessor::postProcessAfterCompletion);
     }

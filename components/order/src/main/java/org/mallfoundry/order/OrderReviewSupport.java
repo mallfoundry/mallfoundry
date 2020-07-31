@@ -21,10 +21,6 @@ package org.mallfoundry.order;
 import java.util.Date;
 import java.util.List;
 
-import static org.mallfoundry.order.OrderReviewStatus.APPROVED;
-import static org.mallfoundry.order.OrderReviewStatus.DISAPPROVED;
-import static org.mallfoundry.order.OrderReviewStatus.PENDING;
-
 public abstract class OrderReviewSupport implements MutableOrderReview {
 
     @Override
@@ -33,20 +29,7 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
     }
 
     @Override
-    public void create() {
-        this.setStatus(PENDING);
-        this.setCreatedTime(new Date());
-    }
-
-    @Override
-    public void approve() {
-        this.setStatus(APPROVED);
-        this.setReviewedTime(new Date());
-    }
-
-    @Override
-    public void disapprove() {
-        this.setStatus(DISAPPROVED);
+    public void review() {
         this.setReviewedTime(new Date());
     }
 

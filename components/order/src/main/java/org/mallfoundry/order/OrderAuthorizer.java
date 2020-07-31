@@ -216,40 +216,4 @@ public class OrderAuthorizer implements OrderProcessor {
     public List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
         return reviews;
     }
-
-    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
-            + OrderAuthorities.ORDER_REVIEW_APPROVE + ","
-            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
-            + OrderAuthorities.ORDER_MANAGE + "')")
-    @Override
-    public OrderReview preProcessApproveOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
-            + OrderAuthorities.ORDER_REVIEW_APPROVE + ","
-            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
-            + OrderAuthorities.ORDER_MANAGE + "')")
-    @Override
-    public List<OrderReview> preProcessApproveOrderReviews(Order order, List<OrderReview> reviews) {
-        return reviews;
-    }
-
-    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
-            + OrderAuthorities.ORDER_REVIEW_DISAPPROVE + ","
-            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
-            + OrderAuthorities.ORDER_MANAGE + "')")
-    @Override
-    public OrderReview preProcessDisapproveOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
-            + OrderAuthorities.ORDER_REVIEW_DISAPPROVE + ","
-            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
-            + OrderAuthorities.ORDER_MANAGE + "')")
-    @Override
-    public List<OrderReview> preProcessDisapproveOrderReviews(Order order, List<OrderReview> reviews) {
-        return reviews;
-    }
 }

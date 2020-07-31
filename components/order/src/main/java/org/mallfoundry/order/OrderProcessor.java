@@ -118,7 +118,6 @@ public interface OrderProcessor {
         return refund;
     }
 
-
     default OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
@@ -128,22 +127,6 @@ public interface OrderProcessor {
     }
 
     default List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
-        return reviews;
-    }
-
-    default OrderReview preProcessApproveOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    default List<OrderReview> preProcessApproveOrderReviews(Order order, List<OrderReview> reviews) {
-        return reviews;
-    }
-
-    default OrderReview preProcessDisapproveOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    default List<OrderReview> preProcessDisapproveOrderReviews(Order order, List<OrderReview> reviews) {
         return reviews;
     }
 

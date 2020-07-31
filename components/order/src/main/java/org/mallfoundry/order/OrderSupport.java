@@ -333,7 +333,7 @@ public abstract class OrderSupport implements MutableOrder {
         item.review();
         review.setProductId(item.getProductId());
         review.setVariantId(item.getVariantId());
-        review.create();
+        review.review();
         this.getReviews().add(review);
         return review;
     }
@@ -346,32 +346,6 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public Optional<OrderReview> getReview(String reviewId) {
         return this.getReviews().stream().filter(review -> Objects.equals(review.getId(), reviewId)).findFirst();
-    }
-
-    public OrderReview requiredReview(String reviewId) throws OrderReviewException {
-        return this.getReview(reviewId).orElseThrow(OrderExceptions.Review::notFound);
-    }
-
-    @Override
-    public void approveReview(OrderReview args) throws OrderReviewException {
-        var review = this.requiredReview(args.getId());
-        review.approve();
-    }
-
-    @Override
-    public void approveReviews(List<OrderReview> reviews) throws OrderReviewException {
-        reviews.forEach(this::approveReview);
-    }
-
-    @Override
-    public void disapproveReview(OrderReview args) throws OrderReviewException {
-        var review = this.requiredReview(args.getId());
-        review.disapprove();
-    }
-
-    @Override
-    public void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException {
-        reviews.forEach(this::disapproveReview);
     }
 
     @Override

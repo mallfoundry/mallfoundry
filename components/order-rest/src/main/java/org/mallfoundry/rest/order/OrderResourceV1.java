@@ -265,28 +265,4 @@ public class OrderResourceV1 {
                 .collect(Collectors.toUnmodifiableList());
         return this.orderService.addOrderReviews(orderId, reviews);
     }
-
-    @PatchMapping("/orders/{order_id}/reviews/{review_id}/approve")
-    public void approveOrderReview(@PathVariable("order_id") String orderId,
-                                   @PathVariable("review_id") String reviewId) {
-        this.orderService.approveOrderReview(orderId, reviewId);
-    }
-
-    @PatchMapping("/orders/{order_id}/reviews/approve/batch")
-    public void approveOrderReviews(@PathVariable("order_id") String orderId,
-                                    @RequestBody Set<String> reviewIds) {
-        this.orderService.approveOrderReviews(orderId, reviewIds);
-    }
-
-    @PatchMapping("/orders/{order_id}/reviews/{review_id}/disapprove")
-    public void disapproveOrderReview(@PathVariable("order_id") String orderId,
-                                      @PathVariable("review_id") String reviewId) {
-        this.orderService.disapproveOrderReview(orderId, reviewId);
-    }
-
-    @PatchMapping("/orders/{order_id}/reviews/disapprove/batch")
-    public void disapproveOrderReviews(@PathVariable("order_id") String orderId,
-                                       @RequestBody Set<String> reviewIds) {
-        this.orderService.disapproveOrderReviews(orderId, reviewIds);
-    }
 }

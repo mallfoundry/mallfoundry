@@ -34,7 +34,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -440,49 +439,13 @@ public class DefaultOrderService implements OrderService {
         return review;
     }
 
+    @Transactional
     @Override
     public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
         var order = this.requiredOrder(orderId);
+        newReviews = this.processorsInvoker.invokePreProcessAddOrderReviews(order, newReviews);
         var reviews = order.addReviews(newReviews);
         this.orderRepository.save(order);
         return reviews;
-    }
-
-    @Transactional
-    @Override
-    public void approveOrderReview(String orderId, String reviewId) {
-        var order = this.requiredOrder(orderId);
-        order.approveReview(
-                this.processorsInvoker.invokePreProcessApproveOrderReview(order, order.createReview(reviewId)));
-        this.orderRepository.save(order);
-    }
-
-    @Transactional
-    @Override
-    public void approveOrderReviews(String orderId, Set<String> reviewIds) {
-        var order = this.requiredOrder(orderId);
-        order.approveReviews(
-                this.processorsInvoker.invokePreProcessApproveOrderReviews(order,
-                        reviewIds.stream().map(order::createReview).collect(Collectors.toUnmodifiableList())));
-        this.orderRepository.save(order);
-    }
-
-    @Transactional
-    @Override
-    public void disapproveOrderReview(String orderId, String reviewId) {
-        var order = this.requiredOrder(orderId);
-        order.disapproveReview(
-                this.processorsInvoker.invokePreProcessDisapproveOrderReview(order, order.createReview(reviewId)));
-        this.orderRepository.save(order);
-    }
-
-    @Transactional
-    @Override
-    public void disapproveOrderReviews(String orderId, Set<String> reviewIds) {
-        var order = this.requiredOrder(orderId);
-        order.disapproveReviews(
-                this.processorsInvoker.invokePreProcessDisapproveOrderReviews(order,
-                        reviewIds.stream().map(order::createReview).collect(Collectors.toUnmodifiableList())));
-        this.orderRepository.save(order);
     }
 }

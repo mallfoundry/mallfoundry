@@ -52,8 +52,6 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void setRating(int rating);
 
-    OrderReviewStatus getStatus();
-
     boolean isAnonymous();
 
     /**
@@ -98,13 +96,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     Date getReviewedTime();
 
-    Date getCreatedTime();
-
-    void create() throws OrderReviewException;
-
-    void approve() throws OrderReviewException;
-
-    void disapprove() throws OrderReviewException;
+    void review() throws OrderReviewException;
 
     /**
      * 订单评价内容类型，用于在渲染内容的时候使用。

@@ -205,14 +205,6 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     List<OrderReview> getReviews();
 
-    void approveReview(OrderReview review) throws OrderReviewException;
-
-    void approveReviews(List<OrderReview> reviews) throws OrderReviewException;
-
-    void disapproveReview(OrderReview review) throws OrderReviewException;
-
-    void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException;
-
     BigDecimal getTotalDiscountAmount();
 
     BigDecimal getTotalShippingCost();
