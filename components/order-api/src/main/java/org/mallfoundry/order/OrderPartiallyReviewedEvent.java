@@ -20,6 +20,6 @@ package org.mallfoundry.order;
 
 import java.util.List;
 
-public interface OrderReviewedEvent extends OrderEvent {
+public interface OrderPartiallyReviewedEvent extends OrderEvent {
     List<OrderReview> getOrderReviews();
 }
