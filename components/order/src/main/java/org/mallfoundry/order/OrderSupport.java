@@ -331,8 +331,10 @@ public abstract class OrderSupport implements MutableOrder {
             throw OrderExceptions.Item.reviewed(review.getItemId());
         }
         item.review();
+        review.setOrderId(this.getId());
         review.setProductId(item.getProductId());
         review.setVariantId(item.getVariantId());
+        review.setOptionSelections(item.getOptionSelections());
         review.review();
         this.getReviews().add(review);
         return review;
