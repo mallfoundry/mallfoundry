@@ -87,6 +87,14 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "body_type_")
     private BodyType bodyType;
 
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "video_urls_", length = 1024)
+    private List<String> videoUrls;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "image_urls_", length = 1024)
+    private List<String> imageUrls;
+
     @Column(name = "reviewed_time_")
     private Date reviewedTime;
 

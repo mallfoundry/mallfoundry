@@ -88,9 +88,13 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void setBodyType(BodyType bodyType);
 
-/*    List<String> getVideoUrls();
+    List<String> getVideoUrls();
 
-    List<String> getImageUrls();*/
+    void setVideoUrls(List<String> videoUrls);
+
+    List<String> getImageUrls();
+
+    void setImageUrls(List<String> imageUrls);
 
     Date getReviewedTime();
 
@@ -108,7 +112,6 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
     enum BodyType {
         HTML, JSON, TEXT
     }
-
 
     interface Builder extends ObjectBuilder<OrderReview> {
 
