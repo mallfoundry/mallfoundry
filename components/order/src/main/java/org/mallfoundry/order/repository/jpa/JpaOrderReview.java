@@ -24,15 +24,12 @@ import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.order.OrderReviewStatus;
 import org.mallfoundry.order.OrderReviewSupport;
 import org.mallfoundry.review.ReviewBodyType;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -67,10 +64,6 @@ public class JpaOrderReview extends OrderReviewSupport {
 
     @Column(name = "rating_")
     private int rating;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_")
-    private OrderReviewStatus status;
 
     @Column(name = "anonymous_")
     private boolean anonymous;
