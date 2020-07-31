@@ -40,6 +40,10 @@ public abstract class OrderExceptions {
         return new OrderException(OrderMessages.notPay());
     }
 
+    public static OrderException notReview() {
+        return new OrderException(OrderMessages.notReview());
+    }
+
     public abstract static class Item {
         public static OrderException notFound() {
             return new OrderException(OrderMessages.Item.notFound());
