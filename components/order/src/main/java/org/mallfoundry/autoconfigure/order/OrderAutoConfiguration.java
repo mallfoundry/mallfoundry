@@ -35,6 +35,7 @@ import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
 import org.mallfoundry.payment.PaymentService;
+import org.mallfoundry.product.OrderReviewedToProductReviewer;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +44,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.SmartValidator;
 
@@ -50,6 +52,7 @@ import java.util.List;
 
 @EnableConfigurationProperties(OrderProperties.class)
 @Configuration
+@Import(OrderReviewedToProductReviewer.class)
 public class OrderAutoConfiguration {
 
     @ConditionalOnMissingBean(OrderConfiguration.class)
