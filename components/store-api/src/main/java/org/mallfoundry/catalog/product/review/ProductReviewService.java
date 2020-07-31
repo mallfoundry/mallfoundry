@@ -16,40 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.product.review;
 
-import java.util.Date;
+public interface ProductReviewService {
 
-public interface ProductReview {
+    ProductReview createProductReview();
 
-    String getId();
+    void addProductReview(ProductReview review) throws ProductReviewException;
 
-    String getProductId();
+    void approveProductReview(String reviewId) throws ProductReviewException;
 
-    String getReviewerId();
-
-    String getReviewer();
-
-    void setReviewer(String reviewer);
-
-    int getRating();
-
-    void setRating(int rating);
-
-    String getTitle();
-
-    void setTitle(String title);
-
-    String getComment();
-
-    void setComment(String comment);
-
-    ProductReviewStatus getStatus();
-
-    Date getReviewedTime();
-
-    void approve();
-
-    void disapprove();
-
+    void disapproveProductReview(String reviewId) throws ProductReviewException;
 }

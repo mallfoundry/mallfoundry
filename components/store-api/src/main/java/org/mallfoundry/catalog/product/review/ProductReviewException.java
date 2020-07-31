@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.product.review;
 
-public interface ProductReviewService {
+public class ProductReviewException extends RuntimeException {
 
-    ProductReview createReview();
+    public ProductReviewException(String message) {
+        super(message);
+    }
 
-    void addReview(ProductReview review) throws ProductReviewException;
-
-    void approveReview(String reviewId) throws ProductReviewException;
-
-    void disapproveReview(String reviewId) throws ProductReviewException;
+    public ProductReviewException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

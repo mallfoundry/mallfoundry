@@ -16,10 +16,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.product.review;
 
-public enum ProductReviewStatus {
-    PENDING,
-    APPROVED,
-    DISAPPROVED;
+import java.util.Date;
+
+public interface ProductReview {
+
+    String getId();
+
+    String getOrderId();
+
+    String getProductId();
+
+    String getVariantId();
+
+    String getReviewerId();
+
+    String getReviewer();
+
+    void setReviewer(String reviewer);
+
+    int getRating();
+
+    void setRating(int rating);
+
+    ProductReviewStatus getStatus();
+
+    Date getReviewedTime();
+
+    void approve();
+
+    void disapprove();
 }
