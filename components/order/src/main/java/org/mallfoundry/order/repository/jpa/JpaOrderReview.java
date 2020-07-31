@@ -21,16 +21,19 @@ package org.mallfoundry.order.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderReviewStatus;
 import org.mallfoundry.order.OrderReviewSupport;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -70,6 +73,19 @@ public class JpaOrderReview extends OrderReviewSupport {
 
     @Column(name = "reviewer_id_")
     private String reviewerId;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(name = "tags_")
+    private List<String> tags;
+
+    @Column(name = "body_")
+    private String body;
+
+    @Column(name = "raw_body_")
+    private String rawBody;
+
+    @Column(name = "body_type_")
+    private BodyType bodyType;
 
     @Column(name = "reviewed_time_")
     private Date reviewedTime;
