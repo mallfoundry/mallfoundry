@@ -68,7 +68,7 @@ public class OrderRefundTests {
     public void testPaidAndItemThenApplyRefundAmountGreaterThanItemTotalAmount() {
         var order = new JpaOrder()
                 .toBuilder()
-                .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
+                .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1");
@@ -86,7 +86,7 @@ public class OrderRefundTests {
     public void testPaidAndItemThenApplyRefundTwoAmountEqualsItemTotalAmount() {
         var order = new JpaOrder()
                 .toBuilder()
-                .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
+                .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1")
@@ -101,7 +101,7 @@ public class OrderRefundTests {
     public void testPaidAndItemThenApplyRefundTwoAmountGreaterThanItemTotalAmount() {
         var order = new JpaOrder()
                 .toBuilder()
-                .item(self -> self.createItem("12").toBuilder().price(BigDecimal.valueOf(1)).quantity(2).build())
+                .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1")
