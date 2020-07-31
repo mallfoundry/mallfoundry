@@ -28,4 +28,6 @@ public interface OrderConfiguration extends Configuration {
     InventoryDeduction getInventoryDeduction();
 
     boolean isAutoApprovalRefund();
+
+    boolean isAutoApprovalReview();
 }

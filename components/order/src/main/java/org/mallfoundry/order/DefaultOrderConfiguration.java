@@ -31,4 +31,6 @@ public class DefaultOrderConfiguration implements OrderConfiguration {
     private InventoryDeduction inventoryDeduction;
 
     private boolean autoApprovalRefund;
+    
+    private boolean autoApprovalReview;
 }
