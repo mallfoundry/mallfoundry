@@ -236,9 +236,9 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     List<OrderReview> getReviews();
 
-    void approveReview(String reviewId) throws OrderReviewException;
+    OrderReview approveReview(String reviewId) throws OrderReviewException;
 
-    void disapproveReview(String reviewId) throws OrderReviewException;
+    OrderReview disapproveReview(String reviewId) throws OrderReviewException;
 
     void approveReviews(Set<String> reviewIds) throws OrderReviewException;
 
