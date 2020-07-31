@@ -432,4 +432,31 @@ public class DefaultOrderService implements OrderService {
         return order.getRefund(refundId)
                 .map(refund -> this.processorsInvoker.invokePostProcessGetOrderRefund(order, refund));
     }
+
+    @Transactional
+    @Override
+    public void addOrderReview(String orderId, OrderReview newReview) {
+        var order = this.requiredOrder(orderId);
+        var review = this.processorsInvoker.invokePreProcessAddOrderReview(order, newReview);
+        order.addReview(review);
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void approveOrderReview(String orderId, String reviewId) {
+        var order = this.requiredOrder(orderId);
+        var review = order.approveReview(reviewId);
+        this.processorsInvoker.invokePostProcessApproveOrderReview(order, review);
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void disapproveOrderReview(String orderId, String reviewId) {
+        var order = this.requiredOrder(orderId);
+        var review = order.disapproveReview(reviewId);
+        this.processorsInvoker.invokePostProcessDisapproveOrderReview(order, review);
+        this.orderRepository.save(order);
+    }
 }
