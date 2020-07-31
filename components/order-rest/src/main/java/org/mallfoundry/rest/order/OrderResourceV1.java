@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderRefund;
+import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
@@ -246,5 +247,46 @@ public class OrderResourceV1 {
     public Optional<OrderRefund> getOrderRefund(@PathVariable("order_id") String orderId,
                                                 @PathVariable("refund_id") String refundId) {
         return this.orderService.getOrderRefund(orderId, refundId);
+    }
+
+    @PostMapping("/orders/{order_id}/reviews")
+    public OrderReview addOrderReview(@PathVariable("order_id") String orderId,
+                                      @RequestBody OrderReviewRequest request) {
+        var review = request.assignTo(this.orderService.createOrder(orderId).createReview(null));
+        return this.orderService.addOrderReview(orderId, review);
+    }
+
+    @PostMapping("/orders/{order_id}/reviews/batch")
+    public List<OrderReview> addOrderReviews(@PathVariable("order_id") String orderId,
+                                             @RequestBody List<OrderReviewRequest> requests) {
+        var order = this.orderService.createOrder(orderId);
+        var reviews = requests.stream()
+                .map(r -> r.assignTo(order.createReview(null)))
+                .collect(Collectors.toUnmodifiableList());
+        return this.orderService.addOrderReviews(orderId, reviews);
+    }
+
+    @PatchMapping("/orders/{order_id}/reviews/{review_id}/approve")
+    public void approveOrderReview(@PathVariable("order_id") String orderId,
+                                   @PathVariable("review_id") String reviewId) {
+        this.orderService.approveOrderReview(orderId, reviewId);
+    }
+
+    @PatchMapping("/orders/{order_id}/reviews/approve/batch")
+    public void approveOrderReviews(@PathVariable("order_id") String orderId,
+                                    @RequestBody Set<String> reviewIds) {
+        this.orderService.approveOrderReviews(orderId, reviewIds);
+    }
+
+    @PatchMapping("/orders/{order_id}/reviews/{review_id}/disapprove")
+    public void disapproveOrderReview(@PathVariable("order_id") String orderId,
+                                      @PathVariable("review_id") String reviewId) {
+        this.orderService.disapproveOrderReview(orderId, reviewId);
+    }
+
+    @PatchMapping("/orders/{order_id}/reviews/disapprove/batch")
+    public void disapproveOrderReviews(@PathVariable("order_id") String orderId,
+                                       @RequestBody Set<String> reviewIds) {
+        this.orderService.disapproveOrderReviews(orderId, reviewIds);
     }
 }
