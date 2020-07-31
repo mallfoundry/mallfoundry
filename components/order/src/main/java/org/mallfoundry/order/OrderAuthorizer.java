@@ -159,8 +159,8 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public void preProcessCancelOrderRefund(Order order, OrderRefund refund) {
-
+    public OrderRefund preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+        return refund;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -168,8 +168,8 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public void preProcessApproveOrderRefund(Order order, OrderRefund refund) {
-
+    public OrderRefund preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -177,8 +177,8 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public String preProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
-        return disapprovedReason;
+    public OrderRefund preProcessDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"

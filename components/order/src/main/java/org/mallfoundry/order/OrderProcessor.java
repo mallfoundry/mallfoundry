@@ -101,16 +101,17 @@ public interface OrderProcessor {
         return refund;
     }
 
-    default void preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
 
     }
 
-    default void preProcessApproveOrderRefund(Order order, OrderRefund refund) {
-
-    }
-
-    default String preProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
-        return disapprovedReason;
+    default OrderRefund preProcessDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
     }
 
     default OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {

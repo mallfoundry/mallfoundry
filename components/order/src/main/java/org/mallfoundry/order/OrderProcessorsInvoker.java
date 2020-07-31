@@ -123,17 +123,17 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessApplyOrderRefund(order, identity));
     }
 
-    public void invokePreProcessCancelOrderRefund(Order order, OrderRefund refund) {
-        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessCancelOrderRefund(order, identity));
+    public OrderRefund invokePreProcessCancelOrderRefund(Order order, OrderRefund refund) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessCancelOrderRefund(order, identity));
     }
 
-    public void invokePreProcessApproveOrderRefund(Order order, OrderRefund refund) {
-        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderRefund(order, identity));
+    public OrderRefund invokePreProcessApproveOrderRefund(Order order, OrderRefund refund) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessApproveOrderRefund(order, identity));
     }
 
-    public String invokePreProcessDisapproveOrderRefund(Order order, OrderRefund refund, String disapprovedReason) {
-        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderRefund(order, refund, identity);
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, disapprovedReason, function);
+    public OrderRefund invokePreProcessDisapproveOrderRefund(Order order, OrderRefund refund) {
+        BiFunction<OrderProcessor, OrderRefund, OrderRefund> function = (orderProcessor, identity) -> orderProcessor.preProcessDisapproveOrderRefund(order, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, function);
     }
 
     public OrderRefund invokePreProcessActiveOrderRefund(Order order, OrderRefund refund) {
