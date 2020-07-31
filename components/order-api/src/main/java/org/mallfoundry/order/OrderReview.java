@@ -38,6 +38,8 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     String getOrderId();
 
+    void setOrderId(String orderId);
+
     String getItemId();
 
     void setItemId(String itemId);
@@ -56,7 +58,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     int getRating();
 
-    void setRating(int rating);
+    void rating(int rating);
 
     boolean isAnonymous();
 
@@ -114,15 +116,17 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder variantId(String variantId);
 
+        Builder optionSelections(List<OptionSelection> optionSelections);
+
         Builder rating(int rating);
 
         Builder anonymous();
 
         Builder anonymous(boolean anonymous);
 
-        Builder reviewer(String reviewer);
-
         Builder reviewerId(String reviewerId);
+
+        Builder reviewer(String reviewer);
 
         Builder tags(List<String> tags);
 
@@ -131,6 +135,9 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
         Builder rawBody(String rawBody);
 
         Builder bodyType(ReviewBodyType bodyType);
-    }
 
+        Builder videoUrls(List<String> videoUrls);
+
+        Builder imageUrls(List<String> imageUrls);
+    }
 }
