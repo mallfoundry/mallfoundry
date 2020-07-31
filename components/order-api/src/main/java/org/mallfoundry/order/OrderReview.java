@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.review.ReviewBodyType;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
@@ -82,9 +83,9 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void setRawBody(String rawBody);
 
-    BodyType getBodyType();
+    ReviewBodyType getBodyType();
 
-    void setBodyType(BodyType bodyType);
+    void setBodyType(ReviewBodyType bodyType);
 
     List<String> getVideoUrls();
 
@@ -97,13 +98,6 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
     Date getReviewedTime();
 
     void review() throws OrderReviewException;
-
-    /**
-     * 订单评价内容类型，用于在渲染内容的时候使用。
-     */
-    enum BodyType {
-        HTML, JSON, TEXT
-    }
 
     interface Builder extends ObjectBuilder<OrderReview> {
 
@@ -131,13 +125,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder rawBody(String rawBody);
 
-        Builder bodyType(BodyType bodyType);
-
-        Builder htmlBody();
-
-        Builder textBody();
-
-        Builder jsonBody();
+        Builder bodyType(ReviewBodyType bodyType);
     }
 
 }

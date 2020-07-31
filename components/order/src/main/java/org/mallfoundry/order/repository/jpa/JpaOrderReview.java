@@ -24,6 +24,7 @@ import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderReviewStatus;
 import org.mallfoundry.order.OrderReviewSupport;
+import org.mallfoundry.review.ReviewBodyType;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -85,7 +86,7 @@ public class JpaOrderReview extends OrderReviewSupport {
     private String rawBody;
 
     @Column(name = "body_type_")
-    private BodyType bodyType;
+    private ReviewBodyType bodyType;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "video_urls_", length = 1024)

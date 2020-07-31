@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.review.ReviewBodyType;
+
 import java.util.Date;
 import java.util.List;
 
@@ -118,24 +120,9 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
         }
 
         @Override
-        public Builder bodyType(BodyType bodyType) {
+        public Builder bodyType(ReviewBodyType bodyType) {
             this.review.setBodyType(bodyType);
             return this;
-        }
-
-        @Override
-        public Builder htmlBody() {
-            return this.bodyType(BodyType.HTML);
-        }
-
-        @Override
-        public Builder textBody() {
-            return this.bodyType(BodyType.TEXT);
-        }
-
-        @Override
-        public Builder jsonBody() {
-            return this.bodyType(BodyType.JSON);
         }
 
         @Override
