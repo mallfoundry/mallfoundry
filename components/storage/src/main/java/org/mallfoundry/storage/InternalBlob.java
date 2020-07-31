@@ -20,8 +20,6 @@ package org.mallfoundry.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,6 @@ import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.data.repository.jpa.convert.StringStringMapConverter;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.UrlResource;
@@ -37,22 +34,18 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.util.MimeType;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -62,7 +55,6 @@ import java.util.Optional;
 @Entity
 @Table(name = "mf_storage_blob")
 @IdClass(InternalBlobId.class)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class InternalBlob implements Blob {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -92,10 +84,9 @@ public class InternalBlob implements Blob {
     @Column(name = "content_type_")
     private String contentType;
 
-    @Lob
-    @Column(name = "metadata_")
+    /*@Column(name = "metadata_", length = 1024)
     @Convert(converter = StringStringMapConverter.class)
-    private Map<String, String> metadata = new HashMap<>();
+    private Map<String, String> metadata = new HashMap<>();*/
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
