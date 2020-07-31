@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.review.ReviewBodyType;
 
 import java.util.Date;
@@ -28,6 +29,11 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
     @Override
     public void anonymous() {
         this.setAnonymous(true);
+    }
+
+    @Override
+    public void rating(int rating) {
+        this.setRating(rating);
     }
 
     @Override
@@ -73,8 +79,14 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
         }
 
         @Override
+        public Builder optionSelections(List<OptionSelection> optionSelections) {
+            this.review.setOptionSelections(optionSelections);
+            return this;
+        }
+
+        @Override
         public Builder rating(int rating) {
-            this.review.setRating(rating);
+            this.review.rating(rating);
             return this;
         }
 
@@ -122,6 +134,18 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
         @Override
         public Builder bodyType(ReviewBodyType bodyType) {
             this.review.setBodyType(bodyType);
+            return this;
+        }
+
+        @Override
+        public Builder videoUrls(List<String> videoUrls) {
+            this.review.setVideoUrls(videoUrls);
+            return this;
+        }
+
+        @Override
+        public Builder imageUrls(List<String> imageUrls) {
+            this.review.setImageUrls(imageUrls);
             return this;
         }
 
