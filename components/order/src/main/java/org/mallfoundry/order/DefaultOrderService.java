@@ -368,17 +368,12 @@ public class DefaultOrderService implements OrderService {
         return refund;
     }
 
-    private OrderRefund requiredOrderRefund(Order order, String refundId) {
-        return order.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
-    }
-
     @Transactional
     @Override
     public void cancelOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
-        var refund = this.requiredOrderRefund(order, refundId);
-        this.processorsInvoker.invokePreProcessCancelOrderRefund(order, refund);
-        order.cancelRefund(refundId);
+        var refund = this.processorsInvoker.invokePreProcessCancelOrderRefund(order, order.createRefund(refundId));
+        order.cancelRefund(refund);
         this.orderRepository.save(order);
     }
 
@@ -386,10 +381,11 @@ public class DefaultOrderService implements OrderService {
         var payRefund = this.paymentService.refundPayment(order.getPaymentId(),
                 this.paymentService.createPayment(order.getPaymentId()).createRefund(refundId)
                         .toBuilder().orderId(order.getId()).amount(refundAmount).build());
+        var refund = order.createRefund(refundId);
         if (payRefund.isSucceeded()) {
-            order.succeedRefund(refundId);
+            order.succeedRefund(refund);
         } else if (payRefund.isFailed()) {
-            order.failRefund(refundId, payRefund.getFailReason());
+            order.failRefund(refund.toBuilder().failReason(payRefund.getFailReason()).build());
         }
     }
 
@@ -397,9 +393,8 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void approveOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
-        var refund = this.requiredOrderRefund(order, refundId);
-        this.processorsInvoker.invokePreProcessApproveOrderRefund(order, refund);
-        order.approveRefund(refundId);
+        var refund = this.processorsInvoker.invokePreProcessApproveOrderRefund(order, order.createRefund(refundId));
+        order.approveRefund(refund);
         this.refundOrderPayment(order, refund.getId(), refund.getTotalAmount());
         this.orderRepository.save(order);
     }
@@ -408,9 +403,12 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason) {
         var order = this.requiredOrder(orderId);
-        var refund = this.requiredOrderRefund(order, refundId);
-        disapprovedReason = this.processorsInvoker.invokePreProcessDisapproveOrderRefund(order, refund, disapprovedReason);
-        order.disapproveRefund(refundId, disapprovedReason);
+        var refund = Function.<OrderRefund>identity()
+                .<OrderRefund>compose(aRefund -> this.processorsInvoker.invokePreProcessDisapproveOrderRefund(order, aRefund))
+                .<OrderRefund>compose(aRefund -> aRefund.toBuilder().disapprovalReason(disapprovedReason).build())
+                .compose(order::createRefund)
+                .apply(refundId);
+        order.disapproveRefund(refund);
         this.orderRepository.save(order);
     }
 
@@ -419,9 +417,7 @@ public class DefaultOrderService implements OrderService {
     public void activeOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
         refund = this.processorsInvoker.invokePreProcessActiveOrderRefund(order, refund);
-        order.activeRefund(refund);
-        // 获得退款对象，用以更新退款状态。
-        var fetchRefund = this.requiredOrderRefund(order, refund.getId());
+        var fetchRefund = order.activeRefund(refund);
         this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getTotalAmount());
         this.orderRepository.save(order);
     }
