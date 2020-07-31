@@ -74,4 +74,10 @@ public class OrderIdentifier implements OrderProcessor {
         review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME));
         return review;
     }
+
+    @Override
+    public List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+        reviews.forEach(review -> review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME)));
+        return reviews;
+    }
 }
