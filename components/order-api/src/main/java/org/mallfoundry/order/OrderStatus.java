@@ -59,6 +59,10 @@ public enum OrderStatus {
         return AWAITING_PAYMENT == status;
     }
 
+    public static boolean isCompleted(OrderStatus status) {
+        return COMPLETED == status;
+    }
+
     @JsonValue
     @Override
     public String toString() {
