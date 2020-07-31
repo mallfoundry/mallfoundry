@@ -55,11 +55,6 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public ProductId createProductId(String id) {
-        return new ImmutableProductId(id);
-    }
-
-    @Override
     public Product createProduct(String id) {
         return this.productRepository.create(id);
     }

@@ -40,14 +40,6 @@ public interface ProductService {
     ProductQuery createProductQuery();
 
     /**
-     * 创建一个商品标识对象。
-     *
-     * @param id 字符串类型的商品标识
-     * @return 商品标识对象
-     */
-    ProductId createProductId(String id);
-
-    /**
      * 创建一个商品对象。
      *
      * @param id 商品标识
