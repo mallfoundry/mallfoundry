@@ -37,6 +37,8 @@ public class OrderIdentifier implements OrderProcessor {
 
     private static final String ORDER_REFUND_ITEM_ID_VALUE_NAME = "order.refund.item.id";
 
+    private static final String ORDER_REVIEW_ID_VALUE_NAME = "order.review.id";
+
     @Override
     public List<Order> preProcessPlaceOrders(List<Order> orders) {
         orders.stream().peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
@@ -65,5 +67,11 @@ public class OrderIdentifier implements OrderProcessor {
     @Override
     public OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
         return this.preProcessApplyOrderRefund(order, refund);
+    }
+
+    @Override
+    public OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+        review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME));
+        return review;
     }
 }
