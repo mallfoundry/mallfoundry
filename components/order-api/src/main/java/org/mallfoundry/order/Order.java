@@ -154,55 +154,24 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
      */
     OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException;
 
-    /**
-     * 批准退款。
-     *
-     * @param refundId 订单退款对象标识
-     * @throws OrderRefundException 订单退款对象不存在
-     */
-    void approveRefund(String refundId) throws OrderRefundException;
+    void approveRefund(OrderRefund refund) throws OrderRefundException;
+
+    void disapproveRefund(OrderRefund refund) throws OrderRefundException;
 
     /**
-     * 不批准退款。
-     *
-     * @param refundId          订单退款对象标识
-     * @param disapprovalReason 不批准的运用
-     * @throws OrderRefundException 订单退款对象不存在
-     */
-    void disapproveRefund(String refundId, String disapprovalReason) throws OrderRefundException;
-
-    /**
-     * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(String)}
+     * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(OrderRefund)}
      * 两个方法的组合。
      *
      * @param refund 订单退款对象
      * @throws OrderRefundException 请查看 {@link #applyRefund(OrderRefund)} 异常原因
      */
-    void activeRefund(OrderRefund refund) throws OrderRefundException;
+    OrderRefund activeRefund(OrderRefund refund) throws OrderRefundException;
 
-    /**
-     * 取消退款，取消退款后订单退款对象将被删除。
-     *
-     * @param refundId 订单退款对象标识
-     * @throws OrderRefundException 订单退款对象不存在，或者已经同意申请
-     */
-    void cancelRefund(String refundId) throws OrderRefundException;
+    void cancelRefund(OrderRefund refund) throws OrderRefundException;
 
-    /**
-     * 成功付款。
-     *
-     * @param refundId 订单退款对象标识
-     * @throws OrderRefundException 订单退款对象不存在
-     */
-    void succeedRefund(String refundId) throws OrderRefundException;
+    void succeedRefund(OrderRefund refund) throws OrderRefundException;
 
-    /**
-     * 付款失败。
-     *
-     * @param refundId 订单退款对象标识
-     * @throws OrderRefundException 订单退款对象不存在
-     */
-    void failRefund(String refundId, String failReason) throws OrderRefundException;
+    void failRefund(OrderRefund refund) throws OrderRefundException;
 
     OrderStatus getReviewStatus();
 

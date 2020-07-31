@@ -270,8 +270,8 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void cancelRefund(String refundId) throws OrderRefundException {
-        var refund = this.requiredRefund(refundId);
+    public void cancelRefund(OrderRefund args) throws OrderRefundException {
+        var refund = this.requiredRefund(args.getId());
         refund.cancel();
         this.getRefunds().remove(refund);
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).cancelRefund(item.getAmount()));
@@ -279,38 +279,39 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void approveRefund(String refundId) {
-        this.requiredRefund(refundId).approve();
+    public void approveRefund(OrderRefund args) {
+        this.requiredRefund(args.getId()).approve();
     }
 
     @Override
-    public void disapproveRefund(String refundId, String disapprovalReason) throws OrderRefundException {
-        var refund = this.requiredRefund(refundId);
+    public void disapproveRefund(OrderRefund args) throws OrderRefundException {
+        var refund = this.requiredRefund(args.getId());
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).disapproveRefund(item.getAmount()));
-        refund.disapprove(disapprovalReason);
+        refund.disapprove(args.getDisapprovalReason());
         this.updateRefundStatus();
     }
 
     @Override
-    public void activeRefund(OrderRefund refund) throws OrderRefundException {
+    public OrderRefund activeRefund(OrderRefund refund) throws OrderRefundException {
         this.applyRefund(refund);
-        this.approveRefund(refund.getId());
+        this.approveRefund(refund);
         this.updateRefundStatus();
+        return this.requiredRefund(refund.getId());
     }
 
     @Override
-    public void succeedRefund(String refundId) throws OrderRefundException {
-        var refund = this.requiredRefund(refundId);
+    public void succeedRefund(OrderRefund args) throws OrderRefundException {
+        var refund = this.requiredRefund(args.getId());
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).succeedRefund(item.getAmount()));
         refund.succeed();
         this.updateRefundStatus();
     }
 
     @Override
-    public void failRefund(String refundId, String failReason) throws OrderRefundException {
-        var refund = this.requiredRefund(refundId);
+    public void failRefund(OrderRefund args) throws OrderRefundException {
+        var refund = this.requiredRefund(args.getId());
         refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).failRefund(item.getAmount()));
-        refund.fail(failReason);
+        refund.fail(args.getFailReason());
         this.updateRefundStatus();
     }
 
