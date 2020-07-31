@@ -163,34 +163,35 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void approveRefund(String refundId) {
+    public void approveRefund(OrderRefund refund) throws OrderRefundException {
 
     }
 
     @Override
-    public void disapproveRefund(String refundId, String disapprovedReason) throws OrderRefundException {
+    public void disapproveRefund(OrderRefund refund) throws OrderRefundException {
 
     }
 
     @Override
-    public void activeRefund(OrderRefund refund) throws OrderRefundException {
+    public OrderRefund activeRefund(OrderRefund refund) throws OrderRefundException {
+        return null;
+    }
+
+    @Override
+    public void cancelRefund(OrderRefund refund) throws OrderRefundException {
 
     }
 
     @Override
-    public void cancelRefund(String refundId) {
+    public void succeedRefund(OrderRefund refund) throws OrderRefundException {
 
     }
 
     @Override
-    public void succeedRefund(String refundId) {
+    public void failRefund(OrderRefund refund) throws OrderRefundException {
 
     }
 
-    @Override
-    public void failRefund(String refundId, String failReason) throws OrderRefundException {
-
-    }
 
     @Override
     public OrderStatus getReviewStatus() {
@@ -228,13 +229,13 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void approveReview(String reviewId) throws OrderReviewException {
-
+    public OrderReview approveReview(String reviewId) throws OrderReviewException {
+        return null;
     }
 
     @Override
-    public void disapproveReview(String reviewId) throws OrderReviewException {
-
+    public OrderReview disapproveReview(String reviewId) throws OrderReviewException {
+        return null;
     }
 
     @Override
