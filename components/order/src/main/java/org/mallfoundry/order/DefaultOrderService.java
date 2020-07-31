@@ -435,7 +435,8 @@ public class DefaultOrderService implements OrderService {
         var order = this.requiredOrder(orderId);
         newReview = this.processorsInvoker.invokePreProcessAddOrderReview(order, newReview);
         var review = order.addReview(newReview);
-        this.orderRepository.save(order);
+        var savedOrder = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, List.of(review)));
         return review;
     }
 
@@ -445,7 +446,8 @@ public class DefaultOrderService implements OrderService {
         var order = this.requiredOrder(orderId);
         newReviews = this.processorsInvoker.invokePreProcessAddOrderReviews(order, newReviews);
         var reviews = order.addReviews(newReviews);
-        this.orderRepository.save(order);
+        var savedOrder = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));
         return reviews;
     }
 }
