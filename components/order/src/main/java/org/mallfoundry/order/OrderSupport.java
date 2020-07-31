@@ -51,6 +51,7 @@ import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
 import static org.mallfoundry.order.OrderStatus.isAwaitingPayment;
+import static org.mallfoundry.order.OrderStatus.isCompleted;
 import static org.mallfoundry.order.OrderStatus.isIncomplete;
 import static org.mallfoundry.order.OrderStatus.isPending;
 import static org.mallfoundry.payment.PaymentStatus.isCaptured;
@@ -315,11 +316,15 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public boolean canReview() {
-        return this.getItems().stream().anyMatch(item -> !item.isReviewed());
+        return isCompleted(this.getStatus());
     }
 
     @Override
     public void addReview(OrderReview review) throws OrderReviewException {
+        if (!this.canReview()) {
+            throw OrderExceptions.notReview();
+
+        }
         var item = this.requiredItem(review.getItemId());
         if (item.isReviewed()) {
             throw OrderExceptions.Item.reviewed(review.getItemId());
@@ -534,8 +539,8 @@ public abstract class OrderSupport implements MutableOrder {
         }
 
         @Override
-        public Builder item(Function<Order, OrderItem> item) {
-            return this.item(item.apply(this.order));
+        public Builder item(Function<OrderItem, OrderItem> function) {
+            return this.item(function.apply(this.order.createItem(null)));
         }
 
         @Override
