@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -431,19 +432,38 @@ public class DefaultOrderService implements OrderService {
 
     @Transactional
     @Override
-    public void addOrderReview(String orderId, OrderReview newReview) {
+    public OrderReview addOrderReview(String orderId, OrderReview newReview) {
         var order = this.requiredOrder(orderId);
-        var review = this.processorsInvoker.invokePreProcessAddOrderReview(order, newReview);
-        order.addReview(review);
+        newReview = this.processorsInvoker.invokePreProcessAddOrderReview(order, newReview);
+        var review = order.addReview(newReview);
         this.orderRepository.save(order);
+        return review;
+    }
+
+    @Override
+    public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
+        var order = this.requiredOrder(orderId);
+        var reviews = order.addReviews(newReviews);
+        this.orderRepository.save(order);
+        return reviews;
     }
 
     @Transactional
     @Override
     public void approveOrderReview(String orderId, String reviewId) {
         var order = this.requiredOrder(orderId);
-        var review = order.approveReview(order.createReview(reviewId));
-        this.processorsInvoker.invokePostProcessApproveOrderReview(order, review);
+        order.approveReview(
+                this.processorsInvoker.invokePreProcessApproveOrderReview(order, order.createReview(reviewId)));
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void approveOrderReviews(String orderId, Set<String> reviewIds) {
+        var order = this.requiredOrder(orderId);
+        order.approveReviews(
+                this.processorsInvoker.invokePreProcessApproveOrderReviews(order,
+                        reviewIds.stream().map(order::createReview).collect(Collectors.toUnmodifiableList())));
         this.orderRepository.save(order);
     }
 
@@ -451,8 +471,18 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void disapproveOrderReview(String orderId, String reviewId) {
         var order = this.requiredOrder(orderId);
-        var review = order.disapproveReview(order.createReview(reviewId));
-        this.processorsInvoker.invokePostProcessDisapproveOrderReview(order, review);
+        order.disapproveReview(
+                this.processorsInvoker.invokePreProcessDisapproveOrderReview(order, order.createReview(reviewId)));
+        this.orderRepository.save(order);
+    }
+
+    @Transactional
+    @Override
+    public void disapproveOrderReviews(String orderId, Set<String> reviewIds) {
+        var order = this.requiredOrder(orderId);
+        order.disapproveReviews(
+                this.processorsInvoker.invokePreProcessDisapproveOrderReviews(order,
+                        reviewIds.stream().map(order::createReview).collect(Collectors.toUnmodifiableList())));
         this.orderRepository.save(order);
     }
 }

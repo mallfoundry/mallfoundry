@@ -116,9 +116,15 @@ public interface OrderService {
 
     Optional<OrderRefund> getOrderRefund(String orderId, String refundId);
 
-    void addOrderReview(String orderId, OrderReview review);
+    OrderReview addOrderReview(String orderId, OrderReview review);
+
+    List<OrderReview> addOrderReviews(String orderId, List<OrderReview> reviews);
 
     void approveOrderReview(String orderId, String reviewId);
 
+    void approveOrderReviews(String orderId, Set<String> reviewIds);
+
     void disapproveOrderReview(String orderId, String reviewId);
+
+    void disapproveOrderReviews(String orderId, Set<String> reviewIds);
 }
