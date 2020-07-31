@@ -21,6 +21,8 @@ package org.mallfoundry.order.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderReviewStatus;
 import org.mallfoundry.order.OrderReviewSupport;
@@ -58,6 +60,10 @@ public class JpaOrderReview extends OrderReviewSupport {
 
     @Column(name = "variant_id_")
     private String variantId;
+
+    @Column(name = "option_selections_", length = 1024)
+    @Convert(converter = OptionSelectionListConverter.class)
+    private List<OptionSelection> optionSelections;
 
     @Column(name = "rating_")
     private int rating;
