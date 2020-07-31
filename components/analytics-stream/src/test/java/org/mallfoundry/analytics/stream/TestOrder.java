@@ -27,6 +27,8 @@ import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaymentResult;
 import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefundException;
+import org.mallfoundry.order.OrderReview;
+import org.mallfoundry.order.OrderReviewException;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
@@ -187,6 +189,61 @@ public class TestOrder implements Order {
 
     @Override
     public void failRefund(String refundId, String failReason) throws OrderRefundException {
+
+    }
+
+    @Override
+    public OrderStatus getReviewStatus() {
+        return null;
+    }
+
+    @Override
+    public boolean canReview() {
+        return false;
+    }
+
+    @Override
+    public OrderReview createReview(String reviewId) {
+        return null;
+    }
+
+    @Override
+    public void addReview(OrderReview review) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void addReviews(List<OrderReview> reviews) throws OrderReviewException {
+
+    }
+
+    @Override
+    public Optional<OrderReview> getReview(String reviewId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<OrderReview> getReviews() {
+        return null;
+    }
+
+    @Override
+    public void approveReview(String reviewId) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void disapproveReview(String reviewId) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void approveReviews(Set<String> reviewIds) throws OrderReviewException {
+
+    }
+
+    @Override
+    public void disapproveReviews(Set<String> reviewIds) throws OrderReviewException {
 
     }
 

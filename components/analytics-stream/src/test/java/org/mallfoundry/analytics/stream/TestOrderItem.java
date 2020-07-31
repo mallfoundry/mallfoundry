@@ -44,6 +44,7 @@ public class TestOrderItem implements OrderItem {
     private BigDecimal discountAmount;
     private BigDecimal shippingCost;
     private BigDecimal discountShippingCost;
+    private boolean reviewed;
 
     public BigDecimal getDiscountAmount() {
         return Objects.isNull(this.discountAmount)
@@ -73,6 +74,11 @@ public class TestOrderItem implements OrderItem {
 
     @Override
     public void failRefund(BigDecimal failAmount) {
+
+    }
+
+    @Override
+    public void review() {
 
     }
 
