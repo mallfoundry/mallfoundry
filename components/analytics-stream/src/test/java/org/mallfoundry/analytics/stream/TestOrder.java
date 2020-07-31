@@ -229,22 +229,22 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public OrderReview approveReview(String reviewId) throws OrderReviewException {
+    public OrderReview approveReview(OrderReview review) throws OrderReviewException {
         return null;
     }
 
     @Override
-    public OrderReview disapproveReview(String reviewId) throws OrderReviewException {
+    public OrderReview disapproveReview(OrderReview review) throws OrderReviewException {
         return null;
     }
 
     @Override
-    public void approveReviews(Set<String> reviewIds) throws OrderReviewException {
+    public void approveReviews(Set<OrderReview> reviews) throws OrderReviewException {
 
     }
 
     @Override
-    public void disapproveReviews(Set<String> reviewIds) throws OrderReviewException {
+    public void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException {
 
     }
 

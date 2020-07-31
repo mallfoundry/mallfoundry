@@ -352,27 +352,27 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public OrderReview approveReview(String reviewId) throws OrderReviewException {
-        var review = this.requiredReview(reviewId);
+    public OrderReview approveReview(OrderReview args) throws OrderReviewException {
+        var review = this.requiredReview(args.getId());
         review.approve();
         return review;
     }
 
     @Override
-    public OrderReview disapproveReview(String reviewId) throws OrderReviewException {
-        var review = this.requiredReview(reviewId);
+    public OrderReview disapproveReview(OrderReview args) throws OrderReviewException {
+        var review = this.requiredReview(args.getId());
         review.disapprove();
         return review;
     }
 
     @Override
-    public void approveReviews(Set<String> reviewIds) throws OrderReviewException {
-        reviewIds.forEach(this::approveReview);
+    public void approveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+        reviews.forEach(this::approveReview);
     }
 
     @Override
-    public void disapproveReviews(Set<String> reviewIds) throws OrderReviewException {
-        reviewIds.forEach(this::disapproveReview);
+    public void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException {
+        reviews.forEach(this::disapproveReview);
     }
 
     @Override

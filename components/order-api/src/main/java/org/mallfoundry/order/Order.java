@@ -205,13 +205,13 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     List<OrderReview> getReviews();
 
-    OrderReview approveReview(String reviewId) throws OrderReviewException;
+    OrderReview approveReview(OrderReview review) throws OrderReviewException;
 
-    OrderReview disapproveReview(String reviewId) throws OrderReviewException;
+    OrderReview disapproveReview(OrderReview review) throws OrderReviewException;
 
-    void approveReviews(Set<String> reviewIds) throws OrderReviewException;
+    void approveReviews(Set<OrderReview> reviews) throws OrderReviewException;
 
-    void disapproveReviews(Set<String> reviewIds) throws OrderReviewException;
+    void disapproveReviews(Set<OrderReview> reviews) throws OrderReviewException;
 
     BigDecimal getTotalDiscountAmount();
 

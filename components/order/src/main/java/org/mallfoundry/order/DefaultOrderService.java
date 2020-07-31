@@ -442,7 +442,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void approveOrderReview(String orderId, String reviewId) {
         var order = this.requiredOrder(orderId);
-        var review = order.approveReview(reviewId);
+        var review = order.approveReview(order.createReview(reviewId));
         this.processorsInvoker.invokePostProcessApproveOrderReview(order, review);
         this.orderRepository.save(order);
     }
@@ -451,7 +451,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void disapproveOrderReview(String orderId, String reviewId) {
         var order = this.requiredOrder(orderId);
-        var review = order.disapproveReview(reviewId);
+        var review = order.disapproveReview(order.createReview(reviewId));
         this.processorsInvoker.invokePostProcessDisapproveOrderReview(order, review);
         this.orderRepository.save(order);
     }
