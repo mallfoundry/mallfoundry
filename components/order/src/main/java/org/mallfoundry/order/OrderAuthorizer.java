@@ -202,4 +202,29 @@ public class OrderAuthorizer implements OrderProcessor {
     public OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
+
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + OrderAuthorities.ORDER_REVIEW_ADD + "')")
+    @Override
+    public OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+        return review;
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REVIEW_APPROVE + ","
+            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public void postProcessApproveOrderReview(Order order, OrderReview review) {
+
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + OrderAuthorities.ORDER_REVIEW_DISAPPROVE + ","
+            + OrderAuthorities.ORDER_REVIEW_MANAGE + ","
+            + OrderAuthorities.ORDER_MANAGE + "')")
+    @Override
+    public void postProcessDisapproveOrderReview(Order order, OrderReview review) {
+
+    }
 }
