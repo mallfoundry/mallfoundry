@@ -229,26 +229,6 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void approveReview(OrderReview review) throws OrderReviewException {
-
-    }
-
-    @Override
-    public void approveReviews(List<OrderReview> reviews) throws OrderReviewException {
-
-    }
-
-    @Override
-    public void disapproveReview(OrderReview review) throws OrderReviewException {
-
-    }
-
-    @Override
-    public void disapproveReviews(List<OrderReview> reviews) throws OrderReviewException {
-
-    }
-
-    @Override
     public int getTotalItems() {
         return 0;
     }
