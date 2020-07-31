@@ -117,18 +117,22 @@ public interface OrderProcessor {
         return refund;
     }
 
-    default void preProcessSucceedOrderRefund(Order order, OrderRefund refund) {
-
-    }
-
-    default String preProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
-        return failReason;
-    }
 
     default OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
+    default OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+        return review;
+    }
+
+    default void postProcessApproveOrderReview(Order order, OrderReview review) {
+
+    }
+
+    default void postProcessDisapproveOrderReview(Order order, OrderReview review) {
+
+    }
 
     default void postProcessAfterCompletion() {
     }

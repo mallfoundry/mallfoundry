@@ -140,18 +140,23 @@ public class OrderProcessorsInvoker {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessActiveOrderRefund(order, identity));
     }
 
-    public void invokePreProcessSucceedOrderRefund(Order order, OrderRefund refund) {
-        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, refund, (orderProcessor, identity) -> orderProcessor.preProcessSucceedOrderRefund(order, identity));
-    }
-
-    public String invokePreProcessFailOrderRefund(Order order, OrderRefund refund, String failReason) {
-        BiFunction<OrderProcessor, String, String> function = (orderProcessor, identity) -> orderProcessor.preProcessFailOrderRefund(order, refund, identity);
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, failReason, function);
-    }
-
     public OrderRefund invokePostProcessGetOrderRefund(Order order, OrderRefund refund) {
         BiFunction<OrderProcessor, OrderRefund, OrderRefund> function = (orderProcessor, identity) -> orderProcessor.postProcessGetOrderRefund(order, identity);
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, refund, function);
+    }
+
+    public OrderReview invokePreProcessAddOrderReview(Order order, OrderReview review) {
+        BiFunction<OrderProcessor, OrderReview, OrderReview> function = (orderProcessor, identity) -> orderProcessor.preProcessAddOrderReview(order, identity);
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, function);
+    }
+
+    public void invokePostProcessApproveOrderReview(Order order, OrderReview review) {
+        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.postProcessApproveOrderReview(order, identity));
+
+    }
+
+    public void invokePostProcessDisapproveOrderReview(Order order, OrderReview review) {
+        ProcessorsInvoker.invokeBiConsumerProcessors(this.processors, review, (orderProcessor, identity) -> orderProcessor.postProcessDisapproveOrderReview(order, identity));
     }
 
     public void invokePostProcessAfterCompletion() {
