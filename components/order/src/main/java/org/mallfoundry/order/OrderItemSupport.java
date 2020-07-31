@@ -18,9 +18,11 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.util.DecimalUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public abstract class OrderItemSupport implements MutableOrderItem {
 
@@ -87,5 +89,79 @@ public abstract class OrderItemSupport implements MutableOrderItem {
     @Override
     public void review() {
         this.setReviewed(true);
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final OrderItem item;
+
+        protected BuilderSupport(OrderItem item) {
+            this.item = item;
+        }
+
+        @Override
+        public Builder id(String id) {
+            this.item.setId(id);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.item.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
+        public Builder productId(String productId) {
+            this.item.setProductId(productId);
+            return this;
+        }
+
+        @Override
+        public Builder variantId(String variantId) {
+            this.item.setVariantId(variantId);
+            return this;
+        }
+
+        @Override
+        public Builder optionSelections(List<OptionSelection> optionSelections) {
+            this.item.setOptionSelections(optionSelections);
+            return this;
+        }
+
+        @Override
+        public Builder imageUrl(String imageUrl) {
+            this.item.setImageUrl(imageUrl);
+            return this;
+        }
+
+        @Override
+        public Builder name(String name) {
+            this.item.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder quantity(int quantity) {
+            this.item.setQuantity(quantity);
+            return this;
+        }
+
+        @Override
+        public Builder price(BigDecimal price) {
+            this.item.setPrice(price);
+            return this;
+        }
+
+        @Override
+        public OrderItem build() {
+            return this.item;
+        }
     }
 }

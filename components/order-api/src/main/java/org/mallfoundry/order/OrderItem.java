@@ -24,7 +24,7 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface OrderItem {
+public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
 
     String getId();
 
@@ -98,12 +98,9 @@ public interface OrderItem {
 
     BigDecimal getTotalAmount();
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
-
     interface Builder extends ObjectBuilder<OrderItem> {
+
+        Builder id(String id);
 
         Builder storeId(String storeId);
 
@@ -120,67 +117,5 @@ public interface OrderItem {
         Builder quantity(int quantity);
 
         Builder price(BigDecimal price);
-    }
-
-    abstract class BuilderSupport implements Builder {
-
-        private final OrderItem item;
-
-        public BuilderSupport(OrderItem item) {
-            this.item = item;
-        }
-
-        @Override
-        public Builder storeId(String storeId) {
-            this.item.setStoreId(storeId);
-            return this;
-        }
-
-        @Override
-        public Builder productId(String productId) {
-            this.item.setProductId(productId);
-            return this;
-        }
-
-        @Override
-        public Builder variantId(String variantId) {
-            this.item.setVariantId(variantId);
-            return this;
-        }
-
-        @Override
-        public Builder optionSelections(List<OptionSelection> optionSelections) {
-            this.item.setOptionSelections(optionSelections);
-            return this;
-        }
-
-        @Override
-        public Builder imageUrl(String imageUrl) {
-            this.item.setImageUrl(imageUrl);
-            return this;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.item.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder quantity(int quantity) {
-            this.item.setQuantity(quantity);
-            return this;
-        }
-
-        @Override
-        public Builder price(BigDecimal price) {
-            this.item.setPrice(price);
-            return this;
-        }
-
-        @Override
-        public OrderItem build() {
-            return this.item;
-        }
     }
 }
