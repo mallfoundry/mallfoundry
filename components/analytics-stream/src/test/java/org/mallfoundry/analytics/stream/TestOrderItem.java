@@ -111,4 +111,8 @@ public class TestOrderItem implements OrderItem {
                 .add(this.getDiscountShippingCost());
     }
 
+    @Override
+    public Builder toBuilder() {
+        return null;
+    }
 }
