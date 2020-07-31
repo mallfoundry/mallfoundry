@@ -207,28 +207,28 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
     OrderStatus getReviewStatus();
 
     /**
-     * 获得订单是否还可以评价。
+     * 获得订单是否还可以评论。
      */
     boolean canReview();
 
     /**
-     * 创建一个新的订单评价对象。
+     * 创建一个新的订单评论对象。
      */
     OrderReview createReview(String reviewId);
 
     /**
-     * 添加商品订单评价。
+     * 添加商品订单评价，一个订单项对象只允许评论一次。
      *
-     * @param review 订单评价对象
-     * @throws OrderReviewException 订单已被评论
+     * @param review 订单评论对象
+     * @throws OrderReviewException 订单项重复评论
      */
     void addReview(OrderReview review) throws OrderReviewException;
 
     /**
      * 批量添加商品订单评价。
      *
-     * @param reviews 订单评价对象集合
-     * @throws OrderReviewException 订单已被评论
+     * @param reviews 订单评论对象集合
+     * @throws OrderReviewException 订单项重复评论
      */
     void addReviews(List<OrderReview> reviews) throws OrderReviewException;
 
@@ -356,6 +356,6 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
         Builder item(OrderItem item);
 
-        Builder item(Function<Order, OrderItem> item);
+        Builder item(Function<OrderItem, OrderItem> function);
     }
 }
