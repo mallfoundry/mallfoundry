@@ -124,6 +124,8 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder anonymous();
 
+        Builder anonymous(boolean anonymous);
+
         Builder reviewer(String reviewer);
 
         Builder reviewerId(String reviewerId);

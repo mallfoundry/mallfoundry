@@ -100,6 +100,11 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
         }
 
         @Override
+        public Builder anonymous(boolean anonymous) {
+            return anonymous ? this.anonymous() : this;
+        }
+
+        @Override
         public Builder reviewer(String reviewer) {
             this.review.setReviewer(reviewer);
             return this;
