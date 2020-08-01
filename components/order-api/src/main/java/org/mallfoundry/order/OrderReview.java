@@ -19,7 +19,8 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.review.ReviewBodyType;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.BodyType;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
@@ -60,20 +61,9 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void rating(int rating);
 
-    boolean isAnonymous();
+    Author getReviewer();
 
-    /**
-     * 匿名评价。
-     */
-    void anonymous();
-
-    String getReviewer();
-
-    void setReviewer(String reviewer);
-
-    String getReviewerId();
-
-    void setReviewerId(String reviewerId);
+    void setReviewer(Author reviewer);
 
     List<String> getTags();
 
@@ -90,9 +80,9 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void setRawBody(String rawBody);
 
-    ReviewBodyType getBodyType();
+    BodyType getBodyType();
 
-    void setBodyType(ReviewBodyType bodyType);
+    void setBodyType(BodyType bodyType);
 
     List<String> getVideoUrls();
 
@@ -120,13 +110,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder rating(int rating);
 
-        Builder anonymous();
-
-        Builder anonymous(boolean anonymous);
-
-        Builder reviewerId(String reviewerId);
-
-        Builder reviewer(String reviewer);
+        Builder reviewer(Author reviewer);
 
         Builder tags(List<String> tags);
 
@@ -134,7 +118,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder rawBody(String rawBody);
 
-        Builder bodyType(ReviewBodyType bodyType);
+        Builder bodyType(BodyType bodyType);
 
         Builder videoUrls(List<String> videoUrls);
 
