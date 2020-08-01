@@ -23,7 +23,7 @@ import org.mallfoundry.captcha.CaptchaException;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.captcha.CaptchaType;
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.security.UserSubject;
+import org.mallfoundry.security.UserDetailsSubject;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,7 +60,7 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
         var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
         var user = this.userService.getUserByMobile(countryCode, mobile)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s not found", mobile)));
-        var securityUser = new UserSubject(user);
+        var securityUser = new UserDetailsSubject(user);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }
 

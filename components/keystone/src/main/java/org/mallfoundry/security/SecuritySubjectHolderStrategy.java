@@ -18,26 +18,13 @@
 
 package org.mallfoundry.security;
 
-import lombok.Getter;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collection;
+public class SecuritySubjectHolderStrategy implements SubjectHolderStrategy {
+    public static final SecuritySubjectHolderStrategy INSTANCE = new SecuritySubjectHolderStrategy();
 
-public class SystemUserAuthentication extends UsernamePasswordAuthenticationToken {
-
-    private static final String PASSWORD = "N/A";
-
-    private static final Collection<GrantedAuthority> AUTHORITIES =
-            AuthorityUtils.createAuthorityList("ADMIN", "SYSTEM_ADMIN");
-
-    @Getter
-    private final Authentication suspended;
-
-    public SystemUserAuthentication(Authentication suspended, SystemUser systemUser) {
-        super(systemUser, PASSWORD, AUTHORITIES);
-        this.suspended = suspended;
+    @Override
+    public Subject getSubject() {
+        return (Subject) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

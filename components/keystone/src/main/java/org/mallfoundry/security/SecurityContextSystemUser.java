@@ -20,11 +20,8 @@ package org.mallfoundry.security;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collection;
 import java.util.concurrent.Callable;
 
 @Getter
@@ -32,31 +29,10 @@ public class SecurityContextSystemUser implements SystemUser {
     private final String id = "System";
     private final String username = "System";
     private final String nickname = "System";
-    private final String password = "N/A";
-    private final Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ADMIN", "SYSTEM_ADMIN");
+    private final String avatar = null;
 
     @Getter(AccessLevel.PRIVATE)
     private SystemUserAuthentication authentication;
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
     @Override
     public void doRun(Runnable runnable) {

@@ -42,6 +42,6 @@ public class SecurityUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = this.userService.getUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
-        return new UserSubject(user);
+        return new UserDetailsSubject(user);
     }
 }

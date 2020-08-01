@@ -19,7 +19,9 @@
 package org.mallfoundry.autoconfigure.security;
 
 import org.mallfoundry.security.SecurityContextSystemUserSwitcher;
-import org.mallfoundry.security.SystemUsers;
+import org.mallfoundry.security.SecuritySubjectHolderStrategy;
+import org.mallfoundry.security.SubjectHolder;
+import org.mallfoundry.security.SubjectSwitches;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +31,14 @@ public class SecurityAutoConfiguration {
     @Bean
     public SecurityContextSystemUserSwitcher securityContextSystemUserSwitcher() {
         var switcher = new SecurityContextSystemUserSwitcher();
-        SystemUsers.setSwitcher(switcher);
+        SubjectSwitches.setSystemUserSwitcher(switcher);
         return switcher;
+    }
+
+    @Bean
+    public SecuritySubjectHolderStrategy securitySubjectHolderStrategy() {
+        var strategy = SecuritySubjectHolderStrategy.INSTANCE;
+        SubjectHolder.setHolderStrategy(strategy);
+        return strategy;
     }
 }

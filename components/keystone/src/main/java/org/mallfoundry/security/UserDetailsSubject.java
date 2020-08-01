@@ -18,28 +18,26 @@
 
 package org.mallfoundry.security;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.identity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Use identity user to enhance user details to support extended properties of identity user.
- */
-public class UserSubject implements Subject {
+public class UserDetailsSubject implements UserDetails, Subject {
 
     private final User user;
 
     private final List<GrantedAuthority> authorities;
 
-    public UserSubject(User user) {
+    public UserDetailsSubject(User user) {
         this.user = user;
-        this.authorities = CollectionUtils.isEmpty(user.getAuthorities())
-                ? AuthorityUtils.NO_AUTHORITIES
-                : AuthorityUtils.createAuthorityList(user.getAuthorities().toArray(new String[0]));
+        this.authorities =
+                AuthorityUtils.createAuthorityList(
+                        ListUtils.emptyIfNull(user.getAuthorities()).toArray(new String[0]));
     }
 
     @Override
@@ -55,6 +53,11 @@ public class UserSubject implements Subject {
     @Override
     public String getUsername() {
         return this.user.getUsername();
+    }
+
+    @Override
+    public String getAvatar() {
+        return this.user.getAvatar();
     }
 
     @Override

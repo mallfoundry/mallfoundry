@@ -154,7 +154,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public Optional<User> getCurrentUser() {
-        return this.getUser(SubjectHolder.getUserId());
+        return this.getUser(SubjectHolder.getSubject().getId());
     }
 
     @Transactional
