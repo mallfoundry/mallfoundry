@@ -30,15 +30,11 @@ public class OrderShipmentItemListConverter implements AttributeConverter<List<O
 
     @Override
     public String convertToDatabaseColumn(List<OrderShipmentItem> items) {
-        return Objects.isNull(items)
-                ? null
-                : JsonUtils.stringify(items);
+        return Objects.isNull(items) ? null : JsonUtils.stringify(items);
     }
 
     @Override
     public List<OrderShipmentItem> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData)
-                ? null
-                : JsonUtils.parse(dbData, List.class, DefaultOrderShipmentItem.class);
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, List.class, DefaultOrderShipmentItem.class);
     }
 }
