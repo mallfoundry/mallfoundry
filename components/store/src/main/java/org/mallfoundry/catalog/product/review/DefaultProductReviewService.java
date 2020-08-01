@@ -19,9 +19,13 @@
 package org.mallfoundry.catalog.product.review;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.DefaultAuthor;
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class DefaultProductReviewService implements ProductReviewService {
@@ -43,14 +47,6 @@ public class DefaultProductReviewService implements ProductReviewService {
     @Override
     public ProductReview createProductReview(String reviewId) {
         return this.reviewRepository.create(reviewId);
-    }
-
-    @Transactional
-    @Override
-    public void addProductReview(ProductReview review) throws ProductReviewException {
-        review = this.processorsInvoker.invokePreProcessAddProductReview(review);
-        review.review();
-        this.reviewRepository.save(review);
     }
 
     @Transactional
@@ -83,9 +79,38 @@ public class DefaultProductReviewService implements ProductReviewService {
         return this.reviewRepository.findAll(query);
     }
 
+    private ProductReview requiredProductReview(String reviewId) {
+        return this.getProductReview(reviewId).orElseThrow();
+    }
+
+    private Author createFromAuthor(ProductReview review, ProductReviewComment comment) {
+        var source = comment.getAuthor();
+        var subject = SubjectHolder.getSubject();
+        var author = new DefaultAuthor(subject.getId()).toBuilder().nickname(subject.getNickname()).build();
+        if (Objects.nonNull(source) && source.isAnonymous()) {
+            author.anonymous();
+        }
+        author.setAvatar(Objects.nonNull(source) && Objects.nonNull(source.getAvatar())
+                ? source.getAvatar() : subject.getAvatar());
+//        if (Objects.equals(review.getReviewer().getId(),))
+        return author;
+    }
+
+    private ProductReviewComment createProductReviewComment(ProductReview review, ProductReviewComment source) {
+        var comment = review.createComment(null);
+        comment.setBody(source.getBody());
+        comment.setRawBody(source.getRawBody());
+        comment.setBodyType(source.getBodyType());
+        comment.setAuthor(this.createFromAuthor(review, source));
+        return comment;
+    }
+
     @Override
-    public ProductReviewComment commentProductReview(String reviewId, ProductReviewComment comment) throws ProductReviewException {
-        return null;
+    public ProductReviewComment commentProductReview(String reviewId, ProductReviewComment source) throws ProductReviewException {
+        var review = this.requiredProductReview(reviewId);
+        var comment = this.createProductReviewComment(review, source);
+        review.comment(comment);
+        return comment;
     }
 
     @Override

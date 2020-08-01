@@ -22,32 +22,57 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.product.review.ProductReviewComment;
+import org.mallfoundry.catalog.product.review.ProductReviewCommentSupport;
 import org.mallfoundry.catalog.product.review.ProductReviewReplyComment;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.BodyType;
+import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import static javax.persistence.InheritanceType.SINGLE_TABLE;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_catalog_product_review_comment")
-@Inheritance(strategy = SINGLE_TABLE)
-@DiscriminatorColumn(name = "type_", discriminatorType = DiscriminatorType.STRING, length = 14)
-@DiscriminatorValue("COMMENT")
-public class JpaProductReviewComment extends JpaProductReviewCommentBase implements ProductReviewComment {
+public class JpaProductReviewComment extends ProductReviewCommentSupport {
+
+    @Id
+    @Column(name = "id_")
+    private String id;
+
+    @Column(name = "review_id_")
+    private String reviewId;
+
+    @Column(name = "author_")
+    @Convert(converter = AuthorConverter.class)
+    private Author author;
+
+    @Column(name = "body_")
+    private String body;
+
+    @Column(name = "raw_body_")
+    private String rawBody;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "body_type")
+    private BodyType bodyType;
 
     @ManyToOne(targetEntity = JpaProductReviewComment.class)
     @JoinColumn(name = "parent_id_")
     private ProductReviewComment parent;
+
+    @Column(name = "created_time_")
+    private Date createdTime;
 
     public JpaProductReviewComment(String id) {
         this.setId(id);
@@ -55,11 +80,6 @@ public class JpaProductReviewComment extends JpaProductReviewCommentBase impleme
 
     @Override
     public ProductReviewReplyComment createReplyComment(String id) {
-        return null;
-    }
-
-    @Override
-    public void replyComment(ProductReviewReplyComment comment) {
-
+        return new JpaProductReviewReplyComment(id);
     }
 }
