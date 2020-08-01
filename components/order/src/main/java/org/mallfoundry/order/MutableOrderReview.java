@@ -24,7 +24,5 @@ public interface MutableOrderReview extends OrderReview {
 
     void setRating(int rating);
 
-    void setAnonymous(boolean anonymous);
-
     void setReviewedTime(Date reviewedTime);
 }
