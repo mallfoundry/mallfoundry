@@ -105,6 +105,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-keystone</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-payment</artifactId>
             <scope>test</scope>
         </dependency>
