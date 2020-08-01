@@ -29,7 +29,7 @@ public abstract class OrderShipmentSupport implements OrderShipment {
 
     @Override
     public OrderShipmentItem createItem(String id) {
-        return new DefaultOrderShipmentItem();
+        return new DefaultOrderShipmentItem(id);
     }
 
     @Override
