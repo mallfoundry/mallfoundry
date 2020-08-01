@@ -108,8 +108,7 @@ public class JpaOrder extends OrderSupport {
 
     @Valid
     @NotEmpty
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-            targetEntity = JpaOrderItem.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderItem.class)
     @JoinColumn(name = "order_id_")
     @OrderBy("id ASC")
     private List<OrderItem> items = new ArrayList<>();
