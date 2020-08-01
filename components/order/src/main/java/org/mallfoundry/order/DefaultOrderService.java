@@ -23,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.AuthorType;
+import org.mallfoundry.review.DefaultAuthor;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
@@ -78,7 +81,7 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public Order createOrder(String id) {
-        return this.orderRepository.create(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
+        return this.orderRepository.create(id);
     }
 
     @Override
@@ -429,13 +432,28 @@ public class DefaultOrderService implements OrderService {
                 .map(refund -> this.processorsInvoker.invokePostProcessGetOrderRefund(order, refund));
     }
 
+    private Author createNewReviewer(Author author) {
+        var newAuthor = new DefaultAuthor(SubjectHolder.getUserId()).toBuilder()
+                .type(AuthorType.CUSTOMER).nickname(SubjectHolder.getNickname())
+                .build();
+        if (Objects.nonNull(author) && StringUtils.isNotBlank(author.getAvatar())) {
+            newAuthor.setAvatar(author.getAvatar());
+        }
+        if (Objects.nonNull(author) && author.isAnonymous()) {
+            newAuthor.anonymous();
+        }
+        return newAuthor;
+    }
+
     @Transactional
     @Override
     public OrderReview addOrderReview(String orderId, OrderReview newReview) {
         var order = this.requiredOrder(orderId);
         var review = order.addReview(
                 this.processorsInvoker.invokePreProcessAddOrderReview(order,
-                        newReview.toBuilder().reviewerId(SubjectHolder.getUserId()).reviewer(SubjectHolder.getNickname()).build()));
+                        newReview.toBuilder()
+                                .reviewer(this.createNewReviewer(newReview.getReviewer()))
+                                .build()));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, List.of(review)));
         return review;
@@ -445,7 +463,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
         var order = this.requiredOrder(orderId);
-        newReviews.forEach(review -> review.toBuilder().reviewerId(SubjectHolder.getUserId()).reviewer(SubjectHolder.getNickname()).build());
+        newReviews.forEach(review -> review.toBuilder().reviewer(this.createNewReviewer(review.getReviewer())).build());
         var reviews = order.addReviews(this.processorsInvoker.invokePreProcessAddOrderReviews(order, newReviews));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));
