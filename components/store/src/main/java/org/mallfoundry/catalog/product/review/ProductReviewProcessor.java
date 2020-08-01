@@ -22,10 +22,6 @@ import java.util.List;
 
 public interface ProductReviewProcessor {
 
-    default ProductReview preProcessAddProductReview(ProductReview review) {
-        return review;
-    }
-
     default List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
         return reviews;
     }

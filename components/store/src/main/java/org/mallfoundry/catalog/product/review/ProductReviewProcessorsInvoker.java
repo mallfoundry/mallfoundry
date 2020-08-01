@@ -31,10 +31,6 @@ public class ProductReviewProcessorsInvoker {
         this.processors = ListUtils.emptyIfNull(processors);
     }
 
-    public ProductReview invokePreProcessAddProductReview(ProductReview review) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, review, ProductReviewProcessor::preProcessAddProductReview);
-    }
-
     public List<ProductReview> invokePreProcessAddProductReviews(List<ProductReview> reviews) {
         return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, ProductReviewProcessor::preProcessAddProductReviews);
     }

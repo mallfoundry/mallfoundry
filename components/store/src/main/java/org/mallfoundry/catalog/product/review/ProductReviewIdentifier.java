@@ -24,13 +24,8 @@ import org.mallfoundry.keygen.PrimaryKeyHolder;
 import java.util.List;
 
 public class ProductReviewIdentifier implements ProductReviewProcessor {
-    private static final String PRODUCT_REVIEW_VALUE_ID_NAME = "product.review.id";
 
-    @Override
-    public ProductReview preProcessApproveProductReview(ProductReview review) {
-        this.setIdentifier(review);
-        return review;
-    }
+    private static final String PRODUCT_REVIEW_VALUE_ID_NAME = "product.review.id";
 
     @Override
     public List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
