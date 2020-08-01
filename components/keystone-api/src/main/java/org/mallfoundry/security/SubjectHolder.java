@@ -60,6 +60,8 @@ public abstract class SubjectHolder {
     /**
      * 切换到系统用户。
      */
+    // switches().systemUser().doRun()
+    // switches().systemUser().doCall()
     public static SystemUser switchToSystemUser() {
         return SystemUsers.switcher().switchTo();
     }
