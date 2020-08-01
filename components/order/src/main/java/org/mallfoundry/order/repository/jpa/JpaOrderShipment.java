@@ -91,7 +91,7 @@ public class JpaOrderShipment extends OrderShipmentSupport {
     @Valid
     @NotEmpty
     @Convert(converter = OrderShipmentItemListConverter.class)
-    @Column(name = "items_", length = 1024 * 2)
+    @Column(name = "items_", length = 1024 * 4)
     private List<OrderShipmentItem> items = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
