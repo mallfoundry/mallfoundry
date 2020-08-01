@@ -19,13 +19,11 @@
 package org.mallfoundry.shipping.rate;
 
 import org.mallfoundry.data.SliceList;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-@Service
 public class DefaultRateService implements RateService {
 
     private final RateProcessorsInvoker processorsInvoker;
