@@ -18,21 +18,43 @@
 
 package org.mallfoundry.product;
 
+import org.mallfoundry.catalog.product.review.ProductReview;
+import org.mallfoundry.catalog.product.review.ProductReviewService;
+import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderReviewedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+import java.util.stream.Collectors;
+
 @Configuration
 public class OrderReviewedToProductReviewer {
-    private static final Logger logger = LoggerFactory.getLogger(OrderReviewedToProductReviewer.class);
+
+    private final ProductReviewService productReviewService;
+
+    public OrderReviewedToProductReviewer(ProductReviewService productReviewService) {
+        this.productReviewService = productReviewService;
+    }
+
+    private ProductReview assignReview(OrderReview review) {
+        return this.productReviewService.createProductReview(review.getId())
+                .toBuilder()
+                .orderId(review.getOrderId()).itemId(review.getItemId())
+                .productId(review.getProductId()).variantId(review.getVariantId())
+                .optionSelections(review.getOptionSelections())
+                .reviewer(review.getReviewer())
+                .body(review.getBody()).rawBody(review.getRawBody()).bodyType(review.getBodyType())
+                .tags(review.getTags()).rating(review.getRating())
+                .imageUrls(review.getImageUrls()).videoUrls(review.getVideoUrls())
+                .build();
+    }
 
     @EventListener
     public void handleOrderReviewedEvent(OrderReviewedEvent event) {
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Eventing");
-        }
+        var reviews = event.getOrderReviews()
+                .stream()
+                .map(this::assignReview)
+                .collect(Collectors.toUnmodifiableList());
+        this.productReviewService.addProductReviews(reviews);
     }
 }
