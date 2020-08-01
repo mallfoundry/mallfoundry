@@ -34,6 +34,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -71,6 +72,7 @@ public class JpaOrderItem extends OrderItemSupport {
     @Column(name = "name_")
     private String name;
 
+    @NotEmpty
     @Column(name = "option_selections_", length = 1024)
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
