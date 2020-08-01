@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Min;
@@ -27,6 +28,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class DefaultOrderShipmentItem extends OrderShipmentItemSupport {
 
     @NotBlank
@@ -49,6 +51,10 @@ public class DefaultOrderShipmentItem extends OrderShipmentItemSupport {
 
     @NotBlank
     private String imageUrl;
+
+    public DefaultOrderShipmentItem(String id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {
