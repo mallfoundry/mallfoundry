@@ -29,8 +29,6 @@ public interface ProductReviewService {
 
     ProductReview createProductReview(String reviewId);
 
-    void addProductReview(ProductReview review) throws ProductReviewException;
-
     void addProductReviews(List<ProductReview> reviews) throws ProductReviewException;
 
     void approveProductReview(String reviewId) throws ProductReviewException;
