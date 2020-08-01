@@ -32,7 +32,6 @@ public class ProductReviewAuthorizer implements ProductReviewProcessor {
         return review;
     }
 
-    //    @PostAuthorize("HAS_PERMISSION_ADD")
     @Override
     public List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
         return reviews;
