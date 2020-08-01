@@ -25,11 +25,15 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderReviewSupport;
-import org.mallfoundry.review.ReviewBodyType;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.BodyType;
+import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -65,14 +69,9 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "rating_")
     private int rating;
 
-    @Column(name = "anonymous_")
-    private boolean anonymous;
-
     @Column(name = "reviewer_")
-    private String reviewer;
-
-    @Column(name = "reviewer_id_")
-    private String reviewerId;
+    @Convert(converter = AuthorConverter.class)
+    private Author reviewer;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "tags_")
@@ -84,8 +83,9 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "raw_body_")
     private String rawBody;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "body_type_")
-    private ReviewBodyType bodyType;
+    private BodyType bodyType;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "video_urls_", length = 1024)
