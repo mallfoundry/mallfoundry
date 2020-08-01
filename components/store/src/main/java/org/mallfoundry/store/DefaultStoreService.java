@@ -62,7 +62,7 @@ public class DefaultStoreService implements StoreService {
     @Transactional
     @Override
     public Store createStore(Store store) {
-        store.setOwnerId(SubjectHolder.getUserId());
+        store.setOwnerId(SubjectHolder.getSubject().getId());
         if (Objects.isNull(store.getLogo())) {
             store.setLogo(storeConfiguration.getDefaultLogo());
         }

@@ -49,7 +49,7 @@ public class CustomerResourceV1 {
     @Operation(summary = "获得当前登录的顾客对象")
     @GetMapping("/customer")
     public Optional<CustomerResponse> getCustomer() {
-        return this.customerService.getCustomer(SubjectHolder.getUserId()).map(CustomerResponse::new);
+        return this.customerService.getCustomer(SubjectHolder.getSubject().getId()).map(CustomerResponse::new);
     }
 
     @Operation(summary = "根据顾客标识获得顾客对象")

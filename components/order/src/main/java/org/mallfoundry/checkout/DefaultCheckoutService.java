@@ -117,7 +117,7 @@ public class DefaultCheckoutService implements CheckoutService {
     }
 
     private Address getCustomerDefaultAddress() {
-        var customerAddress = this.customerService.getDefaultAddress(SubjectHolder.getUserId()).orElseThrow();
+        var customerAddress = this.customerService.getDefaultAddress(SubjectHolder.getSubject().getId()).orElseThrow();
         var address = new DefaultAddress();
         BeanUtils.copyProperties(customerAddress, address);
         return address;

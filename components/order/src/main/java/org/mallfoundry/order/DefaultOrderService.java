@@ -259,9 +259,9 @@ public class DefaultOrderService implements OrderService {
     public OrderShipment addOrderShipment(String orderId, OrderShipment shipment) {
         var order = this.requiredOrder(orderId);
         shipment = this.processorsInvoker.invokePreProcessAddOrderShipment(order, shipment);
-        shipment.setConsignorId(SubjectHolder.getUserId());
+        shipment.setConsignorId(SubjectHolder.getSubject().getId());
         if (StringUtils.isBlank(shipment.getConsignor())) {
-            shipment.setConsignor(SubjectHolder.getNickname());
+            shipment.setConsignor(SubjectHolder.getSubject().getNickname());
         }
         // Set the tracking carrier name.
         if (isNotBlank(shipment.getTrackingNumber())
@@ -334,7 +334,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public Payment startOrderPayment(OrderPayment orderPayment) throws OrderException {
         var payment = orderPayment.toPayment().toBuilder()
-                .payerId(SubjectHolder.getUserId()).payer(SubjectHolder.getNickname()).build();
+                .payerId(SubjectHolder.getSubject().getId()).payer(SubjectHolder.getSubject().getNickname()).build();
         var orders = this.orderRepository.findAllById(orderPayment.getOrderIds());
         String firstCustomerId = null;
         for (var order : orders) {
@@ -433,8 +433,8 @@ public class DefaultOrderService implements OrderService {
     }
 
     private Author createNewReviewer(Author author) {
-        var newAuthor = new DefaultAuthor(SubjectHolder.getUserId()).toBuilder()
-                .type(AuthorType.CUSTOMER).nickname(SubjectHolder.getNickname())
+        var newAuthor = new DefaultAuthor(SubjectHolder.getSubject().getId()).toBuilder()
+                .type(AuthorType.CUSTOMER).nickname(SubjectHolder.getSubject().getNickname())
                 .build();
         if (Objects.nonNull(author) && StringUtils.isNotBlank(author.getAvatar())) {
             newAuthor.setAvatar(author.getAvatar());

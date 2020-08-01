@@ -27,6 +27,7 @@ import org.mallfoundry.catalog.product.review.ProductReview;
 import org.mallfoundry.catalog.product.review.ProductReviewService;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryStatus;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -87,6 +88,12 @@ public class ProductResourceV1 {
         return this.productService.getProduct(id);
     }
 
+    @GetMapping("/products/{product_id}/reviews/{review_id}")
+    public Optional<ProductReview> getProductReview(@PathVariable("product_id") String productId, @PathVariable("review_id") String reviewId) {
+        Assert.notNull(productId, "Product id is not null");
+        return this.productReviewService.getProductReview(reviewId);
+    }
+
     @GetMapping("/products/{id}/reviews")
     public SliceList<ProductReview> getProductReviews(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
@@ -98,7 +105,6 @@ public class ProductResourceV1 {
                         .page(page).limit(limit).sort(aSort -> aSort.from(sort))
                         .productId(productId).variantId(variantId).build());
     }
-
 
     @PostMapping("/products")
     public Product addProduct(@RequestBody AddProductRequest request) {

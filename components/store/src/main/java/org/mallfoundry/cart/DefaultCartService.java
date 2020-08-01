@@ -49,13 +49,13 @@ public class DefaultCartService implements CartService {
     }
 
     private InternalCart createEmptyCart(String id) {
-        var cart = (InternalCart) new InternalCart(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
+        var cart = (InternalCart) new InternalCart(id).toBuilder().customerId(SubjectHolder.getSubject().getId()).build();
         return this.cartRepository.save(cart);
     }
 
     @Override
     public Cart createCart(String id) {
-        return new InternalCart(id).toBuilder().customerId(SubjectHolder.getUserId()).build();
+        return new InternalCart(id).toBuilder().customerId(SubjectHolder.getSubject().getId()).build();
     }
 
     @Override
