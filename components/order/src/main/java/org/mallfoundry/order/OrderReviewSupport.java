@@ -19,17 +19,13 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.review.ReviewBodyType;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.BodyType;
 
 import java.util.Date;
 import java.util.List;
 
 public abstract class OrderReviewSupport implements MutableOrderReview {
-
-    @Override
-    public void anonymous() {
-        this.setAnonymous(true);
-    }
 
     @Override
     public void rating(int rating) {
@@ -90,26 +86,10 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
             return this;
         }
 
-        @Override
-        public Builder anonymous() {
-            this.review.anonymous();
-            return this;
-        }
 
         @Override
-        public Builder anonymous(boolean anonymous) {
-            return anonymous ? this.anonymous() : this;
-        }
-
-        @Override
-        public Builder reviewer(String reviewer) {
+        public Builder reviewer(Author reviewer) {
             this.review.setReviewer(reviewer);
-            return this;
-        }
-
-        @Override
-        public Builder reviewerId(String reviewerId) {
-            this.review.setReviewerId(reviewerId);
             return this;
         }
 
@@ -132,7 +112,7 @@ public abstract class OrderReviewSupport implements MutableOrderReview {
         }
 
         @Override
-        public Builder bodyType(ReviewBodyType bodyType) {
+        public Builder bodyType(BodyType bodyType) {
             this.review.setBodyType(bodyType);
             return this;
         }
