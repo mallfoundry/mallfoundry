@@ -23,6 +23,8 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
+import org.mallfoundry.catalog.product.review.ProductReview;
+import org.mallfoundry.catalog.product.review.ProductReviewService;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,8 +49,12 @@ public class ProductResourceV1 {
 
     private final ProductService productService;
 
-    public ProductResourceV1(ProductService productService) {
+    private final ProductReviewService productReviewService;
+
+    public ProductResourceV1(ProductService productService,
+                             ProductReviewService productReviewService) {
         this.productService = productService;
+        this.productReviewService = productReviewService;
     }
 
     @GetMapping("/products")
@@ -80,6 +86,19 @@ public class ProductResourceV1 {
     public Optional<Product> getProduct(@PathVariable("id") String id) {
         return this.productService.getProduct(id);
     }
+
+    @GetMapping("/products/{id}/reviews")
+    public SliceList<ProductReview> getProductReviews(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                      @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                                      @PathVariable("id") String productId,
+                                                      @RequestParam(name = "variant_id", required = false) String variantId,
+                                                      @RequestParam(name = "sort", required = false) String sort) {
+        return this.productReviewService.getProductReviews(
+                this.productReviewService.createProductReviewQuery().toBuilder()
+                        .page(page).limit(limit).sort(aSort -> aSort.from(sort))
+                        .productId(productId).variantId(variantId).build());
+    }
+
 
     @PostMapping("/products")
     public Product addProduct(@RequestBody AddProductRequest request) {
