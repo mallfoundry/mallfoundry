@@ -18,8 +18,16 @@
 
 package org.mallfoundry.catalog.product.review;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ProductReviewStatus {
     PENDING,
     APPROVED,
     DISAPPROVED;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
