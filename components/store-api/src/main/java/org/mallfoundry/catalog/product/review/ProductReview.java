@@ -18,33 +18,114 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import java.util.Date;
+import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.review.Author;
+import org.mallfoundry.review.BodyType;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface ProductReview {
+import java.util.Date;
+import java.util.List;
+
+public interface ProductReview extends ObjectBuilder.ToBuilder<ProductReview.Builder> {
 
     String getId();
 
+    void setId(String id);
+
     String getOrderId();
+
+    void setOrderId(String orderId);
+
+    String getItemId();
+
+    void setItemId(String itemId);
 
     String getProductId();
 
+    void setProductId(String productId);
+
     String getVariantId();
 
-    String getReviewerId();
+    void setVariantId(String variantId);
 
-    String getReviewer();
+    List<OptionSelection> getOptionSelections();
 
-    void setReviewer(String reviewer);
+    void setOptionSelections(List<OptionSelection> optionSelections);
+
+    Author getReviewer();
+
+    void setReviewer(Author reviewer);
+
+    List<String> getTags();
+
+    void setTags(List<String> tags);
+
+    String getBody();
+
+    void setBody(String body);
+
+    String getRawBody();
+
+    void setRawBody(String rawBody);
+
+    BodyType getBodyType();
+
+    void setBodyType(BodyType bodyType);
+
+    List<String> getVideoUrls();
+
+    void setVideoUrls(List<String> videoUrls);
+
+    List<String> getImageUrls();
+
+    void setImageUrls(List<String> imageUrls);
 
     int getRating();
 
-    void setRating(int rating);
+    void rating(int rating);
 
     ProductReviewStatus getStatus();
 
     Date getReviewedTime();
 
+    void review();
+
     void approve();
 
     void disapprove();
+
+    ProductReviewComment createComment(String commentId);
+
+    void comment(ProductReviewComment comment);
+
+    interface Builder extends ObjectBuilder<ProductReview> {
+
+        Builder id(String id);
+
+        Builder orderId(String orderId);
+
+        Builder itemId(String itemId);
+
+        Builder productId(String productId);
+
+        Builder variantId(String variantId);
+
+        Builder optionSelections(List<OptionSelection> optionSelections);
+
+        Builder rating(int rating);
+
+        Builder reviewer(Author reviewer);
+
+        Builder tags(List<String> tags);
+
+        Builder body(String body);
+
+        Builder rawBody(String rawBody);
+
+        Builder bodyType(BodyType bodyType);
+
+        Builder videoUrls(List<String> videoUrls);
+
+        Builder imageUrls(List<String> imageUrls);
+    }
 }
