@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-commons-api</artifactId>
+            <artifactId>mall-commons</artifactId>
         </dependency>
 
         <dependency>
