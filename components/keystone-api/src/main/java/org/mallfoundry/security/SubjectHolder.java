@@ -18,11 +18,7 @@
 
 package org.mallfoundry.security;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.util.Objects;
-
-import static org.mallfoundry.i18n.MessageHolder.message;
 
 /**
  * 获得当前上下文中的用户对象。
@@ -31,38 +27,19 @@ import static org.mallfoundry.i18n.MessageHolder.message;
  */
 public abstract class SubjectHolder {
 
-    public static boolean isAuthenticated() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Objects.nonNull(authentication) && authentication.isAuthenticated();
+    private static SubjectHolderStrategy holderStrategy;
+
+    private static final SubjectSwitches SWITCHES = new SubjectSwitches();
+
+    public static void setHolderStrategy(SubjectHolderStrategy strategy) {
+        SubjectHolder.holderStrategy = Objects.requireNonNull(strategy, "Only non-null SubjectHolderStrategy instances are permitted");
     }
 
-    private static Subject requiredPrincipal() {
-        if (!isAuthenticated()) {
-            throw new SecurityException(
-                    message("security.subject.notAuthenticated",
-                            "The current user is not authenticated"));
-        }
-        return (Subject) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public static Subject getSubject() {
+        return SubjectHolder.holderStrategy.getSubject();
     }
 
-    public static String getUserId() {
-        return requiredPrincipal().getId();
-    }
-
-    public static String getUsername() {
-        return requiredPrincipal().getUsername();
-    }
-
-    public static String getNickname() {
-        return requiredPrincipal().getNickname();
-    }
-
-    /**
-     * 切换到系统用户。
-     */
-    // switches().systemUser().doRun()
-    // switches().systemUser().doCall()
-    public static SystemUser switchToSystemUser() {
-        return SystemUsers.switcher().switchTo();
+    public static SubjectSwitches switchTo() {
+        return SWITCHES;
     }
 }

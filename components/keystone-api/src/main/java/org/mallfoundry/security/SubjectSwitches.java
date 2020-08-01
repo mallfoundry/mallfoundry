@@ -18,15 +18,15 @@
 
 package org.mallfoundry.security;
 
-public abstract class SystemUsers {
+public class SubjectSwitches {
 
-    private static SubjectSwitcher<SystemUser> switcher;
+    private static SubjectSwitcher<SystemUser> systemUserSwitcher;
 
-    public static void setSwitcher(SubjectSwitcher<SystemUser> suSwitcher) {
-        switcher = suSwitcher;
+    public static void setSystemUserSwitcher(SubjectSwitcher<SystemUser> suSwitcher) {
+        SubjectSwitches.systemUserSwitcher = suSwitcher;
     }
 
-    public static SubjectSwitcher<SystemUser> switcher() {
-        return switcher;
+    public SystemUser systemUser() {
+        return SubjectSwitches.systemUserSwitcher.switchTo();
     }
 }

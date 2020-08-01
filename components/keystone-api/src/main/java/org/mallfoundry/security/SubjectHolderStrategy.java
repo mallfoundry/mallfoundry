@@ -18,5 +18,6 @@
 
 package org.mallfoundry.security;
 
-public class SubjectSwitchHolder {
+public interface SubjectHolderStrategy {
+    Subject getSubject();
 }
