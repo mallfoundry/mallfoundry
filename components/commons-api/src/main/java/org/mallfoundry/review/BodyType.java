@@ -18,6 +18,14 @@
 
 package org.mallfoundry.review;
 
-public enum ReviewBodyType {
-    HTML, JSON, TEXT
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum BodyType {
+    HTML, JSON, TEXT;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

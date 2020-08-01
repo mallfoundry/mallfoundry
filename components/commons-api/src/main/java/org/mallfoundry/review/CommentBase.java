@@ -18,9 +18,29 @@
 
 package org.mallfoundry.review;
 
-/**
- * 评论者类型。
- */
-public enum ReviewerType {
-    STORE, CUSTOMER, REPLIER
+import java.util.Date;
+
+public interface CommentBase {
+
+    String getId();
+
+    void setId(String id);
+
+    Author getAuthor();
+
+    void setAuthor(Author author);
+
+    String getBody();
+
+    void setBody(String body);
+
+    String getRawBody();
+
+    void setRawBody(String rawBody);
+
+    BodyType getBodyType();
+
+    void setBodyType(BodyType bodyType);
+
+    Date getCreatedTime();
 }
