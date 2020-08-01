@@ -18,6 +18,5 @@
 
 package org.mallfoundry.order;
 
-public enum OrderReviewStatus {
-    PENDING, APPROVED, DISAPPROVED
+public class OrderShipmentTests {
 }
