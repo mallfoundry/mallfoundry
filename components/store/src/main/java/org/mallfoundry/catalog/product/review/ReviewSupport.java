@@ -19,8 +19,8 @@
 package org.mallfoundry.catalog.product.review;
 
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
 
 import java.util.Date;
 import java.util.List;
@@ -114,8 +114,8 @@ public abstract class ReviewSupport implements MutableReview {
         }
 
         @Override
-        public Builder reviewer(Author reviewer) {
-            this.review.setReviewer(reviewer);
+        public Builder author(Author author) {
+            this.review.setAuthor(author);
             return this;
         }
 

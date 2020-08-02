@@ -19,18 +19,15 @@
 package org.mallfoundry.catalog.product.review;
 
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.Topic;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
 
-public interface Review extends ObjectBuilder.ToBuilder<Review.Builder> {
-
-    String getId();
-
-    void setId(String id);
+public interface Review extends Topic, ObjectBuilder.ToBuilder<Review.Builder> {
 
     String getOrderId();
 
@@ -52,25 +49,9 @@ public interface Review extends ObjectBuilder.ToBuilder<Review.Builder> {
 
     void setOptionSelections(List<OptionSelection> optionSelections);
 
-    Author getReviewer();
-
-    void setReviewer(Author reviewer);
-
     List<String> getTags();
 
     void setTags(List<String> tags);
-
-    String getBody();
-
-    void setBody(String body);
-
-    String getRawBody();
-
-    void setRawBody(String rawBody);
-
-    BodyType getBodyType();
-
-    void setBodyType(BodyType bodyType);
 
     List<String> getVideoUrls();
 
@@ -116,7 +97,7 @@ public interface Review extends ObjectBuilder.ToBuilder<Review.Builder> {
 
         Builder rating(int rating);
 
-        Builder reviewer(Author reviewer);
+        Builder author(Author author);
 
         Builder tags(List<String> tags);
 

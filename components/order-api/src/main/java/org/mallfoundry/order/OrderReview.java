@@ -19,8 +19,9 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.Topic;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
@@ -31,11 +32,7 @@ import java.util.List;
  *
  * @author Zhi Tang
  */
-public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder> {
-
-    String getId();
-
-    void setId(String id);
+public interface OrderReview extends Topic, ObjectBuilder.ToBuilder<OrderReview.Builder> {
 
     String getOrderId();
 
@@ -61,28 +58,9 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
     void rating(int rating);
 
-    Author getReviewer();
-
-    void setReviewer(Author reviewer);
-
     List<String> getTags();
 
     void setTags(List<String> tags);
-
-    /**
-     * 获得商品订单评价内容。
-     */
-    String getBody();
-
-    void setBody(String body);
-
-    String getRawBody();
-
-    void setRawBody(String rawBody);
-
-    BodyType getBodyType();
-
-    void setBodyType(BodyType bodyType);
 
     List<String> getVideoUrls();
 
@@ -110,7 +88,7 @@ public interface OrderReview extends ObjectBuilder.ToBuilder<OrderReview.Builder
 
         Builder rating(int rating);
 
-        Builder reviewer(Author reviewer);
+        Builder author(Author author);
 
         Builder tags(List<String> tags);
 

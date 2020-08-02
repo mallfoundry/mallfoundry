@@ -16,33 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.review;
+package org.mallfoundry.discuss;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public interface CommentBase {
+@Getter
+@Setter
+@NoArgsConstructor
+public class DefaultAuthor extends AuthorSupport {
+    private String id;
+    private String nickname;
+    private String avatar;
+    private AuthorType type;
+    private boolean anonymous;
 
-    String getId();
-
-    void setId(String id);
-
-    Author getAuthor();
-
-    void setAuthor(Author author);
-
-    String getBody();
-
-    void setBody(String body);
-
-    String getRawBody();
-
-    void setRawBody(String rawBody);
-
-    BodyType getBodyType();
-
-    void setBodyType(BodyType bodyType);
-
-    Date getCreatedTime();
-
-    void create();
+    public DefaultAuthor(String id) {
+        this.id = id;
+    }
 }

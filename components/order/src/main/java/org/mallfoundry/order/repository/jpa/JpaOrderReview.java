@@ -24,10 +24,10 @@ import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.repository.jpa.convert.AuthorConverter;
 import org.mallfoundry.order.OrderReviewSupport;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
-import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -69,9 +69,9 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "rating_")
     private int rating;
 
-    @Column(name = "reviewer_")
+    @Column(name = "author_")
     @Convert(converter = AuthorConverter.class)
-    private Author reviewer;
+    private Author author;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "tags_")

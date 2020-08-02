@@ -25,13 +25,13 @@ import java.util.Optional;
 
 public interface ReviewService {
 
-    ReviewReplyQuery createReplyQuery();
+    ReviewReplyQuery createReviewReplyQuery();
 
     ReviewQuery createReviewQuery();
 
     Review createReview(String reviewId);
 
-    void addReviews(List<Review> reviews) throws ReviewException;
+    void review(List<Review> reviews) throws ReviewException;
 
     Optional<Review> getReview(String reviewId);
 

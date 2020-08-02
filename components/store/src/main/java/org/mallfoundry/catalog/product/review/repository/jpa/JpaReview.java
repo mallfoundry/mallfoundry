@@ -28,9 +28,9 @@ import org.mallfoundry.catalog.product.review.Review;
 import org.mallfoundry.catalog.product.review.ReviewStatus;
 import org.mallfoundry.catalog.product.review.ReviewSupport;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
-import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.repository.jpa.convert.AuthorConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -77,9 +77,9 @@ public class JpaReview extends ReviewSupport {
     @Column(name = "status_")
     private ReviewStatus status;
 
-    @Column(name = "reviewer_")
+    @Column(name = "author_")
     @Convert(converter = AuthorConverter.class)
-    private Author reviewer;
+    private Author author;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "tags_")

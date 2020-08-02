@@ -16,42 +16,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.review;
+package org.mallfoundry.discuss;
 
-import org.mallfoundry.util.ObjectBuilder;
+import java.util.Date;
 
-public interface Author extends ObjectBuilder.ToBuilder<Author.Builder> {
+public interface Comment {
 
     String getId();
 
     void setId(String id);
 
-    String getNickname();
+    Author getAuthor();
 
-    void setNickname(String nickname);
+    void setAuthor(Author author);
 
-    String getAvatar();
+    String getBody();
 
-    void setAvatar(String avatar);
+    void setBody(String body);
 
-    AuthorType getType();
+    String getRawBody();
 
-    void setType(AuthorType type);
+    void setRawBody(String rawBody);
 
-    boolean isAnonymous();
+    BodyType getBodyType();
 
-    void anonymous();
+    void setBodyType(BodyType bodyType);
 
-    interface Builder extends ObjectBuilder<Author> {
+    Date getCreatedTime();
 
-        Builder nickname(String nickname);
-
-        Builder avatar(String avatar);
-
-        Builder type(AuthorType type);
-
-        Builder anonymous(boolean anonymous);
-
-        Builder anonymous();
-    }
+    void create();
 }

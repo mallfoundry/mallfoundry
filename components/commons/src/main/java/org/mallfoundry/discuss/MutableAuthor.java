@@ -16,16 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.review;
+package org.mallfoundry.discuss;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
-public enum BodyType {
-    HTML, JSON, TEXT;
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
+public interface MutableAuthor extends Author {
+    void setAnonymous(boolean anonymous);
 }

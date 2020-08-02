@@ -20,10 +20,10 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.order.OrderReview;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
-import org.mallfoundry.review.DefaultAuthor;
 
 import java.util.List;
 
@@ -37,25 +37,24 @@ public class OrderReviewRequest {
     private String body;
     private String rawBody;
     private BodyType bodyType;
-    private ReviewerRequest reviewer;
+    private AuthorRequest author;
 
     public OrderReview assignTo(OrderReview review) {
         return review.toBuilder()
                 .itemId(this.itemId).rating(this.rating)
                 .tags(this.tags)
-                .reviewer(this.reviewer.assignTo(new DefaultAuthor()))
+                .author(this.author.assignTo(new DefaultAuthor()))
                 .body(this.body).rawBody(this.rawBody).bodyType(this.bodyType)
                 .build();
     }
 
     @Getter
     @Setter
-    static class ReviewerRequest {
-        private String avatar;
+    static class AuthorRequest {
         private boolean anonymous;
 
         public Author assignTo(Author author) {
-            return author.toBuilder().avatar(this.avatar).anonymous(this.anonymous).build();
+            return author.toBuilder().anonymous(this.anonymous).build();
         }
     }
 }

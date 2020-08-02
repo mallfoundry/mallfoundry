@@ -16,17 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.review;
+package org.mallfoundry.discuss;
 
-import org.mallfoundry.discuss.Comment;
+public interface Topic {
 
-public interface ReviewReply extends Comment {
+    String getId();
 
-    String getReviewId();
+    void setId(String id);
 
-    void setReviewId(String reviewId);
+    Author getAuthor();
 
-    ReviewReply getReplyTo();
+    void setAuthor(Author author);
 
-    void replyTo(ReviewReply reply);
+    String getBody();
+
+    void setBody(String body);
+
+    String getRawBody();
+
+    void setRawBody(String rawBody);
+
+    BodyType getBodyType();
+
+    void setBodyType(BodyType bodyType);
 }

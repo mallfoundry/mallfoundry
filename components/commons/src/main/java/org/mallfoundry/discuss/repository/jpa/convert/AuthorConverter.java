@@ -16,8 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.review;
+package org.mallfoundry.discuss.repository.jpa.convert;
 
-public interface MutableAuthor extends Author {
-    void setAnonymous(boolean anonymous);
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.DefaultAuthor;
+import org.mallfoundry.util.JsonUtils;
+
+import javax.persistence.AttributeConverter;
+import java.util.Objects;
+
+public class AuthorConverter implements AttributeConverter<Author, String> {
+
+    @Override
+    public String convertToDatabaseColumn(Author address) {
+        return Objects.isNull(address) ? null : JsonUtils.stringify(address);
+    }
+
+    @Override
+    public Author convertToEntityAttribute(String dbData) {
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, DefaultAuthor.class);
+    }
 }

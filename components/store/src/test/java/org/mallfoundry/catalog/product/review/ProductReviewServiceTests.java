@@ -19,7 +19,7 @@
 package org.mallfoundry.catalog.product.review;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.review.BodyType;
+import org.mallfoundry.discuss.BodyType;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;

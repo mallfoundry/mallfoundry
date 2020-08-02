@@ -23,9 +23,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.ReviewReplySupport;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.BodyType;
-import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.BodyType;
+import org.mallfoundry.discuss.repository.jpa.convert.AuthorConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;

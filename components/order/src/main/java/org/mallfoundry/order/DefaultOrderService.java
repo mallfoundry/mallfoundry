@@ -23,9 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.AuthorType;
-import org.mallfoundry.review.DefaultAuthor;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.AuthorType;
+import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
@@ -452,7 +452,7 @@ public class DefaultOrderService implements OrderService {
         var review = order.addReview(
                 this.processorsInvoker.invokePreProcessAddOrderReview(order,
                         newReview.toBuilder()
-                                .reviewer(this.createNewReviewer(newReview.getReviewer()))
+                                .author(this.createNewReviewer(newReview.getAuthor()))
                                 .build()));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, List.of(review)));
@@ -463,7 +463,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
         var order = this.requiredOrder(orderId);
-        newReviews.forEach(review -> review.toBuilder().reviewer(this.createNewReviewer(review.getReviewer())).build());
+        newReviews.forEach(review -> review.toBuilder().author(this.createNewReviewer(review.getAuthor())).build());
         var reviews = order.addReviews(this.processorsInvoker.invokePreProcessAddOrderReviews(order, newReviews));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));

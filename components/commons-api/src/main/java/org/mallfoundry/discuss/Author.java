@@ -16,24 +16,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.review.repository.jpa.convert;
+package org.mallfoundry.discuss;
 
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.DefaultAuthor;
-import org.mallfoundry.util.JsonUtils;
+import org.mallfoundry.util.ObjectBuilder;
 
-import javax.persistence.AttributeConverter;
-import java.util.Objects;
+public interface Author extends ObjectBuilder.ToBuilder<Author.Builder> {
 
-public class AuthorConverter implements AttributeConverter<Author, String> {
+    String getId();
 
-    @Override
-    public String convertToDatabaseColumn(Author address) {
-        return Objects.isNull(address) ? null : JsonUtils.stringify(address);
-    }
+    void setId(String id);
 
-    @Override
-    public Author convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, DefaultAuthor.class);
+    String getNickname();
+
+    void setNickname(String nickname);
+
+    String getAvatar();
+
+    void setAvatar(String avatar);
+
+    AuthorType getType();
+
+    void setType(AuthorType type);
+
+    boolean isAnonymous();
+
+    void anonymous();
+
+    interface Builder extends ObjectBuilder<Author> {
+
+        Builder nickname(String nickname);
+
+        Builder avatar(String avatar);
+
+        Builder type(AuthorType type);
+
+        Builder anonymous(boolean anonymous);
+
+        Builder anonymous();
     }
 }

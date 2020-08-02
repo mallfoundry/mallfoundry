@@ -19,9 +19,9 @@
 package org.mallfoundry.catalog.product.review;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.review.Author;
-import org.mallfoundry.review.AuthorType;
-import org.mallfoundry.review.DefaultAuthor;
+import org.mallfoundry.discuss.Author;
+import org.mallfoundry.discuss.AuthorType;
+import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.security.SubjectHolder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +46,7 @@ public class DefaultReviewService implements ReviewService {
     }
 
     @Override
-    public ReviewReplyQuery createReplyQuery() {
+    public ReviewReplyQuery createReviewReplyQuery() {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class DefaultReviewService implements ReviewService {
 
     @Transactional
     @Override
-    public void addReviews(List<Review> reviews) throws ReviewException {
+    public void review(List<Review> reviews) throws ReviewException {
         reviews.forEach(Review::review);
         reviews = this.processorsInvoker.invokePreProcessAddProductReviews(reviews);
         this.reviewRepository.saveAll(reviews);
@@ -94,7 +94,7 @@ public class DefaultReviewService implements ReviewService {
 
     private void setCommentAuthor(Review review, ReviewReply comment) {
         var author = this.getAuthorFromComment(comment);
-        var reviewer = review.getReviewer();
+        var reviewer = review.getAuthor();
         if (Objects.equals(reviewer.getId(), author.getId())) {
             author.setType(reviewer.getType());
         }

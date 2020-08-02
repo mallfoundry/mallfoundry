@@ -18,9 +18,9 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.mallfoundry.review.CommentBase;
+import org.mallfoundry.discuss.Comment;
 
-public interface ReviewStoreReply extends CommentBase {
+public interface ReviewStoreReply extends Comment {
 
     String getStoreId();
 

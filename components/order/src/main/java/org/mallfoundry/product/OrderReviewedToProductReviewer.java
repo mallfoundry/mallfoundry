@@ -42,7 +42,7 @@ public class OrderReviewedToProductReviewer {
                 .orderId(review.getOrderId()).itemId(review.getItemId())
                 .productId(review.getProductId()).variantId(review.getVariantId())
                 .optionSelections(review.getOptionSelections())
-                .reviewer(review.getReviewer())
+                .author(review.getAuthor())
                 .body(review.getBody()).rawBody(review.getRawBody()).bodyType(review.getBodyType())
                 .tags(review.getTags()).rating(review.getRating())
                 .imageUrls(review.getImageUrls()).videoUrls(review.getVideoUrls())
@@ -55,6 +55,6 @@ public class OrderReviewedToProductReviewer {
                 .stream()
                 .map(this::assignReview)
                 .collect(Collectors.toUnmodifiableList());
-        this.productReviewService.addReviews(reviews);
+        this.productReviewService.review(reviews);
     }
 }
