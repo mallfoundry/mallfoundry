@@ -18,5 +18,30 @@
 
 package org.mallfoundry.customer.blob;
 
+import org.mallfoundry.data.SliceList;
+import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobQuery;
+import org.mallfoundry.storage.Bucket;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
 public interface CustomerBlobService {
+
+    BlobQuery createBlobQuery();
+
+    String getBucketName(String customerId);
+
+    Optional<Bucket> getBucket(String customerId);
+
+    void initializeBucket(String customerId);
+
+    Blob storeBlob(Blob blob) throws IOException, CustomerBlobException;
+
+    void deleteBlob(String customerId, String path);
+
+    void deleteBlobs(String customerId, List<String> paths);
+
+    SliceList<Blob> getBlobs(BlobQuery query);
 }
