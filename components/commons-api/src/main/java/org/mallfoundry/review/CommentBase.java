@@ -43,4 +43,6 @@ public interface CommentBase {
     void setBodyType(BodyType bodyType);
 
     Date getCreatedTime();
+
+    void create();
 }
