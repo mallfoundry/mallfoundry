@@ -16,19 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.store;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-public class InternalFollowerId implements FollowerId {
-    private String identifier;
+public class StoreProcessorsInvoker {
 }

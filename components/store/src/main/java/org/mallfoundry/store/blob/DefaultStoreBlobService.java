@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class InternalStoreBlobService implements StoreBlobService {
+public class DefaultStoreBlobService implements StoreBlobService {
 
     private static final String STORE_OWNER_TYPE = "store";
 
@@ -44,7 +44,7 @@ public class InternalStoreBlobService implements StoreBlobService {
 
     private final StorageService storageService;
 
-    public InternalStoreBlobService(StorageService storageService) {
+    public DefaultStoreBlobService(StorageService storageService) {
         this.storageService = storageService;
     }
 

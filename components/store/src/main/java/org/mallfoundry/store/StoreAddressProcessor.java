@@ -16,9 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.store;
 
-import org.mallfoundry.util.UniqueIdentifier;
-
-public interface FollowerId extends UniqueIdentifier<String> {
+public interface StoreAddressProcessor {
 }
