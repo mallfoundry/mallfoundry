@@ -25,6 +25,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -101,6 +103,11 @@ public class DefaultStoreService implements StoreService {
     @Override
     public SliceList<Store> getStores(StoreQuery query) {
         return this.storeRepository.findAll(query);
+    }
+
+    @Override
+    public List<Store> getStores(Collection<String> ids) {
+        return this.storeRepository.findAllById(ids);
     }
 
 }

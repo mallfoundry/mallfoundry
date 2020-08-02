@@ -16,25 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
-import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.Store;
 
-import java.util.Optional;
-
-public interface FollowProductRepository {
-
-    Optional<InternalFollowProduct> findById(JpaFollowProductId id);
-
-    InternalFollowProduct save(InternalFollowProduct followProduct);
-
-    boolean existsById(JpaFollowProductId id);
-
-    void delete(InternalFollowProduct followProduct);
-
-    SliceList<InternalFollowProduct> findAll(FollowProductQuery query);
-
-    long count(FollowProductQuery query);
-
-    long countById(String id);
+public interface FollowStore extends Store, FollowBase {
 }

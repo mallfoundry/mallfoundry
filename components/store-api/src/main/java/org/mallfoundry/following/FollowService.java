@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
 import org.mallfoundry.data.SliceList;
 
@@ -46,7 +46,5 @@ public interface FollowService {
 
     SliceList<FollowStore> getFollowingStores(FollowStoreQuery query);
 
-    long getFollowingStoreCount(FollowStoreQuery query);
-
-    long getStoreFollowerCount(String storeId);
+    long countFollowingStores(FollowStoreQuery query);
 }

@@ -16,31 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.following;
 
-import org.mallfoundry.data.SliceList;
+public class FollowException extends RuntimeException {
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-public interface StoreService {
-
-    StoreQuery createStoreQuery();
-
-    Store createStore(String id);
-
-    Store createStore(Store store);
-
-    Store updateStore(Store store);
-
-    void cancelStore(String id);
-
-    boolean existsStore(String id);
-
-    Optional<Store> getStore(String id);
-
-    SliceList<Store> getStores(StoreQuery query);
-
-    List<Store> getStores(Collection<String> ids);
+    public FollowException(String message) {
+        super(message);
+    }
 }

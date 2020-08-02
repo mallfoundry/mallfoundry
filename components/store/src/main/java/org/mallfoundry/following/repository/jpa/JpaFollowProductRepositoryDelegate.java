@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow.repository.jpa;
+package org.mallfoundry.following.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.follow.FollowProductQuery;
-import org.mallfoundry.follow.FollowProductRepository;
-import org.mallfoundry.follow.InternalFollowProduct;
-import org.mallfoundry.follow.JpaFollowProductId;
+import org.mallfoundry.following.FollowProductQuery;
+import org.mallfoundry.following.FollowProductRepository;
+import org.mallfoundry.following.InternalFollowProduct;
+import org.mallfoundry.following.JpaFollowProductId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;

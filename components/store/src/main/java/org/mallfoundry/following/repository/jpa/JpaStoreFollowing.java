@@ -16,11 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.following.StoreFollowingSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,30 +34,23 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_follow_store")
-@IdClass(JpaFollowStoreId.class)
-public class InternalFollowStore implements FollowStore {
+@Table(name = "mf_following_store")
+@IdClass(JpaStoreFollowingId.class)
+public class JpaStoreFollowing extends StoreFollowingSupport {
 
     @Id
     @Column(name = "follower_id_")
     private String followerId;
 
     @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "store_id_")
+    private String storeId;
 
-    @Column(name = "logo_")
-    private String logo;
+    @Column(name = "followed_time_")
+    private Date followedTime;
 
-    @Column(name = "name_")
-    private String name;
-
-    @Column(name = "follow_time_")
-    private Date followTime;
-
-    public InternalFollowStore(String followerId, String id) {
+    public JpaStoreFollowing(String followerId, String storeId) {
         this.followerId = followerId;
-        this.id = id;
-        this.followTime = new Date();
+        this.storeId = storeId;
     }
 }

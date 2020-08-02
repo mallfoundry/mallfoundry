@@ -16,29 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.ProductStatus;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
-public interface FollowProduct extends Serializable {
-
-    String getId();
-
-    String getName();
-
-    BigDecimal getPrice();
-
-    String getImageUrl();
+public interface StoreFollowing {
 
     String getFollowerId();
 
+    void setFollowerId(String followerId);
+
     String getStoreId();
 
-    ProductStatus getStatus();
+    void setStoreId(String storeId);
 
-    Date getFollowTime();
+    Date getFollowedTime();
+
+    void following();
 }

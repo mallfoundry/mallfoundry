@@ -16,14 +16,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
-@Setter
-public class DefaultFollowStoreQuery extends PageableSupport implements FollowStoreQuery {
-    private String followerId;
+public class JpaFollowProductId implements Serializable {
+
+    private final String followerId;
+
+    private final String id;
+
+    public JpaFollowProductId(String followerId, String id) {
+        this.followerId = followerId;
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        JpaFollowProductId that = (JpaFollowProductId) o;
+        return Objects.equals(followerId, that.followerId)
+                && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(followerId, id);
+    }
 }

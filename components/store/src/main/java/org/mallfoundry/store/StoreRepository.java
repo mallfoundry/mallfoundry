@@ -20,6 +20,8 @@ package org.mallfoundry.store;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface StoreRepository {
@@ -33,4 +35,6 @@ public interface StoreRepository {
     Optional<Store> findById(String id);
 
     SliceList<Store> findAll(StoreQuery query);
+
+    List<Store> findAllById(Collection<String> ids);
 }

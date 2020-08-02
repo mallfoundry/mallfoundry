@@ -16,31 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.following;
 
-import org.mallfoundry.data.SliceList;
+import org.mallfoundry.catalog.product.ProductStatus;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
-public interface StoreService {
+public interface FollowProduct extends Serializable {
 
-    StoreQuery createStoreQuery();
+    String getId();
 
-    Store createStore(String id);
+    String getName();
 
-    Store createStore(Store store);
+    BigDecimal getPrice();
 
-    Store updateStore(Store store);
+    String getImageUrl();
 
-    void cancelStore(String id);
+    String getFollowerId();
 
-    boolean existsStore(String id);
+    String getStoreId();
 
-    Optional<Store> getStore(String id);
+    ProductStatus getStatus();
 
-    SliceList<Store> getStores(StoreQuery query);
-
-    List<Store> getStores(Collection<String> ids);
+    Date getFollowTime();
 }

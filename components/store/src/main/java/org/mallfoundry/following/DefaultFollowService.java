@@ -16,14 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.StoreService;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultFollowService implements FollowService {
@@ -34,16 +39,16 @@ public class DefaultFollowService implements FollowService {
 
     private final FollowProductRepository followProductRepository;
 
-    private final FollowStoreRepository followStoreRepository;
+    private final StoreFollowingRepository storeFollowingRepository;
 
     public DefaultFollowService(ProductService productService,
                                 StoreService storeService,
                                 FollowProductRepository followProductRepository,
-                                FollowStoreRepository followStoreRepository) {
+                                StoreFollowingRepository storeFollowingRepository) {
         this.productService = productService;
         this.storeService = storeService;
         this.followProductRepository = followProductRepository;
-        this.followStoreRepository = followStoreRepository;
+        this.storeFollowingRepository = storeFollowingRepository;
     }
 
     @Override
@@ -102,43 +107,49 @@ public class DefaultFollowService implements FollowService {
 
     @Override
     public void followStore(String followerId, String storeId) {
-        var id = new JpaFollowStoreId(followerId, storeId);
-        if (this.followStoreRepository.existsById(id)) {
+        var following = this.storeFollowingRepository.create(followerId, storeId);
+        if (this.storeFollowingRepository.exists(following)) {
             throw new FollowException("The follower has followed to this store");
         }
-        var store = this.storeService.getStore(storeId).orElseThrow();
-        var followStore = new InternalFollowStore(followerId, storeId);
-        followStore.setLogo(store.getLogo());
-        followStore.setName(store.getName());
-        this.followStoreRepository.save(followStore);
+        following.following();
+        this.storeFollowingRepository.save(following);
     }
 
     @Override
     public void unfollowStore(String followerId, String storeId) {
-        var id = new JpaFollowStoreId(followerId, storeId);
-        var followStore = this.followStoreRepository.findById(id).orElseThrow();
-        this.followStoreRepository.delete(followStore);
+        var following = this.storeFollowingRepository.create(followerId, storeId);
+        this.storeFollowingRepository.delete(following);
     }
 
     @Override
     public boolean checkFollowingStore(String followerId, String storeId) {
-        var id = new JpaFollowStoreId(followerId, storeId);
-        return this.followStoreRepository.existsById(id);
+        var following = this.storeFollowingRepository.create(followerId, storeId);
+        return this.storeFollowingRepository.exists(following);
     }
 
     @Override
     public SliceList<FollowStore> getFollowingStores(FollowStoreQuery query) {
-        return CastUtils.cast(this.followStoreRepository.findAll(query));
+        var sliceFollowings = this.storeFollowingRepository.findAll(query);
+        var storeIds = ListUtils.emptyIfNull(sliceFollowings.getElements()).stream()
+                .map(StoreFollowing::getStoreId)
+                .collect(Collectors.toUnmodifiableList());
+        if (CollectionUtils.isEmpty(storeIds)) {
+            return sliceFollowings.elements(Collections.emptyList());
+        }
+        // 根据店铺标识获得店铺对象集合。
+        var stores = this.storeService.getStores(storeIds);
+        var followStores = sliceFollowings.getElements().stream()
+                .map(following -> stores.stream()
+                        .filter(aStore -> Objects.equals(aStore.getId(), following.getStoreId()))
+                        .findFirst()
+                        .<FollowStore>map(aStore -> new DelegatingFollowStore(aStore, following))
+                        .orElseGet(() -> new NullFollowStore(following)))
+                .collect(Collectors.toUnmodifiableList());
+        return sliceFollowings.elements(followStores);
     }
 
     @Override
-    public long getFollowingStoreCount(FollowStoreQuery query) {
-        return this.followStoreRepository.count(query);
+    public long countFollowingStores(FollowStoreQuery query) {
+        return this.storeFollowingRepository.count(query);
     }
-
-    @Override
-    public long getStoreFollowerCount(String storeId) {
-        return this.followStoreRepository.countById(storeId);
-    }
-
 }

@@ -16,11 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following.repository.jpa;
 
-public class FollowException extends RuntimeException {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.following.StoreFollowingId;
 
-    public FollowException(String message) {
-        super(message);
-    }
+@Getter
+@Setter
+public class JpaStoreFollowingId implements StoreFollowingId {
+    private String followerId;
+    private String storeId;
 }

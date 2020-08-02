@@ -16,31 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.following;
 
 import org.mallfoundry.data.SliceList;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
-public interface StoreService {
+public interface StoreFollowingRepository {
 
-    StoreQuery createStoreQuery();
+    StoreFollowing create(String followerId, String storeId);
 
-    Store createStore(String id);
+    Optional<StoreFollowing> findById(StoreFollowingId followingId);
 
-    Store createStore(Store store);
+    StoreFollowing save(StoreFollowing following);
 
-    Store updateStore(Store store);
+    boolean exists(StoreFollowing following);
 
-    void cancelStore(String id);
+    void delete(StoreFollowing following);
 
-    boolean existsStore(String id);
+    SliceList<StoreFollowing> findAll(FollowStoreQuery query);
 
-    Optional<Store> getStore(String id);
-
-    SliceList<Store> getStores(StoreQuery query);
-
-    List<Store> getStores(Collection<String> ids);
+    long count(FollowStoreQuery query);
 }

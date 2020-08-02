@@ -16,14 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow.repository.jpa;
+package org.mallfoundry.following.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.follow.FollowStoreQuery;
-import org.mallfoundry.follow.FollowStoreRepository;
-import org.mallfoundry.follow.InternalFollowStore;
-import org.mallfoundry.follow.JpaFollowStoreId;
+import org.mallfoundry.following.FollowStoreQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,13 +32,11 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaFollowStoreRepositoryDelegate extends
-        FollowStoreRepository, JpaRepository<InternalFollowStore, JpaFollowStoreId>,
-        JpaSpecificationExecutor<InternalFollowStore> {
+public interface JpaStoreFollowingRepositoryDelegate extends JpaRepository<JpaStoreFollowing, JpaStoreFollowingId>,
+        JpaSpecificationExecutor<JpaStoreFollowing> {
 
-    @Override
-    default SliceList<InternalFollowStore> findAll(FollowStoreQuery followQuery) {
-        Page<InternalFollowStore> page = this.findAll((Specification<InternalFollowStore>) (root, query, criteriaBuilder) -> {
+    default SliceList<JpaStoreFollowing> findAll(FollowStoreQuery followQuery) {
+        Page<JpaStoreFollowing> page = this.findAll((Specification<JpaStoreFollowing>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
@@ -51,9 +46,8 @@ public interface JpaFollowStoreRepositoryDelegate extends
         return PageList.of(page.getContent()).page(page.getNumber()).limit(followQuery.getLimit()).totalSize(page.getTotalElements());
     }
 
-    @Override
     default long count(FollowStoreQuery followQuery) {
-        return this.count((Specification<InternalFollowStore>) (root, query, criteriaBuilder) -> {
+        return this.count((Specification<JpaStoreFollowing>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));

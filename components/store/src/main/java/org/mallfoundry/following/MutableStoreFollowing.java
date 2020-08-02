@@ -16,14 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.follow;
+package org.mallfoundry.following;
 
-import org.mallfoundry.data.PageableSupport;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Date;
 
-@Getter
-@Setter
-public class DefaultFollowProductQuery extends PageableSupport implements FollowProductQuery {
-    private String followerId;
+public interface MutableStoreFollowing extends StoreFollowing {
+    void setFollowedTime(Date followedTime);
 }
