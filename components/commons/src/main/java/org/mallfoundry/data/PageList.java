@@ -129,6 +129,11 @@ public class PageList<T> implements SliceList<T> {
                 .page(this.page).limit(this.limit).totalSize(this.totalSize);
     }
 
+    @Override
+    public <R> SliceList<R> elements(List<R> elements) {
+        return new PageList<>(elements).page(this.page).limit(this.limit).totalSize(this.totalSize);
+    }
+
     public void setTotalSize(long totalSize) {
         this.totalSize = totalSize;
     }

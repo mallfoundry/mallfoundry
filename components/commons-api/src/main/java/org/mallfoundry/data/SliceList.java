@@ -46,4 +46,6 @@ public interface SliceList<T> extends Iterable<T> {
     }
 
     <R> SliceList<R> map(Function<T, R> mapper);
+
+    <R> SliceList<R> elements(List<R> elements);
 }
