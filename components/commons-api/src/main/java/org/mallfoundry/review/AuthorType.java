@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 评论者类型。
  */
 public enum AuthorType {
-    STORE, CUSTOMER, REPLIER;
+    STORE, STORE_STAFF, CUSTOMER, REPLIER;
 
     @JsonValue
     @Override
