@@ -24,6 +24,8 @@ public interface Author extends ObjectBuilder.ToBuilder<Author.Builder> {
 
     String getId();
 
+    void setId(String id);
+
     String getNickname();
 
     void setNickname(String nickname);
