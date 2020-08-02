@@ -18,7 +18,7 @@
 
 package org.mallfoundry.cart;
 
-public abstract class CartItemAdjustmentSupport implements CartItemAdjustment {
+public abstract class CartAdjustmentSupport implements CartAdjustment {
 
     @Override
     public Builder toBuilder() {
@@ -28,9 +28,9 @@ public abstract class CartItemAdjustmentSupport implements CartItemAdjustment {
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final CartItemAdjustmentSupport adjustment;
+        private final CartAdjustmentSupport adjustment;
 
-        protected BuilderSupport(CartItemAdjustmentSupport adjustment) {
+        protected BuilderSupport(CartAdjustmentSupport adjustment) {
             this.adjustment = adjustment;
         }
 
@@ -59,7 +59,7 @@ public abstract class CartItemAdjustmentSupport implements CartItemAdjustment {
         }
 
         @Override
-        public CartItemAdjustment build() {
+        public CartAdjustment build() {
             return this.adjustment;
         }
     }

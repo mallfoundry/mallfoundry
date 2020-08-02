@@ -22,9 +22,11 @@ import java.util.Optional;
 
 public interface CartRepository {
 
-    <S extends InternalCart> S save(S s);
+    Cart create(String id);
 
-    void delete(InternalCart cart);
+    Cart save(Cart s);
 
-    Optional<InternalCart> findById(String id);
+    void delete(Cart cart);
+
+    Optional<Cart> findById(String id);
 }

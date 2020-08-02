@@ -19,10 +19,10 @@
 package org.mallfoundry.cart;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.cart.repository.jpa.JpaCart;
+import org.mallfoundry.cart.repository.jpa.JpaCartItem;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.SubjectHolder;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -48,19 +48,18 @@ public class DefaultCartService implements CartService {
         this.cartRepository = cartRepository;
     }
 
-    private InternalCart createEmptyCart(String id) {
-        var cart = (InternalCart) new InternalCart(id).toBuilder().customerId(SubjectHolder.getSubject().getId()).build();
-        return this.cartRepository.save(cart);
+    private Cart createEmptyCart(String id) {
+        return this.cartRepository.save(this.createCart(id));
     }
 
     @Override
     public Cart createCart(String id) {
-        return new InternalCart(id).toBuilder().customerId(SubjectHolder.getSubject().getId()).build();
+        return this.cartRepository.create(id);
     }
 
     @Override
     public Cart createCart(Cart cart) {
-        return this.cartRepository.save(InternalCart.of(cart));
+        return this.cartRepository.save(JpaCart.of(cart));
     }
 
     @Override
@@ -69,28 +68,22 @@ public class DefaultCartService implements CartService {
         this.cartRepository.delete(cart);
     }
 
-    private Optional<InternalCart> getInternalCart(String id) {
-        return this.cartRepository.findById(id);
-    }
-
     @Transactional
     @Override
     public Optional<Cart> getCart(String id) {
-        return CastUtils.cast(this.getInternalCart(id));
+        return this.cartRepository.findById(id);
     }
 
-    private InternalCartItem setCartItem(CartItem newItem) {
-        var item = InternalCartItem.of(newItem);
+    private JpaCartItem setCartItem(CartItem newItem) {
+        var item = JpaCartItem.of(newItem);
         var product = this.productService.getProduct(item.getProductId()).orElseThrow();
         var variant = product.getVariant(item.getVariantId()).orElseThrow();
         item.setOptionSelections(variant.getOptionSelections());
         item.setStoreId(product.getStoreId());
         item.setPrice(variant.getPrice());
-
         if (StringUtils.isBlank(item.getName())) {
             item.setName(product.getName());
         }
-
         if (StringUtils.isBlank(item.getImageUrl())) {
             item.setImageUrl(CollectionUtils.firstElement(variant.getImageUrls()));
         }
@@ -101,7 +94,7 @@ public class DefaultCartService implements CartService {
     @Override
     public CartItem addCartItem(String id, CartItem newItem) {
         var mapItem = Stream.of(newItem)
-                .map(InternalCartItem::of)
+                .map(JpaCartItem::of)
                 .peek(item -> item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME)))
                 .map(this::setCartItem)
                 .findFirst()
@@ -113,7 +106,7 @@ public class DefaultCartService implements CartService {
     @Transactional
     @Override
     public List<CartItem> addCartItems(String id, Collection<CartItem> items) {
-        List<CartItem> itemList = items.stream().map(InternalCartItem::of)
+        List<CartItem> itemList = items.stream().map(JpaCartItem::of)
                 .peek(item -> item.setId(PrimaryKeyHolder.next(CART_ITEM_ID_VALUE_NAME)))
                 .map(this::setCartItem)
                 .collect(Collectors.toList());
@@ -122,10 +115,14 @@ public class DefaultCartService implements CartService {
         return itemList;
     }
 
+    private Cart requiredCart(String id) {
+        return this.getCart(id).orElseThrow();
+    }
+
     @Transactional
     @Override
     public void updateCartItem(String id, CartItem newItem) {
-        var cart = this.getInternalCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         if (Objects.nonNull(newItem.getProductId()) && Objects.nonNull(newItem.getVariantId())) {
             this.setCartItem(newItem);
         }
@@ -135,69 +132,70 @@ public class DefaultCartService implements CartService {
     @Transactional
     @Override
     public void removeCartItem(String id, String itemId) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.removeItem(cart.getItem(itemId).orElseThrow());
     }
 
     @Transactional
     @Override
     public void removeCartItems(String id, Collection<String> itemIds) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.removeItems(cart.getItems(itemIds));
     }
 
     @Transactional
     @Override
-    public void adjustCartItem(String id, CartItemAdjustment adjustment) {
-        var cart = this.getCart(id).orElseThrow();
+    public void adjustCart(String id, CartAdjustment adjustment) {
+        var cart = this.requiredCart(id);
         cart.adjustItem(adjustment);
     }
 
+    @Transactional
     @Override
-    public void adjustCartItems(String id, List<CartItemAdjustment> adjustments) {
-        var cart = this.getCart(id).orElseThrow();
+    public void adjustCart(String id, List<CartAdjustment> adjustments) {
+        var cart = this.requiredCart(id);
         adjustments.forEach(cart::adjustItem);
     }
 
     @Transactional
     @Override
     public void checkCartItem(String id, String itemId) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.checkItem(itemId);
     }
 
     @Transactional
     @Override
     public void uncheckCartItem(String id, String itemId) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.uncheckItem(itemId);
     }
 
     @Transactional
     @Override
     public void checkCartItems(String id, Collection<String> itemIds) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.checkItems(itemIds);
     }
 
     @Transactional
     @Override
     public void uncheckCartItems(String id, Collection<String> itemIds) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.uncheckItems(itemIds);
     }
 
     @Transactional
     @Override
     public void checkAllCartItems(String id) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.checkAllItems();
     }
 
     @Transactional
     @Override
     public void uncheckAllCartItems(String id) {
-        var cart = this.getCart(id).orElseThrow();
+        var cart = this.requiredCart(id);
         cart.uncheckAllItems();
     }
 }

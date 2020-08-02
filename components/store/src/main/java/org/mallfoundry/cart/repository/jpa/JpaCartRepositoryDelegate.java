@@ -16,17 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.cart;
+package org.mallfoundry.cart.repository.jpa;
 
-import java.util.function.Supplier;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public abstract class CartExceptions {
-
-    public static Supplier<CartException> notExist() {
-        return () -> new CartException("The cart object does not exist");
-    }
-
-    public static Supplier<CartException> itemNotExist() {
-        return () -> new CartException("The cart item object does not exist");
-    }
+@Repository
+public interface JpaCartRepositoryDelegate extends JpaRepository<JpaCart, String> {
 }

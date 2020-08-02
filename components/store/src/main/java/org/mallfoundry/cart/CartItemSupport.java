@@ -18,27 +18,25 @@
 
 package org.mallfoundry.cart;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public abstract class CartItemSupport implements MutableCartItem {
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class DefaultCartItemAdjustment extends CartItemAdjustmentSupport {
-    private String itemId;
-    private String productId;
-    private String variantId;
-    private int quantityDelta;
+    @Override
+    public void adjustQuantity(int quantityDelta) throws CartException {
+        var adjustedQuantity = this.getQuantity() + quantityDelta;
+        if (adjustedQuantity < 0) {
+            throw new CartException("The adjusted quantity cannot be less than zero");
+        }
 
-    public DefaultCartItemAdjustment(String itemId, int quantityDelta) {
-        this.itemId = itemId;
-        this.quantityDelta = quantityDelta;
+        this.setQuantity(adjustedQuantity);
     }
 
-    public DefaultCartItemAdjustment(String productId, String variantId, int quantityDelta) {
-        this.productId = productId;
-        this.variantId = variantId;
-        this.quantityDelta = quantityDelta;
+    @Override
+    public void check() {
+        this.setChecked(true);
+    }
+
+    @Override
+    public void uncheck() {
+        this.setChecked(false);
     }
 }

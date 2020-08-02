@@ -16,11 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.cart;
+package org.mallfoundry.cart.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.cart.CartItem;
+import org.mallfoundry.cart.CartItemSupport;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +42,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_cart_item")
-public class InternalCartItem implements CartItem {
+public class JpaCartItem extends CartItemSupport {
 
     @Id
     @Column(name = "id_")
@@ -77,38 +79,18 @@ public class InternalCartItem implements CartItem {
     @Column(name = "added_time_")
     private Date addedTime;
 
-    public InternalCartItem(String id) {
+    public JpaCartItem(String id) {
         this.id = id;
         this.addedTime = new Date();
     }
 
-    public static InternalCartItem of(CartItem item) {
-        if (item instanceof InternalCartItem) {
-            return (InternalCartItem) item;
+    public static JpaCartItem of(CartItem item) {
+        if (item instanceof JpaCartItem) {
+            return (JpaCartItem) item;
         }
-        var target = new InternalCartItem();
+        var target = new JpaCartItem();
         BeanUtils.copyProperties(item, target);
         return target;
-    }
-
-    @Override
-    public void adjustQuantity(int quantityDelta) throws CartException {
-        var adjustedQuantity = this.quantity + quantityDelta;
-        if (adjustedQuantity < 0) {
-            throw new CartException("The adjusted quantity cannot be less than zero");
-        }
-
-        this.setQuantity(adjustedQuantity);
-    }
-
-    @Override
-    public void check() {
-        this.checked = true;
-    }
-
-    @Override
-    public void uncheck() {
-        this.checked = false;
     }
 
     @Override
@@ -119,7 +101,7 @@ public class InternalCartItem implements CartItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalCartItem that = (InternalCartItem) o;
+        JpaCartItem that = (JpaCartItem) o;
         return Objects.equals(productId, that.productId) && Objects.equals(variantId, that.variantId);
     }
 

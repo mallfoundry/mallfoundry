@@ -18,15 +18,27 @@
 
 package org.mallfoundry.cart;
 
-import java.util.function.Supplier;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public abstract class CartExceptions {
+@Getter
+@Setter
+@NoArgsConstructor
+public class DefaultCartAdjustment extends CartAdjustmentSupport {
+    private String itemId;
+    private String productId;
+    private String variantId;
+    private int quantityDelta;
 
-    public static Supplier<CartException> notExist() {
-        return () -> new CartException("The cart object does not exist");
+    public DefaultCartAdjustment(String itemId, int quantityDelta) {
+        this.itemId = itemId;
+        this.quantityDelta = quantityDelta;
     }
 
-    public static Supplier<CartException> itemNotExist() {
-        return () -> new CartException("The cart item object does not exist");
+    public DefaultCartAdjustment(String productId, String variantId, int quantityDelta) {
+        this.productId = productId;
+        this.variantId = variantId;
+        this.quantityDelta = quantityDelta;
     }
 }

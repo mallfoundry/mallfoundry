@@ -18,20 +18,6 @@
 
 package org.mallfoundry.cart;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.BeanUtils;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -39,52 +25,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "mf_cart")
-public class InternalCart implements Cart {
-
-    @Id
-    @Column(name = "id_")
-    private String id;
-
-    @Column(name = "customer_id_")
-    private String customerId;
-
-    @OneToMany(targetEntity = InternalCartItem.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id_")
-    @OrderBy("addedTime ASC")
-    private List<CartItem> items = new ArrayList<>();
-
-    public InternalCart(String id) {
-        this.id = id;
-    }
-
-    public static InternalCart of(Cart cart) {
-        if (cart instanceof InternalCart) {
-            return (InternalCart) cart;
-        }
-        var target = new InternalCart();
-        BeanUtils.copyProperties(cart, target);
-        return target;
-    }
+public abstract class CartSupport implements Cart {
 
     @Override
-    public CartItemAdjustment createItemAdjustment(String itemId) {
-        return new DefaultCartItemAdjustment(itemId, 0);
-    }
-
-    @Override
-    public CartItem createItem(String id) {
-        return new InternalCartItem(id);
+    public CartAdjustment createAdjustment(String itemId) {
+        return new DefaultCartAdjustment(itemId, 0);
     }
 
     @Override
     public void addItem(CartItem newItem) {
         this.findItem(newItem.getProductId(), newItem.getVariantId())
-                .ifPresentOrElse(eItem -> this.adjustItem(newItem, eItem), () -> this.items.add(newItem));
+                .ifPresentOrElse(eItem -> this.adjustItem(newItem, eItem), () -> this.getItems().add(newItem));
     }
 
     @Override
@@ -94,33 +45,39 @@ public class InternalCart implements Cart {
 
     @Override
     public Optional<CartItem> getItem(String itemId) {
-        return this.items.stream().filter(item -> Objects.equals(item.getId(), itemId)).findFirst();
+        return this.getItems().stream().filter(item -> Objects.equals(item.getId(), itemId)).findFirst();
     }
 
-    @Override
     public Optional<CartItem> getItem(String productId, String variantId) {
-        return this.items.stream()
-                .filter(item ->
-                        Objects.equals(item.getProductId(), productId)
-                                && Objects.equals(item.getVariantId(), variantId))
+        return this.getItems().stream()
+                .filter(item -> Objects.equals(item.getProductId(), productId) && Objects.equals(item.getVariantId(), variantId))
                 .findFirst();
+    }
+
+    private CartItem requiredItem(String itemId) {
+        return this.getItem(itemId).orElseThrow();
+    }
+
+    private CartItem requiredItem(String productId, String variantId) {
+        return this.getItem(productId, variantId).orElseThrow();
+    }
+
+    private CartItem requiredItem(CartAdjustment adjustment) {
+        return Objects.nonNull(adjustment.getItemId())
+                ? this.requiredItem(adjustment.getItemId())
+                : this.requiredItem(adjustment.getProductId(), adjustment.getVariantId());
     }
 
     @Override
     public List<CartItem> getItems(Collection<String> itemIds) {
-        return this.items.stream().filter(item -> itemIds.contains(item.getId())).collect(Collectors.toUnmodifiableList());
-    }
-
-    private Optional<CartItem> getItem(CartItemAdjustment adjustment) {
-        if (Objects.nonNull(adjustment.getItemId())) {
-            return this.getItem(adjustment.getItemId());
-        }
-        return this.getItem(adjustment.getProductId(), adjustment.getVariantId());
+        return this.getItems().stream()
+                .filter(item -> itemIds.contains(item.getId()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
-    public void adjustItem(CartItemAdjustment adjustment) throws CartException {
-        var item = this.getItem(adjustment).orElseThrow();
+    public void adjustItem(CartAdjustment adjustment) throws CartException {
+        var item = this.requiredItem(adjustment);
         item.adjustQuantity(adjustment.getQuantityDelta());
         if (item.getQuantity() == 0) {
             this.removeItem(item);
@@ -139,22 +96,22 @@ public class InternalCart implements Cart {
 
     @Override
     public void checkItems(Collection<String> itemIds) {
-        itemIds.stream().map(this::getItem).map(Optional::orElseThrow).forEach(CartItem::check);
+        itemIds.stream().map(this::requiredItem).forEach(CartItem::check);
     }
 
     @Override
     public void uncheckItems(Collection<String> itemIds) {
-        itemIds.stream().map(this::getItem).map(Optional::orElseThrow).forEach(CartItem::uncheck);
+        itemIds.stream().map(this::requiredItem).forEach(CartItem::uncheck);
     }
 
     @Override
     public void checkAllItems() {
-        this.items.forEach(CartItem::check);
+        this.getItems().forEach(CartItem::check);
     }
 
     @Override
     public void uncheckAllItems() {
-        this.items.forEach(CartItem::uncheck);
+        this.getItems().forEach(CartItem::uncheck);
     }
 
     private void adjustItem(CartItem newItem, CartItem targetItem) {
@@ -178,7 +135,7 @@ public class InternalCart implements Cart {
     }
 
     private Optional<CartItem> findItem(String productId, String variantId) {
-        return this.items.stream().filter(eItem ->
+        return this.getItems().stream().filter(eItem ->
                 Objects.equals(eItem.getProductId(), productId)
                         && Objects.equals(eItem.getVariantId(), variantId))
                 .findFirst();
@@ -220,7 +177,7 @@ public class InternalCart implements Cart {
 
     @Override
     public void removeItem(CartItem item) {
-        this.items.remove(item);
+        this.getItems().remove(item);
     }
 
     @Override
