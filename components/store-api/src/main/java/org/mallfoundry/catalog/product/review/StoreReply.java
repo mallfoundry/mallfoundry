@@ -18,6 +18,13 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public interface ProductReviewCommentRepository {
-    <S extends ProductReviewComment> S save(S comment);
+import org.mallfoundry.review.CommentBase;
+
+public interface StoreReply extends CommentBase {
+
+    String getStoreId();
+
+    String getStoreName();
+
+    String getStoreLogo();
 }

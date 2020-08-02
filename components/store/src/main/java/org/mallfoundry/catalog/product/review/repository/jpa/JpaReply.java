@@ -21,12 +21,12 @@ package org.mallfoundry.catalog.product.review.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.review.ProductReviewComment;
-import org.mallfoundry.catalog.product.review.ProductReviewCommentSupport;
-import org.mallfoundry.catalog.product.review.ProductReviewReplyComment;
+import org.mallfoundry.catalog.product.review.Reply;
+import org.mallfoundry.catalog.product.review.ReplySupport;
 import org.mallfoundry.review.Author;
 import org.mallfoundry.review.BodyType;
 import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -44,7 +44,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_catalog_product_review_comment")
-public class JpaProductReviewComment extends ProductReviewCommentSupport {
+public class JpaReply extends ReplySupport {
 
     @Id
     @Column(name = "id_")
@@ -67,19 +67,23 @@ public class JpaProductReviewComment extends ProductReviewCommentSupport {
     @Column(name = "body_type")
     private BodyType bodyType;
 
-    @ManyToOne(targetEntity = JpaProductReviewComment.class)
-    @JoinColumn(name = "parent_id_")
-    private ProductReviewComment parent;
+    @ManyToOne(targetEntity = JpaReply.class)
+    @JoinColumn(name = "reply_to_id_")
+    private Reply replyTo;
 
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public JpaProductReviewComment(String id) {
+    public JpaReply(String id) {
         this.setId(id);
     }
 
-    @Override
-    public ProductReviewReplyComment createReplyComment(String id) {
-        return new JpaProductReviewReplyComment(id);
+    public static JpaReply of(Reply comment) {
+        if (comment instanceof JpaReply) {
+            return (JpaReply) comment;
+        }
+        var target = new JpaReply();
+        BeanUtils.copyProperties(comment, target);
+        return target;
     }
 }

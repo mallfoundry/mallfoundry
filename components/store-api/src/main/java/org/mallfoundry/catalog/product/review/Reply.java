@@ -18,24 +18,15 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.review.CommentBase;
 
-import java.util.List;
+public interface Reply extends CommentBase {
 
-public class ProductReviewIdentifier implements ProductReviewProcessor {
+    String getReviewId();
 
-    private static final String PRODUCT_REVIEW_VALUE_ID_NAME = "product.review.id";
+    void setReviewId(String reviewId);
 
-    @Override
-    public List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
-        reviews.forEach(this::setIdentifier);
-        return reviews;
-    }
+    Reply getReplyTo();
 
-    private void setIdentifier(ProductReview review) {
-        if (StringUtils.isBlank(review.getId())) {
-            review.setId(PrimaryKeyHolder.next(PRODUCT_REVIEW_VALUE_ID_NAME));
-        }
-    }
+    void replyTo(Reply reply);
 }

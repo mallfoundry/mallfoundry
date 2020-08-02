@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
-import org.mallfoundry.catalog.product.review.ProductReview;
-import org.mallfoundry.catalog.product.review.ProductReviewComment;
-import org.mallfoundry.catalog.product.review.ProductReviewStatus;
-import org.mallfoundry.catalog.product.review.ProductReviewSupport;
+import org.mallfoundry.catalog.product.review.Reply;
+import org.mallfoundry.catalog.product.review.Review;
+import org.mallfoundry.catalog.product.review.ReviewStatus;
+import org.mallfoundry.catalog.product.review.ReviewSupport;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.review.Author;
 import org.mallfoundry.review.BodyType;
@@ -48,7 +48,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_catalog_product_review")
-public class JpaProductReview extends ProductReviewSupport {
+public class JpaReview extends ReviewSupport {
 
     @Id
     @Column(name = "id_")
@@ -75,7 +75,7 @@ public class JpaProductReview extends ProductReviewSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
-    private ProductReviewStatus status;
+    private ReviewStatus status;
 
     @Column(name = "reviewer_")
     @Convert(converter = AuthorConverter.class)
@@ -106,21 +106,21 @@ public class JpaProductReview extends ProductReviewSupport {
     @Column(name = "reviewed_time_")
     private Date reviewedTime;
 
-    public JpaProductReview(String id) {
+    public JpaReview(String id) {
         this.id = id;
     }
 
-    public static JpaProductReview of(ProductReview review) {
-        if (review instanceof JpaProductReview) {
-            return (JpaProductReview) review;
+    public static JpaReview of(Review review) {
+        if (review instanceof JpaReview) {
+            return (JpaReview) review;
         }
-        var target = new JpaProductReview();
+        var target = new JpaReview();
         BeanUtils.copyProperties(review, target);
         return target;
     }
 
     @Override
-    public ProductReviewComment createComment(String commentId) {
-        return new JpaProductReviewComment(commentId);
+    public Reply createReply(String replyId) {
+        return new JpaReply(replyId);
     }
 }

@@ -19,11 +19,12 @@
 package org.mallfoundry.catalog.product;
 
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@SpringBootTest
+@StandaloneTest
 public class ProductAuthorizerTests {
 
     @Autowired

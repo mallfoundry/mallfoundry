@@ -18,6 +18,12 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public interface MutableProductReviewReplyComment extends ProductReviewReplyComment {
-    void setReplyTo(ProductReviewComment comment);
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class DefaultReviewQuery extends ReviewQuerySupport {
+    private String productId;
+    private String variantId;
 }

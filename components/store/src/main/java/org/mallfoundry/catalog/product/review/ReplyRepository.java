@@ -18,20 +18,6 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.List;
-import java.util.Optional;
-
-public interface ProductReviewRepository {
-
-    ProductReview create(String reviewId);
-
-    ProductReview save(ProductReview review);
-
-    List<ProductReview> saveAll(List<ProductReview> reviews);
-
-    Optional<ProductReview> findById(String reviewId);
-
-    SliceList<ProductReview> findAll(ProductReviewQuery query);
+public interface ReplyRepository {
+    Reply save(Reply comment);
 }

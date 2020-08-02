@@ -25,11 +25,11 @@ import org.mallfoundry.review.BodyType;
 import java.util.Date;
 import java.util.List;
 
-import static org.mallfoundry.catalog.product.review.ProductReviewStatus.APPROVED;
-import static org.mallfoundry.catalog.product.review.ProductReviewStatus.DISAPPROVED;
-import static org.mallfoundry.catalog.product.review.ProductReviewStatus.PENDING;
+import static org.mallfoundry.catalog.product.review.ReviewStatus.APPROVED;
+import static org.mallfoundry.catalog.product.review.ReviewStatus.DISAPPROVED;
+import static org.mallfoundry.catalog.product.review.ReviewStatus.PENDING;
 
-public abstract class ProductReviewSupport implements MutableProductReview {
+public abstract class ReviewSupport implements MutableReview {
 
     @Override
     public void rating(int rating) {
@@ -53,8 +53,9 @@ public abstract class ProductReviewSupport implements MutableProductReview {
     }
 
     @Override
-    public void comment(ProductReviewComment comment) {
-
+    public void reply(Reply reply) {
+        reply.setReviewId(this.getId());
+        reply.create();
     }
 
     @Override
@@ -64,9 +65,9 @@ public abstract class ProductReviewSupport implements MutableProductReview {
     }
 
     protected abstract static class BuilderSupport implements Builder {
-        private final ProductReviewSupport review;
+        private final ReviewSupport review;
 
-        protected BuilderSupport(ProductReviewSupport review) {
+        protected BuilderSupport(ReviewSupport review) {
             this.review = review;
         }
 
@@ -155,7 +156,7 @@ public abstract class ProductReviewSupport implements MutableProductReview {
         }
 
         @Override
-        public ProductReview build() {
+        public Review build() {
             return this.review;
         }
     }

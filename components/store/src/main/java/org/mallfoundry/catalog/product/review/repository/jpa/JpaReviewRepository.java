@@ -18,9 +18,9 @@
 
 package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import org.mallfoundry.catalog.product.review.ProductReview;
-import org.mallfoundry.catalog.product.review.ProductReviewQuery;
-import org.mallfoundry.catalog.product.review.ProductReviewRepository;
+import org.mallfoundry.catalog.product.review.Review;
+import org.mallfoundry.catalog.product.review.ReviewQuery;
+import org.mallfoundry.catalog.product.review.ReviewRepository;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
@@ -30,40 +30,40 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class JpaProductReviewRepository implements ProductReviewRepository {
+public class JpaReviewRepository implements ReviewRepository {
 
-    private final JpaProductReviewRepositoryDelegate repository;
+    private final JpaReviewRepositoryDelegate repository;
 
-    public JpaProductReviewRepository(JpaProductReviewRepositoryDelegate repository) {
+    public JpaReviewRepository(JpaReviewRepositoryDelegate repository) {
         this.repository = repository;
     }
 
     @Override
-    public ProductReview create(String reviewId) {
-        return new JpaProductReview(reviewId);
+    public Review create(String reviewId) {
+        return new JpaReview(reviewId);
     }
 
     @Override
-    public ProductReview save(ProductReview review) {
-        return Function.<ProductReview>identity()
-                .<JpaProductReview>compose(this.repository::save)
-                .compose(JpaProductReview::of)
+    public Review save(Review review) {
+        return Function.<Review>identity()
+                .<JpaReview>compose(this.repository::save)
+                .compose(JpaReview::of)
                 .apply(review);
     }
 
     @Override
-    public List<ProductReview> saveAll(List<ProductReview> reviews) {
-        var jpaReviews = reviews.stream().map(JpaProductReview::of).collect(Collectors.toList());
+    public List<Review> saveAll(List<Review> reviews) {
+        var jpaReviews = reviews.stream().map(JpaReview::of).collect(Collectors.toList());
         return CastUtils.cast(this.repository.saveAll(jpaReviews));
     }
 
     @Override
-    public Optional<ProductReview> findById(String reviewId) {
+    public Optional<Review> findById(String reviewId) {
         return CastUtils.cast(this.repository.findById(reviewId));
     }
 
     @Override
-    public SliceList<ProductReview> findAll(ProductReviewQuery query) {
+    public SliceList<Review> findAll(ReviewQuery query) {
         var page = this.repository.findAll(query);
         return CastUtils.cast(PageList.of(page.getContent()).page(query.getPage()).limit(query.getLimit()).totalSize(page.getTotalElements()));
     }

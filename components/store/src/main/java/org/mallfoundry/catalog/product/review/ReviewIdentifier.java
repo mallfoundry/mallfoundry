@@ -18,24 +18,24 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.mallfoundry.data.Query;
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.util.ObjectBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 
-public interface ProductReviewQuery extends Query, ObjectBuilder.ToBuilder<ProductReviewQuery.Builder> {
+import java.util.List;
 
-    String getProductId();
+public class ReviewIdentifier implements ReviewProcessor {
 
-    void setProductId(String productId);
+    private static final String PRODUCT_REVIEW_VALUE_ID_NAME = "product.review.id";
 
-    String getVariantId();
+    @Override
+    public List<Review> preProcessAddProductReviews(List<Review> reviews) {
+        reviews.forEach(this::setIdentifier);
+        return reviews;
+    }
 
-    void setVariantId(String variantId);
-
-    interface Builder extends QueryBuilder<ProductReviewQuery, Builder> {
-
-        Builder productId(String productId);
-
-        Builder variantId(String variantId);
+    private void setIdentifier(Review review) {
+        if (StringUtils.isBlank(review.getId())) {
+            review.setId(PrimaryKeyHolder.next(PRODUCT_REVIEW_VALUE_ID_NAME));
+        }
     }
 }

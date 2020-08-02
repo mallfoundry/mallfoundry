@@ -18,17 +18,16 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.mallfoundry.review.CommentBase;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public interface ProductReviewComment extends CommentBase {
+public enum ReviewStatus {
+    PENDING,
+    APPROVED,
+    DISAPPROVED;
 
-    String getReviewId();
-
-    void setReviewId(String reviewId);
-
-    ProductReviewComment getParent();
-
-    ProductReviewReplyComment createReplyComment(String id);
-
-    void replyComment(ProductReviewReplyComment comment);
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

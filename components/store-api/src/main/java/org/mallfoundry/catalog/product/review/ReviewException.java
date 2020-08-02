@@ -18,16 +18,13 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+public class ReviewException extends RuntimeException {
 
-public enum ProductReviewStatus {
-    PENDING,
-    APPROVED,
-    DISAPPROVED;
+    public ReviewException(String message) {
+        super(message);
+    }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
+    public ReviewException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

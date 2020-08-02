@@ -16,9 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.customer;
+package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import org.mallfoundry.store.StoreQueryBase;
+import org.mallfoundry.catalog.product.review.Reply;
+import org.mallfoundry.catalog.product.review.ReplyRepository;
 
-public interface StoreCustomerQuery extends StoreQueryBase {
+public class JpaReplyRepository implements ReplyRepository {
+
+    private final JpaReplyRepositoryDelegate repository;
+
+    public JpaReplyRepository(JpaReplyRepositoryDelegate repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Reply save(Reply comment) {
+        return this.repository.save(JpaReply.of(comment));
+    }
 }

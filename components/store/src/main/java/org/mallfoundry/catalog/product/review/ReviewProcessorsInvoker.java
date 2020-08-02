@@ -18,22 +18,28 @@
 
 package org.mallfoundry.catalog.product.review;
 
+import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.processor.ProcessorsInvoker;
+
 import java.util.List;
 
-public class ProductReviewAuthorizer implements ProductReviewProcessor {
+public class ReviewProcessorsInvoker {
 
-    @Override
-    public ProductReview preProcessApproveProductReview(ProductReview review) {
+    private final List<ReviewProcessor> processors;
+
+    public ReviewProcessorsInvoker(List<ReviewProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
+    }
+
+    public List<Review> invokePreProcessAddProductReviews(List<Review> reviews) {
+        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, ReviewProcessor::preProcessAddProductReviews);
+    }
+
+    public Review invokePreProcessApproveProductReview(Review review) {
         return review;
     }
 
-    @Override
-    public ProductReview preProcessDisapproveProductReview(ProductReview review) {
+    public Review invokePreProcessDisapproveProductReview(Review review) {
         return review;
-    }
-
-    @Override
-    public List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
-        return reviews;
     }
 }

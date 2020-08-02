@@ -21,7 +21,7 @@ package org.mallfoundry.catalog.product.review;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
-public abstract class ProductReviewQuerySupport extends QuerySupport implements ProductReviewQuery {
+public abstract class ReviewQuerySupport extends QuerySupport implements ReviewQuery {
 
     @Override
     public Builder toBuilder() {
@@ -30,11 +30,11 @@ public abstract class ProductReviewQuerySupport extends QuerySupport implements 
     }
 
     protected abstract static class BuilderSupport
-            extends QueryBuilderSupport<ProductReviewQuery, Builder> implements Builder {
+            extends QueryBuilderSupport<ReviewQuery, Builder> implements Builder {
 
-        private final ProductReviewQuerySupport query;
+        private final ReviewQuerySupport query;
 
-        public BuilderSupport(ProductReviewQuerySupport query) {
+        public BuilderSupport(ReviewQuerySupport query) {
             super(query);
             this.query = query;
         }

@@ -26,7 +26,7 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.util.Date;
 import java.util.List;
 
-public interface ProductReview extends ObjectBuilder.ToBuilder<ProductReview.Builder> {
+public interface Review extends ObjectBuilder.ToBuilder<Review.Builder> {
 
     String getId();
 
@@ -84,7 +84,7 @@ public interface ProductReview extends ObjectBuilder.ToBuilder<ProductReview.Bui
 
     void rating(int rating);
 
-    ProductReviewStatus getStatus();
+    ReviewStatus getStatus();
 
     Date getReviewedTime();
 
@@ -94,11 +94,11 @@ public interface ProductReview extends ObjectBuilder.ToBuilder<ProductReview.Bui
 
     void disapprove();
 
-    ProductReviewComment createComment(String commentId);
+    Reply createReply(String replyId);
 
-    void comment(ProductReviewComment comment);
+    void reply(Reply reply);
 
-    interface Builder extends ObjectBuilder<ProductReview> {
+    interface Builder extends ObjectBuilder<Review> {
 
         Builder id(String id);
 

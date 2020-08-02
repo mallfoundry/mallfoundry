@@ -18,14 +18,17 @@
 
 package org.mallfoundry.autoconfigure.catalog;
 
-import org.mallfoundry.catalog.product.review.DefaultProductReviewService;
-import org.mallfoundry.catalog.product.review.ProductReviewAuthorizer;
-import org.mallfoundry.catalog.product.review.ProductReviewIdentifier;
-import org.mallfoundry.catalog.product.review.ProductReviewProcessor;
-import org.mallfoundry.catalog.product.review.ProductReviewProcessorsInvoker;
-import org.mallfoundry.catalog.product.review.ProductReviewRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaProductReviewRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaProductReviewRepositoryDelegate;
+import org.mallfoundry.catalog.product.review.DefaultReviewService;
+import org.mallfoundry.catalog.product.review.ReviewAuthorizer;
+import org.mallfoundry.catalog.product.review.ReplyRepository;
+import org.mallfoundry.catalog.product.review.ReviewIdentifier;
+import org.mallfoundry.catalog.product.review.ReviewProcessor;
+import org.mallfoundry.catalog.product.review.ReviewProcessorsInvoker;
+import org.mallfoundry.catalog.product.review.ReviewRepository;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReplyRepository;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReplyRepositoryDelegate;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepository;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,29 +40,35 @@ import java.util.List;
 public class ProductReviewConfiguration {
 
     @Bean
-    public JpaProductReviewRepository jpaProductReviewRepository(JpaProductReviewRepositoryDelegate repositoryDelegate) {
-        return new JpaProductReviewRepository(repositoryDelegate);
+    public JpaReviewRepository jpaProductReviewRepository(JpaReviewRepositoryDelegate repositoryDelegate) {
+        return new JpaReviewRepository(repositoryDelegate);
     }
 
     @Bean
-    public DefaultProductReviewService defaultProductReviewService(ProductReviewProcessorsInvoker processorsInvoker,
-                                                                   ProductReviewRepository reviewRepository) {
-        return new DefaultProductReviewService(processorsInvoker, reviewRepository);
+    public JpaReplyRepository jpaProductReviewCommentRepository(JpaReplyRepositoryDelegate repositoryDelegate) {
+        return new JpaReplyRepository(repositoryDelegate);
+    }
+
+    @Bean
+    public DefaultReviewService defaultProductReviewService(ReviewProcessorsInvoker processorsInvoker,
+                                                            ReviewRepository reviewRepository,
+                                                            ReplyRepository commentRepository) {
+        return new DefaultReviewService(processorsInvoker, reviewRepository, commentRepository);
     }
 
     @Bean
     @Autowired(required = false)
-    public ProductReviewProcessorsInvoker productReviewProcessorsInvoker(@Lazy List<ProductReviewProcessor> processors) {
-        return new ProductReviewProcessorsInvoker(processors);
+    public ReviewProcessorsInvoker productReviewProcessorsInvoker(@Lazy List<ReviewProcessor> processors) {
+        return new ReviewProcessorsInvoker(processors);
     }
 
     @Bean
-    public ProductReviewIdentifier productReviewIdentifier() {
-        return new ProductReviewIdentifier();
+    public ReviewIdentifier productReviewIdentifier() {
+        return new ReviewIdentifier();
     }
 
     @Bean
-    public ProductReviewAuthorizer productReviewAuthorizer() {
-        return new ProductReviewAuthorizer();
+    public ReviewAuthorizer productReviewAuthorizer() {
+        return new ReviewAuthorizer();
     }
 }

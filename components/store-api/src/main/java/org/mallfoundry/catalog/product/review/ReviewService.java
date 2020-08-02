@@ -18,19 +18,24 @@
 
 package org.mallfoundry.catalog.product.review;
 
+import org.mallfoundry.data.SliceList;
+
 import java.util.List;
+import java.util.Optional;
 
-public interface ProductReviewProcessor {
+public interface ReviewService {
 
-    default List<ProductReview> preProcessAddProductReviews(List<ProductReview> reviews) {
-        return reviews;
-    }
+    ReplyQuery createReplyQuery();
 
-    default ProductReview preProcessApproveProductReview(ProductReview review) {
-        return review;
-    }
+    ReviewQuery createReviewQuery();
 
-    default ProductReview preProcessDisapproveProductReview(ProductReview review) {
-        return review;
-    }
+    Review createReview(String reviewId);
+
+    void addReviews(List<Review> reviews) throws ReviewException;
+
+    Optional<Review> getReview(String reviewId);
+
+    SliceList<Review> getReviews(ReviewQuery query);
+
+    Reply replyReview(String reviewId, Reply reply) throws ReviewException;
 }

@@ -18,13 +18,20 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public class ProductReviewException extends RuntimeException {
+import org.mallfoundry.data.SliceList;
 
-    public ProductReviewException(String message) {
-        super(message);
-    }
+import java.util.List;
+import java.util.Optional;
 
-    public ProductReviewException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface ReviewRepository {
+
+    Review create(String reviewId);
+
+    Review save(Review review);
+
+    List<Review> saveAll(List<Review> reviews);
+
+    Optional<Review> findById(String reviewId);
+
+    SliceList<Review> findAll(ReviewQuery query);
 }

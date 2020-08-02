@@ -16,17 +16,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.customer;
+package org.mallfoundry.store.member;
 
-public interface StoreCustomerService {
+import org.mallfoundry.identity.Gender;
 
-    StoreCustomerQuery createCustomerQuery();
+import java.util.Date;
+import java.util.List;
 
-    StoreCustomer createCustomer(String id);
+public interface StoreMember {
 
-    StoreCustomer addCustomer(String id);
+    String getId();
 
-    StoreCustomer updateCustomer(String id);
+    String getStoreId();
 
-    void deleteCustomer(String id);
+    String getCountryCode();
+
+    void setCountryCode(String countryCode);
+
+    String getMobile();
+
+    void setMobile(String mobile);
+
+    Gender getGender();
+
+    void setGender(Gender gender);
+
+    Date getBirthdate();
+
+    void setBirthdate(Date birthdate);
+
+    List<String> getTags();
+
+    void setTags(List<String> tags);
+
+    String getNotes();
+
+    void setNotes(String notes);
 }

@@ -18,10 +18,9 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public abstract class ProductReviewCommentSupport implements ProductReviewComment {
+import java.util.Date;
 
-    @Override
-    public void replyComment(ProductReviewReplyComment comment) {
-
-    }
+public interface MutableReply extends Reply {
+    void setReplyTo(Reply comment);
+    void setCreatedTime(Date createdTime);
 }

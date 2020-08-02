@@ -18,7 +18,7 @@
 
 package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import org.mallfoundry.catalog.product.review.ProductReviewQuery;
+import org.mallfoundry.catalog.product.review.ReviewQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,11 +31,11 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaProductReviewRepositoryDelegate
-        extends JpaRepository<JpaProductReview, String>, JpaSpecificationExecutor<JpaProductReview> {
+public interface JpaReviewRepositoryDelegate
+        extends JpaRepository<JpaReview, String>, JpaSpecificationExecutor<JpaReview> {
 
-    default Specification<JpaProductReview> createSpecification(ProductReviewQuery reviewQuery) {
-        return (Specification<JpaProductReview>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaReview> createSpecification(ReviewQuery reviewQuery) {
+        return (Specification<JpaReview>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(reviewQuery.getProductId())) {
@@ -48,7 +48,7 @@ public interface JpaProductReviewRepositoryDelegate
         };
     }
 
-    default Page<JpaProductReview> findAll(ProductReviewQuery reviewQuery) {
+    default Page<JpaReview> findAll(ReviewQuery reviewQuery) {
         var sort = Objects.nonNull(reviewQuery.getSort())
                 ? Sort.by(
                 reviewQuery.getSort().getOrders().stream()

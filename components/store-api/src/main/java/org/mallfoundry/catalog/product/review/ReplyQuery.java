@@ -18,12 +18,5 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class DefaultProductReviewQuery extends ProductReviewQuerySupport {
-    private String productId;
-    private String variantId;
+public interface ReplyQuery {
 }

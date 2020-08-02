@@ -18,9 +18,24 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public interface ProductReviewReplyComment extends ProductReviewComment {
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
 
-    ProductReviewComment getReplyTo();
+public interface ReviewQuery extends Query, ObjectBuilder.ToBuilder<ReviewQuery.Builder> {
 
-    void replyTo(ProductReviewComment comment);
+    String getProductId();
+
+    void setProductId(String productId);
+
+    String getVariantId();
+
+    void setVariantId(String variantId);
+
+    interface Builder extends QueryBuilder<ReviewQuery, Builder> {
+
+        Builder productId(String productId);
+
+        Builder variantId(String variantId);
+    }
 }

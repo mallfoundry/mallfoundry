@@ -18,28 +18,19 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.processor.ProcessorsInvoker;
-
 import java.util.List;
 
-public class ProductReviewProcessorsInvoker {
+public interface ReviewProcessor {
 
-    private final List<ProductReviewProcessor> processors;
-
-    public ProductReviewProcessorsInvoker(List<ProductReviewProcessor> processors) {
-        this.processors = ListUtils.emptyIfNull(processors);
+    default List<Review> preProcessAddProductReviews(List<Review> reviews) {
+        return reviews;
     }
 
-    public List<ProductReview> invokePreProcessAddProductReviews(List<ProductReview> reviews) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, reviews, ProductReviewProcessor::preProcessAddProductReviews);
-    }
-
-    public ProductReview invokePreProcessApproveProductReview(ProductReview review) {
+    default Review preProcessApproveProductReview(Review review) {
         return review;
     }
 
-    public ProductReview invokePreProcessDisapproveProductReview(ProductReview review) {
+    default Review preProcessDisapproveProductReview(Review review) {
         return review;
     }
 }
