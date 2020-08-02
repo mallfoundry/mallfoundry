@@ -27,8 +27,6 @@ import java.util.Optional;
  */
 public interface CategoryService {
 
-    CategoryId createCategoryId(String categoryId);
-
     Category createCategory(String id);
 
     CategoryQuery createCategoryQuery();

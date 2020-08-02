@@ -26,17 +26,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class InternalBrandService implements BrandService {
+public class DefaultBrandService implements BrandService {
 
     private final BrandRepository brandRepository;
 
-    public InternalBrandService(BrandRepository brandRepository) {
+    public DefaultBrandService(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
-    }
-
-    @Override
-    public BrandId createBrandId(String id) {
-        return new InternalBrandId(id);
     }
 
     @Override
@@ -46,7 +41,7 @@ public class InternalBrandService implements BrandService {
 
     @Override
     public BrandQuery createBrandQuery() {
-        return new InternalBrandQuery();
+        return new DefaultBrandQuery();
     }
 
     @Override

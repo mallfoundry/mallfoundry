@@ -28,8 +28,6 @@ import java.util.Optional;
  */
 public interface BrandService {
 
-    BrandId createBrandId(String id);
-
     Brand createBrand(String id);
 
     BrandQuery createBrandQuery();

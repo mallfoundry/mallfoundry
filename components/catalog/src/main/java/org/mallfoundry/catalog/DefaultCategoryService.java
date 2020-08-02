@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class InternalCategoryService implements CategoryService {
+public class DefaultCategoryService implements CategoryService {
 
     private static final String CATALOG_CATEGORY_ID_VALUE_NAME = "catalog.category.id";
 
@@ -36,15 +36,10 @@ public class InternalCategoryService implements CategoryService {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    public InternalCategoryService(CategoryRepository categoryRepository,
-                                   ApplicationEventPublisher eventPublisher) {
+    public DefaultCategoryService(CategoryRepository categoryRepository,
+                                  ApplicationEventPublisher eventPublisher) {
         this.categoryRepository = categoryRepository;
         this.eventPublisher = eventPublisher;
-    }
-
-    @Override
-    public CategoryId createCategoryId(String categoryId) {
-        return new InternalCategoryId(categoryId);
     }
 
     @Override
@@ -54,7 +49,7 @@ public class InternalCategoryService implements CategoryService {
 
     @Override
     public CategoryQuery createCategoryQuery() {
-        return new InternalCategoryQuery();
+        return new DefaultCategoryQuery();
     }
 
     @Override

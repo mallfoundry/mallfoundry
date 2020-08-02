@@ -18,18 +18,14 @@
 
 package org.mallfoundry.catalog;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.data.PageableSupport;
 
+import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
-public class InternalCategoryId implements CategoryId {
-    private String identifier;
+public class DefaultBrandQuery extends PageableSupport implements BrandQuery {
+    private Set<String> categories;
 }
