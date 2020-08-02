@@ -94,9 +94,11 @@ public interface Review extends ObjectBuilder.ToBuilder<Review.Builder> {
 
     void disapprove();
 
-    Reply createReply(String replyId);
+    ReviewReply createReply(String replyId);
 
-    void reply(Reply reply);
+    void reply(ReviewReply reply);
+
+    /*ReviewStoreReply createStoreReply(String replyId);*/
 
     interface Builder extends ObjectBuilder<Review> {
 

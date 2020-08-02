@@ -18,5 +18,17 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public interface ReplyQuery {
+import java.util.Date;
+
+public abstract class ReviewReplySupport implements MutableReviewReply {
+
+    @Override
+    public void create() {
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public void replyTo(ReviewReply comment) {
+        this.setReplyTo(comment);
+    }
 }

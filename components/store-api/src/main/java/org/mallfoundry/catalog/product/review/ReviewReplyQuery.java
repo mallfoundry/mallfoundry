@@ -18,13 +18,11 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import org.mallfoundry.review.CommentBase;
+import org.mallfoundry.data.Query;
 
-public interface StoreReply extends CommentBase {
+public interface ReviewReplyQuery extends Query {
 
-    String getStoreId();
+    String getReviewId();
 
-    String getStoreName();
-
-    String getStoreLogo();
+    void setReviewId(String reviewId);
 }

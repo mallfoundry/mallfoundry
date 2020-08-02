@@ -20,13 +20,13 @@ package org.mallfoundry.catalog.product.review;
 
 import org.mallfoundry.review.CommentBase;
 
-public interface Reply extends CommentBase {
+public interface ReviewReply extends CommentBase {
 
     String getReviewId();
 
     void setReviewId(String reviewId);
 
-    Reply getReplyTo();
+    ReviewReply getReplyTo();
 
-    void replyTo(Reply reply);
+    void replyTo(ReviewReply reply);
 }

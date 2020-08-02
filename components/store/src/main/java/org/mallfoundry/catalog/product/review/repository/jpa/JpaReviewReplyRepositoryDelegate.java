@@ -16,19 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.review;
+package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import java.util.Date;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public abstract class ReplySupport implements MutableReply {
-
-    @Override
-    public void create() {
-        this.setCreatedTime(new Date());
-    }
-
-    @Override
-    public void replyTo(Reply comment) {
-        this.setReplyTo(comment);
-    }
+@Repository
+public interface JpaReviewReplyRepositoryDelegate extends JpaRepository<JpaReviewReply, String> {
 }

@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public interface ReviewService {
 
-    ReplyQuery createReplyQuery();
+    ReviewReplyQuery createReplyQuery();
 
     ReviewQuery createReviewQuery();
 
@@ -37,5 +37,5 @@ public interface ReviewService {
 
     SliceList<Review> getReviews(ReviewQuery query);
 
-    Reply replyReview(String reviewId, Reply reply) throws ReviewException;
+    ReviewReply replyReview(String reviewId, ReviewReply reply) throws ReviewException;
 }

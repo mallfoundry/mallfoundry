@@ -20,13 +20,13 @@ package org.mallfoundry.autoconfigure.catalog;
 
 import org.mallfoundry.catalog.product.review.DefaultReviewService;
 import org.mallfoundry.catalog.product.review.ReviewAuthorizer;
-import org.mallfoundry.catalog.product.review.ReplyRepository;
+import org.mallfoundry.catalog.product.review.ReviewReplyRepository;
 import org.mallfoundry.catalog.product.review.ReviewIdentifier;
 import org.mallfoundry.catalog.product.review.ReviewProcessor;
 import org.mallfoundry.catalog.product.review.ReviewProcessorsInvoker;
 import org.mallfoundry.catalog.product.review.ReviewRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaReplyRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaReplyRepositoryDelegate;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewReplyRepository;
+import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewReplyRepositoryDelegate;
 import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepository;
 import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +45,14 @@ public class ProductReviewConfiguration {
     }
 
     @Bean
-    public JpaReplyRepository jpaProductReviewCommentRepository(JpaReplyRepositoryDelegate repositoryDelegate) {
-        return new JpaReplyRepository(repositoryDelegate);
+    public JpaReviewReplyRepository jpaProductReviewCommentRepository(JpaReviewReplyRepositoryDelegate repositoryDelegate) {
+        return new JpaReviewReplyRepository(repositoryDelegate);
     }
 
     @Bean
     public DefaultReviewService defaultProductReviewService(ReviewProcessorsInvoker processorsInvoker,
                                                             ReviewRepository reviewRepository,
-                                                            ReplyRepository commentRepository) {
+                                                            ReviewReplyRepository commentRepository) {
         return new DefaultReviewService(processorsInvoker, reviewRepository, commentRepository);
     }
 

@@ -35,18 +35,18 @@ public class DefaultReviewService implements ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    private final ReplyRepository commentRepository;
+    private final ReviewReplyRepository commentRepository;
 
     public DefaultReviewService(ReviewProcessorsInvoker processorsInvoker,
                                 ReviewRepository reviewRepository,
-                                ReplyRepository commentRepository) {
+                                ReviewReplyRepository commentRepository) {
         this.processorsInvoker = processorsInvoker;
         this.reviewRepository = reviewRepository;
         this.commentRepository = commentRepository;
     }
 
     @Override
-    public ReplyQuery createReplyQuery() {
+    public ReviewReplyQuery createReplyQuery() {
         return null;
     }
 
@@ -82,7 +82,7 @@ public class DefaultReviewService implements ReviewService {
         return this.getReview(reviewId).orElseThrow();
     }
 
-    private Author getAuthorFromComment(Reply comment) {
+    private Author getAuthorFromComment(ReviewReply comment) {
         var author = Objects.requireNonNullElseGet(comment.getAuthor(), DefaultAuthor::new);
         var subject = SubjectHolder.getSubject();
         author.setAvatar(subject.getAvatar());
@@ -92,7 +92,7 @@ public class DefaultReviewService implements ReviewService {
         return author;
     }
 
-    private void setCommentAuthor(Review review, Reply comment) {
+    private void setCommentAuthor(Review review, ReviewReply comment) {
         var author = this.getAuthorFromComment(comment);
         var reviewer = review.getReviewer();
         if (Objects.equals(reviewer.getId(), author.getId())) {
@@ -103,7 +103,7 @@ public class DefaultReviewService implements ReviewService {
 
     @Transactional
     @Override
-    public Reply replyReview(String reviewId, Reply reply) throws ReviewException {
+    public ReviewReply replyReview(String reviewId, ReviewReply reply) throws ReviewException {
         var review = this.requiredReview(reviewId);
         this.setCommentAuthor(review, reply);
         review.reply(reply);

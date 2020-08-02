@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
-import org.mallfoundry.catalog.product.review.Reply;
+import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.Review;
 import org.mallfoundry.catalog.product.review.ReviewStatus;
 import org.mallfoundry.catalog.product.review.ReviewSupport;
@@ -120,7 +120,7 @@ public class JpaReview extends ReviewSupport {
     }
 
     @Override
-    public Reply createReply(String replyId) {
-        return new JpaReply(replyId);
+    public ReviewReply createReply(String replyId) {
+        return new JpaReviewReply(replyId);
     }
 }

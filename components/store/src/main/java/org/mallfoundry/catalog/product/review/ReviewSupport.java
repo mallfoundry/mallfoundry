@@ -53,7 +53,7 @@ public abstract class ReviewSupport implements MutableReview {
     }
 
     @Override
-    public void reply(Reply reply) {
+    public void reply(ReviewReply reply) {
         reply.setReviewId(this.getId());
         reply.create();
     }

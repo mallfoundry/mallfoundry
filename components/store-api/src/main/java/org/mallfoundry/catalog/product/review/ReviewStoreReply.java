@@ -18,9 +18,13 @@
 
 package org.mallfoundry.catalog.product.review;
 
-import java.util.Date;
+import org.mallfoundry.review.CommentBase;
 
-public interface MutableReply extends Reply {
-    void setReplyTo(Reply comment);
-    void setCreatedTime(Date createdTime);
+public interface ReviewStoreReply extends CommentBase {
+
+    String getStoreId();
+
+    String getStoreName();
+
+    String getStoreLogo();
 }

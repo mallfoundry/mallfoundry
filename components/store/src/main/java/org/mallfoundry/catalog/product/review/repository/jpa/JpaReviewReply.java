@@ -21,8 +21,8 @@ package org.mallfoundry.catalog.product.review.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.review.Reply;
-import org.mallfoundry.catalog.product.review.ReplySupport;
+import org.mallfoundry.catalog.product.review.ReviewReply;
+import org.mallfoundry.catalog.product.review.ReviewReplySupport;
 import org.mallfoundry.review.Author;
 import org.mallfoundry.review.BodyType;
 import org.mallfoundry.review.repository.jpa.convert.AuthorConverter;
@@ -43,8 +43,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_catalog_product_review_comment")
-public class JpaReply extends ReplySupport {
+@Table(name = "mf_catalog_product_review_reply")
+public class JpaReviewReply extends ReviewReplySupport {
 
     @Id
     @Column(name = "id_")
@@ -67,22 +67,22 @@ public class JpaReply extends ReplySupport {
     @Column(name = "body_type")
     private BodyType bodyType;
 
-    @ManyToOne(targetEntity = JpaReply.class)
+    @ManyToOne(targetEntity = JpaReviewReply.class)
     @JoinColumn(name = "reply_to_id_")
-    private Reply replyTo;
+    private ReviewReply replyTo;
 
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public JpaReply(String id) {
+    public JpaReviewReply(String id) {
         this.setId(id);
     }
 
-    public static JpaReply of(Reply comment) {
-        if (comment instanceof JpaReply) {
-            return (JpaReply) comment;
+    public static JpaReviewReply of(ReviewReply comment) {
+        if (comment instanceof JpaReviewReply) {
+            return (JpaReviewReply) comment;
         }
-        var target = new JpaReply();
+        var target = new JpaReviewReply();
         BeanUtils.copyProperties(comment, target);
         return target;
     }

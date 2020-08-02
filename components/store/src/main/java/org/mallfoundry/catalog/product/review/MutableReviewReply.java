@@ -18,6 +18,9 @@
 
 package org.mallfoundry.catalog.product.review;
 
-public interface ReplyRepository {
-    Reply save(Reply comment);
+import java.util.Date;
+
+public interface MutableReviewReply extends ReviewReply {
+    void setReplyTo(ReviewReply comment);
+    void setCreatedTime(Date createdTime);
 }
