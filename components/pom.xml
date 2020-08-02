@@ -79,6 +79,7 @@
         <module>marketing-rest</module>
         <module>app-rest</module>
         <module>analytics-rest</module>
+        <module>trade-api</module>
     </modules>
 
 </project>
