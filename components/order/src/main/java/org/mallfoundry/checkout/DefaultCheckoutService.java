@@ -178,11 +178,11 @@ public class DefaultCheckoutService implements CheckoutService {
             return;
         }
         var adjustments = checkout.getItems().stream().filter(item -> item.getQuantity() != 0)
-                .map(item -> factory.createItemAdjustment(null).toBuilder()
+                .map(item -> factory.createAdjustment(null).toBuilder()
                         .productId(item.getProductId()).variantId(item.getVariantId())
                         .quantityDelta(-item.getQuantity()).build())
                 .collect(Collectors.toUnmodifiableList());
-        this.cartService.adjustCartItems(checkout.getCartId(), adjustments);
+        this.cartService.adjustCart(checkout.getCartId(), adjustments);
     }
 
     private void placeOrders(InternalCheckout checkout) {
