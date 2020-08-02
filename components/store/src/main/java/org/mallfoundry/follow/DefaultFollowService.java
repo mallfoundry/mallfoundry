@@ -47,23 +47,18 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public FollowerId createFollowerId(String id) {
-        return new InternalFollowerId(id);
-    }
-
-    @Override
     public FollowProductQuery createFollowProductQuery() {
-        return new InternalFollowProductQuery();
+        return new DefaultFollowProductQuery();
     }
 
     @Override
     public FollowStoreQuery createFollowStoreQuery() {
-        return new InternalFollowStoreQuery();
+        return new DefaultFollowStoreQuery();
     }
 
     @Override
     public FollowProduct followProduct(String followerId, String productId) {
-        var id = new InternalFollowProductId(followerId, productId);
+        var id = new JpaFollowProductId(followerId, productId);
         if (this.followProductRepository.existsById(id)) {
             throw new FollowException("The follower has followed to this product");
         }
@@ -79,14 +74,14 @@ public class DefaultFollowService implements FollowService {
 
     @Override
     public void unfollowProduct(String followerId, String productId) {
-        var id = new InternalFollowProductId(followerId, productId);
+        var id = new JpaFollowProductId(followerId, productId);
         var followProduct = this.followProductRepository.findById(id).orElseThrow();
         this.followProductRepository.delete(followProduct);
     }
 
     @Override
     public boolean checkFollowingProduct(String followerId, String productId) {
-        var id = new InternalFollowProductId(followerId, productId);
+        var id = new JpaFollowProductId(followerId, productId);
         return this.followProductRepository.existsById(id);
     }
 
@@ -107,7 +102,7 @@ public class DefaultFollowService implements FollowService {
 
     @Override
     public void followStore(String followerId, String storeId) {
-        var id = new InternalFollowStoreId(followerId, storeId);
+        var id = new JpaFollowStoreId(followerId, storeId);
         if (this.followStoreRepository.existsById(id)) {
             throw new FollowException("The follower has followed to this store");
         }
@@ -120,14 +115,14 @@ public class DefaultFollowService implements FollowService {
 
     @Override
     public void unfollowStore(String followerId, String storeId) {
-        var id = new InternalFollowStoreId(followerId, storeId);
+        var id = new JpaFollowStoreId(followerId, storeId);
         var followStore = this.followStoreRepository.findById(id).orElseThrow();
         this.followStoreRepository.delete(followStore);
     }
 
     @Override
     public boolean checkFollowingStore(String followerId, String storeId) {
-        var id = new InternalFollowStoreId(followerId, storeId);
+        var id = new JpaFollowStoreId(followerId, storeId);
         return this.followStoreRepository.existsById(id);
     }
 

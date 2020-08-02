@@ -28,13 +28,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalFollowProductId implements Serializable {
+public class JpaFollowProductId implements Serializable {
 
     private String followerId;
 
     private String id;
 
-    public InternalFollowProductId(String followerId, String id) {
+    public JpaFollowProductId(String followerId, String id) {
         this.followerId = followerId;
         this.id = id;
     }
@@ -47,7 +47,7 @@ public class InternalFollowProductId implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalFollowProductId that = (InternalFollowProductId) o;
+        JpaFollowProductId that = (JpaFollowProductId) o;
         return Objects.equals(followerId, that.followerId)
                 && Objects.equals(id, that.id);
     }

@@ -24,11 +24,11 @@ import java.util.Optional;
 
 public interface FollowStoreRepository {
 
-    Optional<InternalFollowStore> findById(InternalFollowStoreId storeId);
+    Optional<InternalFollowStore> findById(JpaFollowStoreId storeId);
 
     InternalFollowStore save(InternalFollowStore followStore);
 
-    boolean existsById(InternalFollowStoreId storeId);
+    boolean existsById(JpaFollowStoreId storeId);
 
     void delete(InternalFollowStore followStore);
 

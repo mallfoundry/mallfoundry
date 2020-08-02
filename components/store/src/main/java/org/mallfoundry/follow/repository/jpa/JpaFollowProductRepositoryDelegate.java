@@ -20,10 +20,10 @@ package org.mallfoundry.follow.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.follow.FollowStoreQuery;
-import org.mallfoundry.follow.FollowStoreRepository;
-import org.mallfoundry.follow.InternalFollowStore;
-import org.mallfoundry.follow.JpaFollowStoreId;
+import org.mallfoundry.follow.FollowProductQuery;
+import org.mallfoundry.follow.FollowProductRepository;
+import org.mallfoundry.follow.InternalFollowProduct;
+import org.mallfoundry.follow.JpaFollowProductId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,13 +35,14 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaFollowStoreRepository extends
-        FollowStoreRepository, JpaRepository<InternalFollowStore, JpaFollowStoreId>,
-        JpaSpecificationExecutor<InternalFollowStore> {
+public interface JpaFollowProductRepositoryDelegate extends
+        FollowProductRepository,
+        JpaRepository<InternalFollowProduct, JpaFollowProductId>,
+        JpaSpecificationExecutor<InternalFollowProduct> {
 
     @Override
-    default SliceList<InternalFollowStore> findAll(FollowStoreQuery followQuery) {
-        Page<InternalFollowStore> page = this.findAll((Specification<InternalFollowStore>) (root, query, criteriaBuilder) -> {
+    default SliceList<InternalFollowProduct> findAll(FollowProductQuery followQuery) {
+        Page<InternalFollowProduct> page = this.findAll((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
@@ -52,8 +53,8 @@ public interface JpaFollowStoreRepository extends
     }
 
     @Override
-    default long count(FollowStoreQuery followQuery) {
-        return this.count((Specification<InternalFollowStore>) (root, query, criteriaBuilder) -> {
+    default long count(FollowProductQuery followQuery) {
+        return this.count((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));

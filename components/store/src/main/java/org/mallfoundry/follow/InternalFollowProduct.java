@@ -39,7 +39,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_follow_product")
-@IdClass(InternalFollowProductId.class)
+@IdClass(JpaFollowProductId.class)
 public class InternalFollowProduct implements FollowProduct {
 
     @JsonIgnore

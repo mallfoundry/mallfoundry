@@ -24,12 +24,11 @@ import java.util.Optional;
 
 public interface FollowProductRepository {
 
-
-    Optional<InternalFollowProduct> findById(InternalFollowProductId id);
+    Optional<InternalFollowProduct> findById(JpaFollowProductId id);
 
     InternalFollowProduct save(InternalFollowProduct followProduct);
 
-    boolean existsById(InternalFollowProductId id);
+    boolean existsById(JpaFollowProductId id);
 
     void delete(InternalFollowProduct followProduct);
 

@@ -24,6 +24,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InternalFollowProductQuery extends PageableSupport implements FollowProductQuery {
+public class DefaultFollowProductQuery extends PageableSupport implements FollowProductQuery {
     private String followerId;
 }

@@ -18,12 +18,42 @@
 
 package org.mallfoundry.follow;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
-public class InternalFollowStoreQuery extends PageableSupport implements FollowStoreQuery {
+@NoArgsConstructor
+public class JpaFollowStoreId implements Serializable {
+
     private String followerId;
+
+    private String id;
+
+    public JpaFollowStoreId(String followerId, String id) {
+        this.followerId = followerId;
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        JpaFollowStoreId that = (JpaFollowStoreId) o;
+        return Objects.equals(followerId, that.followerId)
+                && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(followerId, id);
+    }
 }

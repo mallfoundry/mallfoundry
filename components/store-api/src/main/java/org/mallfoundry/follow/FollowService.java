@@ -22,8 +22,6 @@ import org.mallfoundry.data.SliceList;
 
 public interface FollowService {
 
-    FollowerId createFollowerId(String id);
-
     FollowProductQuery createFollowProductQuery();
 
     FollowStoreQuery createFollowStoreQuery();

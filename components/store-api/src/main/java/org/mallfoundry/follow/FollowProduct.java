@@ -34,6 +34,8 @@ public interface FollowProduct extends Serializable {
 
     String getImageUrl();
 
+    String getFollowerId();
+
     String getStoreId();
 
     ProductStatus getStatus();

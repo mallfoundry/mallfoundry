@@ -35,7 +35,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaFollowStoreRepository extends
+public interface JpaFollowStoreRepositoryDelegate extends
         FollowStoreRepository, JpaRepository<InternalFollowStore, JpaFollowStoreId>,
         JpaSpecificationExecutor<InternalFollowStore> {
 

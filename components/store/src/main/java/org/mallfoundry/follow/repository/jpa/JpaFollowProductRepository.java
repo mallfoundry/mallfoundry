@@ -23,7 +23,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.follow.FollowProductQuery;
 import org.mallfoundry.follow.FollowProductRepository;
 import org.mallfoundry.follow.InternalFollowProduct;
-import org.mallfoundry.follow.InternalFollowProductId;
+import org.mallfoundry.follow.JpaFollowProductId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,7 +37,7 @@ import java.util.Objects;
 @Repository
 public interface JpaFollowProductRepository extends
         FollowProductRepository,
-        JpaRepository<InternalFollowProduct, InternalFollowProductId>,
+        JpaRepository<InternalFollowProduct, JpaFollowProductId>,
         JpaSpecificationExecutor<InternalFollowProduct> {
 
     @Override

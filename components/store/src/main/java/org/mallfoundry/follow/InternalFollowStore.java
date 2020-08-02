@@ -34,7 +34,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_follow_store")
-@IdClass(InternalFollowStoreId.class)
+@IdClass(JpaFollowStoreId.class)
 public class InternalFollowStore implements FollowStore {
 
     @Id
