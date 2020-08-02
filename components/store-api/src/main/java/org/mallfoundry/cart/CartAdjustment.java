@@ -20,7 +20,7 @@ package org.mallfoundry.cart;
 
 import org.mallfoundry.util.ObjectBuilder;
 
-public interface CartItemAdjustment extends ObjectBuilder.ToBuilder<CartItemAdjustment.Builder> {
+public interface CartAdjustment extends ObjectBuilder.ToBuilder<CartAdjustment.Builder> {
 
     String getItemId();
 
@@ -38,7 +38,7 @@ public interface CartItemAdjustment extends ObjectBuilder.ToBuilder<CartItemAdju
 
     void setQuantityDelta(int quantityDelta);
 
-    interface Builder extends ObjectBuilder<CartItemAdjustment> {
+    interface Builder extends ObjectBuilder<CartAdjustment> {
 
         Builder itemId(String itemId);
 

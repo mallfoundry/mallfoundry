@@ -36,9 +36,9 @@ public interface CartService {
 
     void updateCartItem(String id, CartItem item);
 
-    void adjustCartItem(String id, CartItemAdjustment adjustment);
+    void adjustCart(String id, CartAdjustment adjustment);
 
-    void adjustCartItems(String id, List<CartItemAdjustment> adjustments);
+    void adjustCart(String id, List<CartAdjustment> adjustments);
 
     void checkCartItem(String id, String itemId);
 

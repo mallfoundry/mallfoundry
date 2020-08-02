@@ -33,7 +33,7 @@ public interface Cart extends Serializable, ObjectBuilder.ToBuilder<Cart.Builder
 
     void setCustomerId(String customerId);
 
-    CartItemAdjustment createItemAdjustment(String itemId);
+    CartAdjustment createAdjustment(String itemId);
 
     CartItem createItem(String id);
 
@@ -43,15 +43,13 @@ public interface Cart extends Serializable, ObjectBuilder.ToBuilder<Cart.Builder
 
     Optional<CartItem> getItem(String itemId);
 
-    Optional<CartItem> getItem(String productId, String variantId);
-
     List<CartItem> getItems(Collection<String> itemIds);
 
     List<CartItem> getItems();
 
-    void updateItem(CartItem item);
+    void adjustItem(CartAdjustment adjustment) throws CartException;
 
-    void adjustItem(CartItemAdjustment adjustment) throws CartException;
+    void updateItem(CartItem item);
 
     void checkItem(String itemId);
 
