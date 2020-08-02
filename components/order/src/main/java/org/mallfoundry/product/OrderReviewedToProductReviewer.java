@@ -18,8 +18,8 @@
 
 package org.mallfoundry.product;
 
-import org.mallfoundry.catalog.product.review.ProductReview;
-import org.mallfoundry.catalog.product.review.ProductReviewService;
+import org.mallfoundry.catalog.product.review.Review;
+import org.mallfoundry.catalog.product.review.ReviewService;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderReviewedEvent;
 import org.springframework.context.annotation.Configuration;
@@ -30,14 +30,14 @@ import java.util.stream.Collectors;
 @Configuration
 public class OrderReviewedToProductReviewer {
 
-    private final ProductReviewService productReviewService;
+    private final ReviewService productReviewService;
 
-    public OrderReviewedToProductReviewer(ProductReviewService productReviewService) {
+    public OrderReviewedToProductReviewer(ReviewService productReviewService) {
         this.productReviewService = productReviewService;
     }
 
-    private ProductReview assignReview(OrderReview review) {
-        return this.productReviewService.createProductReview(review.getId())
+    private Review assignReview(OrderReview review) {
+        return this.productReviewService.createReview(review.getId())
                 .toBuilder()
                 .orderId(review.getOrderId()).itemId(review.getItemId())
                 .productId(review.getProductId()).variantId(review.getVariantId())
@@ -55,6 +55,6 @@ public class OrderReviewedToProductReviewer {
                 .stream()
                 .map(this::assignReview)
                 .collect(Collectors.toUnmodifiableList());
-        this.productReviewService.addProductReviews(reviews);
+        this.productReviewService.addReviews(reviews);
     }
 }
