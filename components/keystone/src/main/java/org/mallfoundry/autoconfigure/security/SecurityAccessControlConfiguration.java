@@ -16,9 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security;
+package org.mallfoundry.autoconfigure.security;
 
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.mallfoundry.security.access.AccessControlAuthorizer;
 import org.mallfoundry.security.access.AccessControlManager;
 import org.mallfoundry.security.access.AccessControlPermissionEvaluator;
@@ -38,8 +39,8 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 
 import java.util.List;
 
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityAccessControlConfiguration extends GlobalMethodSecurityConfiguration {
 
     @Bean
@@ -54,11 +55,18 @@ public class SecurityAccessControlConfiguration extends GlobalMethodSecurityConf
         return new StringExpressionSecurityMetadataSource(attributeFactory);
     }
 
+    @Bean
     @Override
     public MethodSecurityMetadataSource methodSecurityMetadataSource() {
         var sources = super.methodSecurityMetadataSource();
         return new DelegatingSecurityMetadataSource(List.of(this.stringExpressionSecurityMetadataSource(),
                 sources));
+    }
+
+    @Bean
+    @Override
+    public MethodInterceptor methodSecurityInterceptor(MethodSecurityMetadataSource methodSecurityMetadataSource) {
+        return super.methodSecurityInterceptor(methodSecurityMetadataSource);
     }
 
     @Bean

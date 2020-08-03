@@ -24,8 +24,10 @@ import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.security.SubjectSwitches;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import(SecurityAccessControlConfiguration.class)
 public class SecurityAutoConfiguration {
 
     @Bean
