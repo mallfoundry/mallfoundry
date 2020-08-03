@@ -59,7 +59,7 @@ public class DefaultUserService implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    
+
     @Override
     public User createUser(String id) {
         return this.userRepository.create(id);
@@ -91,19 +91,20 @@ public class DefaultUserService implements UserService {
         return savedUser;
     }
 
-    private User getNonUser(String id) {
+    private User requiredUser(String id) {
         return this.userRepository.findById(id).orElseThrow(() -> UserExceptions.notExists(id));
     }
 
     @Transactional
     @Override
-    public User setUser(User user) {
-        var savedUser = this.getNonUser(user.getId());
-        if (!Objects.equals(user.getNickname(), savedUser.getNickname())) {
-            savedUser.setNickname(savedUser.getNickname());
+    public User updateUser(User args) {
+        var user = this.requiredUser(args.getId());
+        if (!Objects.equals(user.getNickname(), args.getNickname())) {
+            user.setNickname(args.getNickname());
         }
+        var savedUser = this.userRepository.save(user);
         this.eventPublisher.publishEvent(new ImmutableUserChangedEvent(savedUser));
-        return this.userRepository.save(savedUser);
+        return savedUser;
     }
 
     private String encodePassword(String password) {
@@ -123,7 +124,7 @@ public class DefaultUserService implements UserService {
     @Transactional
     @Override
     public void changePassword(String id, String password, String originalPassword) throws UserException {
-        var user = this.getNonUser(id);
+        var user = this.requiredUser(id);
         if (!this.matchesPassword(originalPassword, user.getPassword())) {
             throw new UserException(
                     message("identity.user.originalPasswordIncorrect",
@@ -135,14 +136,14 @@ public class DefaultUserService implements UserService {
     @Transactional
     @Override
     public void resetPassword(String id, String password) throws UserException {
-        var user = this.getNonUser(id);
+        var user = this.requiredUser(id);
         this.setPassword(user, password);
     }
 
     @Transactional
     @Override
     public void deleteUser(String id) {
-        var user = this.getNonUser(id);
+        var user = this.requiredUser(id);
         this.eventPublisher.publishEvent(new ImmutableUserDeletedEvent(user));
         this.userRepository.delete(user);
     }

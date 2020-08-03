@@ -32,7 +32,7 @@ public interface UserService {
 
     void resetPassword(String id, String password) throws UserException;
 
-    User setUser(User user);
+    User updateUser(User user);
 
     Optional<User> getCurrentUser();
 

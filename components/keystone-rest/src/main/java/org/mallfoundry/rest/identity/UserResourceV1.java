@@ -56,7 +56,7 @@ public class UserResourceV1 {
     }
 
     @PatchMapping("/users/{id}")
-    public void setUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
-        this.userService.setUser(request.assignToUser(this.userService.createUser(id)));
+    public void updateUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
+        this.userService.updateUser(request.assignToUser(this.userService.createUser(id)));
     }
 }
