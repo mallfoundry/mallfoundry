@@ -18,7 +18,7 @@
 
 package org.mallfoundry.shipping.rate;
 
-import org.mallfoundry.security.acl.Resource;
+import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public class RateAuthorizer implements RateProcessor {

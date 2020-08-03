@@ -19,9 +19,9 @@
 package org.mallfoundry.security;
 
 
-import org.mallfoundry.security.acl.AccessControlAuthorizer;
-import org.mallfoundry.security.acl.AccessControlManager;
-import org.mallfoundry.security.acl.AccessControlPermissionEvaluator;
+import org.mallfoundry.security.access.AccessControlAuthorizer;
+import org.mallfoundry.security.access.AccessControlManager;
+import org.mallfoundry.security.access.AccessControlPermissionEvaluator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

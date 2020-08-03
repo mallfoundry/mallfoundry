@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.security.acl.Resource;
+import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
