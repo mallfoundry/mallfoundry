@@ -59,12 +59,7 @@ public class DefaultUserService implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
-    @Override
-    public UserId createUserId(String userId) {
-        return new ImmutableUserId(userId);
-    }
-
+    
     @Override
     public User createUser(String id) {
         return this.userRepository.create(id);

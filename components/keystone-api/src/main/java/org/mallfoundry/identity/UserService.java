@@ -22,8 +22,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserId createUserId(String userId);
-
     User createUser(String id);
 
     User createUser(UserRegistration registration) throws UserException;
