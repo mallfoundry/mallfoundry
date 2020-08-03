@@ -24,4 +24,8 @@ public class AccessDeniedException extends SecurityException {
     public AccessDeniedException(String message) {
         super(message);
     }
+
+    public AccessDeniedException(Throwable cause) {
+        super(cause);
+    }
 }
