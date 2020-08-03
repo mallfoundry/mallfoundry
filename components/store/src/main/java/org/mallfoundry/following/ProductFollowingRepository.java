@@ -18,10 +18,23 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
+import org.mallfoundry.data.SliceList;
 
-import java.util.Date;
+import java.util.Optional;
 
-public interface FollowProduct extends Product {
-    Date getFollowedTime();
+public interface ProductFollowingRepository {
+
+    ProductFollowing create(String followerId, String productId);
+
+    Optional<ProductFollowing> findById(ProductFollowingId followingId);
+
+    ProductFollowing save(ProductFollowing following);
+
+    boolean exists(ProductFollowing following);
+
+    void delete(ProductFollowing following);
+
+    SliceList<ProductFollowing> findAll(FollowProductQuery query);
+
+    long count(FollowProductQuery query);
 }

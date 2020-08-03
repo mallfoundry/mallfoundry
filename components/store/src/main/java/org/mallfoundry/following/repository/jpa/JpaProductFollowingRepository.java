@@ -18,12 +18,7 @@
 
 package org.mallfoundry.following.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
 import org.mallfoundry.following.FollowProductQuery;
-import org.mallfoundry.following.FollowProductRepository;
-import org.mallfoundry.following.InternalFollowProduct;
-import org.mallfoundry.following.JpaFollowProductId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,31 +30,26 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaFollowProductRepository extends
-        FollowProductRepository,
-        JpaRepository<InternalFollowProduct, JpaFollowProductId>,
-        JpaSpecificationExecutor<InternalFollowProduct> {
+public interface JpaProductFollowingRepository
+        extends JpaRepository<JpaProductFollowing, JpaProductFollowingId>,
+        JpaSpecificationExecutor<JpaProductFollowing> {
 
-    @Override
-    default SliceList<InternalFollowProduct> findAll(FollowProductQuery followQuery) {
-        Page<InternalFollowProduct> page = this.findAll((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaProductFollowing> createSpecification(FollowProductQuery followQuery) {
+        return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
             }
             return predicate;
-        }, PageRequest.of(followQuery.getPage() - 1, followQuery.getLimit()));
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(followQuery.getLimit()).totalSize(page.getTotalElements());
+        };
     }
 
-    @Override
-    default long count(FollowProductQuery followQuery) {
-        return this.count((Specification<InternalFollowProduct>) (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
-            if (Objects.nonNull(followQuery.getFollowerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
-            }
-            return predicate;
-        });
+    default Page<JpaProductFollowing> findAll(FollowProductQuery query) {
+        return this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit()));
+    }
+
+    default long count(FollowProductQuery query) {
+        return this.count(this.createSpecification(query));
     }
 }

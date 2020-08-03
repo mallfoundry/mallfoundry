@@ -18,53 +18,24 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.data.Pageable;
-import org.mallfoundry.data.PageableBuilder;
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface FollowStoreQuery extends Pageable {
+public interface FollowStoreQuery extends Query, ObjectBuilder.ToBuilder<FollowStoreQuery.Builder> {
 
     String getFollowerId();
 
     void setFollowerId(String followerId);
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
+    String getStoreId();
 
-    interface Builder extends PageableBuilder<FollowStoreQuery, Builder> {
+    void setStoreId(String storeId);
+
+    interface Builder extends QueryBuilder<FollowStoreQuery, Builder> {
+
         Builder followerId(String followerId);
-    }
 
-    class BuilderSupport implements Builder {
-
-        private final FollowStoreQuery query;
-
-        public BuilderSupport(FollowStoreQuery query) {
-            this.query = query;
-        }
-
-        @Override
-        public Builder followerId(String followerId) {
-            this.query.setFollowerId(followerId);
-            return this;
-        }
-
-        @Override
-        public Builder page(Integer page) {
-            this.query.setPage(page);
-            return this;
-        }
-
-        @Override
-        public Builder limit(Integer limit) {
-            this.query.setLimit(limit);
-            return this;
-        }
-
-        @Override
-        public FollowStoreQuery build() {
-            return this.query;
-        }
+        Builder storeId(String storeId);
     }
 }

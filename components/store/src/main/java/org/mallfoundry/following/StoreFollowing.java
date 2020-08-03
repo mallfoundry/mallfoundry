@@ -18,19 +18,9 @@
 
 package org.mallfoundry.following;
 
-import java.util.Date;
-
-public interface StoreFollowing {
-
-    String getFollowerId();
-
-    void setFollowerId(String followerId);
+public interface StoreFollowing extends Following {
 
     String getStoreId();
 
     void setStoreId(String storeId);
-
-    Date getFollowedTime();
-
-    void following();
 }

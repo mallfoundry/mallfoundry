@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.follow;
+package org.mallfoundry.rest.following;
 
 import org.mallfoundry.data.SliceList;
- import org.mallfoundry.following.FollowProduct;
+import org.mallfoundry.following.FollowProduct;
 import org.mallfoundry.following.FollowService;
 import org.mallfoundry.following.FollowStore;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,9 +40,9 @@ public class FollowResourceV1 {
     }
 
     @PostMapping("/customers/{customer_id}/following-products/{product_id}")
-    public FollowProduct followProduct(@PathVariable("customer_id") String customerId,
-                                       @PathVariable("product_id") String productId) {
-        return this.followService.followProduct(customerId, productId);
+    public void followProduct(@PathVariable("customer_id") String customerId,
+                              @PathVariable("product_id") String productId) {
+        this.followService.followProduct(customerId, productId);
     }
 
     @DeleteMapping("/customers/{customer_id}/following-products/{product_id}")
@@ -65,13 +65,14 @@ public class FollowResourceV1 {
 
     @GetMapping("/customers/{customer_id}/following-products/count")
     public long getFollowingProductCount(@PathVariable("customer_id") String customerId) {
-        return this.followService.getFollowingProductCount(this.followService.createFollowProductQuery()
+        return this.followService.countFollowingProducts(this.followService.createFollowProductQuery()
                 .toBuilder().followerId(customerId).build());
     }
 
     @GetMapping("/products/{product_id}/followers/count")
     public long getProductFollowerCount(@PathVariable("product_id") String productId) {
-        return this.followService.getProductFollowerCount(productId);
+        return this.followService.countFollowingProducts(this.followService.createFollowProductQuery()
+                .toBuilder().productId(productId).build());
     }
 
     @PostMapping("/customers/{customer_id}/following-stores/{store_id}")
@@ -104,9 +105,11 @@ public class FollowResourceV1 {
                 this.followService.createFollowStoreQuery()
                         .toBuilder().followerId(customerId).build());
     }
-//
-//    @GetMapping("/stores/{store_id}/followers/count")
-//    public long getStoreFollowerCount(@PathVariable("store_id") String storeId) {
-//        return this.followService.getStoreFollowerCount(storeId);
-//    }
+
+    @GetMapping("/stores/{store_id}/followers/count")
+    public long getStoreFollowerCount(@PathVariable("store_id") String storeId) {
+        return this.followService.countFollowingStores(
+                this.followService.createFollowStoreQuery()
+                        .toBuilder().storeId(storeId).build());
+    }
 }

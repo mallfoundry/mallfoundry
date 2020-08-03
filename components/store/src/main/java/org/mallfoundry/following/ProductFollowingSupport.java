@@ -18,23 +18,5 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.Optional;
-
-public interface FollowProductRepository {
-
-    Optional<InternalFollowProduct> findById(JpaFollowProductId id);
-
-    InternalFollowProduct save(InternalFollowProduct followProduct);
-
-    boolean existsById(JpaFollowProductId id);
-
-    void delete(InternalFollowProduct followProduct);
-
-    SliceList<InternalFollowProduct> findAll(FollowProductQuery query);
-
-    long count(FollowProductQuery query);
-
-    long countById(String id);
+public abstract class ProductFollowingSupport extends FollowingSupport implements ProductFollowing {
 }

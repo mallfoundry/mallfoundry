@@ -20,10 +20,10 @@ package org.mallfoundry.following;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.data.PageableSupport;
 
 @Getter
 @Setter
-public class DefaultFollowStoreQuery extends PageableSupport implements FollowStoreQuery {
+public class DefaultFollowStoreQuery extends FollowStoreQuerySupport {
     private String followerId;
+    private String storeId;
 }

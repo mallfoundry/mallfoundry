@@ -22,7 +22,7 @@ import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
 
-public class NullFollowStore implements FollowStore {
+public class NullFollowStore implements ImmutableFollowStore {
 
     private final StoreFollowing following;
 
@@ -37,22 +37,12 @@ public class NullFollowStore implements FollowStore {
 
     @Override
     public String getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(String id) {
-
+        return this.following.getStoreId();
     }
 
     @Override
     public String getName() {
         return null;
-    }
-
-    @Override
-    public void setName(String name) {
-
     }
 
     @Override
@@ -66,18 +56,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setDomain(String domain) {
-
-    }
-
-    @Override
     public String getLogo() {
         return null;
-    }
-
-    @Override
-    public void setLogo(String logo) {
-
     }
 
     @Override
@@ -86,18 +66,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setOwnerId(String ownerId) {
-
-    }
-
-    @Override
     public String getIndustry() {
         return null;
-    }
-
-    @Override
-    public void setIndustry(String industry) {
-
     }
 
     @Override
@@ -106,18 +76,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setDescription(String description) {
-
-    }
-
-    @Override
     public String getCountryCode() {
         return null;
-    }
-
-    @Override
-    public void setCountryCode(String countryCode) {
-
     }
 
     @Override
@@ -126,18 +86,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setMobile(String mobile) {
-
-    }
-
-    @Override
     public String getZip() {
         return null;
-    }
-
-    @Override
-    public void setZip(String zip) {
-
     }
 
     @Override
@@ -146,18 +96,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setProvinceId(String provinceId) {
-
-    }
-
-    @Override
     public String getProvince() {
         return null;
-    }
-
-    @Override
-    public void setProvince(String province) {
-
     }
 
     @Override
@@ -166,18 +106,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setCityId(String cityId) {
-
-    }
-
-    @Override
     public String getCity() {
         return null;
-    }
-
-    @Override
-    public void setCity(String city) {
-
     }
 
     @Override
@@ -186,18 +116,8 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setCountyId(String countyId) {
-
-    }
-
-    @Override
     public String getCounty() {
         return null;
-    }
-
-    @Override
-    public void setCounty(String county) {
-
     }
 
     @Override
@@ -206,22 +126,7 @@ public class NullFollowStore implements FollowStore {
     }
 
     @Override
-    public void setAddress(String address) {
-
-    }
-
-    @Override
     public Date getCreatedTime() {
-        return null;
-    }
-
-    @Override
-    public void initialize() {
-
-    }
-
-    @Override
-    public Builder toBuilder() {
         return null;
     }
 }

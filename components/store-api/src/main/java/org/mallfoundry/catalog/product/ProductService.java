@@ -21,6 +21,7 @@ package org.mallfoundry.catalog.product;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -56,6 +57,8 @@ public interface ProductService {
     Product addProduct(Product product);
 
     Optional<Product> getProduct(String id);
+
+    List<Product> getProducts(Collection<String> ids);
 
     SliceList<Product> getProducts(ProductQuery query);
 

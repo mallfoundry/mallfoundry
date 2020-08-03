@@ -18,8 +18,5 @@
 
 package org.mallfoundry.following;
 
-import java.util.Date;
-
-public interface FollowBase {
-    Date getFollowedTime();
+public interface FollowProductSetter {
 }

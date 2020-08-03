@@ -18,10 +18,11 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
-
 import java.util.Date;
 
-public interface FollowProduct extends Product {
-    Date getFollowedTime();
+public abstract class FollowingSupport implements MutableFollowing, Following {
+    @Override
+    public void following() {
+        this.setFollowedTime(new Date());
+    }
 }

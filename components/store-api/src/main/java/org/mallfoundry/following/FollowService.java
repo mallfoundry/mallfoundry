@@ -26,7 +26,7 @@ public interface FollowService {
 
     FollowStoreQuery createFollowStoreQuery();
 
-    FollowProduct followProduct(String followerId, String productId);
+    void followProduct(String followerId, String productId);
 
     void unfollowProduct(String followerId, String productId);
 
@@ -34,9 +34,7 @@ public interface FollowService {
 
     SliceList<FollowProduct> getFollowingProducts(FollowProductQuery query);
 
-    long getFollowingProductCount(FollowProductQuery query);
-
-    long getProductFollowerCount(String productId);
+    long countFollowingProducts(FollowProductQuery query);
 
     void followStore(String followerId, String storeId);
 

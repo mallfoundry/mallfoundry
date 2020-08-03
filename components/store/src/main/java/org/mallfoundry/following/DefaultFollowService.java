@@ -19,14 +19,16 @@
 package org.mallfoundry.following;
 
 import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreService;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -37,17 +39,17 @@ public class DefaultFollowService implements FollowService {
 
     private final StoreService storeService;
 
-    private final FollowProductRepository followProductRepository;
+    private final ProductFollowingRepository productFollowingRepository;
 
     private final StoreFollowingRepository storeFollowingRepository;
 
     public DefaultFollowService(ProductService productService,
                                 StoreService storeService,
-                                FollowProductRepository followProductRepository,
+                                ProductFollowingRepository productFollowingRepository,
                                 StoreFollowingRepository storeFollowingRepository) {
         this.productService = productService;
         this.storeService = storeService;
-        this.followProductRepository = followProductRepository;
+        this.productFollowingRepository = productFollowingRepository;
         this.storeFollowingRepository = storeFollowingRepository;
     }
 
@@ -62,47 +64,53 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public FollowProduct followProduct(String followerId, String productId) {
-        var id = new JpaFollowProductId(followerId, productId);
-        if (this.followProductRepository.existsById(id)) {
+    public void followProduct(String followerId, String productId) {
+        var following = this.productFollowingRepository.create(followerId, productId);
+        if (this.productFollowingRepository.exists(following)) {
             throw new FollowException("The follower has followed to this product");
         }
-        var product = this.productService.getProduct(productId).orElseThrow();
-        var followProduct = new InternalFollowProduct(followerId, productId);
-        followProduct.setImageUrl(CollectionUtils.firstElement(product.getImageUrls()));
-        followProduct.setName(product.getName());
-        followProduct.setPrice(product.getPrice());
-        followProduct.setStatus(product.getStatus());
-        followProduct.setStoreId(product.getStoreId());
-        return this.followProductRepository.save(followProduct);
+        this.productFollowingRepository.save(following);
     }
 
     @Override
     public void unfollowProduct(String followerId, String productId) {
-        var id = new JpaFollowProductId(followerId, productId);
-        var followProduct = this.followProductRepository.findById(id).orElseThrow();
-        this.followProductRepository.delete(followProduct);
+        var following = this.productFollowingRepository.create(followerId, productId);
+        this.productFollowingRepository.delete(following);
     }
 
     @Override
     public boolean checkFollowingProduct(String followerId, String productId) {
-        var id = new JpaFollowProductId(followerId, productId);
-        return this.followProductRepository.existsById(id);
+        var following = this.productFollowingRepository.create(followerId, productId);
+        return this.productFollowingRepository.exists(following);
+    }
+
+    private FollowProduct getFollowProduct(List<Product> products, ProductFollowing following) {
+        return products.stream()
+                .filter(product -> Objects.equals(product.getId(), following.getProductId()))
+                .findFirst()
+                .<FollowProduct>map(aStore -> new DelegatingImmutableFollowProduct(aStore, following))
+                .orElseGet(() -> new NullFollowProduct(following));
     }
 
     @Override
     public SliceList<FollowProduct> getFollowingProducts(FollowProductQuery query) {
-        return CastUtils.cast(this.followProductRepository.findAll(query));
+        var sliceFollowings = this.productFollowingRepository.findAll(query);
+        var productIds = ListUtils.emptyIfNull(sliceFollowings.getElements()).stream()
+                .map(ProductFollowing::getProductId)
+                .collect(Collectors.toUnmodifiableList());
+        if (CollectionUtils.isEmpty(productIds)) {
+            return sliceFollowings.elements(Collections.emptyList());
+        }
+        var products = this.productService.getProducts(productIds);
+        var followProducts = sliceFollowings.getElements().stream()
+                .map(following -> this.getFollowProduct(products, following))
+                .collect(Collectors.toUnmodifiableList());
+        return sliceFollowings.elements(followProducts);
     }
 
     @Override
-    public long getFollowingProductCount(FollowProductQuery query) {
-        return this.followProductRepository.count(query);
-    }
-
-    @Override
-    public long getProductFollowerCount(String productId) {
-        return this.followProductRepository.countById(productId);
+    public long countFollowingProducts(FollowProductQuery query) {
+        return this.productFollowingRepository.count(query);
     }
 
     @Override
@@ -127,6 +135,14 @@ public class DefaultFollowService implements FollowService {
         return this.storeFollowingRepository.exists(following);
     }
 
+    private FollowStore getFollowStore(List<Store> stores, StoreFollowing following) {
+        return stores.stream()
+                .filter(aStore -> Objects.equals(aStore.getId(), following.getStoreId()))
+                .findFirst()
+                .<FollowStore>map(aStore -> new DelegatingImmutableFollowStore(aStore, following))
+                .orElseGet(() -> new NullFollowStore(following));
+    }
+
     @Override
     public SliceList<FollowStore> getFollowingStores(FollowStoreQuery query) {
         var sliceFollowings = this.storeFollowingRepository.findAll(query);
@@ -136,14 +152,9 @@ public class DefaultFollowService implements FollowService {
         if (CollectionUtils.isEmpty(storeIds)) {
             return sliceFollowings.elements(Collections.emptyList());
         }
-        // 根据店铺标识获得店铺对象集合。
         var stores = this.storeService.getStores(storeIds);
         var followStores = sliceFollowings.getElements().stream()
-                .map(following -> stores.stream()
-                        .filter(aStore -> Objects.equals(aStore.getId(), following.getStoreId()))
-                        .findFirst()
-                        .<FollowStore>map(aStore -> new DelegatingFollowStore(aStore, following))
-                        .orElseGet(() -> new NullFollowStore(following)))
+                .map(following -> this.getFollowStore(stores, following))
                 .collect(Collectors.toUnmodifiableList());
         return sliceFollowings.elements(followStores);
     }

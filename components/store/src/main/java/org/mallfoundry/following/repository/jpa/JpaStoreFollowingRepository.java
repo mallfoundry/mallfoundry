@@ -18,50 +18,36 @@
 
 package org.mallfoundry.following.repository.jpa;
 
-import org.mallfoundry.data.SliceList;
 import org.mallfoundry.following.FollowStoreQuery;
-import org.mallfoundry.following.StoreFollowingId;
-import org.mallfoundry.following.StoreFollowing;
-import org.mallfoundry.following.StoreFollowingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
 @Repository
-public class JpaStoreFollowingRepository implements StoreFollowingRepository {
+public interface JpaStoreFollowingRepository extends JpaRepository<JpaStoreFollowing, JpaStoreFollowingId>,
+        JpaSpecificationExecutor<JpaStoreFollowing> {
 
-    @Override
-    public StoreFollowing create(String followerId, String storeId) {
-        return new JpaStoreFollowing(followerId, storeId);
+    default Specification<JpaStoreFollowing> createSpecification(FollowStoreQuery followQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(followQuery.getFollowerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("followerId"), followQuery.getFollowerId()));
+            }
+            return predicate;
+        };
     }
 
-    @Override
-    public Optional<StoreFollowing> findById(StoreFollowingId followingId) {
-        return Optional.empty();
+    default Page<JpaStoreFollowing> findAll(FollowStoreQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 
-    @Override
-    public StoreFollowing save(StoreFollowing following) {
-        return null;
-    }
-
-    @Override
-    public boolean exists(StoreFollowing following) {
-        return false;
-    }
-
-    @Override
-    public void delete(StoreFollowing following) {
-
-    }
-
-    @Override
-    public SliceList<StoreFollowing> findAll(FollowStoreQuery query) {
-        return null;
-    }
-
-    @Override
-    public long count(FollowStoreQuery query) {
-        return 0;
+    default long count(FollowStoreQuery query) {
+        return this.count(this.createSpecification(query));
     }
 }

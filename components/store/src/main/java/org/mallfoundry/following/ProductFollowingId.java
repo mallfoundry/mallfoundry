@@ -18,10 +18,10 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
+import java.io.Serializable;
 
-import java.util.Date;
+public interface ProductFollowingId extends Serializable {
+    String getFollowerId();
 
-public interface FollowProduct extends Product {
-    Date getFollowedTime();
+    String getProductId();
 }

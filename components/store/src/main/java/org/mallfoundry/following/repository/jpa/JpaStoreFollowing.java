@@ -21,7 +21,9 @@ package org.mallfoundry.following.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.following.StoreFollowing;
 import org.mallfoundry.following.StoreFollowingSupport;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,5 +54,14 @@ public class JpaStoreFollowing extends StoreFollowingSupport {
     public JpaStoreFollowing(String followerId, String storeId) {
         this.followerId = followerId;
         this.storeId = storeId;
+    }
+
+    public static JpaStoreFollowing of(StoreFollowing following) {
+        if (following instanceof JpaStoreFollowing) {
+            return (JpaStoreFollowing) following;
+        }
+        var target = new JpaStoreFollowing();
+        BeanUtils.copyProperties(following, target);
+        return target;
     }
 }

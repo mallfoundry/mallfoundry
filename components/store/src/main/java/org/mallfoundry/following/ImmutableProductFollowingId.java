@@ -19,37 +19,20 @@
 package org.mallfoundry.following;
 
 import lombok.Getter;
-
-import java.io.Serializable;
-import java.util.Objects;
+import lombok.Setter;
 
 @Getter
-public class JpaFollowProductId implements Serializable {
-
+@Setter
+public class ImmutableProductFollowingId implements StoreFollowingId {
     private final String followerId;
+    private final String storeId;
 
-    private final String id;
-
-    public JpaFollowProductId(String followerId, String id) {
+    public ImmutableProductFollowingId(String followerId, String storeId) {
         this.followerId = followerId;
-        this.id = id;
+        this.storeId = storeId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        JpaFollowProductId that = (JpaFollowProductId) o;
-        return Objects.equals(followerId, that.followerId)
-                && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(followerId, id);
+    public static ImmutableProductFollowingId of(String followerId, String storeId) {
+        return new ImmutableProductFollowingId(followerId, storeId);
     }
 }

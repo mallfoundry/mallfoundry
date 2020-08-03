@@ -18,10 +18,15 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
-
 import java.util.Date;
 
-public interface FollowProduct extends Product {
+public interface Following {
+
+    String getFollowerId();
+
+    void setFollowerId(String followerId);
+
     Date getFollowedTime();
+
+    void following();
 }

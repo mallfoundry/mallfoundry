@@ -16,10 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.following;
+package org.mallfoundry.following.repository.jpa;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.following.ProductFollowingId;
 
-public interface MutableStoreFollowing extends StoreFollowing {
-    void setFollowedTime(Date followedTime);
+@Getter
+@Setter
+public class JpaProductFollowingId implements ProductFollowingId {
+    private final String followerId;
+    private final String productId;
+
+    public JpaProductFollowingId(String followerId, String productId) {
+        this.followerId = followerId;
+        this.productId = productId;
+    }
+
+    public static JpaProductFollowingId of(String followerId, String productId) {
+        return new JpaProductFollowingId(followerId, productId);
+    }
+
+    public static JpaProductFollowingId of(ProductFollowingId id) {
+        return new JpaProductFollowingId(id.getFollowerId(), id.getProductId());
+    }
 }

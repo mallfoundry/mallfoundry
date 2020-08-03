@@ -20,5 +20,8 @@ package org.mallfoundry.following;
 
 import org.mallfoundry.store.Store;
 
-public interface FollowStore extends Store, FollowBase {
+import java.util.Date;
+
+public interface FollowStore extends Store {
+    Date getFollowedTime();
 }

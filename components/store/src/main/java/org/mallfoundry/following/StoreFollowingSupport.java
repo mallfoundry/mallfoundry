@@ -18,12 +18,5 @@
 
 package org.mallfoundry.following;
 
-import java.util.Date;
-
-public abstract class StoreFollowingSupport implements MutableStoreFollowing {
-
-    @Override
-    public void following() {
-        this.setFollowedTime(new Date());
-    }
+public abstract class StoreFollowingSupport extends FollowingSupport implements StoreFollowing {
 }

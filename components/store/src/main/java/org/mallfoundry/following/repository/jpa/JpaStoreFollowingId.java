@@ -27,4 +27,17 @@ import org.mallfoundry.following.StoreFollowingId;
 public class JpaStoreFollowingId implements StoreFollowingId {
     private String followerId;
     private String storeId;
+
+    public JpaStoreFollowingId(String followerId, String storeId) {
+        this.followerId = followerId;
+        this.storeId = storeId;
+    }
+
+    public static JpaStoreFollowingId of(String followerId, String productId) {
+        return new JpaStoreFollowingId(followerId, productId);
+    }
+
+    public static JpaStoreFollowingId of(StoreFollowingId id) {
+        return new JpaStoreFollowingId(id.getFollowerId(), id.getStoreId());
+    }
 }

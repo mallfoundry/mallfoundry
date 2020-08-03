@@ -23,209 +23,114 @@ import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
 
-public class DelegatingFollowStore implements FollowStore {
+public class DelegatingImmutableFollowStore implements ImmutableFollowStore {
 
     private final Store store;
 
     private final StoreFollowing following;
 
-    public DelegatingFollowStore(Store store, StoreFollowing following) {
+    public DelegatingImmutableFollowStore(Store store, StoreFollowing following) {
         this.store = store;
         this.following = following;
     }
 
     @Override
     public Date getFollowedTime() {
-        return null;
+        return this.following.getFollowedTime();
     }
 
     @Override
     public String getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(String id) {
-
+        return this.store.getId();
     }
 
     @Override
     public String getName() {
-        return null;
-    }
-
-    @Override
-    public void setName(String name) {
-
+        return this.store.getName();
     }
 
     @Override
     public StoreStatus getStatus() {
-        return null;
+        return this.store.getStatus();
     }
 
     @Override
     public String getDomain() {
-        return null;
-    }
-
-    @Override
-    public void setDomain(String domain) {
-
+        return this.store.getDomain();
     }
 
     @Override
     public String getLogo() {
-        return null;
-    }
-
-    @Override
-    public void setLogo(String logo) {
-
+        return this.store.getLogo();
     }
 
     @Override
     public String getOwnerId() {
-        return null;
-    }
-
-    @Override
-    public void setOwnerId(String ownerId) {
-
+        return this.store.getOwnerId();
     }
 
     @Override
     public String getIndustry() {
-        return null;
-    }
-
-    @Override
-    public void setIndustry(String industry) {
-
+        return this.store.getIndustry();
     }
 
     @Override
     public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public void setDescription(String description) {
-
+        return this.store.getDescription();
     }
 
     @Override
     public String getCountryCode() {
-        return null;
-    }
-
-    @Override
-    public void setCountryCode(String countryCode) {
-
+        return this.store.getCountryCode();
     }
 
     @Override
     public String getMobile() {
-        return null;
-    }
-
-    @Override
-    public void setMobile(String mobile) {
-
+        return this.store.getMobile();
     }
 
     @Override
     public String getZip() {
-        return null;
-    }
-
-    @Override
-    public void setZip(String zip) {
-
+        return this.store.getZip();
     }
 
     @Override
     public String getProvinceId() {
-        return null;
-    }
-
-    @Override
-    public void setProvinceId(String provinceId) {
-
+        return this.store.getProvinceId();
     }
 
     @Override
     public String getProvince() {
-        return null;
-    }
-
-    @Override
-    public void setProvince(String province) {
-
+        return this.store.getProvince();
     }
 
     @Override
     public String getCityId() {
-        return null;
-    }
-
-    @Override
-    public void setCityId(String cityId) {
-
+        return this.store.getCityId();
     }
 
     @Override
     public String getCity() {
-        return null;
-    }
-
-    @Override
-    public void setCity(String city) {
-
+        return this.store.getCity();
     }
 
     @Override
     public String getCountyId() {
-        return null;
-    }
-
-    @Override
-    public void setCountyId(String countyId) {
-
+        return this.store.getCountyId();
     }
 
     @Override
     public String getCounty() {
-        return null;
-    }
-
-    @Override
-    public void setCounty(String county) {
-
+        return this.store.getCounty();
     }
 
     @Override
     public String getAddress() {
-        return null;
-    }
-
-    @Override
-    public void setAddress(String address) {
-
+        return this.store.getAddress();
     }
 
     @Override
     public Date getCreatedTime() {
-        return null;
-    }
-
-    @Override
-    public void initialize() {
-
-    }
-
-    @Override
-    public Builder toBuilder() {
-        return null;
+        return this.store.getCreatedTime();
     }
 }

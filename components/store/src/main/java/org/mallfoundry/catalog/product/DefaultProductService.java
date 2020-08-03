@@ -26,6 +26,7 @@ import org.mallfoundry.inventory.InventoryAdjustment;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,6 +73,11 @@ public class DefaultProductService implements ProductService {
     public Optional<Product> getProduct(String id) {
         return this.productRepository.findById(id)
                 .map(this.processorsInvoker::invokePostProcessGetProduct);
+    }
+
+    @Override
+    public List<Product> getProducts(Collection<String> ids) {
+        return this.productRepository.findAllById(ids);
     }
 
     @Transactional(readOnly = true)

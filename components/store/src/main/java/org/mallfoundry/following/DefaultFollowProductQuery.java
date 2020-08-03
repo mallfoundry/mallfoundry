@@ -18,12 +18,12 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultFollowProductQuery extends PageableSupport implements FollowProductQuery {
+public class DefaultFollowProductQuery extends FollowProductQuerySupport {
     private String followerId;
+    private String productId;
 }
