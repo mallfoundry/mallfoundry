@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class DefaultAccessControlService implements AccessControlManager {
+public class DefaultAccessControlManager implements AccessControlManager {
 
     static final String AC_ID_VALUE_NAME = "access.control.id";
 
@@ -46,7 +46,7 @@ public class DefaultAccessControlService implements AccessControlManager {
 
     private final AccessControlRepository accessControlRepository;
 
-    public DefaultAccessControlService(PrincipalRepository principalRepository,
+    public DefaultAccessControlManager(PrincipalRepository principalRepository,
                                        ResourceRepository resourceRepository,
                                        AccessControlRepository accessControlRepository) {
         this.principalRepository = principalRepository;

@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 @Service
-public class SimpleAccessControlAuthorizer implements AccessControlAuthorizer {
+public class DefaultAccessControlAuthorizer implements AccessControlAuthorizer {
 
     private final AccessControlManager manager;
 
-    public SimpleAccessControlAuthorizer(AccessControlManager manager) {
+    public DefaultAccessControlAuthorizer(AccessControlManager manager) {
         this.manager = manager;
     }
 
@@ -50,7 +50,6 @@ public class SimpleAccessControlAuthorizer implements AccessControlAuthorizer {
     public boolean hasAnyPermissions(Principal principal, Resource resource, Set<Permission> permissions) {
         return this.hasAnyPermissions(Set.of(principal), resource, permissions);
     }
-
 
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<Permission> permissions) {
