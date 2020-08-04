@@ -47,6 +47,9 @@ public class JpaUser extends UserSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @Column(name = "username_", unique = true)
     private String username;
 
