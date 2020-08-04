@@ -32,7 +32,6 @@ public abstract class Copies {
 
     public static class StringSetter {
         private final String value;
-
         private final boolean match;
 
         public StringSetter(String value, boolean match) {
