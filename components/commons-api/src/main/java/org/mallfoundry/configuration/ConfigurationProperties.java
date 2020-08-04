@@ -16,8 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.config;
+package org.mallfoundry.configuration;
 
-public abstract class ConfigurationKeys {
-    public static final String H5_SITE_URL = "mall.h5.site.url";
+import org.springframework.core.annotation.AliasFor;
+
+public @interface ConfigurationProperties {
+
+    @AliasFor("prefix")
+    String value() default "";
+
+    @AliasFor("value")
+    String prefix() default "";
 }

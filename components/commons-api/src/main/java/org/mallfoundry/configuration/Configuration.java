@@ -16,45 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.config;
-
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+package org.mallfoundry.configuration;
 
 import java.util.Map;
 
-@Component
-public class EnvironmentConfiguration implements Configuration {
+/**
+ * @author Tang Zhi
+ * @since 1.0
+ */
+public interface Configuration {
 
-    private final Environment environment;
+    String getProperty(String key);
 
-    public EnvironmentConfiguration(Environment environment) {
-        this.environment = environment;
-    }
+    String getProperty(String key, String defaultValue);
 
+    void setProperty(String key, String value);
 
-    @Override
-    public String getProperty(String key) {
-        return null;
-    }
+    void removeProperty(String key);
 
-    @Override
-    public String getProperty(String key, String defaultValue) {
-        return null;
-    }
+    /*String getString(String key);*/
 
-    @Override
-    public void setProperty(String key, String value) {
-
-    }
-
-    @Override
-    public void removeProperty(String key) {
-
-    }
-
-    @Override
-    public Map<String, String> toMap() {
-        return null;
-    }
+    Map<String, String> toMap();
 }

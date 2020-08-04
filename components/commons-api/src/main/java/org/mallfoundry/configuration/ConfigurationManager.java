@@ -16,23 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.config;
+package org.mallfoundry.configuration;
 
-import java.util.Map;
+public interface ConfigurationManager {
 
-/**
- * @author Tang Zhi
- * @since 1.0
- */
-public interface Configuration {
+    Configuration getConfiguration(String namespace);
 
-    String getProperty(String key);
+    <C> C getConfiguration(String namespace, Class<C> clazz);
 
-    String getProperty(String key, String defaultValue);
+    void saveConfiguration(String namespace, Configuration configuration);
 
-    void setProperty(String key, String value);
-
-    void removeProperty(String key);
-
-    Map<String, String> toMap();
+    void saveConfiguration(String namespace, Object configuration);
 }
