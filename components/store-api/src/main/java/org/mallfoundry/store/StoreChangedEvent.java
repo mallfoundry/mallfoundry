@@ -18,5 +18,5 @@
 
 package org.mallfoundry.store;
 
-public class StoreCollectionProcessorsInvoker {
+public interface StoreChangedEvent extends StoreEvent {
 }
