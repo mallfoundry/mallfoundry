@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store;
 
-public interface ProductCollectionProcessorsInvoker {
+public interface ProductCollectionProcessorInvoker {
 
     ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection);
 

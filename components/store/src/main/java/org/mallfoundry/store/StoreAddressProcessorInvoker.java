@@ -18,17 +18,15 @@
 
 package org.mallfoundry.store;
 
-public interface StoreProcessorsInvoker {
+public interface StoreAddressProcessorInvoker {
 
-    Store invokePreProcessBeforeCreateStore(Store store);
+    StoreAddress invokePreProcessBeforeAddAddress(StoreAddress address);
 
-    Store invokePreProcessBeforeUpdateStore(Store store);
+    StoreAddress invokePreProcessBeforeUpdateAddress(StoreAddress address);
 
-    Store invokePreProcessBeforeCancelStore(Store store);
+    StoreAddress invokePreProcessBeforeDeleteAddress(StoreAddress address);
 
-    Store invokePreProcessBeforeExistsStore(Store store);
+    StoreAddressQuery invokePreProcessBeforeGetAddresses(StoreAddressQuery query);
 
-    StoreQuery invokePreProcessBeforeGetStores(StoreQuery query);
-
-    Store invokePostProcessAfterGetStore(Store store);
+    StoreAddress invokePostProcessAfterGetAddress(StoreAddress address);
 }

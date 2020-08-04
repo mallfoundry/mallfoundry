@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class DefaultProductCollectionService implements ProductCollectionService, ProductCollectionProcessorsInvoker {
+public class DefaultProductCollectionService implements ProductCollectionService, ProductCollectionProcessorInvoker {
 
     private List<ProductCollectionProcessor> processors = Collections.emptyList();
 

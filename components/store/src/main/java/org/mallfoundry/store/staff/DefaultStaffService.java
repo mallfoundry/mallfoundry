@@ -32,7 +32,7 @@ import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class DefaultStaffService implements StaffService, StaffProcessorsInvoker {
+public class DefaultStaffService implements StaffService, StaffProcessorInvoker {
 
     private List<StaffProcessor> processors = Collections.emptyList();
 

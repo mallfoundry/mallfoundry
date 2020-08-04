@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class DefaultRoleService implements RoleService, RoleProcessorsInvoker {
+public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
 
     private List<RoleProcessor> processors = Collections.emptyList();
 

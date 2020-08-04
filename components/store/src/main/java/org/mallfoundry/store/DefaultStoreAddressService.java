@@ -24,7 +24,7 @@ import org.mallfoundry.processor.ProcessorStreams;
 import java.util.List;
 import java.util.Optional;
 
-public class DefaultStoreAddressService implements StoreAddressService, StoreAddressProcessorsInvoker {
+public class DefaultStoreAddressService implements StoreAddressService, StoreAddressProcessorInvoker {
 
     private List<StoreAddressProcessor> processors;
 

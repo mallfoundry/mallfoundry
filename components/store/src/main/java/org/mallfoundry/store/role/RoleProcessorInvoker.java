@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.role;
 
-public interface RoleProcessorsInvoker {
+public interface RoleProcessorInvoker {
 
     Role invokePreProcessBeforeAddRole(Role role);
 

@@ -16,15 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store;
 
-public interface StaffProcessorsInvoker {
+public interface StoreProcessorInvoker {
 
-    Staff invokePreProcessBeforeAddStaff(Staff staff);
+    Store invokePreProcessBeforeCreateStore(Store store);
 
-    Staff invokePreProcessBeforeUpdateStaff(Staff staff);
+    Store invokePreProcessBeforeUpdateStore(Store store);
 
-    Staff invokePreProcessAfterUpdateStaff(Staff staff);
+    Store invokePreProcessBeforeCancelStore(Store store);
 
-    Staff invokePreProcessBeforeDeleteStaff(Staff staff);
+    Store invokePreProcessBeforeExistsStore(Store store);
+
+    StoreQuery invokePreProcessBeforeGetStores(StoreQuery query);
+
+    Store invokePostProcessAfterGetStore(Store store);
 }

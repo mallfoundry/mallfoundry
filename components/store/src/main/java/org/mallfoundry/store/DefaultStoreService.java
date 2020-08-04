@@ -34,7 +34,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class DefaultStoreService implements StoreService, StoreProcessorsInvoker {
+public class DefaultStoreService implements StoreService, StoreProcessorInvoker {
 
     private final StoreConfiguration storeConfiguration;
 
