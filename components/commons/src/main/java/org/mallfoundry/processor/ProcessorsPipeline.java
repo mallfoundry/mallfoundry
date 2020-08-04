@@ -20,28 +20,22 @@ package org.mallfoundry.processor;
 
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
-public abstract class ProcessorsInvoker {
+public class ProcessorsPipeline<T, U, R extends U> {
+    private final List<T> processors;
+    private final BiFunction<T, U, R> function;
+
+    public ProcessorsPipeline(List<T> processors, BiFunction<T, U, R> function) {
+        this.processors = processors;
+        this.function = function;
+    }
 
     @SuppressWarnings("unchecked")
-    public static <T, U, R extends U> R invokeBiFunctionProcessors(List<T> processors, U u, BiFunction<T, U, R> function) {
+    public R apply(U u) {
         U result = u;
-        for (var processor : processors) {
-            result = function.apply(processor, result);
+        for (var processor : this.processors) {
+            result = this.function.apply(processor, result);
         }
         return (R) result;
-    }
-/*
-    public static <T, U> void invokeBiConsumerProcessors(List<T> processors, U product, BiConsumer<T, U> consumer) {
-        for (var processor : processors) {
-            consumer.accept(processor, product);
-        }
-    }*/
-
-    public static <T> void invokeConsumerProcessors(List<T> processors, Consumer<T> consumer) {
-        for (var processor : processors) {
-            consumer.accept(processor);
-        }
     }
 }
