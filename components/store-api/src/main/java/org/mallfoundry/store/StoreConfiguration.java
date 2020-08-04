@@ -19,9 +19,5 @@
 package org.mallfoundry.store;
 
 public interface StoreConfiguration {
-
     String getDefaultLogo();
-
-    void setDefaultLogo(String defaultLogo);
-
 }
