@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.store.StoreCollection;
-import org.mallfoundry.store.StoreCollectionSupport;
+import org.mallfoundry.store.ProductCollection;
+import org.mallfoundry.store.ProductCollectionSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -40,7 +40,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store_collection")
-public class JpaStoreCollection extends StoreCollectionSupport {
+public class JpaProductCollection extends ProductCollectionSupport {
 
     @Id
     @Column(name = "id_")
@@ -65,21 +65,21 @@ public class JpaStoreCollection extends StoreCollectionSupport {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public JpaStoreCollection(String id) {
+    public JpaProductCollection(String id) {
         this.id = id;
     }
 
-    public JpaStoreCollection(String storeId, String name) {
+    public JpaProductCollection(String storeId, String name) {
         this.storeId = storeId;
         this.name = name;
         this.setCreatedTime(new Date());
     }
 
-    public static JpaStoreCollection of(StoreCollection collection) {
-        if (collection instanceof JpaStoreCollection) {
-            return (JpaStoreCollection) collection;
+    public static JpaProductCollection of(ProductCollection collection) {
+        if (collection instanceof JpaProductCollection) {
+            return (JpaProductCollection) collection;
         }
-        var target = new JpaStoreCollection();
+        var target = new JpaProductCollection();
         BeanUtils.copyProperties(collection, target);
         return target;
     }
@@ -92,7 +92,7 @@ public class JpaStoreCollection extends StoreCollectionSupport {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JpaStoreCollection that = (JpaStoreCollection) o;
+        JpaProductCollection that = (JpaProductCollection) o;
         return Objects.equals(id, that.id);
     }
 

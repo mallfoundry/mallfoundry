@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.store;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.data.QuerySupport;
 
-import java.util.List;
-
-@Repository
-public interface JpaStoreCollectionRepositoryDelegate extends JpaRepository<JpaStoreCollection, String> {
-    List<JpaStoreCollection> findAllByStoreId(String storeId);
+@Getter
+@Setter
+public class DefaultProductCollectionQuery extends QuerySupport implements ProductCollectionQuery {
+    private String storeId;
 }

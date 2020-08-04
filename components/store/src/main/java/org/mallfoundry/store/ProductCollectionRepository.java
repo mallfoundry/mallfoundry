@@ -21,15 +21,15 @@ package org.mallfoundry.store;
 import java.util.List;
 import java.util.Optional;
 
-public interface StoreCollectionRepository {
+public interface ProductCollectionRepository {
 
-    StoreCollection create(String id);
+    ProductCollection create(String id);
 
-    StoreCollection save(StoreCollection collection);
+    ProductCollection save(ProductCollection collection);
 
-    void delete(StoreCollection collection);
+    void delete(ProductCollection collection);
 
-    Optional<StoreCollection> findById(String id);
+    Optional<ProductCollection> findById(String id);
 
-    List<StoreCollection> findAllByStoreId(String storeId);
+    List<ProductCollection> findAllByStoreId(String storeId);
 }

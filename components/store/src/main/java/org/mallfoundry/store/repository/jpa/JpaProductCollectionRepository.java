@@ -18,43 +18,43 @@
 
 package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.store.StoreCollection;
-import org.mallfoundry.store.StoreCollectionRepository;
+import org.mallfoundry.store.ProductCollection;
+import org.mallfoundry.store.ProductCollectionRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JpaStoreCollectionRepository implements StoreCollectionRepository {
+public class JpaProductCollectionRepository implements ProductCollectionRepository {
 
-    private final JpaStoreCollectionRepositoryDelegate repository;
+    private final JpaProductCollectionRepositoryDelegate repository;
 
-    public JpaStoreCollectionRepository(JpaStoreCollectionRepositoryDelegate repository) {
+    public JpaProductCollectionRepository(JpaProductCollectionRepositoryDelegate repository) {
         this.repository = repository;
     }
 
     @Override
-    public StoreCollection create(String id) {
-        return new JpaStoreCollection(id);
+    public ProductCollection create(String id) {
+        return new JpaProductCollection(id);
     }
 
     @Override
-    public StoreCollection save(StoreCollection collection) {
-        return this.repository.save(JpaStoreCollection.of(collection));
+    public ProductCollection save(ProductCollection collection) {
+        return this.repository.save(JpaProductCollection.of(collection));
     }
 
     @Override
-    public void delete(StoreCollection collection) {
-        this.repository.delete(JpaStoreCollection.of(collection));
+    public void delete(ProductCollection collection) {
+        this.repository.delete(JpaProductCollection.of(collection));
     }
 
     @Override
-    public Optional<StoreCollection> findById(String id) {
+    public Optional<ProductCollection> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public List<StoreCollection> findAllByStoreId(String storeId) {
+    public List<ProductCollection> findAllByStoreId(String storeId) {
         return CastUtils.cast(this.repository.findAllByStoreId(storeId));
     }
 }

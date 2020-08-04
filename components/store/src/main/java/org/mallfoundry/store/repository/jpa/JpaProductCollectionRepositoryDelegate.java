@@ -16,18 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface StoreConfigPropertyRepository {
-
-    List<StoreConfigProperty> findAllByStoreId(String storeId);
-
-    StoreConfigProperty save(StoreConfigProperty property);
-
-    Optional<StoreConfigProperty> findById(StoreConfigPropertyId id);
-
-    void deleteById(StoreConfigPropertyId id);
+@Repository
+public interface JpaProductCollectionRepositoryDelegate extends JpaRepository<JpaProductCollection, String> {
+    List<JpaProductCollection> findAllByStoreId(String storeId);
 }

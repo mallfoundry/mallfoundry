@@ -20,7 +20,7 @@ package org.mallfoundry.store;
 
 import java.util.Date;
 
-public abstract class StoreCollectionSupport implements MutableStoreCollection {
+public abstract class ProductCollectionSupport implements MutableProductCollection {
 
     @Override
     public void create() {
@@ -35,9 +35,9 @@ public abstract class StoreCollectionSupport implements MutableStoreCollection {
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final StoreCollectionSupport collection;
+        private final ProductCollectionSupport collection;
 
-        protected BuilderSupport(StoreCollectionSupport collection) {
+        protected BuilderSupport(ProductCollectionSupport collection) {
             this.collection = collection;
         }
 
@@ -66,7 +66,7 @@ public abstract class StoreCollectionSupport implements MutableStoreCollection {
         }
 
         @Override
-        public StoreCollection build() {
+        public ProductCollection build() {
             return this.collection;
         }
     }
