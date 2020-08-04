@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.shipping.Address;
 
 /**
@@ -25,7 +26,7 @@ import org.mallfoundry.shipping.Address;
  *
  * @author Zhi Tang
  */
-public interface StoreAddress extends Address {
+public interface StoreAddress extends Address, StoreOwnership {
 
     AddressType getType();
 
