@@ -18,7 +18,7 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.role.StoreRoleService;
+import org.mallfoundry.store.role.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
 import org.mallfoundry.store.staff.SmartStaffValidatedProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
@@ -40,7 +40,7 @@ public class StoreStaffConfiguration {
     }
 
     @Bean
-    public DefaultStaffService defaultStaffService(@Lazy StoreRoleService storeRoleService,
+    public DefaultStaffService defaultStaffService(@Lazy RoleService storeRoleService,
                                                    StaffRepository repository) {
         return new DefaultStaffService(storeRoleService, repository);
     }

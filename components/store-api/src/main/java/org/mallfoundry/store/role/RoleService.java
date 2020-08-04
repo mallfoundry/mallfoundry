@@ -20,21 +20,25 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.data.SliceList;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-public interface StoreRoleRepository {
+public interface RoleService {
 
-    StoreRole create(String id);
+    RoleQuery createRoleQuery();
 
-    StoreRole save(StoreRole role);
+    Role createRole(String roleId);
 
-    Optional<StoreRole> findById(String id);
+    Role addRole(Role role);
 
-    List<StoreRole> findAllById(Collection<String> ids);
+    Role updateRole(Role role);
 
-    SliceList<StoreRole> findAll(StoreRoleQuery query);
+    void deleteRole(String roleId);
 
-    void delete(StoreRole role);
+    Optional<Role> getRole(String roleId);
+
+    List<Role> getRoles(Set<String> roleIds);
+
+    SliceList<Role> getRoles(RoleQuery query);
 }

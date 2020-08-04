@@ -26,26 +26,26 @@ import org.springframework.security.access.prepost.PreAuthorize;
  *
  * @author Zhi Tang
  */
-public class StoreRoleAuthorizeProcessor implements StoreRoleProcessor {
+public class RoleAuthorizeProcessor implements RoleProcessor {
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StoreRoleAuthorities.STORE_ROLE_ADD + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
+            + RoleAuthorities.STORE_ROLE_ADD + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+    public Role preProcessBeforeAddRole(Role role) {
         return null;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StoreRoleAuthorities.STORE_ROLE_UPDATE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
+            + RoleAuthorities.STORE_ROLE_UPDATE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessBeforeUpdateRole(StoreRole role) {
+    public Role preProcessBeforeUpdateRole(Role role) {
         return null;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StoreRoleAuthorities.STORE_ROLE_DELETE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
+            + RoleAuthorities.STORE_ROLE_DELETE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessBeforeDeleteRole(StoreRole role) {
+    public Role preProcessBeforeDeleteRole(Role role) {
         return null;
     }
 }

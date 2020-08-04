@@ -20,52 +20,52 @@ package org.mallfoundry.store.role.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.role.StoreRole;
-import org.mallfoundry.store.role.StoreRoleQuery;
-import org.mallfoundry.store.role.StoreRoleRepository;
+import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.role.RoleQuery;
+import org.mallfoundry.store.role.RoleRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class JpaStoreRoleRepository implements StoreRoleRepository {
+public class JpaRoleRepository implements RoleRepository {
 
-    private final JpaStoreRoleRepositoryDelegate repository;
+    private final JpaRoleRepositoryDelegate repository;
 
-    public JpaStoreRoleRepository(JpaStoreRoleRepositoryDelegate repository) {
+    public JpaRoleRepository(JpaRoleRepositoryDelegate repository) {
         this.repository = repository;
     }
 
     @Override
-    public StoreRole create(String id) {
-        return new JpaStoreRole(id);
+    public Role create(String id) {
+        return new JpaRole(id);
     }
 
     @Override
-    public StoreRole save(StoreRole role) {
-        return this.repository.save(JpaStoreRole.of(role));
+    public Role save(Role role) {
+        return this.repository.save(JpaRole.of(role));
     }
 
     @Override
-    public Optional<StoreRole> findById(String id) {
+    public Optional<Role> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public List<StoreRole> findAllById(Collection<String> ids) {
+    public List<Role> findAllById(Collection<String> ids) {
         return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override
-    public SliceList<StoreRole> findAll(StoreRoleQuery query) {
+    public SliceList<Role> findAll(RoleQuery query) {
         var page = this.repository.findAll(query);
         var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
         return CastUtils.cast(list);
     }
 
     @Override
-    public void delete(StoreRole role) {
-        this.repository.delete(JpaStoreRole.of(role));
+    public void delete(Role role) {
+        this.repository.delete(JpaRole.of(role));
     }
 }

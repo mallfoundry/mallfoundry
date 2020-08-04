@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.store.role.StoreRole;
+import org.mallfoundry.store.role.Role;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -40,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store_role")
-public class JpaStoreRole implements StoreRole {
+public class JpaRole implements Role {
 
     @NotBlank
     @Id
@@ -60,15 +60,15 @@ public class JpaStoreRole implements StoreRole {
     @Column(name = "authorities_", length = 1024 * 2)
     private List<String> authorities = new ArrayList<>();
 
-    public JpaStoreRole(String id) {
+    public JpaRole(String id) {
         this.id = id;
     }
 
-    public static JpaStoreRole of(StoreRole role) {
-        if (role instanceof JpaStoreRole) {
-            return (JpaStoreRole) role;
+    public static JpaRole of(Role role) {
+        if (role instanceof JpaRole) {
+            return (JpaRole) role;
         }
-        var target = new JpaStoreRole();
+        var target = new JpaRole();
         BeanUtils.copyProperties(role, target);
         return target;
     }

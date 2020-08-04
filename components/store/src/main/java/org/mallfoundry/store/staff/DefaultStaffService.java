@@ -19,7 +19,7 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.role.StoreRoleService;
+import org.mallfoundry.store.role.RoleService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -30,11 +30,11 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class DefaultStaffService implements StaffService, StaffProcessorsInvoker {
 
-    private final StoreRoleService storeRoleService;
+    private final RoleService storeRoleService;
 
     private final StaffRepository staffRepository;
 
-    public DefaultStaffService(StoreRoleService storeRoleService,
+    public DefaultStaffService(RoleService storeRoleService,
                                StaffRepository staffRepository) {
         this.storeRoleService = storeRoleService;
         this.staffRepository = staffRepository;

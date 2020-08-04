@@ -18,7 +18,13 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.store.StoreQueryBase;
+public interface RoleProcessorsInvoker {
 
-public interface StoreRoleQuery extends StoreQueryBase {
+    Role invokePreProcessBeforeAddRole(Role role);
+
+    Role invokePreProcessBeforeUpdateRole(Role role);
+
+    Role invokePreProcessAfterUpdateRole(Role role);
+
+    Role invokePreProcessBeforeDeleteRole(Role role);
 }

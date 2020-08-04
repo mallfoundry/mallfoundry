@@ -18,14 +18,14 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.role.DefaultStoreRoleService;
+import org.mallfoundry.store.role.DefaultRoleService;
 import org.mallfoundry.store.role.SmartStoreRoleValidatedProcessor;
-import org.mallfoundry.store.role.StoreRoleAuthorizeProcessor;
-import org.mallfoundry.store.role.StoreRoleIdentityProcessor;
-import org.mallfoundry.store.role.StoreRoleProcessor;
-import org.mallfoundry.store.role.StoreRoleRepository;
-import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepository;
-import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepositoryDelegate;
+import org.mallfoundry.store.role.RoleAuthorizeProcessor;
+import org.mallfoundry.store.role.RoleIdentityProcessor;
+import org.mallfoundry.store.role.RoleProcessor;
+import org.mallfoundry.store.role.RoleRepository;
+import org.mallfoundry.store.role.repository.jpa.JpaRoleRepository;
+import org.mallfoundry.store.role.repository.jpa.JpaRoleRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,16 +38,16 @@ import java.util.List;
 public class StoreRoleConfiguration {
 
     @Bean
-    public JpaStoreRoleRepository jpaStoreRoleRepository(JpaStoreRoleRepositoryDelegate roleRepositoryDelegate) {
-        return new JpaStoreRoleRepository(roleRepositoryDelegate);
+    public JpaRoleRepository jpaStoreRoleRepository(JpaRoleRepositoryDelegate roleRepositoryDelegate) {
+        return new JpaRoleRepository(roleRepositoryDelegate);
     }
 
 
     @Bean
     @Autowired(required = false)
-    public DefaultStoreRoleService defaultStoreRoleService(@Lazy List<StoreRoleProcessor> processors,
-                                                           StoreRoleRepository repository) {
-        var service = new DefaultStoreRoleService(repository);
+    public DefaultRoleService defaultStoreRoleService(@Lazy List<RoleProcessor> processors,
+                                                      RoleRepository repository) {
+        var service = new DefaultRoleService(repository);
         service.setProcessors(processors);
         return service;
     }
@@ -58,13 +58,13 @@ public class StoreRoleConfiguration {
     }
 
     @Bean
-    public StoreRoleIdentityProcessor storeRoleIdentityProcessor() {
-        return new StoreRoleIdentityProcessor();
+    public RoleIdentityProcessor storeRoleIdentityProcessor() {
+        return new RoleIdentityProcessor();
     }
 
     @Bean
-    public StoreRoleAuthorizeProcessor storeRoleAuthorizeProcessor() {
-        return new StoreRoleAuthorizeProcessor();
+    public RoleAuthorizeProcessor storeRoleAuthorizeProcessor() {
+        return new RoleAuthorizeProcessor();
     }
 
 }

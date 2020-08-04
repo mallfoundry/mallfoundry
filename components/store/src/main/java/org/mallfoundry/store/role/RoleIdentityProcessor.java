@@ -20,12 +20,12 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 
-public class StoreRoleIdentityProcessor implements StoreRoleProcessor {
+public class RoleIdentityProcessor implements RoleProcessor {
 
     private static final String ROLE_ID_VALUE_NAME = "store.role.id";
 
     @Override
-    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+    public Role preProcessBeforeAddRole(Role role) {
         role.setId(PrimaryKeyHolder.next(ROLE_ID_VALUE_NAME));
         return role;
     }

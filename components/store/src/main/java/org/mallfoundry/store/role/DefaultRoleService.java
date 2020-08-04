@@ -29,64 +29,64 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class DefaultStoreRoleService implements StoreRoleService, StoreRoleProcessorsInvoker {
+public class DefaultRoleService implements RoleService, RoleProcessorsInvoker {
 
-    private List<StoreRoleProcessor> processors = Collections.emptyList();
+    private List<RoleProcessor> processors = Collections.emptyList();
 
-    private final StoreRoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    public DefaultStoreRoleService(StoreRoleRepository roleRepository) {
+    public DefaultRoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
-    public void setProcessors(List<StoreRoleProcessor> processors) {
+    public void setProcessors(List<RoleProcessor> processors) {
         this.processors = ListUtils.emptyIfNull(processors);
     }
 
     @Override
-    public StoreRoleQuery createRoleQuery() {
-        return new DefaultStoreRoleQuery();
+    public RoleQuery createRoleQuery() {
+        return new DefaultRoleQuery();
     }
 
     @Override
-    public StoreRole createRole(String roleId) {
+    public Role createRole(String roleId) {
         return this.roleRepository.create(roleId);
     }
 
     @Transactional
     @Override
-    public StoreRole addRole(StoreRole role) {
-        return Function.<StoreRole>identity()
+    public Role addRole(Role role) {
+        return Function.<Role>identity()
                 .compose(this.roleRepository::save)
                 .compose(this::invokePreProcessBeforeAddRole)
                 .apply(role);
     }
 
-    private StoreRole copyFrom(StoreRole source, StoreRole target) {
+    private Role copyFrom(Role source, Role target) {
 
         return target;
     }
 
     @Transactional
     @Override
-    public StoreRole updateRole(StoreRole role) {
-        return Function.<StoreRole>identity()
+    public Role updateRole(Role role) {
+        return Function.<Role>identity()
                 .compose(this.roleRepository::save)
                 .compose(this::invokePreProcessAfterUpdateRole)
-                .<StoreRole>compose(target -> this.copyFrom(role, target))
+                .<Role>compose(target -> this.copyFrom(role, target))
                 .compose(this::invokePreProcessBeforeUpdateRole)
                 .compose(this::requiredRole)
                 .apply(role.getId());
     }
 
-    private StoreRole requiredRole(String roleId) {
+    private Role requiredRole(String roleId) {
         return this.getRole(roleId).orElseThrow();
     }
 
     @Transactional
     @Override
     public void deleteRole(String roleId) {
-        var role = Function.<StoreRole>identity()
+        var role = Function.<Role>identity()
                 .compose(this::invokePreProcessBeforeDeleteRole)
                 .compose(this::requiredRole)
                 .apply(roleId);
@@ -94,45 +94,45 @@ public class DefaultStoreRoleService implements StoreRoleService, StoreRoleProce
     }
 
     @Override
-    public Optional<StoreRole> getRole(String roleId) {
+    public Optional<Role> getRole(String roleId) {
         return this.roleRepository.findById(roleId);
     }
 
     @Override
-    public List<StoreRole> getRoles(Set<String> roleIds) {
+    public List<Role> getRoles(Set<String> roleIds) {
         return this.roleRepository.findAllById(roleIds);
     }
 
     @Override
-    public SliceList<StoreRole> getRoles(StoreRoleQuery query) {
+    public SliceList<Role> getRoles(RoleQuery query) {
         return this.roleRepository.findAll(query);
     }
 
     @Override
-    public StoreRole invokePreProcessBeforeAddRole(StoreRole role) {
+    public Role invokePreProcessBeforeAddRole(Role role) {
         return ProcessorStreams.stream(this.processors)
-                .map(StoreRoleProcessor::preProcessBeforeAddRole)
+                .map(RoleProcessor::preProcessBeforeAddRole)
                 .apply(role);
     }
 
     @Override
-    public StoreRole invokePreProcessBeforeUpdateRole(StoreRole role) {
+    public Role invokePreProcessBeforeUpdateRole(Role role) {
         return ProcessorStreams.stream(this.processors)
-                .map(StoreRoleProcessor::preProcessBeforeUpdateRole)
+                .map(RoleProcessor::preProcessBeforeUpdateRole)
                 .apply(role);
     }
 
     @Override
-    public StoreRole invokePreProcessAfterUpdateRole(StoreRole role) {
+    public Role invokePreProcessAfterUpdateRole(Role role) {
         return ProcessorStreams.stream(this.processors)
-                .map(StoreRoleProcessor::preProcessAfterUpdateRole)
+                .map(RoleProcessor::preProcessAfterUpdateRole)
                 .apply(role);
     }
 
     @Override
-    public StoreRole invokePreProcessBeforeDeleteRole(StoreRole role) {
+    public Role invokePreProcessBeforeDeleteRole(Role role) {
         return ProcessorStreams.stream(this.processors)
-                .map(StoreRoleProcessor::preProcessBeforeDeleteRole)
+                .map(RoleProcessor::preProcessBeforeDeleteRole)
                 .apply(role);
     }
 }

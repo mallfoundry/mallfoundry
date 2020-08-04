@@ -21,8 +21,8 @@ package org.mallfoundry.store.staff.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.store.role.StoreRole;
-import org.mallfoundry.store.role.repository.jpa.JpaStoreRole;
+import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.role.repository.jpa.JpaRole;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffSupport;
 import org.springframework.beans.BeanUtils;
@@ -64,13 +64,13 @@ public class JpaStaff extends StaffSupport {
     private String avatar;
 
     @NotNull
-    @OneToMany(targetEntity = JpaStoreRole.class)
+    @OneToMany(targetEntity = JpaRole.class)
     @JoinTable(name = "mf_store_staff_role",
             joinColumns =
             @JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
             inverseJoinColumns =
             @JoinColumn(name = "role_id_", referencedColumnName = "id_"))
-    private List<StoreRole> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     public JpaStaff(String id) {
         this.id = id;

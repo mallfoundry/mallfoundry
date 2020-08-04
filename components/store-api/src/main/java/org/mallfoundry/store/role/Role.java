@@ -18,13 +18,28 @@
 
 package org.mallfoundry.store.role;
 
-public interface StoreRoleProcessorsInvoker {
+import java.util.List;
 
-    StoreRole invokePreProcessBeforeAddRole(StoreRole role);
+/**
+ * 店铺角色对象。
+ *
+ * @author Zhi Tang
+ */
+public interface Role {
 
-    StoreRole invokePreProcessBeforeUpdateRole(StoreRole role);
+    String getId();
 
-    StoreRole invokePreProcessAfterUpdateRole(StoreRole role);
+    void setId(String id);
 
-    StoreRole invokePreProcessBeforeDeleteRole(StoreRole role);
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
+    String getName();
+
+    void setName(String name);
+
+    List<String> getAuthorities();
+
+    void setAuthorities(List<String> authorities);
 }

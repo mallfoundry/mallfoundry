@@ -18,13 +18,21 @@
 
 package org.mallfoundry.store.role;
 
-public abstract class StoreRoleAuthorities {
+public interface RoleProcessor {
 
-    public static final String STORE_ROLE_ADD = "store_role_add";
+    default Role preProcessBeforeAddRole(Role role) {
+        return role;
+    }
 
-    public static final String STORE_ROLE_UPDATE = "store_role_update";
+    default Role preProcessBeforeUpdateRole(Role role) {
+        return role;
+    }
 
-    public static final String STORE_ROLE_DELETE = "store_role_delete";
+    default Role preProcessAfterUpdateRole(Role role) {
+        return role;
+    }
 
-    public static final String STORE_ROLE_MANAGE = "store_role_manage";
+    default Role preProcessBeforeDeleteRole(Role role) {
+        return role;
+    }
 }

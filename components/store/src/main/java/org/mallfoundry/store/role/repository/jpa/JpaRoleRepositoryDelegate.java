@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.role.repository.jpa;
 
-import org.mallfoundry.store.role.StoreRoleQuery;
+import org.mallfoundry.store.role.RoleQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,9 +28,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
-public interface JpaStoreRoleRepositoryDelegate extends JpaRepository<JpaStoreRole, String>, JpaSpecificationExecutor<JpaStoreRole> {
+public interface JpaRoleRepositoryDelegate extends JpaRepository<JpaRole, String>, JpaSpecificationExecutor<JpaRole> {
 
-    default Specification<JpaStoreRole> createSpecification(StoreRoleQuery staffQuery) {
+    default Specification<JpaRole> createSpecification(RoleQuery staffQuery) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
@@ -42,7 +42,7 @@ public interface JpaStoreRoleRepositoryDelegate extends JpaRepository<JpaStoreRo
         };
     }
 
-    default Page<JpaStoreRole> findAll(StoreRoleQuery query) {
+    default Page<JpaRole> findAll(RoleQuery query) {
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 }

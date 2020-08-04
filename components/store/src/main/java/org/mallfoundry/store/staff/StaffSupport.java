@@ -18,29 +18,29 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.StoreRole;
+import org.mallfoundry.store.role.Role;
 
 import java.util.List;
 
 public abstract class StaffSupport implements Staff {
 
     @Override
-    public void addRole(StoreRole role) {
+    public void addRole(Role role) {
 
     }
 
     @Override
-    public void removeRole(StoreRole role) {
+    public void removeRole(Role role) {
 
     }
 
     @Override
-    public void addRoles(List<StoreRole> roles) {
+    public void addRoles(List<Role> roles) {
 
     }
 
     @Override
-    public void removeRoles(List<StoreRole> roles) {
+    public void removeRoles(List<Role> roles) {
 
     }
 }

@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.StoreRole;
+import org.mallfoundry.store.role.Role;
 
 import java.util.List;
 
@@ -40,13 +40,13 @@ public interface Staff {
 
     void setAvatar(String avatar);
 
-    List<StoreRole> getRoles();
+    List<Role> getRoles();
 
-    void addRole(StoreRole role);
+    void addRole(Role role);
 
-    void removeRole(StoreRole role);
+    void removeRole(Role role);
 
-    void addRoles(List<StoreRole> roles);
+    void addRoles(List<Role> roles);
 
-    void removeRoles(List<StoreRole> roles);
+    void removeRoles(List<Role> roles);
 }

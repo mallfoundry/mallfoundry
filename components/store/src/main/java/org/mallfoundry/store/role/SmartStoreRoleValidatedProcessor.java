@@ -24,7 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.validation.ValidationUtils;
 
-public class SmartStoreRoleValidatedProcessor implements StoreRoleProcessor {
+public class SmartStoreRoleValidatedProcessor implements RoleProcessor {
 
     private final SmartValidator validator;
 
@@ -33,22 +33,22 @@ public class SmartStoreRoleValidatedProcessor implements StoreRoleProcessor {
     }
 
     @Override
-    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+    public Role preProcessBeforeAddRole(Role role) {
         this.validate(role);
         return role;
     }
 
     @Override
-    public StoreRole preProcessAfterUpdateRole(StoreRole role) {
+    public Role preProcessAfterUpdateRole(Role role) {
         this.validate(role);
         return role;
     }
 
-    private BindingResult createError(StoreRole role) {
+    private BindingResult createError(Role role) {
         return new BeanPropertyBindingResult(role, "role");
     }
 
-    private void validate(StoreRole role) {
+    private void validate(Role role) {
         var error = this.createError(role);
         ValidationUtils.invokeValidator(this.validator, role, error);
         if (error.hasErrors()) {

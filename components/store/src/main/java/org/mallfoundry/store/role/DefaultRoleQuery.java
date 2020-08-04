@@ -24,6 +24,6 @@ import org.mallfoundry.data.QuerySupport;
 
 @Getter
 @Setter
-public class DefaultStoreRoleQuery extends QuerySupport implements StoreRoleQuery {
+public class DefaultRoleQuery extends QuerySupport implements RoleQuery {
     private String storeId;
 }
