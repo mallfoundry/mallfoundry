@@ -18,10 +18,14 @@
 
 package org.mallfoundry.store.staff;
 
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.ProcessorStreams;
 import org.mallfoundry.store.role.RoleService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -29,6 +33,8 @@ import java.util.function.Function;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class DefaultStaffService implements StaffService, StaffProcessorsInvoker {
+
+    private List<StaffProcessor> processors = Collections.emptyList();
 
     private final RoleService storeRoleService;
 
@@ -38,6 +44,10 @@ public class DefaultStaffService implements StaffService, StaffProcessorsInvoker
                                StaffRepository staffRepository) {
         this.storeRoleService = storeRoleService;
         this.staffRepository = staffRepository;
+    }
+
+    public void setProcessors(List<StaffProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
     }
 
     @Override
@@ -132,21 +142,29 @@ public class DefaultStaffService implements StaffService, StaffProcessorsInvoker
 
     @Override
     public Staff invokePreProcessBeforeAddStaff(Staff staff) {
-        return null;
+        return ProcessorStreams.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeAddStaff)
+                .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessBeforeUpdateStaff(Staff staff) {
-        return null;
+        return ProcessorStreams.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeUpdateStaff)
+                .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessAfterUpdateStaff(Staff staff) {
-        return null;
+        return ProcessorStreams.stream(this.processors)
+                .map(StaffProcessor::preProcessAfterUpdateStaff)
+                .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessBeforeDeleteStaff(Staff staff) {
-        return null;
+        return ProcessorStreams.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeDeleteStaff)
+                .apply(staff);
     }
 }
