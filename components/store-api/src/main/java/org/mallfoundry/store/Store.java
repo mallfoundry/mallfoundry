@@ -18,11 +18,12 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.ownership.Ownership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 
-public interface Store extends ObjectBuilder.ToBuilder<Store.Builder> {
+public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder> {
 
     String getId();
 
@@ -41,10 +42,6 @@ public interface Store extends ObjectBuilder.ToBuilder<Store.Builder> {
     String getLogo();
 
     void setLogo(String logo);
-
-    String getOwnerId();
-
-    void setOwnerId(String ownerId);
 
     String getIndustry();
 
@@ -97,6 +94,8 @@ public interface Store extends ObjectBuilder.ToBuilder<Store.Builder> {
     Date getCreatedTime();
 
     void initialize();
+
+    void changeOwner(String ownerId);
 
     interface Builder extends ObjectBuilder<Store> {
 
