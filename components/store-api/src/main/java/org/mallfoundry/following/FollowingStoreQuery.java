@@ -18,12 +18,24 @@
 
 package org.mallfoundry.following;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
 
-@Getter
-@Setter
-public class DefaultFollowProductQuery extends FollowProductQuerySupport {
-    private String followerId;
-    private String productId;
+public interface FollowingStoreQuery extends Query, ObjectBuilder.ToBuilder<FollowingStoreQuery.Builder> {
+
+    String getFollowerId();
+
+    void setFollowerId(String followerId);
+
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
+    interface Builder extends QueryBuilder<FollowingStoreQuery, Builder> {
+
+        Builder followerId(String followerId);
+
+        Builder storeId(String storeId);
+    }
 }

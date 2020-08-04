@@ -18,6 +18,7 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductShippingOrigin;
@@ -27,158 +28,160 @@ import org.mallfoundry.catalog.product.ProductVariant;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class NullFollowProduct implements ImmutableFollowProduct {
+public class DelegatingImmutableFollowingProduct implements ImmutableFollowingProduct {
+
+    private final Product product;
 
     private final ProductFollowing following;
 
-    public NullFollowProduct(ProductFollowing following) {
+    public DelegatingImmutableFollowingProduct(Product product, ProductFollowing following) {
+        this.product = product;
         this.following = following;
     }
 
     @Override
     public String getId() {
-        return this.following.getProductId();
+        return this.product.getId();
     }
 
     @Override
     public String getStoreId() {
-        return null;
+        return this.product.getStoreId();
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.product.getName();
     }
 
     @Override
     public ProductType getType() {
-        return null;
+        return this.product.getType();
     }
 
     @Override
     public ProductStatus getStatus() {
-        return null;
+        return this.product.getStatus();
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return this.product.getDescription();
     }
 
     @Override
     public BigDecimal getPrice() {
-        return null;
+        return this.product.getPrice();
     }
 
     @Override
     public String getCategoryId() {
-        return null;
+        return this.product.getCategoryId();
     }
 
     @Override
     public String getBrandId() {
-        return null;
+        return this.product.getBrandId();
     }
 
     @Override
     public Set<String> getCollections() {
-        return null;
+        return this.product.getCollections();
     }
 
     @Override
     public long getTotalSales() {
-        return 0;
+        return this.product.getTotalSales();
     }
 
     @Override
     public long getMonthlySales() {
-        return 0;
+        return this.product.getMonthlySales();
     }
 
     @Override
     public List<String> getImageUrls() {
-        return null;
+        return this.product.getImageUrls();
     }
 
     @Override
     public List<String> getVideoUrls() {
-        return null;
+        return this.product.getVideoUrls();
     }
 
     @Override
     public ProductShippingOrigin getShippingOrigin() {
-        return null;
+        return this.product.getShippingOrigin();
     }
 
     @Override
     public boolean isFreeShipping() {
-        return false;
+        return this.product.isFreeShipping();
     }
 
     @Override
     public BigDecimal getFixedShippingCost() {
-        return null;
+        return this.product.getFixedShippingCost();
     }
 
     @Override
     public String getShippingRateId() {
-        return null;
+        return this.product.getShippingRateId();
     }
 
     @Override
     public int getInventoryQuantity() {
-        return 0;
+        return this.product.getInventoryQuantity();
     }
 
     @Override
     public InventoryStatus getInventoryStatus() {
-        return null;
+        return this.product.getInventoryStatus();
     }
 
     @Override
     public List<ProductVariant> getVariants() {
-        return Collections.emptyList();
+        return this.product.getVariants();
     }
 
     @Override
     public Optional<ProductVariant> getVariant(String variantId) {
-        return Optional.empty();
+        return this.product.getVariant(variantId);
     }
 
     @Override
     public List<ProductOption> getOptions() {
-        return Collections.emptyList();
+        return this.product.getOptions();
     }
 
     @Override
     public Optional<ProductOption> getOption(String name) {
-        return Optional.empty();
+        return this.product.getOption(name);
     }
 
     @Override
     public Optional<ProductAttribute> getAttribute(String namespace, String name) {
-        return Optional.empty();
+        return this.product.getAttribute(namespace, name);
     }
 
     @Override
     public List<ProductAttribute> getAttributes() {
-        return Collections.emptyList();
+        return this.product.getAttributes();
     }
 
     @Override
     public Date getCreatedTime() {
-        return null;
+        return this.product.getCreatedTime();
     }
 
     @Override
     public Date getPublishedTime() {
-        return null;
+        return this.product.getPublishedTime();
     }
 
     @Override

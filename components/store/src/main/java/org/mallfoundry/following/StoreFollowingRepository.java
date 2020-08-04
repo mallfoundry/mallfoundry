@@ -34,7 +34,7 @@ public interface StoreFollowingRepository {
 
     void delete(StoreFollowing following);
 
-    SliceList<StoreFollowing> findAll(FollowStoreQuery query);
+    SliceList<StoreFollowing> findAll(FollowingStoreQuery query);
 
-    long count(FollowStoreQuery query);
+    long count(FollowingStoreQuery query);
 }

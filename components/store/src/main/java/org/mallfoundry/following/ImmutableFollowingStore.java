@@ -18,7 +18,7 @@
 
 package org.mallfoundry.following;
 
-public interface ImmutableFollowStore extends FollowStore {
+public interface ImmutableFollowingStore extends FollowingStore {
 
     @Override
     default void setId(String id) {

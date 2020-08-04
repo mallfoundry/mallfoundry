@@ -18,9 +18,24 @@
 
 package org.mallfoundry.following;
 
-public class FollowException extends RuntimeException {
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
 
-    public FollowException(String message) {
-        super(message);
+public interface FollowingProductQuery extends Query, ObjectBuilder.ToBuilder<FollowingProductQuery.Builder> {
+
+    String getFollowerId();
+
+    void setFollowerId(String followerId);
+
+    String getProductId();
+
+    void setProductId(String productId);
+
+    interface Builder extends QueryBuilder<FollowingProductQuery, Builder> {
+
+        Builder followerId(String followerId);
+
+        Builder productId(String productId);
     }
 }

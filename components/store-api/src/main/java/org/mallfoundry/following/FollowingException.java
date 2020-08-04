@@ -18,5 +18,9 @@
 
 package org.mallfoundry.following;
 
-public interface FollowProductSetter {
+public class FollowingException extends RuntimeException {
+
+    public FollowingException(String message) {
+        super(message);
+    }
 }

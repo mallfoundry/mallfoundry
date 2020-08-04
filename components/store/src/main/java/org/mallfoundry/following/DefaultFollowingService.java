@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultFollowService implements FollowService {
+public class DefaultFollowingService implements FollowingService {
 
     private final ProductService productService;
 
@@ -43,10 +43,10 @@ public class DefaultFollowService implements FollowService {
 
     private final StoreFollowingRepository storeFollowingRepository;
 
-    public DefaultFollowService(ProductService productService,
-                                StoreService storeService,
-                                ProductFollowingRepository productFollowingRepository,
-                                StoreFollowingRepository storeFollowingRepository) {
+    public DefaultFollowingService(ProductService productService,
+                                   StoreService storeService,
+                                   ProductFollowingRepository productFollowingRepository,
+                                   StoreFollowingRepository storeFollowingRepository) {
         this.productService = productService;
         this.storeService = storeService;
         this.productFollowingRepository = productFollowingRepository;
@@ -54,20 +54,20 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public FollowProductQuery createFollowProductQuery() {
-        return new DefaultFollowProductQuery();
+    public FollowingProductQuery createFollowProductQuery() {
+        return new DefaultFollowingProductQuery();
     }
 
     @Override
-    public FollowStoreQuery createFollowStoreQuery() {
-        return new DefaultFollowStoreQuery();
+    public FollowingStoreQuery createFollowStoreQuery() {
+        return new DefaultFollowingStoreQuery();
     }
 
     @Override
     public void followProduct(String followerId, String productId) {
         var following = this.productFollowingRepository.create(followerId, productId);
         if (this.productFollowingRepository.exists(following)) {
-            throw new FollowException("The follower has followed to this product");
+            throw new FollowingException("The follower has followed to this product");
         }
         this.productFollowingRepository.save(following);
     }
@@ -84,16 +84,16 @@ public class DefaultFollowService implements FollowService {
         return this.productFollowingRepository.exists(following);
     }
 
-    private FollowProduct getFollowProduct(List<Product> products, ProductFollowing following) {
+    private FollowingProduct getFollowProduct(List<Product> products, ProductFollowing following) {
         return products.stream()
                 .filter(product -> Objects.equals(product.getId(), following.getProductId()))
                 .findFirst()
-                .<FollowProduct>map(aStore -> new DelegatingImmutableFollowProduct(aStore, following))
-                .orElseGet(() -> new NullFollowProduct(following));
+                .<FollowingProduct>map(aStore -> new DelegatingImmutableFollowingProduct(aStore, following))
+                .orElseGet(() -> new NullFollowingProduct(following));
     }
 
     @Override
-    public SliceList<FollowProduct> getFollowingProducts(FollowProductQuery query) {
+    public SliceList<FollowingProduct> getFollowingProducts(FollowingProductQuery query) {
         var sliceFollowings = this.productFollowingRepository.findAll(query);
         var productIds = ListUtils.emptyIfNull(sliceFollowings.getElements()).stream()
                 .map(ProductFollowing::getProductId)
@@ -109,7 +109,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public long countFollowingProducts(FollowProductQuery query) {
+    public long countFollowingProducts(FollowingProductQuery query) {
         return this.productFollowingRepository.count(query);
     }
 
@@ -117,7 +117,7 @@ public class DefaultFollowService implements FollowService {
     public void followStore(String followerId, String storeId) {
         var following = this.storeFollowingRepository.create(followerId, storeId);
         if (this.storeFollowingRepository.exists(following)) {
-            throw new FollowException("The follower has followed to this store");
+            throw new FollowingException("The follower has followed to this store");
         }
         following.following();
         this.storeFollowingRepository.save(following);
@@ -135,16 +135,16 @@ public class DefaultFollowService implements FollowService {
         return this.storeFollowingRepository.exists(following);
     }
 
-    private FollowStore getFollowStore(List<Store> stores, StoreFollowing following) {
+    private FollowingStore getFollowStore(List<Store> stores, StoreFollowing following) {
         return stores.stream()
                 .filter(aStore -> Objects.equals(aStore.getId(), following.getStoreId()))
                 .findFirst()
-                .<FollowStore>map(aStore -> new DelegatingImmutableFollowStore(aStore, following))
-                .orElseGet(() -> new NullFollowStore(following));
+                .<FollowingStore>map(aStore -> new DelegatingImmutableFollowingStore(aStore, following))
+                .orElseGet(() -> new NullFollowingStore(following));
     }
 
     @Override
-    public SliceList<FollowStore> getFollowingStores(FollowStoreQuery query) {
+    public SliceList<FollowingStore> getFollowingStores(FollowingStoreQuery query) {
         var sliceFollowings = this.storeFollowingRepository.findAll(query);
         var storeIds = ListUtils.emptyIfNull(sliceFollowings.getElements()).stream()
                 .map(StoreFollowing::getStoreId)
@@ -160,7 +160,7 @@ public class DefaultFollowService implements FollowService {
     }
 
     @Override
-    public long countFollowingStores(FollowStoreQuery query) {
+    public long countFollowingStores(FollowingStoreQuery query) {
         return this.storeFollowingRepository.count(query);
     }
 }

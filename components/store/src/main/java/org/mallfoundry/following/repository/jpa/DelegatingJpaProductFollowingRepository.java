@@ -20,7 +20,7 @@ package org.mallfoundry.following.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.following.FollowProductQuery;
+import org.mallfoundry.following.FollowingProductQuery;
 import org.mallfoundry.following.ProductFollowing;
 import org.mallfoundry.following.ProductFollowingId;
 import org.mallfoundry.following.ProductFollowingRepository;
@@ -63,7 +63,7 @@ public class DelegatingJpaProductFollowingRepository implements ProductFollowing
     }
 
     @Override
-    public SliceList<ProductFollowing> findAll(FollowProductQuery query) {
+    public SliceList<ProductFollowing> findAll(FollowingProductQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
                 .page(page.getNumber()).limit(query.getLimit())
@@ -72,7 +72,7 @@ public class DelegatingJpaProductFollowingRepository implements ProductFollowing
     }
 
     @Override
-    public long count(FollowProductQuery query) {
+    public long count(FollowingProductQuery query) {
         return this.repository.count(query);
     }
 }

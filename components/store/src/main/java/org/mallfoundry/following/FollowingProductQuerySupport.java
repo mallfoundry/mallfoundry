@@ -21,7 +21,7 @@ package org.mallfoundry.following;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
-public abstract class FollowStoreQuerySupport extends QuerySupport implements FollowStoreQuery {
+public abstract class FollowingProductQuerySupport extends QuerySupport implements FollowingProductQuery {
 
     @Override
     public Builder toBuilder() {
@@ -30,10 +30,10 @@ public abstract class FollowStoreQuerySupport extends QuerySupport implements Fo
     }
 
     protected abstract static class BuilderSupport
-            extends QueryBuilderSupport<FollowStoreQuery, Builder> implements Builder {
-        private final FollowStoreQuerySupport query;
+            extends QueryBuilderSupport<FollowingProductQuery, Builder> implements Builder {
+        private final FollowingProductQuerySupport query;
 
-        public BuilderSupport(FollowStoreQuerySupport query) {
+        public BuilderSupport(FollowingProductQuerySupport query) {
             super(query);
             this.query = query;
         }
@@ -45,8 +45,8 @@ public abstract class FollowStoreQuerySupport extends QuerySupport implements Fo
         }
 
         @Override
-        public Builder storeId(String storeId) {
-            this.query.setStoreId(storeId);
+        public Builder productId(String productId) {
+            this.query.setProductId(productId);
             return this;
         }
     }

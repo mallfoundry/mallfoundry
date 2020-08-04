@@ -19,9 +19,9 @@
 package org.mallfoundry.rest.following;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.following.FollowProduct;
-import org.mallfoundry.following.FollowService;
-import org.mallfoundry.following.FollowStore;
+import org.mallfoundry.following.FollowingProduct;
+import org.mallfoundry.following.FollowingService;
+import org.mallfoundry.following.FollowingStore;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class FollowResourceV1 {
 
-    private final FollowService followService;
+    private final FollowingService followService;
 
-    public FollowResourceV1(FollowService followService) {
+    public FollowResourceV1(FollowingService followService) {
         this.followService = followService;
     }
 
@@ -58,7 +58,7 @@ public class FollowResourceV1 {
     }
 
     @GetMapping("/customers/{customer_id}/following-products")
-    public SliceList<FollowProduct> getFollowProducts(@PathVariable("customer_id") String customerId) {
+    public SliceList<FollowingProduct> getFollowProducts(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingProducts(this.followService.createFollowProductQuery()
                 .toBuilder().followerId(customerId).build());
     }
@@ -94,7 +94,7 @@ public class FollowResourceV1 {
     }
 
     @GetMapping("/customers/{customer_id}/following-stores")
-    public SliceList<FollowStore> getFollowStores(@PathVariable("customer_id") String customerId) {
+    public SliceList<FollowingStore> getFollowStores(@PathVariable("customer_id") String customerId) {
         return this.followService.getFollowingStores(this.followService.createFollowStoreQuery()
                 .toBuilder().followerId(customerId).build());
     }

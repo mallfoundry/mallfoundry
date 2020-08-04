@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultFollowStoreQuery extends FollowStoreQuerySupport {
+public class DefaultFollowingProductQuery extends FollowingProductQuerySupport {
     private String followerId;
-    private String storeId;
+    private String productId;
 }

@@ -34,7 +34,7 @@ public interface ProductFollowingRepository {
 
     void delete(ProductFollowing following);
 
-    SliceList<ProductFollowing> findAll(FollowProductQuery query);
+    SliceList<ProductFollowing> findAll(FollowingProductQuery query);
 
-    long count(FollowProductQuery query);
+    long count(FollowingProductQuery query);
 }

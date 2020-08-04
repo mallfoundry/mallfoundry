@@ -18,15 +18,19 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
 
-public class NullFollowStore implements ImmutableFollowStore {
+public class DelegatingImmutableFollowingStore implements ImmutableFollowingStore {
+
+    private final Store store;
 
     private final StoreFollowing following;
 
-    public NullFollowStore(StoreFollowing following) {
+    public DelegatingImmutableFollowingStore(Store store, StoreFollowing following) {
+        this.store = store;
         this.following = following;
     }
 
@@ -37,96 +41,96 @@ public class NullFollowStore implements ImmutableFollowStore {
 
     @Override
     public String getId() {
-        return this.following.getStoreId();
+        return this.store.getId();
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.store.getName();
     }
 
     @Override
     public StoreStatus getStatus() {
-        return null;
+        return this.store.getStatus();
     }
 
     @Override
     public String getDomain() {
-        return null;
+        return this.store.getDomain();
     }
 
     @Override
     public String getLogo() {
-        return null;
+        return this.store.getLogo();
     }
 
     @Override
     public String getOwnerId() {
-        return null;
+        return this.store.getOwnerId();
     }
 
     @Override
     public String getIndustry() {
-        return null;
+        return this.store.getIndustry();
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return this.store.getDescription();
     }
 
     @Override
     public String getCountryCode() {
-        return null;
+        return this.store.getCountryCode();
     }
 
     @Override
     public String getMobile() {
-        return null;
+        return this.store.getMobile();
     }
 
     @Override
     public String getZip() {
-        return null;
+        return this.store.getZip();
     }
 
     @Override
     public String getProvinceId() {
-        return null;
+        return this.store.getProvinceId();
     }
 
     @Override
     public String getProvince() {
-        return null;
+        return this.store.getProvince();
     }
 
     @Override
     public String getCityId() {
-        return null;
+        return this.store.getCityId();
     }
 
     @Override
     public String getCity() {
-        return null;
+        return this.store.getCity();
     }
 
     @Override
     public String getCountyId() {
-        return null;
+        return this.store.getCountyId();
     }
 
     @Override
     public String getCounty() {
-        return null;
+        return this.store.getCounty();
     }
 
     @Override
     public String getAddress() {
-        return null;
+        return this.store.getAddress();
     }
 
     @Override
     public Date getCreatedTime() {
-        return null;
+        return this.store.getCreatedTime();
     }
 }

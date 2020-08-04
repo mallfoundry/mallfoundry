@@ -22,6 +22,6 @@ import org.mallfoundry.catalog.product.Product;
 
 import java.util.Date;
 
-public interface FollowProduct extends Product {
+public interface FollowingProduct extends Product {
     Date getFollowedTime();
 }

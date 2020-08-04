@@ -18,24 +18,10 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.data.Query;
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.util.ObjectBuilder;
+import org.mallfoundry.store.Store;
 
-public interface FollowStoreQuery extends Query, ObjectBuilder.ToBuilder<FollowStoreQuery.Builder> {
+import java.util.Date;
 
-    String getFollowerId();
-
-    void setFollowerId(String followerId);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    interface Builder extends QueryBuilder<FollowStoreQuery, Builder> {
-
-        Builder followerId(String followerId);
-
-        Builder storeId(String storeId);
-    }
+public interface FollowingStore extends Store {
+    Date getFollowedTime();
 }

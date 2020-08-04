@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface ImmutableFollowProduct extends FollowProduct {
+public interface ImmutableFollowingProduct extends FollowingProduct {
 
     @Override
     default void removeImageUrl(String imageUrl) {

@@ -18,7 +18,7 @@
 
 package org.mallfoundry.following.repository.jpa;
 
-import org.mallfoundry.following.FollowStoreQuery;
+import org.mallfoundry.following.FollowingStoreQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,7 +33,7 @@ import java.util.Objects;
 public interface JpaStoreFollowingRepository extends JpaRepository<JpaStoreFollowing, JpaStoreFollowingId>,
         JpaSpecificationExecutor<JpaStoreFollowing> {
 
-    default Specification<JpaStoreFollowing> createSpecification(FollowStoreQuery followQuery) {
+    default Specification<JpaStoreFollowing> createSpecification(FollowingStoreQuery followQuery) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(followQuery.getFollowerId())) {
@@ -43,11 +43,11 @@ public interface JpaStoreFollowingRepository extends JpaRepository<JpaStoreFollo
         };
     }
 
-    default Page<JpaStoreFollowing> findAll(FollowStoreQuery query) {
+    default Page<JpaStoreFollowing> findAll(FollowingStoreQuery query) {
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 
-    default long count(FollowStoreQuery query) {
+    default long count(FollowingStoreQuery query) {
         return this.count(this.createSpecification(query));
     }
 }
