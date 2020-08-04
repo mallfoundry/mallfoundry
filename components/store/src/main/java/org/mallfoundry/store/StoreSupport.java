@@ -18,7 +18,12 @@
 
 package org.mallfoundry.store;
 
-public abstract class StoreSupport implements Store {
+public abstract class StoreSupport implements MutableStore {
+
+    @Override
+    public void changeOwner(String ownerId) {
+        this.setOwnerId(ownerId);
+    }
 
     @Override
     public Builder toBuilder() {
