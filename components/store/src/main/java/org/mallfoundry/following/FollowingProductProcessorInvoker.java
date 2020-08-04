@@ -18,12 +18,15 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
+public interface FollowingProductProcessorInvoker {
 
-import java.util.Date;
+    FollowingProduct invokePreProcessBeforeFollowProduct(Follower follower, FollowingProduct product);
 
-public interface FollowingProduct extends Product {
-    Date getFollowedTime();
+    FollowingProduct invokePreProcessBeforeUnfollowProduct(Follower follower, FollowingProduct product);
 
-  /*  boolean isPresent();*/
+    FollowingProduct invokePreProcessBeforeCheckFollowingProduct(Follower follower, FollowingProduct product);
+
+    FollowingProductQuery invokePreProcessBeforeGetFollowingProducts(FollowingProductQuery query);
+
+    FollowingProductQuery invokePreProcessBeforeCountFollowingProducts(FollowingProductQuery query);
 }

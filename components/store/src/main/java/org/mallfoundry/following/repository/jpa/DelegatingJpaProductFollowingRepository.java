@@ -25,12 +25,11 @@ import org.mallfoundry.following.ProductFollowing;
 import org.mallfoundry.following.ProductFollowingId;
 import org.mallfoundry.following.ProductFollowingRepository;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class DelegatingJpaProductFollowingRepository implements ProductFollowingRepository {
+
     private final JpaProductFollowingRepository repository;
 
     public DelegatingJpaProductFollowingRepository(JpaProductFollowingRepository repository) {

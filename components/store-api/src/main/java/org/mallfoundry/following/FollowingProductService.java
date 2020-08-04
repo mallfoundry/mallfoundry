@@ -20,11 +20,9 @@ package org.mallfoundry.following;
 
 import org.mallfoundry.data.SliceList;
 
-public interface FollowingService {
+public interface FollowingProductService {
 
     FollowingProductQuery createFollowProductQuery();
-
-    FollowingStoreQuery createFollowStoreQuery();
 
     void followProduct(String followerId, String productId);
 
@@ -35,14 +33,4 @@ public interface FollowingService {
     SliceList<FollowingProduct> getFollowingProducts(FollowingProductQuery query);
 
     long countFollowingProducts(FollowingProductQuery query);
-
-    void followStore(String followerId, String storeId);
-
-    void unfollowStore(String followerId, String storeId);
-
-    boolean checkFollowingStore(String followerId, String storeId);
-
-    SliceList<FollowingStore> getFollowingStores(FollowingStoreQuery query);
-
-    long countFollowingStores(FollowingStoreQuery query);
 }

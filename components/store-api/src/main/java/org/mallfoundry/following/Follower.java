@@ -18,12 +18,7 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
+import org.mallfoundry.identity.User;
 
-import java.util.Date;
-
-public interface FollowingProduct extends Product {
-    Date getFollowedTime();
-
-  /*  boolean isPresent();*/
+public interface Follower extends User {
 }

@@ -25,11 +25,9 @@ import org.mallfoundry.following.StoreFollowing;
 import org.mallfoundry.following.StoreFollowingId;
 import org.mallfoundry.following.StoreFollowingRepository;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class DelegatingJpaStoreFollowingRepository implements StoreFollowingRepository {
 
     private final JpaStoreFollowingRepository repository;

@@ -18,12 +18,19 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.catalog.product.Product;
+import org.mallfoundry.data.SliceList;
 
-import java.util.Date;
+public interface FollowingStoreService {
 
-public interface FollowingProduct extends Product {
-    Date getFollowedTime();
+    FollowingStoreQuery createFollowStoreQuery();
 
-  /*  boolean isPresent();*/
+    void followStore(String followerId, String storeId);
+
+    void unfollowStore(String followerId, String storeId);
+
+    boolean checkFollowingStore(String followerId, String storeId);
+
+    SliceList<FollowingStore> getFollowingStores(FollowingStoreQuery query);
+
+    long countFollowingStores(FollowingStoreQuery query);
 }
