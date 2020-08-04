@@ -18,8 +18,8 @@
 
 package org.mallfoundry.store;
 
-import java.io.Serializable;
+import org.mallfoundry.util.ObjectEvent;
 
-public interface StoreEvent extends Serializable {
+public interface StoreEvent extends ObjectEvent {
     Store getStore();
 }
