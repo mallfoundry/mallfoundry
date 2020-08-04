@@ -20,6 +20,6 @@ package org.mallfoundry.store;
 
 import java.util.Date;
 
-public interface MutableStoreCollection extends StoreCollection {
+public interface MutableProductCollection extends ProductCollection {
     void setCreatedTime(Date createdTime);
 }
