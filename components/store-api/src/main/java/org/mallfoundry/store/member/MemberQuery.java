@@ -18,15 +18,7 @@
 
 package org.mallfoundry.store.member;
 
-public interface StoreMemberService {
+import org.mallfoundry.store.StoreQueryBase;
 
-    StoreMemberQuery createMemberQuery();
-
-    StoreMember createMember(String id);
-
-    StoreMember addMember(String id);
-
-    StoreMember updateMember(String id);
-
-    void deleteMember(String id);
+public interface MemberQuery extends StoreQueryBase {
 }
