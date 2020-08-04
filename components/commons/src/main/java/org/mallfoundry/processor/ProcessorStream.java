@@ -29,7 +29,7 @@ public class ProcessorStream<T> {
         this.processors = processors;
     }
 
-    public <U, R extends U> ProcessorsPipeline<T, U, R> map(BiFunction<T, U, R> function) {
+    public <U> ProcessorsPipeline<T, U, U> map(BiFunction<T, U, U> function) {
         return new ProcessorsPipeline<>(this.processors, function);
     }
 }
