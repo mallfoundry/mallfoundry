@@ -20,7 +20,7 @@ package org.mallfoundry.store.staff;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 
-public class StaffIdentifier implements StaffProcessor {
+public class StaffIdentityProcessor implements StaffProcessor {
 
     private static final String STAFF_ID_VALUE_NAME = "store.staff.id";
 

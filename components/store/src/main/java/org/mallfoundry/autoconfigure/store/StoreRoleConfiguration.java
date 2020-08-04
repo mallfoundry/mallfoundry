@@ -19,9 +19,9 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.store.role.DefaultStoreRoleService;
-import org.mallfoundry.store.role.SmartStoreRoleValidator;
-import org.mallfoundry.store.role.StoreRoleAuthorizer;
-import org.mallfoundry.store.role.StoreRoleIdentifier;
+import org.mallfoundry.store.role.SmartStoreRoleValidatedProcessor;
+import org.mallfoundry.store.role.StoreRoleAuthorizeProcessor;
+import org.mallfoundry.store.role.StoreRoleIdentityProcessor;
 import org.mallfoundry.store.role.StoreRoleProcessor;
 import org.mallfoundry.store.role.StoreRoleRepository;
 import org.mallfoundry.store.role.repository.jpa.JpaStoreRoleRepository;
@@ -53,18 +53,18 @@ public class StoreRoleConfiguration {
     }
 
     @Bean
-    public SmartStoreRoleValidator smartStoreRoleValidator(SmartValidator validator) {
-        return new SmartStoreRoleValidator(validator);
+    public SmartStoreRoleValidatedProcessor smartStoreRoleValidatedProcessor(SmartValidator validator) {
+        return new SmartStoreRoleValidatedProcessor(validator);
     }
 
     @Bean
-    public StoreRoleIdentifier storeRoleIdentifier() {
-        return new StoreRoleIdentifier();
+    public StoreRoleIdentityProcessor storeRoleIdentityProcessor() {
+        return new StoreRoleIdentityProcessor();
     }
 
     @Bean
-    public StoreRoleAuthorizer storeRoleAuthorizer() {
-        return new StoreRoleAuthorizer();
+    public StoreRoleAuthorizeProcessor storeRoleAuthorizeProcessor() {
+        return new StoreRoleAuthorizeProcessor();
     }
 
 }

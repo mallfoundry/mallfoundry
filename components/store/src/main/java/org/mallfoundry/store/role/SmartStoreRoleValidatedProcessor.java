@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store.role;
 
 import org.mallfoundry.validation.BindRuntimeException;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -24,33 +24,33 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.validation.ValidationUtils;
 
-public class SmartStaffValidator implements StaffProcessor {
+public class SmartStoreRoleValidatedProcessor implements StoreRoleProcessor {
 
     private final SmartValidator validator;
 
-    public SmartStaffValidator(SmartValidator validator) {
+    public SmartStoreRoleValidatedProcessor(SmartValidator validator) {
         this.validator = validator;
     }
 
     @Override
-    public Staff preProcessBeforeAddStaff(Staff staff) {
-        this.validate(staff);
-        return staff;
+    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+        this.validate(role);
+        return role;
     }
 
     @Override
-    public Staff preProcessAfterUpdateStaff(Staff staff) {
-        this.validate(staff);
-        return staff;
+    public StoreRole preProcessAfterUpdateRole(StoreRole role) {
+        this.validate(role);
+        return role;
     }
 
-    private BindingResult createError(Staff staff) {
-        return new BeanPropertyBindingResult(staff, "staff");
+    private BindingResult createError(StoreRole role) {
+        return new BeanPropertyBindingResult(role, "role");
     }
 
-    private void validate(Staff staff) {
-        var error = this.createError(staff);
-        ValidationUtils.invokeValidator(this.validator, staff, error);
+    private void validate(StoreRole role) {
+        var error = this.createError(role);
+        ValidationUtils.invokeValidator(this.validator, role, error);
         if (error.hasErrors()) {
             throw new BindRuntimeException(error);
         }

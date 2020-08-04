@@ -20,7 +20,7 @@ package org.mallfoundry.store.role;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 
-public class StoreRoleIdentifier implements StoreRoleProcessor {
+public class StoreRoleIdentityProcessor implements StoreRoleProcessor {
 
     private static final String ROLE_ID_VALUE_NAME = "store.role.id";
 

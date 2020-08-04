@@ -16,36 +16,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store.role;
 
 import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * 店铺职员对象鉴权者。
+ * 店铺角色对象鉴权者。
  *
  * @author Zhi Tang
  */
-public class StaffAuthorizer implements StaffProcessor {
+public class StoreRoleAuthorizeProcessor implements StoreRoleProcessor {
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STAFF_ADD + "," + StaffAuthorities.STAFF_MANAGE + "')")
+    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+            + StoreRoleAuthorities.STORE_ROLE_ADD + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public Staff preProcessBeforeAddStaff(Staff staff) {
-        return staff;
+    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+        return null;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STAFF_UPDATE + "," + StaffAuthorities.STAFF_MANAGE + "')")
+    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+            + StoreRoleAuthorities.STORE_ROLE_UPDATE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public Staff preProcessBeforeUpdateStaff(Staff staff) {
-        return staff;
+    public StoreRole preProcessBeforeUpdateRole(StoreRole role) {
+        return null;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STAFF_DELETE + "," + StaffAuthorities.STAFF_MANAGE + "')")
+    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+            + StoreRoleAuthorities.STORE_ROLE_DELETE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public Staff preProcessBeforeDeleteStaff(Staff staff) {
-        return staff;
+    public StoreRole preProcessBeforeDeleteRole(StoreRole role) {
+        return null;
     }
 }
