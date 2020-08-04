@@ -18,5 +18,5 @@
 
 package org.mallfoundry.processor;
 
-public interface ValidatedProcessor extends Processor {
+public interface ValidateProcessor extends Processor {
 }
