@@ -28,18 +28,14 @@ import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class DefaultStaffService implements StaffService {
-
-    private final StaffProcessorsInvoker processorsInvoker;
+public class DefaultStaffService implements StaffService, StaffProcessorsInvoker {
 
     private final StoreRoleService storeRoleService;
 
     private final StaffRepository staffRepository;
 
-    public DefaultStaffService(StaffProcessorsInvoker processorsInvoker,
-                               StoreRoleService storeRoleService,
+    public DefaultStaffService(StoreRoleService storeRoleService,
                                StaffRepository staffRepository) {
-        this.processorsInvoker = processorsInvoker;
         this.storeRoleService = storeRoleService;
         this.staffRepository = staffRepository;
     }
@@ -58,9 +54,8 @@ public class DefaultStaffService implements StaffService {
     @Override
     public Staff addStaff(Staff staff) {
         return Function.<Staff>identity()
-                .compose(this.processorsInvoker::invokePostProcessAddStaff)
                 .compose(this.staffRepository::save)
-                .compose(this.processorsInvoker::invokePreProcessAddStaff)
+                .compose(this::invokePreProcessBeforeAddStaff)
                 .apply(staff);
     }
 
@@ -75,10 +70,10 @@ public class DefaultStaffService implements StaffService {
     @Override
     public Staff updateStaff(Staff newStaff) {
         return Function.<Staff>identity()
-                .compose(this.processorsInvoker::invokePostProcessUpdateStaff)
                 .compose(this.staffRepository::save)
+                .compose(this::invokePreProcessAfterUpdateStaff)
                 .<Staff>compose(target -> this.copyFrom(newStaff, target))
-                .compose(this.processorsInvoker::invokePreProcessUpdateStaff)
+                .compose(this::invokePreProcessBeforeUpdateStaff)
                 .compose(this::requiredStaff)
                 .apply(newStaff.getId());
     }
@@ -91,7 +86,7 @@ public class DefaultStaffService implements StaffService {
     @Override
     public void deleteStaff(String staffId) {
         var staff = Function.<Staff>identity()
-                .compose(this.processorsInvoker::invokePreProcessDeleteStaff)
+                .compose(this::invokePreProcessBeforeDeleteStaff)
                 .compose(this::requiredStaff)
                 .apply(staffId);
         this.staffRepository.delete(staff);
@@ -133,5 +128,25 @@ public class DefaultStaffService implements StaffService {
         var staff = this.requiredStaff(staffId);
         var roles = this.storeRoleService.getRoles(roleIds);
         staff.removeRoles(roles);
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeAddStaff(Staff staff) {
+        return null;
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeUpdateStaff(Staff staff) {
+        return null;
+    }
+
+    @Override
+    public Staff invokePreProcessAfterUpdateStaff(Staff staff) {
+        return null;
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeDeleteStaff(Staff staff) {
+        return null;
     }
 }

@@ -18,36 +18,13 @@
 
 package org.mallfoundry.store.role;
 
-import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.processor.ProcessorsInvoker;
+public interface StoreRoleProcessorsInvoker {
 
-import java.util.List;
+    StoreRole invokePreProcessBeforeAddRole(StoreRole role);
 
-public class StoreRoleProcessorsInvoker {
+    StoreRole invokePreProcessBeforeUpdateRole(StoreRole role);
 
-    private final List<StoreRoleProcessor> processors;
+    StoreRole invokePreProcessAfterUpdateRole(StoreRole role);
 
-    public StoreRoleProcessorsInvoker(List<StoreRoleProcessor> processors) {
-        this.processors = ListUtils.emptyIfNull(processors);
-    }
-
-    public StoreRole invokePreProcessAddRole(StoreRole role) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, role, StoreRoleProcessor::preProcessAddRole);
-    }
-
-    public StoreRole invokePostProcessAddRole(StoreRole role) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, role, StoreRoleProcessor::postProcessAddRole);
-    }
-
-    public StoreRole invokePreProcessUpdateRole(StoreRole role) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, role, StoreRoleProcessor::preProcessUpdateRole);
-    }
-
-    public StoreRole invokePostProcessUpdateRole(StoreRole role) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, role, StoreRoleProcessor::postProcessUpdateRole);
-    }
-
-    public StoreRole invokePreProcessDeleteRole(StoreRole role) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, role, StoreRoleProcessor::preProcessDeleteRole);
-    }
+    StoreRole invokePreProcessBeforeDeleteRole(StoreRole role);
 }

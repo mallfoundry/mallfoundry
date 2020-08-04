@@ -18,23 +18,29 @@
 
 package org.mallfoundry.store.role;
 
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.ProcessorStreams;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class DefaultStoreRoleService implements StoreRoleService {
+public class DefaultStoreRoleService implements StoreRoleService, StoreRoleProcessorsInvoker {
 
-    private final StoreRoleProcessorsInvoker processorsInvoker;
+    private List<StoreRoleProcessor> processors = Collections.emptyList();
 
     private final StoreRoleRepository roleRepository;
 
-    public DefaultStoreRoleService(StoreRoleProcessorsInvoker processorsInvoker, StoreRoleRepository roleRepository) {
-        this.processorsInvoker = processorsInvoker;
+    public DefaultStoreRoleService(StoreRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+    }
+
+    public void setProcessors(List<StoreRoleProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
     }
 
     @Override
@@ -51,9 +57,8 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Override
     public StoreRole addRole(StoreRole role) {
         return Function.<StoreRole>identity()
-                .compose(this.processorsInvoker::invokePostProcessAddRole)
                 .compose(this.roleRepository::save)
-                .compose(this.processorsInvoker::invokePreProcessAddRole)
+                .compose(this::invokePreProcessBeforeAddRole)
                 .apply(role);
     }
 
@@ -66,10 +71,10 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Override
     public StoreRole updateRole(StoreRole role) {
         return Function.<StoreRole>identity()
-                .compose(this.processorsInvoker::invokePostProcessUpdateRole)
                 .compose(this.roleRepository::save)
+                .compose(this::invokePreProcessAfterUpdateRole)
                 .<StoreRole>compose(target -> this.copyFrom(role, target))
-                .compose(this.processorsInvoker::invokePreProcessUpdateRole)
+                .compose(this::invokePreProcessBeforeUpdateRole)
                 .compose(this::requiredRole)
                 .apply(role.getId());
     }
@@ -82,7 +87,7 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Override
     public void deleteRole(String roleId) {
         var role = Function.<StoreRole>identity()
-                .compose(this.processorsInvoker::invokePreProcessDeleteRole)
+                .compose(this::invokePreProcessBeforeDeleteRole)
                 .compose(this::requiredRole)
                 .apply(roleId);
         this.roleRepository.delete(role);
@@ -101,5 +106,33 @@ public class DefaultStoreRoleService implements StoreRoleService {
     @Override
     public SliceList<StoreRole> getRoles(StoreRoleQuery query) {
         return this.roleRepository.findAll(query);
+    }
+
+    @Override
+    public StoreRole invokePreProcessBeforeAddRole(StoreRole role) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreRoleProcessor::preProcessBeforeAddRole)
+                .apply(role);
+    }
+
+    @Override
+    public StoreRole invokePreProcessBeforeUpdateRole(StoreRole role) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreRoleProcessor::preProcessBeforeUpdateRole)
+                .apply(role);
+    }
+
+    @Override
+    public StoreRole invokePreProcessAfterUpdateRole(StoreRole role) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreRoleProcessor::preProcessAfterUpdateRole)
+                .apply(role);
+    }
+
+    @Override
+    public StoreRole invokePreProcessBeforeDeleteRole(StoreRole role) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreRoleProcessor::preProcessBeforeDeleteRole)
+                .apply(role);
     }
 }

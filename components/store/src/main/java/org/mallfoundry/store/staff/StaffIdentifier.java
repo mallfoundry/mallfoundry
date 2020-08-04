@@ -25,7 +25,7 @@ public class StaffIdentifier implements StaffProcessor {
     private static final String STAFF_ID_VALUE_NAME = "store.staff.id";
 
     @Override
-    public Staff preProcessAddStaff(Staff staff) {
+    public Staff preProcessBeforeAddStaff(Staff staff) {
         staff.setId(PrimaryKeyHolder.next(STAFF_ID_VALUE_NAME));
         return staff;
     }

@@ -18,5 +18,31 @@
 
 package org.mallfoundry.store;
 
-public interface StoreProcessor {
+import org.mallfoundry.processor.Processor;
+
+public interface StoreProcessor extends Processor {
+
+    default Store preProcessBeforeCreateStore(Store store) {
+        return store;
+    }
+
+    default Store preProcessBeforeUpdateStore(Store store) {
+        return store;
+    }
+
+    default Store preProcessBeforeCancelStore(Store store) {
+        return store;
+    }
+
+    default Store preProcessBeforeExistsStore(Store store) {
+        return store;
+    }
+
+    default StoreQuery preProcessBeforeGetStores(StoreQuery query) {
+        return query;
+    }
+
+    default Store postProcessAfterGetStore(Store store) {
+        return store;
+    }
 }

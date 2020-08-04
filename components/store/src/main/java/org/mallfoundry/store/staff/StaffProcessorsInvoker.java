@@ -18,36 +18,13 @@
 
 package org.mallfoundry.store.staff;
 
-import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.processor.ProcessorsInvoker;
+public interface StaffProcessorsInvoker {
 
-import java.util.List;
+    Staff invokePreProcessBeforeAddStaff(Staff staff);
 
-public class StaffProcessorsInvoker {
+    Staff invokePreProcessBeforeUpdateStaff(Staff staff);
 
-    private final List<StaffProcessor> processors;
+    Staff invokePreProcessAfterUpdateStaff(Staff staff);
 
-    public StaffProcessorsInvoker(List<StaffProcessor> processors) {
-        this.processors = ListUtils.emptyIfNull(processors);
-    }
-
-    public Staff invokePreProcessAddStaff(Staff staff) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, staff, StaffProcessor::preProcessAddStaff);
-    }
-
-    public Staff invokePostProcessAddStaff(Staff staff) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, staff, StaffProcessor::postProcessAddStaff);
-    }
-
-    public Staff invokePreProcessUpdateStaff(Staff staff) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, staff, StaffProcessor::preProcessUpdateStaff);
-    }
-
-    public Staff invokePostProcessUpdateStaff(Staff staff) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, staff, StaffProcessor::postProcessUpdateStaff);
-    }
-
-    public Staff invokePreProcessDeleteStaff(Staff staff) {
-        return ProcessorsInvoker.invokeBiFunctionProcessors(this.processors, staff, StaffProcessor::preProcessDeleteStaff);
-    }
+    Staff invokePreProcessBeforeDeleteStaff(Staff staff);
 }

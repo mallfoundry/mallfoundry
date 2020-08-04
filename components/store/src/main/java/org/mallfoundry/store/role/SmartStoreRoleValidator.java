@@ -33,13 +33,13 @@ public class SmartStoreRoleValidator implements StoreRoleProcessor {
     }
 
     @Override
-    public StoreRole postProcessAddRole(StoreRole role) {
+    public StoreRole preProcessBeforeAddRole(StoreRole role) {
         this.validate(role);
         return role;
     }
 
     @Override
-    public StoreRole postProcessUpdateRole(StoreRole role) {
+    public StoreRole preProcessAfterUpdateRole(StoreRole role) {
         this.validate(role);
         return role;
     }

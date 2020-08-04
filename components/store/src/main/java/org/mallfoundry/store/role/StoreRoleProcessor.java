@@ -20,23 +20,19 @@ package org.mallfoundry.store.role;
 
 public interface StoreRoleProcessor {
 
-    default StoreRole preProcessAddRole(StoreRole role) {
+    default StoreRole preProcessBeforeAddRole(StoreRole role) {
         return role;
     }
 
-    default StoreRole postProcessAddRole(StoreRole role) {
+    default StoreRole preProcessBeforeUpdateRole(StoreRole role) {
         return role;
     }
 
-    default StoreRole preProcessUpdateRole(StoreRole role) {
+    default StoreRole preProcessAfterUpdateRole(StoreRole role) {
         return role;
     }
 
-    default StoreRole postProcessUpdateRole(StoreRole role) {
-        return role;
-    }
-
-    default StoreRole preProcessDeleteRole(StoreRole role) {
+    default StoreRole preProcessBeforeDeleteRole(StoreRole role) {
         return role;
     }
 }

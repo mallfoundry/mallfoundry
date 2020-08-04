@@ -20,23 +20,19 @@ package org.mallfoundry.store.staff;
 
 public interface StaffProcessor {
 
-    default Staff preProcessAddStaff(Staff staff) {
+    default Staff preProcessBeforeAddStaff(Staff staff) {
         return staff;
     }
 
-    default Staff postProcessAddStaff(Staff staff) {
+    default Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }
 
-    default Staff preProcessUpdateStaff(Staff staff) {
+    default Staff preProcessAfterUpdateStaff(Staff staff) {
         return staff;
     }
 
-    default Staff postProcessUpdateStaff(Staff staff) {
-        return staff;
-    }
-
-    default Staff preProcessDeleteStaff(Staff staff) {
+    default Staff preProcessBeforeDeleteStaff(Staff staff) {
         return staff;
     }
 }

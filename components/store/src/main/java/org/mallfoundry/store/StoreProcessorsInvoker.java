@@ -18,5 +18,17 @@
 
 package org.mallfoundry.store;
 
-public class StoreProcessorsInvoker {
+public interface StoreProcessorsInvoker {
+
+    Store invokePreProcessBeforeCreateStore(Store store);
+
+    Store invokePreProcessBeforeUpdateStore(Store store);
+
+    Store invokePreProcessBeforeCancelStore(Store store);
+
+    Store invokePreProcessBeforeExistsStore(Store store);
+
+    StoreQuery invokePreProcessBeforeGetStores(StoreQuery query);
+
+    Store invokePostProcessAfterGetStore(Store store);
 }

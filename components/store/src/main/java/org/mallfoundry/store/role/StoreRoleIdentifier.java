@@ -25,7 +25,7 @@ public class StoreRoleIdentifier implements StoreRoleProcessor {
     private static final String ROLE_ID_VALUE_NAME = "store.role.id";
 
     @Override
-    public StoreRole preProcessAddRole(StoreRole role) {
+    public StoreRole preProcessBeforeAddRole(StoreRole role) {
         role.setId(PrimaryKeyHolder.next(ROLE_ID_VALUE_NAME));
         return role;
     }

@@ -31,21 +31,21 @@ public class StoreRoleAuthorizer implements StoreRoleProcessor {
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + StoreRoleAuthorities.STORE_ROLE_ADD + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessAddRole(StoreRole role) {
-        return role;
+    public StoreRole preProcessBeforeAddRole(StoreRole role) {
+        return null;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + StoreRoleAuthorities.STORE_ROLE_UPDATE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessUpdateRole(StoreRole role) {
-        return role;
+    public StoreRole preProcessBeforeUpdateRole(StoreRole role) {
+        return null;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + StoreRoleAuthorities.STORE_ROLE_DELETE + "," + StoreRoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
-    public StoreRole preProcessDeleteRole(StoreRole role) {
-        return role;
+    public StoreRole preProcessBeforeDeleteRole(StoreRole role) {
+        return null;
     }
 }

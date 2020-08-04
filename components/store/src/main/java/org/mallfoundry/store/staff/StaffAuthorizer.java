@@ -31,21 +31,21 @@ public class StaffAuthorizer implements StaffProcessor {
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + StaffAuthorities.STAFF_ADD + "," + StaffAuthorities.STAFF_MANAGE + "')")
     @Override
-    public Staff preProcessAddStaff(Staff staff) {
+    public Staff preProcessBeforeAddStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + StaffAuthorities.STAFF_UPDATE + "," + StaffAuthorities.STAFF_MANAGE + "')")
     @Override
-    public Staff preProcessUpdateStaff(Staff staff) {
+    public Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + StaffAuthorities.STAFF_DELETE + "," + StaffAuthorities.STAFF_MANAGE + "')")
     @Override
-    public Staff preProcessDeleteStaff(Staff staff) {
+    public Staff preProcessBeforeDeleteStaff(Staff staff) {
         return staff;
     }
 }

@@ -18,22 +18,27 @@
 
 package org.mallfoundry.store;
 
+import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.ProcessorStreams;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
+import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
-@Service
-public class DefaultStoreService implements StoreService {
+public class DefaultStoreService implements StoreService, StoreProcessorsInvoker {
 
     private final StoreConfiguration storeConfiguration;
+
+    private List<StoreProcessor> processors = Collections.emptyList();
 
     private final StoreBlobService storeBlobService;
 
@@ -51,6 +56,10 @@ public class DefaultStoreService implements StoreService {
         this.storeBlobService = storeBlobService;
     }
 
+    public void setProcessors(List<StoreProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
+    }
+
     @Override
     public StoreQuery createStoreQuery() {
         return new DefaultStoreQuery();
@@ -64,7 +73,8 @@ public class DefaultStoreService implements StoreService {
     @Transactional
     @Override
     public Store createStore(Store store) {
-        store.setOwnerId(SubjectHolder.getSubject().getId());
+        store = this.invokePreProcessBeforeCreateStore(store);
+        store.changeOwner(SubjectHolder.getSubject().getId());
         if (Objects.isNull(store.getLogo())) {
             store.setLogo(storeConfiguration.getDefaultLogo());
         }
@@ -75,39 +85,110 @@ public class DefaultStoreService implements StoreService {
         return savedStore;
     }
 
+    private Store requiredStore(String storeId) {
+        return this.storeRepository.findById(storeId).orElseThrow();
+    }
+
+    private Store updateStore(final Store source, final Store dest) {
+        Copies.notBlank(source::getName).trim(dest::setName);
+        Copies.notBlank(source::getLogo).trim(dest::setLogo);
+        Copies.notBlank(source::getIndustry).trim(dest::setIndustry);
+        Copies.notBlank(source::getDescription).trim(dest::setDescription);
+        return dest;
+    }
+
     @Transactional
     @Override
-    public Store updateStore(Store store) {
-        return this.storeRepository.save(store);
+    public Store updateStore(Store source) {
+        return Function.<Store>identity()
+                .compose(this.storeRepository::save)
+                .<Store>compose(aStore -> this.updateStore(source, aStore))
+                .compose(this::invokePreProcessBeforeUpdateStore)
+                .compose(this::requiredStore)
+                .compose(Store::getId)
+                .apply(source);
     }
 
     @Transactional
     @Override
     public void cancelStore(String storeId) {
-        var store = this.storeRepository.findById(storeId).orElseThrow();
-        this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
+        var store = Function.<Store>identity()
+                .compose(this::invokePreProcessBeforeCancelStore)
+                .compose(this::requiredStore)
+                .apply(storeId);
         this.storeRepository.delete(store);
+        this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean existsStore(String id) {
-        return this.storeRepository.findById(id).isPresent();
+        return this.storeRepository.findById(id)
+                .map(this::invokePreProcessBeforeExistsStore)
+                .isPresent();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<Store> getStore(String id) {
-        return this.storeRepository.findById(id);
+        return this.storeRepository.findById(id)
+                .map(this::invokePostProcessAfterGetStore);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SliceList<Store> getStores(StoreQuery query) {
-        return this.storeRepository.findAll(query);
+        return Function.<SliceList<Store>>identity()
+                .compose(this.storeRepository::findAll)
+                .compose(this::invokePreProcessBeforeGetStores)
+                .apply(query);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Store> getStores(Collection<String> ids) {
         return this.storeRepository.findAllById(ids);
     }
 
+    @Override
+    public Store invokePreProcessBeforeCreateStore(Store store) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::preProcessBeforeCreateStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforeUpdateStore(Store store) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::preProcessBeforeUpdateStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforeCancelStore(Store store) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::preProcessBeforeCancelStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforeExistsStore(Store store) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::preProcessBeforeExistsStore)
+                .apply(store);
+    }
+
+    @Override
+    public StoreQuery invokePreProcessBeforeGetStores(StoreQuery query) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::preProcessBeforeGetStores)
+                .apply(query);
+    }
+
+    @Override
+    public Store invokePostProcessAfterGetStore(Store store) {
+        return ProcessorStreams.stream(processors)
+                .map(StoreProcessor::postProcessAfterGetStore)
+                .apply(store);
+    }
 }

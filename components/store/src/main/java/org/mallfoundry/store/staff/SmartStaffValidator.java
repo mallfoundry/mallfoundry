@@ -33,13 +33,13 @@ public class SmartStaffValidator implements StaffProcessor {
     }
 
     @Override
-    public Staff postProcessAddStaff(Staff staff) {
+    public Staff preProcessBeforeAddStaff(Staff staff) {
         this.validate(staff);
         return staff;
     }
 
     @Override
-    public Staff postProcessUpdateStaff(Staff staff) {
+    public Staff preProcessAfterUpdateStaff(Staff staff) {
         this.validate(staff);
         return staff;
     }

@@ -19,15 +19,23 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.ProcessorStreams;
 
+import java.util.List;
 import java.util.Optional;
 
-public class DefaultStoreAddressService implements StoreAddressService {
+public class DefaultStoreAddressService implements StoreAddressService, StoreAddressProcessorsInvoker {
+
+    private List<StoreAddressProcessor> processors;
 
     private final StoreAddressRepository addressRepository;
 
     public DefaultStoreAddressService(StoreAddressRepository addressRepository) {
         this.addressRepository = addressRepository;
+    }
+
+    public void setProcessors(List<StoreAddressProcessor> processors) {
+        this.processors = processors;
     }
 
     @Override
@@ -68,5 +76,40 @@ public class DefaultStoreAddressService implements StoreAddressService {
     @Override
     public SliceList<StoreAddress> getAddresses(StoreAddressQuery query) {
         return this.addressRepository.findAll(query);
+    }
+
+    @Override
+    public StoreAddress invokePreProcessBeforeAddAddress(StoreAddress address) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreAddressProcessor::preProcessBeforeAddAddress)
+                .apply(address);
+    }
+
+    @Override
+    public StoreAddress invokePreProcessBeforeUpdateAddress(StoreAddress address) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreAddressProcessor::preProcessBeforeUpdateAddress)
+                .apply(address);
+    }
+
+    @Override
+    public StoreAddress invokePreProcessBeforeDeleteAddress(StoreAddress address) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreAddressProcessor::preProcessBeforeDeleteAddress)
+                .apply(address);
+    }
+
+    @Override
+    public StoreAddressQuery invokePreProcessBeforeGetAddresses(StoreAddressQuery query) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreAddressProcessor::preProcessBeforeGetAddresses)
+                .apply(query);
+    }
+
+    @Override
+    public StoreAddress invokePostProcessAfterGetAddress(StoreAddress address) {
+        return ProcessorStreams.stream(this.processors)
+                .map(StoreAddressProcessor::postProcessAfterGetAddress)
+                .apply(address);
     }
 }

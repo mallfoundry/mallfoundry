@@ -41,7 +41,7 @@ public interface ImmutableFollowStore extends FollowStore {
     }
 
     @Override
-    default void setOwnerId(String ownerId) {
+    default void changeOwner(String ownerId) {
 
     }
 

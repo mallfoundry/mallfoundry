@@ -18,27 +18,15 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.processor.Processor;
+public interface ProductCollectionProcessorsInvoker {
 
-public interface StoreAddressProcessor extends Processor {
+    ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection);
 
-    default StoreAddress preProcessBeforeAddAddress(StoreAddress address) {
-        return address;
-    }
+    ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection);
 
-    default StoreAddress preProcessBeforeUpdateAddress(StoreAddress address) {
-        return address;
-    }
+    ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection);
 
-    default StoreAddress preProcessBeforeDeleteAddress(StoreAddress address) {
-        return address;
-    }
+    ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query);
 
-    default StoreAddressQuery preProcessBeforeGetAddresses(StoreAddressQuery query) {
-        return query;
-    }
-
-    default StoreAddress postProcessAfterGetAddress(StoreAddress address) {
-        return address;
-    }
+    ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection);
 }
