@@ -28,9 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CollectionTests {
 
     @Autowired
-    private StoreCollectionService collectionService;
+    private ProductCollectionService collectionService;
 
-    private StoreCollection createCollection(String storeId, String name) {
+    private ProductCollection createCollection(String storeId, String name) {
         return this.collectionService.createCollection(null).toBuilder().storeId(storeId).name(name).build();
     }
 

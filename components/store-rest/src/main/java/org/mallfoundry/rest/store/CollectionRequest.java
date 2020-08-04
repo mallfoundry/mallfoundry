@@ -20,7 +20,7 @@ package org.mallfoundry.rest.store;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.store.StoreCollection;
+import org.mallfoundry.store.ProductCollection;
 
 @Getter
 @Setter
@@ -28,12 +28,12 @@ public class CollectionRequest {
 
     private String name;
 
-    public StoreCollection assignToCollection(StoreCollection collection) {
+    public ProductCollection assignToCollection(ProductCollection collection) {
         collection.setName(this.name);
         return collection;
     }
 
-    public StoreCollection assignTo(StoreCollection collection) {
+    public ProductCollection assignTo(ProductCollection collection) {
         return collection.toBuilder().name(this.name).build();
     }
 }

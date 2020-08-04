@@ -18,8 +18,8 @@
 
 package org.mallfoundry.rest.store;
 
-import org.mallfoundry.store.StoreCollection;
-import org.mallfoundry.store.StoreCollectionService;
+import org.mallfoundry.store.ProductCollection;
+import org.mallfoundry.store.ProductCollectionService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +35,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 public class CollectionResourceV1 {
-    private final StoreCollectionService collectionService;
+    private final ProductCollectionService collectionService;
 
-    public CollectionResourceV1(StoreCollectionService collectionService) {
+    public CollectionResourceV1(ProductCollectionService collectionService) {
         this.collectionService = collectionService;
     }
 
     @PostMapping("/stores/{store_id}/collections")
-    public StoreCollection addCollection(@PathVariable("store_id") String storeId,
-                                         @RequestBody CollectionRequest request) {
+    public ProductCollection addCollection(@PathVariable("store_id") String storeId,
+                                           @RequestBody CollectionRequest request) {
         return this.collectionService.addCollection(
                 request.assignToCollection(
                         this.collectionService.createCollection(null).toBuilder().storeId(storeId).build()));
@@ -69,7 +69,7 @@ public class CollectionResourceV1 {
     }
 
     @GetMapping("/stores/{store_id}/collections")
-    public List<StoreCollection> getCollections(@PathVariable("store_id") String storeId) {
+    public List<ProductCollection> getCollections(@PathVariable("store_id") String storeId) {
         return this.collectionService.getCollections(storeId);
     }
 
