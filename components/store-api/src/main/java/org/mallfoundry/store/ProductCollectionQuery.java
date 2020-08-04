@@ -18,5 +18,5 @@
 
 package org.mallfoundry.store;
 
-public interface StoreCollectionProcessor {
+public interface ProductCollectionQuery extends StoreQueryBase {
 }

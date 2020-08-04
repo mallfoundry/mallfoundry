@@ -18,20 +18,41 @@
 
 package org.mallfoundry.store;
 
-import java.util.List;
-import java.util.Optional;
+import org.mallfoundry.util.ObjectBuilder;
+import org.mallfoundry.util.Position;
 
-public interface StoreCollectionService {
+import java.util.Date;
 
-    StoreCollection createCollection(String id);
+public interface ProductCollection extends Position, ObjectBuilder.ToBuilder<ProductCollection.Builder> {
 
-    StoreCollection addCollection(StoreCollection collection);
+    String getId();
 
-    StoreCollection updateCollection(StoreCollection collection);
+    void setId(String id);
 
-    void deleteCollection(String id);
+    String getStoreId();
 
-    Optional<StoreCollection> getCollection(String id);
+    void setStoreId(String storeId);
 
-    List<StoreCollection> getCollections(String storeId);
+    String getName();
+
+    void setName(String name);
+
+    int getProducts();
+
+    void setProducts(int products);
+
+    Date getCreatedTime();
+
+    void create();
+
+    interface Builder extends ObjectBuilder<ProductCollection> {
+
+        Builder id(String id);
+
+        Builder storeId(String storeId);
+
+        Builder name(String name);
+
+        Builder products(int products);
+    }
 }
