@@ -19,15 +19,14 @@
 package org.mallfoundry.store.member;
 
 import org.mallfoundry.identity.Gender;
+import org.mallfoundry.ownership.StoreOwnership;
 
 import java.util.Date;
 import java.util.List;
 
-public interface StoreMember {
+public interface Member extends StoreOwnership {
 
     String getId();
-
-    String getStoreId();
 
     String getCountryCode();
 

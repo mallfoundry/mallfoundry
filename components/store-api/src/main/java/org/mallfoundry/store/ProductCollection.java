@@ -18,18 +18,17 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 import java.util.Date;
 
-public interface ProductCollection extends Position, ObjectBuilder.ToBuilder<ProductCollection.Builder> {
+public interface ProductCollection extends StoreOwnership, Position, ObjectBuilder.ToBuilder<ProductCollection.Builder> {
 
     String getId();
 
     void setId(String id);
-
-    String getStoreId();
 
     void setStoreId(String storeId);
 

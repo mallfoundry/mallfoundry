@@ -18,17 +18,16 @@
 
 package org.mallfoundry.store.staff;
 
+import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.store.role.Role;
 
 import java.util.List;
 
-public interface Staff {
+public interface Staff extends StoreOwnership {
 
     String getId();
 
     void setId(String id);
-
-    String getStoreId();
 
     void setStoreId(String storeId);
 

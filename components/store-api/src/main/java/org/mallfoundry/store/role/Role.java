@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store.role;
 
+import org.mallfoundry.ownership.StoreOwnership;
+
 import java.util.List;
 
 /**
@@ -25,13 +27,11 @@ import java.util.List;
  *
  * @author Zhi Tang
  */
-public interface Role {
+public interface Role extends StoreOwnership {
 
     String getId();
 
     void setId(String id);
-
-    String getStoreId();
 
     void setStoreId(String storeId);
 
