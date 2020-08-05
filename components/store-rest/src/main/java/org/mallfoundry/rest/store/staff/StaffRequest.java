@@ -16,15 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.rest.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.store.staff.Staff;
 
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
+@Getter
+@Setter
+public class StaffRequest {
+    private String id;
+    private String name;
+    private String number;
+    private String countryCode;
+    private String phone;
 
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
+    public Staff assignTo(Staff staff) {
+        return staff.toBuilder()
+                .id(this.id).name(this.name).number(number)
+                .countryCode(this.countryCode).phone(this.phone)
+                .build();
     }
 }

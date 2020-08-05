@@ -27,23 +27,25 @@ public interface StaffService {
 
     StaffQuery createStaffQuery();
 
-    Staff createStaff(String staffId);
+    StaffId createStaffId(String storeId, String staffId);
+
+    Staff createStaff(StaffId id);
 
     Staff addStaff(Staff staff);
 
     Staff updateStaff(Staff staff);
 
-    void deleteStaff(String staffId);
+    void deleteStaff(StaffId staffId);
 
-    Optional<Staff> getStaff(String staffId);
+    Optional<Staff> getStaff(StaffId staffId);
 
     SliceList<Staff> getStaffs(StaffQuery query);
 
-    void addStaffRole(String staffId, String roleId);
+    void addStaffRole(StaffId staffId, String roleId);
 
-    void addStaffRoles(String staffId, Set<String> roleIds);
+    void addStaffRoles(StaffId staffId, Set<String> roleIds);
 
-    void removeStaffRole(String staffId, String roleId);
+    void removeStaffRole(StaffId staffId, String roleId);
 
-    void removeStaffRoles(String staffId, Set<String> roleIds);
+    void removeStaffRoles(StaffId staffId, Set<String> roleIds);
 }

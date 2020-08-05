@@ -20,9 +20,10 @@ package org.mallfoundry.store.staff;
 
 import org.mallfoundry.store.role.Role;
 
+import java.util.Date;
 import java.util.List;
 
-public abstract class StaffSupport implements Staff {
+public abstract class StaffSupport implements MutableStaff {
 
     @Override
     public void addRole(Role role) {
@@ -42,5 +43,65 @@ public abstract class StaffSupport implements Staff {
     @Override
     public void removeRoles(List<Role> roles) {
 
+    }
+
+    @Override
+    public void create() {
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+        private final StaffSupport staff;
+
+        protected BuilderSupport(StaffSupport staff) {
+            this.staff = staff;
+        }
+
+        @Override
+        public Builder id(String id) {
+            this.staff.setId(id);
+            return this;
+        }
+
+        @Override
+        public Builder number(String number) {
+            this.staff.setNumber(number);
+            return this;
+        }
+
+        @Override
+        public Builder name(String name) {
+            this.staff.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder avatar(String avatar) {
+            this.staff.setAvatar(avatar);
+            return this;
+        }
+
+        @Override
+        public Builder countryCode(String countryCode) {
+            this.staff.setCountryCode(countryCode);
+            return this;
+        }
+
+        @Override
+        public Builder phone(String phone) {
+            this.staff.setPhone(phone);
+            return this;
+        }
+
+        @Override
+        public Staff build() {
+            return this.staff;
+        }
     }
 }

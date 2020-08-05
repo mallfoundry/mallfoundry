@@ -18,13 +18,20 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+import java.util.List;
 
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
+import static org.mallfoundry.i18n.MessageHolder.message;
 
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
+public abstract class StaffMessages {
+
+    private static final String STORE_STAFF_ALREADY_EXISTS_MESSAGE_CODE_KEY = "store.staff.Staff.alreadyExists";
+    private static final String STORE_STAFF_NOT_FOUND_MESSAGE_CODE_KEY = "store.staff.Staff.notFound";
+
+    public static String alreadyExists(String staffId) {
+        return message(STORE_STAFF_ALREADY_EXISTS_MESSAGE_CODE_KEY, List.of(staffId), String.format("Staff %s already exists", staffId));
+    }
+
+    public static String notFound(String staffId) {
+        return message(STORE_STAFF_NOT_FOUND_MESSAGE_CODE_KEY, List.of(staffId), String.format("User %s not found", staffId));
     }
 }

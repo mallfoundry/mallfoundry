@@ -21,6 +21,7 @@ package org.mallfoundry.store.staff.repository.jpa;
 import org.mallfoundry.store.staff.StaffQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -30,7 +31,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 @Repository
-public interface JpaStaffRepository extends JpaRepository<JpaStaff, String>, JpaSpecificationExecutor<JpaStaff> {
+public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>, JpaSpecificationExecutor<JpaStaff> {
 
     default Specification<JpaStaff> createSpecification(StaffQuery staffQuery) {
         return (root, query, criteriaBuilder) -> {
@@ -45,6 +46,7 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, String>, Jpa
     }
 
     default Page<JpaStaff> findAll(StaffQuery query) {
-        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
+        return this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime").ascending()));
     }
 }

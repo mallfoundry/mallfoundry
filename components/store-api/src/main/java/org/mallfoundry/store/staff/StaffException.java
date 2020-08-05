@@ -16,9 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.util;
+package org.mallfoundry.store.staff;
 
-public interface EventPublisher {
-    default void publishEvent(Object event) {
+public class StaffException extends RuntimeException {
+
+    public StaffException(String message) {
+        super(message);
     }
 }

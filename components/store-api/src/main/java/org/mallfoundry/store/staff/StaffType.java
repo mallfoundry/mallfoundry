@@ -18,13 +18,6 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
-
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
-
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
-    }
+public enum StaffType {
+    OWNER, STAFF
 }

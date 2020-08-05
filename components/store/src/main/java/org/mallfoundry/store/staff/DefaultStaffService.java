@@ -20,8 +20,11 @@ package org.mallfoundry.store.staff;
 
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.role.RoleService;
+import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -30,18 +33,20 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 public class DefaultStaffService implements StaffService, StaffProcessorInvoker {
 
     private List<StaffProcessor> processors = Collections.emptyList();
+
+    private final UserService userService;
 
     private final RoleService storeRoleService;
 
     private final StaffRepository staffRepository;
 
-    public DefaultStaffService(RoleService storeRoleService,
+    public DefaultStaffService(UserService userService,
+                               RoleService storeRoleService,
                                StaffRepository staffRepository) {
+        this.userService = userService;
         this.storeRoleService = storeRoleService;
         this.staffRepository = staffRepository;
     }
@@ -56,8 +61,29 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     }
 
     @Override
-    public Staff createStaff(String staffId) {
+    public StaffId createStaffId(String storeId, String staffId) {
+        return new ImmutableStaffId(storeId, staffId);
+    }
+
+    @Override
+    public Staff createStaff(StaffId staffId) {
         return this.staffRepository.create(staffId);
+    }
+
+    private User requiredUser(String staffId) {
+        return this.userService.getUser(staffId)
+                .orElseThrow(() -> StaffExceptions.notFound(staffId));
+    }
+
+    private Staff addStaffPeek(Staff staff) {
+        var exists = this.staffRepository.findById(this.createStaffId(staff.getStoreId(), staff.getId())).isPresent();
+        if (exists) {
+            throw StaffExceptions.alreadyExists(staff.getId());
+        }
+        var user = this.requiredUser(staff.getId());
+        staff.setAvatar(user.getAvatar());
+        staff.create();
+        return staff;
     }
 
     @Transactional
@@ -65,15 +91,17 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     public Staff addStaff(Staff staff) {
         return Function.<Staff>identity()
                 .compose(this.staffRepository::save)
+                .compose(this::addStaffPeek)
                 .compose(this::invokePreProcessBeforeAddStaff)
                 .apply(staff);
     }
 
-    private Staff copyFrom(Staff source, Staff target) {
-        if (isNotBlank(source.getName())) {
-            target.setName(source.getName());
-        }
-        return target;
+    private Staff updateStaff(Staff source, Staff dest) {
+        Copies.notBlank(source::getName).trim(dest::setName);
+        Copies.notBlank(source::getNumber).trim(dest::setNumber);
+        Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
+        Copies.notBlank(source::getPhone).trim(dest::setPhone);
+        return dest;
     }
 
     @Transactional
@@ -82,19 +110,19 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
         return Function.<Staff>identity()
                 .compose(this.staffRepository::save)
                 .compose(this::invokePreProcessAfterUpdateStaff)
-                .<Staff>compose(target -> this.copyFrom(newStaff, target))
+                .<Staff>compose(target -> this.updateStaff(newStaff, target))
                 .compose(this::invokePreProcessBeforeUpdateStaff)
                 .compose(this::requiredStaff)
-                .apply(newStaff.getId());
+                .apply(this.createStaffId(newStaff.getStoreId(), newStaff.getId()));
     }
 
-    private Staff requiredStaff(String staffId) {
+    private Staff requiredStaff(StaffId staffId) {
         return this.getStaff(staffId).orElseThrow();
     }
 
     @Transactional
     @Override
-    public void deleteStaff(String staffId) {
+    public void deleteStaff(StaffId staffId) {
         var staff = Function.<Staff>identity()
                 .compose(this::invokePreProcessBeforeDeleteStaff)
                 .compose(this::requiredStaff)
@@ -103,7 +131,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     }
 
     @Override
-    public Optional<Staff> getStaff(String staffId) {
+    public Optional<Staff> getStaff(StaffId staffId) {
         return this.staffRepository.findById(staffId);
     }
 
@@ -114,13 +142,13 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
 
     @Transactional
     @Override
-    public void addStaffRole(String staffId, String roleId) {
+    public void addStaffRole(StaffId staffId, String roleId) {
         this.addStaffRoles(staffId, Set.of(roleId));
     }
 
     @Transactional
     @Override
-    public void addStaffRoles(String staffId, Set<String> roleIds) {
+    public void addStaffRoles(StaffId staffId, Set<String> roleIds) {
         var staff = this.requiredStaff(staffId);
         var roles = this.storeRoleService.getRoles(roleIds);
         staff.addRoles(roles);
@@ -128,13 +156,13 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
 
     @Transactional
     @Override
-    public void removeStaffRole(String staffId, String roleId) {
+    public void removeStaffRole(StaffId staffId, String roleId) {
         this.removeStaffRoles(staffId, Set.of(roleId));
     }
 
     @Transactional
     @Override
-    public void removeStaffRoles(String staffId, Set<String> roleIds) {
+    public void removeStaffRoles(StaffId staffId, Set<String> roleIds) {
         var staff = this.requiredStaff(staffId);
         var roles = this.storeRoleService.getRoles(roleIds);
         staff.removeRoles(roles);

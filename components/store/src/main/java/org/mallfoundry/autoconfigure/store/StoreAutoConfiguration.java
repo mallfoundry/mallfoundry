@@ -26,7 +26,6 @@ import org.mallfoundry.store.StoreRepository;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -54,9 +53,8 @@ public class StoreAutoConfiguration {
                                                    @Autowired(required = false)
                                                    @Lazy List<StoreProcessor> processors,
                                                    StoreBlobService storeBlobService,
-                                                   StoreRepository storeRepository,
-                                                   ApplicationEventPublisher eventPublisher) {
-        var service = new DefaultStoreService(storeConfiguration, storeBlobService, storeRepository, eventPublisher);
+                                                   StoreRepository storeRepository) {
+        var service = new DefaultStoreService(storeConfiguration, storeBlobService, storeRepository);
         service.setProcessors(processors);
         return service;
     }

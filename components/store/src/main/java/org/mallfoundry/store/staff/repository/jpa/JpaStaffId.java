@@ -16,35 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store.staff.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.QueryBuilderSupport;
-import org.mallfoundry.data.QuerySupport;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
-public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
+@NoArgsConstructor
+public class JpaStaffId implements Serializable {
     private String storeId;
+    private String id;
 
-    @Override
-    public Builder toBuilder() {
-        return new DefaultBuilder(this);
+    public JpaStaffId(String storeId, String id) {
+        this.storeId = storeId;
+        this.id = id;
     }
 
-    public static class DefaultBuilder extends QueryBuilderSupport<StaffQuery, Builder> implements Builder {
-        private final DefaultStaffQuery query;
-
-        public DefaultBuilder(DefaultStaffQuery query) {
-            super(query);
-            this.query = query;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
         }
-
-        @Override
-        public Builder storeId(String storeId) {
-            this.query.setStoreId(storeId);
-            return this;
+        if (!(object instanceof JpaStaffId)) {
+            return false;
         }
+        JpaStaffId that = (JpaStaffId) object;
+        return Objects.equals(storeId, that.storeId) && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, id);
     }
 }

@@ -30,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -37,42 +38,62 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@IdClass(JpaStaffId.class)
 @Table(name = "mf_store_staff")
 public class JpaStaff extends StaffSupport {
 
-    @NotBlank
     @Id
+    @NotBlank
     @Column(name = "id_")
     private String id;
 
+    @Id
     @NotBlank
-    @Column(name = "store_d_")
+    @Column(name = "store_id_")
     private String storeId;
 
     @NotBlank
     @Column(name = "name_")
     private String name;
 
+    @Column(name = "number_")
+    private String number;
+
     @NotBlank
     @Column(name = "avatar_")
     private String avatar;
 
+    @NotBlank
+    @Column(name = "country_code_")
+    private String countryCode;
+
+    @NotBlank
+    @Column(name = "phone_")
+    private String phone;
+
     @NotNull
     @OneToMany(targetEntity = JpaRole.class)
     @JoinTable(name = "mf_store_staff_role",
-            joinColumns =
-            @JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
+            joinColumns = {@JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
+                    @JoinColumn(name = "store_id_", referencedColumnName = "store_id_")},
             inverseJoinColumns =
             @JoinColumn(name = "role_id_", referencedColumnName = "id_"))
     private List<Role> roles = new ArrayList<>();
 
-    public JpaStaff(String id) {
+    @NotNull
+    @Column(name = "created_time_")
+    private Date createdTime;
+
+
+    public JpaStaff(String storeId, String id) {
+        this.storeId = storeId;
         this.id = id;
     }
 

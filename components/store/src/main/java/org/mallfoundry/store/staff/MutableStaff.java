@@ -18,13 +18,8 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+import java.util.Date;
 
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
-
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
-    }
+public interface MutableStaff extends Staff {
+    void setCreatedTime(Date createdTime);
 }

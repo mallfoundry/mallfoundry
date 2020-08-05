@@ -18,13 +18,13 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+public abstract class StaffExceptions {
 
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
+    public static StaffException alreadyExists(String staffId) {
+        return new StaffException(StaffMessages.alreadyExists(staffId));
+    }
 
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
+    public static StaffException notFound(String id) {
+        return new StaffException(StaffMessages.notFound(id));
     }
 }

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.role.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
 import org.mallfoundry.store.staff.SmartStaffValidatedProcessor;
@@ -28,7 +29,6 @@ import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.SmartValidator;
 
 @Configuration
@@ -40,9 +40,10 @@ public class StoreStaffConfiguration {
     }
 
     @Bean
-    public DefaultStaffService defaultStaffService(@Lazy RoleService storeRoleService,
+    public DefaultStaffService defaultStaffService(UserService userService,
+                                                   RoleService storeRoleService,
                                                    StaffRepository repository) {
-        return new DefaultStaffService(storeRoleService, repository);
+        return new DefaultStaffService(userService, storeRoleService, repository);
     }
 
     @Bean

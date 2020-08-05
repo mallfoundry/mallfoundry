@@ -24,11 +24,11 @@ import java.util.Optional;
 
 public interface StaffRepository {
 
-    Staff create(String id);
+    Staff create(StaffId id);
 
     Staff save(Staff staff);
 
-    Optional<Staff> findById(String id);
+    Optional<Staff> findById(StaffId id);
 
     SliceList<Staff> findAll(StaffQuery query);
 

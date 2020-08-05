@@ -20,16 +20,22 @@ package org.mallfoundry.store.staff;
 
 import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.store.role.Role;
+import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
 import java.util.List;
 
-public interface Staff extends StoreOwnership {
+public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Builder> {
 
     String getId();
 
     void setId(String id);
 
     void setStoreId(String storeId);
+
+    String getNumber();
+
+    void setNumber(String number);
 
     String getName();
 
@@ -38,6 +44,14 @@ public interface Staff extends StoreOwnership {
     String getAvatar();
 
     void setAvatar(String avatar);
+
+    String getCountryCode();
+
+    void setCountryCode(String countryCode);
+
+    String getPhone();
+
+    void setPhone(String phone);
 
     List<Role> getRoles();
 
@@ -48,4 +62,23 @@ public interface Staff extends StoreOwnership {
     void addRoles(List<Role> roles);
 
     void removeRoles(List<Role> roles);
+
+    Date getCreatedTime();
+
+    void create();
+
+    interface Builder extends ObjectBuilder<Staff> {
+
+        Builder id(String id);
+
+        Builder number(String number);
+
+        Builder name(String name);
+
+        Builder avatar(String avatar);
+
+        Builder countryCode(String countryCode);
+
+        Builder phone(String phone);
+    }
 }

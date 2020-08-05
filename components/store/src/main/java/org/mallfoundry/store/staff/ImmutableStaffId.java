@@ -18,13 +18,34 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+import lombok.Getter;
 
-public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
+import java.util.Objects;
 
-    interface Builder extends QueryBuilder<StaffQuery, Builder> {
-        Builder storeId(String storeId);
+@Getter
+public class ImmutableStaffId implements StaffId {
+    private final String storeId;
+    private final String staffId;
+
+    public ImmutableStaffId(String storeId, String staffId) {
+        this.storeId = storeId;
+        this.staffId = staffId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ImmutableStaffId)) {
+            return false;
+        }
+        ImmutableStaffId that = (ImmutableStaffId) object;
+        return Objects.equals(this.storeId, that.storeId) && Objects.equals(this.staffId, that.staffId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.storeId, this.staffId);
     }
 }

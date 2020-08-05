@@ -35,7 +35,7 @@ public class StaffServiceTests {
     @WithSystemUser
     @Test
     public void testAddStaff() {
-        var staff = this.staffService.createStaff("");
+        var staff = this.staffService.createStaff(null);
         staff.setStoreId("mi");
         staff.setName("我爱工作");
         var savedStaff = this.staffService.addStaff(staff);
