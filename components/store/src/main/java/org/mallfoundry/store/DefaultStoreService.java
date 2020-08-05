@@ -25,6 +25,7 @@ import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -34,7 +35,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class DefaultStoreService implements StoreService, StoreProcessorInvoker {
+public class DefaultStoreService implements StoreService, StoreProcessorInvoker, ApplicationEventPublisherAware {
 
     private final StoreConfiguration storeConfiguration;
 
@@ -44,21 +45,25 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker 
 
     private final StoreRepository storeRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
 
     public DefaultStoreService(StoreConfiguration storeConfiguration,
                                StoreBlobService storeBlobService,
-                               StoreRepository storeRepository,
-                               ApplicationEventPublisher eventPublisher) {
+                               StoreRepository storeRepository) {
         this.storeConfiguration = storeConfiguration;
         this.storeRepository = storeRepository;
-        this.eventPublisher = eventPublisher;
         this.storeBlobService = storeBlobService;
     }
 
     public void setProcessors(List<StoreProcessor> processors) {
         this.processors = ListUtils.emptyIfNull(processors);
     }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
 
     @Override
     public StoreQuery createStoreQuery() {
