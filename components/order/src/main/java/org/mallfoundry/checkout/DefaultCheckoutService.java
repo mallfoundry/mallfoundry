@@ -116,8 +116,8 @@ public class DefaultCheckoutService implements CheckoutService {
         checkout.setOrders(this.createOrders(checkout));
     }
 
-    private Address getCustomerDefaultAddress() {
-        var customerAddress = this.customerService.getDefaultAddress(SubjectHolder.getSubject().getId()).orElseThrow();
+    private Address getDefaultCustomerAddress() {
+        var customerAddress = this.customerService.getDefaultCustomerAddress(SubjectHolder.getSubject().getId()).orElseThrow();
         var address = new DefaultAddress();
         BeanUtils.copyProperties(customerAddress, address);
         return address;
@@ -128,7 +128,7 @@ public class DefaultCheckoutService implements CheckoutService {
             checkout.setId(PrimaryKeyHolder.next(CHECKOUT_ID_VALUE_NAME));
         }
         if (Objects.isNull(checkout.getShippingAddress())) {
-            checkout.setShippingAddress(this.getCustomerDefaultAddress());
+            checkout.setShippingAddress(this.getDefaultCustomerAddress());
         }
         this.setOrdersToCheckout(checkout);
         checkout.create();

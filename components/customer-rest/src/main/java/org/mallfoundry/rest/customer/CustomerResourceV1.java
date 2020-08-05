@@ -71,46 +71,46 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "添加一个顾客的收货地址对象")
     @PostMapping("/customers/{customer_id}/addresses")
-    public CustomerAddress addAddress(@PathVariable("customer_id") String customerId,
+    public CustomerAddress addCustomerAddress(@PathVariable("customer_id") String customerId,
                                       @RequestBody ShippingAddressRequest request) {
-        return this.customerService.addAddress(customerId,
+        return this.customerService.addCustomerAddress(customerId,
                 request.assignToAddress(
                         this.customerService.createCustomer(customerId).createAddress(null)));
     }
 
     @Operation(summary = "更新顾客的收货地址对象")
     @PatchMapping("/customers/{customer_id}/addresses/{address_id}")
-    public void setAddress(@PathVariable("customer_id") String customerId,
+    public void updateCustomerAddress(@PathVariable("customer_id") String customerId,
                            @PathVariable("address_id") String addressId,
                            @RequestBody ShippingAddressRequest request) {
-        this.customerService.setAddress(customerId,
+        this.customerService.updateCustomerAddress(customerId,
                 request.assignToAddress(
                         this.customerService.createCustomer(customerId).createAddress(addressId)));
     }
 
     @Operation(summary = "删除顾客的收货地址对象")
     @DeleteMapping("/customers/{customer_id}/addresses/{address_id}")
-    public void removeAddress(@PathVariable("customer_id") String id,
+    public void removeCustomerAddress(@PathVariable("customer_id") String id,
                               @PathVariable("address_id") String addressId) {
-        this.customerService.removeAddress(id, addressId);
+        this.customerService.removeCustomerAddress(id, addressId);
     }
 
     @Operation(summary = "获得顾客的收货地址对象集合")
     @GetMapping("/customers/{customer_id}/addresses")
-    public List<CustomerAddress> getAddresses(@PathVariable("customer_id") String id) {
-        return this.customerService.getAddresses(id);
+    public List<CustomerAddress> getCustomerAddresses(@PathVariable("customer_id") String id) {
+        return this.customerService.getCustomerAddresses(id);
     }
 
     @Operation(summary = "根据标识获得顾客的收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/{address_id}")
-    public Optional<CustomerAddress> getAddress(@PathVariable("customer_id") String customerId,
+    public Optional<CustomerAddress> getCustomerAddress(@PathVariable("customer_id") String customerId,
                                                 @PathVariable("address_id") String addressId) {
-        return this.customerService.getAddress(customerId, addressId);
+        return this.customerService.getCustomerAddress(customerId, addressId);
     }
 
     @Operation(summary = "根据标识获得顾客的默认收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/default")
-    public Optional<CustomerAddress> getDefaultAddress(@PathVariable("customer_id") String id) {
-        return this.customerService.getDefaultAddress(id);
+    public Optional<CustomerAddress> getDefaultCustomerAddress(@PathVariable("customer_id") String id) {
+        return this.customerService.getDefaultCustomerAddress(id);
     }
 }

@@ -24,8 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
-public class DefaultCustomerService implements CustomerService {
+public class DefaultCustomerService implements CustomerService, CustomerProcessorInvoker {
 
     private static final String ADDRESS_ID_VALUE_NAME = "customer.address.id";
 
@@ -42,13 +43,17 @@ public class DefaultCustomerService implements CustomerService {
 
     @Override
     public Optional<Customer> getCustomer(String customerId) {
-        return this.customerRepository.findById(customerId);
+        return this.customerRepository.findById(customerId)
+                .map(this::invokePostProcessAfterGetCustomer);
     }
 
     @Transactional
     @Override
     public Customer addCustomer(Customer customer) {
-        return this.customerRepository.save(customer);
+        return Function.<Customer>identity()
+                .compose(this.customerRepository::save)
+                .compose(this::invokePreProcessBeforeAddCustomer)
+                .apply(customer);
     }
 
     public Customer requiredCustomer(String customerId) {
@@ -80,7 +85,7 @@ public class DefaultCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public CustomerAddress addAddress(String customerId, CustomerAddress address) {
+    public CustomerAddress addCustomerAddress(String customerId, CustomerAddress address) {
         address.setId(PrimaryKeyHolder.next(ADDRESS_ID_VALUE_NAME));
         this.requiredCustomer(customerId).addAddress(address);
         return address;
@@ -88,23 +93,23 @@ public class DefaultCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public List<CustomerAddress> getAddresses(String customerId) {
+    public List<CustomerAddress> getCustomerAddresses(String customerId) {
         return this.requiredCustomer(customerId).getAddresses();
     }
 
     @Override
-    public Optional<CustomerAddress> getAddress(String customerId, String addressId) {
+    public Optional<CustomerAddress> getCustomerAddress(String customerId, String addressId) {
         return this.requiredCustomer(customerId).getAddress(addressId);
     }
 
     @Override
-    public Optional<CustomerAddress> getDefaultAddress(String customerId) {
+    public Optional<CustomerAddress> getDefaultCustomerAddress(String customerId) {
         return this.requiredCustomer(customerId).getDefaultAddress();
     }
 
     @Transactional
     @Override
-    public void setAddress(String customerId, CustomerAddress newAddress) {
+    public void updateCustomerAddress(String customerId, CustomerAddress newAddress) {
         this.requiredCustomer(customerId).updateAddress(newAddress);
     }
 
@@ -114,8 +119,58 @@ public class DefaultCustomerService implements CustomerService {
 
     @Transactional
     @Override
-    public void removeAddress(String customerId, String addressId) {
+    public void removeCustomerAddress(String customerId, String addressId) {
         var customer = this.requiredCustomer(customerId);
         customer.removeAddress(this.requiredCustomerAddress(customer, addressId));
+    }
+
+    @Override
+    public Customer invokePreProcessBeforeAddCustomer(Customer customer) {
+        return customer;
+    }
+
+    @Override
+    public Customer invokePreProcessBeforeUpdateCustomer(Customer customer) {
+        return customer;
+    }
+
+    @Override
+    public Customer invokePreProcessBeforeDeleteCustomer(Customer customer) {
+        return customer;
+    }
+
+    @Override
+    public Customer invokePostProcessAfterGetCustomer(Customer customer) {
+        return customer;
+    }
+
+    @Override
+    public CustomerAddress invokePreProcessBeforeAddCustomerAddress(Customer customer, CustomerAddress address) {
+        return address;
+    }
+
+    @Override
+    public CustomerAddress invokePreProcessBeforeUpdateCustomerAddress(Customer customer, CustomerAddress address) {
+        return address;
+    }
+
+    @Override
+    public CustomerAddress invokePostProcessAfterGetCustomerAddress(Customer customer, CustomerAddress address) {
+        return address;
+    }
+
+    @Override
+    public CustomerAddress invokePostProcessAfterGetDefaultCustomerAddress(Customer customer, CustomerAddress address) {
+        return address;
+    }
+
+    @Override
+    public List<CustomerAddress> invokePostProcessAfterGetDefaultCustomerAddresses(Customer customer, List<CustomerAddress> addresses) {
+        return addresses;
+    }
+
+    @Override
+    public CustomerAddress invokePreProcessBeforeRemoveCustomerAddress(Customer customer, CustomerAddress address) {
+        return address;
     }
 }

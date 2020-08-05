@@ -25,24 +25,23 @@ public interface CustomerService {
 
     Customer createCustomer(String customerId);
 
-    Optional<Customer> getCustomer(String customerId);
-
     Customer addCustomer(Customer customer);
+
+    Optional<Customer> getCustomer(String customerId);
 
     Customer updateCustomer(Customer customer);
 
     void deleteCustomer(String customerId);
 
-    CustomerAddress addAddress(String customerId, CustomerAddress address);
+    CustomerAddress addCustomerAddress(String customerId, CustomerAddress address);
 
-    List<CustomerAddress> getAddresses(String customerId);
+    List<CustomerAddress> getCustomerAddresses(String customerId);
 
-    Optional<CustomerAddress> getAddress(String customerId, String addressId);
+    Optional<CustomerAddress> getCustomerAddress(String customerId, String addressId);
 
-    Optional<CustomerAddress> getDefaultAddress(String customerId);
+    Optional<CustomerAddress> getDefaultCustomerAddress(String customerId);
 
-    void setAddress(String customerId, CustomerAddress address);
+    void updateCustomerAddress(String customerId, CustomerAddress address);
 
-    void removeAddress(String customerId, String addressId);
-
+    void removeCustomerAddress(String customerId, String addressId);
 }
