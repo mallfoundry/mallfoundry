@@ -19,7 +19,7 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 
 import java.util.List;
 import java.util.Optional;
@@ -80,35 +80,35 @@ public class DefaultStoreAddressService implements StoreAddressService, StoreAdd
 
     @Override
     public StoreAddress invokePreProcessBeforeAddAddress(StoreAddress address) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StoreAddressProcessor::preProcessBeforeAddAddress)
                 .apply(address);
     }
 
     @Override
     public StoreAddress invokePreProcessBeforeUpdateAddress(StoreAddress address) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StoreAddressProcessor::preProcessBeforeUpdateAddress)
                 .apply(address);
     }
 
     @Override
     public StoreAddress invokePreProcessBeforeDeleteAddress(StoreAddress address) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StoreAddressProcessor::preProcessBeforeDeleteAddress)
                 .apply(address);
     }
 
     @Override
     public StoreAddressQuery invokePreProcessBeforeGetAddresses(StoreAddressQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StoreAddressProcessor::preProcessBeforeGetAddresses)
                 .apply(query);
     }
 
     @Override
     public StoreAddress invokePostProcessAfterGetAddress(StoreAddress address) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StoreAddressProcessor::postProcessAfterGetAddress)
                 .apply(address);
     }

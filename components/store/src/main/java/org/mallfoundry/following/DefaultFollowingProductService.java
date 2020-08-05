@@ -23,7 +23,7 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -141,35 +141,35 @@ public class DefaultFollowingProductService implements FollowingProductService, 
 
     @Override
     public FollowingProduct invokePreProcessBeforeFollowProduct(Follower follower, FollowingProduct product) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingProduct>map((processor, identity) -> processor.preProcessBeforeFollowProduct(follower, identity))
                 .apply(product);
     }
 
     @Override
     public FollowingProduct invokePreProcessBeforeUnfollowProduct(Follower follower, FollowingProduct product) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingProduct>map((processor, identity) -> processor.preProcessBeforeUnfollowProduct(follower, identity))
                 .apply(product);
     }
 
     @Override
     public FollowingProduct invokePreProcessBeforeCheckFollowingProduct(Follower follower, FollowingProduct product) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingProduct>map((processor, identity) -> processor.preProcessBeforeCheckFollowingProduct(follower, identity))
                 .apply(product);
     }
 
     @Override
     public FollowingProductQuery invokePreProcessBeforeGetFollowingProducts(FollowingProductQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(FollowingProductProcessor::preProcessBeforeGetFollowingProducts)
                 .apply(query);
     }
 
     @Override
     public FollowingProductQuery invokePreProcessBeforeCountFollowingProducts(FollowingProductQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(FollowingProductProcessor::preProcessBeforeCountFollowingProducts)
                 .apply(query);
     }

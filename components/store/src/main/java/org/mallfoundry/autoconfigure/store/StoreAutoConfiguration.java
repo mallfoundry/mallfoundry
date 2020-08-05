@@ -49,9 +49,9 @@ public class StoreAutoConfiguration {
         return config;
     }
 
-    @Autowired(required = false)
     @Bean
     public DefaultStoreService defaultStoreService(StoreConfiguration storeConfiguration,
+                                                   @Autowired(required = false)
                                                    @Lazy List<StoreProcessor> processors,
                                                    StoreBlobService storeBlobService,
                                                    StoreRepository storeRepository,

@@ -20,7 +20,7 @@ package org.mallfoundry.store;
 
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.util.Copies;
@@ -152,42 +152,42 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker 
 
     @Override
     public Store invokePreProcessBeforeCreateStore(Store store) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeCreateStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeUpdateStore(Store store) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeUpdateStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeCancelStore(Store store) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeCancelStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeExistsStore(Store store) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeExistsStore)
                 .apply(store);
     }
 
     @Override
     public StoreQuery invokePreProcessBeforeGetStores(StoreQuery query) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeGetStores)
                 .apply(query);
     }
 
     @Override
     public Store invokePostProcessAfterGetStore(Store store) {
-        return ProcessorStreams.stream(processors)
+        return Processors.stream(processors)
                 .map(StoreProcessor::postProcessAfterGetStore)
                 .apply(store);
     }

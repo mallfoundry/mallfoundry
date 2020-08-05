@@ -16,17 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.event;
+package org.mallfoundry.processor;
 
-import org.mallfoundry.util.EventPublisher;
-import org.springframework.context.ApplicationEventPublisher;
+import java.util.List;
 
-public class DelegatingEventPublisher implements EventPublisher {
-
-    private ApplicationEventPublisher publisher;
-
-    @Override
-    public void publishEvent(Object event) {
-        this.publisher.publishEvent(event);
+public abstract class Processors {
+    public static <T> ProcessorStream<T> stream(List<T> processors) {
+        return new ProcessorStream<>(processors);
     }
 }

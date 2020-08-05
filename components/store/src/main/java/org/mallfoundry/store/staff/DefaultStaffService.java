@@ -20,7 +20,7 @@ package org.mallfoundry.store.staff;
 
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.role.RoleService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -142,28 +142,28 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
 
     @Override
     public Staff invokePreProcessBeforeAddStaff(Staff staff) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeAddStaff)
                 .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessBeforeUpdateStaff(Staff staff) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeUpdateStaff)
                 .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessAfterUpdateStaff(Staff staff) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessAfterUpdateStaff)
                 .apply(staff);
     }
 
     @Override
     public Staff invokePreProcessBeforeDeleteStaff(Staff staff) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeDeleteStaff)
                 .apply(staff);
     }

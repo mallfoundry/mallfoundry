@@ -20,7 +20,7 @@ package org.mallfoundry.store.role;
 
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -110,28 +110,28 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
 
     @Override
     public Role invokePreProcessBeforeAddRole(Role role) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessBeforeAddRole)
                 .apply(role);
     }
 
     @Override
     public Role invokePreProcessBeforeUpdateRole(Role role) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessBeforeUpdateRole)
                 .apply(role);
     }
 
     @Override
     public Role invokePreProcessAfterUpdateRole(Role role) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessAfterUpdateRole)
                 .apply(role);
     }
 
     @Override
     public Role invokePreProcessBeforeDeleteRole(Role role) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessBeforeDeleteRole)
                 .apply(role);
     }

@@ -21,7 +21,7 @@ package org.mallfoundry.following;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreService;
 import org.springframework.util.CollectionUtils;
@@ -142,35 +142,35 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
 
     @Override
     public FollowingStore invokePreProcessBeforeFollowStore(Follower follower, FollowingStore store) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingStore>map((processor, identity) -> processor.preProcessBeforeFollowStore(follower, identity))
                 .apply(store);
     }
 
     @Override
     public FollowingStore invokePreProcessBeforeUnfollowStore(Follower follower, FollowingStore store) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingStore>map((processor, identity) -> processor.preProcessBeforeUnfollowStore(follower, identity))
                 .apply(store);
     }
 
     @Override
     public FollowingStore invokePreProcessBeforeCheckFollowingStore(Follower follower, FollowingStore store) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .<FollowingStore>map((processor, identity) -> processor.preProcessBeforeCheckFollowingStore(follower, identity))
                 .apply(store);
     }
 
     @Override
     public FollowingStoreQuery invokePreProcessBeforeGetFollowingStores(FollowingStoreQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(FollowingStoreProcessor::preProcessBeforeGetFollowingStores)
                 .apply(query);
     }
 
     @Override
     public FollowingStoreQuery invokePreProcessBeforeCountFollowingStores(FollowingStoreQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(FollowingStoreProcessor::preProcessBeforeCountFollowingStores)
                 .apply(query);
     }

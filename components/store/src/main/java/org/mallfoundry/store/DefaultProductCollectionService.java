@@ -19,7 +19,7 @@
 package org.mallfoundry.store;
 
 import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.processor.ProcessorStreams;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,35 +93,35 @@ public class DefaultProductCollectionService implements ProductCollectionService
 
     @Override
     public ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(ProductCollectionProcessor::preProcessBeforeAddCollection)
                 .apply(collection);
     }
 
     @Override
     public ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(ProductCollectionProcessor::preProcessBeforeUpdateCollection)
                 .apply(collection);
     }
 
     @Override
     public ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(ProductCollectionProcessor::preProcessBeforeDeleteCollection)
                 .apply(collection);
     }
 
     @Override
     public ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(ProductCollectionProcessor::preProcessBeforeGetCollections)
                 .apply(query);
     }
 
     @Override
     public ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection) {
-        return ProcessorStreams.stream(this.processors)
+        return Processors.stream(this.processors)
                 .map(ProductCollectionProcessor::postProcessAfterGetCollection)
                 .apply(collection);
     }
