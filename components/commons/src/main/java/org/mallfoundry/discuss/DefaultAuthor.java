@@ -22,6 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,5 +36,22 @@ public class DefaultAuthor extends AuthorSupport {
 
     public DefaultAuthor(String id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof DefaultAuthor)) {
+            return false;
+        }
+        DefaultAuthor that = (DefaultAuthor) object;
+        return Objects.equals(id, that.id) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type);
     }
 }

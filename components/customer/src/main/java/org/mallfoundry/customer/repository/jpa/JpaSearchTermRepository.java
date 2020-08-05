@@ -27,7 +27,7 @@ import java.util.List;
 @Repository
 public interface JpaSearchTermRepository extends JpaRepository<JpaSearchTerm, JpaSearchTermId> {
 
-    @Query("from InternalSearchTerm where customerId = ?1 order by timestamp desc")
+    @Query("from JpaSearchTerm where customerId = ?1 order by timestamp desc")
     List<JpaSearchTerm> findAllByCustomerId(String customerId);
 
     void deleteByCustomerIdAndTerm(String customerId, String term);

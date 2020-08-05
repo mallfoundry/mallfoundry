@@ -42,6 +42,12 @@ public interface Author extends ObjectBuilder.ToBuilder<Author.Builder> {
 
     void anonymous();
 
+    @Override
+    boolean equals(Object object);
+
+    @Override
+    int hashCode();
+
     interface Builder extends ObjectBuilder<Author> {
 
         Builder nickname(String nickname);

@@ -19,14 +19,18 @@
 package org.mallfoundry.following.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.following.ProductFollowingId;
 
+import java.util.Objects;
+
 @Getter
 @Setter
+@NoArgsConstructor
 public class JpaProductFollowingId implements ProductFollowingId {
-    private final String followerId;
-    private final String productId;
+    private String followerId;
+    private String productId;
 
     public JpaProductFollowingId(String followerId, String productId) {
         this.followerId = followerId;
@@ -39,5 +43,23 @@ public class JpaProductFollowingId implements ProductFollowingId {
 
     public static JpaProductFollowingId of(ProductFollowingId id) {
         return new JpaProductFollowingId(id.getFollowerId(), id.getProductId());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof JpaProductFollowingId)) {
+            return false;
+        }
+        JpaProductFollowingId that = (JpaProductFollowingId) object;
+        return Objects.equals(followerId, that.followerId) &&
+                Objects.equals(productId, that.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(followerId, productId);
     }
 }
