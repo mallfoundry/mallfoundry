@@ -19,8 +19,10 @@
 package org.mallfoundry.store.role;
 
 import org.mallfoundry.ownership.StoreOwnership;
+import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,26 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
     List<String> getAuthorities();
 
     void setAuthorities(List<String> authorities);
+
+    String getDescription();
+
+    void setDescription(String description);
+
+    RoleType getType();
+
+    int getStaffsCount();
+
+    void addStaff(Staff staff);
+
+    void removeStaff(Staff staff);
+
+    void primitive();
+
+    void predefine();
+
+    void custom();
+
+    Date getCreatedTime();
 
     interface Builder extends ObjectBuilder<Role> {
 

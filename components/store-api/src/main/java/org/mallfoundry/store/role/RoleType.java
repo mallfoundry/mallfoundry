@@ -18,23 +18,8 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-public interface RoleRepository {
-
-    Role create(RoleId id);
-
-    Role save(Role role);
-
-    Optional<Role> findById(String id);
-
-    List<Role> findAllById(Collection<String> ids);
-
-    SliceList<Role> findAll(RoleQuery query);
-
-    void delete(Role role);
+public enum RoleType {
+    PRIMITIVE/* 初始角色 */,
+    PREDEFINED /* 预定义角色 */,
+    CUSTOM /* 自定义角色 */
 }

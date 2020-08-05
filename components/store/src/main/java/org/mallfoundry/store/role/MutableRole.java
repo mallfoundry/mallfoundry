@@ -18,23 +18,13 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.data.SliceList;
+import java.util.Date;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+public interface MutableRole extends Role {
 
-public interface RoleRepository {
+    void setType(RoleType type);
 
-    Role create(RoleId id);
+    void setStaffsCount(int staffsCount);
 
-    Role save(Role role);
-
-    Optional<Role> findById(String id);
-
-    List<Role> findAllById(Collection<String> ids);
-
-    SliceList<Role> findAll(RoleQuery query);
-
-    void delete(Role role);
+    void setCreatedTime(Date createdTime);
 }

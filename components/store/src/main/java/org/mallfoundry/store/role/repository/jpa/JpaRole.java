@@ -23,7 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.store.role.Role;
- import org.mallfoundry.store.role.RoleSupport;
+import org.mallfoundry.store.role.RoleSupport;
+import org.mallfoundry.store.role.RoleType;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -31,9 +32,12 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -61,7 +65,23 @@ public class JpaRole extends RoleSupport {
     @Column(name = "authorities_", length = 1024 * 2)
     private List<String> authorities = new ArrayList<>();
 
-    public JpaRole(String id) {
+    @NotBlank
+    @Column(name = "description_")
+    private String description;
+
+    @NotNull
+    @Column(name = "type_")
+    private RoleType type;
+
+    @Min(0)
+    @Column(name = "staffs_count_")
+    private int staffsCount;
+
+    @Column(name = "created_time_")
+    private Date createdTime;
+
+    public JpaRole(String storeId, String id) {
+        this.storeId = storeId;
         this.id = id;
     }
 

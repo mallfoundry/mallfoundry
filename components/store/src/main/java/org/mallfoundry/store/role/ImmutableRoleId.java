@@ -18,23 +18,34 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.data.SliceList;
+import lombok.Getter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-public interface RoleRepository {
+@Getter
+public class ImmutableRoleId implements RoleId {
+    private final String storeId;
+    private final String roleId;
 
-    Role create(RoleId id);
+    public ImmutableRoleId(String storeId, String roleId) {
+        this.storeId = storeId;
+        this.roleId = roleId;
+    }
 
-    Role save(Role role);
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ImmutableRoleId)) {
+            return false;
+        }
+        ImmutableRoleId that = (ImmutableRoleId) object;
+        return Objects.equals(storeId, that.storeId) && Objects.equals(roleId, that.roleId);
+    }
 
-    Optional<Role> findById(String id);
-
-    List<Role> findAllById(Collection<String> ids);
-
-    SliceList<Role> findAll(RoleQuery query);
-
-    void delete(Role role);
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, roleId);
+    }
 }

@@ -21,6 +21,7 @@ package org.mallfoundry.store.role.repository.jpa;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.role.RoleId;
 import org.mallfoundry.store.role.RoleQuery;
 import org.mallfoundry.store.role.RoleRepository;
 import org.springframework.data.util.CastUtils;
@@ -38,8 +39,8 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     }
 
     @Override
-    public Role create(String id) {
-        return new JpaRole(id);
+    public Role create(RoleId id) {
+        return new JpaRole(id.getStoreId(), id.getRoleId());
     }
 
     @Override

@@ -18,9 +18,40 @@
 
 package org.mallfoundry.store.role;
 
+import org.mallfoundry.store.staff.Staff;
+
+import java.util.Date;
 import java.util.List;
 
-public abstract class RoleSupport implements Role {
+public abstract class RoleSupport implements MutableRole {
+
+    @Override
+    public void addStaff(Staff staff) {
+        this.setStaffsCount(this.getStaffsCount() + 1);
+    }
+
+    @Override
+    public void removeStaff(Staff staff) {
+        this.setStaffsCount(this.getStaffsCount() - 1);
+    }
+
+    @Override
+    public void primitive() {
+        this.setType(RoleType.PRIMITIVE);
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public void predefine() {
+        this.setType(RoleType.PREDEFINED);
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public void custom() {
+        this.setType(RoleType.CUSTOM);
+        this.setCreatedTime(new Date());
+    }
 
     @Override
     public Builder toBuilder() {

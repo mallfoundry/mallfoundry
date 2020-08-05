@@ -18,23 +18,8 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.data.SliceList;
+import org.mallfoundry.ownership.StoreOwnership;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-public interface RoleRepository {
-
-    Role create(RoleId id);
-
-    Role save(Role role);
-
-    Optional<Role> findById(String id);
-
-    List<Role> findAllById(Collection<String> ids);
-
-    SliceList<Role> findAll(RoleQuery query);
-
-    void delete(Role role);
+public interface RoleId extends StoreOwnership {
+    String getRoleId();
 }

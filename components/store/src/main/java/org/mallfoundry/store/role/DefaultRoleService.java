@@ -49,7 +49,12 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     }
 
     @Override
-    public Role createRole(String roleId) {
+    public RoleId createRoleId(String storeId, String roleId) {
+        return new ImmutableRoleId(storeId, roleId);
+    }
+
+    @Override
+    public Role createRole(RoleId roleId) {
         return this.roleRepository.create(roleId);
     }
 
@@ -62,7 +67,7 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .apply(role);
     }
 
-    private Role copyFrom(Role source, Role target) {
+    private Role updateRole(Role source, Role target) {
 
         return target;
     }
@@ -73,7 +78,7 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
         return Function.<Role>identity()
                 .compose(this.roleRepository::save)
                 .compose(this::invokePreProcessAfterUpdateRole)
-                .<Role>compose(target -> this.copyFrom(role, target))
+                .<Role>compose(target -> this.updateRole(role, target))
                 .compose(this::invokePreProcessBeforeUpdateRole)
                 .compose(this::requiredRole)
                 .apply(role.getId());
