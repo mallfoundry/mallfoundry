@@ -26,6 +26,8 @@ import java.util.Optional;
 
 public interface BrowsingProductRepository {
 
+    BrowsingProduct create(String browserId, String productId);
+
     BrowsingProduct save(BrowsingProduct browsingProduct);
 
     Optional<BrowsingProduct> findByIdAndBrowserId(String id, String browserId);

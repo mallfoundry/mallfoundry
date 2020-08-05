@@ -16,11 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.cart.repository.jpa;
+package org.mallfoundry.browsing;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.data.PageableSupport;
 
-@Repository
-public interface JpaCartRepositoryDelegate extends JpaRepository<JpaCart, String> {
+import java.util.Date;
+
+@Getter
+@Setter
+public class DefaultBrowsingProductQuery extends PageableSupport implements BrowsingProductQuery {
+    private String browserId;
+    private Date browsingTime;
 }

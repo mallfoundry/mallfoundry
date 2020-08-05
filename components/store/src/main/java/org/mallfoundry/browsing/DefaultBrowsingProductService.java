@@ -21,33 +21,30 @@ package org.mallfoundry.browsing;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-@Service
-public class InternalBrowsingProductService implements BrowsingProductService {
+public class DefaultBrowsingProductService implements BrowsingProductService {
 
     private final ProductService productService;
 
     private final BrowsingProductRepository browsingProductRepository;
 
-    public InternalBrowsingProductService(ProductService productService,
-                                          BrowsingProductRepository browsingProductRepository) {
+    public DefaultBrowsingProductService(ProductService productService,
+                                         BrowsingProductRepository browsingProductRepository) {
         this.productService = productService;
         this.browsingProductRepository = browsingProductRepository;
     }
 
-    @Override
-    public BrowsingProduct createBrowsingProduct(String browserId, String productId) {
-        return new InternalBrowsingProduct(browserId, productId);
+    private BrowsingProduct createBrowsingProduct(String browserId, String productId) {
+        return this.browsingProductRepository.create(browserId, productId);
     }
 
     @Override
     public BrowsingProductQuery createBrowsingProductQuery() {
-        return new InternalBrowsingProductQuery();
+        return new DefaultBrowsingProductQuery();
     }
 
     private BrowsingProduct hitBrowsingProduct(BrowsingProduct browsingProduct) {
@@ -61,7 +58,7 @@ public class InternalBrowsingProductService implements BrowsingProductService {
 
     @Transactional
     @Override
-    public BrowsingProduct addBrowsingProduct(String browserId, String productId) {
+    public BrowsingProduct hitBrowsingProduct(String browserId, String productId) {
         var browsingProduct = this.hitBrowsingProduct(
                 this.browsingProductRepository.findByIdAndBrowserId(productId, browserId)
                         .orElseGet(() -> this.createBrowsingProduct(browserId, productId)));
@@ -74,7 +71,7 @@ public class InternalBrowsingProductService implements BrowsingProductService {
     }
 
     @Override
-    public long getBrowsingProductCount(BrowsingProductQuery query) {
+    public long countBrowsingProducts(BrowsingProductQuery query) {
         return this.browsingProductRepository.count(query);
     }
 
@@ -91,5 +88,4 @@ public class InternalBrowsingProductService implements BrowsingProductService {
         var browsingProducts = this.browsingProductRepository.findAllByIdInAndBrowserId(ids, browserId);
         this.browsingProductRepository.deleteAll(browsingProducts);
     }
-
 }

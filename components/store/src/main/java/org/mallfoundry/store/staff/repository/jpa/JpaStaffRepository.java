@@ -18,47 +18,33 @@
 
 package org.mallfoundry.store.staff.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffQuery;
-import org.mallfoundry.store.staff.StaffRepository;
-import org.springframework.data.util.CastUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
-public class JpaStaffRepository implements StaffRepository {
+@Repository
+public interface JpaStaffRepository extends JpaRepository<JpaStaff, String>, JpaSpecificationExecutor<JpaStaff> {
 
-    private final JpaStaffRepositoryDelegate repository;
+    default Specification<JpaStaff> createSpecification(StaffQuery staffQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
 
-    public JpaStaffRepository(JpaStaffRepositoryDelegate repository) {
-        this.repository = repository;
+            if (Objects.nonNull(staffQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
+            }
+
+            return predicate;
+        };
     }
 
-    @Override
-    public Staff create(String id) {
-        return new JpaStaff(id);
-    }
-
-    @Override
-    public Staff save(Staff staff) {
-        return this.repository.save(JpaStaff.of(staff));
-    }
-
-    @Override
-    public Optional<Staff> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public SliceList<Staff> findAll(StaffQuery query) {
-        var page = this.repository.findAll(query);
-        var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
-        return CastUtils.cast(list);
-    }
-
-    @Override
-    public void delete(Staff staff) {
-        this.repository.delete(JpaStaff.of(staff));
+    default Page<JpaStaff> findAll(StaffQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 }

@@ -18,54 +18,31 @@
 
 package org.mallfoundry.store.role.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.role.Role;
 import org.mallfoundry.store.role.RoleQuery;
-import org.mallfoundry.store.role.RoleRepository;
-import org.springframework.data.util.CastUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
-public class JpaRoleRepository implements RoleRepository {
+public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSpecificationExecutor<JpaRole> {
 
-    private final JpaRoleRepositoryDelegate repository;
+    default Specification<JpaRole> createSpecification(RoleQuery staffQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
 
-    public JpaRoleRepository(JpaRoleRepositoryDelegate repository) {
-        this.repository = repository;
+            if (Objects.nonNull(staffQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
+            }
+
+            return predicate;
+        };
     }
 
-    @Override
-    public Role create(String id) {
-        return new JpaRole(id);
-    }
-
-    @Override
-    public Role save(Role role) {
-        return this.repository.save(JpaRole.of(role));
-    }
-
-    @Override
-    public Optional<Role> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public List<Role> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
-    }
-
-    @Override
-    public SliceList<Role> findAll(RoleQuery query) {
-        var page = this.repository.findAll(query);
-        var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
-        return CastUtils.cast(list);
-    }
-
-    @Override
-    public void delete(Role role) {
-        this.repository.delete(JpaRole.of(role));
+    default Page<JpaRole> findAll(RoleQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
     }
 }

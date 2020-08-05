@@ -24,8 +24,8 @@ import org.mallfoundry.store.staff.SmartStaffValidatedProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
 import org.mallfoundry.store.staff.StaffIdentityProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
+import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
-import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepositoryDelegate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -35,8 +35,8 @@ import org.springframework.validation.SmartValidator;
 public class StoreStaffConfiguration {
 
     @Bean
-    public JpaStaffRepository jpaStaffRepository(JpaStaffRepositoryDelegate repositoryDelegate) {
-        return new JpaStaffRepository(repositoryDelegate);
+    public DelegatingJpaStaffRepository delegatingJpaStaffRepository(JpaStaffRepository repositoryDelegate) {
+        return new DelegatingJpaStaffRepository(repositoryDelegate);
     }
 
     @Bean

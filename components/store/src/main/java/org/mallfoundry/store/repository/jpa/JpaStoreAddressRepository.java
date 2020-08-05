@@ -18,44 +18,38 @@
 
 package org.mallfoundry.store.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.StoreAddress;
 import org.mallfoundry.store.StoreAddressQuery;
-import org.mallfoundry.store.StoreAddressRepository;
-import org.springframework.data.util.CastUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 
-public class JpaStoreAddressRepository implements StoreAddressRepository {
+@Repository
+public interface JpaStoreAddressRepository
+        extends JpaRepository<JpaStoreAddress, String>, JpaSpecificationExecutor<JpaStoreAddress> {
 
-    private final JpaStoreAddressRepositoryDelegate repository;
+    default Specification<JpaStoreAddress> createSpecification(StoreAddressQuery addressQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
 
-    public JpaStoreAddressRepository(JpaStoreAddressRepositoryDelegate repository) {
-        this.repository = repository;
+            if (Objects.nonNull(addressQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), addressQuery.getStoreId()));
+            }
+
+            return predicate;
+        };
     }
 
-    @Override
-    public StoreAddress create(String id) {
-        return new JpaStoreAddress(id);
-    }
-
-    @Override
-    public StoreAddress save(StoreAddress address) {
-        return this.repository.save(JpaStoreAddress.of(address));
-    }
-
-    @Override
-    public Optional<StoreAddress> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public SliceList<StoreAddress> findAll(StoreAddressQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
-    }
-
-    @Override
-    public void delete(StoreAddress address) {
-        this.repository.delete(JpaStoreAddress.of(address));
+    default SliceList<JpaStoreAddress> findAll(StoreAddressQuery query) {
+        Page<JpaStoreAddress> page = this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit()));
+        return PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
     }
 }

@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.browsing;
+package org.mallfoundry.browsing.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.browsing.repository.jpa.JpaBrowsingProductId;
+import org.mallfoundry.browsing.BrowsingProduct;
+import org.mallfoundry.browsing.BrowsingProductSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ import java.util.Date;
 @Entity
 @Table(name = "mf_browsing_product")
 @IdClass(JpaBrowsingProductId.class)
-public class InternalBrowsingProduct implements BrowsingProduct {
+public class JpaBrowsingProduct extends BrowsingProductSupport {
 
     @Id
     @Column(name = "id_")
@@ -63,24 +64,18 @@ public class InternalBrowsingProduct implements BrowsingProduct {
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
-    public InternalBrowsingProduct(String browserId, String productId) {
+    public JpaBrowsingProduct(String browserId, String productId) {
         this.browserId = browserId;
         this.id = productId;
         this.browsingTime = new Date();
     }
 
-    public static InternalBrowsingProduct of(BrowsingProduct browsingProduct) {
-        if (browsingProduct instanceof InternalBrowsingProduct) {
-            return (InternalBrowsingProduct) browsingProduct;
+    public static JpaBrowsingProduct of(BrowsingProduct browsingProduct) {
+        if (browsingProduct instanceof JpaBrowsingProduct) {
+            return (JpaBrowsingProduct) browsingProduct;
         }
-        var target = new InternalBrowsingProduct();
+        var target = new JpaBrowsingProduct();
         BeanUtils.copyProperties(browsingProduct, target);
         return target;
-    }
-
-    @Override
-    public int hit() {
-        this.browsingTime = new Date();
-        return this.hits++;
     }
 }

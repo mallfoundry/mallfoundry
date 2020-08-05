@@ -18,63 +18,59 @@
 
 package org.mallfoundry.browsing.repository.jpa;
 
-import org.mallfoundry.browsing.BrowsingProduct;
+
 import org.mallfoundry.browsing.BrowsingProductQuery;
-import org.mallfoundry.browsing.BrowsingProductRepository;
-import org.mallfoundry.browsing.InternalBrowsingProduct;
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.springframework.data.util.CastUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.Predicate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
-public class JpaBrowsingProductRepository implements BrowsingProductRepository {
-
-    private final JpaBrowsingProductRepositoryDelegate browsingProductRepository;
-
-    public JpaBrowsingProductRepository(JpaBrowsingProductRepositoryDelegate browsingProductRepository) {
-        this.browsingProductRepository = browsingProductRepository;
-    }
+public interface JpaBrowsingProductRepository
+        extends JpaRepository<JpaBrowsingProduct, JpaBrowsingProductId>,
+        JpaSpecificationExecutor<JpaBrowsingProduct> {
 
     @Override
-    public BrowsingProduct save(BrowsingProduct browsingProduct) {
-        return this.browsingProductRepository.save(InternalBrowsingProduct.of(browsingProduct));
+    <S extends JpaBrowsingProduct> S save(S entity);
+
+    Optional<JpaBrowsingProduct> findByIdAndBrowserId(String id, String browserId);
+
+    List<JpaBrowsingProduct> findAllByIdInAndBrowserId(Iterable<String> ids, String browserId);
+
+    default Specification<JpaBrowsingProduct> createSpecification(BrowsingProductQuery bpQuery) {
+        return (Specification<JpaBrowsingProduct>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+
+            if (Objects.nonNull(bpQuery.getBrowserId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("browserId"), bpQuery.getBrowserId()));
+            }
+            return predicate;
+        };
     }
 
-    @Override
-    public Optional<BrowsingProduct> findByIdAndBrowserId(String id, String browserId) {
-        return CastUtils.cast(this.browsingProductRepository.findByIdAndBrowserId(id, browserId));
+    default SliceList<JpaBrowsingProduct> findAll(BrowsingProductQuery query) {
+        Page<JpaBrowsingProduct> page = this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by(Sort.Order.desc("browsingTime"))));
+        return PageList.of(page.getContent())
+                .page(page.getNumber())
+                .limit(query.getLimit())
+                .totalSize(page.getTotalElements());
     }
 
-    @Override
-    public List<BrowsingProduct> findAllByIdInAndBrowserId(Collection<String> ids, String browserId) {
-        return CastUtils.cast(this.browsingProductRepository.findAllByIdInAndBrowserId(ids, browserId));
+    default long count(BrowsingProductQuery query) {
+        return this.count(this.createSpecification(query));
     }
 
-    @Override
-    public SliceList<BrowsingProduct> findAll(BrowsingProductQuery query) {
-        return CastUtils.cast(this.browsingProductRepository.findAll(query));
-    }
-
-    @Override
-    public void delete(BrowsingProduct browsingProduct) {
-        this.browsingProductRepository.deleteById(
-                new JpaBrowsingProductId(browsingProduct.getBrowserId(), browsingProduct.getId()));
-    }
-
-    @Override
-    public void deleteAll(Collection<? extends BrowsingProduct> browsingProducts) {
-        var ids = browsingProducts.stream().map(product -> new JpaBrowsingProductId(product.getBrowserId(), product.getId()))
-                .collect(Collectors.toUnmodifiableList());
-        this.browsingProductRepository.deleteAllByIdIn(ids);
-    }
-
-    @Override
-    public long count(BrowsingProductQuery query) {
-        return this.browsingProductRepository.count(query);
-    }
+    void deleteAllByIdIn(Collection<JpaBrowsingProductId> ids);
 }

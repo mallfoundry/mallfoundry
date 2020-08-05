@@ -21,8 +21,8 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.store.DefaultProductCollectionService;
 import org.mallfoundry.store.ProductCollectionProcessor;
 import org.mallfoundry.store.ProductCollectionRepository;
+import org.mallfoundry.store.repository.jpa.DelegatingJpaProductCollectionRepository;
 import org.mallfoundry.store.repository.jpa.JpaProductCollectionRepository;
-import org.mallfoundry.store.repository.jpa.JpaProductCollectionRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +33,8 @@ import java.util.List;
 @Configuration
 public class ProductCollectionConfiguration {
     @Bean
-    public JpaProductCollectionRepository jpaProductCollectionRepository(JpaProductCollectionRepositoryDelegate repositoryDelegate) {
-        return new JpaProductCollectionRepository(repositoryDelegate);
+    public DelegatingJpaProductCollectionRepository delegatingJpaProductCollectionRepository(JpaProductCollectionRepository repositoryDelegate) {
+        return new DelegatingJpaProductCollectionRepository(repositoryDelegate);
     }
 
     @Bean

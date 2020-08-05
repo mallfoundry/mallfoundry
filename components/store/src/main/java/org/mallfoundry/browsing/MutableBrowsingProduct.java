@@ -18,17 +18,12 @@
 
 package org.mallfoundry.browsing;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.data.PageableSupport;
+import org.hibernate.exception.DataException;
 
 import java.util.Date;
 
-@Getter
-@Setter
-public class InternalBrowsingProductQuery extends PageableSupport implements BrowsingProductQuery {
+public interface MutableBrowsingProduct extends BrowsingProduct {
+    void setHits(int hits);
 
-    private String browserId;
-
-    private Date browsingTime;
+    void setBrowsingTime(Date browsingTime);
 }

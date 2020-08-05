@@ -24,8 +24,8 @@ import org.mallfoundry.store.role.RoleAuthorizeProcessor;
 import org.mallfoundry.store.role.RoleIdentityProcessor;
 import org.mallfoundry.store.role.RoleProcessor;
 import org.mallfoundry.store.role.RoleRepository;
+import org.mallfoundry.store.role.repository.jpa.DelegatingJpaRoleRepository;
 import org.mallfoundry.store.role.repository.jpa.JpaRoleRepository;
-import org.mallfoundry.store.role.repository.jpa.JpaRoleRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +38,8 @@ import java.util.List;
 public class StoreRoleConfiguration {
 
     @Bean
-    public JpaRoleRepository jpaStoreRoleRepository(JpaRoleRepositoryDelegate roleRepositoryDelegate) {
-        return new JpaRoleRepository(roleRepositoryDelegate);
+    public DelegatingJpaRoleRepository delegatingJpaRoleRepository(JpaRoleRepository roleRepositoryDelegate) {
+        return new DelegatingJpaRoleRepository(roleRepositoryDelegate);
     }
 
 

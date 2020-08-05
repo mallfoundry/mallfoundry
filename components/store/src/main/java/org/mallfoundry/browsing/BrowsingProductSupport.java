@@ -16,14 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.browsing;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Date;
 
-import java.util.List;
+public abstract class BrowsingProductSupport implements MutableBrowsingProduct {
 
-@Repository
-public interface JpaProductCollectionRepositoryDelegate extends JpaRepository<JpaProductCollection, String> {
-    List<JpaProductCollection> findAllByStoreId(String storeId);
+    @Override
+    public void hit() {
+        this.setBrowsingTime(new Date());
+        this.setHits(this.getHits() + 1);
+    }
 }

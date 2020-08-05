@@ -21,8 +21,8 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.store.DefaultStoreAddressService;
 import org.mallfoundry.store.StoreAddressProcessor;
 import org.mallfoundry.store.StoreAddressRepository;
+import org.mallfoundry.store.repository.jpa.DelegatingJpaStoreAddressRepository;
 import org.mallfoundry.store.repository.jpa.JpaStoreAddressRepository;
-import org.mallfoundry.store.repository.jpa.JpaStoreAddressRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -32,8 +32,8 @@ import java.util.List;
 public class StoreAddressConfiguration {
 
     @Bean
-    public JpaStoreAddressRepository jpaStoreAddressRepository(JpaStoreAddressRepositoryDelegate repositoryDelegate) {
-        return new JpaStoreAddressRepository(repositoryDelegate);
+    public DelegatingJpaStoreAddressRepository delegatingJpaStoreAddressRepository(JpaStoreAddressRepository repositoryDelegate) {
+        return new DelegatingJpaStoreAddressRepository(repositoryDelegate);
     }
 
     @Bean

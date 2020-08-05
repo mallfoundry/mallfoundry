@@ -16,14 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.cart.repository.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.mallfoundry.cart.Cart;
+import org.mallfoundry.cart.CartRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface JpaProductCollectionRepository extends JpaRepository<JpaProductCollection, String> {
-    List<JpaProductCollection> findAllByStoreId(String storeId);
+public class DelegatingJpaCartRepository implements CartRepository {
+
+    private final JpaCartRepository repository;
+
+    public DelegatingJpaCartRepository(JpaCartRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Cart create(String id) {
+        return new JpaCart(id);
+    }
+
+    @Override
+    public Cart save(Cart cart) {
+        return this.repository.save(JpaCart.of(cart));
+    }
+
+    @Override
+    public void delete(Cart cart) {
+        this.repository.delete(JpaCart.of(cart));
+    }
+
+    @Override
+    public Optional<Cart> findById(String id) {
+        return Optional.empty();
+    }
 }

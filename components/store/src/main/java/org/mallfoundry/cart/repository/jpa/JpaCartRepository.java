@@ -18,39 +18,9 @@
 
 package org.mallfoundry.cart.repository.jpa;
 
-
-import org.mallfoundry.cart.Cart;
-import org.mallfoundry.cart.CartRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public class JpaCartRepository implements CartRepository {
-
-    private final JpaCartRepositoryDelegate repository;
-
-    public JpaCartRepository(JpaCartRepositoryDelegate repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public Cart create(String id) {
-        return new JpaCart(id);
-    }
-
-    @Override
-    public Cart save(Cart cart) {
-        return this.repository.save(JpaCart.of(cart));
-    }
-
-    @Override
-    public void delete(Cart cart) {
-        this.repository.delete(JpaCart.of(cart));
-    }
-
-    @Override
-    public Optional<Cart> findById(String id) {
-        return Optional.empty();
-    }
+public interface JpaCartRepository extends JpaRepository<JpaCart, String> {
 }
