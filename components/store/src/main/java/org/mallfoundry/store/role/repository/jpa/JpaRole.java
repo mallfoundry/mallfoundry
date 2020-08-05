@@ -31,6 +31,7 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -44,6 +45,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@IdClass(JpaRoleId.class)
 @Table(name = "mf_store_role")
 public class JpaRole extends RoleSupport {
 

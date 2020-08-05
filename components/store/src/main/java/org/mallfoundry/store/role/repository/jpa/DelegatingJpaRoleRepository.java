@@ -29,6 +29,8 @@ import org.springframework.data.util.CastUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DelegatingJpaRoleRepository implements RoleRepository {
 
@@ -49,13 +51,14 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     }
 
     @Override
-    public Optional<Role> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
+    public Optional<Role> findById(RoleId id) {
+        return CastUtils.cast(this.repository.findById(JpaRoleId.of(id)));
     }
 
     @Override
-    public List<Role> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
+    public List<Role> findAllById(Collection<RoleId> ids) {
+        var jpaIds = ids.stream().map(JpaRoleId::of).collect(Collectors.toUnmodifiableList());
+        return CastUtils.cast(this.repository.findAllById(jpaIds));
     }
 
     @Override

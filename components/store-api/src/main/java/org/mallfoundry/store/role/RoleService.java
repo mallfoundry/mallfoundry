@@ -36,11 +36,11 @@ public interface RoleService {
 
     Role updateRole(Role role);
 
-    void deleteRole(String roleId);
+    void deleteRole(RoleId roleId);
 
-    Optional<Role> getRole(String roleId);
+    Optional<Role> getRole(RoleId roleId);
 
-    List<Role> getRoles(Set<String> roleIds);
+    List<Role> getRoles(Set<RoleId> roleIds);
 
     SliceList<Role> getRoles(RoleQuery query);
 }

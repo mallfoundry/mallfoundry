@@ -18,19 +18,9 @@
 
 package org.mallfoundry.store.role;
 
-import org.mallfoundry.validation.BindRuntimeException;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.ValidationUtils;
+import org.mallfoundry.validation.ValidationHolder;
 
-public class SmartStoreRoleValidatedProcessor implements RoleProcessor {
-
-    private final SmartValidator validator;
-
-    public SmartStoreRoleValidatedProcessor(SmartValidator validator) {
-        this.validator = validator;
-    }
+public class SmartRoleValidateProcessor implements RoleProcessor {
 
     @Override
     public Role preProcessBeforeAddRole(Role role) {
@@ -44,15 +34,7 @@ public class SmartStoreRoleValidatedProcessor implements RoleProcessor {
         return role;
     }
 
-    private BindingResult createError(Role role) {
-        return new BeanPropertyBindingResult(role, "role");
-    }
-
     private void validate(Role role) {
-        var error = this.createError(role);
-        ValidationUtils.invokeValidator(this.validator, role, error);
-        if (error.hasErrors()) {
-            throw new BindRuntimeException(error);
-        }
+        ValidationHolder.validate(role, "role");
     }
 }

@@ -81,16 +81,16 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .<Role>compose(target -> this.updateRole(role, target))
                 .compose(this::invokePreProcessBeforeUpdateRole)
                 .compose(this::requiredRole)
-                .apply(role.getId());
+                .apply(new ImmutableRoleId(role.getStoreId(), role.getId()));
     }
 
-    private Role requiredRole(String roleId) {
+    private Role requiredRole(RoleId roleId) {
         return this.getRole(roleId).orElseThrow();
     }
 
     @Transactional
     @Override
-    public void deleteRole(String roleId) {
+    public void deleteRole(RoleId roleId) {
         var role = Function.<Role>identity()
                 .compose(this::invokePreProcessBeforeDeleteRole)
                 .compose(this::requiredRole)
@@ -99,12 +99,12 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     }
 
     @Override
-    public Optional<Role> getRole(String roleId) {
+    public Optional<Role> getRole(RoleId roleId) {
         return this.roleRepository.findById(roleId);
     }
 
     @Override
-    public List<Role> getRoles(Set<String> roleIds) {
+    public List<Role> getRoles(Set<RoleId> roleIds) {
         return this.roleRepository.findAllById(roleIds);
     }
 

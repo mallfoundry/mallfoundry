@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DefaultStaffService implements StaffService, StaffProcessorInvoker {
 
@@ -150,7 +151,10 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     @Override
     public void addStaffRoles(StaffId staffId, Set<String> roleIds) {
         var staff = this.requiredStaff(staffId);
-        var roles = this.storeRoleService.getRoles(roleIds);
+        var rIds = roleIds.stream()
+                .map(rId -> this.storeRoleService.createRoleId(staffId.getStoreId(), rId))
+                .collect(Collectors.toUnmodifiableSet());
+        var roles = this.storeRoleService.getRoles(rIds);
         staff.addRoles(roles);
     }
 
@@ -164,7 +168,10 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     @Override
     public void removeStaffRoles(StaffId staffId, Set<String> roleIds) {
         var staff = this.requiredStaff(staffId);
-        var roles = this.storeRoleService.getRoles(roleIds);
+        var rIds = roleIds.stream()
+                .map(rId -> this.storeRoleService.createRoleId(staffId.getStoreId(), rId))
+                .collect(Collectors.toUnmodifiableSet());
+        var roles = this.storeRoleService.getRoles(rIds);
         staff.removeRoles(roles);
     }
 

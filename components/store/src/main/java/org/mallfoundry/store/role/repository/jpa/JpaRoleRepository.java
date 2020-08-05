@@ -28,7 +28,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
-public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSpecificationExecutor<JpaRole> {
+public interface JpaRoleRepository extends JpaRepository<JpaRole, JpaRoleId>, JpaSpecificationExecutor<JpaRole> {
 
     default Specification<JpaRole> createSpecification(RoleQuery staffQuery) {
         return (root, query, criteriaBuilder) -> {

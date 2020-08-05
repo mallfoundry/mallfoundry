@@ -30,9 +30,9 @@ public interface RoleRepository {
 
     Role save(Role role);
 
-    Optional<Role> findById(String id);
+    Optional<Role> findById(RoleId id);
 
-    List<Role> findAllById(Collection<String> ids);
+    List<Role> findAllById(Collection<RoleId> ids);
 
     SliceList<Role> findAll(RoleQuery query);
 
