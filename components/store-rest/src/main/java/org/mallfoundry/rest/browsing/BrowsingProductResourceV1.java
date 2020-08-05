@@ -48,9 +48,9 @@ public class BrowsingProductResourceV1 {
 
     @Operation(summary = "添加一个顾客浏览的商品记录对象")
     @PostMapping("customers/{customer_id}/browsing-products/{product_id}")
-    public BrowsingProduct addBrowsingProduct(@PathVariable("customer_id") String customerId,
+    public BrowsingProduct hitBrowsingProduct(@PathVariable("customer_id") String customerId,
                                               @PathVariable("product_id") String productId) {
-        return this.browsingProductService.addBrowsingProduct(customerId, productId);
+        return this.browsingProductService.hitBrowsingProduct(customerId, productId);
     }
 
     @Operation(summary = "获得顾客浏览的商品记录分页集合")
@@ -68,9 +68,9 @@ public class BrowsingProductResourceV1 {
 
     @Operation(summary = "获得顾客浏览的商品数量")
     @GetMapping("customers/{customer_id}/browsing-products/count")
-    public long getBrowsingProductCount(@PathVariable("customer_id") String customerId,
+    public long countBrowsingProducts(@PathVariable("customer_id") String customerId,
                                         @RequestParam(name = "browsing_time", required = false) Date browsingTime) {
-        return this.browsingProductService.getBrowsingProductCount(
+        return this.browsingProductService.countBrowsingProducts(
                 this.browsingProductService.createBrowsingProductQuery().toBuilder()
                         .browserId(customerId).browsingTime(browsingTime).build());
     }

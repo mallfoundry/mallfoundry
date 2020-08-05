@@ -24,15 +24,13 @@ import java.util.List;
 
 public interface BrowsingProductService {
 
-    BrowsingProduct createBrowsingProduct(String browserId, String productId);
-
     BrowsingProductQuery createBrowsingProductQuery();
 
-    BrowsingProduct addBrowsingProduct(String browserId, String productId);
+    BrowsingProduct hitBrowsingProduct(String browserId, String productId);
 
     SliceList<BrowsingProduct> getBrowsingProducts(BrowsingProductQuery query);
 
-    long getBrowsingProductCount(BrowsingProductQuery query);
+    long countBrowsingProducts(BrowsingProductQuery query);
 
     void deleteBrowsingProduct(String browserId, String productId);
 

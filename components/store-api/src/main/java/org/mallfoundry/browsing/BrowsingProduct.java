@@ -48,7 +48,7 @@ public interface BrowsingProduct extends Serializable {
 
     Date getBrowsingTime();
 
-    int hit();
+    void hit();
 
     default Builder toBuilder() {
         return new BuilderSupport(this) {
