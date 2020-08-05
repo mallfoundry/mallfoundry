@@ -28,7 +28,9 @@ public interface RoleService {
 
     RoleQuery createRoleQuery();
 
-    Role createRole(String roleId);
+    RoleId createRoleId(String storeId, String roleId);
+
+    Role createRole(RoleId roleId);
 
     Role addRole(Role role);
 
