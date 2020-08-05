@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.store.role.Role;
+ import org.mallfoundry.store.role.RoleSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_store_role")
-public class JpaRole implements Role {
+public class JpaRole extends RoleSupport {
 
     @NotBlank
     @Id

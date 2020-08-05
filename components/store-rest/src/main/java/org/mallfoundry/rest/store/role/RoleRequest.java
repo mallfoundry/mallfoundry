@@ -16,40 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.rest.store.role;
 
-import org.mallfoundry.ownership.StoreOwnership;
-import org.mallfoundry.util.ObjectBuilder;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.store.role.Role;
 
-import java.util.List;
+@Getter
+@Setter
+public class RoleRequest {
+    private String id;
+    private String name;
 
-/**
- * 店铺角色对象。
- *
- * @author Zhi Tang
- */
-public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Builder> {
-
-    String getId();
-
-    void setId(String id);
-
-    void setStoreId(String storeId);
-
-    String getName();
-
-    void setName(String name);
-
-    List<String> getAuthorities();
-
-    void setAuthorities(List<String> authorities);
-
-    interface Builder extends ObjectBuilder<Role> {
-
-        Builder id(String id);
-
-        Builder name(String name);
-
-        Builder authorities(List<String> authorities);
+    public Role assignTo(Role role) {
+        return role.toBuilder().id(this.id).name(this.name).build();
     }
 }
