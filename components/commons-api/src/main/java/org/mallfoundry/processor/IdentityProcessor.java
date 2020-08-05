@@ -18,5 +18,5 @@
 
 package org.mallfoundry.processor;
 
-public interface IdentityProcessor {
+public interface IdentityProcessor extends Processor {
 }
