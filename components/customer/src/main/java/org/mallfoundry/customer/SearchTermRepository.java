@@ -23,15 +23,17 @@ import java.util.Optional;
 
 public interface SearchTermRepository {
 
-    Optional<InternalSearchTerm> findById(InternalSearchTermId internalSearchTermId);
+    SearchTerm create(String customerId, String term);
 
-    List<InternalSearchTerm> findAllByCustomerId(String customerId);
+    Optional<SearchTerm> findByCustomerIdAndTerm(String customerId, String term);
 
-    <S extends InternalSearchTerm> S save(S entity);
+    List<SearchTerm> findAllByCustomerId(String customerId);
+
+    SearchTerm save(SearchTerm entity);
 
     void deleteByCustomerIdAndTerm(String customerId, String term);
 
-    void deleteByCustomerIdAndTermIn(String customerId, List<String> terms);
+    void deleteByCustomerIdAndTerms(String customerId, List<String> terms);
 
     void deleteByCustomerId(String customerId);
 }

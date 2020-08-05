@@ -18,95 +18,27 @@
 
 package org.mallfoundry.customer;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.identity.Gender;
-import org.springframework.beans.BeanUtils;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "mf_customer")
-public class InternalCustomer implements Customer {
-
-    @Id
-    @Column(name = "id_")
-    private String id;
-
-    @Column(name = "username_")
-    private String username;
-
-    @Column(name = "avatar_")
-    private String avatar;
-
-    @Column(name = "nickname_")
-    private String nickname;
-
-    @Column(name = "gender_")
-    private Gender gender;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "birthdate_")
-    private Date birthdate;
-
-    @OneToMany(targetEntity = InternalCustomerAddress.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "customer_id_")
-    @OrderBy("defaulted DESC , createdTime ASC")
-    private List<CustomerAddress> addresses = new ArrayList<>();
-
-    public InternalCustomer(String userId) {
-        this.id = userId;
-        this.gender = Gender.UNKNOWN;
-        this.birthdate = new Date();
-    }
-
-    public static InternalCustomer of(Customer customer) {
-        if (customer instanceof InternalCustomer) {
-            return (InternalCustomer) customer;
-        }
-        var target = new InternalCustomer();
-        BeanUtils.copyProperties(customer, target);
-        return target;
-    }
+public abstract class CustomerSupport implements MutableCustomer {
 
     @Override
     public Optional<CustomerAddress> getDefaultAddress() {
-        return this.addresses.stream().filter(CustomerAddress::isDefaulted).findFirst();
+        return this.getAddresses().stream().filter(CustomerAddress::isDefaulted).findFirst();
     }
 
     @Override
     public Optional<CustomerAddress> getAddress(String addressId) {
-        return this.addresses.stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
-    }
-
-    @Override
-    public CustomerAddress createAddress(String id) {
-        return new InternalCustomerAddress(id);
+        return this.getAddresses().stream().filter(address -> Objects.equals(address.getId(), addressId)).findFirst();
     }
 
     @Override
     public void addAddress(final CustomerAddress address) {
-        this.addresses.remove(address);
-        this.addresses.add(address);
+        this.getAddresses().remove(address);
+        this.getAddresses().add(address);
         this.switchDefaultAddress(address);
     }
 
@@ -121,9 +53,13 @@ public class InternalCustomer implements Customer {
         }
     }
 
+    private CustomerAddress requiredAddress(String addressId) {
+        return this.getAddress(addressId).orElseThrow();
+    }
+
     @Override
-    public void setAddress(CustomerAddress address) {
-        var oldAddress = this.getAddress(address.getId()).orElseThrow();
+    public void updateAddress(CustomerAddress address) {
+        var oldAddress = this.requiredAddress(address.getId());
 
         var firstName = StringUtils.trim(address.getFirstName());
         if (StringUtils.isNotEmpty(firstName)) {
@@ -191,6 +127,6 @@ public class InternalCustomer implements Customer {
 
     @Override
     public void removeAddress(CustomerAddress address) {
-        this.addresses.remove(address);
+        this.getAddresses().remove(address);
     }
 }

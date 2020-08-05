@@ -28,5 +28,5 @@ public interface SearchTerm {
 
     int getHits();
 
-    int hit();
+    void hit();
 }

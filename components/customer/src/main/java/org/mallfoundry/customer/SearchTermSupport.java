@@ -18,5 +18,11 @@
 
 package org.mallfoundry.customer;
 
-public interface CustomerConfiguration {
+public abstract class SearchTermSupport implements MutableSearchTerm {
+
+    @Override
+    public void hit() {
+        this.setTimestamp(System.currentTimeMillis());
+        this.setHits(this.getHits() + 1);
+    }
 }

@@ -18,31 +18,28 @@
 
 package org.mallfoundry.customer;
 
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-@Service
-public class InternalSearchTermService implements SearchTermService {
+public class DefaultSearchTermService implements SearchTermService {
 
     private final SearchTermRepository searchTermRepository;
 
-    public InternalSearchTermService(SearchTermRepository searchTermRepository) {
+    public DefaultSearchTermService(SearchTermRepository searchTermRepository) {
         this.searchTermRepository = searchTermRepository;
     }
 
-    private Supplier<InternalSearchTerm> createNewSearchTerm(String customerId, String term) {
-        return () -> new InternalSearchTerm(customerId, term);
+    private Supplier<SearchTerm> createNewSearchTerm(String customerId, String term) {
+        return () -> this.searchTermRepository.create(customerId, term);
     }
 
     @Transactional
     @Override
     public SearchTerm addSearchTerm(String customerId, String termText) {
         var term = this.searchTermRepository
-                .findById(InternalSearchTermId.of(customerId, termText))
+                .findByCustomerIdAndTerm(customerId, termText)
                 .orElseGet(createNewSearchTerm(customerId, termText));
         term.hit();
         return this.searchTermRepository.save(term);
@@ -50,7 +47,7 @@ public class InternalSearchTermService implements SearchTermService {
 
     @Override
     public List<SearchTerm> getSearchTerms(String customerId) {
-        return CastUtils.cast(this.searchTermRepository.findAllByCustomerId(customerId));
+        return this.searchTermRepository.findAllByCustomerId(customerId);
     }
 
     @Transactional
@@ -62,7 +59,7 @@ public class InternalSearchTermService implements SearchTermService {
     @Transactional
     @Override
     public void deleteSearchTerms(String customerId, List<String> terms) {
-        this.searchTermRepository.deleteByCustomerIdAndTermIn(customerId, terms);
+        this.searchTermRepository.deleteByCustomerIdAndTerms(customerId, terms);
     }
 
     @Transactional

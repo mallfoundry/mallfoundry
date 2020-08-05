@@ -18,27 +18,23 @@
 
 package org.mallfoundry.autoconfigure.customer;
 
-import org.mallfoundry.customer.CustomerRepository;
-import org.mallfoundry.customer.DefaultCustomerService;
-import org.mallfoundry.customer.repository.jpa.DelegatingJpaCustomerRepository;
-import org.mallfoundry.customer.repository.jpa.JpaCustomerRepository;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.mallfoundry.customer.DefaultSearchTermService;
+import org.mallfoundry.customer.SearchTermRepository;
+import org.mallfoundry.customer.repository.jpa.DelegatingJpaSearchTermRepository;
+import org.mallfoundry.customer.repository.jpa.JpaSearchTermRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-@Import(SearchTermConfiguration.class)
-@EnableConfigurationProperties(CustomerProperties.class)
 @Configuration
-public class CustomerAutoConfiguration {
+public class SearchTermConfiguration {
 
     @Bean
-    public DelegatingJpaCustomerRepository delegatingJpaCustomerRepository(JpaCustomerRepository repository) {
-        return new DelegatingJpaCustomerRepository(repository);
+    public DelegatingJpaSearchTermRepository delegatingJpaSearchTermRepository(JpaSearchTermRepository repository) {
+        return new DelegatingJpaSearchTermRepository(repository);
     }
 
     @Bean
-    public DefaultCustomerService defaultCustomerService(CustomerRepository customerRepository) {
-        return new DefaultCustomerService(customerRepository);
+    public DefaultSearchTermService defaultSearchTermService(SearchTermRepository repository) {
+        return new DefaultSearchTermService(repository);
     }
 }

@@ -60,10 +60,10 @@ public class CustomerResourceV1 {
 
     @Operation(summary = "根据顾客标识更新顾客对象")
     @PatchMapping("/customers/{customer_id}")
-    public Optional<CustomerResponse> setCustomer(@PathVariable("customer_id") String customerId,
+    public Optional<CustomerResponse> updateCustomer(@PathVariable("customer_id") String customerId,
                                                   @RequestBody CustomerRequest request) {
         return Optional.ofNullable(
-                this.customerService.setCustomer(
+                this.customerService.updateCustomer(
                         request.assignToCustomer(
                                 this.customerService.createCustomer(customerId))))
                 .map(CustomerResponse::new);

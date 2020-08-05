@@ -16,48 +16,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.customer.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.customer.SearchTerm;
+import org.mallfoundry.customer.SearchTermSupport;
+import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class InternalSearchTermId implements Serializable {
+@Entity
+@Table(name = "mf_customer_search_term")
+@IdClass(JpaSearchTermId.class)
+public class JpaSearchTerm extends SearchTermSupport {
 
+    @Id
+    @Column(name = "customer_id_")
     private String customerId;
 
+    @Id
+    @Column(name = "term_")
     private String term;
 
-    public InternalSearchTermId(String customerId, String term) {
+    @Column(name = "timestamp_")
+    private long timestamp;
+
+    @Column(name = "hits_")
+    private int hits;
+
+    public JpaSearchTerm(String customerId, String term) {
         this.customerId = customerId;
         this.term = term;
     }
 
-    public static InternalSearchTermId of(String customerId, String term) {
-        return new InternalSearchTermId(customerId, term);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public static JpaSearchTerm of(SearchTerm term) {
+        if (term instanceof JpaSearchTerm) {
+            return (JpaSearchTerm) term;
         }
-        if (!(o instanceof InternalSearchTermId)) {
-            return false;
-        }
-        InternalSearchTermId that = (InternalSearchTermId) o;
-        return Objects.equals(customerId, that.customerId)
-                && Objects.equals(term, that.term);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(customerId, term);
+        var target = new JpaSearchTerm();
+        BeanUtils.copyProperties(term, target);
+        return target;
     }
 }

@@ -16,23 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.customer.repository.jpa;
+package org.mallfoundry.customer;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-@Repository
-public interface JpaSearchTermRepository extends JpaRepository<JpaSearchTerm, JpaSearchTermId> {
-
-    @Query("from InternalSearchTerm where customerId = ?1 order by timestamp desc")
-    List<JpaSearchTerm> findAllByCustomerId(String customerId);
-
-    void deleteByCustomerIdAndTerm(String customerId, String term);
-
-    void deleteByCustomerIdAndTermIn(String customerId, List<String> terms);
-
-    void deleteByCustomerId(String customerId);
+public interface MutableCustomer extends Customer {
 }

@@ -29,7 +29,7 @@ public interface CustomerService {
 
     Customer addCustomer(Customer customer);
 
-    Customer setCustomer(Customer customer);
+    Customer updateCustomer(Customer customer);
 
     void deleteCustomer(String customerId);
 

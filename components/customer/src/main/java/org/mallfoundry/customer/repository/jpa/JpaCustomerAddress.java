@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.customer.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.customer.CustomerAddress;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_customer_address")
-public class InternalCustomerAddress implements CustomerAddress {
+public class JpaCustomerAddress implements CustomerAddress {
 
     @Id
     @Column(name = "id_")
@@ -87,7 +88,7 @@ public class InternalCustomerAddress implements CustomerAddress {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalCustomerAddress(String id) {
+    public JpaCustomerAddress(String id) {
         this.id = id;
         this.createdTime = new Date();
     }
@@ -100,7 +101,7 @@ public class InternalCustomerAddress implements CustomerAddress {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalCustomerAddress that = (InternalCustomerAddress) o;
+        JpaCustomerAddress that = (JpaCustomerAddress) o;
         return Objects.equals(id, that.id);
     }
 

@@ -18,10 +18,9 @@
 
 package org.mallfoundry.customer;
 
-import lombok.Getter;
-import lombok.Setter;
+public interface MutableSearchTerm extends SearchTerm {
 
-@Getter
-@Setter
-public class DefaultCustomerConfiguration implements CustomerConfiguration {
+    void setTimestamp(long timestamp);
+
+    void setHits(int hits);
 }

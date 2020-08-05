@@ -16,32 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.customer;
+package org.mallfoundry.customer.repository.jpa;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.util.UniqueIdentifier;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Embeddable
-public class CustomerId implements UniqueIdentifier<String> {
+public class JpaSearchTermId implements Serializable {
+    private String customerId;
+    private String term;
 
-    @JsonValue
-    @Column(name = "customer_id_")
-    private String identifier;
+    public JpaSearchTermId(String customerId, String term) {
+        this.customerId = customerId;
+        this.term = term;
+    }
 
-    @JsonCreator
-    public CustomerId(String id) {
-        this.identifier = id;
+    public static JpaSearchTermId of(String customerId, String term) {
+        return new JpaSearchTermId(customerId, term);
     }
 
     @Override
@@ -49,15 +46,16 @@ public class CustomerId implements UniqueIdentifier<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CustomerId)) {
+        if (!(o instanceof JpaSearchTermId)) {
             return false;
         }
-        CustomerId that = (CustomerId) o;
-        return Objects.equals(identifier, that.identifier);
+        JpaSearchTermId that = (JpaSearchTermId) o;
+        return Objects.equals(customerId, that.customerId)
+                && Objects.equals(term, that.term);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier);
+        return Objects.hash(customerId, term);
     }
 }

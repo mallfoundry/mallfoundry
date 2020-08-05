@@ -59,7 +59,7 @@ public interface Customer {
 
     void addAddress(CustomerAddress address);
 
-    void setAddress(CustomerAddress address);
+    void updateAddress(CustomerAddress address);
 
     void removeAddress(CustomerAddress address);
 

@@ -22,9 +22,11 @@ import java.util.Optional;
 
 public interface CustomerRepository {
 
-    InternalCustomer save(InternalCustomer customer);
+    Customer create(String id);
 
-    Optional<InternalCustomer> findById(String id);
+    Customer save(Customer customer);
 
-    void deleteById(String id);
+    Optional<Customer> findById(String id);
+
+    void delete(Customer customer);
 }

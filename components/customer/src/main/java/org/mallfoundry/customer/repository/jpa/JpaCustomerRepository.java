@@ -18,12 +18,9 @@
 
 package org.mallfoundry.customer.repository.jpa;
 
-import org.mallfoundry.customer.CustomerRepository;
-import org.mallfoundry.customer.InternalCustomer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JpaCustomerRepository
-        extends CustomerRepository, JpaRepository<InternalCustomer, String> {
+public interface JpaCustomerRepository extends JpaRepository<JpaCustomer, String> {
 }

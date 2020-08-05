@@ -19,45 +19,46 @@
 package org.mallfoundry.customer;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
-public class InternalCustomerService implements CustomerService {
+public class DefaultCustomerService implements CustomerService {
 
     private static final String ADDRESS_ID_VALUE_NAME = "customer.address.id";
 
     private final CustomerRepository customerRepository;
 
-    public InternalCustomerService(CustomerRepository customerRepository) {
+    public DefaultCustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
     @Override
     public Customer createCustomer(String customerId) {
-        return new InternalCustomer(customerId);
+        return this.customerRepository.create(customerId);
     }
 
     @Override
     public Optional<Customer> getCustomer(String customerId) {
-        return CastUtils.cast(this.customerRepository.findById(customerId));
+        return this.customerRepository.findById(customerId);
     }
 
     @Transactional
     @Override
     public Customer addCustomer(Customer customer) {
-        return this.customerRepository.save(InternalCustomer.of(customer));
+        return this.customerRepository.save(customer);
+    }
+
+    public Customer requiredCustomer(String customerId) {
+        return this.getCustomer(customerId).orElseThrow();
     }
 
     @Transactional
     @Override
-    public Customer setCustomer(Customer customer) {
-        var savedCustomer = this.customerRepository.findById(customer.getId()).orElseThrow();
+    public Customer updateCustomer(Customer customer) {
+        var savedCustomer = this.requiredCustomer(customer.getId());
         if (Objects.nonNull(customer.getNickname())) {
             savedCustomer.setNickname(customer.getNickname());
         }
@@ -73,43 +74,48 @@ public class InternalCustomerService implements CustomerService {
     @Transactional
     @Override
     public void deleteCustomer(String customerId) {
-        this.customerRepository.deleteById(customerId);
+        var customer = this.requiredCustomer(customerId);
+        this.customerRepository.delete(customer);
     }
 
     @Transactional
     @Override
     public CustomerAddress addAddress(String customerId, CustomerAddress address) {
         address.setId(PrimaryKeyHolder.next(ADDRESS_ID_VALUE_NAME));
-        this.getCustomer(customerId).orElseThrow().addAddress(address);
+        this.requiredCustomer(customerId).addAddress(address);
         return address;
     }
 
     @Transactional
     @Override
     public List<CustomerAddress> getAddresses(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getAddresses();
+        return this.requiredCustomer(customerId).getAddresses();
     }
 
     @Override
     public Optional<CustomerAddress> getAddress(String customerId, String addressId) {
-        return this.getCustomer(customerId).orElseThrow().getAddress(addressId);
+        return this.requiredCustomer(customerId).getAddress(addressId);
     }
 
     @Override
     public Optional<CustomerAddress> getDefaultAddress(String customerId) {
-        return this.getCustomer(customerId).orElseThrow().getDefaultAddress();
+        return this.requiredCustomer(customerId).getDefaultAddress();
     }
 
     @Transactional
     @Override
     public void setAddress(String customerId, CustomerAddress newAddress) {
-        this.getCustomer(customerId).orElseThrow().setAddress(newAddress);
+        this.requiredCustomer(customerId).updateAddress(newAddress);
+    }
+
+    private CustomerAddress requiredCustomerAddress(Customer customer, String addressId) {
+        return customer.getAddress(addressId).orElseThrow();
     }
 
     @Transactional
     @Override
     public void removeAddress(String customerId, String addressId) {
-        var customer = this.getCustomer(customerId).orElseThrow();
-        customer.removeAddress(customer.getAddress(addressId).orElseThrow());
+        var customer = this.requiredCustomer(customerId);
+        customer.removeAddress(this.requiredCustomerAddress(customer, addressId));
     }
 }
