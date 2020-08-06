@@ -19,12 +19,15 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.store.role.DefaultRoleService;
+import org.mallfoundry.store.role.RoleAuthorityRepository;
 import org.mallfoundry.store.role.RoleAuthorizeProcessor;
 import org.mallfoundry.store.role.RoleIdentityProcessor;
 import org.mallfoundry.store.role.RoleProcessor;
 import org.mallfoundry.store.role.RoleRepository;
 import org.mallfoundry.store.role.SmartRoleValidateProcessor;
+import org.mallfoundry.store.role.repository.jpa.DelegatingJpaRoleAuthorityRepository;
 import org.mallfoundry.store.role.repository.jpa.DelegatingJpaRoleRepository;
+import org.mallfoundry.store.role.repository.jpa.JpaRoleAuthorityRepository;
 import org.mallfoundry.store.role.repository.jpa.JpaRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,16 +40,21 @@ import java.util.List;
 public class StoreRoleConfiguration {
 
     @Bean
+    public DelegatingJpaRoleAuthorityRepository delegatingJpaRoleAuthorityRepository(JpaRoleAuthorityRepository repository) {
+        return new DelegatingJpaRoleAuthorityRepository(repository);
+    }
+
+    @Bean
     public DelegatingJpaRoleRepository delegatingJpaRoleRepository(JpaRoleRepository roleRepositoryDelegate) {
         return new DelegatingJpaRoleRepository(roleRepositoryDelegate);
     }
 
-
     @Bean
     @Autowired(required = false)
     public DefaultRoleService defaultStoreRoleService(@Lazy List<RoleProcessor> processors,
-                                                      RoleRepository repository) {
-        var service = new DefaultRoleService(repository);
+                                                      RoleRepository repository,
+                                                      RoleAuthorityRepository roleAuthorityRepository) {
+        var service = new DefaultRoleService(repository, roleAuthorityRepository);
         service.setProcessors(processors);
         return service;
     }
@@ -65,5 +73,4 @@ public class StoreRoleConfiguration {
     public RoleAuthorizeProcessor storeRoleAuthorizeProcessor() {
         return new RoleAuthorizeProcessor();
     }
-
 }
