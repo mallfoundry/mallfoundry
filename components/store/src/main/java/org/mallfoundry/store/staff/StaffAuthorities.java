@@ -20,11 +20,11 @@ package org.mallfoundry.store.staff;
 
 public abstract class StaffAuthorities {
 
-    public static final String STAFF_ADD = "store_staff_add";
+    public static final String STORE_STAFF_READ = "store_staff_read";
 
-    public static final String STAFF_UPDATE = "store_staff_update";
+    public static final String STORE_STAFF_WRITE = "store_staff_write";
 
-    public static final String STAFF_DELETE = "store_staff_delete";
+    public static final String STORE_STAFF_DELETE = "store_staff_delete";
 
-    public static final String STAFF_MANAGE = "store_staff_manage";
+    public static final String STORE_STAFF_MANAGE = "store_staff_manage";
 }
