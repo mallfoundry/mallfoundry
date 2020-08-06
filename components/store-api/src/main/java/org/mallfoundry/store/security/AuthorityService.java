@@ -16,12 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role.repository.jpa;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.store.role.RoleAuthority;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-public interface JpaRoleAuthorityRepository extends JpaRepository<JpaRoleAuthority, String> {
+public interface AuthorityService {
+
+    Authority addAuthority(Authority roleAuthority);
+
+    List<Authority> addAuthorities(List<Authority> roleAuthorities);
+
+    void deleteAuthority(String authority);
+
+    void deleteAuthorities(List<String> authorities);
+
+    List<Authority> getAuthorities();
 }

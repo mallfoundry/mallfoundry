@@ -16,25 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.util.Position;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.store.StoreQueryBase;
+import org.mallfoundry.util.ObjectBuilder;
 
-import java.util.List;
+public interface RoleQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<RoleQuery.Builder> {
 
-public interface RoleAuthority extends Position {
-
-    String getAuthority();
-
-    void setAuthority(String authority);
-
-    String getName();
-
-    void setName(String name);
-
-    String getDescription();
-
-    void setDescription(String description);
-
-    List<RoleAuthority> getChildren();
+    interface Builder extends QueryBuilder<RoleQuery, Builder> {
+        Builder storeId(String storeId);
+    }
 }

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
 import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;

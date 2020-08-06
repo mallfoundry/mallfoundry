@@ -18,17 +18,18 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.role.DefaultRoleService;
-import org.mallfoundry.store.role.RoleAuthorityRepository;
-import org.mallfoundry.store.role.RoleAuthorizeProcessor;
-import org.mallfoundry.store.role.RoleIdentityProcessor;
-import org.mallfoundry.store.role.RoleProcessor;
-import org.mallfoundry.store.role.RoleRepository;
-import org.mallfoundry.store.role.SmartRoleValidateProcessor;
-import org.mallfoundry.store.role.repository.jpa.DelegatingJpaRoleAuthorityRepository;
-import org.mallfoundry.store.role.repository.jpa.DelegatingJpaRoleRepository;
-import org.mallfoundry.store.role.repository.jpa.JpaRoleAuthorityRepository;
-import org.mallfoundry.store.role.repository.jpa.JpaRoleRepository;
+import org.mallfoundry.store.security.AuthorityRepository;
+import org.mallfoundry.store.security.DefaultAuthorityService;
+import org.mallfoundry.store.security.DefaultRoleService;
+import org.mallfoundry.store.security.RoleAuthorizeProcessor;
+import org.mallfoundry.store.security.RoleIdentityProcessor;
+import org.mallfoundry.store.security.RoleProcessor;
+import org.mallfoundry.store.security.RoleRepository;
+import org.mallfoundry.store.security.SmartRoleValidateProcessor;
+import org.mallfoundry.store.security.repository.jpa.DelegatingJpaAuthorityRepository;
+import org.mallfoundry.store.security.repository.jpa.DelegatingJpaRoleRepository;
+import org.mallfoundry.store.security.repository.jpa.JpaAuthorityRepository;
+import org.mallfoundry.store.security.repository.jpa.JpaRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,11 +38,16 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 @Configuration
-public class StoreRoleConfiguration {
+public class StoreSecurityConfiguration {
 
     @Bean
-    public DelegatingJpaRoleAuthorityRepository delegatingJpaRoleAuthorityRepository(JpaRoleAuthorityRepository repository) {
-        return new DelegatingJpaRoleAuthorityRepository(repository);
+    public DelegatingJpaAuthorityRepository delegatingJpaAuthorityRepository(JpaAuthorityRepository repository) {
+        return new DelegatingJpaAuthorityRepository(repository);
+    }
+
+    @Bean
+    public DefaultAuthorityService defaultAuthorityService(AuthorityRepository repository) {
+        return new DefaultAuthorityService(repository);
     }
 
     @Bean
@@ -51,10 +57,8 @@ public class StoreRoleConfiguration {
 
     @Bean
     @Autowired(required = false)
-    public DefaultRoleService defaultStoreRoleService(@Lazy List<RoleProcessor> processors,
-                                                      RoleRepository repository,
-                                                      RoleAuthorityRepository roleAuthorityRepository) {
-        var service = new DefaultRoleService(repository, roleAuthorityRepository);
+    public DefaultRoleService defaultStoreRoleService(@Lazy List<RoleProcessor> processors, RoleRepository repository) {
+        var service = new DefaultRoleService(repository);
         service.setProcessors(processors);
         return service;
     }

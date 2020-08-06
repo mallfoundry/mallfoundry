@@ -16,25 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security.repository.jpa;
 
-import org.mallfoundry.data.SliceList;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-public interface RoleRepository {
-
-    Role create(RoleId id);
-
-    Role save(Role role);
-
-    Optional<Role> findById(RoleId id);
-
-    List<Role> findAllById(Collection<RoleId> ids);
-
-    SliceList<Role> findAll(RoleQuery query);
-
-    void delete(Role role);
+@Repository
+public interface JpaAuthorityRepository extends JpaRepository<JpaAuthority, String> {
 }

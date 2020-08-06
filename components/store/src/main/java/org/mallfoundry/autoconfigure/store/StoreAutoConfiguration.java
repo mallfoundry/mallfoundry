@@ -37,7 +37,7 @@ import java.util.List;
 @EnableConfigurationProperties(StoreProperties.class)
 @Import({ProductCollectionConfiguration.class,
         StoreAddressConfiguration.class,
-        StoreRoleConfiguration.class,
+        StoreSecurityConfiguration.class,
         StoreStaffConfiguration.class})
 public class StoreAutoConfiguration {
 

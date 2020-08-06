@@ -19,7 +19,7 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.store.role.RoleService;
+import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
 import org.mallfoundry.store.staff.SmartStaffValidateProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;

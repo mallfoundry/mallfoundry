@@ -16,17 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role.repository.jpa;
+package org.mallfoundry.store.security.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.store.role.RoleAuthority;
+import org.mallfoundry.store.security.Authority;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_role_authority")
-public class JpaRoleAuthority implements RoleAuthority {
+@Table(name = "mf_store_authority")
+public class JpaAuthority implements Authority {
 
     @Id
     @Column(name = "authority_")
@@ -49,17 +50,18 @@ public class JpaRoleAuthority implements RoleAuthority {
     @Column(name = "description_")
     private String description;
 
-    @OneToMany(targetEntity = JpaRoleAuthority.class)
-    private List<RoleAuthority> children = new ArrayList<>();
+    @OneToMany(targetEntity = JpaAuthority.class)
+    @JoinColumn(name = "parent_id_")
+    private List<Authority> children = new ArrayList<>();
 
     @Column(name = "position_")
     private int position;
 
-    public static JpaRoleAuthority of(RoleAuthority authority) {
-        if (authority instanceof JpaRoleAuthority) {
-            return (JpaRoleAuthority) authority;
+    public static JpaAuthority of(Authority authority) {
+        if (authority instanceof JpaAuthority) {
+            return (JpaAuthority) authority;
         }
-        var target = new JpaRoleAuthority();
+        var target = new JpaAuthority();
         BeanUtils.copyProperties(authority, target);
         return target;
     }

@@ -16,10 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.ownership.StoreOwnership;
+import java.util.Date;
 
-public interface RoleId extends StoreOwnership {
-    String getRoleId();
+public interface MutableRole extends Role {
+
+    void setType(RoleType type);
+
+    void setStaffsCount(int staffsCount);
+
+    void setCreatedTime(Date createdTime);
 }

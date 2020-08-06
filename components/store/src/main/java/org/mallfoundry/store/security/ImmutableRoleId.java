@@ -16,15 +16,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.store.StoreQueryBase;
-import org.mallfoundry.util.ObjectBuilder;
+import lombok.Getter;
 
-public interface RoleQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<RoleQuery.Builder> {
+import java.util.Objects;
 
-    interface Builder extends QueryBuilder<RoleQuery, Builder> {
-        Builder storeId(String storeId);
+@Getter
+public class ImmutableRoleId implements RoleId {
+    private final String storeId;
+    private final String roleId;
+
+    public ImmutableRoleId(String storeId, String roleId) {
+        this.storeId = storeId;
+        this.roleId = roleId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ImmutableRoleId)) {
+            return false;
+        }
+        ImmutableRoleId that = (ImmutableRoleId) object;
+        return Objects.equals(storeId, that.storeId) && Objects.equals(roleId, that.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, roleId);
     }
 }

@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-public abstract class RoleAuthorities {
+import java.util.List;
 
-    public static final String STORE_ROLE_ADD = "store_role_add";
+public interface AuthorityRepository {
 
-    public static final String STORE_ROLE_UPDATE = "store_role_update";
+    Authority save(Authority authority);
 
-    public static final String STORE_ROLE_DELETE = "store_role_delete";
+    List<Authority> saveAll(List<Authority> authorities);
 
-    public static final String STORE_ROLE_MANAGE = "store_role_manage";
+    List<Authority> findAll();
 }

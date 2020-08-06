@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role.repository.jpa;
+package org.mallfoundry.store.security.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.role.Role;
-import org.mallfoundry.store.role.RoleId;
-import org.mallfoundry.store.role.RoleQuery;
-import org.mallfoundry.store.role.RoleRepository;
+import org.mallfoundry.store.security.Role;
+import org.mallfoundry.store.security.RoleId;
+import org.mallfoundry.store.security.RoleQuery;
+import org.mallfoundry.store.security.RoleRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collection;

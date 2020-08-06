@@ -16,20 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.mallfoundry.data.SliceList;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class RoleIdentityProcessor implements RoleProcessor {
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
-    private static final String ROLE_ID_VALUE_NAME = "store.role.id";
+public interface RoleRepository {
 
-    @Override
-    public Role preProcessBeforeAddRole(Role role) {
-        role.setId(PrimaryKeyHolder.next(ROLE_ID_VALUE_NAME));
-        return role;
-    }
+    Role create(RoleId id);
+
+    Role save(Role role);
+
+    Optional<Role> findById(RoleId id);
+
+    List<Role> findAllById(Collection<RoleId> ids);
+
+    SliceList<Role> findAll(RoleQuery query);
+
+    void delete(Role role);
 }

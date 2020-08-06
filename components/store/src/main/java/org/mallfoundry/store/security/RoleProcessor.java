@@ -16,15 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import java.util.List;
+public interface RoleProcessor {
 
-public interface RoleAuthorityRepository {
+    default Role preProcessBeforeAddRole(Role role) {
+        return role;
+    }
 
-    RoleAuthority save(RoleAuthority authority);
+    default Role preProcessBeforeUpdateRole(Role role) {
+        return role;
+    }
 
-    List<RoleAuthority> saveAll(List<RoleAuthority> authorities);
+    default Role preProcessAfterUpdateRole(Role role) {
+        return role;
+    }
 
-    List<RoleAuthority> findAll();
+    default Role preProcessBeforeDeleteRole(Role role) {
+        return role;
+    }
 }

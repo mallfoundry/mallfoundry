@@ -16,36 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import lombok.Getter;
+import java.util.List;
 
-import java.util.Objects;
+public class DefaultAuthorityService implements AuthorityService {
 
-@Getter
-public class ImmutableRoleId implements RoleId {
-    private final String storeId;
-    private final String roleId;
+    private final AuthorityRepository authorityRepository;
 
-    public ImmutableRoleId(String storeId, String roleId) {
-        this.storeId = storeId;
-        this.roleId = roleId;
+    public DefaultAuthorityService(AuthorityRepository authorityRepository) {
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof ImmutableRoleId)) {
-            return false;
-        }
-        ImmutableRoleId that = (ImmutableRoleId) object;
-        return Objects.equals(storeId, that.storeId) && Objects.equals(roleId, that.roleId);
+    public Authority addAuthority(Authority authority) {
+        return null;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(storeId, roleId);
+    public List<Authority> addAuthorities(List<Authority> roleAuthorities) {
+        return null;
     }
+
+    @Override
+    public void deleteAuthority(String authority) {
+
+    }
+
+    @Override
+    public void deleteAuthorities(List<String> authorities) {
+
+    }
+
+    @Override
+    public List<Authority> getAuthorities() {
+        return this.authorityRepository.findAll();
+    }
+
 }

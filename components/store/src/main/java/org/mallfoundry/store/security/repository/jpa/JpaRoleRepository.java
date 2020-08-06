@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role.repository.jpa;
+package org.mallfoundry.store.security.repository.jpa;
 
-import org.mallfoundry.store.role.RoleQuery;
+import org.mallfoundry.store.security.RoleQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,11 +33,9 @@ public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSp
     default Specification<JpaRole> createSpecification(RoleQuery staffQuery) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
-
             if (Objects.nonNull(staffQuery.getStoreId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
             }
-
             return predicate;
         };
     }

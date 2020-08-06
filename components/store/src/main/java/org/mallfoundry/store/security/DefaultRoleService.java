@@ -16,11 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -61,6 +62,8 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     @Transactional
     @Override
     public Role addRole(Role role) {
+        role.addStaff(null);
+        role.custom();
         return Function.<Role>identity()
                 .compose(this.roleRepository::save)
                 .compose(this::invokePreProcessBeforeAddRole)
@@ -68,7 +71,8 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     }
 
     private Role updateRole(Role source, Role target) {
-
+        Copies.notBlank(source::getName).trim(target::setName);
+        Copies.notBlank(source::getDescription).trim(target::setDescription);
         return target;
     }
 

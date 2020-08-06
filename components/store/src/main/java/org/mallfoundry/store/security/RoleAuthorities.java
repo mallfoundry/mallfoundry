@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-public interface RoleProcessorInvoker {
+public abstract class RoleAuthorities {
 
-    Role invokePreProcessBeforeAddRole(Role role);
+    public static final String STORE_ROLE_ADD = "store_role_add";
 
-    Role invokePreProcessBeforeUpdateRole(Role role);
+    public static final String STORE_ROLE_UPDATE = "store_role_update";
 
-    Role invokePreProcessAfterUpdateRole(Role role);
+    public static final String STORE_ROLE_DELETE = "store_role_delete";
 
-    Role invokePreProcessBeforeDeleteRole(Role role);
+    public static final String STORE_ROLE_MANAGE = "store_role_manage";
 }

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
 import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.store.staff.Staff;

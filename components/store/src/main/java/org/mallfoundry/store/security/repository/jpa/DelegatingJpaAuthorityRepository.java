@@ -16,36 +16,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role.repository.jpa;
+package org.mallfoundry.store.security.repository.jpa;
 
-import org.mallfoundry.store.role.RoleAuthority;
-import org.mallfoundry.store.role.RoleAuthorityRepository;
+import org.mallfoundry.store.security.Authority;
+import org.mallfoundry.store.security.AuthorityRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DelegatingJpaRoleAuthorityRepository implements RoleAuthorityRepository {
+public class DelegatingJpaAuthorityRepository implements AuthorityRepository {
 
-    private final JpaRoleAuthorityRepository repository;
+    private final JpaAuthorityRepository repository;
 
-    public DelegatingJpaRoleAuthorityRepository(JpaRoleAuthorityRepository repository) {
+    public DelegatingJpaAuthorityRepository(JpaAuthorityRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public RoleAuthority save(RoleAuthority authority) {
-        return this.repository.save(JpaRoleAuthority.of(authority));
+    public Authority save(Authority authority) {
+        return this.repository.save(JpaAuthority.of(authority));
     }
 
     @Override
-    public List<RoleAuthority> saveAll(List<RoleAuthority> authorities) {
+    public List<Authority> saveAll(List<Authority> authorities) {
         return CastUtils.cast(this.repository.saveAll(
-                authorities.stream().map(JpaRoleAuthority::of).collect(Collectors.toUnmodifiableList())));
+                authorities.stream().map(JpaAuthority::of).collect(Collectors.toUnmodifiableList())));
     }
 
     @Override
-    public List<RoleAuthority> findAll() {
+    public List<Authority> findAll() {
         return CastUtils.cast(this.repository.findAll());
     }
 }

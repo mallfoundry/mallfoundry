@@ -16,25 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.validation.ValidationHolder;
+public interface RoleProcessorInvoker {
 
-public class SmartRoleValidateProcessor implements RoleProcessor {
+    Role invokePreProcessBeforeAddRole(Role role);
 
-    @Override
-    public Role preProcessBeforeAddRole(Role role) {
-        this.validate(role);
-        return role;
-    }
+    Role invokePreProcessBeforeUpdateRole(Role role);
 
-    @Override
-    public Role preProcessAfterUpdateRole(Role role) {
-        this.validate(role);
-        return role;
-    }
+    Role invokePreProcessAfterUpdateRole(Role role);
 
-    private void validate(Role role) {
-        ValidationHolder.validate(role, "role");
-    }
+    Role invokePreProcessBeforeDeleteRole(Role role);
 }

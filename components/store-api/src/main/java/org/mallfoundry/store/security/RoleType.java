@@ -16,33 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.role;
+package org.mallfoundry.store.security;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-public interface RoleService {
-
-    RoleQuery createRoleQuery();
-
-    RoleId createRoleId(String storeId, String roleId);
-
-    Role createRole(RoleId roleId);
-
-    Role addRole(Role role);
-
-    Role updateRole(Role role);
-
-    void deleteRole(RoleId roleId);
-
-    Optional<Role> getRole(RoleId roleId);
-
-    List<Role> getRoles(Set<RoleId> roleIds);
-
-    SliceList<Role> getRoles(RoleQuery query);
-
-    List<RoleAuthority> getRoleAuthorities();
+public enum RoleType {
+    PRIMITIVE/* 初始角色 */,
+    PREDEFINED /* 预定义角色 */,
+    CUSTOM /* 自定义角色 */
 }
