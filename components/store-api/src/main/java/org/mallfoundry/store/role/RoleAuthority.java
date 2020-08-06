@@ -22,19 +22,19 @@ import org.mallfoundry.util.Position;
 
 import java.util.List;
 
-public interface AuthorityDescription extends Position {
-
-    String getName();
-
-    void setName(String name);
+public interface RoleAuthority extends Position {
 
     String getAuthority();
 
     void setAuthority(String authority);
 
+    String getName();
+
+    void setName(String name);
+
     String getDescription();
 
     void setDescription(String description);
 
-    List<AuthorityDescription> getChildren();
+    List<RoleAuthority> getChildren();
 }
