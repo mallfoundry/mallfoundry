@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.store.role;
+package org.mallfoundry.rest.store.security;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.store.role.Role;
-import org.mallfoundry.store.role.RoleService;
+import org.mallfoundry.store.security.Role;
+import org.mallfoundry.store.security.RoleService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class RoleResourceV1 {
         return this.roleService.addRole(request.assignTo(store));
     }
 
-    @PostMapping("/stores/{store_id}/roles/{role_id}")
+    @PatchMapping("/stores/{store_id}/roles/{role_id}")
     public Role updateRole(@PathVariable("store_id") String storeId,
                            @PathVariable("role_id") String roleId,
                            @RequestBody RoleRequest request) {

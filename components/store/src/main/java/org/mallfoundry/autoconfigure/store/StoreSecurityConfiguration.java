@@ -18,17 +18,13 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.security.AuthorityRepository;
-import org.mallfoundry.store.security.DefaultAuthorityService;
 import org.mallfoundry.store.security.DefaultRoleService;
 import org.mallfoundry.store.security.RoleAuthorizeProcessor;
 import org.mallfoundry.store.security.RoleIdentityProcessor;
 import org.mallfoundry.store.security.RoleProcessor;
 import org.mallfoundry.store.security.RoleRepository;
 import org.mallfoundry.store.security.SmartRoleValidateProcessor;
-import org.mallfoundry.store.security.repository.jpa.DelegatingJpaAuthorityRepository;
 import org.mallfoundry.store.security.repository.jpa.DelegatingJpaRoleRepository;
-import org.mallfoundry.store.security.repository.jpa.JpaAuthorityRepository;
 import org.mallfoundry.store.security.repository.jpa.JpaRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,16 +35,6 @@ import java.util.List;
 
 @Configuration
 public class StoreSecurityConfiguration {
-
-    @Bean
-    public DelegatingJpaAuthorityRepository delegatingJpaAuthorityRepository(JpaAuthorityRepository repository) {
-        return new DelegatingJpaAuthorityRepository(repository);
-    }
-
-    @Bean
-    public DefaultAuthorityService defaultAuthorityService(AuthorityRepository repository) {
-        return new DefaultAuthorityService(repository);
-    }
 
     @Bean
     public DelegatingJpaRoleRepository delegatingJpaRoleRepository(JpaRoleRepository roleRepositoryDelegate) {
