@@ -19,7 +19,10 @@
 package org.mallfoundry.store.role;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RoleIdentityProcessor implements RoleProcessor {
 
     private static final String ROLE_ID_VALUE_NAME = "store.role.id";
