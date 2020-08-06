@@ -18,6 +18,7 @@
 
 package org.mallfoundry.i18n;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public abstract class MessageHolder {
 
     public static void setMessages(MessageSourceAccessor messages) {
         MessageHolder.messages = messages;
+    }
+
+    public static String getLanguage() {
+        return LocaleContextHolder.getLocale().getLanguage();
     }
 
     public static String message(String code) {
