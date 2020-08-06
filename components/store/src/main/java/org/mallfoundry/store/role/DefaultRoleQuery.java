@@ -20,10 +20,37 @@ package org.mallfoundry.store.role;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
 @Getter
 @Setter
 public class DefaultRoleQuery extends QuerySupport implements RoleQuery {
     private String storeId;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<RoleQuery, Builder> implements Builder {
+        private final DefaultRoleQuery query;
+
+        public BuilderSupport(DefaultRoleQuery query) {
+            super(query);
+            this.query = query;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.query.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
+        public RoleQuery build() {
+            return this.query;
+        }
+    }
 }
