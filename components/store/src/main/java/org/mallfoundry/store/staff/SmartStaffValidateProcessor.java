@@ -24,11 +24,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.validation.ValidationUtils;
 
-public class SmartStaffValidatedProcessor implements StaffProcessor {
+public class SmartStaffValidateProcessor implements StaffProcessor {
 
     private final SmartValidator validator;
 
-    public SmartStaffValidatedProcessor(SmartValidator validator) {
+    public SmartStaffValidateProcessor(SmartValidator validator) {
         this.validator = validator;
     }
 
