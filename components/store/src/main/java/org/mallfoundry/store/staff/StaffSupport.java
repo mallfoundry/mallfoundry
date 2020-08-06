@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.security.Role;
 
 import java.util.Date;
 import java.util.List;

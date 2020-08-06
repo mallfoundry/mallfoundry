@@ -19,7 +19,7 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.ownership.StoreOwnership;
-import org.mallfoundry.store.role.Role;
+import org.mallfoundry.store.security.Role;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
