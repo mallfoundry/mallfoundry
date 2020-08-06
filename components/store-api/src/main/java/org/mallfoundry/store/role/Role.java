@@ -72,6 +72,14 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
 
         Builder name(String name);
 
+        Builder description(String description);
+
         Builder authorities(List<String> authorities);
+
+        Builder primitive();
+
+        Builder predefine();
+
+        Builder custom();
     }
 }
