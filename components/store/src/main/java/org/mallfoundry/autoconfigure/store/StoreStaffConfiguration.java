@@ -21,9 +21,8 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.role.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
-import org.mallfoundry.store.staff.SmartStaffValidatedProcessor;
+import org.mallfoundry.store.staff.SmartStaffValidateProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
-import org.mallfoundry.store.staff.StaffIdentityProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
@@ -47,17 +46,12 @@ public class StoreStaffConfiguration {
     }
 
     @Bean
-    public StaffIdentityProcessor staffIdentityProcessor() {
-        return new StaffIdentityProcessor();
-    }
-
-    @Bean
     public StaffAuthorizeProcessor staffAuthorizeProcessor() {
         return new StaffAuthorizeProcessor();
     }
 
     @Bean
-    public SmartStaffValidatedProcessor smartStaffValidatedProcessor(SmartValidator validator) {
-        return new SmartStaffValidatedProcessor(validator);
+    public SmartStaffValidateProcessor smartStaffValidatedProcessor(SmartValidator validator) {
+        return new SmartStaffValidateProcessor(validator);
     }
 }
