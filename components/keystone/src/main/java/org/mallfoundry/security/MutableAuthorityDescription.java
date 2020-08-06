@@ -16,19 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.security;
+package org.mallfoundry.security;
 
-import java.util.List;
-
-public interface AuthorityService {
-
-    Authority addAuthority(Authority roleAuthority);
-
-    List<Authority> addAuthorities(List<Authority> roleAuthorities);
-
-    void deleteAuthority(String authority);
-
-    void deleteAuthorities(List<String> authorities);
-
-    List<Authority> getAuthorities();
+public interface MutableAuthorityDescription extends AuthorityDescription {
 }

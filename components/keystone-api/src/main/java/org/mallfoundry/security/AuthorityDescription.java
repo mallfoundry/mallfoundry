@@ -16,17 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.security;
+package org.mallfoundry.security;
 
+import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 import java.util.List;
 
-public interface Authority extends Position {
+public interface AuthorityDescription extends Position, ObjectBuilder.ToBuilder<AuthorityDescription.Builder> {
 
     String getAuthority();
 
     void setAuthority(String authority);
+
+    String getLanguage();
+
+    void setLanguage(String language);
 
     String getName();
 
@@ -36,5 +41,26 @@ public interface Authority extends Position {
 
     void setDescription(String description);
 
-    List<Authority> getChildren();
+    List<AuthorityDescription> getChildren();
+
+    void addAuthority(AuthorityDescription authority);
+
+    void addAuthorities(List<AuthorityDescription> authorities);
+
+    void removeAuthority(AuthorityDescription authority);
+
+    void removeAuthorities(List<AuthorityDescription> authorities);
+
+    interface Builder extends ObjectBuilder<AuthorityDescription> {
+
+        Builder authority(String authority);
+
+        Builder language(String language);
+
+        Builder name(String name);
+
+        Builder addAuthority(AuthorityDescription authority);
+
+        Builder addAuthorities(List<AuthorityDescription> authorities);
+    }
 }

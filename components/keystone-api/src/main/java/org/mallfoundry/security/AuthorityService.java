@@ -16,15 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.security;
+package org.mallfoundry.security;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface AuthorityRepository {
+public interface AuthorityService {
 
-    Authority save(Authority authority);
+    AuthorityDescriptionId createAuthorityDescriptionId(String authority);
 
-    List<Authority> saveAll(List<Authority> authorities);
+    AuthorityDescriptionId createAuthorityDescriptionId(String authority, String language);
 
-    List<Authority> findAll();
+    AuthorityDescription createAuthorityDescription(String authority);
+
+    AuthorityDescription createAuthorityDescription(String authority, String language);
+
+    Optional<AuthorityDescription> getAuthorityDescription(AuthorityDescriptionId descriptionId);
 }

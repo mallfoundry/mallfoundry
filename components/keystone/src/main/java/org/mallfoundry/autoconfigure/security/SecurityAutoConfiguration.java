@@ -18,10 +18,14 @@
 
 package org.mallfoundry.autoconfigure.security;
 
+import org.mallfoundry.security.AuthorityDescriptionRepository;
+import org.mallfoundry.security.DefaultAuthorityService;
 import org.mallfoundry.security.SecurityContextSystemUserSwitcher;
 import org.mallfoundry.security.SecuritySubjectHolderStrategy;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.security.SubjectSwitches;
+import org.mallfoundry.security.repository.jpa.JpaAuthorityDescriptionRepository;
+import org.mallfoundry.security.repository.jpa.DelegatingJpaAuthorityDescriptionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -29,6 +33,16 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(SecurityAccessControlConfiguration.class)
 public class SecurityAutoConfiguration {
+
+    @Bean
+    public JpaAuthorityDescriptionRepository jpaAuthorityDescriptionRepository(DelegatingJpaAuthorityDescriptionRepository repository) {
+        return new JpaAuthorityDescriptionRepository(repository);
+    }
+
+    @Bean
+    public DefaultAuthorityService defaultAuthorityService(AuthorityDescriptionRepository authorityDescriptionRepository) {
+        return new DefaultAuthorityService(authorityDescriptionRepository);
+    }
 
     @Bean
     public SecurityContextSystemUserSwitcher securityContextSystemUserSwitcher() {

@@ -16,11 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.security.repository.jpa;
+package org.mallfoundry.security;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface JpaAuthorityRepository extends JpaRepository<JpaAuthority, String> {
+public interface AuthorityDescriptionRepository {
+
+    AuthorityDescription create(String authority, String language);
+
+    AuthorityDescription save(AuthorityDescription authority);
+
+    List<AuthorityDescription> saveAll(List<AuthorityDescription> descriptions);
+
+    Optional<AuthorityDescription> findById(AuthorityDescriptionId id);
+
+    Optional<AuthorityDescription> findAllById(AuthorityDescriptionId id);
 }
