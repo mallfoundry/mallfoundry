@@ -41,7 +41,7 @@ public abstract class Copies {
 
         public void trim(Consumer<String> consumer) {
             if (this.match) {
-                consumer.accept(this.value);
+                consumer.accept(StringUtils.trim(this.value));
             }
         }
     }
