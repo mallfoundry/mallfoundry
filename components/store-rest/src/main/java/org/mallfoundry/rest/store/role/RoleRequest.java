@@ -25,10 +25,10 @@ import org.mallfoundry.store.role.Role;
 @Getter
 @Setter
 public class RoleRequest {
-    private String id;
     private String name;
+    private String description;
 
     public Role assignTo(Role role) {
-        return role.toBuilder().id(this.id).name(this.name).build();
+        return role.toBuilder().name(this.name).description(this.description).build();
     }
 }
