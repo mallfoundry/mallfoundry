@@ -31,11 +31,9 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +43,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@IdClass(JpaRoleId.class)
 @Table(name = "mf_store_role")
 public class JpaRole extends RoleSupport {
 
@@ -62,7 +59,7 @@ public class JpaRole extends RoleSupport {
     @Column(name = "name_")
     private String name;
 
-    @NotEmpty
+    @NotNull
     @Convert(converter = StringListConverter.class)
     @Column(name = "authorities_", length = 1024 * 2)
     private List<String> authorities = new ArrayList<>();
@@ -79,6 +76,7 @@ public class JpaRole extends RoleSupport {
     @Column(name = "staffs_count_")
     private int staffsCount;
 
+    @NotNull
     @Column(name = "created_time_")
     private Date createdTime;
 
