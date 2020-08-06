@@ -18,7 +18,13 @@
 
 package org.mallfoundry.store.role;
 
+import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.store.StoreQueryBase;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface RoleQuery extends StoreQueryBase {
+public interface RoleQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<RoleQuery.Builder> {
+
+    interface Builder extends QueryBuilder<RoleQuery, Builder> {
+        Builder storeId(String storeId);
+    }
 }
