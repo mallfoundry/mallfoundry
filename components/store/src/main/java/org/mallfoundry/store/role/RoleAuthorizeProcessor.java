@@ -32,20 +32,20 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
             + RoleAuthorities.STORE_ROLE_ADD + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
     public Role preProcessBeforeAddRole(Role role) {
-        return null;
+        return role;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + RoleAuthorities.STORE_ROLE_UPDATE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
     public Role preProcessBeforeUpdateRole(Role role) {
-        return null;
+        return role;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + RoleAuthorities.STORE_ROLE_DELETE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
     public Role preProcessBeforeDeleteRole(Role role) {
-        return null;
+        return role;
     }
 }
