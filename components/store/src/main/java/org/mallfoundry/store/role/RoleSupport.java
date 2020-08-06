@@ -85,6 +85,30 @@ public abstract class RoleSupport implements MutableRole {
         }
 
         @Override
+        public Builder description(String description) {
+            this.role.setDescription(description);
+            return this;
+        }
+
+        @Override
+        public Builder primitive() {
+            this.role.setType(RoleType.PRIMITIVE);
+            return this;
+        }
+
+        @Override
+        public Builder predefine() {
+            this.role.setType(RoleType.PREDEFINED);
+            return this;
+        }
+
+        @Override
+        public Builder custom() {
+            this.role.setType(RoleType.CUSTOM);
+            return this;
+        }
+
+        @Override
         public Role build() {
             return this.role;
         }
