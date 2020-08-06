@@ -43,4 +43,6 @@ public interface RoleService {
     List<Role> getRoles(Set<RoleId> roleIds);
 
     SliceList<Role> getRoles(RoleQuery query);
+
+    List<RoleAuthority> getRoleAuthorities();
 }
