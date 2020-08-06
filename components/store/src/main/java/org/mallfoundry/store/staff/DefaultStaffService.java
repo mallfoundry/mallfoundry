@@ -23,7 +23,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
-import org.mallfoundry.store.role.RoleService;
+import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
