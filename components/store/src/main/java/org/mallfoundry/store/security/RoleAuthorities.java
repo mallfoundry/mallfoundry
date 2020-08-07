@@ -20,9 +20,9 @@ package org.mallfoundry.store.security;
 
 public abstract class RoleAuthorities {
 
-    public static final String STORE_ROLE_ADD = "store_role_add";
+    public static final String STORE_ROLE_READ = "store_role_read";
 
-    public static final String STORE_ROLE_UPDATE = "store_role_update";
+    public static final String STORE_ROLE_WRITE = "store_role_add";
 
     public static final String STORE_ROLE_DELETE = "store_role_delete";
 

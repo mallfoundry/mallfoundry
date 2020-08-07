@@ -29,14 +29,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class RoleAuthorizeProcessor implements RoleProcessor {
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + RoleAuthorities.STORE_ROLE_ADD + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
+            + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
     public Role preProcessBeforeAddRole(Role role) {
         return role;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + RoleAuthorities.STORE_ROLE_UPDATE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
+            + RoleAuthorities.STORE_ROLE_WRITE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
     @Override
     public Role preProcessBeforeUpdateRole(Role role) {
         return role;
