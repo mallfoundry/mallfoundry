@@ -54,23 +54,27 @@ public class ProductAutoConfiguration {
         return new JpaProductRepository(delegate);
     }
 
-    @Bean
-    @ConditionalOnClass(ElasticsearchProductRepository.class)
-    @ConditionalOnMissingBean(SearchProductRepository.class)
-    public ElasticsearchProductRepository elasticsearchProductRepository(ElasticsearchOperations elasticsearchOperations) {
-        return new ElasticsearchProductRepository(elasticsearchOperations);
+    @Configuration
+    @ConditionalOnClass(ElasticsearchOperations.class)
+    public static class ElasticsearchProductConfiguration {
+
+        @Bean
+        @ConditionalOnClass(ElasticsearchProductRepository.class)
+        @ConditionalOnMissingBean(SearchProductRepository.class)
+        public ElasticsearchProductRepository elasticsearchProductRepository(ElasticsearchOperations elasticsearchOperations) {
+            return new ElasticsearchProductRepository(elasticsearchOperations);
+        }
+
+        @Bean
+        @ConditionalOnBean(ElasticsearchProductRepository.class)
+        public ElasticsearchProductPersistEventListener elasticsearchProductPersistEventListener(ElasticsearchProductRepository repository) {
+            return new ElasticsearchProductPersistEventListener(repository);
+        }
     }
 
-    @Bean
-    @ConditionalOnBean(ElasticsearchProductRepository.class)
-    public ElasticsearchProductPersistEventListener elasticsearchProductPersistEventListener(ElasticsearchProductRepository repository) {
-        return new ElasticsearchProductPersistEventListener(repository);
-    }
-
-    @Autowired(required = false)
     @Bean
     public DelegatingProductRepository delegatingProductRepository(JpaProductRepository primaryRepository,
-                                                                   SearchProductRepository searchRepository) {
+                                                                   @Autowired(required = false) SearchProductRepository searchRepository) {
         return new DelegatingProductRepository(primaryRepository, searchRepository);
     }
 
