@@ -32,5 +32,7 @@ public interface StaffRepository {
 
     SliceList<Staff> findAll(StaffQuery query);
 
+    long count(StaffQuery query);
+
     void delete(Staff staff);
 }
