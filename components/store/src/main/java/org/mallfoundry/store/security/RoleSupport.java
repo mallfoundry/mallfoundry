@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.security;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.store.staff.Staff;
 
 import java.util.Date;
@@ -31,8 +32,23 @@ public abstract class RoleSupport implements MutableRole {
     }
 
     @Override
+    public void addStaffs(List<Staff> staffs) {
+        this.setStaffsCount(this.getStaffsCount() + CollectionUtils.size(staffs));
+    }
+
+    @Override
     public void removeStaff(Staff staff) {
         this.setStaffsCount(this.getStaffsCount() - 1);
+    }
+
+    @Override
+    public void removeStaffs(List<Staff> staffs) {
+        this.setStaffsCount(this.getStaffsCount() - CollectionUtils.size(staffs));
+    }
+
+    @Override
+    public void clearStaffs() {
+        this.setStaffsCount(0);
     }
 
     @Override
