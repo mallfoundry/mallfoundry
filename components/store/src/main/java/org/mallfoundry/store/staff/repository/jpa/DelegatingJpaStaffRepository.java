@@ -59,6 +59,11 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
     }
 
     @Override
+    public long count(StaffQuery query) {
+        return this.repository.count(query);
+    }
+
+    @Override
     public void delete(Staff staff) {
         this.repository.delete(JpaStaff.of(staff));
     }
