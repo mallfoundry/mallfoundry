@@ -21,14 +21,20 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
+import org.mallfoundry.store.staff.RoleStaffsCountProcessor;
 import org.mallfoundry.store.staff.SmartStaffValidateProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
+import org.mallfoundry.store.staff.StaffProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.validation.SmartValidator;
+
+import java.util.List;
 
 @Configuration
 public class StoreStaffConfiguration {
@@ -39,10 +45,14 @@ public class StoreStaffConfiguration {
     }
 
     @Bean
-    public DefaultStaffService defaultStaffService(UserService userService,
+    public DefaultStaffService defaultStaffService(@Autowired(required = false)
+                                                   @Lazy List<StaffProcessor> processors,
+                                                   UserService userService,
                                                    RoleService storeRoleService,
                                                    StaffRepository repository) {
-        return new DefaultStaffService(userService, storeRoleService, repository);
+        var service = new DefaultStaffService(userService, storeRoleService, repository);
+        service.setProcessors(processors);
+        return service;
     }
 
     @Bean
@@ -53,5 +63,10 @@ public class StoreStaffConfiguration {
     @Bean
     public SmartStaffValidateProcessor smartStaffValidatedProcessor(SmartValidator validator) {
         return new SmartStaffValidateProcessor(validator);
+    }
+
+    @Bean
+    public RoleStaffsCountProcessor roleStaffsCountProcessor(RoleService roleService) {
+        return new RoleStaffsCountProcessor(roleService);
     }
 }
