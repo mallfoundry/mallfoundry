@@ -30,6 +30,8 @@ public interface RoleRepository {
 
     Role save(Role role);
 
+    List<Role> saveAll(List<Role> roles);
+
     Optional<Role> findById(RoleId id);
 
     List<Role> findAllById(Collection<RoleId> ids);
