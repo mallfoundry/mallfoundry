@@ -55,6 +55,8 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
 
     List<Role> getRoles();
 
+    void setRoles(List<Role> roles);
+
     void addRole(Role role);
 
     void removeRole(Role role);
