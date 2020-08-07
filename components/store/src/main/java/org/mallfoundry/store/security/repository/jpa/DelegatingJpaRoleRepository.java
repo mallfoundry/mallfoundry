@@ -50,6 +50,13 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     }
 
     @Override
+    public List<Role> saveAll(List<Role> roles) {
+        return CastUtils.cast(
+                this.repository.saveAll(
+                        roles.stream().map(JpaRole::of).collect(Collectors.toUnmodifiableList())));
+    }
+
+    @Override
     public Optional<Role> findById(RoleId id) {
         return CastUtils.cast(this.repository.findById(id.getRoleId()));
     }
