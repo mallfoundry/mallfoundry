@@ -30,6 +30,4 @@ public interface AuthorityDescriptionRepository {
     List<AuthorityDescription> saveAll(List<AuthorityDescription> descriptions);
 
     Optional<AuthorityDescription> findById(AuthorityDescriptionId id);
-
-    Optional<AuthorityDescription> findAllById(AuthorityDescriptionId id);
 }
