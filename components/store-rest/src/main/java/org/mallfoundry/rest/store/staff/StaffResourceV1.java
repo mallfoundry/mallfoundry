@@ -19,6 +19,7 @@
 package org.mallfoundry.rest.store.staff;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1")
@@ -40,8 +43,22 @@ public class StaffResourceV1 {
 
     private final StaffService staffService;
 
-    public StaffResourceV1(StaffService staffService) {
+    private final RoleService roleService;
+
+    public StaffResourceV1(StaffService staffService, RoleService roleService) {
         this.staffService = staffService;
+        this.roleService = roleService;
+    }
+
+    private Staff assignToStaff(StaffRequest request, Staff staff) {
+        var storeId = staff.getStoreId();
+        staff = request.assignTo(staff);
+        var roles = request.getRoles().stream()
+                .map(role -> this.roleService.createRoleId(storeId, role.getId()))
+                .map(this.roleService::createRole)
+                .collect(Collectors.toList());
+        staff.setRoles(roles);
+        return staff;
     }
 
     @PostMapping("/stores/{store_id}/staffs")
@@ -49,7 +66,7 @@ public class StaffResourceV1 {
                           @RequestBody StaffRequest request) {
         return Function.<Staff>identity()
                 .compose(this.staffService::addStaff)
-                .compose(request::assignTo)
+                .<Staff>compose(staff -> this.assignToStaff(request, staff))
                 .compose(this.staffService::createStaff)
                 .apply(this.staffService.createStaffId(storeId, request.getId()));
     }
@@ -60,7 +77,7 @@ public class StaffResourceV1 {
                              @RequestBody StaffRequest request) {
         return Function.<Staff>identity()
                 .compose(this.staffService::updateStaff)
-                .compose(request::assignTo)
+                .<Staff>compose(staff -> this.assignToStaff(request, staff))
                 .compose(this.staffService::createStaff)
                 .apply(this.staffService.createStaffId(storeId, staffId));
     }
@@ -74,11 +91,24 @@ public class StaffResourceV1 {
     @GetMapping("/stores/{store_id}/staffs")
     public SliceList<Staff> getStaffs(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                      @PathVariable("store_id") String storeId) {
+                                      @PathVariable("store_id") String storeId,
+                                      @RequestParam(name = "role_ids", required = false) Set<String> roleIds) {
         return this.staffService.getStaffs(
-                this.staffService.createStaffQuery().toBuilder()
-                        .page(page).limit(limit)
-                        .storeId(storeId).build());
+                this.staffService.createStaffQuery()
+                        .toBuilder().page(page).limit(limit)
+                        .storeId(storeId).roleIds(roleIds).build());
+    }
+
+
+    @GetMapping("/stores/{store_id}/staffs/count")
+    public long countStaffs(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                            @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                            @PathVariable("store_id") String storeId,
+                            @RequestParam(name = "role_ids", required = false) Set<String> roleIds) {
+        return this.staffService.countStaffs(
+                this.staffService.createStaffQuery()
+                        .toBuilder().page(page).limit(limit)
+                        .storeId(storeId).roleIds(roleIds).build());
     }
 
     @DeleteMapping("/stores/{store_id}/staffs/{staff_id}")

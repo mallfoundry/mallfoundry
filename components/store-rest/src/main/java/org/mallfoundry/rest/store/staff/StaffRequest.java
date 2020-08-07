@@ -22,6 +22,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.store.staff.Staff;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class StaffRequest {
@@ -30,11 +33,18 @@ public class StaffRequest {
     private String number;
     private String countryCode;
     private String phone;
+    private List<RoleRequest> roles = new ArrayList<>();
 
     public Staff assignTo(Staff staff) {
         return staff.toBuilder()
                 .id(this.id).name(this.name).number(number)
                 .countryCode(this.countryCode).phone(this.phone)
                 .build();
+    }
+
+    @Getter
+    @Setter
+    static class RoleRequest {
+        private String id;
     }
 }
