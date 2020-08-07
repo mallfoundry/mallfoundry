@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
@@ -41,6 +42,11 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>,
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
             }
 
+            if (Objects.nonNull(staffQuery.getRoleIds())) {
+                var rolesIn = root.join("roles", JoinType.LEFT).get("id").as(String.class).in(staffQuery.getRoleIds());
+                predicate.getExpressions().add(rolesIn);
+            }
+
             return predicate;
         };
     }
@@ -48,5 +54,9 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>,
     default Page<JpaStaff> findAll(StaffQuery query) {
         return this.findAll(this.createSpecification(query),
                 PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime").ascending()));
+    }
+
+    default long count(StaffQuery query) {
+        return this.count(this.createSpecification(query));
     }
 }
