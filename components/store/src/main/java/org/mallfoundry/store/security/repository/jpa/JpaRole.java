@@ -52,7 +52,7 @@ public class JpaRole extends RoleSupport {
     private String id;
 
     @NotBlank
-    @Column(name = "store_d_")
+    @Column(name = "store_id_")
     private String storeId;
 
     @NotBlank
