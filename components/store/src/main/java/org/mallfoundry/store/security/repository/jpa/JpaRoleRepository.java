@@ -21,6 +21,7 @@ package org.mallfoundry.store.security.repository.jpa;
 import org.mallfoundry.store.security.RoleQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -41,6 +42,6 @@ public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSp
     }
 
     default Page<JpaRole> findAll(RoleQuery query) {
-        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime")));
     }
 }
