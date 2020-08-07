@@ -27,22 +27,22 @@ public abstract class StaffSupport implements MutableStaff {
 
     @Override
     public void addRole(Role role) {
-
+        this.getRoles().add(role);
     }
 
     @Override
     public void removeRole(Role role) {
-
+        this.getRoles().remove(role);
     }
 
     @Override
     public void addRoles(List<Role> roles) {
-
+        this.getRoles().addAll(roles);
     }
 
     @Override
     public void removeRoles(List<Role> roles) {
-
+        this.getRoles().removeAll(roles);
     }
 
     @Override
