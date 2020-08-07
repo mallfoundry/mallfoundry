@@ -18,8 +18,16 @@
 
 package org.mallfoundry.store.security;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum RoleType {
     PRIMITIVE/* 初始角色 */,
     PREDEFINED /* 预定义角色 */,
-    CUSTOM /* 自定义角色 */
+    CUSTOM /* 自定义角色 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
