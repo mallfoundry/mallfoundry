@@ -36,6 +36,8 @@ public interface RoleService {
 
     Role updateRole(Role role);
 
+    List<Role> updateRoles(List<Role> roles);
+
     void deleteRole(RoleId roleId);
 
     Optional<Role> getRole(RoleId roleId);
