@@ -28,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -56,7 +57,7 @@ public class JpaAuthorityDescription extends AuthorityDescriptionSupport {
     @Column(name = "description_")
     private String description;
 
-    @OneToMany(targetEntity = JpaAuthorityDescription.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = JpaAuthorityDescription.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_authority_")
     private List<AuthorityDescription> children = new ArrayList<>();
 
