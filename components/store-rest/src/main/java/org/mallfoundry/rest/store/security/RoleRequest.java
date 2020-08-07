@@ -22,13 +22,19 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.store.security.Role;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class RoleRequest {
     private String name;
     private String description;
+    private List<String> authorities;
 
     public Role assignTo(Role role) {
-        return role.toBuilder().name(this.name).description(this.description).build();
+        return role.toBuilder()
+                .name(this.name).description(this.description)
+                .authorities(this.authorities)
+                .build();
     }
 }
