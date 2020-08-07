@@ -23,10 +23,15 @@ import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
+
     private String storeId;
+
+    private Set<String> roleIds;
 
     @Override
     public Builder toBuilder() {
@@ -44,6 +49,12 @@ public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
         @Override
         public Builder storeId(String storeId) {
             this.query.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
+        public Builder roleIds(Set<String> roleIds) {
+            this.query.setRoleIds(roleIds);
             return this;
         }
     }

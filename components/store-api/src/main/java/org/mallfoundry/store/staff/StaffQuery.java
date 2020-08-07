@@ -22,9 +22,18 @@ import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.store.StoreQueryBase;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Set;
+
 public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
 
+    Set<String> getRoleIds();
+
+    void setRoleIds(Set<String> roleIds);
+
     interface Builder extends QueryBuilder<StaffQuery, Builder> {
+
         Builder storeId(String storeId);
+
+        Builder roleIds(Set<String> roleIds);
     }
 }
