@@ -19,6 +19,8 @@
 package org.mallfoundry.store.security;
 
 import org.mallfoundry.security.access.Resource;
+import org.mallfoundry.store.staff.Staff;
+import org.mallfoundry.store.staff.StaffAuthorities;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
@@ -47,5 +49,21 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
     @Override
     public Role preProcessBeforeDeleteRole(Role role) {
         return role;
+    }
+
+    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+            + StaffAuthorities.STORE_STAFF_WRITE + "," + StaffAuthorities.STORE_STAFF_MANAGE + ","
+            + RoleAuthorities.STORE_ROLE_WRITE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
+    @Override
+    public Staff preProcessBeforeAddRoleStaff(Role role, Staff staff) {
+        return staff;
+    }
+
+    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+            + StaffAuthorities.STORE_STAFF_WRITE + "," + StaffAuthorities.STORE_STAFF_MANAGE + ","
+            + RoleAuthorities.STORE_ROLE_WRITE + "," + RoleAuthorities.STORE_ROLE_MANAGE + "')")
+    @Override
+    public Staff preProcessBeforeRemoveRoleStaff(Role role, Staff staff) {
+        return staff;
     }
 }

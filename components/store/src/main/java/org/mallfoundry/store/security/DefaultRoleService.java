@@ -18,9 +18,11 @@
 
 package org.mallfoundry.store.security;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +75,9 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     private Role updateRole(Role source, Role target) {
         Copies.notBlank(source::getName).trim(target::setName);
         Copies.notBlank(source::getDescription).trim(target::setDescription);
+        if (CollectionUtils.isNotEmpty(source.getAuthorities())) {
+            target.setAuthorities(source.getAuthorities());
+        }
         return target;
     }
 
@@ -86,6 +91,22 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .compose(this::invokePreProcessBeforeUpdateRole)
                 .compose(this::requiredRole)
                 .apply(new ImmutableRoleId(role.getStoreId(), role.getId()));
+    }
+
+    @Transactional
+    @Override
+    public void addRoleStaff(RoleId roleId, Staff staff) {
+        var role = this.requiredRole(roleId);
+        role.addStaff(this.invokePreProcessBeforeAddRoleStaff(role, staff));
+        this.roleRepository.save(role);
+    }
+
+    @Transactional
+    @Override
+    public void removeRoleStaff(RoleId roleId, Staff staff) {
+        var role = this.requiredRole(roleId);
+        role.removeStaff(this.invokePreProcessBeforeRemoveRoleStaff(role, staff));
+        this.roleRepository.save(role);
     }
 
     private Role requiredRole(RoleId roleId) {
@@ -136,6 +157,20 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
         return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessAfterUpdateRole)
                 .apply(role);
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeAddRoleStaff(Role role, Staff staff) {
+        return Processors.stream(this.processors)
+                .<Staff>map((processor, identity) -> processor.preProcessBeforeAddRoleStaff(role, identity))
+                .apply(staff);
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeRemoveRoleStaff(Role role, Staff staff) {
+        return Processors.stream(this.processors)
+                .<Staff>map((processor, identity) -> processor.preProcessBeforeRemoveRoleStaff(role, identity))
+                .apply(staff);
     }
 
     @Override

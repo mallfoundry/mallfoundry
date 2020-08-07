@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store.security;
 
+import org.mallfoundry.store.staff.Staff;
+
 public interface RoleProcessor {
 
     default Role preProcessBeforeAddRole(Role role) {
@@ -30,6 +32,14 @@ public interface RoleProcessor {
 
     default Role preProcessAfterUpdateRole(Role role) {
         return role;
+    }
+
+    default Staff preProcessBeforeAddRoleStaff(Role role, Staff staff) {
+        return staff;
+    }
+
+    default Staff preProcessBeforeRemoveRoleStaff(Role role, Staff staff) {
+        return staff;
     }
 
     default Role preProcessBeforeDeleteRole(Role role) {

@@ -19,6 +19,7 @@
 package org.mallfoundry.store.security;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.staff.Staff;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +37,6 @@ public interface RoleService {
 
     Role updateRole(Role role);
 
-    List<Role> updateRoles(List<Role> roles);
-
     void deleteRole(RoleId roleId);
 
     Optional<Role> getRole(RoleId roleId);
@@ -45,4 +44,8 @@ public interface RoleService {
     List<Role> getRoles(Set<RoleId> roleIds);
 
     SliceList<Role> getRoles(RoleQuery query);
+
+    void addRoleStaff(RoleId roleId, Staff staff);
+
+    void removeRoleStaff(RoleId roleId, Staff staff);
 }

@@ -19,15 +19,12 @@
 package org.mallfoundry.store.staff;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleService;
 import org.springframework.core.NamedThreadLocal;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RoleStaffsCountProcessor implements StaffProcessor {
 
@@ -49,17 +46,14 @@ public class RoleStaffsCountProcessor implements StaffProcessor {
     public Staff preProcessAfterUpdateStaff(Staff staff) {
         var removedRoles = CollectionUtils.subtract(localRoles.get(), staff.getRoles());
         var addRoles = CollectionUtils.subtract(staff.getRoles(), localRoles.get());
-        var roleIds = Stream.concat(removedRoles.stream(), addRoles.stream())
-                .map(role -> this.roleService.createRoleId(role.getStoreId(), role.getId()))
-                .collect(Collectors.toUnmodifiableSet());
-        var allRoles = this.roleService.getRoles(roleIds);
         for (var role : removedRoles) {
-            IterableUtils.find(allRoles, aRole -> aRole.equals(role)).removeStaff(staff);
+            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
+            this.roleService.removeRoleStaff(roleId, staff);
         }
         for (var role : addRoles) {
-            IterableUtils.find(allRoles, aRole -> aRole.equals(role)).addStaff(staff);
+            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
+            this.roleService.addRoleStaff(roleId, staff);
         }
-        this.roleService.updateRoles(allRoles);
         return staff;
     }
 
