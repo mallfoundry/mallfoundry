@@ -27,4 +27,6 @@ public interface StaffProcessorInvoker {
     Staff invokePreProcessAfterUpdateStaff(Staff staff);
 
     Staff invokePreProcessBeforeDeleteStaff(Staff staff);
+
+    void invokePreProcessAfterCompletion();
 }

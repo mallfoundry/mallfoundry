@@ -35,4 +35,7 @@ public interface StaffProcessor {
     default Staff preProcessBeforeDeleteStaff(Staff staff) {
         return staff;
     }
+
+    default void preProcessAfterCompletion() {
+    }
 }
