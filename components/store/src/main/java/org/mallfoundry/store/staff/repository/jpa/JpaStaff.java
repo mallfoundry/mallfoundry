@@ -33,7 +33,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -79,12 +79,11 @@ public class JpaStaff extends StaffSupport {
     private String phone;
 
     @NotNull
-    @OneToMany(targetEntity = JpaRole.class)
+    @ManyToMany(targetEntity = JpaRole.class)
     @JoinTable(name = "mf_store_staff_role",
             joinColumns = {@JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
                     @JoinColumn(name = "store_id_", referencedColumnName = "store_id_")},
-            inverseJoinColumns =
-            @JoinColumn(name = "role_id_", referencedColumnName = "id_"))
+            inverseJoinColumns = {@JoinColumn(name = "role_id_", referencedColumnName = "id_")})
     private List<Role> roles = new ArrayList<>();
 
     @NotNull
