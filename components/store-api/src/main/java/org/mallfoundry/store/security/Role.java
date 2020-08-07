@@ -56,7 +56,13 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
 
     void addStaff(Staff staff);
 
+    void addStaffs(List<Staff> staffs);
+
     void removeStaff(Staff staff);
+
+    void removeStaffs(List<Staff> staffs);
+
+    void clearStaffs();
 
     void primitive();
 
