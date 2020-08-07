@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.staff;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
@@ -25,31 +26,38 @@ import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.util.Copies;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class DefaultStaffService implements StaffService, StaffProcessorInvoker {
+public class DefaultStaffService implements StaffService, StaffProcessorInvoker, ApplicationEventPublisherAware {
 
     private List<StaffProcessor> processors = Collections.emptyList();
 
     private final UserService userService;
 
-    private final RoleService storeRoleService;
+    private final RoleService roleService;
 
     private final StaffRepository staffRepository;
 
+    private ApplicationEventPublisher eventPublisher;
+
     public DefaultStaffService(UserService userService,
-                               RoleService storeRoleService,
+                               RoleService roleService,
                                StaffRepository staffRepository) {
         this.userService = userService;
-        this.storeRoleService = storeRoleService;
+        this.roleService = roleService;
         this.staffRepository = staffRepository;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     public void setProcessors(List<StaffProcessor> processors) {
@@ -91,6 +99,10 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
     @Override
     public Staff addStaff(Staff staff) {
         return Function.<Staff>identity()
+                .<Staff>compose(aStaff -> {
+                    this.eventPublisher.publishEvent(new ImmutableStaffAddedEvent(aStaff));
+                    return aStaff;
+                })
                 .compose(this.staffRepository::save)
                 .compose(this::addStaffPeek)
                 .compose(this::invokePreProcessBeforeAddStaff)
@@ -102,19 +114,35 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
         Copies.notBlank(source::getNumber).trim(dest::setNumber);
         Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
         Copies.notBlank(source::getPhone).trim(dest::setPhone);
+        if (CollectionUtils.isNotEmpty(source.getRoles())) {
+            dest.setRoles(source.getRoles());
+        }
         return dest;
     }
 
     @Transactional
     @Override
     public Staff updateStaff(Staff newStaff) {
+        Staff preStaff;
+        try {
+            preStaff = Function.<Staff>identity()
+                    .compose(this.staffRepository::save)
+                    .compose(this::invokePreProcessAfterUpdateStaff)
+                    .<Staff>compose(target -> this.updateStaff(newStaff, target))
+                    .compose(this::invokePreProcessBeforeUpdateStaff)
+                    .compose(this::requiredStaff)
+                    .apply(this.createStaffId(newStaff.getStoreId(), newStaff.getId()));
+        } finally {
+            this.invokePreProcessAfterCompletion();
+        }
+
         return Function.<Staff>identity()
+                .<Staff>compose(staff -> {
+                    this.eventPublisher.publishEvent(new ImmutableStaffChangedEvent(staff));
+                    return staff;
+                })
                 .compose(this.staffRepository::save)
-                .compose(this::invokePreProcessAfterUpdateStaff)
-                .<Staff>compose(target -> this.updateStaff(newStaff, target))
-                .compose(this::invokePreProcessBeforeUpdateStaff)
-                .compose(this::requiredStaff)
-                .apply(this.createStaffId(newStaff.getStoreId(), newStaff.getId()));
+                .apply(preStaff);
     }
 
     private Staff requiredStaff(StaffId staffId) {
@@ -129,6 +157,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
                 .compose(this::requiredStaff)
                 .apply(staffId);
         this.staffRepository.delete(staff);
+        this.eventPublisher.publishEvent(new ImmutableStaffDeletedEvent(staff));
     }
 
     @Override
@@ -141,38 +170,9 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
         return this.staffRepository.findAll(query);
     }
 
-    @Transactional
     @Override
-    public void addStaffRole(StaffId staffId, String roleId) {
-        this.addStaffRoles(staffId, Set.of(roleId));
-    }
-
-    @Transactional
-    @Override
-    public void addStaffRoles(StaffId staffId, Set<String> roleIds) {
-        var staff = this.requiredStaff(staffId);
-        var rIds = roleIds.stream()
-                .map(rId -> this.storeRoleService.createRoleId(staffId.getStoreId(), rId))
-                .collect(Collectors.toUnmodifiableSet());
-        var roles = this.storeRoleService.getRoles(rIds);
-        staff.addRoles(roles);
-    }
-
-    @Transactional
-    @Override
-    public void removeStaffRole(StaffId staffId, String roleId) {
-        this.removeStaffRoles(staffId, Set.of(roleId));
-    }
-
-    @Transactional
-    @Override
-    public void removeStaffRoles(StaffId staffId, Set<String> roleIds) {
-        var staff = this.requiredStaff(staffId);
-        var rIds = roleIds.stream()
-                .map(rId -> this.storeRoleService.createRoleId(staffId.getStoreId(), rId))
-                .collect(Collectors.toUnmodifiableSet());
-        var roles = this.storeRoleService.getRoles(rIds);
-        staff.removeRoles(roles);
+    public long countStaffs(StaffQuery query) {
+        return this.staffRepository.count(query);
     }
 
     @Override
@@ -201,5 +201,10 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker 
         return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeDeleteStaff)
                 .apply(staff);
+    }
+
+    @Override
+    public void invokePreProcessAfterCompletion() {
+        this.processors.forEach(StaffProcessor::preProcessAfterCompletion);
     }
 }
