@@ -38,6 +38,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -92,5 +93,22 @@ public class JpaRole extends RoleSupport {
         var target = new JpaRole();
         BeanUtils.copyProperties(role, target);
         return target;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof JpaRole)) {
+            return false;
+        }
+        JpaRole jpaRole = (JpaRole) object;
+        return Objects.equals(id, jpaRole.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
