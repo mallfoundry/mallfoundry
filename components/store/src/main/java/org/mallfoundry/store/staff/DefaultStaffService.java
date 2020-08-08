@@ -24,7 +24,6 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
-import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -41,17 +40,12 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
 
     private final UserService userService;
 
-    private final RoleService roleService;
-
     private final StaffRepository staffRepository;
 
     private ApplicationEventPublisher eventPublisher;
 
-    public DefaultStaffService(UserService userService,
-                               RoleService roleService,
-                               StaffRepository staffRepository) {
+    public DefaultStaffService(UserService userService, StaffRepository staffRepository) {
         this.userService = userService;
-        this.roleService = roleService;
         this.staffRepository = staffRepository;
     }
 
@@ -104,9 +98,29 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
                     return aStaff;
                 })
                 .compose(this.staffRepository::save)
+                .compose(this::invokePreProcessAfterAddStaff)
                 .compose(this::addStaffPeek)
                 .compose(this::invokePreProcessBeforeAddStaff)
                 .apply(staff);
+    }
+
+    @Override
+    public Optional<Staff> getStaff(StaffId staffId) {
+        return this.staffRepository.findById(staffId);
+    }
+
+    @Override
+    public SliceList<Staff> getStaffs(StaffQuery query) {
+        return this.staffRepository.findAll(query);
+    }
+
+    @Override
+    public long countStaffs(StaffQuery query) {
+        return this.staffRepository.count(query);
+    }
+
+    private Staff requiredStaff(StaffId staffId) {
+        return this.getStaff(staffId).orElseThrow();
     }
 
     private Staff updateStaff(Staff source, Staff dest) {
@@ -145,14 +159,33 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
                 .apply(preStaff);
     }
 
-    private Staff requiredStaff(StaffId staffId) {
-        return this.getStaff(staffId).orElseThrow();
+    @Transactional
+    @Override
+    public void activeStaff(StaffId staffId) {
+        var staff = Function.<Staff>identity()
+                .compose(this::invokePreProcessBeforeActiveStaff)
+                .compose(this::requiredStaff)
+                .apply(staffId);
+        staff.active();
+        this.staffRepository.save(staff);
+    }
+
+    @Override
+    public void inactiveStaff(StaffId staffId) {
+        var staff = Function.<Staff>identity()
+                .compose(this::invokePreProcessBeforeInactiveStaff)
+                .compose(this::requiredStaff)
+                .apply(staffId);
+        staff.inactive();
+        this.staffRepository.save(staff);
     }
 
     @Transactional
     @Override
     public void deleteStaff(StaffId staffId) {
         var staff = Function.<Staff>identity()
+                .compose(this::invokePreProcessAfterDeleteStaff)
+                // invoke peek...
                 .compose(this::invokePreProcessBeforeDeleteStaff)
                 .compose(this::requiredStaff)
                 .apply(staffId);
@@ -161,24 +194,16 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     }
 
     @Override
-    public Optional<Staff> getStaff(StaffId staffId) {
-        return this.staffRepository.findById(staffId);
-    }
-
-    @Override
-    public SliceList<Staff> getStaffs(StaffQuery query) {
-        return this.staffRepository.findAll(query);
-    }
-
-    @Override
-    public long countStaffs(StaffQuery query) {
-        return this.staffRepository.count(query);
-    }
-
-    @Override
     public Staff invokePreProcessBeforeAddStaff(Staff staff) {
         return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeAddStaff)
+                .apply(staff);
+    }
+
+    @Override
+    public Staff invokePreProcessAfterAddStaff(Staff staff) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessAfterAddStaff)
                 .apply(staff);
     }
 
@@ -197,9 +222,30 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     }
 
     @Override
+    public Staff invokePreProcessBeforeActiveStaff(Staff staff) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeActiveStaff)
+                .apply(staff);
+    }
+
+    @Override
+    public Staff invokePreProcessBeforeInactiveStaff(Staff staff) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeInactiveStaff)
+                .apply(staff);
+    }
+
+    @Override
     public Staff invokePreProcessBeforeDeleteStaff(Staff staff) {
         return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessBeforeDeleteStaff)
+                .apply(staff);
+    }
+
+    @Override
+    public Staff invokePreProcessAfterDeleteStaff(Staff staff) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessAfterDeleteStaff)
                 .apply(staff);
     }
 
