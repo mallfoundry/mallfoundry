@@ -39,9 +39,13 @@ public interface Message extends Serializable {
 
     void setSignature(String signature);
 
-    String getMobile();
+    String getCountryCode();
 
-    void setMobile(String mobile);
+    void setCountryCode(String countryCode);
+
+    String getPhone();
+
+    void setPhone(String phone);
 
     String getBody();
 
@@ -58,7 +62,9 @@ public interface Message extends Serializable {
 
     interface Builder extends ObjectBuilder<Message> {
 
-        Builder mobile(String mobile);
+        Builder countryCode(String countryCode);
+
+        Builder phone(String phone);
 
         Builder template(String template);
 
@@ -79,8 +85,14 @@ public interface Message extends Serializable {
         }
 
         @Override
-        public Builder mobile(String mobile) {
-            this.message.setMobile(mobile);
+        public Builder countryCode(String countryCode) {
+            this.message.setCountryCode(countryCode);
+            return this;
+        }
+
+        @Override
+        public Builder phone(String phone) {
+            this.message.setPhone(phone);
             return this;
         }
 

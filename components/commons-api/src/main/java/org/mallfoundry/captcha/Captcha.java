@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public interface Captcha {
 
-    String MOBILE_PARAMETER_NAME = "mobile";
-
     String COUNTRY_CODE_PARAMETER_NAME = "country_code";
+
+    String PHONE_PARAMETER_NAME = "phone";
 
     CaptchaType getType();
 
