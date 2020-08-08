@@ -18,7 +18,35 @@
 
 package org.mallfoundry.store.member.repository.jpa;
 
+import org.mallfoundry.store.member.MemberQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaMemberRepository extends JpaRepository<JpaMember, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+
+public interface JpaMemberRepository extends JpaRepository<JpaMember, String>, JpaSpecificationExecutor<JpaMember> {
+
+    default Specification<JpaMember> createSpecification(MemberQuery memberQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(memberQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), memberQuery.getStoreId()));
+            }
+            return predicate;
+        };
+    }
+
+    default Page<JpaMember> findAll(MemberQuery query) {
+        return this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime").ascending()));
+    }
+
+    default long count(MemberQuery query) {
+        return this.count(this.createSpecification(query));
+    }
 }

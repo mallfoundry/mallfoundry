@@ -19,4 +19,14 @@
 package org.mallfoundry.store.member;
 
 public interface MemberProcessor {
+
+    Member preProcessBeforeAddMember(Member member);
+
+    Member postProcessAfterGetMember(Member member);
+
+    MemberQuery preProcessBeforeGetMembers(MemberQuery query);
+
+    Member preProcessBeforeUpdateMember(Member member);
+
+    Member preProcessBeforeDeleteMember(Member member);
 }

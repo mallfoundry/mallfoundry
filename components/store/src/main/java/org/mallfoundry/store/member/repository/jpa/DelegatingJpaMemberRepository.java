@@ -18,8 +18,12 @@
 
 package org.mallfoundry.store.member.repository.jpa;
 
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.member.Member;
+import org.mallfoundry.store.member.MemberQuery;
 import org.mallfoundry.store.member.MemberRepository;
+import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
 
@@ -38,7 +42,16 @@ public class DelegatingJpaMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findById(String id) {
-        return Optional.empty();
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public SliceList<Member> findAll(MemberQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(page.getNumber()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override

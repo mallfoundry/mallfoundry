@@ -18,19 +18,25 @@
 
 package org.mallfoundry.store.member;
 
+import org.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface MemberService {
 
     MemberQuery createMemberQuery();
 
+    MemberId createMemberId(String storeId, String memberId);
+
     Member createMember(String id);
 
     Member addMember(Member member);
 
-    Member updateMember(Member member);
-
     Optional<Member> getMember(String id);
+
+    SliceList<Member> getMembers(MemberQuery query);
+
+    Member updateMember(Member member);
 
     void deleteMember(String id);
 }

@@ -18,9 +18,20 @@
 
 package org.mallfoundry.store.member;
 
-import java.util.Optional;
+import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.Processors;
+import org.mallfoundry.util.Copies;
 
-public class DefaultMemberService implements MemberService {
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+// store.member.auto-join-conditional=order_placed
+// store.member.auto-join-conditional=order_paid
+public class DefaultMemberService implements MemberService, MemberProcessorInvoker {
+
+    private List<MemberProcessor> processors;
 
     private final MemberRepository memberRepository;
 
@@ -28,9 +39,18 @@ public class DefaultMemberService implements MemberService {
         this.memberRepository = memberRepository;
     }
 
+    public void setProcessors(List<MemberProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
+    }
+
     @Override
     public MemberQuery createMemberQuery() {
         return new DefaultMemberQuery();
+    }
+
+    @Override
+    public MemberId createMemberId(String storeId, String memberId) {
+        return new ImmutableMemberId(storeId, memberId);
     }
 
     @Override
@@ -40,28 +60,89 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     public Member addMember(Member member) {
-        return this.memberRepository.save(member);
-    }
-
-    private Member requiredMember(String id) {
-        return this.memberRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public Member updateMember(Member source) {
-        var member = this.requiredMember(source.getId());
-
-        return this.memberRepository.save(member);
+        return Function.<Member>identity()
+                .compose(this.memberRepository::save)
+                .compose(this::invokePreProcessBeforeAddMember)
+                .apply(member);
     }
 
     @Override
     public Optional<Member> getMember(String id) {
-        return this.memberRepository.findById(id);
+        return this.memberRepository.findById(id)
+                .map(this::invokePostProcessAfterGetMember);
+    }
+
+    @Override
+    public SliceList<Member> getMembers(MemberQuery query) {
+        return Function.<SliceList<Member>>identity()
+                .compose(this.memberRepository::findAll)
+                .compose(this::invokePreProcessBeforeGetMembers)
+                .apply(query);
+    }
+
+    private Member requiredMember(String id) {
+        return this.memberRepository.findById(id)
+                .orElseThrow();
+    }
+
+    private Member updateMember(Member source, Member dest) {
+        Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
+        Copies.notBlank(source::getPhone).trim(dest::setPhone);
+        Copies.notBlank(source::getNickname).trim(dest::setNickname);
+        Copies.notBlank(source::getNotes).trim(dest::setNotes);
+        return dest;
+    }
+
+    @Override
+    public Member updateMember(Member source) {
+        return Function.<Member>identity()
+                .compose(this.memberRepository::save)
+                .<Member>compose(aMember -> this.updateMember(source, aMember))
+                .compose(this::requiredMember)
+                .apply(source.getId());
     }
 
     @Override
     public void deleteMember(String id) {
-        var member = this.requiredMember(id);
+        var member = Function.<Member>identity()
+                .compose(this::invokePreProcessBeforeDeleteMember)
+                .compose(this::requiredMember)
+                .apply(id);
         this.memberRepository.delete(member);
+    }
+
+    @Override
+    public Member invokePreProcessBeforeAddMember(Member member) {
+        return Processors.stream(this.processors)
+                .map(MemberProcessor::preProcessBeforeAddMember)
+                .apply(member);
+    }
+
+    @Override
+    public Member invokePostProcessAfterGetMember(Member member) {
+        return Processors.stream(this.processors)
+                .map(MemberProcessor::postProcessAfterGetMember)
+                .apply(member);
+    }
+
+    @Override
+    public MemberQuery invokePreProcessBeforeGetMembers(MemberQuery query) {
+        return Processors.stream(this.processors)
+                .map(MemberProcessor::preProcessBeforeGetMembers)
+                .apply(query);
+    }
+
+    @Override
+    public Member invokePreProcessBeforeUpdateMember(Member member) {
+        return Processors.stream(this.processors)
+                .map(MemberProcessor::preProcessBeforeUpdateMember)
+                .apply(member);
+    }
+
+    @Override
+    public Member invokePreProcessBeforeDeleteMember(Member member) {
+        return Processors.stream(this.processors)
+                .map(MemberProcessor::preProcessBeforeDeleteMember)
+                .apply(member);
     }
 }

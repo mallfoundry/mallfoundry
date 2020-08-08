@@ -18,43 +18,15 @@
 
 package org.mallfoundry.store.member;
 
-import org.mallfoundry.identity.Gender;
-import org.mallfoundry.store.StoreOwnership;
+public interface MemberProcessorInvoker {
 
-import java.util.Date;
-import java.util.List;
+    Member invokePreProcessBeforeAddMember(Member member);
 
-public interface Member extends StoreOwnership {
+    Member invokePostProcessAfterGetMember(Member member);
 
-    String getId();
+    MemberQuery invokePreProcessBeforeGetMembers(MemberQuery query);
 
-    String getCountryCode();
+    Member invokePreProcessBeforeUpdateMember(Member member);
 
-    void setCountryCode(String countryCode);
-
-    String getPhone();
-
-    void setPhone(String phone);
-
-    String getNickname();
-
-    void setNickname(String nickname);
-
-    Gender getGender();
-
-    void setGender(Gender gender);
-
-    Date getBirthdate();
-
-    void setBirthdate(Date birthdate);
-
-    List<String> getTags();
-
-    void setTags(List<String> tags);
-
-    String getNotes();
-
-    void setNotes(String notes);
-
-    /*int getPurchasesCount();*/
+    Member invokePreProcessBeforeDeleteMember(Member member);
 }

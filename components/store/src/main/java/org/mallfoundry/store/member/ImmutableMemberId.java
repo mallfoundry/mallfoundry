@@ -18,43 +18,15 @@
 
 package org.mallfoundry.store.member;
 
-import org.mallfoundry.identity.Gender;
-import org.mallfoundry.store.StoreOwnership;
+import lombok.Getter;
 
-import java.util.Date;
-import java.util.List;
+@Getter
+public class ImmutableMemberId implements MemberId {
+    private final String storeId;
+    private final String memberId;
 
-public interface Member extends StoreOwnership {
-
-    String getId();
-
-    String getCountryCode();
-
-    void setCountryCode(String countryCode);
-
-    String getPhone();
-
-    void setPhone(String phone);
-
-    String getNickname();
-
-    void setNickname(String nickname);
-
-    Gender getGender();
-
-    void setGender(Gender gender);
-
-    Date getBirthdate();
-
-    void setBirthdate(Date birthdate);
-
-    List<String> getTags();
-
-    void setTags(List<String> tags);
-
-    String getNotes();
-
-    void setNotes(String notes);
-
-    /*int getPurchasesCount();*/
+    public ImmutableMemberId(String storeId, String memberId) {
+        this.storeId = storeId;
+        this.memberId = memberId;
+    }
 }

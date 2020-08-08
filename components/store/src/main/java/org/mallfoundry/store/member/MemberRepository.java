@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store.member;
 
+import org.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface MemberRepository {
@@ -25,6 +27,8 @@ public interface MemberRepository {
     Member create(String id);
 
     Optional<Member> findById(String id);
+
+    SliceList<Member> findAll(MemberQuery query);
 
     Member save(Member member);
 

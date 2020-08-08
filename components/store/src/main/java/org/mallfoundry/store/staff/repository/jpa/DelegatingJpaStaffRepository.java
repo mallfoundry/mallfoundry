@@ -54,8 +54,10 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
     @Override
     public SliceList<Staff> findAll(StaffQuery query) {
         var page = this.repository.findAll(query);
-        var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
-        return CastUtils.cast(list);
+        return PageList.of(page.getContent())
+                .page(page.getNumber()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override
