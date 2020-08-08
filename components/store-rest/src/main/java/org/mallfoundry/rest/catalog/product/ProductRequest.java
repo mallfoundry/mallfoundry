@@ -24,7 +24,7 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductVariant;
 
 import java.math.BigDecimal;
@@ -51,9 +51,9 @@ public class ProductRequest {
     private List<ProductOptionRequest> options;
     private List<ProductVariantRequest> variants;
 
-    private ProductShippingOrigin createShippingOrigin(Product product) {
+    private ProductOrigin createOrigin(Product product) {
         return Objects.isNull(this.shippingOrigin) ? null
-                : this.shippingOrigin.assignTo(product.createShippingOrigin());
+                : this.shippingOrigin.assignTo(product.createOrigin());
     }
 
     private List<ProductAttribute> createAttributes(Product product) {
@@ -95,7 +95,7 @@ public class ProductRequest {
                 .imageUrls(this.imageUrls).videoUrls(this.videoUrls)
                 .freeShipping(this.freeShipping)
                 .fixedShippingCost(this.fixedShippingCost).shippingRateId(this.shippingRateId)
-                .shippingOrigin(this::createShippingOrigin)
+                .origin(this::createOrigin)
                 .attributes(this::createAttributes)
                 .options(this::createOptions)
                 .variants(this::createVariants)

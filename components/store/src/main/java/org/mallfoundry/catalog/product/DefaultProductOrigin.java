@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class DefaultProductShippingOrigin implements ProductShippingOrigin {
+public class DefaultProductOrigin implements ProductOrigin {
 
     private String provinceId;
 
@@ -40,11 +40,11 @@ public class DefaultProductShippingOrigin implements ProductShippingOrigin {
 
     private String county;
 
-    public static DefaultProductShippingOrigin of(ProductShippingOrigin shippingOrigin) {
-        if (shippingOrigin instanceof DefaultProductShippingOrigin) {
-            return (DefaultProductShippingOrigin) shippingOrigin;
+    public static DefaultProductOrigin of(ProductOrigin shippingOrigin) {
+        if (shippingOrigin instanceof DefaultProductOrigin) {
+            return (DefaultProductOrigin) shippingOrigin;
         }
-        var target = new DefaultProductShippingOrigin();
+        var target = new DefaultProductOrigin();
         BeanUtils.copyProperties(shippingOrigin, target);
         return target;
     }
@@ -55,10 +55,10 @@ public class DefaultProductShippingOrigin implements ProductShippingOrigin {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultProductShippingOrigin)) {
+        if (!(o instanceof DefaultProductOrigin)) {
             return false;
         }
-        DefaultProductShippingOrigin that = (DefaultProductShippingOrigin) o;
+        DefaultProductOrigin that = (DefaultProductOrigin) o;
         return Objects.equals(provinceId, that.provinceId)
                 && Objects.equals(province, that.province)
                 && Objects.equals(cityId, that.cityId)
@@ -79,9 +79,9 @@ public class DefaultProductShippingOrigin implements ProductShippingOrigin {
 
     private static class DefaultBuilder implements Builder {
 
-        private final DefaultProductShippingOrigin shippingOrigin;
+        private final DefaultProductOrigin shippingOrigin;
 
-        private DefaultBuilder(DefaultProductShippingOrigin shippingOrigin) {
+        private DefaultBuilder(DefaultProductOrigin shippingOrigin) {
             this.shippingOrigin = shippingOrigin;
         }
 
@@ -122,7 +122,7 @@ public class DefaultProductShippingOrigin implements ProductShippingOrigin {
         }
 
         @Override
-        public ProductShippingOrigin build() {
+        public ProductOrigin build() {
             return this.shippingOrigin;
         }
     }

@@ -131,9 +131,9 @@ public class DefaultProductService implements ProductService {
             oldProduct.setCategoryId(product.getCategoryId());
         }
 
-        if (Objects.nonNull(product.getShippingOrigin())
-                && ObjectUtils.notEqual(product.getShippingOrigin(), oldProduct.getShippingOrigin())) {
-            oldProduct.setShippingOrigin(product.getShippingOrigin());
+        if (Objects.nonNull(product.getOrigin())
+                && ObjectUtils.notEqual(product.getOrigin(), oldProduct.getOrigin())) {
+            oldProduct.setOrigin(product.getOrigin());
         }
 
         if (Objects.nonNull(product.getFixedShippingCost())

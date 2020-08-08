@@ -20,11 +20,11 @@ package org.mallfoundry.catalog.product.repository.elasticsearch;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.DefaultProductShippingOrigin;
+import org.mallfoundry.catalog.product.DefaultProductOrigin;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
 import org.mallfoundry.catalog.product.ProductType;
@@ -100,7 +100,7 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private List<String> videoUrls = new ArrayList<>();
 
-    private DefaultProductShippingOrigin shippingOrigin;
+    private DefaultProductOrigin origin;
 
     private boolean freeShipping;
 
@@ -157,8 +157,8 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
-    public void setShippingOrigin(ProductShippingOrigin shippingOrigin) {
-        this.shippingOrigin = DefaultProductShippingOrigin.of(shippingOrigin);
+    public void setOrigin(ProductOrigin shippingOrigin) {
+        this.origin = DefaultProductOrigin.of(shippingOrigin);
     }
 
     @Override

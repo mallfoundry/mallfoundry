@@ -22,7 +22,7 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductException;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
@@ -105,7 +105,7 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default ProductShippingOrigin createShippingOrigin() {
+    default ProductOrigin createOrigin() {
         return null;
     }
 
@@ -250,7 +250,7 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default void setShippingOrigin(ProductShippingOrigin shippingOrigin) {
+    default void setOrigin(ProductOrigin origin) {
 
     }
 

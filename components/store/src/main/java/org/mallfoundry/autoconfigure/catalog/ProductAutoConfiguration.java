@@ -30,8 +30,8 @@ import org.mallfoundry.catalog.product.repository.JdbcProductRepository;
 import org.mallfoundry.catalog.product.repository.SearchProductRepository;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductPersistEventListener;
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
+import org.mallfoundry.catalog.product.repository.jpa.DelegatingJpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
-import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -49,13 +49,13 @@ public class ProductAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(JdbcProductRepository.class)
-    @ConditionalOnClass(JpaProductRepository.class)
-    public JpaProductRepository jpaProductRepository(JpaProductRepositoryDelegate delegate) {
-        return new JpaProductRepository(delegate);
+    @ConditionalOnClass(DelegatingJpaProductRepository.class)
+    public DelegatingJpaProductRepository delegatingJpaProductRepository(JpaProductRepository delegate) {
+        return new DelegatingJpaProductRepository(delegate);
     }
 
     @Configuration
-    @ConditionalOnClass(ElasticsearchOperations.class)
+    @ConditionalOnBean(ElasticsearchOperations.class)
     public static class ElasticsearchProductConfiguration {
 
         @Bean
@@ -73,7 +73,7 @@ public class ProductAutoConfiguration {
     }
 
     @Bean
-    public DelegatingProductRepository delegatingProductRepository(JpaProductRepository primaryRepository,
+    public DelegatingProductRepository delegatingProductRepository(DelegatingJpaProductRepository primaryRepository,
                                                                    @Autowired(required = false) SearchProductRepository searchRepository) {
         return new DelegatingProductRepository(primaryRepository, searchRepository);
     }

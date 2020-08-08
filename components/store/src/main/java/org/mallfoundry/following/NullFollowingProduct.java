@@ -20,7 +20,7 @@ package org.mallfoundry.following;
 
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
@@ -112,7 +112,7 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
-    public ProductShippingOrigin getShippingOrigin() {
+    public ProductOrigin getOrigin() {
         return null;
     }
 

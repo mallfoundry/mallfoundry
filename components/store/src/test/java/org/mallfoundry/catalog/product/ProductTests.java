@@ -100,7 +100,7 @@ public class ProductTests {
                 //
                 .freeShipping()
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("90").province("山东省")
                         .cityId("1427").city("济南市")
                         .countyId("11191").county("槐荫区")
@@ -171,7 +171,7 @@ public class ProductTests {
                 //
                 .fixedShippingCost(10.00)
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("82").province("广东省")
                         .cityId("1353").city("深圳市")
                         .countyId("10451").county("罗湖区")
@@ -249,7 +249,7 @@ public class ProductTests {
                 //
                 .fixedShippingCost(20.00)
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("82").province("广东省")
                         .cityId("1354").city("珠海市")
                         .countyId("10462").county("金湾区")
@@ -378,7 +378,7 @@ public class ProductTests {
                 //
                 .fixedShippingCost(10.00)
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("82").province("广东省")
                         .cityId("1354").city("珠海市")
                         .countyId("10462").county("金湾区")
@@ -506,7 +506,7 @@ public class ProductTests {
                 //
                 .fixedShippingCost(10.00)
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("82").province("广东省")
                         .cityId("1354").city("珠海市")
                         .countyId("10462").county("金湾区")
@@ -623,7 +623,7 @@ public class ProductTests {
                 //
                 .freeShipping()
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("80").province("湖南省")
                         .cityId("1330").city("湘潭市")
                         .countyId("10241").county("雨湖区")
@@ -717,7 +717,7 @@ public class ProductTests {
                 //
                 .fixedShippingCost(30)
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("90").province("山东省")
                         .cityId("1428").city("青岛市")
                         .countyId("11202").county("市南区")
@@ -796,7 +796,7 @@ public class ProductTests {
                 //
                 .freeShipping()
                 //
-                .shippingOrigin(product -> product.createShippingOrigin().toBuilder()
+                .origin(product -> product.createOrigin().toBuilder()
                         .provinceId("79").province("湖北省")
                         .cityId("1314").city("武汉市")
                         .countyId("10119").county("江岸区")

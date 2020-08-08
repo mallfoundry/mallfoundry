@@ -84,8 +84,8 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public ProductShippingOrigin createShippingOrigin() {
-        return new DefaultProductShippingOrigin();
+    public ProductOrigin createOrigin() {
+        return new DefaultProductOrigin();
     }
 
     @Override
@@ -381,19 +381,19 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
-        public Builder shippingOrigin(ProductShippingOrigin shippingOrigin) {
-            this.product.setShippingOrigin(shippingOrigin);
+        public Builder origin(ProductOrigin shippingOrigin) {
+            this.product.setOrigin(shippingOrigin);
             return this;
         }
 
         @Override
-        public Builder shippingOrigin(Function<Product, ProductShippingOrigin> shippingOrigin) {
-            return this.shippingOrigin(shippingOrigin.apply(this.product));
+        public Builder origin(Function<Product, ProductOrigin> shippingOrigin) {
+            return this.origin(shippingOrigin.apply(this.product));
         }
 
         @Override
-        public Builder shippingOrigin(Supplier<ProductShippingOrigin> supplier) {
-            return this.shippingOrigin(supplier.get());
+        public Builder origin(Supplier<ProductOrigin> supplier) {
+            return this.origin(supplier.get());
         }
 
         @Override

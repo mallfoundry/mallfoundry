@@ -20,7 +20,7 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.util.ObjectBuilder;
 
-public interface ProductShippingOrigin {
+public interface ProductOrigin {
 
     String getProvinceId();
 
@@ -54,7 +54,7 @@ public interface ProductShippingOrigin {
     @Override
     boolean equals(Object o);
 
-    interface Builder extends ObjectBuilder<ProductShippingOrigin> {
+    interface Builder extends ObjectBuilder<ProductOrigin> {
 
         Builder provinceId(String provinceId);
 

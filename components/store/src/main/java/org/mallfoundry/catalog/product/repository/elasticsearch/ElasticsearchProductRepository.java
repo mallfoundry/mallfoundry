@@ -75,8 +75,8 @@ public class ElasticsearchProductRepository
             queryBuilder.must(QueryBuilders.matchQuery("name", productQuery.getName()));
         }
 
-        if (Objects.nonNull(productQuery.getMinPrice()) || Objects.nonNull(productQuery.getMaxPrice())) {
-            queryBuilder.must(QueryBuilders.rangeQuery("price").gte(productQuery.getMinPrice()).lte(productQuery.getMaxPrice()));
+        if (Objects.nonNull(productQuery.getPriceMin()) || Objects.nonNull(productQuery.getPriceMax())) {
+            queryBuilder.must(QueryBuilders.rangeQuery("price").gte(productQuery.getPriceMin()).lte(productQuery.getPriceMax()));
         }
 
         if (StringUtils.isNotEmpty(productQuery.getStoreId())) {

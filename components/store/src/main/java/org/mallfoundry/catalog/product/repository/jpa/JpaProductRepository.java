@@ -19,60 +19,72 @@
 package org.mallfoundry.catalog.product.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.catalog.product.repository.JdbcProductRepository;
-import org.mallfoundry.catalog.product.Product;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.product.ProductQuery;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.data.repository.JpaRepository;
-import org.springframework.data.util.CastUtils;
+import org.mallfoundry.util.CaseUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.Collection;
-import java.util.List;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class JpaProductRepository implements JdbcProductRepository, JpaRepository {
+public interface JpaProductRepository extends JpaRepository<JpaProduct, String>, JpaSpecificationExecutor<JpaProduct> {
 
-    private final JpaProductRepositoryDelegate repository;
-
-    public JpaProductRepository(JpaProductRepositoryDelegate repository) {
-        this.repository = repository;
+    private Sort createSort(ProductQuery query) {
+        return Optional.ofNullable(query.getSort())
+                .map(aSort -> Sort.by(aSort.getOrders().stream()
+                        .peek(sortOrder -> sortOrder.setProperty(CaseUtils.camelCase(sortOrder.getProperty())))
+                        .map(sortOrder -> sortOrder.getDirection().isDescending()
+                                ? Sort.Order.desc(sortOrder.getProperty())
+                                : Sort.Order.asc(sortOrder.getProperty()))
+                        .collect(Collectors.toUnmodifiableList())))
+                .orElseGet(Sort::unsorted);
     }
 
-    @Override
-    public Product create(String id) {
-        return new JpaProduct(id);
+    default Specification<JpaProduct> createSpecification(ProductQuery productQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (StringUtils.isNotEmpty(productQuery.getName())) {
+                predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + productQuery.getName() + "%"));
+            }
+
+            if (Objects.nonNull(productQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), productQuery.getStoreId()));
+            }
+
+            if (Objects.nonNull(productQuery.getPriceMin())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), productQuery.getPriceMin()));
+            }
+
+            if (Objects.nonNull(productQuery.getPriceMax())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), productQuery.getPriceMax()));
+            }
+
+            if (CollectionUtils.isNotEmpty(productQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(productQuery.getStatuses()));
+            }
+
+            if (CollectionUtils.isNotEmpty(productQuery.getInventoryStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("inventoryStatus")).value(productQuery.getInventoryStatuses()));
+            }
+
+            if (CollectionUtils.isNotEmpty(productQuery.getCollections())) {
+                predicate.getExpressions().add(root.joinSet("collections", JoinType.LEFT).as(String.class).in(productQuery.getCollections()));
+            }
+
+            return predicate;
+        };
     }
 
-    @Override
-    public Product save(Product product) {
-        return this.repository.save(JpaProduct.of(product));
-    }
-
-    @Override
-    public List<Product> saveAll(Collection<Product> products) {
-        return CastUtils.cast(this.repository.saveAll(
-                CollectionUtils.emptyIfNull(products).stream().map(JpaProduct::of).collect(Collectors.toList())));
-    }
-
-    @Override
-    public Optional<Product> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public List<Product> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
-    }
-
-    @Override
-    public SliceList<Product> findAll(ProductQuery query) {
-        return PageList.empty();
-    }
-
-    @Override
-    public void delete(Product product) {
-        this.repository.delete(JpaProduct.of(product));
+    default Page<JpaProduct> findAll(ProductQuery query) {
+        return this.findAll(this.createSpecification(query),
+                PageRequest.of(query.getPage() - 1, query.getLimit(), this.createSort(query)));
     }
 }

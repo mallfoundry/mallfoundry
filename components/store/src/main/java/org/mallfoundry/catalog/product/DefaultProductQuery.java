@@ -40,9 +40,9 @@ public class DefaultProductQuery extends QuerySupport implements ProductQuery {
 
     private String storeId;
 
-    private BigDecimal minPrice;
+    private BigDecimal priceMin;
 
-    private BigDecimal maxPrice;
+    private BigDecimal priceMax;
 
     private Set<String> collections;
 
@@ -76,13 +76,13 @@ public class DefaultProductQuery extends QuerySupport implements ProductQuery {
             return this;
         }
 
-        public Builder minPrice(BigDecimal minPrice) {
-            this.query.setMinPrice(minPrice);
+        public Builder priceMin(BigDecimal priceMin) {
+            this.query.setPriceMin(priceMin);
             return this;
         }
 
-        public Builder maxPrice(BigDecimal maxPrice) {
-            this.query.setMaxPrice(maxPrice);
+        public Builder priceMax(BigDecimal priceMax) {
+            this.query.setPriceMax(priceMax);
             return this;
         }
 

@@ -154,16 +154,16 @@ public interface Product extends Serializable {
      *
      * @return 商品发货地址实例
      */
-    ProductShippingOrigin createShippingOrigin();
+    ProductOrigin createOrigin();
 
     /**
      * 获得商品关联的发货地址。
      *
      * @return 商品发货地址实例
      */
-    ProductShippingOrigin getShippingOrigin();
+    ProductOrigin getOrigin();
 
-    void setShippingOrigin(ProductShippingOrigin shippingOrigin);
+    void setOrigin(ProductOrigin origin);
 
     /**
      * 获得商品是否包邮。
@@ -331,11 +331,11 @@ public interface Product extends Serializable {
 
         Builder shippingRateId(String shippingRateId);
 
-        Builder shippingOrigin(ProductShippingOrigin shippingOrigin);
+        Builder origin(ProductOrigin origin);
 
-        Builder shippingOrigin(Function<Product, ProductShippingOrigin> function);
+        Builder origin(Function<Product, ProductOrigin> function);
 
-        Builder shippingOrigin(Supplier<ProductShippingOrigin> supplier);
+        Builder origin(Supplier<ProductOrigin> supplier);
 
         Builder adjustTotalSales(long sales);
 

@@ -44,13 +44,13 @@ public interface ProductQuery extends Query {
 
     void setStoreId(String storeId);
 
-    BigDecimal getMinPrice();
+    BigDecimal getPriceMin();
 
-    void setMinPrice(BigDecimal minPrice);
+    void setPriceMin(BigDecimal minPrice);
 
-    BigDecimal getMaxPrice();
+    BigDecimal getPriceMax();
 
-    void setMaxPrice(BigDecimal maxPrice);
+    void setPriceMax(BigDecimal maxPrice);
 
     Set<String> getCollections();
 
@@ -75,9 +75,9 @@ public interface ProductQuery extends Query {
 
         Builder name(String name);
 
-        Builder minPrice(BigDecimal minPrice);
+        Builder priceMin(BigDecimal priceMin);
 
-        Builder maxPrice(BigDecimal maxPrice);
+        Builder priceMax(BigDecimal priceMax);
 
         Builder storeId(String storeId);
 

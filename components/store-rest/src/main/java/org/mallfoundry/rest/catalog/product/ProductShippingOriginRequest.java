@@ -20,7 +20,7 @@ package org.mallfoundry.rest.catalog.product;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 
 @Getter
 @Setter
@@ -32,7 +32,7 @@ public class ProductShippingOriginRequest {
     private String countyId;
     private String county;
 
-    public ProductShippingOrigin assignTo(ProductShippingOrigin shippingOrigin) {
+    public ProductOrigin assignTo(ProductOrigin shippingOrigin) {
         return shippingOrigin.toBuilder()
                 .provinceId(this.provinceId).province(this.province)
                 .cityId(this.cityId).city(this.city)

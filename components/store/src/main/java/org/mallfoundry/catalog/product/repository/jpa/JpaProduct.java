@@ -26,21 +26,22 @@ import org.mallfoundry.catalog.product.DefaultProductAttribute;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductShippingOrigin;
+import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
 import org.mallfoundry.catalog.product.ProductType;
 import org.mallfoundry.catalog.product.ProductVariant;
 import org.mallfoundry.catalog.product.repository.jpa.convert.ProductAttributeListConverter;
-import org.mallfoundry.catalog.product.repository.jpa.convert.ProductShippingOriginConverter;
+import org.mallfoundry.catalog.product.repository.jpa.convert.ProductOriginConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -99,8 +100,9 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "brand_id_")
     private String brandId;
 
-    @Column(name = "collections_")
-    @Convert(converter = StringSetConverter.class)
+    @ElementCollection
+    @CollectionTable(name = "mf_catalog_product_collection", joinColumns = @JoinColumn(name = "product_id_"))
+    @Column(name = "collection_id_")
     private Set<String> collections = new HashSet<>();
 
     @Column(name = "total_sales_")
@@ -147,9 +149,9 @@ public class JpaProduct extends ProductSupport {
     private List<String> videoUrls = new ArrayList<>();
 
     @NotNull
-    @Column(name = "shipping_origin_", length = 512)
-    @Convert(converter = ProductShippingOriginConverter.class)
-    private ProductShippingOrigin shippingOrigin;
+    @Column(name = "origin_", length = 512)
+    @Convert(converter = ProductOriginConverter.class)
+    private ProductOrigin origin;
 
     @Column(name = "free_shipping_")
     private boolean freeShipping;

@@ -72,7 +72,7 @@ public class ProductResourceV1 {
         return this.productService.getProducts(this.productService.createProductQuery().toBuilder()
                 .page(page).limit(limit)
                 .sort(aSort -> aSort.from(sort))
-                .name(name).storeId(storeId).minPrice(minPrice).maxPrice(maxPrice)
+                .name(name).storeId(storeId).priceMin(minPrice).priceMax(maxPrice)
                 .types(() -> Stream.ofNullable(types).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
                         .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
                 .statuses(() -> Stream.ofNullable(statuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
