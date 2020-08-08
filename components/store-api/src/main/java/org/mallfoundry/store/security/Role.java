@@ -32,6 +32,8 @@ import java.util.List;
  */
 public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Builder> {
 
+    RoleId toRoleId();
+
     String getId();
 
     void setId(String id);
@@ -63,6 +65,12 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
     void removeStaffs(List<Staff> staffs);
 
     void clearStaffs();
+
+    boolean isPrimitive();
+
+    boolean isPredefined();
+
+    boolean isCustom();
 
     void primitive();
 
