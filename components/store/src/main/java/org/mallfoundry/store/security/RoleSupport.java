@@ -24,7 +24,16 @@ import org.mallfoundry.store.staff.Staff;
 import java.util.Date;
 import java.util.List;
 
+import static org.mallfoundry.store.security.RoleType.CUSTOM;
+import static org.mallfoundry.store.security.RoleType.PREDEFINED;
+import static org.mallfoundry.store.security.RoleType.PRIMITIVE;
+
 public abstract class RoleSupport implements MutableRole {
+
+    @Override
+    public RoleId toRoleId() {
+        return new ImmutableRoleId(this.getStoreId(), this.getId());
+    }
 
     @Override
     public void addStaff(Staff staff) {
@@ -52,20 +61,35 @@ public abstract class RoleSupport implements MutableRole {
     }
 
     @Override
+    public boolean isPrimitive() {
+        return PRIMITIVE == this.getType();
+    }
+
+    @Override
+    public boolean isPredefined() {
+        return PREDEFINED == this.getType();
+    }
+
+    @Override
+    public boolean isCustom() {
+        return CUSTOM == this.getType();
+    }
+
+    @Override
     public void primitive() {
-        this.setType(RoleType.PRIMITIVE);
+        this.setType(PRIMITIVE);
         this.setCreatedTime(new Date());
     }
 
     @Override
     public void predefine() {
-        this.setType(RoleType.PREDEFINED);
+        this.setType(PREDEFINED);
         this.setCreatedTime(new Date());
     }
 
     @Override
     public void custom() {
-        this.setType(RoleType.CUSTOM);
+        this.setType(CUSTOM);
         this.setCreatedTime(new Date());
     }
 
@@ -108,19 +132,19 @@ public abstract class RoleSupport implements MutableRole {
 
         @Override
         public Builder primitive() {
-            this.role.setType(RoleType.PRIMITIVE);
+            this.role.setType(PRIMITIVE);
             return this;
         }
 
         @Override
         public Builder predefine() {
-            this.role.setType(RoleType.PREDEFINED);
+            this.role.setType(PREDEFINED);
             return this;
         }
 
         @Override
         public Builder custom() {
-            this.role.setType(RoleType.CUSTOM);
+            this.role.setType(CUSTOM);
             return this;
         }
 
