@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.ownership.Ownership;
+import org.mallfoundry.identity.Ownership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;

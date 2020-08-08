@@ -19,7 +19,7 @@
 package org.mallfoundry.store.member;
 
 import org.mallfoundry.identity.Gender;
-import org.mallfoundry.ownership.StoreOwnership;
+import org.mallfoundry.store.StoreOwnership;
 
 import java.util.Date;
 import java.util.List;

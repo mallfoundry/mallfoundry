@@ -18,7 +18,6 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.ownership.StoreOwnership;
 import org.mallfoundry.shipping.Address;
 
 /**

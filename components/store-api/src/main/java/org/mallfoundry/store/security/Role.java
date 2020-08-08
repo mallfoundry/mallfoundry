@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store.security;
 
-import org.mallfoundry.ownership.StoreOwnership;
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.ObjectBuilder;
 
