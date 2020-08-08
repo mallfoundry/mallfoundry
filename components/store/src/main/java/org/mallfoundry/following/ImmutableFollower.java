@@ -50,7 +50,7 @@ public interface ImmutableFollower extends Follower {
     }
 
     @Override
-    default void setMobile(String mobile) {
+    default void setPhone(String phone) {
 
     }
 

@@ -64,8 +64,8 @@ public class DelegatingImmutableFollower implements ImmutableFollower {
     }
 
     @Override
-    public String getMobile() {
-        return this.user.getMobile();
+    public String getPhone() {
+        return this.user.getPhone();
     }
 
     @Override
