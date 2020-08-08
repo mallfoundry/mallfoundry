@@ -120,6 +120,10 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .compose(this::invokePreProcessBeforeDeleteRole)
                 .compose(this::requiredRole)
                 .apply(roleId);
+        /*if (role.isPrimitive()) {
+            throw new RoleException("The primitive role cannot be deleted");
+        }*/
+        role = this.invokePreProcessAfterDeleteRole(role);
         this.roleRepository.delete(role);
     }
 
@@ -177,6 +181,13 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     public Role invokePreProcessBeforeDeleteRole(Role role) {
         return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessBeforeDeleteRole)
+                .apply(role);
+    }
+
+    @Override
+    public Role invokePreProcessAfterDeleteRole(Role role) {
+        return Processors.stream(this.processors)
+                .map(RoleProcessor::preProcessAfterDeleteRole)
                 .apply(role);
     }
 }
