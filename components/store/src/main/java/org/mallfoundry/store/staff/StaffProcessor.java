@@ -28,6 +28,18 @@ public interface StaffProcessor {
         return staff;
     }
 
+    default Staff postProcessAfterGetStaff(Staff staff) {
+        return staff;
+    }
+
+    default StaffQuery preProcessBeforeGetStaffs(StaffQuery query) {
+        return query;
+    }
+
+    default StaffQuery preProcessBeforeCountStaffs(StaffQuery query) {
+        return query;
+    }
+
     default Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }

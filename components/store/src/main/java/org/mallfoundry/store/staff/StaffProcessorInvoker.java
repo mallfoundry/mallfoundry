@@ -24,6 +24,12 @@ public interface StaffProcessorInvoker {
 
     Staff invokePreProcessAfterAddStaff(Staff staff);
 
+    Staff invokePostProcessAfterGetStaff(Staff staff);
+
+    StaffQuery invokePreProcessBeforeGetStaffs(StaffQuery query);
+
+    StaffQuery invokePreProcessBeforeCountStaffs(StaffQuery query);
+
     Staff invokePreProcessBeforeUpdateStaff(Staff staff);
 
     Staff invokePreProcessAfterUpdateStaff(Staff staff);
