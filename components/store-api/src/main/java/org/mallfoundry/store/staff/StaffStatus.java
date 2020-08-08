@@ -18,6 +18,14 @@
 
 package org.mallfoundry.store.staff;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum StaffStatus {
-    ACTIVE, INACTIVE
+    ACTIVE, INACTIVE;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
