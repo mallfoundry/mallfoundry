@@ -21,6 +21,7 @@ package org.mallfoundry.store.member.repository.jpa;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.member.Member;
+import org.mallfoundry.store.member.MemberId;
 import org.mallfoundry.store.member.MemberQuery;
 import org.mallfoundry.store.member.MemberRepository;
 import org.springframework.data.util.CastUtils;
@@ -36,7 +37,7 @@ public class DelegatingJpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member create(String id) {
+    public Member create(MemberId id) {
         return new JpaMember(id);
     }
 

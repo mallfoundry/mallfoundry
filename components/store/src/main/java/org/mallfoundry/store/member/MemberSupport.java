@@ -18,5 +18,88 @@
 
 package org.mallfoundry.store.member;
 
-public abstract class MemberSupport implements Member {
+import org.mallfoundry.identity.Gender;
+
+import java.util.Date;
+import java.util.List;
+
+public abstract class MemberSupport implements MutableMember {
+
+    @Override
+    public void join() {
+        this.setJoinedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+        private final MemberSupport member;
+
+        protected BuilderSupport(MemberSupport member) {
+            this.member = member;
+        }
+
+        @Override
+        public Builder id(String id) {
+            this.member.setId(id);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.member.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
+        public Builder countryCode(String countryCode) {
+            this.member.setCountryCode(countryCode);
+            return this;
+        }
+
+        @Override
+        public Builder phone(String phone) {
+            this.member.setPhone(phone);
+            return this;
+        }
+
+        @Override
+        public Builder nickname(String nickname) {
+            this.member.setNickname(nickname);
+            return this;
+        }
+
+        @Override
+        public Builder gender(Gender gender) {
+            this.member.setGender(gender);
+            return this;
+        }
+
+        @Override
+        public Builder birthdate(Date birthdate) {
+            this.member.setBirthdate(birthdate);
+            return this;
+        }
+
+        @Override
+        public Builder tags(List<String> tags) {
+            this.member.setTags(tags);
+            return this;
+        }
+
+        @Override
+        public Builder notes(String notes) {
+            this.member.setNotes(notes);
+            return this;
+        }
+
+        @Override
+        public Member build() {
+            return this.member;
+        }
+    }
 }

@@ -28,7 +28,7 @@ public interface MemberService {
 
     MemberId createMemberId(String storeId, String memberId);
 
-    Member createMember(String id);
+    Member createMember(MemberId memberId);
 
     Member addMember(Member member);
 

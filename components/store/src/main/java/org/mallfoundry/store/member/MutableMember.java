@@ -18,34 +18,11 @@
 
 package org.mallfoundry.store.member;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.data.QueryBuilderSupport;
-import org.mallfoundry.data.QuerySupport;
+import java.util.Date;
 
-@Getter
-@Setter
-public class DefaultMemberQuery extends QuerySupport implements MemberQuery {
-    private String storeId;
+public interface MutableMember extends Member {
 
-    @Override
-    public Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
+    void setStoreId(String storeId);
 
-    protected abstract static class BuilderSupport extends QueryBuilderSupport<MemberQuery, Builder> implements Builder {
-        private final DefaultMemberQuery query;
-
-        public BuilderSupport(DefaultMemberQuery query) {
-            super(query);
-            this.query = query;
-        }
-
-        @Override
-        public Builder storeId(String storeId) {
-            this.query.setStoreId(storeId);
-            return this;
-        }
-    }
+    void setJoinedTime(Date joinedTime);
 }

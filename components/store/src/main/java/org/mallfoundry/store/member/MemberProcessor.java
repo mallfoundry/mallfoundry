@@ -20,13 +20,23 @@ package org.mallfoundry.store.member;
 
 public interface MemberProcessor {
 
-    Member preProcessBeforeAddMember(Member member);
+    default Member preProcessBeforeAddMember(Member member) {
+        return member;
+    }
 
-    Member postProcessAfterGetMember(Member member);
+    default Member postProcessAfterGetMember(Member member) {
+        return member;
+    }
 
-    MemberQuery preProcessBeforeGetMembers(MemberQuery query);
+    default MemberQuery preProcessBeforeGetMembers(MemberQuery query) {
+        return query;
+    }
 
-    Member preProcessBeforeUpdateMember(Member member);
+    default Member preProcessBeforeUpdateMember(Member member) {
+        return member;
+    }
 
-    Member preProcessBeforeDeleteMember(Member member);
+    default Member preProcessBeforeDeleteMember(Member member) {
+        return member;
+    }
 }

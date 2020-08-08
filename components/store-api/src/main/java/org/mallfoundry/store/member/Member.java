@@ -20,13 +20,16 @@ package org.mallfoundry.store.member;
 
 import org.mallfoundry.identity.Gender;
 import org.mallfoundry.store.StoreOwnership;
+import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
 
-public interface Member extends StoreOwnership {
+public interface Member extends StoreOwnership, ObjectBuilder.ToBuilder<Member.Builder> {
 
     String getId();
+
+    void setId(String id);
 
     String getCountryCode();
 
@@ -35,6 +38,10 @@ public interface Member extends StoreOwnership {
     String getPhone();
 
     void setPhone(String phone);
+
+    String getAvatar();
+
+    void setAvatar(String avatar);
 
     String getNickname();
 
@@ -56,5 +63,32 @@ public interface Member extends StoreOwnership {
 
     void setNotes(String notes);
 
-    /*int getPurchasesCount();*/
+    Date getCreatedTime();
+
+    void setCreatedTime(Date createdTime);
+
+    Date getJoinedTime();
+
+    void join();
+
+    interface Builder extends ObjectBuilder<Member> {
+
+        Builder id(String id);
+
+        Builder storeId(String storeId);
+
+        Builder countryCode(String countryCode);
+
+        Builder phone(String phone);
+
+        Builder nickname(String nickname);
+
+        Builder gender(Gender gender);
+
+        Builder birthdate(Date birthdate);
+
+        Builder tags(List<String> tags);
+
+        Builder notes(String notes);
+    }
 }

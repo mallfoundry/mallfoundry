@@ -24,6 +24,7 @@ import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.identity.Gender;
 import org.mallfoundry.store.member.Member;
+import org.mallfoundry.store.member.MemberId;
 import org.mallfoundry.store.member.MemberSupport;
 import org.springframework.beans.BeanUtils;
 
@@ -34,6 +35,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,47 +48,62 @@ import java.util.List;
 @Table(name = "mf_store_member")
 public class JpaMember extends MemberSupport {
 
+    @NotNull
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotNull
     @Column(name = "store_id_")
     private String storeId;
 
     @Column(name = "tenant_id_")
     private String tenantId;
 
+    @NotBlank
     @Column(name = "avatar_")
     private String avatar;
 
+    @NotNull
     @Column(name = "gender_")
     private Gender gender;
 
+    @NotBlank
     @Column(name = "nickname_")
     private String nickname;
 
+    @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "birthdate_")
     private Date birthdate;
 
+    @NotBlank
     @Column(name = "country_code_")
     private String countryCode;
 
+    @NotBlank
     @Column(name = "phone_")
     private String phone;
 
     @Column(name = "notes_")
     private String notes;
 
+    @NotNull
     @Column(name = "created_time_")
     private Date createdTime;
 
+    @NotNull
+    @Column(name = "joined_time_")
+    private Date joinedTime;
+
+    @NotNull
     @Convert(converter = StringListConverter.class)
     @Column(name = "tags_")
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 
-    public JpaMember(String id) {
-        this.id = id;
+    public JpaMember(MemberId id) {
+        this.id = id.getMemberId();
+        this.storeId = id.getStoreId();
     }
 
     public static JpaMember of(Member member) {

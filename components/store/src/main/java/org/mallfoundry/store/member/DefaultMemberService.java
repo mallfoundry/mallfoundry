@@ -19,11 +19,17 @@
 package org.mallfoundry.store.member;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.util.Copies;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -31,11 +37,14 @@ import java.util.function.Function;
 // store.member.auto-join-conditional=order_paid
 public class DefaultMemberService implements MemberService, MemberProcessorInvoker {
 
-    private List<MemberProcessor> processors;
+    private List<MemberProcessor> processors = Collections.emptyList();
+
+    private final UserService userService;
 
     private final MemberRepository memberRepository;
 
-    public DefaultMemberService(MemberRepository memberRepository) {
+    public DefaultMemberService(UserService userService, MemberRepository memberRepository) {
+        this.userService = userService;
         this.memberRepository = memberRepository;
     }
 
@@ -54,14 +63,38 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
     }
 
     @Override
-    public Member createMember(String id) {
-        return this.memberRepository.create(id);
+    public Member createMember(MemberId memberId) {
+        return this.memberRepository.create(memberId);
+    }
+
+    public User requiredUser(String userId) {
+        return this.userService.getUser(userId).orElseThrow();
+    }
+
+    private Member addMemberPeek(Member member) {
+        var user = this.requiredUser(member.getId());
+        member.setAvatar(user.getAvatar());
+        member.setCountryCode(user.getCountryCode());
+        member.setPhone(user.getPhone());
+        member.setCreatedTime(user.getCreatedTime());
+        if (StringUtils.isBlank(member.getNickname())) {
+            member.setNickname(user.getNickname());
+        }
+        if (Objects.isNull(member.getGender())) {
+            member.setGender(user.getGender());
+        }
+        if (Objects.isNull(member.getBirthdate())) {
+            member.setBirthdate(new Date());
+        }
+        member.join();
+        return member;
     }
 
     @Override
     public Member addMember(Member member) {
         return Function.<Member>identity()
                 .compose(this.memberRepository::save)
+                .compose(this::addMemberPeek)
                 .compose(this::invokePreProcessBeforeAddMember)
                 .apply(member);
     }

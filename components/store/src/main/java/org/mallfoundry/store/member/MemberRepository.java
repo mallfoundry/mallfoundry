@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-    Member create(String id);
+    Member create(MemberId id);
 
     Optional<Member> findById(String id);
 

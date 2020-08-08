@@ -18,14 +18,19 @@
 
 package org.mallfoundry.rest.store.member;
 
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.member.Member;
 import org.mallfoundry.store.member.MemberService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("/v1")
@@ -37,8 +42,26 @@ public class MemberResourceV1 {
         this.memberService = memberService;
     }
 
-    @GetMapping("/members/{member_id}")
+    @PostMapping("stores/{store_id}/members")
+    public Member addMember(@PathVariable("store_id") String storeId,
+                            @RequestBody MemberRequest request) {
+        return Function.<Member>identity()
+                .compose(this.memberService::addMember)
+                .compose(request::assignTo)
+                .compose(this.memberService::createMember)
+                .apply(this.memberService.createMemberId(storeId, request.getId()));
+    }
+
+    @GetMapping("stores/{store_id}/members/{member_id}")
     public Optional<Member> getMember(@PathVariable("member_id") String memberId) {
         return this.memberService.getMember(memberId);
+    }
+
+    @GetMapping("stores/{store_id}/members")
+    public SliceList<Member> getMembers(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                        @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                        @PathVariable("store_id") String storeId) {
+        return this.memberService.getMembers(
+                this.memberService.createMemberQuery().toBuilder().page(page).limit(limit).storeId(storeId).build());
     }
 }

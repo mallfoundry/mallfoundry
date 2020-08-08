@@ -16,36 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.member;
+package org.mallfoundry.rest.store.member;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.data.QueryBuilderSupport;
-import org.mallfoundry.data.QuerySupport;
+import org.mallfoundry.identity.Gender;
+import org.mallfoundry.store.member.Member;
+
+import java.util.Date;
 
 @Getter
 @Setter
-public class DefaultMemberQuery extends QuerySupport implements MemberQuery {
-    private String storeId;
+public class MemberRequest {
+    private String id;
+    private String nickname;
+    private Gender gender;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date birthdate;
+    private String notes;
 
-    @Override
-    public Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
-
-    protected abstract static class BuilderSupport extends QueryBuilderSupport<MemberQuery, Builder> implements Builder {
-        private final DefaultMemberQuery query;
-
-        public BuilderSupport(DefaultMemberQuery query) {
-            super(query);
-            this.query = query;
-        }
-
-        @Override
-        public Builder storeId(String storeId) {
-            this.query.setStoreId(storeId);
-            return this;
-        }
+    public Member assignTo(Member member) {
+        return member.toBuilder()
+                .id(this.id)
+                .nickname(this.nickname).gender(this.gender)
+                .birthdate(this.birthdate).notes(this.notes)
+                .build();
     }
 }

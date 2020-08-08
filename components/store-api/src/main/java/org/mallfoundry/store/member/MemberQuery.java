@@ -18,7 +18,13 @@
 
 package org.mallfoundry.store.member;
 
+import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.store.StoreQueryBase;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface MemberQuery extends StoreQueryBase {
+public interface MemberQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<MemberQuery.Builder> {
+
+    interface Builder extends QueryBuilder<MemberQuery, Builder> {
+        Builder storeId(String storeId);
+    }
 }
