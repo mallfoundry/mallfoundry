@@ -34,6 +34,10 @@ public interface StaffService {
 
     Staff updateStaff(Staff staff);
 
+    void activeStaff(StaffId id);
+
+    void inactiveStaff(StaffId id);
+
     void deleteStaff(StaffId staffId);
 
     Optional<Staff> getStaff(StaffId staffId);
