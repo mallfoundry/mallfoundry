@@ -18,12 +18,18 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.member.DefaultMemberService;
+import org.mallfoundry.store.member.MemberProcessor;
 import org.mallfoundry.store.member.MemberRepository;
 import org.mallfoundry.store.member.repository.jpa.DelegatingJpaMemberRepository;
 import org.mallfoundry.store.member.repository.jpa.JpaMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class StoreMemberConfiguration {
@@ -34,7 +40,12 @@ public class StoreMemberConfiguration {
     }
 
     @Bean
-    public DefaultMemberService defaultMemberService(MemberRepository repository) {
-        return new DefaultMemberService(repository);
+    public DefaultMemberService defaultMemberService(@Autowired(required = false)
+                                                     @Lazy List<MemberProcessor> processors,
+                                                     UserService userService,
+                                                     MemberRepository repository) {
+        var service = new DefaultMemberService(userService, repository);
+        service.setProcessors(processors);
+        return service;
     }
 }

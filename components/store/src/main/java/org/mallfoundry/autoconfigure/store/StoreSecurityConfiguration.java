@@ -42,8 +42,9 @@ public class StoreSecurityConfiguration {
     }
 
     @Bean
-    @Autowired(required = false)
-    public DefaultRoleService defaultStoreRoleService(@Lazy List<RoleProcessor> processors, RoleRepository repository) {
+    public DefaultRoleService defaultStoreRoleService(@Autowired(required = false)
+                                                      @Lazy List<RoleProcessor> processors,
+                                                      RoleRepository repository) {
         var service = new DefaultRoleService(repository);
         service.setProcessors(processors);
         return service;

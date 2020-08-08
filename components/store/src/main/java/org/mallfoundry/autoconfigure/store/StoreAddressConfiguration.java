@@ -37,8 +37,8 @@ public class StoreAddressConfiguration {
     }
 
     @Bean
-    @Autowired(required = false)
-    public DefaultStoreAddressService defaultStoreAddressService(@Lazy List<StoreAddressProcessor> processors,
+    public DefaultStoreAddressService defaultStoreAddressService(@Autowired(required = false)
+                                                                 @Lazy List<StoreAddressProcessor> processors,
                                                                  StoreAddressRepository repository) {
         var service = new DefaultStoreAddressService(repository);
         service.setProcessors(processors);
