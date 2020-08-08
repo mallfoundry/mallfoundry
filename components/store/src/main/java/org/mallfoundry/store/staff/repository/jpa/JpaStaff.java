@@ -24,6 +24,7 @@ import lombok.Setter;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.repository.jpa.JpaRole;
 import org.mallfoundry.store.staff.Staff;
+import org.mallfoundry.store.staff.StaffStatus;
 import org.mallfoundry.store.staff.StaffSupport;
 import org.springframework.beans.BeanUtils;
 
@@ -58,6 +59,10 @@ public class JpaStaff extends StaffSupport {
     @NotBlank
     @Column(name = "store_id_")
     private String storeId;
+
+    @NotNull
+    @Column(name = "status_")
+    private StaffStatus status;
 
     @NotBlank
     @Column(name = "name_")

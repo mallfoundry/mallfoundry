@@ -45,6 +45,8 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
 
     void setAvatar(String avatar);
 
+    StaffStatus getStatus();
+
     String getCountryCode();
 
     void setCountryCode(String countryCode);
@@ -68,6 +70,10 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
     Date getCreatedTime();
 
     void create();
+
+    void active();
+
+    void inactive();
 
     interface Builder extends ObjectBuilder<Staff> {
 

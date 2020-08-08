@@ -21,5 +21,8 @@ package org.mallfoundry.store.staff;
 import java.util.Date;
 
 public interface MutableStaff extends Staff {
+
+    void setStatus(StaffStatus status);
+
     void setCreatedTime(Date createdTime);
 }

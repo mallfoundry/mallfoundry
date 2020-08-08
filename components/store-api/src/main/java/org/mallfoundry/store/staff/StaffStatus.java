@@ -19,4 +19,5 @@
 package org.mallfoundry.store.staff;
 
 public enum StaffStatus {
+    ACTIVE, INACTIVE
 }
