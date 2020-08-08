@@ -47,6 +47,7 @@ public abstract class StaffSupport implements MutableStaff {
 
     @Override
     public void create() {
+        this.active();
         this.setCreatedTime(new Date());
     }
 
