@@ -55,7 +55,7 @@ public class InternalBrand implements Brand {
     private String logoUrl;
 
     @ElementCollection
-    @CollectionTable(name = "mf_brand_categories",
+    @CollectionTable(name = "mf_catalog_category_brand",
             joinColumns = @JoinColumn(name = "brand_id_"))
     @Column(name = "category_id_")
     private Set<String> categories;
