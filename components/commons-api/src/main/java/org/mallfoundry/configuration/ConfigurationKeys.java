@@ -20,4 +20,23 @@ package org.mallfoundry.configuration;
 
 public abstract class ConfigurationKeys {
     public static final String H5_SITE_URL = "mall.h5.site.url";
+
+
+    // store.member.auto-join-conditional=order_placed
+// store.member.auto-join-conditional=order_paid
+
+    // tenant.stores.max_size=200
+    public abstract static class Tenant {
+
+    }
+
+    // store.products.max_size=200
+    public abstract static class Store {
+        static final String STORE_PREFIX = "store";
+
+        public abstract static class Member {
+            static final String STORE_MEMBER_PREFIX = STORE_PREFIX + ".member";
+            public static final String AUTO_JOIN_CONDITIONAL = STORE_MEMBER_PREFIX + ".auto-join-conditional";
+        }
+    }
 }
