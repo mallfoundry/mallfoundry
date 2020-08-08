@@ -22,11 +22,19 @@ public interface StaffProcessorInvoker {
 
     Staff invokePreProcessBeforeAddStaff(Staff staff);
 
+    Staff invokePreProcessAfterAddStaff(Staff staff);
+
     Staff invokePreProcessBeforeUpdateStaff(Staff staff);
 
     Staff invokePreProcessAfterUpdateStaff(Staff staff);
 
+    Staff invokePreProcessBeforeActiveStaff(Staff staff);
+
+    Staff invokePreProcessBeforeInactiveStaff(Staff staff);
+
     Staff invokePreProcessBeforeDeleteStaff(Staff staff);
+
+    Staff invokePreProcessAfterDeleteStaff(Staff staff);
 
     void invokePreProcessAfterCompletion();
 }

@@ -24,6 +24,10 @@ public interface StaffProcessor {
         return staff;
     }
 
+    default Staff preProcessAfterAddStaff(Staff staff) {
+        return staff;
+    }
+
     default Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }
@@ -32,7 +36,19 @@ public interface StaffProcessor {
         return staff;
     }
 
+    default Staff preProcessBeforeActiveStaff(Staff staff) {
+        return staff;
+    }
+
+    default Staff preProcessBeforeInactiveStaff(Staff staff) {
+        return staff;
+    }
+
     default Staff preProcessBeforeDeleteStaff(Staff staff) {
+        return staff;
+    }
+
+    default Staff preProcessAfterDeleteStaff(Staff staff) {
         return staff;
     }
 
