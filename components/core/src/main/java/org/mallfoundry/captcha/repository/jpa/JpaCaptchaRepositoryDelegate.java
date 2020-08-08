@@ -26,7 +26,7 @@ import java.util.Optional;
 @Repository
 interface JpaCaptchaRepositoryDelegate extends JpaRepository<JpaCaptcha, String> {
 
-    Optional<JpaCaptcha> findByMobile(String mobile);
+    Optional<JpaCaptcha> findByCountryCodeAndPhone(String countryCode, String phone);
 
-    void deleteByMobile(String mobile);
+    void deleteByCountryCodeAndPhone(String countryCode, String phone);
 }

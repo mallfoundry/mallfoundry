@@ -39,7 +39,8 @@ public class SmsTests {
         this.messageService.sendMessage(
                 this.messageService.createMessage()
                         .toBuilder()
-                        .mobile("15688477267")
+                        .countryCode("86")
+                        .phone("15688477267")
                         .variable(CODE_VARIABLE_NAME, "123456")
                         .build());
     }

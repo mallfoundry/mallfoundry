@@ -26,12 +26,12 @@ public interface CaptchaRepository {
 
     Optional<Captcha> findByToken(String token);
 
-    Optional<Captcha> findByMobile(String mobile);
+    Optional<Captcha> findByCountryCodeAndPhone(String countryCode, String phone);
 
     Captcha save(Captcha captcha);
 
     void deleteByToken(String token);
 
-    void deleteByMobile(String mobile);
+    void deleteByCountryCodeAndPhone(String countryCode, String phone);
 
 }

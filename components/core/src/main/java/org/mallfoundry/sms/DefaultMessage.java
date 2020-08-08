@@ -34,7 +34,9 @@ public class DefaultMessage implements Message {
 
     private String signature;
 
-    private String mobile;
+    private String countryCode;
+
+    private String phone;
 
     private String body;
 

@@ -46,8 +46,8 @@ public class JpaCaptchaRepository implements CaptchaRepository {
     }
 
     @Override
-    public Optional<Captcha> findByMobile(String mobile) {
-        return CastUtils.cast(this.captchaRepository.findByMobile(mobile));
+    public Optional<Captcha> findByCountryCodeAndPhone(String countryCode, String phone) {
+        return CastUtils.cast(this.captchaRepository.findByCountryCodeAndPhone(countryCode, phone));
     }
 
     @Override
@@ -61,8 +61,8 @@ public class JpaCaptchaRepository implements CaptchaRepository {
     }
 
     @Override
-    public void deleteByMobile(String mobile) {
-        this.captchaRepository.deleteByMobile(mobile);
+    public void deleteByCountryCodeAndPhone(String countryCode, String phone) {
+        this.captchaRepository.deleteByCountryCodeAndPhone(countryCode, phone);
     }
 
 }

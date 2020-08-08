@@ -64,7 +64,7 @@ public class AliyunMessageService extends AbstractMessageService implements Init
         request.setSysVersion(this.sysVersion);
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", this.regionId);
-        request.putQueryParameter("PhoneNumbers", message.getMobile());
+        request.putQueryParameter("PhoneNumbers", message.getPhone());
 
         if (Objects.nonNull(message.getTemplate())) {
             request.putQueryParameter("TemplateCode", message.getTemplate());

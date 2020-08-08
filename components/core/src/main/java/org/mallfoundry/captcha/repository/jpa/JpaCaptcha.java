@@ -57,14 +57,26 @@ public class JpaCaptcha extends CaptchaSupport {
     private Date createdTime;
 
     @JsonIgnore
-    @Column(name = "mobile_", length = 20)
-    public String getMobile() {
-        return this.getParameters().getOrDefault("mobile", null);
+    @Column(name = "phone_", length = 20)
+    public String getPhone() {
+        return this.getParameters().getOrDefault(Captcha.PHONE_PARAMETER_NAME, null);
     }
 
-    public void setMobile(String mobile) {
-        if (Objects.nonNull(mobile) && !this.getParameters().containsKey("mobile")) {
-            this.getParameters().put("mobile", mobile);
+    public void setPhone(String phone) {
+        if (Objects.nonNull(phone) && !this.getParameters().containsKey(Captcha.PHONE_PARAMETER_NAME)) {
+            this.getParameters().put(Captcha.PHONE_PARAMETER_NAME, phone);
+        }
+    }
+
+    @JsonIgnore
+    @Column(name = "country_code_", length = 20)
+    public String getCountryCode() {
+        return this.getParameters().getOrDefault(Captcha.COUNTRY_CODE_PARAMETER_NAME, null);
+    }
+
+    public void setCountryCode(String countryCode) {
+        if (Objects.nonNull(countryCode) && !this.getParameters().containsKey(Captcha.COUNTRY_CODE_PARAMETER_NAME)) {
+            this.getParameters().put(Captcha.COUNTRY_CODE_PARAMETER_NAME, countryCode);
         }
     }
 

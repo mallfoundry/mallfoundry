@@ -35,8 +35,10 @@ public class CaptchaAntiSpamService {
 
     private CaptchaSpam createCaptchaSpam(Captcha captcha) throws CaptchaException {
         if (Objects.equals(captcha.getType(), CaptchaType.SMS)) {
-            var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
-            return new CaptchaSpam(mobile, captcha.getIntervals(), captcha.getCreatedTime());
+            var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
+            var phone = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
+            var spamId = String.format("%s%s", countryCode, phone);
+            return new CaptchaSpam(spamId, captcha.getIntervals(), captcha.getCreatedTime());
         }
 
         throw new CaptchaException(String.format("This type(%s) of captcha is not supported", captcha.getType()));

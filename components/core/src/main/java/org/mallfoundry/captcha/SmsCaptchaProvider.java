@@ -49,8 +49,9 @@ public class SmsCaptchaProvider implements CaptchaProvider {
 
     @Override
     public void clearCaptcha(Captcha captcha) throws CaptchaException {
-        var mobile = captcha.getParameters().get("mobile");
-        this.captchaRepository.deleteByMobile(mobile);
+        var countryCode = captcha.getParameters().get(Captcha.COUNTRY_CODE_PARAMETER_NAME);
+        var phone = captcha.getParameters().get(Captcha.PHONE_PARAMETER_NAME);
+        this.captchaRepository.deleteByCountryCodeAndPhone(countryCode, phone);
     }
 
     private void setCaptchaIntervals(Captcha captcha) {
@@ -64,20 +65,22 @@ public class SmsCaptchaProvider implements CaptchaProvider {
 
     @Override
     public void generateCaptcha(Captcha captcha) throws CaptchaException {
-        var mobile = captcha.getParameters().get("mobile");
+        var countryCode = captcha.getParameters().get(Captcha.COUNTRY_CODE_PARAMETER_NAME);
+        var phone = captcha.getParameters().get(Captcha.PHONE_PARAMETER_NAME);
         this.setCaptchaIntervals(captcha);
-        this.sendMessage(mobile, captcha.getCode());
+        this.sendMessage(countryCode, phone, captcha.getCode());
     }
 
-    private Message createMessage(String mobile, String code) {
+    private Message createMessage(String countryCode, String phone, String code) {
         return this.messageService.createMessage().toBuilder()
-                .mobile(mobile).signature(this.signature)
-                .template(this.template).variable(Message.CODE_VARIABLE_NAME, code)
+                .countryCode(countryCode).phone(phone)
+                .signature(this.signature).template(this.template)
+                .variable(Message.CODE_VARIABLE_NAME, code)
                 .build();
     }
 
-    private void sendMessage(String mobile, String code) {
-        this.messageService.sendMessage(this.createMessage(mobile, code));
+    private void sendMessage(String countryCode, String phone, String code) {
+        this.messageService.sendMessage(this.createMessage(countryCode, phone, code));
     }
 
     @Override
