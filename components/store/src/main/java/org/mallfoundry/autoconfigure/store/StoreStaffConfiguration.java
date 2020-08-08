@@ -21,10 +21,10 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
-import org.mallfoundry.store.staff.SmartStaffValidateProcessor;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
 import org.mallfoundry.store.staff.StaffProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
+import org.mallfoundry.store.staff.StaffValidateProcessor;
 import org.mallfoundry.store.staff.repository.RoleStaffsCountProcessor;
 import org.mallfoundry.store.staff.repository.StaffRoleRemovalProcessor;
 import org.mallfoundry.store.staff.repository.StaffRoleRepository;
@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.validation.SmartValidator;
 
 import java.util.List;
 
@@ -64,8 +63,8 @@ public class StoreStaffConfiguration {
     }
 
     @Bean
-    public SmartStaffValidateProcessor smartStaffValidatedProcessor(SmartValidator validator) {
-        return new SmartStaffValidateProcessor(validator);
+    public StaffValidateProcessor staffValidateProcessor() {
+        return new StaffValidateProcessor();
     }
 
     @Bean
