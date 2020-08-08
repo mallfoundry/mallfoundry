@@ -32,7 +32,6 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_object_type")
+@Table(name = "mf_analytics_object_type")
 public class JpaObjectType extends ObjectTypeSupport {
 
     @Id
