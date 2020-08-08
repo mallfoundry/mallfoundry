@@ -45,4 +45,8 @@ public interface RoleProcessor {
     default Role preProcessBeforeDeleteRole(Role role) {
         return role;
     }
+
+    default Role preProcessAfterDeleteRole(Role role) {
+        return role;
+    }
 }

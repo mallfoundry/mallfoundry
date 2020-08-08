@@ -33,4 +33,6 @@ public interface RoleProcessorInvoker {
     Staff invokePreProcessBeforeRemoveRoleStaff(Role role, Staff staff);
 
     Role invokePreProcessBeforeDeleteRole(Role role);
+
+    Role invokePreProcessAfterDeleteRole(Role role);
 }
