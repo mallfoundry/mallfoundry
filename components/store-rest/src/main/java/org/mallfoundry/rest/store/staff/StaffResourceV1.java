@@ -71,16 +71,6 @@ public class StaffResourceV1 {
                 .apply(this.staffService.createStaffId(storeId, request.getId()));
     }
 
-    @PatchMapping("/stores/{store_id}/staffs/{staff_id}")
-    public Staff updateStaff(@PathVariable("store_id") String storeId,
-                             @PathVariable("staff_id") String staffId,
-                             @RequestBody StaffRequest request) {
-        return Function.<Staff>identity()
-                .compose(this.staffService::updateStaff)
-                .<Staff>compose(staff -> this.assignToStaff(request, staff))
-                .compose(this.staffService::createStaff)
-                .apply(this.staffService.createStaffId(storeId, staffId));
-    }
 
     @GetMapping("/stores/{store_id}/staffs/{staff_id}")
     public Optional<Staff> getStaff(@PathVariable("store_id") String storeId,
@@ -109,6 +99,29 @@ public class StaffResourceV1 {
                 this.staffService.createStaffQuery()
                         .toBuilder().page(page).limit(limit)
                         .storeId(storeId).roleIds(roleIds).build());
+    }
+
+    @PatchMapping("/stores/{store_id}/staffs/{staff_id}")
+    public Staff updateStaff(@PathVariable("store_id") String storeId,
+                             @PathVariable("staff_id") String staffId,
+                             @RequestBody StaffRequest request) {
+        return Function.<Staff>identity()
+                .compose(this.staffService::updateStaff)
+                .<Staff>compose(staff -> this.assignToStaff(request, staff))
+                .compose(this.staffService::createStaff)
+                .apply(this.staffService.createStaffId(storeId, staffId));
+    }
+
+    @PatchMapping("/stores/{store_id}/staffs/{staff_id}/active")
+    public void activeStaff(@PathVariable("store_id") String storeId,
+                            @PathVariable("staff_id") String staffId) {
+        this.staffService.activeStaff(this.staffService.createStaffId(storeId, staffId));
+    }
+
+    @PatchMapping("/stores/{store_id}/staffs/{staff_id}/inactive")
+    public void inactiveStaff(@PathVariable("store_id") String storeId,
+                              @PathVariable("staff_id") String staffId) {
+        this.staffService.inactiveStaff(this.staffService.createStaffId(storeId, staffId));
     }
 
     @DeleteMapping("/stores/{store_id}/staffs/{staff_id}")
