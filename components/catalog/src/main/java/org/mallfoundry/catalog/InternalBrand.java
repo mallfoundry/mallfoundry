@@ -38,7 +38,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_brand")
+@Table(name = "mf_catalog_brand")
 public class InternalBrand implements Brand {
 
     @Id
