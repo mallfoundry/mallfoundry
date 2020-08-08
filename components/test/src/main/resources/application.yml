@@ -26,9 +26,9 @@ spring:
       org.mallfoundry.store.messages,
       org.mallfoundry.catalog.product.messages
     always-use-message-format: true
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
+#  elasticsearch:
+#    rest:
+#      uris: http://localhost:9200
   liquibase:
     database-change-log-lock-table: mf_databasechangeloglock
     database-change-log-table: mf_databasechangelog
