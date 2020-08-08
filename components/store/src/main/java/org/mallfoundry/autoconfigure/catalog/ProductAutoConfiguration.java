@@ -55,6 +55,7 @@ public class ProductAutoConfiguration {
     }
 
     @Configuration
+    @ConditionalOnClass(ElasticsearchOperations.class)
     @ConditionalOnBean(ElasticsearchOperations.class)
     public static class ElasticsearchProductConfiguration {
 
