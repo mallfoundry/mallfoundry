@@ -19,7 +19,7 @@
 package org.mallfoundry.security;
 
 import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationProvider;
-import org.mallfoundry.security.authentication.MobilePasswordCredentialsAuthenticationProvider;
+import org.mallfoundry.security.authentication.PhonePasswordCredentialsAuthenticationProvider;
 import org.mallfoundry.security.token.AccessTokenAuthenticationFilter;
 import org.mallfoundry.security.token.AccessTokenAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
@@ -41,12 +41,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider;
 
-    private final MobilePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider;
+    private final PhonePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider;
 
     public SecurityConfiguration(SecurityUserService securityUserService,
                                  AccessTokenAuthenticationProvider tokenAuthenticationProvider,
                                  CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider,
-                                 MobilePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider) {
+                                 PhonePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider) {
         this.securityUserService = securityUserService;
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
         this.captchaCredentialsAuthenticationProvider = captchaCredentialsAuthenticationProvider;
@@ -76,6 +76,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        http.formLogin();
         http.addFilterAfter(new AccessTokenAuthenticationFilter(this.authenticationManager()), BasicAuthenticationFilter.class);
     }
-
-
 }

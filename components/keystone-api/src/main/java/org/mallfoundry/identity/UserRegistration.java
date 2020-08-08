@@ -32,7 +32,9 @@ public interface UserRegistration {
 
     void setNickname(String nickname);
 
-    String getMobile();
+    String getCountryCode();
+
+    String getPhone();
 
     String getEmail();
 

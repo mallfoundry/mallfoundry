@@ -32,36 +32,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MobilePasswordCredentialsAuthenticationProvider implements AuthenticationProvider {
-
+public class PhonePasswordCredentialsAuthenticationProvider implements AuthenticationProvider {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    public MobilePasswordCredentialsAuthenticationProvider(UserService userService) {
+    public PhonePasswordCredentialsAuthenticationProvider(UserService userService) {
         this.userService = userService;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        var mpAuthentication = (MobilePasswordCredentialsAuthenticationToken) authentication;
-        String countryCode = mpAuthentication.getCountryCode();
-        String mobile = mpAuthentication.getMobile();
-        String password = mpAuthentication.getPassword();
-        var user = this.userService.getUserByMobile(countryCode, mobile)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s%s not found", countryCode, mobile)));
+        var ppAuthentication = (PhonePasswordCredentialsAuthenticationToken) authentication;
+        String countryCode = ppAuthentication.getCountryCode();
+        String phone = ppAuthentication.getPhone();
+        String password = ppAuthentication.getPassword();
+        var user = this.userService.getUserByPhone(countryCode, phone)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone %s%s not found", countryCode, phone)));
         var securityUser = new UserDetailsSubject(user);
-        this.authenticationChecks(securityUser, mpAuthentication);
+        this.authenticationChecks(securityUser, ppAuthentication);
         return new UsernamePasswordAuthenticationToken(securityUser, password, securityUser.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return MobilePasswordCredentialsAuthenticationToken.class.isAssignableFrom(authentication);
+        return PhonePasswordCredentialsAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
     protected void authenticationChecks(UserDetails userDetails,
-                                        MobilePasswordCredentialsAuthenticationToken authentication) throws AuthenticationException {
+                                        PhonePasswordCredentialsAuthenticationToken authentication) throws AuthenticationException {
         String presentedPassword = authentication.getPassword();
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
             throw new BadCredentialsException("Bad credentials");

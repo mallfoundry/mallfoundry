@@ -57,9 +57,9 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
             throw new BadCredentialsException("Invalid captcha");
         }
         var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
-        var mobile = captcha.getParameter(Captcha.MOBILE_PARAMETER_NAME);
-        var user = this.userService.getUserByMobile(countryCode, mobile)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("The mobile %s not found", mobile)));
+        var mobile = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
+        var user = this.userService.getUserByPhone(countryCode, mobile)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone %s not found", mobile)));
         var securityUser = new UserDetailsSubject(user);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
     }

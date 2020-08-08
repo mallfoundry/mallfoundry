@@ -65,8 +65,8 @@ public class JpaUser extends UserSupport {
     @Column(name = "country_code_")
     private String countryCode;
 
-    @Column(name = "mobile_", unique = true)
-    private String mobile;
+    @Column(name = "phone_", unique = true)
+    private String phone;
 
     @Column(name = "password_")
     private String password;

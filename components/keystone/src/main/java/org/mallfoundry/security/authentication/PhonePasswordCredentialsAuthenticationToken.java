@@ -24,24 +24,21 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 @Getter
 @Setter
-public class MobilePasswordCredentialsAuthenticationToken extends AbstractAuthenticationToken {
-
+public class PhonePasswordCredentialsAuthenticationToken extends AbstractAuthenticationToken {
     private String countryCode;
-
-    private String mobile;
-
+    private String phone;
     private String password;
 
-    public MobilePasswordCredentialsAuthenticationToken(String countryCode, String mobile, String password) {
+    public PhonePasswordCredentialsAuthenticationToken(String countryCode, String phone, String password) {
         super(null);
         this.countryCode = countryCode;
-        this.mobile = mobile;
+        this.phone = phone;
         this.password = password;
     }
 
     @Override
     public Object getPrincipal() {
-        return this.mobile;
+        return this.phone;
     }
 
     @Override

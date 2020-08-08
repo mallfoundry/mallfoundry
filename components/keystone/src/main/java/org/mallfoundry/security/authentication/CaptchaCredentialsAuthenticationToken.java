@@ -26,9 +26,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 @Getter
 @Setter
 public class CaptchaCredentialsAuthenticationToken extends AbstractAuthenticationToken {
-
     private String token;
-
     private String code;
 
     public CaptchaCredentialsAuthenticationToken(String token, String code) {

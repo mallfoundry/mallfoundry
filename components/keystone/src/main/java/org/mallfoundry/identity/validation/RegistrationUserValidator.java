@@ -40,14 +40,15 @@ public class RegistrationUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        var mobile = registration.getMobile();
-        if (Objects.nonNull(mobile)) {
-            this.userRepository.findByMobile(mobile).ifPresent(user -> {
-                throw new UserValidatorException(
-                        message("identity.user.validation.mobileRegistered",
-                                List.of(mobile),
-                                "Mobile has been registered"));
-            });
+        var phone = registration.getPhone();
+        if (Objects.nonNull(phone)) {
+            this.userRepository.findByCountryCodeAndPhone(registration.getCountryCode(), registration.getPhone())
+                    .ifPresent(user -> {
+                        throw new UserValidatorException(
+                                message("identity.user.validation.mobileRegistered",
+                                        List.of(phone),
+                                        "Phone has been registered"));
+                    });
         }
 
     }

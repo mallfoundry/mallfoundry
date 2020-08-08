@@ -100,8 +100,8 @@ public abstract class UserSupport implements MutableUser {
         }
 
         @Override
-        public Builder mobile(String mobile) {
-            this.user.setMobile(mobile);
+        public Builder phone(String phone) {
+            this.user.setPhone(phone);
             return this;
         }
 

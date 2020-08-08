@@ -24,5 +24,5 @@ package org.mallfoundry.security.authentication;
  * @author Zhi Tang
  */
 public enum CredentialsType {
-    CAPTCHA, USERNAME_PASSWORD, MOBILE_PASSWORD/*, QR_CODE*/
+    CAPTCHA, USERNAME_PASSWORD, PHONE_PASSWORD/*, QR_CODE*/
 }

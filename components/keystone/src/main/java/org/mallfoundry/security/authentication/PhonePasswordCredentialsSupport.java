@@ -18,16 +18,20 @@
 
 package org.mallfoundry.security.authentication;
 
-public interface MobilePasswordCredentials extends Credentials {
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
-    @Override
-    default CredentialsType getType() {
-        return CredentialsType.MOBILE_PASSWORD;
+@Getter
+@Setter(AccessLevel.PROTECTED)
+public class PhonePasswordCredentialsSupport implements PhonePasswordCredentials {
+    private String countryCode;
+    private String phone;
+    private String password;
+
+    public PhonePasswordCredentialsSupport(String countryCode, String phone, String password) {
+        this.countryCode = countryCode;
+        this.phone = phone;
+        this.password = password;
     }
-
-    String getCountryCode();
-
-    String getMobile();
-
-    String getPassword();
 }

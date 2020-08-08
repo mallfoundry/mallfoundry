@@ -18,8 +18,16 @@
 
 package org.mallfoundry.security.authentication;
 
-public class DefaultMobilePasswordCredentials extends MobilePasswordCredentialsSupport {
-    public DefaultMobilePasswordCredentials(String countryCode, String mobile, String password) {
-        super(countryCode, mobile, password);
+public interface PhonePasswordCredentials extends Credentials {
+
+    @Override
+    default CredentialsType getType() {
+        return CredentialsType.PHONE_PASSWORD;
     }
+
+    String getCountryCode();
+
+    String getPhone();
+
+    String getPassword();
 }

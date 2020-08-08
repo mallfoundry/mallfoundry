@@ -31,7 +31,8 @@ import java.util.Map;
 public class UserCreateRequest implements UserRegistration {
     private String nickname;
     private String password;
-    private String mobile;
+    private String countryCode;
+    private String phone;
     private String email;
     private Mode mode;
     private Map<String, String> parameters = new HashMap<>();
@@ -49,6 +50,7 @@ public class UserCreateRequest implements UserRegistration {
     @Override
     public User assignToUser(User user) {
         return user.toBuilder().nickname(this.nickname).password(this.password)
-                .mobile(this.mobile).email(this.email).build();
+                .countryCode(this.countryCode).phone(this.phone)
+                .email(this.email).build();
     }
 }

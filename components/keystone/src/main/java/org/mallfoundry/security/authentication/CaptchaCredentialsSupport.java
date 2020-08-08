@@ -25,9 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 public class CaptchaCredentialsSupport implements CaptchaCredentials {
-
     private String token;
-
     private String code;
 
     public CaptchaCredentialsSupport(String token, String code) {

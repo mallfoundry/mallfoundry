@@ -164,7 +164,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByMobile(String countryCode, String mobile) {
-        return this.userRepository.findByMobile(mobile);
+    public Optional<User> getUserByPhone(String countryCode, String phone) {
+        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone);
     }
 }

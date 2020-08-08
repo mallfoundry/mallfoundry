@@ -18,23 +18,8 @@
 
 package org.mallfoundry.security.authentication;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter(AccessLevel.PROTECTED)
-public class MobilePasswordCredentialsSupport implements MobilePasswordCredentials {
-
-    private String countryCode;
-
-    private String mobile;
-
-    private String password;
-
-    public MobilePasswordCredentialsSupport(String countryCode, String mobile, String password) {
-        this.countryCode = countryCode;
-        this.mobile = mobile;
-        this.password = password;
+public class DefaultPhonePasswordCredentials extends PhonePasswordCredentialsSupport {
+    public DefaultPhonePasswordCredentials(String countryCode, String mobile, String password) {
+        super(countryCode, mobile, password);
     }
 }

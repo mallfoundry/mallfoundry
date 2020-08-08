@@ -21,10 +21,10 @@ package org.mallfoundry.security.token;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.http.ErrorMessage;
 import org.mallfoundry.security.authentication.Credentials;
-import org.mallfoundry.security.authentication.DefaultCaptchaCredentials;
-import org.mallfoundry.security.authentication.DefaultMobilePasswordCredentials;
-import org.mallfoundry.security.authentication.DefaultUsernamePasswordCredentials;
 import org.mallfoundry.security.authentication.CredentialsType;
+import org.mallfoundry.security.authentication.DefaultCaptchaCredentials;
+import org.mallfoundry.security.authentication.DefaultPhonePasswordCredentials;
+import org.mallfoundry.security.authentication.DefaultUsernamePasswordCredentials;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,10 +57,10 @@ public class AccessTokenEndpointV1 {
         Credentials credentials = null;
         if (type == CredentialsType.USERNAME_PASSWORD) {
             credentials = new DefaultUsernamePasswordCredentials(request.getParameter("username"), request.getParameter("password"));
-        } else if (type == CredentialsType.MOBILE_PASSWORD) {
-            credentials = new DefaultMobilePasswordCredentials(
+        } else if (type == CredentialsType.PHONE_PASSWORD) {
+            credentials = new DefaultPhonePasswordCredentials(
                     request.getParameter("country_code"),
-                    request.getParameter("mobile"),
+                    request.getParameter("phone"),
                     request.getParameter("password"));
         } else if (type == CredentialsType.CAPTCHA) {
             credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));

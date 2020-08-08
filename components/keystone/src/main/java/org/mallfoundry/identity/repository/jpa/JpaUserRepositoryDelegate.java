@@ -26,7 +26,7 @@ import java.util.Optional;
 @Repository
 public interface JpaUserRepositoryDelegate extends JpaRepository<JpaUser, String> {
 
-    Optional<JpaUser> findByMobile(String mobile);
+    Optional<JpaUser> findByCountryCodeAndPhone(String countryCode, String phone);
 
     Optional<JpaUser> findByUsername(String username);
 }

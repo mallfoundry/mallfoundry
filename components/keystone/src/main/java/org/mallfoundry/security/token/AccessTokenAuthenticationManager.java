@@ -21,8 +21,8 @@ package org.mallfoundry.security.token;
 import org.mallfoundry.security.authentication.CaptchaCredentials;
 import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationToken;
 import org.mallfoundry.security.authentication.Credentials;
-import org.mallfoundry.security.authentication.MobilePasswordCredentials;
-import org.mallfoundry.security.authentication.MobilePasswordCredentialsAuthenticationToken;
+import org.mallfoundry.security.authentication.PhonePasswordCredentials;
+import org.mallfoundry.security.authentication.PhonePasswordCredentialsAuthenticationToken;
 import org.mallfoundry.security.Subject;
 import org.mallfoundry.security.authentication.UsernamePasswordCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,10 +50,10 @@ public class AccessTokenAuthenticationManager {
             var passwordCredentials = (UsernamePasswordCredentials) credentials;
             authentication = new UsernamePasswordAuthenticationToken(passwordCredentials.getUsername(), passwordCredentials.getPassword());
 
-        } else if (credentials instanceof MobilePasswordCredentials) {
-            var mpCredentials = (MobilePasswordCredentials) credentials;
-            authentication = new MobilePasswordCredentialsAuthenticationToken(
-                    mpCredentials.getCountryCode(), mpCredentials.getMobile(), mpCredentials.getPassword());
+        } else if (credentials instanceof PhonePasswordCredentials) {
+            var mpCredentials = (PhonePasswordCredentials) credentials;
+            authentication = new PhonePasswordCredentialsAuthenticationToken(
+                    mpCredentials.getCountryCode(), mpCredentials.getPhone(), mpCredentials.getPassword());
         } else if (credentials instanceof CaptchaCredentials) {
             var captchaCredentials = (CaptchaCredentials) credentials;
             authentication = new CaptchaCredentialsAuthenticationToken(captchaCredentials.getToken(), captchaCredentials.getCode());

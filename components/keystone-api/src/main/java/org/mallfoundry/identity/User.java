@@ -47,9 +47,9 @@ public interface User extends TenantOwnership, ObjectBuilder.ToBuilder<User.Buil
 
     void setCountryCode(String countryCode);
 
-    String getMobile();
+    String getPhone();
 
-    void setMobile(String mobile);
+    void setPhone(String phone);
 
     String getEmail();
 
@@ -85,7 +85,7 @@ public interface User extends TenantOwnership, ObjectBuilder.ToBuilder<User.Buil
 
         Builder countryCode(String countryCode);
 
-        Builder mobile(String mobile);
+        Builder phone(String phone);
 
         Builder email(String mail);
 

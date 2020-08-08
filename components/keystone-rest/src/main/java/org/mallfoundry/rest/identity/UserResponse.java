@@ -52,7 +52,7 @@ public class UserResponse {
         this.nickname = user.getNickname();
         this.avatar = user.getAvatar();
         this.countryCode = user.getCountryCode();
-        this.mobile = user.getMobile();
+        this.mobile = user.getPhone();
         this.email = user.getEmail();
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities())
                 ? Collections.emptyList()

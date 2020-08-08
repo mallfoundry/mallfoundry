@@ -55,8 +55,8 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByMobile(String mobile) {
-        return CastUtils.cast(this.repository.findByMobile(mobile));
+    public Optional<User> findByCountryCodeAndPhone(String countryCode, String phone) {
+        return CastUtils.cast(this.repository.findByCountryCodeAndPhone(countryCode, phone));
     }
 
     @Override

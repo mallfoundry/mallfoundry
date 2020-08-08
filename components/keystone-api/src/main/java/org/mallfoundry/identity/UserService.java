@@ -40,6 +40,6 @@ public interface UserService {
 
     Optional<User> getUserByUsername(String id);
 
-    Optional<User> getUserByMobile(String countryCode, String mobile);
+    Optional<User> getUserByPhone(String countryCode, String phone);
 
 }
