@@ -106,17 +106,24 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
 
     @Override
     public Optional<Staff> getStaff(StaffId staffId) {
-        return this.staffRepository.findById(staffId);
+        return this.staffRepository.findById(staffId)
+                .map(this::invokePostProcessAfterGetStaff);
     }
 
     @Override
     public SliceList<Staff> getStaffs(StaffQuery query) {
-        return this.staffRepository.findAll(query);
+        return Function.<SliceList<Staff>>identity()
+                .compose(this.staffRepository::findAll)
+                .compose(this::invokePreProcessBeforeGetStaffs)
+                .apply(query);
     }
 
     @Override
     public long countStaffs(StaffQuery query) {
-        return this.staffRepository.count(query);
+        return Function.<Long>identity()
+                .compose(this.staffRepository::count)
+                .compose(this::invokePreProcessBeforeCountStaffs)
+                .apply(query);
     }
 
     private Staff requiredStaff(StaffId staffId) {
@@ -205,6 +212,27 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         return Processors.stream(this.processors)
                 .map(StaffProcessor::preProcessAfterAddStaff)
                 .apply(staff);
+    }
+
+    @Override
+    public Staff invokePostProcessAfterGetStaff(Staff staff) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::postProcessAfterGetStaff)
+                .apply(staff);
+    }
+
+    @Override
+    public StaffQuery invokePreProcessBeforeGetStaffs(StaffQuery query) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeGetStaffs)
+                .apply(query);
+    }
+
+    @Override
+    public StaffQuery invokePreProcessBeforeCountStaffs(StaffQuery query) {
+        return Processors.stream(this.processors)
+                .map(StaffProcessor::preProcessBeforeCountStaffs)
+                .apply(query);
     }
 
     @Override
