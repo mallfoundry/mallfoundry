@@ -35,6 +35,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -89,6 +90,7 @@ public class JpaStaff extends StaffSupport {
             joinColumns = {@JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
                     @JoinColumn(name = "store_id_", referencedColumnName = "store_id_")},
             inverseJoinColumns = {@JoinColumn(name = "role_id_", referencedColumnName = "id_")})
+    @OrderBy("createdTime")
     private List<Role> roles = new ArrayList<>();
 
     @NotNull

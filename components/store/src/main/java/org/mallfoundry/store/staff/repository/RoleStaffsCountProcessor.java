@@ -16,13 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff;
+package org.mallfoundry.store.staff.repository;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleService;
+import org.mallfoundry.store.staff.Staff;
+import org.mallfoundry.store.staff.StaffProcessor;
 import org.springframework.core.NamedThreadLocal;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +40,12 @@ public class RoleStaffsCountProcessor implements StaffProcessor {
     }
 
     @Override
+    public Staff preProcessAfterAddStaff(Staff staff) {
+        this.addStaffToRoles(staff, staff.getRoles());
+        return staff;
+    }
+
+    @Override
     public Staff preProcessBeforeUpdateStaff(Staff staff) {
         localRoles.set(Collections.unmodifiableList(staff.getRoles()));
         return staff;
@@ -45,20 +54,34 @@ public class RoleStaffsCountProcessor implements StaffProcessor {
     @Override
     public Staff preProcessAfterUpdateStaff(Staff staff) {
         var removedRoles = CollectionUtils.subtract(localRoles.get(), staff.getRoles());
-        var addRoles = CollectionUtils.subtract(staff.getRoles(), localRoles.get());
-        for (var role : removedRoles) {
-            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
-            this.roleService.removeRoleStaff(roleId, staff);
-        }
-        for (var role : addRoles) {
-            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
-            this.roleService.addRoleStaff(roleId, staff);
-        }
+        var newRoles = CollectionUtils.subtract(staff.getRoles(), localRoles.get());
+        this.addStaffToRoles(staff, newRoles);
+        this.removeStaffFromRoles(staff, removedRoles);
         return staff;
     }
 
     @Override
     public void preProcessAfterCompletion() {
         this.localRoles.remove();
+    }
+
+    @Override
+    public Staff preProcessAfterDeleteStaff(Staff staff) {
+        this.removeStaffFromRoles(staff, staff.getRoles());
+        return staff;
+    }
+
+    private void addStaffToRoles(Staff staff, Collection<Role> roles) {
+        for (var role : roles) {
+            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
+            this.roleService.addRoleStaff(roleId, staff);
+        }
+    }
+
+    private void removeStaffFromRoles(Staff staff, Collection<Role> roles) {
+        for (var role : roles) {
+            var roleId = this.roleService.createRoleId(role.getStoreId(), role.getId());
+            this.roleService.removeRoleStaff(roleId, staff);
+        }
     }
 }

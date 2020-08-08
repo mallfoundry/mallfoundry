@@ -25,13 +25,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
-@Repository
 public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>, JpaSpecificationExecutor<JpaStaff> {
 
     default Specification<JpaStaff> createSpecification(StaffQuery staffQuery) {
