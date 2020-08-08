@@ -18,41 +18,15 @@
 
 package org.mallfoundry.store.member;
 
-import org.mallfoundry.identity.Gender;
-import org.mallfoundry.ownership.StoreOwnership;
+import java.util.Optional;
 
-import java.util.Date;
-import java.util.List;
+public interface MemberRepository {
 
-public interface Member extends StoreOwnership {
+    Member create(String id);
 
-    String getId();
+    Optional<Member> findById(String id);
 
-    String getCountryCode();
+    Member save(Member member);
 
-    void setCountryCode(String countryCode);
-
-    String getPhone();
-
-    void setPhone(String phone);
-
-    String getNickname();
-
-    void setNickname(String nickname);
-
-    Gender getGender();
-
-    void setGender(Gender gender);
-
-    Date getBirthdate();
-
-    void setBirthdate(Date birthdate);
-
-    List<String> getTags();
-
-    void setTags(List<String> tags);
-
-    String getNotes();
-
-    void setNotes(String notes);
+    void delete(Member member);
 }

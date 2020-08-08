@@ -16,21 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.member;
+package org.mallfoundry.rest.store.member;
+
+import org.mallfoundry.store.member.Member;
+import org.mallfoundry.store.member.MemberService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-public interface MemberService {
+@RestController
+@RequestMapping("/v1")
+public class MemberResourceV1 {
 
-    MemberQuery createMemberQuery();
+    private final MemberService memberService;
 
-    Member createMember(String id);
+    public MemberResourceV1(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
-    Member addMember(Member member);
-
-    Member updateMember(Member member);
-
-    Optional<Member> getMember(String id);
-
-    void deleteMember(String id);
+    @GetMapping("/members/{member_id}")
+    public Optional<Member> getMember(@PathVariable("member_id") String memberId) {
+        return this.memberService.getMember(memberId);
+    }
 }

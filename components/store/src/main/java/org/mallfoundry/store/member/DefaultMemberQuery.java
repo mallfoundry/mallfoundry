@@ -18,41 +18,12 @@
 
 package org.mallfoundry.store.member;
 
-import org.mallfoundry.identity.Gender;
-import org.mallfoundry.ownership.StoreOwnership;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.data.QuerySupport;
 
-import java.util.Date;
-import java.util.List;
-
-public interface Member extends StoreOwnership {
-
-    String getId();
-
-    String getCountryCode();
-
-    void setCountryCode(String countryCode);
-
-    String getPhone();
-
-    void setPhone(String phone);
-
-    String getNickname();
-
-    void setNickname(String nickname);
-
-    Gender getGender();
-
-    void setGender(Gender gender);
-
-    Date getBirthdate();
-
-    void setBirthdate(Date birthdate);
-
-    List<String> getTags();
-
-    void setTags(List<String> tags);
-
-    String getNotes();
-
-    void setNotes(String notes);
+@Getter
+@Setter
+public class DefaultMemberQuery extends QuerySupport implements MemberQuery {
+    private String storeId;
 }

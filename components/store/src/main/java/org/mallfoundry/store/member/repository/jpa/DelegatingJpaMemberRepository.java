@@ -16,21 +16,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.member;
+package org.mallfoundry.store.member.repository.jpa;
+
+import org.mallfoundry.store.member.Member;
+import org.mallfoundry.store.member.MemberRepository;
 
 import java.util.Optional;
 
-public interface MemberService {
+public class DelegatingJpaMemberRepository implements MemberRepository {
 
-    MemberQuery createMemberQuery();
+    private final JpaMemberRepository repository;
 
-    Member createMember(String id);
+    public DelegatingJpaMemberRepository(JpaMemberRepository repository) {
+        this.repository = repository;
+    }
 
-    Member addMember(Member member);
+    @Override
+    public Member create(String id) {
+        return new JpaMember(id);
+    }
 
-    Member updateMember(Member member);
+    @Override
+    public Optional<Member> findById(String id) {
+        return Optional.empty();
+    }
 
-    Optional<Member> getMember(String id);
+    @Override
+    public Member save(Member member) {
+        return this.repository.save(JpaMember.of(member));
+    }
 
-    void deleteMember(String id);
+    @Override
+    public void delete(Member member) {
+        this.repository.delete(JpaMember.of(member));
+    }
 }

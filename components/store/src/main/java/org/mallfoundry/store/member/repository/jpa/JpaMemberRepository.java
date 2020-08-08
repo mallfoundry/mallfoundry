@@ -16,43 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.member;
+package org.mallfoundry.store.member.repository.jpa;
 
-import org.mallfoundry.identity.Gender;
-import org.mallfoundry.ownership.StoreOwnership;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Date;
-import java.util.List;
-
-public interface Member extends StoreOwnership {
-
-    String getId();
-
-    String getCountryCode();
-
-    void setCountryCode(String countryCode);
-
-    String getPhone();
-
-    void setPhone(String phone);
-
-    String getNickname();
-
-    void setNickname(String nickname);
-
-    Gender getGender();
-
-    void setGender(Gender gender);
-
-    Date getBirthdate();
-
-    void setBirthdate(Date birthdate);
-
-    List<String> getTags();
-
-    void setTags(List<String> tags);
-
-    String getNotes();
-
-    void setNotes(String notes);
+public interface JpaMemberRepository extends JpaRepository<JpaMember, String> {
 }
