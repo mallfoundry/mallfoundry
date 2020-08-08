@@ -38,7 +38,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_report")
+@Table(name = "mf_analytics_report")
 public class JpaReport extends ReportSupport {
 
     @Id
