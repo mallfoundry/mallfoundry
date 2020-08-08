@@ -18,19 +18,9 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.validation.BindRuntimeException;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.ValidationUtils;
+import org.mallfoundry.validation.ValidationHolder;
 
-public class SmartStaffValidateProcessor implements StaffProcessor {
-
-    private final SmartValidator validator;
-
-    public SmartStaffValidateProcessor(SmartValidator validator) {
-        this.validator = validator;
-    }
+public class StaffValidateProcessor implements StaffProcessor {
 
     @Override
     public Staff preProcessAfterAddStaff(Staff staff) {
@@ -44,15 +34,7 @@ public class SmartStaffValidateProcessor implements StaffProcessor {
         return staff;
     }
 
-    private BindingResult createError(Staff staff) {
-        return new BeanPropertyBindingResult(staff, "staff");
-    }
-
     private void validate(Staff staff) {
-        var error = this.createError(staff);
-        ValidationUtils.invokeValidator(this.validator, staff, error);
-        if (error.hasErrors()) {
-            throw new BindRuntimeException(error);
-        }
+        ValidationHolder.validate(staff, "staff");
     }
 }
