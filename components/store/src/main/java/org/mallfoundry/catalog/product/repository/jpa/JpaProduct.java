@@ -43,8 +43,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -77,11 +75,9 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "store_id_")
     private String storeId;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "type_")
     private ProductType type;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status_")
     private ProductStatus status;
 
