@@ -35,6 +35,7 @@
         <module>analytics-api</module>
         <module>commons-api</module>
         <module>catalog-api</module>
+        <module>content-api</module>
         <module>customer-api</module>
         <module>storage-api</module>
         <module>store-api</module>
@@ -45,6 +46,7 @@
         <module>district-api</module>
         <module>dom-api</module>
         <module>marketing-api</module>
+        <module>trade-api</module>
 
         <module>analytics</module>
         <module>analytics-stream</module>
@@ -62,7 +64,6 @@
         <module>shipping</module>
         <module>payment</module>
         <module>marketing</module>
-        <module>spring-boot</module>
 
         <!-- test modules -->
         <module>test</module>
@@ -79,7 +80,9 @@
         <module>marketing-rest</module>
         <module>app-rest</module>
         <module>analytics-rest</module>
-        <module>trade-api</module>
+
+        <!-- BOOT modules -->
+        <module>spring-boot</module>
     </modules>
 
 </project>
