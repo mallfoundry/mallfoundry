@@ -21,6 +21,7 @@ package org.mallfoundry.rest.store.security;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,15 +50,6 @@ public class RoleResourceV1 {
         return this.roleService.addRole(request.assignTo(store));
     }
 
-    @PatchMapping("/stores/{store_id}/roles/{role_id}")
-    public Role updateRole(@PathVariable("store_id") String storeId,
-                           @PathVariable("role_id") String roleId,
-                           @RequestBody RoleRequest request) {
-        var aRoleId = this.roleService.createRoleId(storeId, roleId);
-        var store = this.roleService.createRole(aRoleId);
-        return this.roleService.updateRole(request.assignTo(store));
-    }
-
     @GetMapping("/stores/{store_id}/roles/{role_id}")
     public Optional<Role> getRoles(@PathVariable("store_id") String storeId,
                                    @PathVariable("role_id") String roleId) {
@@ -71,5 +63,21 @@ public class RoleResourceV1 {
         return this.roleService.getRoles(
                 this.roleService.createRoleQuery().toBuilder()
                         .page(page).limit(limit).storeId(storeId).build());
+    }
+
+    @PatchMapping("/stores/{store_id}/roles/{role_id}")
+    public Role updateRole(@PathVariable("store_id") String storeId,
+                           @PathVariable("role_id") String roleId,
+                           @RequestBody RoleRequest request) {
+        var aRoleId = this.roleService.createRoleId(storeId, roleId);
+        var store = this.roleService.createRole(aRoleId);
+        return this.roleService.updateRole(request.assignTo(store));
+    }
+
+    @DeleteMapping("/stores/{store_id}/roles/{role_id}")
+    public void deleteRole(@PathVariable("store_id") String storeId,
+                           @PathVariable("role_id") String roleId) {
+        var aRoleId = this.roleService.createRoleId(storeId, roleId);
+        this.roleService.deleteRole(aRoleId);
     }
 }
