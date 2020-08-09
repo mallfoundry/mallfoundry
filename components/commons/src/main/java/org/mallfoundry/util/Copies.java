@@ -20,29 +20,47 @@ package org.mallfoundry.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class Copies {
 
-    public static StringSetter notBlank(Supplier<String> supplier) {
-        var value = supplier.get();
-        return new StringSetter(value, StringUtils.isNotBlank(value));
+    public static CopyObject notBlank(Supplier<String> supplier) {
+        return new CopyObject().notBlank(supplier);
     }
 
-    public static class StringSetter {
-        private final String value;
-        private final boolean match;
+    public static class CopyObject {
+        private Object value;
+        private boolean match;
 
-        public StringSetter(String value, boolean match) {
+        public CopyObject notBlank(Supplier<String> supplier) {
+            var value = supplier.get();
+            this.match = StringUtils.isNotBlank(value);
             this.value = value;
-            this.match = match;
+            return this;
         }
 
-        public void trim(Consumer<String> consumer) {
+        public CopyObject notNull(Supplier<Object> supplier) {
+            var value = supplier.get();
+            this.match = Objects.nonNull(value);
+            this.value = value;
+            return this;
+        }
+
+        public CopyObject trim(Consumer<String> consumer) {
             if (this.match) {
-                consumer.accept(StringUtils.trim(this.value));
+                consumer.accept(StringUtils.trim((String) this.value));
             }
+            return this;
+        }
+
+        public CopyObject set(Consumer<Date> consumer) {
+            if (this.match) {
+                consumer.accept((Date) this.value);
+            }
+            return this;
         }
     }
 }
