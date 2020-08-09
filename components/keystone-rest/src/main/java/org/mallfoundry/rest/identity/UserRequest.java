@@ -22,7 +22,7 @@ import org.mallfoundry.identity.User;
 
 public class UserRequest {
 
-    public User assignToUser(User user) {
+    public User assignTo(User user) {
         return user;
     }
 }

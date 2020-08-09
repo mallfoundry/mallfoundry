@@ -57,11 +57,6 @@ public class NullFollowingStore implements ImmutableFollowingStore {
     }
 
     @Override
-    public String getDomain() {
-        return null;
-    }
-
-    @Override
     public String getLogo() {
         return null;
     }

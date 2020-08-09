@@ -38,7 +38,7 @@ public class UserResponse {
 
     private String countryCode;
 
-    private String mobile;
+    private String phone;
 
     private String avatar;
 
@@ -52,7 +52,7 @@ public class UserResponse {
         this.nickname = user.getNickname();
         this.avatar = user.getAvatar();
         this.countryCode = user.getCountryCode();
-        this.mobile = user.getPhone();
+        this.phone = user.getPhone();
         this.email = user.getEmail();
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities())
                 ? Collections.emptyList()

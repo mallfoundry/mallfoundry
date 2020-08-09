@@ -29,6 +29,8 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -47,14 +49,13 @@ public class JpaStore extends StoreSupport {
     @Column(name = "name_")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "edition_")
     private StoreEdition edition;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private StoreStatus status;
-
-    @Column(name = "domain_")
-    private String domain;
 
     @Column(name = "logo_")
     private String logo;

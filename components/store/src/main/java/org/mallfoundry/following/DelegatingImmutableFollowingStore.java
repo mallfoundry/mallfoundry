@@ -61,11 +61,6 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     }
 
     @Override
-    public String getDomain() {
-        return this.store.getDomain();
-    }
-
-    @Override
     public String getLogo() {
         return this.store.getLogo();
     }

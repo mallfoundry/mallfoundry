@@ -19,7 +19,6 @@
 package org.mallfoundry.rest.identity;
 
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.security.SubjectHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +56,6 @@ public class UserResourceV1 {
 
     @PatchMapping("/users/{id}")
     public void updateUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
-        this.userService.updateUser(request.assignToUser(this.userService.createUser(id)));
+        this.userService.updateUser(request.assignTo(this.userService.createUser(id)));
     }
 }

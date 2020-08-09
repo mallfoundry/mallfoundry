@@ -37,10 +37,6 @@ public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder>
 
     StoreStatus getStatus();
 
-    String getDomain();
-
-    void setDomain(String domain);
-
     String getLogo();
 
     void setLogo(String logo);

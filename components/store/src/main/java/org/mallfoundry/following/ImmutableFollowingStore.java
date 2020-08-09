@@ -31,11 +31,6 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void setDomain(String domain) {
-
-    }
-
-    @Override
     default void setLogo(String logo) {
 
     }
