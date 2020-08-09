@@ -110,7 +110,6 @@ public class JpaMember extends MemberSupport {
         if (member instanceof JpaMember) {
             return (JpaMember) member;
         }
-
         var target = new JpaMember();
         BeanUtils.copyProperties(member, target);
         return target;
