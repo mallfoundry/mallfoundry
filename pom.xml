@@ -313,6 +313,12 @@
                 <version>${mall.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-shared-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <!-- common vendors -->
             <dependency>
                 <groupId>commons-codec</groupId>

@@ -16,15 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district;
+package org.mallfoundry.district.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.district.City;
+import org.mallfoundry.district.CitySupport;
+import org.mallfoundry.district.County;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -36,29 +40,46 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_district_province")
-public class InternalProvince extends DistrictSupport implements Province {
+@Table(name = "mf_district_city")
+public class JpaCity extends CitySupport implements City {
 
-    @Column(name = "country_id_")
-    private String countryId;
+    @Id
+    @Column(name = "id_")
+    private String id;
 
-    @OneToMany(targetEntity = InternalCity.class)
-    @JoinColumn(name = "province_id_")
+    @Column(name = "code_")
+    private String code;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "position_")
+    private int position;
+
+    @Column(name = "province_id_")
+    private String provinceId;
+
+    @OneToMany(targetEntity = JpaCounty.class)
+    @JoinColumn(name = "city_id_")
     @OrderBy("position")
-    private List<City> cities = new ArrayList<>();
+    private List<County> counties = new ArrayList<>();
 
-    public InternalProvince(String code, String name, String countryId) {
-        this.setCode(code);
-        this.setName(name);
-        this.countryId = countryId;
+    public JpaCity(String id) {
+        this.setId(id);
     }
 
-    public static InternalProvince of(Province province) {
-        if (province instanceof InternalProvince) {
-            return (InternalProvince) province;
+    public JpaCity(String code, String name, String provinceId) {
+        this.setCode(code);
+        this.setName(name);
+        this.provinceId = provinceId;
+    }
+
+    public static JpaCity of(City city) {
+        if (city instanceof JpaCity) {
+            return (JpaCity) city;
         }
-        var target = new InternalProvince();
-        BeanUtils.copyProperties(province, target);
+        var target = new JpaCity();
+        BeanUtils.copyProperties(city, target);
         return target;
     }
 }

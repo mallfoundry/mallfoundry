@@ -1,5 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.mallfoundry.autoconfigure.captcha.CaptchaAutoConfiguration,\
-  org.mallfoundry.autoconfigure.sms.SmsAutoConfiguration
+  org.mallfoundry.autoconfigure.sms.SmsAutoConfiguration,\
+  org.mallfoundry.autoconfigure.district.DistrictAutoConfiguration
 

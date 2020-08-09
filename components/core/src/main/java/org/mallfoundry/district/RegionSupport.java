@@ -20,11 +20,33 @@ package org.mallfoundry.district;
 
 import java.util.List;
 
-public interface ProvinceRepository {
+public abstract class RegionSupport implements Region {
 
-    Province create(String id);
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
 
-    Province save(Province province);
+    protected abstract static class BuilderSupport extends DistrictSupport.BuilderSupport<Region, Builder> implements Builder {
 
-    List<Province> findAllByCountryId(String countryId);
+        private final RegionSupport region;
+
+        protected BuilderSupport(RegionSupport region) {
+            super(region);
+            this.region = region;
+        }
+
+        @Override
+        public Builder countryId(String countryId) {
+            this.region.setCountryId(countryId);
+            return this;
+        }
+
+        @Override
+        public Builder provinces(List<Province> provinces) {
+            this.region.setProvinces(provinces);
+            return this;
+        }
+    }
 }

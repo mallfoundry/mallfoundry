@@ -19,15 +19,12 @@
 package org.mallfoundry.district;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class InternalDistrictService implements DistrictService {
+public class DefaultDistrictService implements DistrictService {
 
     private static final String DISTRICT_ID_VALUE_NAME = "district.id";
 
@@ -39,6 +36,8 @@ public class InternalDistrictService implements DistrictService {
 
     private static final String COUNTY_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
 
+    private final CountryRepository countryRepository;
+
     private final RegionRepository regionRepository;
 
     private final ProvinceRepository provinceRepository;
@@ -47,10 +46,12 @@ public class InternalDistrictService implements DistrictService {
 
     private final CountyRepository countyRepository;
 
-    public InternalDistrictService(RegionRepository regionRepository,
-                                   ProvinceRepository provinceRepository,
-                                   CityRepository cityRepository,
-                                   CountyRepository countyRepository) {
+    public DefaultDistrictService(CountryRepository countryRepository,
+                                  RegionRepository regionRepository,
+                                  ProvinceRepository provinceRepository,
+                                  CityRepository cityRepository,
+                                  CountyRepository countyRepository) {
+        this.countryRepository = countryRepository;
         this.regionRepository = regionRepository;
         this.provinceRepository = provinceRepository;
         this.cityRepository = cityRepository;
@@ -59,80 +60,86 @@ public class InternalDistrictService implements DistrictService {
 
     @Override
     public DistrictQuery createQuery() {
-        return new InternalDistrictQuery();
+        return new DefaultDistrictQuery();
     }
 
     @Override
-    public Region createRegion(String code, String name, String countryId) {
-        return new InternalRegion(code, name, countryId);
+    public Country createCountry(String id) {
+        return this.countryRepository.create(id);
     }
 
     @Override
-    public Province createProvince(String code, String name, String countryId) {
-        return new InternalProvince(code, name, countryId);
+    public Region createRegion(String id) {
+        return this.regionRepository.create(id);
     }
 
     @Override
-    public City createCity(String code, String name, String provinceId) {
-        return new InternalCity(code, name, provinceId);
+    public Province createProvince(String id) {
+        return this.provinceRepository.create(id);
     }
 
     @Override
-    public County createCounty(String code, String name, String cityId) {
-        return new InternalCounty(code, name, cityId);
+    public City createCity(String id) {
+        return this.cityRepository.create(id);
     }
 
     @Override
-    public Region addRegion(Region aRegion) {
-        var region = InternalRegion.of(aRegion);
+    public County createCounty(String id) {
+        return this.countyRepository.create(id);
+    }
+
+    @Override
+    public Region addRegion(Region region) {
         region.setId(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME));
         return this.regionRepository.save(region);
     }
 
     @Transactional
     @Override
-    public Province addProvince(Province aProvince) {
-        var province = InternalProvince.of(aProvince);
+    public Province addProvince(Province province) {
         province.setId(PrimaryKeyHolder.next(PROVINCE_ID_VALUE_NAME));
         return this.provinceRepository.save(province);
     }
 
     @Override
-    public City addCity(City aCity) {
-        var city = InternalCity.of(aCity);
+    public City addCity(City city) {
         city.setId(PrimaryKeyHolder.next(CITY_ID_VALUE_NAME));
         return this.cityRepository.save(city);
     }
 
     @Override
-    public County addCounty(County aCounty) {
-        var county = InternalCounty.of(aCounty);
+    public County addCounty(County county) {
         county.setId(PrimaryKeyHolder.next(COUNTY_ID_VALUE_NAME));
         return this.countyRepository.save(county);
     }
 
     @Override
+    public List<Country> getCountries(DistrictQuery query) {
+        return this.countryRepository.findAll();
+    }
+
+    @Override
     public List<Region> getRegions(DistrictQuery query) {
-        return CastUtils.cast(this.regionRepository.findAllByCountryId(query.getCountryId()));
+        return this.regionRepository.findAllByCountryId(query.getCountryId());
     }
 
     @Override
     public List<Province> getProvinces(DistrictQuery query) {
-        return CastUtils.cast(this.provinceRepository.findAllByCountryId(query.getCountryId()));
+        return this.provinceRepository.findAllByCountryId(query.getCountryId());
     }
 
     @Override
     public List<City> getCities(DistrictQuery query) {
-        return CastUtils.cast(this.cityRepository.findAllByProvinceId(query.getProvinceId()));
+        return this.cityRepository.findAllByProvinceId(query.getProvinceId());
     }
 
     @Override
     public List<County> getCounties(DistrictQuery query) {
-        return CastUtils.cast(this.countyRepository.findAll(query));
+        return this.countyRepository.findAll(query);
     }
 
     @Override
     public Optional<County> getCounty(String id) {
-        return CastUtils.cast(this.countyRepository.findById(id));
+        return this.countyRepository.findById(id);
     }
 }

@@ -16,15 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district;
+package org.mallfoundry.district.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.district.Country;
+import org.mallfoundry.district.CountrySupport;
+import org.mallfoundry.district.Province;
+import org.mallfoundry.district.Region;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -36,29 +41,47 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_district_region")
-public class InternalRegion extends DistrictSupport implements Region {
+@Table(name = "mf_district_country")
+public class JpaCountry extends CountrySupport {
 
-    @Column(name = "country_id_")
-    private String countryId;
+    @Id
+    @Column(name = "id_")
+    private String id;
 
-    @OneToMany(targetEntity = InternalProvince.class)
-    @JoinColumn(name = "region_id_")
+    @Column(name = "code_")
+    private String code;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "position_")
+    private int position;
+
+    @OneToMany(targetEntity = JpaProvince.class)
+    @JoinColumn(name = "country_id_")
     @OrderBy("position")
     private List<Province> provinces = new ArrayList<>();
 
-    public InternalRegion(String code, String name, String countryId) {
-        this.setCode(code);
-        this.setName(name);
-        this.countryId = countryId;
+    public JpaCountry(String id) {
+        this.setId(id);
     }
 
-    public static InternalRegion of(Region region) {
-        if (region instanceof InternalRegion) {
-            return (InternalRegion) region;
+    public static JpaCountry of(Country country) {
+        if (country instanceof JpaCountry) {
+            return (JpaCountry) country;
         }
-        var target = new InternalRegion();
-        BeanUtils.copyProperties(region, target);
+        var target = new JpaCountry();
+        BeanUtils.copyProperties(country, target);
         return target;
+    }
+
+    @Override
+    public Region createRegion(String regionId) {
+        return new JpaRegion(regionId, this.id);
+    }
+
+    @Override
+    public Province createProvince(String provinceId) {
+        return new JpaProvince(provinceId, this.id);
     }
 }

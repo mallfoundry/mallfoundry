@@ -80,6 +80,7 @@
         <module>marketing-rest</module>
         <module>app-rest</module>
         <module>analytics-rest</module>
+        <module>shared-rest</module>
 
         <!-- BOOT modules -->
         <module>spring-boot</module>

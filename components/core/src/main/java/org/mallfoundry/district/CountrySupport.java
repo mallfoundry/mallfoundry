@@ -18,20 +18,29 @@
 
 package org.mallfoundry.district;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
-@Getter
-@Setter
-public class InternalDistrictQuery implements DistrictQuery {
+public abstract class CountrySupport implements Country {
 
-    private String countryId;
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
 
-    private String provinceId;
+    protected abstract static class BuilderSupport extends DistrictSupport.BuilderSupport<Country, Builder> implements Builder {
 
-    private String cityId;
+        private final CountrySupport country;
 
-    private String code;
+        protected BuilderSupport(CountrySupport country) {
+            super(country);
+            this.country = country;
+        }
 
-    private byte scope;
+        @Override
+        public Builder provinces(List<Province> provinces) {
+            this.country.setProvinces(provinces);
+            return this;
+        }
+    }
 }

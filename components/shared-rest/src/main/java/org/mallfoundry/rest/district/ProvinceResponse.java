@@ -16,51 +16,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district.rest;
+package org.mallfoundry.rest.district;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.mallfoundry.district.City;
 import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.district.Province;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CityResponse {
+@Getter
+@Setter
+public class ProvinceResponse {
+    private String id;
+    private String code;
+    private String name;
+    private String countryId;
+    private int position;
+    private List<CityResponse> cities;
 
-    @JsonIgnore
-    private final City city;
-
-    @Getter
-    private List<CountyResponse> counties;
-
-    public CityResponse(City city, int scope) {
-        this.city = city;
+    public ProvinceResponse(Province province, int scope) {
+        this.id = province.getId();
+        this.code = province.getCode();
+        this.name = province.getName();
+        this.countryId = province.getCountryId();
+        this.position = province.getPosition();
         if (scope > 0) {
-            this.counties = city
-                    .getCounties()
+            this.cities = province
+                    .getCities()
                     .stream()
-                    .map(CountyResponse::new)
+                    .map(city -> new CityResponse(city, scope - 1))
                     .collect(Collectors.toList());
         }
-    }
-
-    public String getProvinceId() {
-        return this.city.getProvinceId();
-    }
-
-    public String getId() {
-        return this.city.getId();
-    }
-
-    public String getCode() {
-        return this.city.getCode();
-    }
-
-    public String getName() {
-        return this.city.getName();
-    }
-
-    public long getPosition() {
-        return this.city.getPosition();
     }
 }

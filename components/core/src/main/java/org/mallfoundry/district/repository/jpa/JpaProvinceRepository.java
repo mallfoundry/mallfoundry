@@ -18,19 +18,12 @@
 
 package org.mallfoundry.district.repository.jpa;
 
-import org.mallfoundry.district.InternalProvince;
-import org.mallfoundry.district.ProvinceRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface JpaProvinceRepository
-        extends ProvinceRepository, JpaRepository<InternalProvince, String> {
-
-    @Query("from InternalProvince where countryId = ?1 order by position")
-    @Override
-    List<InternalProvince> findAllByCountryId(String countryId);
+public interface JpaProvinceRepository extends JpaRepository<JpaProvince, String> {
+    @Query("from JpaProvince where countryId = ?1 order by position")
+    List<JpaProvince> findAllByCountryId(String countryId);
 }

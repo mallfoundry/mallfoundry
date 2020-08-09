@@ -16,39 +16,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district;
+package org.mallfoundry.rest.district;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
+import org.mallfoundry.district.Region;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "mf_district_county")
-public class InternalCounty extends DistrictSupport implements County {
+public class RegionResponse {
+    private String id;
+    private String code;
+    private String name;
+    private String countryId;
+    private int position;
+    private List<ProvinceResponse> provinces;
 
-    @Column(name = "city_id_")
-    private String cityId;
-
-    public InternalCounty(String code, String name, String cityId) {
-        this.setCode(code);
-        this.setName(name);
-        this.cityId = cityId;
-    }
-
-    public static InternalCounty of(County county) {
-        if (county instanceof InternalCounty) {
-            return (InternalCounty) county;
+    public RegionResponse(Region region, int scope) {
+        this.id = region.getId();
+        this.code = region.getCode();
+        this.name = region.getName();
+        this.countryId = region.getCountryId();
+        this.position = region.getPosition();
+        if (scope > 0) {
+            this.provinces = region
+                    .getProvinces()
+                    .stream()
+                    .map(province -> new ProvinceResponse(province, scope - 1))
+                    .collect(Collectors.toList());
         }
-        var target = new InternalCounty();
-        BeanUtils.copyProperties(county, target);
-        return target;
     }
 }

@@ -18,9 +18,11 @@
 
 package org.mallfoundry.district;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.util.List;
 
-public interface Region extends District {
+public interface Region extends District, ObjectBuilder.ToBuilder<Region.Builder> {
 
     List<Province> getProvinces();
 
@@ -29,4 +31,11 @@ public interface Region extends District {
     String getCountryId();
 
     void setCountryId(String countryId);
+
+    interface Builder extends District.BuilderBase<Region, Builder> {
+
+        Builder countryId(String countryId);
+
+        Builder provinces(List<Province> provinces);
+    }
 }

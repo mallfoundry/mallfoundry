@@ -18,13 +18,15 @@
 
 package org.mallfoundry.district;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface ProvinceRepository {
-
-    Province create(String id);
-
-    Province save(Province province);
-
-    List<Province> findAllByCountryId(String countryId);
+@Getter
+@Setter
+public class DefaultDistrictQuery implements DistrictQuery {
+    private String countryId;
+    private String provinceId;
+    private String cityId;
+    private String code;
+    private byte scope;
 }

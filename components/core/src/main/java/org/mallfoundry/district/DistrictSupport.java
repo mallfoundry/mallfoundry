@@ -18,30 +18,39 @@
 
 package org.mallfoundry.district;
 
-
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
-@Getter
-@Setter
-@MappedSuperclass
 public abstract class DistrictSupport implements District {
 
-    @Id
-    @Column(name = "id_")
-    private String id;
+    protected abstract static class BuilderSupport<D extends District, B> implements District.BuilderBase<D, B> {
 
-    @Column(name = "code_")
-    private String code;
+        private final District district;
 
-    @Column(name = "name_")
-    private String name;
+        protected BuilderSupport(District district) {
+            this.district = district;
+        }
 
-    @Column(name = "position_")
-    private int position;
+        @SuppressWarnings("unchecked")
+        @Override
+        public B id(String id) {
+            return (B) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public B code(String code) {
+            return (B) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public B name(String name) {
+            return (B) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public D build() {
+            return (D) this.district;
+        }
+    }
 
 }

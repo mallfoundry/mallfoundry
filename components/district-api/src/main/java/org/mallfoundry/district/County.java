@@ -18,9 +18,15 @@
 
 package org.mallfoundry.district;
 
-public interface County extends District {
+import org.mallfoundry.util.ObjectBuilder;
+
+public interface County extends District, ObjectBuilder.ToBuilder<County.Builder> {
 
     String getCityId();
 
     void setCityId(String cityId);
+
+    interface Builder extends District.BuilderBase<County, Builder> {
+        Builder cityId(String cityId);
+    }
 }

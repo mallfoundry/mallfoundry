@@ -20,11 +20,8 @@ package org.mallfoundry.district;
 
 import java.util.List;
 
-public interface ProvinceRepository {
+public interface CountryRepository {
+    Country create(String id);
 
-    Province create(String id);
-
-    Province save(Province province);
-
-    List<Province> findAllByCountryId(String countryId);
+    List<Country> findAll();
 }

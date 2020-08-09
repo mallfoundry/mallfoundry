@@ -23,9 +23,11 @@ import java.util.Optional;
 
 public interface CountyRepository {
 
-    InternalCounty save(InternalCounty county);
+    County create(String id);
 
-    List<InternalCounty> findAll(DistrictQuery query);
+    County save(County county);
 
-    Optional<InternalCounty> findById(String id);
+    List<County> findAll(DistrictQuery query);
+
+    Optional<County> findById(String id);
 }

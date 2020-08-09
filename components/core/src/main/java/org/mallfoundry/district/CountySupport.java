@@ -18,13 +18,27 @@
 
 package org.mallfoundry.district;
 
-import java.util.List;
+public abstract class CountySupport implements County {
 
-public interface ProvinceRepository {
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
 
-    Province create(String id);
+    protected abstract static class BuilderSupport extends DistrictSupport.BuilderSupport<County, Builder> implements Builder {
 
-    Province save(Province province);
+        private final CountySupport county;
 
-    List<Province> findAllByCountryId(String countryId);
+        protected BuilderSupport(CountySupport county) {
+            super(county);
+            this.county = county;
+        }
+
+        @Override
+        public Builder cityId(String cityId) {
+            this.county.setCityId(cityId);
+            return this;
+        }
+    }
 }

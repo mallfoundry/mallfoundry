@@ -25,13 +25,15 @@ public interface DistrictService {
 
     DistrictQuery createQuery();
 
-    Region createRegion(String code, String name, String countryId);
+    Country createCountry(String id);
 
-    Province createProvince(String code, String name, String countryId);
+    Region createRegion(String id);
 
-    City createCity(String code, String name, String provinceId);
+    Province createProvince(String id);
 
-    County createCounty(String code, String name, String cityId);
+    City createCity(String id);
+
+    County createCounty(String id);
 
     Region addRegion(Region region);
 
@@ -40,6 +42,8 @@ public interface DistrictService {
     City addCity(City city);
 
     County addCounty(County county);
+
+    List<Country> getCountries(DistrictQuery query);
 
     List<Region> getRegions(DistrictQuery query);
 

@@ -84,19 +84,27 @@ public class DistrictTests {
     }
 
     private Region saveRegion(String code, String name) {
-        return this.districtService.addRegion(this.districtService.createRegion(code, name, "1"));
+        return this.districtService.addRegion(
+                this.districtService.createRegion(null)
+                        .toBuilder().countryId("1").code(code).name(name).build());
     }
 
     private Province saveProvince(String code, String name) {
-        return this.districtService.addProvince(this.districtService.createProvince(code, name, "1"));
+        return this.districtService.addProvince(
+                this.districtService.createProvince(null)
+                        .toBuilder().countryId("1").code(code).name(name).build());
     }
 
     private void saveCounty(String code, String name, String cityId) {
-        this.districtService.addCounty(this.districtService.createCounty(code, name, cityId));
+        this.districtService.addCounty(
+                this.districtService.createCounty(null)
+                        .toBuilder().cityId(cityId).code(code).name(name).build());
     }
 
     private City saveCity(String code, String name, String provinceId) {
-        return this.districtService.addCity(this.districtService.createCity(code, name, provinceId));
+        return this.districtService.addCity(
+                this.districtService.createCity(null)
+                        .toBuilder().provinceId(provinceId).code(code).name(name).build());
     }
 
 }

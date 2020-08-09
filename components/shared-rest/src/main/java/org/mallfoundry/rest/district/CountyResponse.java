@@ -16,15 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district;
+package org.mallfoundry.rest.district;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.district.County;
 
-public interface ProvinceRepository {
+@Getter
+@Setter
+public class CountyResponse {
+    private String id;
+    private String code;
+    private String name;
+    private int position;
+    private String cityId;
 
-    Province create(String id);
-
-    Province save(Province province);
-
-    List<Province> findAllByCountryId(String countryId);
+    public CountyResponse(County county) {
+        this.id = county.getId();
+        this.code = county.getCode();
+        this.name = county.getName();
+        this.position = county.getPosition();
+        this.cityId = county.getCityId();
+    }
 }

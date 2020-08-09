@@ -16,37 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district.rest;
+package org.mallfoundry.district.repository.jpa;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.mallfoundry.district.County;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class CountyResponse {
+public interface JpaCountryRepository extends JpaRepository<JpaCountry, String> {
 
-    @JsonIgnore
-    private final County county;
-
-    public CountyResponse(County county) {
-        this.county = county;
-    }
-
-    public String getCityId() {
-        return this.county.getCityId();
-    }
-
-    public String getId() {
-        return this.county.getId();
-    }
-
-    public String getCode() {
-        return this.county.getCode();
-    }
-
-    public String getName() {
-        return this.county.getName();
-    }
-
-    public long getPosition() {
-        return this.county.getPosition();
-    }
 }

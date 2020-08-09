@@ -18,6 +18,7 @@
 
 package org.mallfoundry.district;
 
+import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 public interface District extends Position {
@@ -33,4 +34,13 @@ public interface District extends Position {
     String getName();
 
     void setName(String name);
+
+    interface BuilderBase<D, B> extends ObjectBuilder<D> {
+
+        B id(String id);
+
+        B code(String code);
+
+        B name(String name);
+    }
 }

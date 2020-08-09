@@ -18,12 +18,14 @@
 
 package org.mallfoundry.district.repository.jpa;
 
-import org.mallfoundry.district.InternalRegion;
-import org.mallfoundry.district.RegionRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface JpaRegionRepository
-        extends RegionRepository, JpaRepository<InternalRegion, String> {
+public interface JpaRegionRepository extends JpaRepository<JpaRegion, String> {
+    @Query("from JpaRegion where countryId = ?1 order by position")
+    List<JpaRegion> findAllByCountryId(String countryId);
 }

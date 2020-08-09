@@ -22,7 +22,9 @@ import java.util.List;
 
 public interface RegionRepository {
 
-    InternalRegion save(InternalRegion region);
+    Region create(String id);
 
-    List<InternalRegion> findAllByCountryId(String countryId);
+    Region save(Region region);
+
+    List<Region> findAllByCountryId(String countryId);
 }

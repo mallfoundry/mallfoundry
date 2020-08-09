@@ -119,10 +119,11 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
     }
 
     private Member updateMember(Member source, Member dest) {
-        Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
-        Copies.notBlank(source::getPhone).trim(dest::setPhone);
-        Copies.notBlank(source::getNickname).trim(dest::setNickname);
-        Copies.notBlank(source::getNotes).trim(dest::setNotes);
+        Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode)
+                .notBlank(source::getPhone).trim(dest::setPhone)
+                .notBlank(source::getNickname).trim(dest::setNickname)
+                .notBlank(source::getNotes).trim(dest::setNotes)
+                .notNull(source::getBirthdate).set(source::setBirthdate);
         return dest;
     }
 

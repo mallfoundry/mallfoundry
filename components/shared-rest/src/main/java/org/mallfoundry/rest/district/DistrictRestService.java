@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district.rest;
+package org.mallfoundry.rest.district;
 
 import org.mallfoundry.district.DistrictQuery;
 import org.mallfoundry.district.DistrictService;
@@ -27,12 +27,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RestDistrictService {
+public class DistrictRestService {
 
     private final DistrictService districtService;
 
-    public RestDistrictService(DistrictService districtService) {
+    public DistrictRestService(DistrictService districtService) {
         this.districtService = districtService;
+    }
+
+    @Transactional
+    public List<CountryResponse> getCountries(DistrictQuery query) {
+        return this.districtService.getCountries(query)
+                .stream()
+                .map(country -> new CountryResponse(country, query.getScope()))
+                .collect(Collectors.toList());
     }
 
     @Transactional

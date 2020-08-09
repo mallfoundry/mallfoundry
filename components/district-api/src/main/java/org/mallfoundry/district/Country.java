@@ -18,5 +18,21 @@
 
 package org.mallfoundry.district;
 
-public interface Country extends District {
+import org.mallfoundry.util.ObjectBuilder;
+
+import java.util.List;
+
+public interface Country extends District, ObjectBuilder.ToBuilder<Country.Builder> {
+
+    Region createRegion(String regionId);
+
+    Province createProvince(String provinceId);
+
+    List<Province> getProvinces();
+
+    void setProvinces(List<Province> provinces);
+
+    interface Builder extends District.BuilderBase<Country, Builder> {
+        Builder provinces(List<Province> provinces);
+    }
 }

@@ -16,15 +16,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district;
+package org.mallfoundry.district.repository.jpa;
+
+import org.mallfoundry.district.Region;
+import org.mallfoundry.district.RegionRepository;
+import org.springframework.data.util.CastUtils;
 
 import java.util.List;
 
-public interface ProvinceRepository {
+public class DelegatingJpaRegionRepository implements RegionRepository {
 
-    Province create(String id);
+    private final JpaRegionRepository repository;
 
-    Province save(Province province);
+    public DelegatingJpaRegionRepository(JpaRegionRepository repository) {
+        this.repository = repository;
+    }
 
-    List<Province> findAllByCountryId(String countryId);
+    @Override
+    public Region create(String id) {
+        return new JpaRegion(id);
+    }
+
+    @Override
+    public Region save(Region region) {
+        return this.repository.save(JpaRegion.of(region));
+    }
+
+    @Override
+    public List<Region> findAllByCountryId(String provinceId) {
+        return CastUtils.cast(this.repository.findAllByCountryId(provinceId));
+    }
 }

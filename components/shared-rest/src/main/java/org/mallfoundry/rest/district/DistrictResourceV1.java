@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.district.rest;
+package org.mallfoundry.rest.district;
 
-import org.mallfoundry.district.InternalDistrictService;
+import org.mallfoundry.district.DistrictService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,41 +32,47 @@ import java.util.Optional;
 @RequestMapping("/v1/district")
 public class DistrictResourceV1 {
 
-    private final InternalDistrictService districtService;
+    private final DistrictService districtService;
 
-    private final RestDistrictService restDistrictService;
+    private final DistrictRestService districtRestService;
 
-    public DistrictResourceV1(InternalDistrictService districtService,
-                              RestDistrictService restDistrictService) {
+    public DistrictResourceV1(DistrictService districtService,
+                              DistrictRestService districtRestService) {
         this.districtService = districtService;
-        this.restDistrictService = restDistrictService;
+        this.districtRestService = districtRestService;
+    }
+
+    @GetMapping("/countries")
+    public List<CountryResponse> getCountries(@RequestParam(required = false, defaultValue = "0") byte scope) {
+        return this.districtRestService.getCountries(
+                this.districtService.createQuery().toBuilder().scope(scope).build());
     }
 
     @GetMapping("/countries/{country_id}/regions")
     public List<RegionResponse> getRegions(@PathVariable("country_id") String countryId,
                                            @RequestParam(required = false, defaultValue = "0") byte scope) {
-        return this.restDistrictService.getRegions(
+        return this.districtRestService.getRegions(
                 this.districtService.createQuery().toBuilder().countryId(countryId).scope(scope).build());
     }
 
     @GetMapping("/countries/{country_id}/provinces")
     public List<ProvinceResponse> getProvinces(@PathVariable("country_id") String countryId,
                                                @RequestParam(required = false, defaultValue = "0") byte scope) {
-        return this.restDistrictService.getProvinces(
+        return this.districtRestService.getProvinces(
                 this.districtService.createQuery().toBuilder().countryId(countryId).scope(scope).build());
     }
 
     @GetMapping("/provinces/{province_id}/cities")
     public List<CityResponse> getCities(@PathVariable("province_id") String provinceId,
                                         @RequestParam(required = false, defaultValue = "0") byte scope) {
-        return this.restDistrictService.getCities(
+        return this.districtRestService.getCities(
                 this.districtService.createQuery().toBuilder().provinceId(provinceId).scope(scope).build());
     }
 
     @GetMapping("/cities/{city_id}/counties")
     public List<CountyResponse> getCounties(@PathVariable("city_id") String cityId,
                                             @RequestParam(required = false) String code) {
-        return this.restDistrictService.getCounties(
+        return this.districtRestService.getCounties(
                 this.districtService.createQuery().toBuilder().cityId(cityId).code(code).build());
     }
 

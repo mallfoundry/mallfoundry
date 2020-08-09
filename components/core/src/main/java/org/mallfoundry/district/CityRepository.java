@@ -22,7 +22,9 @@ import java.util.List;
 
 public interface CityRepository {
 
-    InternalCity save(InternalCity city);
+    City create(String id);
 
-    List<InternalCity> findAllByProvinceId(String provinceId);
+    City save(City city);
+
+    List<City> findAllByProvinceId(String provinceId);
 }

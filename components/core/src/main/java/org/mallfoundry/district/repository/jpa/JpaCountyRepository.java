@@ -18,25 +18,20 @@
 
 package org.mallfoundry.district.repository.jpa;
 
-import org.mallfoundry.district.CountyRepository;
 import org.mallfoundry.district.DistrictQuery;
-import org.mallfoundry.district.InternalCounty;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.List;
 import java.util.Objects;
 
-@Repository
-public interface JpaCountyRepository
-        extends CountyRepository, JpaRepository<InternalCounty, String>,
-        JpaSpecificationExecutor<InternalCounty> {
+public interface JpaCountyRepository extends JpaRepository<JpaCounty, String>, JpaSpecificationExecutor<JpaCounty> {
 
-    default Specification<InternalCounty> createSpecification(DistrictQuery districtQuery) {
-        return (Specification<InternalCounty>) (root, query, criteriaBuilder) -> {
+    private Specification<JpaCounty> createSpecification(DistrictQuery districtQuery) {
+        return (Specification<JpaCounty>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (Objects.nonNull(districtQuery.getCityId())) {
@@ -50,8 +45,7 @@ public interface JpaCountyRepository
         };
     }
 
-    @Override
-    default List<InternalCounty> findAll(DistrictQuery query) {
-        return this.findAll(this.createSpecification(query));
+    default List<JpaCounty> findAll(DistrictQuery query) {
+        return this.findAll(this.createSpecification(query), Sort.by("position"));
     }
 }
