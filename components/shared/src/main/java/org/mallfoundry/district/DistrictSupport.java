@@ -31,18 +31,28 @@ public abstract class DistrictSupport implements District {
         @SuppressWarnings("unchecked")
         @Override
         public B id(String id) {
+            this.district.setId(id);
             return (B) this;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public B code(String code) {
+            this.district.setCode(code);
             return (B) this;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public B name(String name) {
+            this.district.setName(name);
+            return (B) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public B position(int position) {
+            this.district.setPosition(position);
             return (B) this;
         }
 

@@ -42,5 +42,7 @@ public interface District extends Position {
         B code(String code);
 
         B name(String name);
+
+        B position(int position);
     }
 }

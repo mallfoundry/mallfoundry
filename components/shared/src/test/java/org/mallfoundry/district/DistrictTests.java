@@ -20,20 +20,17 @@ package org.mallfoundry.district;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mallfoundry.test.StandaloneTest;
 import org.mallfoundry.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@SpringBootTest
-@ExtendWith(SpringExtension.class)
+@StandaloneTest
 public class DistrictTests {
 
     @Autowired
@@ -43,7 +40,7 @@ public class DistrictTests {
     @Transactional
     @Test
     public void testSaveRegions() throws IOException {
-        var jsonString = FileUtils.readFileToString(new File("d://region.json"), "utf-8");
+        var jsonString = FileUtils.readFileToString(new File("region.json"), "utf-8");
         List<JsonRegion> regions = JsonUtils.parse(jsonString, List.class, JsonRegion.class);
         for (var region : regions) {
             var savedRegion = saveRegion(this.getRegionCode(region.getName()), region.getName());

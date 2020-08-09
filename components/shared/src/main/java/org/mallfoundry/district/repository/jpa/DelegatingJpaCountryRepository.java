@@ -38,6 +38,11 @@ public class DelegatingJpaCountryRepository implements CountryRepository {
     }
 
     @Override
+    public Country save(Country country) {
+        return this.repository.save(JpaCountry.of(country));
+    }
+
+    @Override
     public List<Country> findAll() {
         return CastUtils.cast(this.repository.findAll());
     }

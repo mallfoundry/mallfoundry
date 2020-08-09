@@ -18,42 +18,12 @@
 
 package org.mallfoundry.district;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface DistrictService {
-
-    DistrictQuery createQuery();
-
-    Country createCountry(String id);
-
-    Region createRegion(String id);
-
-    Province createProvince(String id);
-
-    City createCity(String id);
-
-    County createCounty(String id);
-
-    Country addCountry(Country country);
-
-    Region addRegion(Region region);
-
-    Province addProvince(Province province);
-
-    City addCity(City city);
-
-    County addCounty(County county);
-
-    List<Country> getCountries(DistrictQuery query);
-
-    List<Region> getRegions(DistrictQuery query);
-
-    List<Province> getProvinces(DistrictQuery query);
-
-    List<City> getCities(DistrictQuery query);
-
-    List<County> getCounties(DistrictQuery query);
-
-    Optional<County> getCounty(String id);
+@Getter
+@Setter
+public class JsonCountry {
+    private String code;
+    private String name;
 }

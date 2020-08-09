@@ -21,7 +21,10 @@ package org.mallfoundry.district;
 import java.util.List;
 
 public interface CountryRepository {
+
     Country create(String id);
+
+    Country save(Country country);
 
     List<Country> findAll();
 }

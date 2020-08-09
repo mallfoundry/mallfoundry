@@ -28,14 +28,6 @@ public class DefaultDistrictService implements DistrictService {
 
     private static final String DISTRICT_ID_VALUE_NAME = "district.id";
 
-    private static final String REGION_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
-
-    private static final String PROVINCE_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
-
-    private static final String CITY_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
-
-    private static final String COUNTY_ID_VALUE_NAME = DISTRICT_ID_VALUE_NAME;
-
     private final CountryRepository countryRepository;
 
     private final RegionRepository regionRepository;
@@ -88,28 +80,38 @@ public class DefaultDistrictService implements DistrictService {
         return this.countyRepository.create(id);
     }
 
+    @Transactional
+    @Override
+    public Country addCountry(Country country) {
+        country.setId(PrimaryKeyHolder.next(DISTRICT_ID_VALUE_NAME));
+        return this.countryRepository.save(country);
+    }
+
+    @Transactional
     @Override
     public Region addRegion(Region region) {
-        region.setId(PrimaryKeyHolder.next(REGION_ID_VALUE_NAME));
+        region.setId(PrimaryKeyHolder.next(DISTRICT_ID_VALUE_NAME));
         return this.regionRepository.save(region);
     }
 
     @Transactional
     @Override
     public Province addProvince(Province province) {
-        province.setId(PrimaryKeyHolder.next(PROVINCE_ID_VALUE_NAME));
+        province.setId(PrimaryKeyHolder.next(DISTRICT_ID_VALUE_NAME));
         return this.provinceRepository.save(province);
     }
 
+    @Transactional
     @Override
     public City addCity(City city) {
-        city.setId(PrimaryKeyHolder.next(CITY_ID_VALUE_NAME));
+        city.setId(PrimaryKeyHolder.next(DISTRICT_ID_VALUE_NAME));
         return this.cityRepository.save(city);
     }
 
+    @Transactional
     @Override
     public County addCounty(County county) {
-        county.setId(PrimaryKeyHolder.next(COUNTY_ID_VALUE_NAME));
+        county.setId(PrimaryKeyHolder.next(DISTRICT_ID_VALUE_NAME));
         return this.countyRepository.save(county);
     }
 
