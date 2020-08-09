@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.cache;
+package org.mallfoundry.rest.cache;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
