@@ -21,5 +21,5 @@ package org.mallfoundry.store.member;
 import org.mallfoundry.store.StoreOwnership;
 
 public interface MemberId extends StoreOwnership {
-    String getMemberId();
+    String getId();
 }

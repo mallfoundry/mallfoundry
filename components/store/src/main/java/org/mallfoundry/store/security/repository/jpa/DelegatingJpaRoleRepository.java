@@ -41,7 +41,7 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
 
     @Override
     public Role create(RoleId id) {
-        return new JpaRole(id.getStoreId(), id.getRoleId());
+        return new JpaRole(id.getStoreId(), id.getId());
     }
 
     @Override
@@ -58,12 +58,12 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
 
     @Override
     public Optional<Role> findById(RoleId id) {
-        return CastUtils.cast(this.repository.findById(id.getRoleId()));
+        return CastUtils.cast(this.repository.findById(id.getId()));
     }
 
     @Override
     public List<Role> findAllById(Collection<RoleId> ids) {
-        var jpaIds = ids.stream().map(RoleId::getRoleId).collect(Collectors.toUnmodifiableList());
+        var jpaIds = ids.stream().map(RoleId::getId).collect(Collectors.toUnmodifiableList());
         return CastUtils.cast(this.repository.findAllById(jpaIds));
     }
 

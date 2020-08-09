@@ -25,11 +25,11 @@ import java.util.Objects;
 @Getter
 public class ImmutableRoleId implements RoleId {
     private final String storeId;
-    private final String roleId;
+    private final String id;
 
-    public ImmutableRoleId(String storeId, String roleId) {
+    public ImmutableRoleId(String storeId, String id) {
         this.storeId = storeId;
-        this.roleId = roleId;
+        this.id = id;
     }
 
     @Override
@@ -41,11 +41,11 @@ public class ImmutableRoleId implements RoleId {
             return false;
         }
         ImmutableRoleId that = (ImmutableRoleId) object;
-        return Objects.equals(storeId, that.storeId) && Objects.equals(roleId, that.roleId);
+        return Objects.equals(storeId, that.storeId) && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(storeId, roleId);
+        return Objects.hash(storeId, id);
     }
 }

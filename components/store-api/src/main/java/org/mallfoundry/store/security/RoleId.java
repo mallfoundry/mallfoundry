@@ -21,5 +21,5 @@ package org.mallfoundry.store.security;
 import org.mallfoundry.store.StoreOwnership;
 
 public interface RoleId extends StoreOwnership {
-    String getRoleId();
+    String getId();
 }

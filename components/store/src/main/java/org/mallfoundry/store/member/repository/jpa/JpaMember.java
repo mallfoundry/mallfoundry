@@ -102,7 +102,7 @@ public class JpaMember extends MemberSupport {
     private List<String> tags = new ArrayList<>();
 
     public JpaMember(MemberId id) {
-        this.id = id.getMemberId();
+        this.id = id.getId();
         this.storeId = id.getStoreId();
     }
 

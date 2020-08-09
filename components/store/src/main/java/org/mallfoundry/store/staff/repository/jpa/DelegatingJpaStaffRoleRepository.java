@@ -31,6 +31,6 @@ public class DelegatingJpaStaffRoleRepository implements StaffRoleRepository {
 
     @Override
     public void deleteByRoleId(RoleId roleId) {
-        this.repository.deleteByRoleId(roleId.getRoleId());
+        this.repository.deleteByRoleId(roleId.getId());
     }
 }

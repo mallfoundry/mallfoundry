@@ -38,7 +38,7 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
 
     @Override
     public Staff create(StaffId id) {
-        return new JpaStaff(id.getStoreId(), id.getStaffId());
+        return new JpaStaff(id.getStoreId(), id.getId());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
 
     @Override
     public Optional<Staff> findById(StaffId id) {
-        return CastUtils.cast(this.repository.findById(new JpaStaffId(id.getStoreId(), id.getStaffId())));
+        return CastUtils.cast(this.repository.findById(new JpaStaffId(id.getStoreId(), id.getId())));
     }
 
     @Override

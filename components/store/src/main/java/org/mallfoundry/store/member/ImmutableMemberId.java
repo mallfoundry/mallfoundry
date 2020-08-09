@@ -23,10 +23,10 @@ import lombok.Getter;
 @Getter
 public class ImmutableMemberId implements MemberId {
     private final String storeId;
-    private final String memberId;
+    private final String id;
 
-    public ImmutableMemberId(String storeId, String memberId) {
+    public ImmutableMemberId(String storeId, String id) {
         this.storeId = storeId;
-        this.memberId = memberId;
+        this.id = id;
     }
 }
