@@ -22,6 +22,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.member.Member;
 import org.mallfoundry.store.member.MemberService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,5 +64,14 @@ public class MemberResourceV1 {
                                         @PathVariable("store_id") String storeId) {
         return this.memberService.getMembers(
                 this.memberService.createMemberQuery().toBuilder().page(page).limit(limit).storeId(storeId).build());
+    }
+
+    @PatchMapping("/stores/{store_id}/members/{member_id}")
+    public Member updateMember(@PathVariable("store_id") String storeId,
+                               @PathVariable("member_id") String memberId,
+                               @RequestBody MemberRequest request) {
+        var member = this.memberService.createMember(
+                this.memberService.createMemberId(storeId, memberId));
+        return this.memberService.updateMember(request.assignTo(member));
     }
 }
