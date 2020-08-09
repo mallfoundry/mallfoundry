@@ -44,9 +44,9 @@ public interface Address extends Serializable {
 
     void setCountryCode(String countryCode);
 
-    String getMobile();
+    String getPhone();
 
-    void setMobile(String mobile);
+    void setPhone(String phone);
 
     String getZip();
 
@@ -90,7 +90,7 @@ public interface Address extends Serializable {
 
         Builder countryCode(String countryCode);
 
-        Builder mobile(String mobile);
+        Builder phone(String phone);
 
         Builder zip(String zip);
 

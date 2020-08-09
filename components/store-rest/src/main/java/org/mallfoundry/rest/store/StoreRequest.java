@@ -40,7 +40,7 @@ public class StoreRequest {
 
     private String countryCode;
 
-    private String mobile;
+    private String phone;
 
     private String zip;
 
@@ -62,7 +62,7 @@ public class StoreRequest {
         return store.toBuilder()
                 .id(this.id).name(this.name).logo(this.logo)
                 .industry(this.industry).description(this.description)
-                .countryCode(this.countryCode).mobile(this.mobile).zip(this.zip)
+                .countryCode(this.countryCode).phone(this.phone).zip(this.zip)
                 .provinceId(this.provinceId).province(this.province)
                 .cityId(this.cityId).city(this.city)
                 .countyId(this.countyId).county(this.county)

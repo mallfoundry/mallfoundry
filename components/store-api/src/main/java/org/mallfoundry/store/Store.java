@@ -33,6 +33,8 @@ public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder>
 
     void setName(String name);
 
+    StoreEdition getEdition();
+
     StoreStatus getStatus();
 
     String getDomain();
@@ -55,9 +57,9 @@ public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder>
 
     void setCountryCode(String countryCode);
 
-    String getMobile();
+    String getPhone();
 
-    void setMobile(String mobile);
+    void setPhone(String phone);
 
     String getZip();
 
@@ -113,7 +115,7 @@ public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder>
 
         Builder countryCode(String countryCode);
 
-        Builder mobile(String mobile);
+        Builder phone(String phone);
 
         Builder zip(String zip);
 

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.customer.CustomerAddress;
+import org.mallfoundry.customer.CustomerAddressSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_customer_address")
-public class JpaCustomerAddress implements CustomerAddress {
+public class JpaCustomerAddress extends CustomerAddressSupport {
 
     @Id
     @Column(name = "id_")
@@ -54,8 +54,8 @@ public class JpaCustomerAddress implements CustomerAddress {
     @Column(name = "country_code_")
     private String countryCode;
 
-    @Column(name = "mobile_")
-    private String mobile;
+    @Column(name = "phone_")
+    private String phone;
 
     @Column(name = "zip_")
     private String zip;

@@ -82,8 +82,8 @@ public abstract class StoreSupport implements MutableStore {
         }
 
         @Override
-        public Builder mobile(String mobile) {
-            this.store.setMobile(mobile);
+        public Builder phone(String phone) {
+            this.store.setPhone(phone);
             return this;
         }
 

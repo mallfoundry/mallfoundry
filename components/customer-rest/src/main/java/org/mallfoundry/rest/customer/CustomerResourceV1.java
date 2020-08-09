@@ -74,7 +74,7 @@ public class CustomerResourceV1 {
     public CustomerAddress addCustomerAddress(@PathVariable("customer_id") String customerId,
                                       @RequestBody ShippingAddressRequest request) {
         return this.customerService.addCustomerAddress(customerId,
-                request.assignToAddress(
+                request.assignTo(
                         this.customerService.createCustomer(customerId).createAddress(null)));
     }
 
@@ -84,7 +84,7 @@ public class CustomerResourceV1 {
                            @PathVariable("address_id") String addressId,
                            @RequestBody ShippingAddressRequest request) {
         this.customerService.updateCustomerAddress(customerId,
-                request.assignToAddress(
+                request.assignTo(
                         this.customerService.createCustomer(customerId).createAddress(addressId)));
     }
 

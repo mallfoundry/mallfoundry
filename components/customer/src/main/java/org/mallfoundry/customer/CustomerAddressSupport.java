@@ -16,13 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.shipping;
+package org.mallfoundry.customer;
 
-/**
- * @author Tang Zhi
- * @since 1.0
- */
-public abstract class AddressSupport implements Address {
+public abstract class CustomerAddressSupport implements CustomerAddress {
 
     @Override
     public Builder toBuilder() {
@@ -31,9 +27,10 @@ public abstract class AddressSupport implements Address {
     }
 
     protected abstract static class BuilderSupport implements Builder {
-        private final Address address;
 
-        protected BuilderSupport(Address address) {
+        private final CustomerAddress address;
+
+        public BuilderSupport(CustomerAddress address) {
             this.address = address;
         }
 
@@ -109,7 +106,13 @@ public abstract class AddressSupport implements Address {
             return this;
         }
 
-        public Address build() {
+        @Override
+        public Builder defaulted(boolean defaulted) {
+            this.address.setDefaulted(defaulted);
+            return this;
+        }
+
+        public CustomerAddress build() {
             return this.address;
         }
     }

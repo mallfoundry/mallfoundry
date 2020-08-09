@@ -105,9 +105,9 @@ public abstract class CustomerSupport implements MutableCustomer {
             oldAddress.setAddress(anAddress);
         }
 
-        var mobile = StringUtils.trim(address.getMobile());
-        if (StringUtils.isNotEmpty(mobile)) {
-            oldAddress.setMobile(mobile);
+        var phone = StringUtils.trim(address.getPhone());
+        if (StringUtils.isNotEmpty(phone)) {
+            oldAddress.setPhone(phone);
         }
 
         var tag = StringUtils.trim(address.getTag());

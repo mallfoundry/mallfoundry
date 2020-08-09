@@ -18,6 +18,7 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.store.StoreEdition;
 import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
@@ -42,6 +43,11 @@ public class NullFollowingStore implements ImmutableFollowingStore {
 
     @Override
     public String getName() {
+        return null;
+    }
+
+    @Override
+    public StoreEdition getEdition() {
         return null;
     }
 
@@ -81,7 +87,7 @@ public class NullFollowingStore implements ImmutableFollowingStore {
     }
 
     @Override
-    public String getMobile() {
+    public String getPhone() {
         return null;
     }
 

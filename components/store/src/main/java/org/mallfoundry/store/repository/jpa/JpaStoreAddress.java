@@ -55,8 +55,8 @@ public class JpaStoreAddress extends AddressSupport implements StoreAddress {
     @Column(name = "country_code_")
     private String countryCode;
 
-    @Column(name = "mobile_")
-    private String mobile;
+    @Column(name = "phone_")
+    private String phone;
 
     @Column(name = "zip_")
     private String zip;

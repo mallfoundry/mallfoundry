@@ -61,7 +61,7 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void setMobile(String mobile) {
+    default void setPhone(String phone) {
 
     }
 

@@ -37,7 +37,7 @@ public class DefaultAddress extends AddressSupport {
 
     private String countryCode;
 
-    private String mobile;
+    private String phone;
 
     private String zip;
 

@@ -22,7 +22,7 @@ import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 
-public interface CustomerAddress {
+public interface CustomerAddress extends ObjectBuilder.ToBuilder<CustomerAddress.Builder> {
 
     String getId();
 
@@ -40,9 +40,9 @@ public interface CustomerAddress {
 
     void setTag(String tag);
 
-    String getMobile();
+    String getPhone();
 
-    void setMobile(String mobile);
+    void setPhone(String phone);
 
     String getCountryCode();
 
@@ -86,11 +86,6 @@ public interface CustomerAddress {
 
     Date getCreatedTime();
 
-    default BuilderSupport toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
-
     interface Builder extends ObjectBuilder<CustomerAddress> {
 
         Builder firstName(String firstName);
@@ -99,7 +94,7 @@ public interface CustomerAddress {
 
         Builder countryCode(String countryCode);
 
-        Builder mobile(String mobile);
+        Builder phone(String phone);
 
         Builder zip(String zip);
 
@@ -121,97 +116,6 @@ public interface CustomerAddress {
 
         default Builder defaulted() {
             return this.defaulted(true);
-        }
-    }
-
-    abstract class BuilderSupport implements Builder {
-
-        private final CustomerAddress address;
-
-        public BuilderSupport(CustomerAddress address) {
-            this.address = address;
-        }
-
-        @Override
-        public Builder firstName(String firstName) {
-            this.address.setFirstName(firstName);
-            return this;
-        }
-
-        @Override
-        public Builder lastName(String lastName) {
-            this.address.setLastName(lastName);
-            return this;
-        }
-
-        @Override
-        public Builder countryCode(String countryCode) {
-            this.address.setCountryCode(countryCode);
-            return this;
-        }
-
-        @Override
-        public Builder mobile(String mobile) {
-            this.address.setMobile(mobile);
-            return this;
-        }
-
-        @Override
-        public Builder zip(String zip) {
-            this.address.setZip(zip);
-            return this;
-        }
-
-        @Override
-        public Builder provinceId(String provinceId) {
-            this.address.setProvinceId(provinceId);
-            return this;
-        }
-
-        @Override
-        public Builder province(String province) {
-            this.address.setProvince(province);
-            return this;
-        }
-
-        @Override
-        public Builder cityId(String cityId) {
-            this.address.setCityId(cityId);
-            return this;
-        }
-
-        @Override
-        public Builder city(String city) {
-            this.address.setCity(city);
-            return this;
-        }
-
-        @Override
-        public Builder countyId(String countyId) {
-            this.address.setCountyId(countyId);
-            return this;
-        }
-
-        @Override
-        public Builder county(String county) {
-            this.address.setCounty(county);
-            return this;
-        }
-
-        @Override
-        public Builder address(String address) {
-            this.address.setAddress(address);
-            return this;
-        }
-
-        @Override
-        public Builder defaulted(boolean defaulted) {
-            this.address.setDefaulted(defaulted);
-            return this;
-        }
-
-        public CustomerAddress build() {
-            return this.address;
         }
     }
 }

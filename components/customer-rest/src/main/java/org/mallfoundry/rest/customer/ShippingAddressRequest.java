@@ -32,7 +32,7 @@ public class ShippingAddressRequest {
 
     private String countryCode;
 
-    private String mobile;
+    private String phone;
 
     private String zip;
 
@@ -52,15 +52,14 @@ public class ShippingAddressRequest {
 
     private boolean defaulted;
 
-    CustomerAddress assignToAddress(CustomerAddress address) {
+    CustomerAddress assignTo(CustomerAddress address) {
         return address.toBuilder().firstName(this.firstName)
                 .lastName(this.lastName)
-                .countryCode(this.countryCode)
+                .countryCode(this.countryCode).phone(this.phone)
                 .provinceId(this.provinceId).province(this.province)
                 .cityId(this.cityId).city(this.city)
                 .countyId(this.countyId).county(this.county)
                 .address(this.address)
-                .mobile(this.mobile)
                 .zip(this.zip)
                 .defaulted(this.defaulted).build();
     }

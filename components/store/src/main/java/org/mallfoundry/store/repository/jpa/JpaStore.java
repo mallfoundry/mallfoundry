@@ -22,14 +22,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreEdition;
 import org.mallfoundry.store.StoreStatus;
 import org.mallfoundry.store.StoreSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -48,7 +47,9 @@ public class JpaStore extends StoreSupport {
     @Column(name = "name_")
     private String name;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "edition_")
+    private StoreEdition edition;
+
     @Column(name = "status_")
     private StoreStatus status;
 
@@ -70,8 +71,8 @@ public class JpaStore extends StoreSupport {
     @Column(name = "country_code_")
     private String countryCode;
 
-    @Column(name = "mobile_")
-    private String mobile;
+    @Column(name = "phone_")
+    private String phone;
 
     @Column(name = "zip_")
     private String zip;
