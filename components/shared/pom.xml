@@ -27,7 +27,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall-core</artifactId>
+    <artifactId>mall-shared</artifactId>
 
     <dependencies>
 

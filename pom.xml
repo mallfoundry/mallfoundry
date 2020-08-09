@@ -146,7 +146,7 @@
             <!-- mall libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-core</artifactId>
+                <artifactId>mall-shared</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

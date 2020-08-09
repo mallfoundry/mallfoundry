@@ -53,7 +53,7 @@
         <module>data-warehouse</module>
         <module>app</module>
         <module>commons</module>
-        <module>core</module>
+        <module>shared</module>
         <module>keystone</module>
         <module>storage</module>
         <module>store</module>

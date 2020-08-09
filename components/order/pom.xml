@@ -99,7 +99,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-core</artifactId>
+            <artifactId>mall-shared</artifactId>
             <scope>test</scope>
         </dependency>
 
