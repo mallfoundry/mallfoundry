@@ -18,36 +18,9 @@
 
 package org.mallfoundry.configuration;
 
-import org.mallfoundry.identity.TenantOwnership;
+public abstract class ConfigurationHolder {
 
-import java.io.Serializable;
-import java.util.Map;
-
-/**
- * @author Tang Zhi
- * @since 1.0
- */
-public interface Configuration extends TenantOwnership, Serializable {
-
-    String getId();
-
-    ConfigurationScope getScope();
-
-    Configuration getParent();
-
-    Map<String, String> getProperties();
-
-    Map<String, String> toMap();
-
-    void setProperty(String key, Object value);
-
-    void removeProperty(String key);
-
-    Object getProperty(String key);
-
-    Object getProperty(String key, String defaultValue);
-
-    String getString(String key);
-
-    String getString(String key, String defaultValue);
+    public static Configuration getConfiguration(String tenantId, ConfigurationScope scope, String id) {
+        return null;
+    }
 }

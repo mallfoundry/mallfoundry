@@ -20,11 +20,11 @@ package org.mallfoundry.configuration;
 
 public interface ConfigurationManager {
 
-    Configuration getConfiguration(String namespace);
+    ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id);
 
-    <C> C getConfiguration(String namespace, Class<C> clazz);
+    Configuration createConfiguration(ConfigurationId configId);
 
-    void saveConfiguration(String namespace, Configuration configuration);
+    Configuration getConfiguration(ConfigurationId configId);
 
-    void saveConfiguration(String namespace, Object configuration);
+    void saveConfiguration(Configuration configuration);
 }

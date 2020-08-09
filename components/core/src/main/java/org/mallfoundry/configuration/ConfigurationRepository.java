@@ -18,11 +18,13 @@
 
 package org.mallfoundry.configuration;
 
-public interface NamedProperty {
+import java.util.Optional;
 
-    String getNamespace();
+public interface ConfigurationRepository {
 
-    String getKey();
+    Configuration create(ConfigurationId configId);
 
-    String getValue();
+    Optional<Configuration> findById(ConfigurationId configId);
+
+    Configuration save(Configuration config);
 }

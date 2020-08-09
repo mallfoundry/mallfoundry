@@ -18,25 +18,36 @@
 
 package org.mallfoundry.configuration;
 
+import java.util.Set;
+
 public abstract class ConfigurationKeys {
-    public static final String H5_SITE_URL = "mall.h5.site.url";
 
+    // Store key prefix
+    private static final String STORE_KEY_PREFIX = "store";
 
-    // store.member.auto-join-conditional=order_placed
-// store.member.auto-join-conditional=order_paid
+    public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + ".member.auto-join-conditional";
 
-    // tenant.stores.max_size=200
-    public abstract static class Tenant {
+    // Store Property keys
+    public static final String STORE_PRODUCTS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".products.max-size";
+    public static final String STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".product-collections.max-size";
+    public static final String STORE_STAFFS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".staffs.max-size";
+    public static final String STORE_ROLES_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".roles.max-size";
+    public static final String STORE_ADDRESSES_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".addresses.max-size";
 
-    }
+    // Store edition scope key set
+    public static final Set<String> STORE_EDITION_SCOPE_KEY_SET =
+            Set.of(
+                    STORE_PRODUCTS_MAX_SIZE_KEY,
+                    STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY,
+                    STORE_STAFFS_MAX_SIZE_KEY,
+                    STORE_ROLES_MAX_SIZE_KEY,
+                    STORE_ADDRESSES_MAX_SIZE_KEY
+            );
 
-    // store.products.max_size=200
-    public abstract static class Store {
-        static final String STORE_PREFIX = "store";
+    // Store scope key set
+    public static final Set<String> STORE_SCOPE_KEY_SET =
+            Set.of(
+                    STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY
+            );
 
-        public abstract static class Member {
-            static final String STORE_MEMBER_PREFIX = STORE_PREFIX + ".member";
-            public static final String AUTO_JOIN_CONDITIONAL = STORE_MEMBER_PREFIX + ".auto-join-conditional";
-        }
-    }
 }

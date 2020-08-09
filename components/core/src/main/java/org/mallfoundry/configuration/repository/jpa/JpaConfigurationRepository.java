@@ -16,10 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.configuration;
+package org.mallfoundry.configuration.repository.jpa;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NamedPropertyRepository {
-    List<NamedProperty> findAllByNamespace(String namespace);
+public interface JpaConfigurationRepository extends JpaRepository<JpaConfiguration, JpaConfigurationId> {
 }

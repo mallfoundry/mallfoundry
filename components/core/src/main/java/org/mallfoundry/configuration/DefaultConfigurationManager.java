@@ -18,6 +18,38 @@
 
 package org.mallfoundry.configuration;
 
-public class DefaultConfigurationManager {
+import org.springframework.transaction.annotation.Transactional;
 
+public class DefaultConfigurationManager implements ConfigurationManager {
+
+    private final ConfigurationRepository repository;
+
+    public DefaultConfigurationManager(ConfigurationRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id) {
+        return new ImmutableConfigurationId(tenantId, scope, id);
+    }
+
+    @Override
+    public Configuration createConfiguration(ConfigurationId configId) {
+        return this.repository.create(configId);
+    }
+
+    private Configuration requiredConfiguration(ConfigurationId configId) {
+        return this.repository.findById(configId).orElseThrow();
+    }
+
+    @Override
+    public Configuration getConfiguration(ConfigurationId configId) {
+        return this.requiredConfiguration(configId);
+    }
+
+    @Transactional
+    @Override
+    public void saveConfiguration(Configuration configuration) {
+        this.repository.save(configuration);
+    }
 }

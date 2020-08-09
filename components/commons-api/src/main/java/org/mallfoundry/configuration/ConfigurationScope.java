@@ -18,5 +18,10 @@
 
 package org.mallfoundry.configuration;
 
-public class ConcurrentMapConfiguration {
+public enum ConfigurationScope {
+    ENVIRONMENT,
+    APPLICATION,
+    TENANT,
+    STORE_EDITION,
+    STORE
 }

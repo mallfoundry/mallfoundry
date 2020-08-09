@@ -16,7 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.plugins;
+package org.mallfoundry.configuration;
 
-public class PluginTests {
+import org.mallfoundry.identity.TenantOwnership;
+
+public interface ConfigurationId extends TenantOwnership {
+
+    String getId();
+
+    ConfigurationScope getScope();
 }

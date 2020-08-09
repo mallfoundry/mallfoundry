@@ -18,6 +18,8 @@
 
 package org.mallfoundry.identity;
 
-public interface TenantOwnership {
+import java.io.Serializable;
+
+public interface TenantOwnership extends Serializable {
     String getTenantId();
 }
