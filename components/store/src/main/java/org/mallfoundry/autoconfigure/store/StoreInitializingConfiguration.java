@@ -21,6 +21,7 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.store.initializing.DelegatingStoreInitializer;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingExecutor;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingManager;
+import org.mallfoundry.store.initializing.StoreConfigurationInitializer;
 import org.mallfoundry.store.initializing.StoreInitializer;
 import org.mallfoundry.store.initializing.StoreRoleInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ import java.util.List;
 
 @Configuration
 public class StoreInitializingConfiguration {
+
+    @Bean
+    public StoreConfigurationInitializer storeConfigurationInitializer() {
+        return new StoreConfigurationInitializer();
+    }
 
     @Bean
     public DelegatingStoreInitializer delegatingStoreInitializer(@Autowired(required = false)
