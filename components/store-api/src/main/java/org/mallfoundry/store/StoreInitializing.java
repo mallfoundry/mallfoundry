@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.mallfoundry.util.Position;
 
 import java.util.Date;
@@ -29,31 +30,48 @@ public interface StoreInitializing {
 
     List<InitializingStage> getStages();
 
+    InitializingStage addStage(String message);
+
     void initialize();
 
     void configure();
 
-    void build();
-
     void complete();
 
+    void fail();
+
     enum InitializingState {
+        NEW,
         INITIALIZING,
         CONFIGURING,
-        BUILDING,
         INITIALIZED,
+        FAILED;
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
     }
 
     interface InitializingStage extends Position {
 
-        InitializingStageStatus getStatus();
+        StageStatus getStatus();
 
         String getMessage();
 
         Date getOccurredTime();
-    }
 
-    enum InitializingStageStatus {
+        void failure();
 
+        enum StageStatus {
+            SUCCESS, FAILURE;
+
+            @JsonValue
+            @Override
+            public String toString() {
+                return this.name().toLowerCase();
+            }
+        }
     }
 }

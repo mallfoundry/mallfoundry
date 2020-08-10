@@ -19,8 +19,11 @@
 package org.mallfoundry.store.initializing;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.mallfoundry.store.StoreInitializing;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -28,9 +31,18 @@ public class DefaultStoreInitializing implements StoreInitializing {
 
     private InitializingState state;
 
+    private final List<InitializingStage> stages = new ArrayList<>();
+
+    public DefaultStoreInitializing() {
+        this.state = InitializingState.NEW;
+    }
+
     @Override
-    public List<InitializingStage> getStages() {
-        return null;
+    public InitializingStage addStage(String message) {
+        var stage = new DefaultInitializingStage(message);
+        this.stages.add(stage);
+        stage.setPosition(this.stages.size());
+        return stage;
     }
 
     @Override
@@ -44,12 +56,32 @@ public class DefaultStoreInitializing implements StoreInitializing {
     }
 
     @Override
-    public void build() {
-        this.state = InitializingState.BUILDING;
+    public void complete() {
+        this.state = InitializingState.INITIALIZED;
     }
 
     @Override
-    public void complete() {
-        this.state = InitializingState.INITIALIZED;
+    public void fail() {
+        this.state = InitializingState.FAILED;
+    }
+
+    @Getter
+    @Setter
+    private static class DefaultInitializingStage implements InitializingStage {
+        private int position;
+        private StageStatus status;
+        private final String message;
+        private final Date occurredTime;
+
+        DefaultInitializingStage(String message) {
+            this.message = message;
+            this.occurredTime = new Date();
+            this.status = StageStatus.SUCCESS;
+        }
+
+        @Override
+        public void failure() {
+            this.status = StageStatus.FAILURE;
+        }
     }
 }
