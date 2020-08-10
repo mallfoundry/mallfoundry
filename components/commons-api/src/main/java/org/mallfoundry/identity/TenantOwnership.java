@@ -21,5 +21,7 @@ package org.mallfoundry.identity;
 import java.io.Serializable;
 
 public interface TenantOwnership extends Serializable {
+    String DEFAULT_TENANT_ID = "0";
+
     String getTenantId();
 }
