@@ -18,6 +18,13 @@
 
 package org.mallfoundry.store;
 
+import java.util.Date;
+
 public interface MutableStore extends Store {
+
     void setOwnerId(String ownerId);
+
+    void setStatus(StoreStatus status);
+
+    void setCreatedTime(Date createdTime);
 }
