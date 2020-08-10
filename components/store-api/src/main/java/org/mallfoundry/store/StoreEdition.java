@@ -19,11 +19,11 @@
 package org.mallfoundry.store;
 
 public enum StoreEdition {
-    RED /* 旗舰版 */,
-    ORANGE /* 专业版 */,
-    YELLOW /* 基础版 */,
+    RED /* 旗舰版(enterprise) */,
+    ORANGE /* 专业版(professional) */,
+    YELLOW /* 基础版(basic) */,
     GREEN,
     CYAN,
-    BLUE /* 试用版 */,
+    BLUE,
     PURPLE
 }
