@@ -35,14 +35,18 @@ public class StoreAsyncInitializingExecutor {
     public void initializingStore(Store store) {
         var storeId = store.toId();
         var initializing = new DefaultStoreInitializing();
-        StoreInitializingResources.addStoreInitializing(storeId, initializing);
-        initializing.initialize();
-        storeInitializer.doInitialize(store);
-        initializing.configure();
-        storeInitializer.doConfigure(store);
-        initializing.build();
-        storeInitializer.doBuild(store);
-        initializing.complete();
+        try {
+            StoreInitializingResources.addStoreInitializing(storeId, initializing);
+            initializing.initialize();
+            storeInitializer.doInitialize(store);
+            initializing.configure();
+            storeInitializer.doConfigure(store);
+            initializing.complete();
+        } catch (Exception e) {
+            initializing.fail();
+            initializing.addStage(e.getMessage()).failure();
+            throw e;
+        }
     }
 
     public StoreInitializing getStoreInitializing(StoreId storeId) {
