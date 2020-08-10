@@ -20,6 +20,7 @@ package org.mallfoundry.district.repository.jpa;
 
 import org.mallfoundry.district.Country;
 import org.mallfoundry.district.CountryRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.CastUtils;
 
 import java.util.List;
@@ -44,6 +45,6 @@ public class DelegatingJpaCountryRepository implements CountryRepository {
 
     @Override
     public List<Country> findAll() {
-        return CastUtils.cast(this.repository.findAll());
+        return CastUtils.cast(this.repository.findAll(Sort.by("position")));
     }
 }
