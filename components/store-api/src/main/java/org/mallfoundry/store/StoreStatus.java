@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum StoreStatus {
     PENDING, // 创建中
     INITIALIZING, // 初始化中
@@ -26,5 +28,11 @@ public enum StoreStatus {
 
     public boolean isPending() {
         return this == PENDING;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }
