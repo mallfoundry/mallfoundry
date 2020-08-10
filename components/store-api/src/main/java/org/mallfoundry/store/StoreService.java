@@ -28,9 +28,15 @@ public interface StoreService {
 
     StoreQuery createStoreQuery();
 
+    StoreId createStoreId(String tenantId, String id);
+
     Store createStore(String id);
 
     Store createStore(Store store);
+
+    StoreInitializing initializeStore(StoreId storeId);
+
+    Optional<StoreInitializing> getStoreInitializing(StoreId storeId);
 
     Store updateStore(Store store);
 
