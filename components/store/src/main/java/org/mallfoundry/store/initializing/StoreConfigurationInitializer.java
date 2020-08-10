@@ -27,22 +27,10 @@ import org.mallfoundry.store.Store;
 @Setter
 public class StoreConfigurationInitializer implements StoreInitializer {
 
-    private int position = 100;
+    private int position = 200;
 
     @Override
     public void doInitialize(Store store) {
-        this.trashConfiguration(store); // 丢弃
-        this.initializeConfiguration(store); // 创建
-    }
-
-    private void trashConfiguration(Store store) {
-        ConfigurationHolder.deleteConfiguration(store);
-    }
-
-    private void initializeConfiguration(Store store) {
-        var tenantConfig = ConfigurationHolder.getTenantConfiguration(store.getTenantId());
-//        tenantConfig.getString()
-
-        ConfigurationHolder.deleteConfiguration(store);
+        ConfigurationHolder.emptyConfiguration(store);
     }
 }
