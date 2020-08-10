@@ -18,11 +18,29 @@
 
 package org.mallfoundry.store;
 
+import java.util.Date;
+
 public abstract class StoreSupport implements MutableStore {
+
+    @Override
+    public StoreId toId() {
+        return new ImmutableStoreId(this.getTenantId(), this.getId());
+    }
 
     @Override
     public void changeOwner(String ownerId) {
         this.setOwnerId(ownerId);
+    }
+
+    @Override
+    public void create() {
+        this.setStatus(StoreStatus.PENDING);
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public void initialize() {
+        this.setStatus(StoreStatus.INITIALIZING);
     }
 
     @Override
