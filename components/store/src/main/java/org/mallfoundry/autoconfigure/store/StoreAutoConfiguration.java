@@ -24,6 +24,7 @@ import org.mallfoundry.store.StoreConfiguration;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
 import org.mallfoundry.store.blob.StoreBlobService;
+import org.mallfoundry.store.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -42,6 +43,11 @@ import java.util.List;
         StoreSecurityConfiguration.class,
         StoreStaffConfiguration.class})
 public class StoreAutoConfiguration {
+
+    @Bean
+    public StoreConfigurationIdRetrievalStrategy storeConfigurationIdRetrievalStrategy() {
+        return new StoreConfigurationIdRetrievalStrategy();
+    }
 
     @Bean
     public StoreConfiguration storeConfiguration(StoreProperties properties) {
