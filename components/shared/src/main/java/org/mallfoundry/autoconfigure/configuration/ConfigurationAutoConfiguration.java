@@ -37,19 +37,15 @@ import java.util.List;
 public class ConfigurationAutoConfiguration {
 
     @Bean
-    public DelegatingConfigurationIdRetrievalStrategy delegatingConfigurationIdRetrievalStrategy(@Autowired(required = false)
-                                                                                                 @Lazy List<ConfigurationIdRetrievalStrategy> idRetrievalStrategies) {
-        return new DelegatingConfigurationIdRetrievalStrategy(idRetrievalStrategies);
-    }
-
-    @Bean
     public DelegatingJpaConfigurationRepository delegatingJpaConfigurationRepository(JpaConfigurationRepository repository) {
         return new DelegatingJpaConfigurationRepository(repository);
     }
 
     @Bean
-    public DefaultConfigurationManager defaultConfigurationManager(ConfigurationIdRetrievalStrategy idRetrievalStrategy,
+    public DefaultConfigurationManager defaultConfigurationManager(@Autowired(required = false)
+                                                                   @Lazy List<ConfigurationIdRetrievalStrategy> idRetrievalStrategies,
                                                                    ConfigurationRepository repository) {
+        var idRetrievalStrategy = new DelegatingConfigurationIdRetrievalStrategy(idRetrievalStrategies);
         return new DefaultConfigurationManager(idRetrievalStrategy, repository);
     }
 
