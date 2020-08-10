@@ -32,6 +32,8 @@ public interface ConfigurationManager {
 
     void saveConfiguration(Configuration configuration);
 
+    void emptyConfiguration(Object entity);
+
     void deleteConfiguration(ConfigurationId configId);
 
     void deleteConfiguration(Object entity);

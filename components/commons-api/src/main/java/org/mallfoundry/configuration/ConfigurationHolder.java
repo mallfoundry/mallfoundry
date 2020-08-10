@@ -48,4 +48,8 @@ public abstract class ConfigurationHolder {
     public static void deleteConfiguration(Object entity) {
         configurationManager.deleteConfiguration(entity);
     }
+
+    public static void emptyConfiguration(Object entity) {
+        configurationManager.emptyConfiguration(entity);
+    }
 }

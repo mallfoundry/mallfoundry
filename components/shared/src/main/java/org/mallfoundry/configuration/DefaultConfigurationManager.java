@@ -67,12 +67,23 @@ public class DefaultConfigurationManager implements ConfigurationManager {
         this.repository.save(configuration);
     }
 
+    @Transactional
+    @Override
+    public void emptyConfiguration(Object entity) {
+        var configId = this.createConfigurationId(entity);
+        this.repository.findById(configId).ifPresent(this.repository::delete);
+        var config = this.createConfiguration(configId);
+        this.saveConfiguration(config);
+    }
+
+    @Transactional
     @Override
     public void deleteConfiguration(ConfigurationId configId) {
         var config = this.requiredConfiguration(configId);
         this.repository.delete(config);
     }
 
+    @Transactional
     @Override
     public void deleteConfiguration(Object entity) {
         this.deleteConfiguration(this.createConfigurationId(entity));
