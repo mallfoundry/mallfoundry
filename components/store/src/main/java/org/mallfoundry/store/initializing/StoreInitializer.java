@@ -30,8 +30,4 @@ public interface StoreInitializer extends Position {
     default void doConfigure(Store store) {
 
     }
-
-    default void doBuild(Store store) {
-
-    }
 }
