@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.util.Positions;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class DelegatingStoreInitializer implements StoreInitializer {
 
     public DelegatingStoreInitializer(List<StoreInitializer> initializes) {
         this.initializes = ListUtils.emptyIfNull(initializes);
+        Positions.sort(this.initializes);
     }
 
     @Override
@@ -48,13 +50,6 @@ public class DelegatingStoreInitializer implements StoreInitializer {
     public void doConfigure(Store store) {
         for (var initializer : initializes) {
             initializer.doConfigure(store);
-        }
-    }
-
-    @Override
-    public void doBuild(Store store) {
-        for (var initializer : initializes) {
-            initializer.doBuild(store);
         }
     }
 }
