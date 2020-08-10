@@ -20,6 +20,8 @@ package org.mallfoundry.store;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class ImmutableStoreId implements StoreId {
     private final String id;
@@ -28,5 +30,22 @@ public class ImmutableStoreId implements StoreId {
     public ImmutableStoreId(String tenantId, String id) {
         this.tenantId = tenantId;
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ImmutableStoreId)) {
+            return false;
+        }
+        ImmutableStoreId that = (ImmutableStoreId) object;
+        return Objects.equals(id, that.id) && Objects.equals(tenantId, that.tenantId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, tenantId);
     }
 }
