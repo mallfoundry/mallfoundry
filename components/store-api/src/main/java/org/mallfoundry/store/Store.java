@@ -19,11 +19,14 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.identity.Ownership;
+import org.mallfoundry.identity.TenantOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 
-public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder> {
+public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuilder<Store.Builder> {
+
+    StoreId toStoreId();
 
     String getId();
 
@@ -90,6 +93,8 @@ public interface Store extends Ownership, ObjectBuilder.ToBuilder<Store.Builder>
     void setAddress(String address);
 
     Date getCreatedTime();
+
+    void create();
 
     void initialize();
 
