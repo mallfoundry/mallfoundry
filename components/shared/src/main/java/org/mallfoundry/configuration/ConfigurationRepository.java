@@ -27,4 +27,6 @@ public interface ConfigurationRepository {
     Optional<Configuration> findById(ConfigurationId configId);
 
     Configuration save(Configuration config);
+
+    void delete(Configuration config);
 }

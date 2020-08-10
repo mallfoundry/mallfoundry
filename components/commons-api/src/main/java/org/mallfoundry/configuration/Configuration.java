@@ -29,11 +29,15 @@ import java.util.Map;
  */
 public interface Configuration extends TenantOwnership, Serializable {
 
+    String DEFAULT_APPLICATION_ID = "0";
+
     String getId();
 
     ConfigurationScope getScope();
 
     Configuration getParent();
+
+    Configuration createConfiguration(ConfigurationId configId);
 
     Map<String, String> getProperties();
 

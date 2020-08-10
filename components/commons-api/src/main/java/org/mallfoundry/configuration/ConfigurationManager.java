@@ -20,11 +20,19 @@ package org.mallfoundry.configuration;
 
 public interface ConfigurationManager {
 
+    ConfigurationId createConfigurationId(Object entity);
+
     ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id);
 
     Configuration createConfiguration(ConfigurationId configId);
 
+    Configuration getConfiguration(Object entity);
+
     Configuration getConfiguration(ConfigurationId configId);
 
     void saveConfiguration(Configuration configuration);
+
+    void deleteConfiguration(ConfigurationId configId);
+
+    void deleteConfiguration(Object entity);
 }

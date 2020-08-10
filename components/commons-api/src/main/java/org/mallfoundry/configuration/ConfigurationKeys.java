@@ -22,17 +22,25 @@ import java.util.Set;
 
 public abstract class ConfigurationKeys {
 
-    // Store key prefix
-    private static final String STORE_KEY_PREFIX = "store";
+    private static final String TENANT_KEY_PREFIX = "tenant.";
 
-    public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + ".member.auto-join-conditional";
+    //
+    private static final String TENANT_STORES_KEY_PREFIX = TENANT_KEY_PREFIX + "stores.";
+
+    public static final String TENANT_STORES_DEFAULT_EDITION_KEY = TENANT_STORES_KEY_PREFIX + "default-edition";
+
+
+    // Store key prefix
+    private static final String STORE_KEY_PREFIX = "store.";
+
+    public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + "member.auto-join-conditional";
 
     // Store Property keys
-    public static final String STORE_PRODUCTS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".products.max-size";
-    public static final String STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".product-collections.max-size";
-    public static final String STORE_STAFFS_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".staffs.max-size";
-    public static final String STORE_ROLES_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".roles.max-size";
-    public static final String STORE_ADDRESSES_MAX_SIZE_KEY = STORE_KEY_PREFIX + ".addresses.max-size";
+    public static final String STORE_PRODUCTS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "products.max-size";
+    public static final String STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "product-collections.max-size";
+    public static final String STORE_STAFFS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "staffs.max-size";
+    public static final String STORE_ROLES_MAX_SIZE_KEY = STORE_KEY_PREFIX + "roles.max-size";
+    public static final String STORE_ADDRESSES_MAX_SIZE_KEY = STORE_KEY_PREFIX + "addresses.max-size";
 
     // Store edition scope key set
     public static final Set<String> STORE_EDITION_SCOPE_KEY_SET =

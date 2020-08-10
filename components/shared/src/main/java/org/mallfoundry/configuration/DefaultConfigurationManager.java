@@ -22,10 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultConfigurationManager implements ConfigurationManager {
 
+    private final ConfigurationIdRetrievalStrategy idRetrievalStrategy;
+
     private final ConfigurationRepository repository;
 
-    public DefaultConfigurationManager(ConfigurationRepository repository) {
+    public DefaultConfigurationManager(ConfigurationIdRetrievalStrategy idRetrievalStrategy,
+                                       ConfigurationRepository repository) {
+        this.idRetrievalStrategy = idRetrievalStrategy;
         this.repository = repository;
+    }
+
+    @Override
+    public ConfigurationId createConfigurationId(Object entity) {
+        return this.idRetrievalStrategy.getConfigurationId(entity);
     }
 
     @Override
@@ -43,6 +52,11 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     }
 
     @Override
+    public Configuration getConfiguration(Object entity) {
+        return this.getConfiguration(this.createConfigurationId(entity));
+    }
+
+    @Override
     public Configuration getConfiguration(ConfigurationId configId) {
         return this.requiredConfiguration(configId);
     }
@@ -51,5 +65,16 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     @Override
     public void saveConfiguration(Configuration configuration) {
         this.repository.save(configuration);
+    }
+
+    @Override
+    public void deleteConfiguration(ConfigurationId configId) {
+        var config = this.requiredConfiguration(configId);
+        this.repository.delete(config);
+    }
+
+    @Override
+    public void deleteConfiguration(Object entity) {
+        this.deleteConfiguration(this.createConfigurationId(entity));
     }
 }

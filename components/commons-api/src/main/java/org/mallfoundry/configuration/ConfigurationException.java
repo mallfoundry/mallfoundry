@@ -16,21 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog;
+package org.mallfoundry.configuration;
 
- import org.mallfoundry.data.Query;
-import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.util.ObjectBuilder;
-
-import java.util.Set;
-
-public interface BrandQuery extends Query, ObjectBuilder.ToBuilder<BrandQuery.Builder> {
-
-    Set<String> getCategories();
-
-    void setCategories(Set<String> categories);
-
-    interface Builder extends QueryBuilder<BrandQuery, Builder> {
-        Builder categories(Set<String> categories);
+public class ConfigurationException extends RuntimeException {
+    public ConfigurationException(String message) {
+        super(message);
     }
 }

@@ -95,4 +95,11 @@ public class JpaConfiguration extends ConfigurationSupport {
         BeanUtils.copyProperties(config, target);
         return target;
     }
+
+    @Override
+    public Configuration createConfiguration(ConfigurationId configId) {
+        var childConfig = new JpaConfiguration(configId);
+        childConfig.setParent(this);
+        return childConfig;
+    }
 }

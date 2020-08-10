@@ -18,15 +18,29 @@
 
 package org.mallfoundry.autoconfigure.configuration;
 
+import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationIdRetrievalStrategy;
+import org.mallfoundry.configuration.ConfigurationManager;
 import org.mallfoundry.configuration.ConfigurationRepository;
 import org.mallfoundry.configuration.DefaultConfigurationManager;
+import org.mallfoundry.configuration.DelegatingConfigurationIdRetrievalStrategy;
 import org.mallfoundry.configuration.repository.jpa.DelegatingJpaConfigurationRepository;
 import org.mallfoundry.configuration.repository.jpa.JpaConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class ConfigurationAutoConfiguration {
+
+    @Bean
+    public DelegatingConfigurationIdRetrievalStrategy delegatingConfigurationIdRetrievalStrategy(@Autowired(required = false)
+                                                                                                 @Lazy List<ConfigurationIdRetrievalStrategy> idRetrievalStrategies) {
+        return new DelegatingConfigurationIdRetrievalStrategy(idRetrievalStrategies);
+    }
 
     @Bean
     public DelegatingJpaConfigurationRepository delegatingJpaConfigurationRepository(JpaConfigurationRepository repository) {
@@ -34,7 +48,13 @@ public class ConfigurationAutoConfiguration {
     }
 
     @Bean
-    public DefaultConfigurationManager defaultConfigurationManager(ConfigurationRepository repository) {
-        return new DefaultConfigurationManager(repository);
+    public DefaultConfigurationManager defaultConfigurationManager(ConfigurationIdRetrievalStrategy idRetrievalStrategy,
+                                                                   ConfigurationRepository repository) {
+        return new DefaultConfigurationManager(idRetrievalStrategy, repository);
+    }
+
+    @Autowired
+    public void setConfigurationManager(ConfigurationManager manager) {
+        ConfigurationHolder.setConfigurationManager(manager);
     }
 }

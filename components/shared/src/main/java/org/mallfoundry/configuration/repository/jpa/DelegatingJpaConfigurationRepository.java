@@ -47,4 +47,9 @@ public class DelegatingJpaConfigurationRepository implements ConfigurationReposi
     public Configuration save(Configuration config) {
         return this.repository.save(JpaConfiguration.of(config));
     }
+
+    @Override
+    public void delete(Configuration config) {
+        this.repository.delete(JpaConfiguration.of(config));
+    }
 }
