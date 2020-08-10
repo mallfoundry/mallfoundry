@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum StoreEdition {
     RED /* 旗舰版(enterprise) */,
     ORANGE /* 专业版(professional) */,
@@ -25,5 +27,11 @@ public enum StoreEdition {
     GREEN,
     CYAN,
     BLUE,
-    PURPLE
+    PURPLE;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
