@@ -20,12 +20,41 @@ package org.mallfoundry.catalog;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.data.PageableSupport;
+import org.mallfoundry.data.QueryBuilderSupport;
+import org.mallfoundry.data.QuerySupport;
 
 import java.util.Set;
 
 @Getter
 @Setter
-public class DefaultBrandQuery extends PageableSupport implements BrandQuery {
+public class DefaultBrandQuery extends QuerySupport implements BrandQuery {
+
     private Set<String> categories;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<BrandQuery, Builder> implements Builder {
+
+        private final BrandQuery query;
+
+        public BuilderSupport(BrandQuery query) {
+            super(query);
+            this.query = query;
+        }
+
+        @Override
+        public Builder categories(Set<String> categories) {
+            this.query.setCategories(categories);
+            return this;
+        }
+
+        @Override
+        public BrandQuery build() {
+            return this.query;
+        }
+    }
 }
