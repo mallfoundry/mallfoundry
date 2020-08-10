@@ -23,6 +23,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.blob.StoreBlobService;
+import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -39,6 +40,8 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     private final StoreConfiguration storeConfiguration;
 
+    private final StoreInitializingManager storeInitializingManager;
+
     private List<StoreProcessor> processors = Collections.emptyList();
 
     private final StoreBlobService storeBlobService;
@@ -48,9 +51,11 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     private ApplicationEventPublisher eventPublisher;
 
     public DefaultStoreService(StoreConfiguration storeConfiguration,
+                               StoreInitializingManager storeInitializingManager,
                                StoreBlobService storeBlobService,
                                StoreRepository storeRepository) {
         this.storeConfiguration = storeConfiguration;
+        this.storeInitializingManager = storeInitializingManager;
         this.storeRepository = storeRepository;
         this.storeBlobService = storeBlobService;
     }
@@ -71,6 +76,11 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     }
 
     @Override
+    public StoreId createStoreId(String tenantId, String id) {
+        return new ImmutableStoreId(tenantId, id);
+    }
+
+    @Override
     public Store createStore(String id) {
         return this.storeRepository.create(id);
     }
@@ -83,15 +93,32 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         if (Objects.isNull(store.getLogo())) {
             store.setLogo(storeConfiguration.getDefaultLogo());
         }
-        store.initialize();
+        store.create();
         var savedStore = this.storeRepository.save(store);
         this.storeBlobService.initializeBucket(store.getId());
         this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
         return savedStore;
     }
 
-    private Store requiredStore(String storeId) {
-        return this.storeRepository.findById(storeId).orElseThrow();
+    @Transactional
+    @Override
+    public StoreInitializing initializeStore(StoreId storeId) {
+        var store = this.requiredStore(storeId);
+        if (!store.getStatus().isPending()) {
+            throw new StoreException("");
+        }
+        store.initialize();
+        var savedStore = this.storeRepository.save(store);
+        return this.storeInitializingManager.initializeStore(savedStore);
+    }
+
+    @Override
+    public Optional<StoreInitializing> getStoreInitializing(StoreId storeId) {
+        return this.storeInitializingManager.getStoreInitializing(storeId);
+    }
+
+    private Store requiredStore(StoreId storeId) {
+        return this.storeRepository.findById(storeId.getId()).orElseThrow();
     }
 
     private Store updateStore(final Store source, final Store dest) {
@@ -110,7 +137,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .<Store>compose(aStore -> this.updateStore(source, aStore))
                 .compose(this::invokePreProcessBeforeUpdateStore)
                 .compose(this::requiredStore)
-                .compose(Store::getId)
+                .compose(Store::toId)
                 .apply(source);
     }
 
@@ -120,7 +147,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         var store = Function.<Store>identity()
                 .compose(this::invokePreProcessBeforeCancelStore)
                 .compose(this::requiredStore)
-                .apply(storeId);
+                .apply(null);
         this.storeRepository.delete(store);
         this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
     }

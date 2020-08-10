@@ -18,9 +18,6 @@
 
 package org.mallfoundry.following;
 
-import org.mallfoundry.store.StoreEdition;
-import org.mallfoundry.store.StoreStatus;
-
 import java.util.Date;
 
 public class NullFollowingStore implements ImmutableFollowingStore {
@@ -39,95 +36,5 @@ public class NullFollowingStore implements ImmutableFollowingStore {
     @Override
     public String getId() {
         return this.following.getStoreId();
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public StoreEdition getEdition() {
-        return null;
-    }
-
-    @Override
-    public StoreStatus getStatus() {
-        return null;
-    }
-
-    @Override
-    public String getLogo() {
-        return null;
-    }
-
-    @Override
-    public String getOwnerId() {
-        return null;
-    }
-
-    @Override
-    public String getIndustry() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public String getCountryCode() {
-        return null;
-    }
-
-    @Override
-    public String getPhone() {
-        return null;
-    }
-
-    @Override
-    public String getZip() {
-        return null;
-    }
-
-    @Override
-    public String getProvinceId() {
-        return null;
-    }
-
-    @Override
-    public String getProvince() {
-        return null;
-    }
-
-    @Override
-    public String getCityId() {
-        return null;
-    }
-
-    @Override
-    public String getCity() {
-        return null;
-    }
-
-    @Override
-    public String getCountyId() {
-        return null;
-    }
-
-    @Override
-    public String getCounty() {
-        return null;
-    }
-
-    @Override
-    public String getAddress() {
-        return null;
-    }
-
-    @Override
-    public Date getCreatedTime() {
-        return null;
     }
 }

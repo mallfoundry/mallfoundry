@@ -18,11 +18,27 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.store.StoreEdition;
+import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreStatus;
+
+import java.util.Date;
+
 public interface ImmutableFollowingStore extends FollowingStore {
+
+    @Override
+    default StoreId toId() {
+        return null;
+    }
 
     @Override
     default void setId(String id) {
 
+    }
+
+    @Override
+    default String getName() {
+        return null;
     }
 
     @Override
@@ -31,7 +47,157 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
+    default StoreEdition getEdition() {
+        return null;
+    }
+
+    @Override
+    default StoreStatus getStatus() {
+        return null;
+    }
+
+    @Override
+    default String getLogo() {
+        return null;
+    }
+
+    @Override
     default void setLogo(String logo) {
+
+    }
+
+    @Override
+    default String getIndustry() {
+        return null;
+    }
+
+    @Override
+    default void setIndustry(String industry) {
+
+    }
+
+    @Override
+    default String getDescription() {
+        return null;
+    }
+
+    @Override
+    default void setDescription(String description) {
+
+    }
+
+    @Override
+    default String getCountryCode() {
+        return null;
+    }
+
+    @Override
+    default void setCountryCode(String countryCode) {
+
+    }
+
+    @Override
+    default String getPhone() {
+        return null;
+    }
+
+    @Override
+    default void setPhone(String phone) {
+
+    }
+
+    @Override
+    default String getZip() {
+        return null;
+    }
+
+    @Override
+    default void setZip(String zip) {
+
+    }
+
+    @Override
+    default String getProvinceId() {
+        return null;
+    }
+
+    @Override
+    default void setProvinceId(String provinceId) {
+
+    }
+
+    @Override
+    default String getProvince() {
+        return null;
+    }
+
+    @Override
+    default void setProvince(String province) {
+
+    }
+
+    @Override
+    default String getCityId() {
+        return null;
+    }
+
+    @Override
+    default void setCityId(String cityId) {
+
+    }
+
+    @Override
+    default String getCity() {
+        return null;
+    }
+
+    @Override
+    default void setCity(String city) {
+
+    }
+
+    @Override
+    default String getCountyId() {
+        return null;
+    }
+
+    @Override
+    default void setCountyId(String countyId) {
+
+    }
+
+    @Override
+    default String getCounty() {
+        return null;
+    }
+
+    @Override
+    default void setCounty(String county) {
+
+    }
+
+    @Override
+    default String getAddress() {
+        return null;
+    }
+
+    @Override
+    default void setAddress(String address) {
+
+    }
+
+    @Override
+    default Date getCreatedTime() {
+        return null;
+    }
+
+    @Override
+    default void create() {
+
+    }
+
+    @Override
+    default void initialize() {
 
     }
 
@@ -41,68 +207,13 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void setIndustry(String industry) {
-
+    default String getOwnerId() {
+        return null;
     }
 
     @Override
-    default void setDescription(String description) {
-
-    }
-
-    @Override
-    default void setCountryCode(String countryCode) {
-
-    }
-
-    @Override
-    default void setPhone(String phone) {
-
-    }
-
-    @Override
-    default void setZip(String zip) {
-
-    }
-
-    @Override
-    default void setProvinceId(String provinceId) {
-
-    }
-
-    @Override
-    default void setProvince(String province) {
-
-    }
-
-    @Override
-    default void setCityId(String cityId) {
-
-    }
-
-    @Override
-    default void setCity(String city) {
-
-    }
-
-    @Override
-    default void setCountyId(String countyId) {
-
-    }
-
-    @Override
-    default void setCounty(String county) {
-
-    }
-
-    @Override
-    default void setAddress(String address) {
-
-    }
-
-    @Override
-    default void initialize() {
-
+    default String getTenantId() {
+        return null;
     }
 
     @Override

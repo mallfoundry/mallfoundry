@@ -26,7 +26,7 @@ import java.util.Date;
 
 public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuilder<Store.Builder> {
 
-    StoreId toStoreId();
+    StoreId toId();
 
     String getId();
 

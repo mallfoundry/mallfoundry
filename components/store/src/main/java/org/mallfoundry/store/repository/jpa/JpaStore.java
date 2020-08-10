@@ -46,6 +46,9 @@ public class JpaStore extends StoreSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @Column(name = "name_")
     private String name;
 
@@ -114,11 +117,5 @@ public class JpaStore extends StoreSupport {
         var target = new JpaStore();
         BeanUtils.copyProperties(store, target);
         return target;
-    }
-
-    @Override
-    public void initialize() {
-        this.setStatus(StoreStatus.ACTIVE);
-        this.setCreatedTime(new Date());
     }
 }

@@ -24,6 +24,7 @@ import org.mallfoundry.store.StoreConfiguration;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
 import org.mallfoundry.store.blob.StoreBlobService;
+import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties(StoreProperties.class)
 @Import({ProductCollectionConfiguration.class,
+        StoreInitializingConfiguration.class,
         StoreAddressConfiguration.class,
         StoreSecurityConfiguration.class,
         StoreStaffConfiguration.class})
@@ -50,11 +52,12 @@ public class StoreAutoConfiguration {
 
     @Bean
     public DefaultStoreService defaultStoreService(StoreConfiguration storeConfiguration,
+                                                   StoreInitializingManager storeInitializingManager,
                                                    @Autowired(required = false)
                                                    @Lazy List<StoreProcessor> processors,
                                                    StoreBlobService storeBlobService,
                                                    StoreRepository storeRepository) {
-        var service = new DefaultStoreService(storeConfiguration, storeBlobService, storeRepository);
+        var service = new DefaultStoreService(storeConfiguration, storeInitializingManager, storeBlobService, storeRepository);
         service.setProcessors(processors);
         return service;
     }

@@ -20,6 +20,7 @@ package org.mallfoundry.following;
 
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreEdition;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
@@ -33,6 +34,11 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     public DelegatingImmutableFollowingStore(Store store, StoreFollowing following) {
         this.store = store;
         this.following = following;
+    }
+
+    @Override
+    public StoreId toId() {
+        return this.store.toId();
     }
 
     @Override
@@ -133,5 +139,10 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     @Override
     public Date getCreatedTime() {
         return this.store.getCreatedTime();
+    }
+
+    @Override
+    public String getTenantId() {
+        return this.store.getTenantId();
     }
 }

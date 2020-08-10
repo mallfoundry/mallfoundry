@@ -20,6 +20,7 @@ package org.mallfoundry.rest.store;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreInitializing;
 import org.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,19 @@ public class StoreResourceV1 {
     @GetMapping("/stores/{id}")
     public Optional<Store> getStore(@PathVariable("id") String id) {
         return this.storeService.getStore(id);
+    }
+
+
+    @PostMapping("/stores/{id}/initialize")
+    public StoreInitializing initializeStore(@PathVariable("id") String id) {
+        var storeId = this.storeService.createStoreId(null, id);
+        return this.storeService.initializeStore(storeId);
+    }
+
+    @GetMapping("/stores/{id}/initializing")
+    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
+        var storeId = this.storeService.createStoreId(null, id);
+        return this.storeService.getStoreInitializing(storeId);
     }
 
     @GetMapping("/stores/{id}/exists")
