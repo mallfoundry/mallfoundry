@@ -20,7 +20,7 @@ package org.mallfoundry.store.security;
 
 import org.mallfoundry.validation.ValidationHolder;
 
-public class SmartRoleValidateProcessor implements RoleProcessor {
+public class RoleValidateProcessor implements RoleProcessor {
 
     @Override
     public Role preProcessBeforeAddRole(Role role) {
