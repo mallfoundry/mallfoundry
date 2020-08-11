@@ -24,10 +24,12 @@ import java.util.Objects;
 
 @Getter
 public class ImmutableStaffId implements StaffId {
+    private final String tenantId;
     private final String storeId;
     private final String id;
 
-    public ImmutableStaffId(String storeId, String id) {
+    public ImmutableStaffId(String tenantId, String storeId, String id) {
+        this.tenantId = tenantId;
         this.storeId = storeId;
         this.id = id;
     }
@@ -41,11 +43,13 @@ public class ImmutableStaffId implements StaffId {
             return false;
         }
         ImmutableStaffId that = (ImmutableStaffId) object;
-        return Objects.equals(this.storeId, that.storeId) && Objects.equals(this.id, that.id);
+        return Objects.equals(tenantId, that.tenantId)
+                && Objects.equals(storeId, that.storeId)
+                && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.storeId, this.id);
+        return Objects.hash(tenantId, storeId, id);
     }
 }

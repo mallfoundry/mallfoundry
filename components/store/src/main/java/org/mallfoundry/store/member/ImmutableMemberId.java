@@ -20,13 +20,36 @@ package org.mallfoundry.store.member;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class ImmutableMemberId implements MemberId {
+    private final String tenantId;
     private final String storeId;
     private final String id;
 
-    public ImmutableMemberId(String storeId, String id) {
+    public ImmutableMemberId(String tenantId, String storeId, String id) {
+        this.tenantId = tenantId;
         this.storeId = storeId;
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof ImmutableMemberId)) {
+            return false;
+        }
+        ImmutableMemberId that = (ImmutableMemberId) object;
+        return Objects.equals(tenantId, that.tenantId)
+                && Objects.equals(storeId, that.storeId)
+                && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tenantId, storeId, id);
     }
 }
