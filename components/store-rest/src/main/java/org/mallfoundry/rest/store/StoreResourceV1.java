@@ -58,14 +58,12 @@ public class StoreResourceV1 {
 
 
     @PostMapping("/stores/{id}/initialize")
-    public StoreInitializing initializeStore(@PathVariable("id") String id) {
-        var storeId = this.storeService.createStoreId(Store.DEFAULT_TENANT_ID, id);
+    public StoreInitializing initializeStore(@PathVariable("id") String storeId) {
         return this.storeService.initializeStore(storeId);
     }
 
     @GetMapping("/stores/{id}/initializing")
-    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
-        var storeId = this.storeService.createStoreId(Store.DEFAULT_TENANT_ID, id);
+    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String storeId) {
         return this.storeService.getStoreInitializing(storeId);
     }
 
