@@ -18,50 +18,11 @@
 
 package org.mallfoundry.security.access.repository.jpa;
 
-import org.mallfoundry.security.access.MutableResource;
-import org.mallfoundry.security.access.Resource;
-import org.mallfoundry.security.access.ResourceRepository;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-@Repository
-public class JpaResourceRepository implements ResourceRepository {
+public interface JpaResourceRepository extends JpaRepository<JpaResource, String> {
 
-    private final JpaResourceRepositoryDelegate repository;
-
-    public JpaResourceRepository(JpaResourceRepositoryDelegate repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public Resource create(String id) {
-        return new JpaResource(id);
-    }
-
-    @Override
-    public Resource create(String id, Object resource) {
-        return new JpaResource(id, resource);
-    }
-
-    @Override
-    public Resource create(String id, String identifier, String type) {
-        return new JpaResource(id, identifier, type);
-    }
-
-    @Override
-    public Resource save(MutableResource resource) {
-        return this.repository.save(JpaResource.of(resource));
-    }
-
-    @Override
-    public Optional<Resource> findByTypeAndIdentifier(String type, String identifier) {
-        return CastUtils.cast(this.repository.findByTypeAndIdentifier(type, identifier));
-    }
-
-    @Override
-    public void delete(Resource resource) {
-        this.repository.delete(JpaResource.of(resource));
-    }
+    Optional<JpaResource> findByTypeAndIdentifier(String type, String identifier);
 }

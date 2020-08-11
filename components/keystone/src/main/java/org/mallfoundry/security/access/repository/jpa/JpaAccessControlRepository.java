@@ -18,47 +18,18 @@
 
 package org.mallfoundry.security.access.repository.jpa;
 
-import org.mallfoundry.security.access.AccessControl;
-import org.mallfoundry.security.access.AccessControlRepository;
 import org.mallfoundry.security.access.Principal;
 import org.mallfoundry.security.access.Resource;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 import java.util.Set;
 
-@Repository
-public class JpaAccessControlRepository implements AccessControlRepository {
+public interface JpaAccessControlRepository extends JpaRepository<JpaAccessControl, String> {
 
-    private final JpaAccessControlRepositoryDelegate repository;
+    Optional<JpaAccessControl> findByResource(Resource resource);
 
-    public JpaAccessControlRepository(JpaAccessControlRepositoryDelegate repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public AccessControl create(String id) {
-        return new JpaAccessControl(id);
-    }
-
-    @Override
-    public Optional<AccessControl> findByResource(Resource resource) {
-        return CastUtils.cast(this.repository.findByResource(JpaResource.of(resource)));
-    }
-
-    @Override
-    public Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals) {
-        return CastUtils.cast(this.repository.findByResourceAndPrincipals(JpaResource.of(resource), principals));
-    }
-
-    @Override
-    public AccessControl save(AccessControl control) {
-        return this.repository.save(JpaAccessControl.of(control));
-    }
-
-    @Override
-    public void delete(AccessControl control) {
-        this.repository.delete(JpaAccessControl.of(control));
-    }
+    @Query("select ac from JpaAccessControl ac JOIN ac.entries ace where ac.resource = ?1 and ace.principal in (?2)")
+    Optional<JpaAccessControl> findByResourceAndPrincipals(JpaResource resource, Set<Principal> principals);
 }

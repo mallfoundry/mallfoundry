@@ -19,54 +19,29 @@
 package org.mallfoundry.security.access.repository.jpa;
 
 import org.mallfoundry.security.access.Principal;
-import org.mallfoundry.security.access.PrincipalRepository;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import javax.persistence.criteria.Predicate;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class JpaPrincipalRepository implements PrincipalRepository {
+public interface JpaPrincipalRepository extends JpaRepository<JpaPrincipal, String>, JpaSpecificationExecutor<JpaPrincipal> {
+    Optional<Principal> findByTypeAndName(String type, String name);
 
-    private final JpaPrincipalRepositoryDelegate principalRepository;
-    private final JpaAccessControlEntryRepository controlEntryRepository;
 
-    public JpaPrincipalRepository(JpaPrincipalRepositoryDelegate principalRepository,
-                                  JpaAccessControlEntryRepository controlEntryRepository) {
-        this.principalRepository = principalRepository;
-        this.controlEntryRepository = controlEntryRepository;
+    default Specification<JpaPrincipal> createSpecification(List<Principal> principals) {
+        return (Specification<JpaPrincipal>) (root, query, criteriaBuilder) -> {
+            var predicates = principals.stream()
+                    .map(principal -> criteriaBuilder.and(criteriaBuilder.equal(root.get("type"),
+                            principal.getType()), criteriaBuilder.equal(root.get("name"), principal.getName())))
+                    .toArray(Predicate[]::new);
+            return criteriaBuilder.or(predicates);
+        };
     }
 
-    @Override
-    public Principal create(String id) {
-        return new JpaPrincipal(id);
-    }
-
-    @Override
-    public Principal save(Principal principal) {
-        return this.principalRepository.save(JpaPrincipal.of(principal));
-    }
-
-    @Override
-    public List<Principal> saveAll(List<Principal> principals) {
-        return CastUtils.cast(this.principalRepository.saveAll(CastUtils.cast(principals)));
-    }
-
-    @Override
-    public Optional<Principal> findByTypeAndName(String type, String name) {
-        return CastUtils.cast(this.principalRepository.findByTypeAndName(type, name));
-    }
-
-    @Override
-    public void delete(Principal principal) {
-        this.principalRepository.delete(JpaPrincipal.of(principal));
-    }
-
-    @Override
-    public void deleteAll(List<Principal> principals) {
-        List<JpaPrincipal> jpaPrincipals = this.principalRepository.findAll(principals);
-        this.controlEntryRepository.deleteAllByPrincipalIn(CastUtils.cast(jpaPrincipals));
-        this.principalRepository.deleteAll(jpaPrincipals);
+    default List<JpaPrincipal> findAll(List<Principal> principals) {
+        return this.findAll(this.createSpecification(principals));
     }
 }
