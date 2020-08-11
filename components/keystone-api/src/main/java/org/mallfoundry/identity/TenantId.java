@@ -18,8 +18,6 @@
 
 package org.mallfoundry.identity;
 
-public interface Tenant {
+public interface TenantId {
     String getId();
-
-    String getName();
 }
