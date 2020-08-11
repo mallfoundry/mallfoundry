@@ -20,6 +20,7 @@ package org.mallfoundry.store.security.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleId;
 import org.mallfoundry.store.security.RoleQuery;
@@ -41,7 +42,7 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
 
     @Override
     public Role create(RoleId id) {
-        return new JpaRole(id.getStoreId(), id.getId());
+        return new JpaRole(id);
     }
 
     @Override
@@ -77,5 +78,10 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     @Override
     public void delete(Role role) {
         this.repository.delete(JpaRole.of(role));
+    }
+
+    @Override
+    public void deleteAllByStoreId(StoreId storeId) {
+        this.repository.deleteAllByStoreId(storeId.getId());
     }
 }
