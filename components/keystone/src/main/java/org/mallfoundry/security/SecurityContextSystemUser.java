@@ -20,6 +20,8 @@ package org.mallfoundry.security;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.apache.commons.lang3.NotImplementedException;
+import org.mallfoundry.identity.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.concurrent.Callable;
@@ -29,6 +31,7 @@ public class SecurityContextSystemUser implements SystemUser {
     private final String id = "System";
     private final String username = "System";
     private final String nickname = "System";
+    private final String tenantId = DEFAULT_TENANT_ID;
     private final String avatar = null;
 
     @Getter(AccessLevel.PRIVATE)
@@ -65,5 +68,10 @@ public class SecurityContextSystemUser implements SystemUser {
     public void exit() {
         var suspended = this.authentication.getSuspended();
         SecurityContextHolder.getContext().setAuthentication(suspended);
+    }
+
+    @Override
+    public User toUser() {
+        throw new NotImplementedException("toUser");
     }
 }
