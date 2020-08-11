@@ -146,11 +146,10 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     @Override
     public Role createSuperRole(StoreId storeId) {
         var roleId = this.createRoleId(storeId, null);
-        var role = this.createRole(roleId);
-        role.setAuthorities(List.of(AllAuthorities.STORE_MANAGE));
-        role.setName("超级管理员");
-        role.setDescription("具备店铺所有管理的权限。");
-        return role;
+        return this.createRole(roleId)
+                .toBuilder().authorities(List.of(AllAuthorities.STORE_MANAGE))
+                .name(RoleMessages.SuperRole.name()).description(RoleMessages.SuperRole.description())
+                .build();
     }
 
     @Transactional
