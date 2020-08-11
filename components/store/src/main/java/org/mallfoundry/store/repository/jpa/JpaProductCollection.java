@@ -19,7 +19,6 @@
 package org.mallfoundry.store.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +45,11 @@ public class JpaProductCollection extends ProductCollectionSupport {
     @Column(name = "id_")
     private String id;
 
-    @JsonIgnore
     @Column(name = "store_id_")
     private String storeId;
+
+    @Column(name = "tenant_id_")
+    private String tenantId;
 
     @Column(name = "name_")
     private String name;
