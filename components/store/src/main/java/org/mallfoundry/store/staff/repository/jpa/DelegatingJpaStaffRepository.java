@@ -20,6 +20,7 @@ package org.mallfoundry.store.staff.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffId;
 import org.mallfoundry.store.staff.StaffQuery;
@@ -38,7 +39,7 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
 
     @Override
     public Staff create(StaffId id) {
-        return new JpaStaff(id.getStoreId(), id.getId());
+        return new JpaStaff(id);
     }
 
     @Override
@@ -68,5 +69,10 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
     @Override
     public void delete(Staff staff) {
         this.repository.delete(JpaStaff.of(staff));
+    }
+
+    @Override
+    public void deleteAllByStoreId(StoreId storeId) {
+        this.repository.deleteAllByStoreId(storeId.getId());
     }
 }
