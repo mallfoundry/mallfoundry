@@ -57,4 +57,6 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>,
     default long count(StaffQuery query) {
         return this.count(this.createSpecification(query));
     }
+
+    void deleteAllByStoreId(String storeId);
 }

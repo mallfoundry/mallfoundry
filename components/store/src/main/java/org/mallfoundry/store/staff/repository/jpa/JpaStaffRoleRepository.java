@@ -19,12 +19,7 @@
 package org.mallfoundry.store.staff.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 public interface JpaStaffRoleRepository extends JpaRepository<JpaStaffRole, JpaStaffRoleId> {
-
-    @Modifying
-    @Query("delete from JpaStaffRole where roleId=?1")
-    void deleteByRoleId(String roleId);
+    void deleteAllByRoleId(String roleId);
 }

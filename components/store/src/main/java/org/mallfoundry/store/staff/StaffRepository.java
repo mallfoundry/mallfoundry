@@ -19,6 +19,7 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 
 import java.util.Optional;
 
@@ -35,4 +36,6 @@ public interface StaffRepository {
     long count(StaffQuery query);
 
     void delete(Staff staff);
+
+    void deleteAllByStoreId(StoreId storeId);
 }
