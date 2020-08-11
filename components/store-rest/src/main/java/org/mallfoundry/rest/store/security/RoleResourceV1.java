@@ -51,9 +51,9 @@ public class RoleResourceV1 {
     }
 
     @GetMapping("/stores/{store_id}/roles/{role_id}")
-    public Optional<Role> getRoles(@PathVariable("store_id") String storeId,
+    public Optional<Role> findRole(@PathVariable("store_id") String storeId,
                                    @PathVariable("role_id") String roleId) {
-        return this.roleService.getRole(this.roleService.createRoleId(storeId, roleId));
+        return this.roleService.findRole(this.roleService.createRoleId(storeId, roleId));
     }
 
     @GetMapping("/stores/{store_id}/roles")
