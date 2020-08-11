@@ -24,6 +24,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.Copies;
 
 import java.util.Collections;
@@ -58,8 +59,13 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
     }
 
     @Override
+    public MemberId createMemberId(StoreId storeId, String memberId) {
+        return new ImmutableMemberId(storeId.getTenantId(), storeId.getId(), memberId);
+    }
+
+    @Override
     public MemberId createMemberId(String storeId, String memberId) {
-        return new ImmutableMemberId(storeId, memberId);
+        return new ImmutableMemberId(null, storeId, memberId);
     }
 
     @Override
@@ -67,12 +73,13 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
         return this.memberRepository.create(memberId);
     }
 
-    public User requiredUser(String userId) {
-        return this.userService.getUser(userId).orElseThrow();
+    public User requiredUser(Member member) {
+        var userId = this.userService.createUserId(member.getTenantId(), member.getId());
+        return this.userService.getUser(userId);
     }
 
     private Member addMemberPeek(Member member) {
-        var user = this.requiredUser(member.getId());
+        var user = this.requiredUser(member);
         member.setAvatar(user.getAvatar());
         member.setCountryCode(user.getCountryCode());
         member.setPhone(user.getPhone());
