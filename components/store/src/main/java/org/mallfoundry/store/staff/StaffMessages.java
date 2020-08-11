@@ -23,7 +23,6 @@ import java.util.List;
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class StaffMessages {
-
     private static final String STORE_STAFF_ALREADY_EXISTS_MESSAGE_CODE_KEY = "store.staff.Staff.alreadyExists";
     private static final String STORE_STAFF_NOT_FOUND_MESSAGE_CODE_KEY = "store.staff.Staff.notFound";
 

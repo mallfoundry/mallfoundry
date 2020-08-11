@@ -21,11 +21,8 @@ package org.mallfoundry.store.security;
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class RoleMessages {
-
     private static final String STORE_SECURITY_SUPER_ROLE_NAME_MESSAGE_CODE_KEY = "store.security.SuperRole.name";
-
     private static final String STORE_SECURITY_SUPER_ROLE_DESCRIPTION_MESSAGE_CODE_KEY = "store.security.SuperRole.description";
-
 
     public abstract static class SuperRole {
         public static String name() {
