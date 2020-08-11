@@ -19,12 +19,15 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 
 import java.util.Optional;
 
 public interface StaffService {
 
     StaffQuery createStaffQuery();
+
+    StaffId createStaffId(StoreId storeId, String staffId);
 
     StaffId createStaffId(String storeId, String staffId);
 
@@ -40,7 +43,11 @@ public interface StaffService {
 
     void deleteStaff(StaffId staffId);
 
-    Optional<Staff> getStaff(StaffId staffId);
+    void clearStaffs(StoreId storeId);
+
+    Staff getStaff(StaffId staffId);
+
+    Optional<Staff> findStaff(StaffId staffId);
 
     SliceList<Staff> getStaffs(StaffQuery query);
 
