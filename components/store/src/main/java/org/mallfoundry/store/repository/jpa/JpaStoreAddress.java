@@ -46,6 +46,9 @@ public class JpaStoreAddress extends AddressSupport implements StoreAddress {
     @Column(name = "store_id_")
     private String storeId;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @Column(name = "first_name_")
     private String firstName;
 
