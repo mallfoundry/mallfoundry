@@ -18,7 +18,10 @@
 
 package org.mallfoundry.security;
 
-public interface Subject {
+import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.identity.User;
+
+public interface Subject extends TenantOwnership {
 
     String getId();
 
@@ -27,4 +30,6 @@ public interface Subject {
     String getAvatar();
 
     String getNickname();
+
+    User toUser();
 }
