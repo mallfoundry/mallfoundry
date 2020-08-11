@@ -31,7 +31,7 @@ public class StaffRoleRemovalProcessor implements RoleProcessor {
 
     @Override
     public Role preProcessAfterDeleteRole(Role role) {
-        this.repository.deleteByRoleId(role.toRoleId());
+        this.repository.deleteAllByRoleId(role.toId());
         return role;
     }
 }
