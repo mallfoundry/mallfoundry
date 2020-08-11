@@ -22,6 +22,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SubjectHolder;
+import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
@@ -61,7 +61,17 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User createUser(String id) {
+    public UserId createUserId(String id) {
+        return new ImmutableUserId(null, id);
+    }
+
+    @Override
+    public UserId createUserId(String tenantId, String id) {
+        return new ImmutableUserId(tenantId, id);
+    }
+
+    @Override
+    public User createUser(UserId id) {
         return this.userRepository.create(id);
     }
 
@@ -81,7 +91,8 @@ public class DefaultUserService implements UserService {
     @Override
     public User createUser(UserRegistration registration) {
         this.userValidators.forEach(userValidator -> userValidator.validateCreateUser(registration));
-        var user = registration.assignToUser(this.userRepository.create(PrimaryKeyHolder.next(USER_ID_VALUE_NAME)));
+        var newUserId = this.createUserId(User.DEFAULT_TENANT_ID, PrimaryKeyHolder.next(USER_ID_VALUE_NAME));
+        var user = registration.assignToUser(this.userRepository.create(newUserId));
         this.setDefaultUsername(user);
         this.setDefaultNickname(user);
         user.changePassword(this.encodePassword(registration.getPassword()));
@@ -91,20 +102,19 @@ public class DefaultUserService implements UserService {
         return savedUser;
     }
 
-    private User requiredUser(String id) {
-        return this.userRepository.findById(id).orElseThrow(() -> UserExceptions.notExists(id));
+    @Override
+    public User getUser(UserId userId) {
+        return this.userRepository.findById(userId).orElseThrow(() -> UserExceptions.notExists(userId.getId()));
     }
 
     @Transactional
     @Override
-    public User updateUser(User args) {
-        var user = this.requiredUser(args.getId());
-        if (!Objects.equals(user.getNickname(), args.getNickname())) {
-            user.setNickname(args.getNickname());
-        }
-        var savedUser = this.userRepository.save(user);
-        this.eventPublisher.publishEvent(new ImmutableUserChangedEvent(savedUser));
-        return savedUser;
+    public User updateUser(User source) {
+        var user = this.getUser(source.toId());
+        Copies.notBlank(source::getNickname).trim(user::setNickname);
+        user = this.userRepository.save(user);
+        this.eventPublisher.publishEvent(new ImmutableUserChangedEvent(user));
+        return user;
     }
 
     private String encodePassword(String password) {
@@ -123,8 +133,8 @@ public class DefaultUserService implements UserService {
 
     @Transactional
     @Override
-    public void changePassword(String id, String password, String originalPassword) throws UserException {
-        var user = this.requiredUser(id);
+    public void changePassword(UserId userId, String password, String originalPassword) throws UserException {
+        var user = this.getUser(userId);
         if (!this.matchesPassword(originalPassword, user.getPassword())) {
             throw new UserException(
                     message("identity.user.originalPasswordIncorrect",
@@ -135,26 +145,27 @@ public class DefaultUserService implements UserService {
 
     @Transactional
     @Override
-    public void resetPassword(String id, String password) throws UserException {
-        var user = this.requiredUser(id);
+    public void resetPassword(UserId userId, String password) throws UserException {
+        var user = this.getUser(userId);
         this.setPassword(user, password);
     }
 
     @Transactional
     @Override
-    public void deleteUser(String id) {
-        var user = this.requiredUser(id);
+    public void deleteUser(UserId userId) {
+        var user = this.getUser(userId);
         this.eventPublisher.publishEvent(new ImmutableUserDeletedEvent(user));
         this.userRepository.delete(user);
     }
 
     @Override
-    public Optional<User> getCurrentUser() {
-        return this.getUser(SubjectHolder.getSubject().getId());
+    public User getCurrentUser() {
+        var subject = SubjectHolder.getSubject();
+        return this.getUser(this.createUserId(subject.getTenantId(), subject.getId()));
     }
 
     @Transactional
-    public Optional<User> getUser(String userId) {
+    public Optional<User> findUser(UserId userId) {
         return this.userRepository.findById(userId);
     }
 
