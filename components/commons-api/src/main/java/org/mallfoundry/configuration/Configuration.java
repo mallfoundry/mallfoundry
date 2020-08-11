@@ -47,9 +47,9 @@ public interface Configuration extends TenantOwnership, Serializable {
 
     void removeProperty(String key);
 
-    Object getProperty(String key);
+    String getProperty(String key);
 
-    Object getProperty(String key, String defaultValue);
+    String getProperty(String key, String defaultValue);
 
     String getString(String key);
 
