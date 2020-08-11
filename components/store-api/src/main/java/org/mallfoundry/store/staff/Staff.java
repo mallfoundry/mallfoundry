@@ -31,7 +31,9 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
 
     void setId(String id);
 
-    void setStoreId(String storeId);
+    StaffType getType();
+
+    void setType(StaffType type);
 
     String getNumber();
 
@@ -78,6 +80,12 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
     interface Builder extends ObjectBuilder<Staff> {
 
         Builder id(String id);
+
+        Builder type(StaffType type);
+
+        Builder active();
+
+        Builder inactive();
 
         Builder number(String number);
 
