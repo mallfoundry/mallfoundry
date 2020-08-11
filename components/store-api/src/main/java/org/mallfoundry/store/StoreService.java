@@ -30,13 +30,15 @@ public interface StoreService {
 
     StoreId createStoreId(String tenantId, String id);
 
+    StoreId createStoreId(String id);
+
     Store createStore(String id);
 
     Store createStore(Store store);
 
-    StoreInitializing initializeStore(StoreId storeId);
+    StoreInitializing initializeStore(String id);
 
-    Optional<StoreInitializing> getStoreInitializing(StoreId storeId);
+    Optional<StoreInitializing> getStoreInitializing(String id);
 
     Store updateStore(Store store);
 
