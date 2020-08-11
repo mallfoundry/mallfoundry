@@ -19,7 +19,6 @@
 package org.mallfoundry.store.initializing;
 
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 
 import java.util.Optional;
@@ -28,5 +27,5 @@ public interface StoreInitializingManager {
 
     StoreInitializing initializeStore(Store store);
 
-    Optional<StoreInitializing> getStoreInitializing(StoreId storeId);
+    Optional<StoreInitializing> getStoreInitializing(String storeId);
 }
