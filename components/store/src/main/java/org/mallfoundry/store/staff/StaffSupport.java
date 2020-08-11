@@ -81,6 +81,24 @@ public abstract class StaffSupport implements MutableStaff {
         }
 
         @Override
+        public Builder type(StaffType type) {
+            this.staff.setType(type);
+            return this;
+        }
+
+        @Override
+        public Builder active() {
+            this.staff.active();
+            return this;
+        }
+
+        @Override
+        public Builder inactive() {
+            this.staff.inactive();
+            return this;
+        }
+
+        @Override
         public Builder number(String number) {
             this.staff.setNumber(number);
             return this;
