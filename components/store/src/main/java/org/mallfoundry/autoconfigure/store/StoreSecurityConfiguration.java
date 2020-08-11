@@ -19,6 +19,7 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.store.security.DefaultRoleService;
+import org.mallfoundry.store.security.RoleAccessControlEventListener;
 import org.mallfoundry.store.security.RoleAuthorizeProcessor;
 import org.mallfoundry.store.security.RoleIdentityProcessor;
 import org.mallfoundry.store.security.RoleProcessor;
@@ -29,10 +30,12 @@ import org.mallfoundry.store.security.repository.jpa.JpaRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
+@Import(RoleAccessControlEventListener.class)
 @Configuration
 public class StoreSecurityConfiguration {
 
