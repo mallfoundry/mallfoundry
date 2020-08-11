@@ -36,8 +36,11 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
 
     private final JpaRoleRepository repository;
 
-    public DelegatingJpaRoleRepository(JpaRoleRepository repository) {
+    private final JpaStaffRoleRepository staffRoleRepository;
+
+    public DelegatingJpaRoleRepository(JpaRoleRepository repository, JpaStaffRoleRepository staffRoleRepository) {
         this.repository = repository;
+        this.staffRoleRepository = staffRoleRepository;
     }
 
     @Override
@@ -82,11 +85,14 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
 
     @Override
     public void delete(Role role) {
+        this.staffRoleRepository.deleteAllByRoleId(role.getId());
         this.repository.delete(JpaRole.of(role));
     }
 
     @Override
     public void deleteAll(List<Role> roles) {
+        var ids = roles.stream().map(Role::getId).collect(Collectors.toUnmodifiableSet());
+        this.staffRoleRepository.deleteAllByRoleIdIn(ids);
         this.repository.deleteAll(CastUtils.cast(roles));
     }
 }

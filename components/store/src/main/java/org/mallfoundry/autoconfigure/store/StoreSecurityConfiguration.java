@@ -27,6 +27,7 @@ import org.mallfoundry.store.security.RoleRepository;
 import org.mallfoundry.store.security.RoleValidateProcessor;
 import org.mallfoundry.store.security.repository.jpa.DelegatingJpaRoleRepository;
 import org.mallfoundry.store.security.repository.jpa.JpaRoleRepository;
+import org.mallfoundry.store.security.repository.jpa.JpaStaffRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,8 +41,9 @@ import java.util.List;
 public class StoreSecurityConfiguration {
 
     @Bean
-    public DelegatingJpaRoleRepository delegatingJpaRoleRepository(JpaRoleRepository roleRepositoryDelegate) {
-        return new DelegatingJpaRoleRepository(roleRepositoryDelegate);
+    public DelegatingJpaRoleRepository delegatingJpaRoleRepository(JpaRoleRepository roleRepository,
+                                                                   JpaStaffRoleRepository staffRoleRepository) {
+        return new DelegatingJpaRoleRepository(roleRepository, staffRoleRepository);
     }
 
     @Bean

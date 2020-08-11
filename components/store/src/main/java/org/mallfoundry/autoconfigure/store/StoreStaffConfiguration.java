@@ -26,12 +26,8 @@ import org.mallfoundry.store.staff.StaffProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.mallfoundry.store.staff.StaffValidateProcessor;
 import org.mallfoundry.store.staff.repository.RoleStaffsCountProcessor;
-import org.mallfoundry.store.staff.repository.StaffRoleRemovalProcessor;
-import org.mallfoundry.store.staff.repository.StaffRoleRepository;
 import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
-import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRoleRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
-import org.mallfoundry.store.staff.repository.jpa.JpaStaffRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,15 +66,5 @@ public class StoreStaffConfiguration {
     @Bean
     public RoleStaffsCountProcessor roleStaffsCountProcessor(RoleService roleService) {
         return new RoleStaffsCountProcessor(roleService);
-    }
-
-    @Bean
-    public DelegatingJpaStaffRoleRepository delegatingJpaStaffRoleRepository(JpaStaffRoleRepository repository) {
-        return new DelegatingJpaStaffRoleRepository(repository);
-    }
-
-    @Bean
-    public StaffRoleRemovalProcessor staffRoleRemovalProcessor(StaffRoleRepository repository) {
-        return new StaffRoleRemovalProcessor(repository);
     }
 }

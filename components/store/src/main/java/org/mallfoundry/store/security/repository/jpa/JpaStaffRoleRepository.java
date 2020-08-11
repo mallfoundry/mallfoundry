@@ -16,30 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff.repository.jpa;
+package org.mallfoundry.store.security.repository.jpa;
 
-import org.mallfoundry.store.security.RoleId;
-import org.mallfoundry.store.staff.repository.StaffRoleRepository;
+import org.mallfoundry.store.security.repository.jpa.JpaStaffRole;
+import org.mallfoundry.store.security.repository.jpa.JpaStaffRoleId;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class DelegatingJpaStaffRoleRepository implements StaffRoleRepository {
+public interface JpaStaffRoleRepository extends JpaRepository<JpaStaffRole, JpaStaffRoleId> {
 
-    private final JpaStaffRoleRepository repository;
+    void deleteAllByRoleId(String roleId);
 
-    public DelegatingJpaStaffRoleRepository(JpaStaffRoleRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public void deleteAllByRoleId(RoleId roleId) {
-        this.repository.deleteAllByRoleId(roleId.getId());
-    }
-
-    @Override
-    public void deleteAllByRoleIds(Set<RoleId> roleIds) {
-        var ids = roleIds.stream().map(RoleId::getId).collect(Collectors.toUnmodifiableSet());
-        this.repository.deleteAllByRoleIdIn(ids);
-    }
+    void deleteAllByRoleIdIn(Set<String> roleIds);
 }
