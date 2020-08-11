@@ -18,5 +18,24 @@
 
 package org.mallfoundry.store;
 
-public class StoreAuthorizeProcessor {
+import org.mallfoundry.security.SubjectHolder;
+import org.mallfoundry.security.access.AuthorizeHolder;
+
+import java.util.Objects;
+
+public class StoreAuthorizeProcessor implements StoreProcessor {
+
+    @Override
+    public int getPosition() {
+        return 0;
+    }
+
+    @Override
+    public Store preProcessBeforeInitializeStore(Store store) {
+        var ownerId = SubjectHolder.getSubject().getId();
+        if (!Objects.equals(store.getOwnerId(), ownerId)) {
+            AuthorizeHolder.authorize("false");
+        }
+        return store;
+    }
 }
