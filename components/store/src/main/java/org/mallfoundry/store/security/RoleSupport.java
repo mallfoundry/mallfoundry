@@ -31,8 +31,8 @@ import static org.mallfoundry.store.security.RoleType.PRIMITIVE;
 public abstract class RoleSupport implements MutableRole {
 
     @Override
-    public RoleId toRoleId() {
-        return new ImmutableRoleId(this.getStoreId(), this.getId());
+    public RoleId toId() {
+        return new ImmutableRoleId(this.getTenantId(), this.getStoreId(), this.getId());
     }
 
     @Override
