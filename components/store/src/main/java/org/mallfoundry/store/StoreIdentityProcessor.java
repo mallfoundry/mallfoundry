@@ -16,20 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.store.Store;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
-@Getter
-@Setter
-public class StoreRoleInitializer implements StoreInitializer {
-
-    private int position = 200;
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class StoreIdentityProcessor implements StoreProcessor {
+    private static final String STORE_ID_VALUE_NAME = "store.id";
 
     @Override
-    public void doInitialize(Store store) {
+    public Store preProcessBeforeCreateStore(Store store) {
+        store.setId(PrimaryKeyHolder.next(STORE_ID_VALUE_NAME));
+        return store;
+    }
 
+    @Override
+    public int getPosition() {
+        return Ordered.HIGHEST_PRECEDENCE;
     }
 }
