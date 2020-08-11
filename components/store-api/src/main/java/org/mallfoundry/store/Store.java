@@ -20,6 +20,7 @@ package org.mallfoundry.store;
 
 import org.mallfoundry.identity.Ownership;
 import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.identity.User;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
@@ -98,7 +99,7 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
 
     void initialize();
 
-    void changeOwner(String ownerId);
+    void changeOwner(User user);
 
     interface Builder extends ObjectBuilder<Store> {
 
@@ -107,8 +108,6 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
         Builder name(String name);
 
         Builder logo(String logo);
-
-        Builder ownerId(String ownerId);
 
         Builder industry(String industry);
 
