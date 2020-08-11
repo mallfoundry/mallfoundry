@@ -22,20 +22,32 @@ import org.mallfoundry.configuration.ConfigurationId;
 import org.mallfoundry.configuration.ConfigurationIdRetrievalStrategy;
 import org.mallfoundry.configuration.ConfigurationScope;
 import org.mallfoundry.configuration.ImmutableConfigurationId;
+import org.mallfoundry.store.ImmutableStoreId;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.security.Role;
+import org.mallfoundry.store.security.RoleId;
 
 public class StoreConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
 
     @Override
     public ConfigurationId getConfigurationId(Object entity) {
-        if (entity instanceof Store) {
+        if (entity instanceof StoreId) {
+            return this.getConfigurationId((StoreId) entity);
+        } else if (entity instanceof Store) {
             var store = (Store) entity;
-            return new ImmutableConfigurationId(store.getTenantId(), ConfigurationScope.STORE, store.getId());
-        } else if (entity instanceof StoreId) {
-            var storeId = (StoreId) entity;
-            return new ImmutableConfigurationId(storeId.getTenantId(), ConfigurationScope.STORE, storeId.getId());
+            return this.getConfigurationId(store.toId());
+        } else if (entity instanceof Role) {
+            var role = (Role) entity;
+            return this.getConfigurationId(role.toId());
+        } else if (entity instanceof RoleId) {
+            var roleId = (RoleId) entity;
+            return this.getConfigurationId(new ImmutableStoreId(roleId.getTenantId(), roleId.getStoreId()));
         }
         return null;
+    }
+
+    private ConfigurationId getConfigurationId(StoreId storeId) {
+        return new ImmutableConfigurationId(storeId.getTenantId(), ConfigurationScope.STORE, storeId.getId());
     }
 }
