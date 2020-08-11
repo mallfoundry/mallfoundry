@@ -19,6 +19,7 @@
 package org.mallfoundry.store.security;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,4 +40,6 @@ public interface RoleRepository {
     SliceList<Role> findAll(RoleQuery query);
 
     void delete(Role role);
+
+    void deleteAllByStoreId(StoreId storeId);
 }
