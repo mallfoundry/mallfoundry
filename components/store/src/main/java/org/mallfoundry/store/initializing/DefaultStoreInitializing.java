@@ -76,6 +76,11 @@ public class DefaultStoreInitializing implements StoreInitializing {
         DefaultInitializingStage(String message) {
             this.message = message;
             this.occurredTime = new Date();
+            this.status = StageStatus.PENDING;
+        }
+
+        @Override
+        public void success() {
             this.status = StageStatus.SUCCESS;
         }
 
