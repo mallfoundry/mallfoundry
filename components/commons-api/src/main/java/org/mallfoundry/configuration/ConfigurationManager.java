@@ -22,6 +22,8 @@ public interface ConfigurationManager {
 
     ConfigurationId createConfigurationId(Object entity);
 
+    ConfigurationId createConfigurationId(ConfigurationScope scope, String id);
+
     ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id);
 
     Configuration createConfiguration(ConfigurationId configId);
