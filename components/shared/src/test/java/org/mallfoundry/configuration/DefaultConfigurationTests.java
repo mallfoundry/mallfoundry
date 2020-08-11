@@ -31,16 +31,16 @@ public class DefaultConfigurationTests {
 
     @Test
     public void testApplicationConfiguration() {
-        var appConfId = this.manager.createConfigurationId(Configuration.DEFAULT_TENANT_ID, ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
+        var appConfId = this.manager.createConfigurationId(ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
         var appConf = this.manager.createConfiguration(appConfId);
         this.manager.saveConfiguration(appConf);
     }
 
     @Test
     public void testDefaultTenantConfiguration() {
-        var appConfId = this.manager.createConfigurationId(Configuration.DEFAULT_TENANT_ID, ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
+        var appConfId = this.manager.createConfigurationId(ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
         var appConf = this.manager.getConfiguration(appConfId);
-        var defaultTenantConfId = this.manager.createConfigurationId(TenantOwnership.DEFAULT_TENANT_ID, ConfigurationScope.TENANT, TenantOwnership.DEFAULT_TENANT_ID);
+        var defaultTenantConfId = this.manager.createConfigurationId(ConfigurationScope.TENANT, TenantOwnership.DEFAULT_TENANT_ID);
         var defaultTenantConf = appConf.createConfiguration(defaultTenantConfId);
         this.manager.saveConfiguration(defaultTenantConf);
     }
