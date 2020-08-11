@@ -20,8 +20,11 @@ package org.mallfoundry.store.security;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.configuration.ConfigurationHolder;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.security.access.AllAuthorities;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,8 +55,18 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     }
 
     @Override
+    public RoleId createRoleId(StoreId storeId, String roleId) {
+        return new ImmutableRoleId(storeId.getTenantId(), storeId.getId(), roleId);
+    }
+
+    @Override
     public RoleId createRoleId(String storeId, String roleId) {
-        return new ImmutableRoleId(storeId, roleId);
+        return new ImmutableRoleId(null, storeId, roleId);
+    }
+
+    @Override
+    public RoleId createRoleId(String roleId) {
+        return new ImmutableRoleId(null, null, roleId);
     }
 
     @Override
@@ -89,14 +102,14 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .compose(this::invokePreProcessAfterUpdateRole)
                 .<Role>compose(target -> this.updateRole(role, target))
                 .compose(this::invokePreProcessBeforeUpdateRole)
-                .compose(this::requiredRole)
-                .apply(new ImmutableRoleId(role.getStoreId(), role.getId()));
+                .compose(this::getRole)
+                .apply(this.createRoleId(role.getId()));
     }
 
     @Transactional
     @Override
     public void addRoleStaff(RoleId roleId, Staff staff) {
-        var role = this.requiredRole(roleId);
+        var role = this.getRole(roleId);
         role.addStaff(this.invokePreProcessBeforeAddRoleStaff(role, staff));
         this.roleRepository.save(role);
     }
@@ -104,13 +117,14 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     @Transactional
     @Override
     public void removeRoleStaff(RoleId roleId, Staff staff) {
-        var role = this.requiredRole(roleId);
+        var role = this.getRole(roleId);
         role.removeStaff(this.invokePreProcessBeforeRemoveRoleStaff(role, staff));
         this.roleRepository.save(role);
     }
 
-    private Role requiredRole(RoleId roleId) {
-        return this.getRole(roleId).orElseThrow();
+    @Override
+    public Role getRole(RoleId roleId) {
+        return this.findRole(roleId).orElseThrow();
     }
 
     @Transactional
@@ -118,17 +132,45 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     public void deleteRole(RoleId roleId) {
         var role = Function.<Role>identity()
                 .compose(this::invokePreProcessBeforeDeleteRole)
-                .compose(this::requiredRole)
+                .compose(this::getRole)
                 .apply(roleId);
-        /*if (role.isPrimitive()) {
-            throw new RoleException("The primitive role cannot be deleted");
-        }*/
         role = this.invokePreProcessAfterDeleteRole(role);
         this.roleRepository.delete(role);
     }
 
     @Override
-    public Optional<Role> getRole(RoleId roleId) {
+    public void clearRoles(StoreId storeId) {
+        this.roleRepository.deleteAllByStoreId(storeId);
+    }
+
+    @Override
+    public Role createSuperRole(StoreId storeId) {
+        var roleId = this.createRoleId(storeId, null);
+        var role = this.createRole(roleId);
+        role.setAuthorities(List.of(AllAuthorities.STORE_MANAGE));
+        role.setName("超级管理员");
+        role.setDescription("具备店铺所有管理的权限。");
+        return role;
+    }
+
+    @Transactional
+    @Override
+    public void changeSuperRole(RoleId roleId) {
+        var config = ConfigurationHolder.getConfiguration(roleId);
+        config.setProperty("store.roles.super_id", roleId.getId());
+        ConfigurationHolder.saveConfiguration(config);
+    }
+
+    @Override
+    public Role getSuperRole(StoreId storeId) {
+        var config = ConfigurationHolder.getConfiguration(storeId);
+        var roleId = config.getString("store.roles.super_id");
+        var superId = this.createRoleId(storeId, roleId);
+        return this.getRole(superId);
+    }
+
+    @Override
+    public Optional<Role> findRole(RoleId roleId) {
         return this.roleRepository.findById(roleId);
     }
 
