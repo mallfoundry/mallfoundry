@@ -24,6 +24,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -64,8 +65,13 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     }
 
     @Override
+    public StaffId createStaffId(StoreId storeId, String staffId) {
+        return new ImmutableStaffId(storeId.getTenantId(), storeId.getId(), staffId);
+    }
+
+    @Override
     public StaffId createStaffId(String storeId, String staffId) {
-        return new ImmutableStaffId(storeId, staffId);
+        return new ImmutableStaffId(null, storeId, staffId);
     }
 
     @Override
@@ -73,9 +79,9 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         return this.staffRepository.create(staffId);
     }
 
-    private User requiredUser(String staffId) {
-        return this.userService.getUser(staffId)
-                .orElseThrow(() -> StaffExceptions.notFound(staffId));
+    private User getUser(Staff staff) {
+        var userId = this.userService.createUserId(staff.getTenantId(), staff.getId());
+        return this.userService.getUser(userId);
     }
 
     private Staff addStaffPeek(Staff staff) {
@@ -83,7 +89,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         if (exists) {
             throw StaffExceptions.alreadyExists(staff.getId());
         }
-        var user = this.requiredUser(staff.getId());
+        var user = this.getUser(staff);
         staff.setAvatar(user.getAvatar());
         staff.create();
         return staff;
@@ -105,7 +111,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     }
 
     @Override
-    public Optional<Staff> getStaff(StaffId staffId) {
+    public Optional<Staff> findStaff(StaffId staffId) {
         return this.staffRepository.findById(staffId)
                 .map(this::invokePostProcessAfterGetStaff);
     }
@@ -126,8 +132,9 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
                 .apply(query);
     }
 
-    private Staff requiredStaff(StaffId staffId) {
-        return this.getStaff(staffId).orElseThrow();
+    @Override
+    public Staff getStaff(StaffId staffId) {
+        return this.findStaff(staffId).orElseThrow();
     }
 
     private Staff updateStaff(Staff source, Staff dest) {
@@ -151,7 +158,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
                     .compose(this::invokePreProcessAfterUpdateStaff)
                     .<Staff>compose(target -> this.updateStaff(newStaff, target))
                     .compose(this::invokePreProcessBeforeUpdateStaff)
-                    .compose(this::requiredStaff)
+                    .compose(this::getStaff)
                     .apply(this.createStaffId(newStaff.getStoreId(), newStaff.getId()));
         } finally {
             this.invokePreProcessAfterCompletion();
@@ -171,7 +178,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     public void activeStaff(StaffId staffId) {
         var staff = Function.<Staff>identity()
                 .compose(this::invokePreProcessBeforeActiveStaff)
-                .compose(this::requiredStaff)
+                .compose(this::getStaff)
                 .apply(staffId);
         staff.active();
         this.staffRepository.save(staff);
@@ -181,7 +188,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     public void inactiveStaff(StaffId staffId) {
         var staff = Function.<Staff>identity()
                 .compose(this::invokePreProcessBeforeInactiveStaff)
-                .compose(this::requiredStaff)
+                .compose(this::getStaff)
                 .apply(staffId);
         staff.inactive();
         this.staffRepository.save(staff);
@@ -194,10 +201,16 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
                 .compose(this::invokePreProcessAfterDeleteStaff)
                 // invoke peek...
                 .compose(this::invokePreProcessBeforeDeleteStaff)
-                .compose(this::requiredStaff)
+                .compose(this::getStaff)
                 .apply(staffId);
         this.staffRepository.delete(staff);
         this.eventPublisher.publishEvent(new ImmutableStaffDeletedEvent(staff));
+    }
+
+    @Transactional
+    @Override
+    public void clearStaffs(StoreId storeId) {
+        this.staffRepository.deleteAllByStoreId(storeId);
     }
 
     @Override
