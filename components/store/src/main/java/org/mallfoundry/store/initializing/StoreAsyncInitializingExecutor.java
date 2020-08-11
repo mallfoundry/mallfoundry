@@ -18,10 +18,11 @@
 
 package org.mallfoundry.store.initializing;
 
+import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 public class StoreAsyncInitializingExecutor {
 
@@ -32,11 +33,17 @@ public class StoreAsyncInitializingExecutor {
     }
 
     @Async
+    @Transactional
     public void initializingStore(Store store) {
-        var storeId = store.toId();
+        SubjectHolder.switchTo().systemUser()
+                .doRun(() -> this.doInitializingStore(store));
+    }
+
+    private void doInitializingStore(Store store) {
         var initializing = new DefaultStoreInitializing();
         try {
-            StoreInitializingResources.addStoreInitializing(storeId, initializing);
+            StoreInitializingResources.removeStoreInitializing(store.getId());
+            StoreInitializingResources.addStoreInitializing(store.getId(), initializing);
             initializing.initialize();
             storeInitializer.doInitialize(store);
             initializing.configure();
@@ -49,7 +56,7 @@ public class StoreAsyncInitializingExecutor {
         }
     }
 
-    public StoreInitializing getStoreInitializing(StoreId storeId) {
+    public StoreInitializing getStoreInitializing(String storeId) {
         return StoreInitializingResources.getStoreInitializing(storeId);
     }
 }
