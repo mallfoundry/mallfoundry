@@ -16,11 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.access;
+package org.mallfoundry.store;
 
-public abstract class BaseAuthorities {
-    /**
-     * 商品的管理权限。
-     */
-    public static final String STORE_MANAGE = "store_manage";
+public class StoreAuthorizeProcessor {
 }
