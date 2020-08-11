@@ -44,4 +44,6 @@ public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSp
     default Page<JpaRole> findAll(RoleQuery query) {
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime")));
     }
+
+    void deleteAllByStoreId(String storeId);
 }
