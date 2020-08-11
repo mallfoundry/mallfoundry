@@ -19,6 +19,7 @@
 package org.mallfoundry.security.repository.jpa;
 
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -31,28 +32,28 @@ public class JpaAuthorityDescriptionRepositoryTests {
     private JpaAuthorityDescriptionRepository repository;
 
     @Transactional
-//    @Rollback(false)
+    @Rollback(false)
     @Test
     public void testSaveAuthorities() {
         var storeDescription = new JpaAuthorityDescription().toBuilder()
-                .name("店铺管理").authority("store_manage")
+                .name("店铺管理").authority(AllAuthorities.STORE_MANAGE)
                 .addAuthority(new JpaAuthorityDescription().toBuilder()
-                        .name("角色").authority("store_role_manage")
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority("store_role_read").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority("store_role_write").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority("store_role_delete").build())
+                        .name("角色").authority(AllAuthorities.STORE_ROLE_MANAGE)
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority(AllAuthorities.STORE_ROLE_READ).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority(AllAuthorities.STORE_ROLE_WRITE).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority(AllAuthorities.STORE_ROLE_DELETE).build())
                         .build())
                 .addAuthority(new JpaAuthorityDescription().toBuilder()
-                        .name("员工").authority("store_staff_manage")
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority("store_staff_read").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority("store_staff_write").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority("store_staff_delete").build())
+                        .name("员工").authority(AllAuthorities.STORE_STAFF_MANAGE)
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority(AllAuthorities.STORE_STAFF_READ).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority(AllAuthorities.STORE_STAFF_WRITE).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority(AllAuthorities.STORE_STAFF_DELETE).build())
                         .build())
                 .addAuthority(new JpaAuthorityDescription().toBuilder()
-                        .name("客户").authority("store_member_manage")
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority("store_member_read").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority("store_member_write").build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority("store_member_delete").build())
+                        .name("客户").authority(AllAuthorities.STORE_MEMBER_MANAGE)
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority(AllAuthorities.STORE_MEMBER_READ).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority(AllAuthorities.STORE_MEMBER_WRITE).build())
+                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority(AllAuthorities.STORE_MEMBER_DELETE).build())
                         .build())
                 .build();
         this.repository.save(storeDescription);
