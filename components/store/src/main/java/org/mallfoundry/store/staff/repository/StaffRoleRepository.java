@@ -21,5 +21,5 @@ package org.mallfoundry.store.staff.repository;
 import org.mallfoundry.store.security.RoleId;
 
 public interface StaffRoleRepository {
-    void deleteByRoleId(RoleId roleId);
+    void deleteAllByRoleId(RoleId roleId);
 }
