@@ -19,6 +19,7 @@
 package org.mallfoundry.identity.repository.jpa;
 
 import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserId;
 import org.mallfoundry.identity.UserRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,7 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public User create(String id) {
+    public User create(UserId id) {
         return new JpaUser(id);
     }
 
@@ -50,8 +51,8 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
+    public Optional<User> findById(UserId id) {
+        return CastUtils.cast(this.repository.findById(id.getId()));
     }
 
     @Override
