@@ -62,10 +62,12 @@ public interface StoreInitializing {
 
         Date getOccurredTime();
 
+        void success();
+
         void failure();
 
         enum StageStatus {
-            SUCCESS, FAILURE;
+            PENDING, SUCCESS, FAILURE;
 
             @JsonValue
             @Override
