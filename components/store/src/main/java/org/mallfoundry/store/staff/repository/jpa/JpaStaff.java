@@ -24,8 +24,10 @@ import lombok.Setter;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.repository.jpa.JpaRole;
 import org.mallfoundry.store.staff.Staff;
+import org.mallfoundry.store.staff.StaffId;
 import org.mallfoundry.store.staff.StaffStatus;
 import org.mallfoundry.store.staff.StaffSupport;
+import org.mallfoundry.store.staff.StaffType;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -60,6 +62,14 @@ public class JpaStaff extends StaffSupport {
     @NotBlank
     @Column(name = "store_id_")
     private String storeId;
+
+    @NotBlank
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @NotNull
+    @Column(name = "type_")
+    private StaffType type;
 
     @NotNull
     @Column(name = "status_")
@@ -97,10 +107,10 @@ public class JpaStaff extends StaffSupport {
     @Column(name = "created_time_")
     private Date createdTime;
 
-
-    public JpaStaff(String storeId, String id) {
-        this.storeId = storeId;
-        this.id = id;
+    public JpaStaff(StaffId staffId) {
+        this.tenantId = staffId.getTenantId();
+        this.storeId = staffId.getStoreId();
+        this.id = staffId.getId();
     }
 
     public static JpaStaff of(Staff staff) {
