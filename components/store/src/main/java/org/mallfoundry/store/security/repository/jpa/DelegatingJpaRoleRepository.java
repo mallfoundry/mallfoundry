@@ -69,6 +69,11 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     }
 
     @Override
+    public List<Role> findAllByStoreId(StoreId storeId) {
+        return CastUtils.cast(this.repository.findAllByStoreId(storeId.getId()));
+    }
+
+    @Override
     public SliceList<Role> findAll(RoleQuery query) {
         var page = this.repository.findAll(query);
         var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
@@ -81,7 +86,7 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     }
 
     @Override
-    public void deleteAllByStoreId(StoreId storeId) {
-        this.repository.deleteAllByStoreId(storeId.getId());
+    public void deleteAll(List<Role> roles) {
+        this.repository.deleteAll(CastUtils.cast(roles));
     }
 }

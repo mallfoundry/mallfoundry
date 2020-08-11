@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Predicate;
+import java.util.List;
 import java.util.Objects;
 
 public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSpecificationExecutor<JpaRole> {
@@ -45,5 +46,5 @@ public interface JpaRoleRepository extends JpaRepository<JpaRole, String>, JpaSp
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by("createdTime")));
     }
 
-    void deleteAllByStoreId(String storeId);
+    List<JpaRole> findAllByStoreId(String storeId);
 }
