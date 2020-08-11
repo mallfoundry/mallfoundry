@@ -31,18 +31,16 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 public class JpaConfigurationId implements Serializable {
-    private String tenantId;
     private ConfigurationScope scope;
     private String id;
 
-    public JpaConfigurationId(String tenantId, ConfigurationScope scope, String id) {
-        this.tenantId = tenantId;
+    public JpaConfigurationId(ConfigurationScope scope, String id) {
         this.scope = scope;
         this.id = id;
     }
 
     public static JpaConfigurationId of(ConfigurationId id) {
-        return new JpaConfigurationId(id.getTenantId(), id.getScope(), id.getId());
+        return new JpaConfigurationId(id.getScope(), id.getId());
     }
 
     @Override
@@ -54,13 +52,11 @@ public class JpaConfigurationId implements Serializable {
             return false;
         }
         JpaConfigurationId that = (JpaConfigurationId) object;
-        return Objects.equals(id, that.id)
-                && scope == that.scope
-                && Objects.equals(tenantId, that.tenantId);
+        return scope == that.scope && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, scope, tenantId);
+        return Objects.hash(scope, id);
     }
 }

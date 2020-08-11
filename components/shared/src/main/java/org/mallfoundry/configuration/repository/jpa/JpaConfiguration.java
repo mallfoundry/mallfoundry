@@ -55,26 +55,21 @@ public class JpaConfiguration extends ConfigurationSupport {
     private String id;
 
     @Id
-    @Column(name = "tenant_id_")
-    private String tenantId;
-
-    @Id
     @Column(name = "scope_")
     private ConfigurationScope scope;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @ManyToOne(targetEntity = JpaConfiguration.class)
-    @JoinColumns({
-            @JoinColumn(name = "parent_tenant_id_", referencedColumnName = "tenant_id_"),
-            @JoinColumn(name = "parent_id_", referencedColumnName = "id_"),
+    @JoinColumns({@JoinColumn(name = "parent_id_", referencedColumnName = "id_"),
             @JoinColumn(name = "parent_scope_", referencedColumnName = "scope_"),
     })
     private Configuration parent;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "mf_config_property",
-            joinColumns = {
-                    @JoinColumn(name = "tenant_id_", referencedColumnName = "tenant_id_"),
-                    @JoinColumn(name = "config_id_", referencedColumnName = "id_"),
+            joinColumns = {@JoinColumn(name = "config_id_", referencedColumnName = "id_"),
                     @JoinColumn(name = "config_scope_", referencedColumnName = "scope_")
             })
     @MapKeyColumn(name = "property_key_")
