@@ -22,6 +22,8 @@ public interface StoreProcessorInvoker {
 
     Store invokePreProcessBeforeCreateStore(Store store);
 
+    Store invokePreProcessBeforeInitializeStore(Store store);
+
     Store invokePreProcessBeforeUpdateStore(Store store);
 
     Store invokePreProcessBeforeCancelStore(Store store);

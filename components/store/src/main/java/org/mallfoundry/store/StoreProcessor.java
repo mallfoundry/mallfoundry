@@ -26,6 +26,10 @@ public interface StoreProcessor extends Processor {
         return store;
     }
 
+    default Store preProcessBeforeInitializeStore(Store store) {
+        return store;
+    }
+
     default Store preProcessBeforeUpdateStore(Store store) {
         return store;
     }
