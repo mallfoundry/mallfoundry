@@ -23,7 +23,7 @@ import org.mallfoundry.store.security.RoleAuthorizeProcessor;
 import org.mallfoundry.store.security.RoleIdentityProcessor;
 import org.mallfoundry.store.security.RoleProcessor;
 import org.mallfoundry.store.security.RoleRepository;
-import org.mallfoundry.store.security.SmartRoleValidateProcessor;
+import org.mallfoundry.store.security.RoleValidateProcessor;
 import org.mallfoundry.store.security.repository.jpa.DelegatingJpaRoleRepository;
 import org.mallfoundry.store.security.repository.jpa.JpaRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +51,8 @@ public class StoreSecurityConfiguration {
     }
 
     @Bean
-    public SmartRoleValidateProcessor smartRoleValidateProcessor() {
-        return new SmartRoleValidateProcessor();
+    public RoleValidateProcessor roleValidateProcessor() {
+        return new RoleValidateProcessor();
     }
 
     @Bean
