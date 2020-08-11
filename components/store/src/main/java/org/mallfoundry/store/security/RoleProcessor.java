@@ -20,6 +20,8 @@ package org.mallfoundry.store.security;
 
 import org.mallfoundry.store.staff.Staff;
 
+import java.util.List;
+
 public interface RoleProcessor {
 
     default Role preProcessBeforeAddRole(Role role) {
@@ -48,5 +50,13 @@ public interface RoleProcessor {
 
     default Role preProcessAfterDeleteRole(Role role) {
         return role;
+    }
+
+    default List<Role> preProcessBeforeClearRoles(List<Role> roles) {
+        return roles;
+    }
+
+    default List<Role> preProcessAfterClearRoles(List<Role> roles) {
+        return roles;
     }
 }

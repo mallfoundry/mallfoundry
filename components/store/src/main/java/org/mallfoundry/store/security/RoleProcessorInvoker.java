@@ -20,6 +20,8 @@ package org.mallfoundry.store.security;
 
 import org.mallfoundry.store.staff.Staff;
 
+import java.util.List;
+
 public interface RoleProcessorInvoker {
 
     Role invokePreProcessBeforeAddRole(Role role);
@@ -35,4 +37,8 @@ public interface RoleProcessorInvoker {
     Role invokePreProcessBeforeDeleteRole(Role role);
 
     Role invokePreProcessAfterDeleteRole(Role role);
+
+    List<Role> invokePreProcessBeforeClearRoles(List<Role> roles);
+
+    List<Role> invokePreProcessAfterClearRoles(List<Role> roles);
 }
