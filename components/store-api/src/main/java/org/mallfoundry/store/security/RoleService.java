@@ -19,6 +19,7 @@
 package org.mallfoundry.store.security;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.staff.Staff;
 
 import java.util.List;
@@ -29,7 +30,11 @@ public interface RoleService {
 
     RoleQuery createRoleQuery();
 
+    RoleId createRoleId(StoreId storeId, String roleId);
+
     RoleId createRoleId(String storeId, String roleId);
+
+    RoleId createRoleId(String roleId);
 
     Role createRole(RoleId roleId);
 
@@ -39,7 +44,17 @@ public interface RoleService {
 
     void deleteRole(RoleId roleId);
 
-    Optional<Role> getRole(RoleId roleId);
+    void clearRoles(StoreId storeId);
+
+    Role createSuperRole(StoreId roleId);
+
+    void changeSuperRole(RoleId roleId);
+
+    Role getSuperRole(StoreId storeId);
+
+    Role getRole(RoleId roleId);
+
+    Optional<Role> findRole(RoleId roleId);
 
     List<Role> getRoles(Set<RoleId> roleIds);
 
