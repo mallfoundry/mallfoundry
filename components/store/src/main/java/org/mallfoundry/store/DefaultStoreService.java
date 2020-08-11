@@ -109,9 +109,10 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     @Override
     public StoreInitializing initializeStore(String id) {
         var store = this.getStore(id);
+        store = this.invokePreProcessBeforeInitializeStore(store);
         store.initialize();
-        var savedStore = this.storeRepository.save(store);
-        return this.storeInitializingManager.initializeStore(savedStore);
+        store = this.storeRepository.save(store);
+        return this.storeInitializingManager.initializeStore(store);
     }
 
     @Override
@@ -121,7 +122,9 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Override
     public Store getStore(String storeId) {
-        return this.storeRepository.findById(storeId).orElseThrow();
+        return this.storeRepository
+                .findById(storeId)
+                .orElseThrow(() -> StoreExceptions.notFound(storeId));
     }
 
     private Store updateStore(final Store source, final Store dest) {
@@ -189,6 +192,13 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public Store invokePreProcessBeforeCreateStore(Store store) {
         return Processors.stream(processors)
                 .map(StoreProcessor::preProcessBeforeCreateStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforeInitializeStore(Store store) {
+        return Processors.stream(processors)
+                .map(StoreProcessor::preProcessBeforeInitializeStore)
                 .apply(store);
     }
 
