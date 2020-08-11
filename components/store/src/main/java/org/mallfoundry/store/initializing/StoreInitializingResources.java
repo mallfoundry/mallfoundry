@@ -18,7 +18,6 @@
 
 package org.mallfoundry.store.initializing;
 
-import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 
 import java.util.Map;
@@ -26,17 +25,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class StoreInitializingResources {
 
-    private static final Map<StoreId, StoreInitializing> INITIALIZING_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, StoreInitializing> INITIALIZING_MAP = new ConcurrentHashMap<>();
 
-    public static void addStoreInitializing(StoreId storeId, StoreInitializing initializing) {
+    public static void addStoreInitializing(String storeId, StoreInitializing initializing) {
         INITIALIZING_MAP.put(storeId, initializing);
     }
 
-    public static StoreInitializing getStoreInitializing(StoreId storeId) {
+    public static StoreInitializing getStoreInitializing(String storeId) {
         return INITIALIZING_MAP.get(storeId);
     }
 
-    public static void removeStoreInitializing(StoreId storeId) {
+    public static void removeStoreInitializing(String storeId) {
         INITIALIZING_MAP.remove(storeId);
     }
 }
