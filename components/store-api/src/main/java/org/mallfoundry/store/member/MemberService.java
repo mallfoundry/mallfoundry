@@ -19,12 +19,15 @@
 package org.mallfoundry.store.member;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 
 import java.util.Optional;
 
 public interface MemberService {
 
     MemberQuery createMemberQuery();
+
+    MemberId createMemberId(StoreId storeId, String memberId);
 
     MemberId createMemberId(String storeId, String memberId);
 
