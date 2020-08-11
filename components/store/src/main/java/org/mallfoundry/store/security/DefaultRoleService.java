@@ -27,6 +27,8 @@ import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.Copies;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -35,14 +37,21 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
+public class DefaultRoleService implements RoleService, RoleProcessorInvoker, ApplicationEventPublisherAware {
 
     private List<RoleProcessor> processors = Collections.emptyList();
+
+    private ApplicationEventPublisher eventPublisher;
 
     private final RoleRepository roleRepository;
 
     public DefaultRoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     public void setProcessors(List<RoleProcessor> processors) {
@@ -79,10 +88,12 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
     public Role addRole(Role role) {
         role.addStaff(null);
         role.custom();
-        return Function.<Role>identity()
+        role = Function.<Role>identity()
                 .compose(this.roleRepository::save)
                 .compose(this::invokePreProcessBeforeAddRole)
                 .apply(role);
+        this.eventPublisher.publishEvent(new ImmutableRoleAddedEvent(role));
+        return role;
     }
 
     private Role updateRole(Role source, Role target) {
@@ -136,11 +147,17 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
                 .apply(roleId);
         role = this.invokePreProcessAfterDeleteRole(role);
         this.roleRepository.delete(role);
+        this.eventPublisher.publishEvent(new ImmutableRoleDeletedEvent(role));
     }
 
     @Override
     public void clearRoles(StoreId storeId) {
-        this.roleRepository.deleteAllByStoreId(storeId);
+        var roles = this.roleRepository.findAllByStoreId(storeId);
+        roles = this.invokePreProcessBeforeClearRoles(roles);
+        // peek...
+        roles = this.invokePreProcessAfterClearRoles(roles);
+        this.roleRepository.deleteAll(roles);
+        this.eventPublisher.publishEvent(new ImmutableRolesDeletedEvent(roles));
     }
 
     @Override
@@ -230,5 +247,19 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker {
         return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessAfterDeleteRole)
                 .apply(role);
+    }
+
+    @Override
+    public List<Role> invokePreProcessBeforeClearRoles(List<Role> roles) {
+        return Processors.stream(this.processors)
+                .map(RoleProcessor::preProcessBeforeClearRoles)
+                .apply(roles);
+    }
+
+    @Override
+    public List<Role> invokePreProcessAfterClearRoles(List<Role> roles) {
+        return Processors.stream(this.processors)
+                .map(RoleProcessor::preProcessAfterClearRoles)
+                .apply(roles);
     }
 }
