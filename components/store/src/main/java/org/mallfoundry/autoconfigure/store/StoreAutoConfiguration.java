@@ -21,6 +21,7 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.store.DefaultStoreConfiguration;
 import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreConfiguration;
+import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
 import org.mallfoundry.store.blob.StoreBlobService;
@@ -66,5 +67,10 @@ public class StoreAutoConfiguration {
         var service = new DefaultStoreService(storeConfiguration, storeInitializingManager, storeBlobService, storeRepository);
         service.setProcessors(processors);
         return service;
+    }
+
+    @Bean
+    public StoreIdentityProcessor storeIdentityProcessor() {
+        return new StoreIdentityProcessor();
     }
 }
