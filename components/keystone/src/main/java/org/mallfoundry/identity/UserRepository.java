@@ -22,13 +22,13 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    User create(String id);
+    User create(UserId id);
 
     User save(User user);
 
     void delete(User user);
 
-    Optional<User> findById(String id);
+    Optional<User> findById(UserId id);
 
     Optional<User> findByCountryCodeAndPhone(String countryCode, String phone);
 

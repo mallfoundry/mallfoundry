@@ -24,6 +24,11 @@ import java.util.List;
 public abstract class UserSupport implements MutableUser {
 
     @Override
+    public UserId toId() {
+        return new ImmutableUserId(this.getTenantId(), this.getId());
+    }
+
+    @Override
     public void changePassword(String password) {
         this.setPassword(password);
     }
