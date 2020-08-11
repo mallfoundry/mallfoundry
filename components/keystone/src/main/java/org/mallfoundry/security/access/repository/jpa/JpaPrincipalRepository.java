@@ -18,35 +18,55 @@
 
 package org.mallfoundry.security.access.repository.jpa;
 
-import org.mallfoundry.security.access.MutablePrincipal;
 import org.mallfoundry.security.access.Principal;
 import org.mallfoundry.security.access.PrincipalRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JpaPrincipalRepository implements PrincipalRepository {
 
-    private final JpaPrincipalRepositoryDelegate repository;
+    private final JpaPrincipalRepositoryDelegate principalRepository;
+    private final JpaAccessControlEntryRepository controlEntryRepository;
 
-    public JpaPrincipalRepository(JpaPrincipalRepositoryDelegate repository) {
-        this.repository = repository;
+    public JpaPrincipalRepository(JpaPrincipalRepositoryDelegate principalRepository,
+                                  JpaAccessControlEntryRepository controlEntryRepository) {
+        this.principalRepository = principalRepository;
+        this.controlEntryRepository = controlEntryRepository;
     }
 
     @Override
-    public MutablePrincipal create(String id) {
+    public Principal create(String id) {
         return new JpaPrincipal(id);
     }
 
     @Override
     public Principal save(Principal principal) {
-        return this.repository.save(JpaPrincipal.of(principal));
+        return this.principalRepository.save(JpaPrincipal.of(principal));
+    }
+
+    @Override
+    public List<Principal> saveAll(List<Principal> principals) {
+        return CastUtils.cast(this.principalRepository.saveAll(CastUtils.cast(principals)));
     }
 
     @Override
     public Optional<Principal> findByTypeAndName(String type, String name) {
-        return CastUtils.cast(this.repository.findByTypeAndName(type, name));
+        return CastUtils.cast(this.principalRepository.findByTypeAndName(type, name));
+    }
+
+    @Override
+    public void delete(Principal principal) {
+        this.principalRepository.delete(JpaPrincipal.of(principal));
+    }
+
+    @Override
+    public void deleteAll(List<Principal> principals) {
+        List<JpaPrincipal> jpaPrincipals = this.principalRepository.findAll(principals);
+        this.controlEntryRepository.deleteAllByPrincipalIn(CastUtils.cast(jpaPrincipals));
+        this.principalRepository.deleteAll(jpaPrincipals);
     }
 }

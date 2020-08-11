@@ -19,15 +19,16 @@
 package org.mallfoundry.security.access;
 
 import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultAccessControlManager implements AccessControlManager {
@@ -56,39 +57,41 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Override
     public Principal createPrincipal(String type, String name) {
-        var principal = this.principalRepository.create(null);
-        principal.setType(type);
-        principal.setName(name);
-        return principal;
-    }
-
-    private Principal addNewPrincipal(Principal principal) {
-        Assert.isInstanceOf(MutablePrincipal.class, principal);
-        var mutablePrincipal = (MutablePrincipal) principal;
-        if (Objects.isNull(mutablePrincipal.getId())) {
-            mutablePrincipal.setId(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME));
-        }
-        return this.principalRepository.save(principal);
+        return this.principalRepository.create(null).toBuilder().type(type).name(name).build();
     }
 
     @Override
     public Principal addPrincipal(Principal principal) {
-        return this.principalRepository
-                .findByTypeAndName(principal.getType(), principal.getName())
-                .orElseGet(() -> addNewPrincipal(principal));
-
+        return this.principalRepository.findByTypeAndName(principal.getType(), principal.getName())
+                .orElseGet(() -> this.principalRepository.save(principal.toBuilder().id(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME)).build()));
     }
 
     @Override
-    public Principal addPrincipal(String type, String name) {
-        return this.addPrincipal(
-                this.principalRepository.create(null)
-                        .toBuilder().type(type).name(name).build());
+    public List<Principal> addPrincipals(List<Principal> principals) {
+        principals = principals.stream()
+                .map(principal -> principal.toBuilder().id(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME)).build())
+                .collect(Collectors.toUnmodifiableList());
+        return this.principalRepository.saveAll(principals);
     }
 
     @Override
-    public Optional<Principal> getPrincipal(String type, String name) {
-        return CastUtils.cast(this.principalRepository.findByTypeAndName(type, name));
+    public Optional<Principal> findPrincipal(Principal principal) {
+        return this.principalRepository.findByTypeAndName(principal.getType(), principal.getName());
+    }
+
+    @Override
+    public Principal getPrincipal(Principal principal) {
+        return this.findPrincipal(principal).orElseThrow();
+    }
+
+    @Override
+    public void removePrincipal(Principal principal) {
+        this.principalRepository.delete(principal);
+    }
+
+    @Override
+    public void removePrincipals(List<Principal> principals) {
+        this.principalRepository.deleteAll(principals);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class DefaultAccessControlManager implements AccessControlManager {
         return this.resourceRepository.create(null, type, String.valueOf(identifier));
     }
 
-    private MutableResource addNewResource(Resource resource) {
+    private Resource addNewResource(Resource resource) {
         var mutableResource = (MutableResource) resource;
         if (Objects.isNull(mutableResource.getId())) {
             mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
@@ -113,34 +116,31 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Transactional
     @Override
-    public Resource addResource(Object resource) {
-        return this.addResource(this.createResource(resource));
-    }
-
-    @Transactional
-    @Override
     public Resource addResource(Resource resource) {
         return this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier())
                 .orElseGet(() -> this.addNewResource(resource));
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Resource getResource(Resource resource) {
+        return this.findResource(resource).orElseThrow();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Resource> findResource(Resource resource) {
+        return this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier());
+    }
+
     @Transactional
     @Override
-    public Resource addResource(String type, Serializable identifier) {
-        return this.addResource(this.createResource(type, identifier));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Resource> getResource(Object object) {
-        var resource = this.createResource(object);
-        return this.getResource(resource.getType(), resource.getIdentifier());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Resource> getResource(String type, Serializable identifier) {
-        return CastUtils.cast(this.resourceRepository.findByTypeAndIdentifier(type, Objects.toString(identifier)));
+    public void removeResource(Resource resource) {
+        resource = this.findResource(resource).orElse(null);
+        if (Objects.nonNull(resource)) {
+            this.accessControlRepository.deleteAllByResource(resource);
+            this.resourceRepository.delete(resource);
+        }
     }
 
     @Override
@@ -169,19 +169,29 @@ public class DefaultAccessControlManager implements AccessControlManager {
     }
 
     @Override
-    public Optional<AccessControl> getAccessControl(Resource resource) {
+    public Optional<AccessControl> findAccessControl(Resource resource) {
         return this.accessControlRepository.findByResource(resource);
     }
 
     @Override
-    public Optional<AccessControl> getAccessControl(Resource resource, Set<Principal> principals) {
+    public Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals) {
         return this.accessControlRepository.findByResourceAndPrincipals(resource, principals);
+    }
+
+    @Override
+    public AccessControl getAccessControl(Resource resource) {
+        return this.findAccessControl(resource).orElseThrow();
+    }
+
+    @Override
+    public AccessControl getAccessControl(Resource resource, Set<Principal> principals) {
+        return this.findAccessControl(resource, principals).orElseThrow();
     }
 
     @Transactional
     @Override
     public void grantPermission(Permission permission, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource).orElseThrow();
+        var accessControl = this.getAccessControl(resource);
         accessControl.grant(permission, principal);
         this.updateAccessControl(accessControl);
     }
@@ -189,7 +199,7 @@ public class DefaultAccessControlManager implements AccessControlManager {
     @Transactional
     @Override
     public void grantPermissions(Set<Permission> permissions, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource).orElseThrow();
+        var accessControl = this.getAccessControl(resource);
         accessControl.grants(permissions, principal);
         this.updateAccessControl(accessControl);
     }
@@ -197,7 +207,7 @@ public class DefaultAccessControlManager implements AccessControlManager {
     @Transactional
     @Override
     public void revokePermission(Permission permission, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource).orElseThrow();
+        var accessControl = this.getAccessControl(resource);
         accessControl.revoke(permission, principal);
         this.updateAccessControl(accessControl);
     }
@@ -205,7 +215,7 @@ public class DefaultAccessControlManager implements AccessControlManager {
     @Transactional
     @Override
     public void revokePermissions(Set<Permission> permissions, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource).orElseThrow();
+        var accessControl = this.getAccessControl(resource);
         accessControl.revoke(permissions, principal);
         this.updateAccessControl(accessControl);
     }

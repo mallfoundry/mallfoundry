@@ -22,13 +22,15 @@ import java.util.Optional;
 
 public interface ResourceRepository {
 
-    MutableResource create(String id);
+    Resource create(String id);
 
-    MutableResource create(String id, Object resource);
+    Resource create(String id, Object resource);
 
-    MutableResource create(String id, String identifier, String type);
+    Resource create(String id, String identifier, String type);
 
-    MutableResource save(MutableResource resource);
+    Resource save(MutableResource resource);
 
-    Optional<MutableResource> findByTypeAndIdentifier(String type, String identifier);
+    Optional<Resource> findByTypeAndIdentifier(String type, String identifier);
+
+    void delete(Resource resource);
 }

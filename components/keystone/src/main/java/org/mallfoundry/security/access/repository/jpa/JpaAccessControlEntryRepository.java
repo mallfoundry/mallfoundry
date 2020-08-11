@@ -19,10 +19,14 @@
 package org.mallfoundry.security.access.repository.jpa;
 
 import org.mallfoundry.security.access.AccessControlEntryRepository;
+import org.mallfoundry.security.access.Principal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
 
 @Repository
 public interface JpaAccessControlEntryRepository extends
         JpaRepository<JpaAccessControlEntry, String>, AccessControlEntryRepository {
+    void deleteAllByPrincipalIn(Collection<Principal> principal);
 }

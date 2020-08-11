@@ -19,13 +19,31 @@
 package org.mallfoundry.security.access.repository.jpa;
 
 import org.mallfoundry.security.access.Principal;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.Predicate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface JpaPrincipalRepositoryDelegate extends JpaRepository<JpaPrincipal, String> {
-
+public interface JpaPrincipalRepositoryDelegate extends JpaRepository<JpaPrincipal, String>, JpaSpecificationExecutor<JpaPrincipal> {
     Optional<Principal> findByTypeAndName(String type, String name);
+
+
+    default Specification<JpaPrincipal> createSpecification(List<Principal> principals) {
+        return (Specification<JpaPrincipal>) (root, query, criteriaBuilder) -> {
+            var predicates = principals.stream()
+                    .map(principal -> criteriaBuilder.and(criteriaBuilder.equal(root.get("type"),
+                            principal.getType()), criteriaBuilder.equal(root.get("name"), principal.getName())))
+                    .toArray(Predicate[]::new);
+            return criteriaBuilder.or(predicates);
+        };
+    }
+
+    default List<JpaPrincipal> findAll(List<Principal> principals) {
+        return this.findAll(this.createSpecification(principals));
+    }
 }

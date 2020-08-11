@@ -34,6 +34,12 @@ public abstract class PrincipalSupport implements MutablePrincipal {
         }
 
         @Override
+        public Builder id(String id) {
+            this.principal.setId(id);
+            return this;
+        }
+
+        @Override
         public Builder name(String name) {
             this.principal.setName(name);
             return this;

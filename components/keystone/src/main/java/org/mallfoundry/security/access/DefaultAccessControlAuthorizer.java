@@ -53,19 +53,18 @@ public class DefaultAccessControlAuthorizer implements AccessControlAuthorizer {
 
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<Permission> permissions) {
-        resource = this.manager.getResource(resource.getType(), resource.getIdentifier()).orElse(null);
+        resource = this.manager.getResource(resource);
         if (Objects.isNull(resource)) {
             return false;
         }
         principals = principals.stream()
-                .map(principal -> this.manager.getPrincipal(principal.getType(), principal.getName()))
-                .map(op -> op.orElse(null))
+                .map(this.manager::getPrincipal)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableSet());
         if (CollectionUtils.isEmpty(principals)) {
             return false;
         }
-        var accessControl = this.manager.getAccessControl(resource, principals).orElse(null);
+        var accessControl = this.manager.getAccessControl(resource, principals);
         if (Objects.isNull(accessControl)) {
             return false;
         }

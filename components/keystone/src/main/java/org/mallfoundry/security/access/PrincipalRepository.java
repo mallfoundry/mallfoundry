@@ -18,13 +18,20 @@
 
 package org.mallfoundry.security.access;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PrincipalRepository {
 
-    MutablePrincipal create(String id);
+    Principal create(String id);
 
     Principal save(Principal principal);
 
+    List<Principal> saveAll(List<Principal> principals);
+
     Optional<Principal> findByTypeAndName(String type, String name);
+
+    void delete(Principal principal);
+
+    void deleteAll(List<Principal> principals);
 }

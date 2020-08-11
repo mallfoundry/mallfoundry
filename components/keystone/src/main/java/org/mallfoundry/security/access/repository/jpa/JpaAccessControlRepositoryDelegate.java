@@ -21,6 +21,7 @@ package org.mallfoundry.security.access.repository.jpa;
 import org.mallfoundry.security.access.Principal;
 import org.mallfoundry.security.access.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,9 @@ public interface JpaAccessControlRepositoryDelegate extends JpaRepository<JpaAcc
     Optional<JpaAccessControl> findByResource(Resource resource);
 
     @Query("select ac from JpaAccessControl ac JOIN ac.entries ace where ac.resource = ?1 and ace.principal in (?2)")
-    Optional<JpaAccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals);
+    Optional<JpaAccessControl> findByResourceAndPrincipals(JpaResource resource, Set<Principal> principals);
+
+    @Modifying
+    @Query("delete from JpaAccessControl ac where ac.resource.id = ?1")
+    void deleteAllByResource(String resourceId);
 }

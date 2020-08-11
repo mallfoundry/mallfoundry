@@ -30,4 +30,6 @@ public interface AccessControlRepository {
     Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals);
 
     AccessControl save(AccessControl entity);
+
+    void deleteAllByResource(Resource resource);
 }

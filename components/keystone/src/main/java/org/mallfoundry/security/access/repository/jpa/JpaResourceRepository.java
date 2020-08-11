@@ -19,6 +19,7 @@
 package org.mallfoundry.security.access.repository.jpa;
 
 import org.mallfoundry.security.access.MutableResource;
+import org.mallfoundry.security.access.Resource;
 import org.mallfoundry.security.access.ResourceRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
@@ -35,27 +36,32 @@ public class JpaResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public MutableResource create(String id) {
+    public Resource create(String id) {
         return new JpaResource(id);
     }
 
     @Override
-    public MutableResource create(String id, Object resource) {
+    public Resource create(String id, Object resource) {
         return new JpaResource(id, resource);
     }
 
     @Override
-    public MutableResource create(String id, String identifier, String type) {
+    public Resource create(String id, String identifier, String type) {
         return new JpaResource(id, identifier, type);
     }
 
     @Override
-    public MutableResource save(MutableResource resource) {
+    public Resource save(MutableResource resource) {
         return this.repository.save(JpaResource.of(resource));
     }
 
     @Override
-    public Optional<MutableResource> findByTypeAndIdentifier(String type, String identifier) {
+    public Optional<Resource> findByTypeAndIdentifier(String type, String identifier) {
         return CastUtils.cast(this.repository.findByTypeAndIdentifier(type, identifier));
+    }
+
+    @Override
+    public void delete(Resource resource) {
+        this.repository.delete(JpaResource.of(resource));
     }
 }

@@ -44,16 +44,21 @@ public class JpaAccessControlRepository implements AccessControlRepository {
 
     @Override
     public Optional<AccessControl> findByResource(Resource resource) {
-        return CastUtils.cast(repository.findByResource(resource));
+        return CastUtils.cast(this.repository.findByResource(JpaResource.of(resource)));
     }
 
     @Override
     public Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals) {
-        return CastUtils.cast(this.repository.findByResourceAndPrincipals(resource, principals));
+        return CastUtils.cast(this.repository.findByResourceAndPrincipals(JpaResource.of(resource), principals));
     }
 
     @Override
     public AccessControl save(AccessControl control) {
         return this.repository.save(JpaAccessControl.of(control));
+    }
+
+    @Override
+    public void deleteAllByResource(Resource resource) {
+        this.repository.deleteAllByResource(JpaResource.of(resource).getId());
     }
 }
