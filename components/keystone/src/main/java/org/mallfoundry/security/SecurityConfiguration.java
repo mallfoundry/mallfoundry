@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security;
 
+import org.mallfoundry.security.access.LocaleAccessDeniedHandler;
 import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationProvider;
 import org.mallfoundry.security.authentication.PhonePasswordCredentialsAuthenticationProvider;
 import org.mallfoundry.security.token.AccessTokenAuthenticationFilter;
@@ -73,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().permitAll();
         http.csrf().disable();
         http.cors();
-//        http.formLogin();
+        http.exceptionHandling().accessDeniedHandler(new LocaleAccessDeniedHandler());
         http.addFilterAfter(new AccessTokenAuthenticationFilter(this.authenticationManager()), BasicAuthenticationFilter.class);
     }
 }
