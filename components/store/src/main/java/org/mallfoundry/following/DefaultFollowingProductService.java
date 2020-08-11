@@ -66,10 +66,10 @@ public class DefaultFollowingProductService implements FollowingProductService, 
                 .orElseGet(() -> new NullFollowingProduct(following));
     }
 
-    private Follower requiredFollower(String followerId) {
-        return this.userService.getUser(followerId)
-                .map(DelegatingImmutableFollower::new)
-                .orElseThrow();
+    private Follower getFollower(String followerId) {
+        var userId = this.userService.createUserId(followerId);
+        var user = this.userService.getUser(userId);
+        return new DelegatingImmutableFollower(user);
     }
 
     @Transactional
@@ -77,7 +77,7 @@ public class DefaultFollowingProductService implements FollowingProductService, 
     public void followProduct(String followerId, String productId) {
         var following = this.productFollowingRepository.create(followerId, productId);
         var followingProduct = this.requiredFollowingProduct(following);
-        followingProduct = this.invokePreProcessBeforeFollowProduct(this.requiredFollower(followerId), followingProduct);
+        followingProduct = this.invokePreProcessBeforeFollowProduct(this.getFollower(followerId), followingProduct);
         following.setProductId(followingProduct.getId());
         if (this.productFollowingRepository.exists(following)) {
             throw new FollowingException("The follower has followed to this product");
@@ -90,7 +90,7 @@ public class DefaultFollowingProductService implements FollowingProductService, 
     public void unfollowProduct(String followerId, String productId) {
         var following = this.productFollowingRepository.create(followerId, productId);
         var followingProduct = this.requiredFollowingProduct(following);
-        followingProduct = this.invokePreProcessBeforeUnfollowProduct(this.requiredFollower(followerId), followingProduct);
+        followingProduct = this.invokePreProcessBeforeUnfollowProduct(this.getFollower(followerId), followingProduct);
         following.setProductId(followingProduct.getId());
         this.productFollowingRepository.delete(following);
     }
@@ -99,7 +99,7 @@ public class DefaultFollowingProductService implements FollowingProductService, 
     public boolean checkFollowingProduct(String followerId, String productId) {
         var following = this.productFollowingRepository.create(followerId, productId);
         var followingProduct = this.requiredFollowingProduct(following);
-        followingProduct = this.invokePreProcessBeforeCheckFollowingProduct(this.requiredFollower(followerId), followingProduct);
+        followingProduct = this.invokePreProcessBeforeCheckFollowingProduct(this.getFollower(followerId), followingProduct);
         following.setProductId(followingProduct.getId());
         return this.productFollowingRepository.exists(following);
     }

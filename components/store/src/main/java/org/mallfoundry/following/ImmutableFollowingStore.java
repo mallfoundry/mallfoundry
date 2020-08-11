@@ -18,6 +18,7 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.identity.User;
 import org.mallfoundry.store.StoreEdition;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreStatus;
@@ -202,7 +203,7 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void changeOwner(String ownerId) {
+    default void changeOwner(User ownerId) {
 
     }
 

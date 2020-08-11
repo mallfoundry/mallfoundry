@@ -65,17 +65,17 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
                 .orElseGet(() -> new NullFollowingStore(following));
     }
 
-    private Follower requiredFollower(String followerId) {
-        return this.userService.getUser(followerId)
-                .map(DelegatingImmutableFollower::new)
-                .orElseThrow();
+    private Follower getFollower(String followerId) {
+        var userId = this.userService.createUserId(followerId);
+        var user = this.userService.getUser(userId);
+        return new DelegatingImmutableFollower(user);
     }
 
     @Override
     public void followStore(String followerId, String storeId) {
         var following = this.storeFollowingRepository.create(followerId, storeId);
         var followingStore = Function.<FollowingStore>identity()
-                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeFollowStore(this.requiredFollower(followerId), aStore))
+                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeFollowStore(this.getFollower(followerId), aStore))
                 .compose(this::requiredFollowingStore).apply(following);
         following.setStoreId(followingStore.getId());
         if (this.storeFollowingRepository.exists(following)) {
@@ -89,7 +89,7 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
     public void unfollowStore(String followerId, String storeId) {
         var following = this.storeFollowingRepository.create(followerId, storeId);
         var followingStore = Function.<FollowingStore>identity()
-                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeUnfollowStore(this.requiredFollower(followerId), aStore))
+                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeUnfollowStore(this.getFollower(followerId), aStore))
                 .compose(this::requiredFollowingStore).apply(following);
         following.setStoreId(followingStore.getId());
         this.storeFollowingRepository.delete(following);
@@ -99,7 +99,7 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
     public boolean checkFollowingStore(String followerId, String storeId) {
         var following = this.storeFollowingRepository.create(followerId, storeId);
         var followingStore = Function.<FollowingStore>identity()
-                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeCheckFollowingStore(this.requiredFollower(followerId), aStore))
+                .<FollowingStore>compose(aStore -> this.invokePreProcessBeforeCheckFollowingStore(this.getFollower(followerId), aStore))
                 .compose(this::requiredFollowingStore).apply(following);
         following.setStoreId(followingStore.getId());
         return this.storeFollowingRepository.exists(following);

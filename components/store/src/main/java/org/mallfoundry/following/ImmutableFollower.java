@@ -19,10 +19,16 @@
 package org.mallfoundry.following;
 
 import org.mallfoundry.identity.Gender;
+import org.mallfoundry.identity.UserId;
 
 import java.util.List;
 
 public interface ImmutableFollower extends Follower {
+
+    @Override
+    default UserId toId() {
+        return null;
+    }
 
     @Override
     default void setUsername(String username) {
