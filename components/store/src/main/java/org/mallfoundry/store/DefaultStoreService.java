@@ -81,6 +81,11 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     }
 
     @Override
+    public StoreId createStoreId(String id) {
+        return this.requiredStore(id).toId();
+    }
+
+    @Override
     public Store createStore(String id) {
         return this.storeRepository.create(id);
     }
@@ -89,36 +94,33 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     @Override
     public Store createStore(Store store) {
         store = this.invokePreProcessBeforeCreateStore(store);
-        store.changeOwner(SubjectHolder.getSubject().getId());
+        store.changeOwner(SubjectHolder.getSubject().toUser());
         if (Objects.isNull(store.getLogo())) {
             store.setLogo(storeConfiguration.getDefaultLogo());
         }
         store.create();
-        var savedStore = this.storeRepository.save(store);
+        store = this.storeRepository.save(store);
         this.storeBlobService.initializeBucket(store.getId());
         this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
-        return savedStore;
+        return store;
     }
 
     @Transactional
     @Override
-    public StoreInitializing initializeStore(StoreId storeId) {
-        var store = this.requiredStore(storeId);
-        if (!store.getStatus().isPending()) {
-            throw new StoreException("");
-        }
+    public StoreInitializing initializeStore(String id) {
+        var store = this.requiredStore(id);
         store.initialize();
         var savedStore = this.storeRepository.save(store);
         return this.storeInitializingManager.initializeStore(savedStore);
     }
 
     @Override
-    public Optional<StoreInitializing> getStoreInitializing(StoreId storeId) {
-        return this.storeInitializingManager.getStoreInitializing(storeId);
+    public Optional<StoreInitializing> getStoreInitializing(String id) {
+        return this.storeInitializingManager.getStoreInitializing(id);
     }
 
-    private Store requiredStore(StoreId storeId) {
-        return this.storeRepository.findById(storeId.getId()).orElseThrow();
+    private Store requiredStore(String storeId) {
+        return this.storeRepository.findById(storeId).orElseThrow();
     }
 
     private Store updateStore(final Store source, final Store dest) {
@@ -137,7 +139,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .<Store>compose(aStore -> this.updateStore(source, aStore))
                 .compose(this::invokePreProcessBeforeUpdateStore)
                 .compose(this::requiredStore)
-                .compose(Store::toId)
+                .compose(Store::getId)
                 .apply(source);
     }
 
