@@ -18,34 +18,6 @@
 
 package org.mallfoundry.identity;
 
-import java.util.Optional;
-
-public interface UserService {
-
-    UserId createUserId(String id);
-
-    UserId createUserId(String tenantId, String id);
-
-    User createUser(UserId userId);
-
-    User createUser(UserRegistration registration) throws UserException;
-
-    void deleteUser(UserId userId);
-
-    void changePassword(UserId userId, String password, String originalPassword) throws UserException;
-
-    void resetPassword(UserId userId, String password) throws UserException;
-
-    User updateUser(User user);
-
-    User getCurrentUser();
-
-    User getUser(UserId userId);
-
-    Optional<User> findUser(UserId userId);
-
-    Optional<User> getUserByUsername(String username);
-
-    Optional<User> getUserByPhone(String countryCode, String phone);
-
+public interface UserId extends TenantOwnership {
+    String getId();
 }

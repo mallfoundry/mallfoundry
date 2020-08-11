@@ -25,6 +25,8 @@ import java.util.List;
 
 public interface User extends TenantOwnership, ObjectBuilder.ToBuilder<User.Builder> {
 
+    UserId toId();
+
     String getId();
 
     String getUsername();
