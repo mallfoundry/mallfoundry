@@ -27,6 +27,11 @@ public class ImmutableStoreId implements StoreId {
     private final String id;
     private final String tenantId;
 
+    public ImmutableStoreId(String id) {
+        this.id = id;
+        this.tenantId = null;
+    }
+
     public ImmutableStoreId(String tenantId, String id) {
         this.tenantId = tenantId;
         this.id = id;

@@ -53,7 +53,7 @@ public class StoreResourceV1 {
 
     @GetMapping("/stores/{id}")
     public Optional<Store> getStore(@PathVariable("id") String id) {
-        return this.storeService.getStore(id);
+        return this.storeService.findStore(id);
     }
 
 

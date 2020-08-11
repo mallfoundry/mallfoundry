@@ -60,7 +60,7 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
     }
 
     private FollowingStore requiredFollowingStore(StoreFollowing following) {
-        return this.storeService.getStore(following.getStoreId())
+        return this.storeService.findStore(following.getStoreId())
                 .<FollowingStore>map(store -> new DelegatingImmutableFollowingStore(store, following))
                 .orElseGet(() -> new NullFollowingStore(following));
     }

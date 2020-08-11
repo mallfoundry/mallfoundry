@@ -82,7 +82,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Override
     public StoreId createStoreId(String id) {
-        return this.requiredStore(id).toId();
+        return new ImmutableStoreId(id);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     @Transactional
     @Override
     public StoreInitializing initializeStore(String id) {
-        var store = this.requiredStore(id);
+        var store = this.getStore(id);
         store.initialize();
         var savedStore = this.storeRepository.save(store);
         return this.storeInitializingManager.initializeStore(savedStore);
@@ -119,7 +119,8 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         return this.storeInitializingManager.getStoreInitializing(id);
     }
 
-    private Store requiredStore(String storeId) {
+    @Override
+    public Store getStore(String storeId) {
         return this.storeRepository.findById(storeId).orElseThrow();
     }
 
@@ -138,7 +139,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .compose(this.storeRepository::save)
                 .<Store>compose(aStore -> this.updateStore(source, aStore))
                 .compose(this::invokePreProcessBeforeUpdateStore)
-                .compose(this::requiredStore)
+                .compose(this::getStore)
                 .compose(Store::getId)
                 .apply(source);
     }
@@ -148,8 +149,8 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public void cancelStore(String storeId) {
         var store = Function.<Store>identity()
                 .compose(this::invokePreProcessBeforeCancelStore)
-                .compose(this::requiredStore)
-                .apply(null);
+                .compose(this::getStore)
+                .apply(storeId);
         this.storeRepository.delete(store);
         this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
     }
@@ -164,7 +165,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Store> getStore(String id) {
+    public Optional<Store> findStore(String id) {
         return this.storeRepository.findById(id)
                 .map(this::invokePostProcessAfterGetStore);
     }

@@ -88,7 +88,7 @@ public class DefaultCheckoutService implements CheckoutService {
             var order = this.findOrderByStoreId(orders, product.getStoreId())
                     .orElseGet(() -> this.orderService.createOrder((String) null).toBuilder()
                             .shippingAddress(checkout.getShippingAddress()).build());
-            var store = this.storeService.getStore(product.getStoreId()).orElseThrow();
+            var store = this.storeService.getStore(product.getStoreId());
             order.setStoreId(store.getId());
             order.setStoreName(store.getName());
             order.setSource(checkout.getSource());

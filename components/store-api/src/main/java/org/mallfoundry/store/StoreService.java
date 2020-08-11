@@ -46,7 +46,9 @@ public interface StoreService {
 
     boolean existsStore(String id);
 
-    Optional<Store> getStore(String id);
+    Store getStore(String id);
+
+    Optional<Store> findStore(String id);
 
     SliceList<Store> getStores(StoreQuery query);
 
