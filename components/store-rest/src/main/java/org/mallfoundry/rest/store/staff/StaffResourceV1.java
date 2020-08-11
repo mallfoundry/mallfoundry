@@ -73,9 +73,9 @@ public class StaffResourceV1 {
 
 
     @GetMapping("/stores/{store_id}/staffs/{staff_id}")
-    public Optional<Staff> getStaff(@PathVariable("store_id") String storeId,
+    public Optional<Staff> findStaff(@PathVariable("store_id") String storeId,
                                     @PathVariable("staff_id") String staffId) {
-        return this.staffService.getStaff(this.staffService.createStaffId(storeId, staffId));
+        return this.staffService.findStaff(this.staffService.createStaffId(storeId, staffId));
     }
 
     @GetMapping("/stores/{store_id}/staffs")
