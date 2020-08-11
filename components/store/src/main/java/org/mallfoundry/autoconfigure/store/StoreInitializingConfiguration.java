@@ -19,7 +19,9 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.security.access.AccessControlManager;
 import org.mallfoundry.store.initializing.DelegatingStoreInitializer;
+import org.mallfoundry.store.initializing.StoreAccessResourceInitializer;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingExecutor;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingManager;
 import org.mallfoundry.store.initializing.StoreConfigurationInitializer;
@@ -67,5 +69,10 @@ public class StoreInitializingConfiguration {
     @Bean
     public StoreStaffsInitializer storeStaffsInitializer(StaffService staffService, RoleService roleService, UserService userService) {
         return new StoreStaffsInitializer(staffService, roleService, userService);
+    }
+
+    @Bean
+    public StoreAccessResourceInitializer storeAccessResourceInitializer(AccessControlManager accessControlManager) {
+        return new StoreAccessResourceInitializer(accessControlManager);
     }
 }
