@@ -80,11 +80,23 @@ public class UserDetailsSubject implements UserDetails, Subject {
         return true;
     }
 
+    @Override
     public String getId() {
         return this.user.getId();
     }
 
+    @Override
     public String getNickname() {
         return this.user.getNickname();
+    }
+
+    @Override
+    public String getTenantId() {
+        return this.user.getTenantId();
+    }
+
+    @Override
+    public User toUser() {
+        return this.user;
     }
 }
