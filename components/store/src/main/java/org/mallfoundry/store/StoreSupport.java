@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.identity.User;
+
 import java.util.Date;
 
 public abstract class StoreSupport implements MutableStore {
@@ -28,8 +30,9 @@ public abstract class StoreSupport implements MutableStore {
     }
 
     @Override
-    public void changeOwner(String ownerId) {
-        this.setOwnerId(ownerId);
+    public void changeOwner(User user) {
+        this.setTenantId(user.getTenantId());
+        this.setOwnerId(user.getId());
     }
 
     @Override
@@ -72,12 +75,6 @@ public abstract class StoreSupport implements MutableStore {
         @Override
         public Builder logo(String logo) {
             this.store.setLogo(logo);
-            return this;
-        }
-
-        @Override
-        public Builder ownerId(String ownerId) {
-            this.store.setOwnerId(ownerId);
             return this;
         }
 
