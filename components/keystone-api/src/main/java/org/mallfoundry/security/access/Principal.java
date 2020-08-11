@@ -41,6 +41,8 @@ public interface Principal extends Serializable {
 
     interface Builder extends ObjectBuilder<Principal> {
 
+        Builder id(String id);
+
         Builder name(String name);
 
         Builder type(String type);

@@ -19,6 +19,7 @@
 package org.mallfoundry.security.access;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,23 +29,27 @@ public interface AccessControlManager {
 
     Principal addPrincipal(Principal principal);
 
-    Principal addPrincipal(String type, String name);
+    List<Principal> addPrincipals(List<Principal> principals);
 
-    Optional<Principal> getPrincipal(String type, String name);
+    Optional<Principal> findPrincipal(Principal principal);
+
+    Principal getPrincipal(Principal principal);
+
+    void removePrincipal(Principal principal);
+
+    void removePrincipals(List<Principal> principals);
 
     Resource createResource(Object resource);
 
     Resource createResource(String type, Serializable identifier);
 
-    Resource addResource(Object resource);
-
     Resource addResource(Resource resource);
 
-    Resource addResource(String type, Serializable identifier);
+    Resource getResource(Resource resource);
 
-    Optional<Resource> getResource(Object resource);
+    Optional<Resource> findResource(Resource resource);
 
-    Optional<Resource> getResource(String type, Serializable identifier);
+    void removeResource(Resource resource);
 
     Permission createPermission(String mask);
 
@@ -52,9 +57,13 @@ public interface AccessControlManager {
 
     AccessControl addAccessControl(AccessControl accessControl);
 
-    Optional<AccessControl> getAccessControl(Resource resource);
+    Optional<AccessControl> findAccessControl(Resource resource);
 
-    Optional<AccessControl> getAccessControl(Resource resource, Set<Principal> principals);
+    Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals);
+
+    AccessControl getAccessControl(Resource resource);
+
+    AccessControl getAccessControl(Resource resource, Set<Principal> principals);
 
     void grantPermission(Permission permission, Resource resource, Principal principal);
 
