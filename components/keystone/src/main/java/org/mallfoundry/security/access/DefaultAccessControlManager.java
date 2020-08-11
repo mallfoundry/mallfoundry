@@ -138,7 +138,7 @@ public class DefaultAccessControlManager implements AccessControlManager {
     public void removeResource(Resource resource) {
         resource = this.findResource(resource).orElse(null);
         if (Objects.nonNull(resource)) {
-            this.accessControlRepository.deleteAllByResource(resource);
+            this.findAccessControl(resource).ifPresent(this.accessControlRepository::delete);
             this.resourceRepository.delete(resource);
         }
     }

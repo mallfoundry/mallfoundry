@@ -58,7 +58,7 @@ public class JpaAccessControlRepository implements AccessControlRepository {
     }
 
     @Override
-    public void deleteAllByResource(Resource resource) {
-        this.repository.deleteAllByResource(JpaResource.of(resource).getId());
+    public void delete(AccessControl control) {
+        this.repository.delete(JpaAccessControl.of(control));
     }
 }
