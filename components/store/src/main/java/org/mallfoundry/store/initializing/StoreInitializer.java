@@ -19,9 +19,8 @@
 package org.mallfoundry.store.initializing;
 
 import org.mallfoundry.store.Store;
-import org.mallfoundry.util.Position;
 
-public interface StoreInitializer extends Position {
+public interface StoreInitializer {
 
     int INITIAL_POSITION = 100;
 

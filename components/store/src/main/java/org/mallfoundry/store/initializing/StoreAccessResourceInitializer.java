@@ -18,46 +18,31 @@
 
 package org.mallfoundry.store.initializing;
 
+import org.mallfoundry.security.access.AccessControlManager;
+import org.mallfoundry.security.access.Principal;
+import org.mallfoundry.security.access.Resource;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.StoreId;
-import org.mallfoundry.store.security.RoleService;
 import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.initializing.StoreInitializer.POSITION_STEP;
 
-/**
- * 商铺角色初始化。
- *
- * @author Zhi Tang
- */
-@Order(POSITION_STEP * 3)
-public class StoreRolesInitializer implements StoreInitializer {
+@Order(POSITION_STEP * 2)
+public class StoreAccessResourceInitializer implements StoreInitializer {
 
-    private final RoleService roleService;
+    private final AccessControlManager manager;
 
-    public StoreRolesInitializer(RoleService roleService) {
-        this.roleService = roleService;
+    public StoreAccessResourceInitializer(AccessControlManager manager) {
+        this.manager = manager;
     }
 
     @Override
     public void doInitialize(Store store) {
-        var storeId = store.toId();
-        this.clearRoles(storeId);
-        this.addSuperRole(storeId);
-        this.addGeneralRoles(storeId);
-    }
-
-    private void clearRoles(StoreId storeId) {
-        this.roleService.clearRoles(storeId);
-    }
-
-    private void addSuperRole(StoreId storeId) {
-        var superRole = this.roleService.createSuperRole(storeId);
-        superRole = this.roleService.addRole(superRole);
-        this.roleService.changeSuperRole(superRole.toId());
-    }
-
-    private void addGeneralRoles(StoreId storeId) {
-
+        var resource = this.manager.createResource(Resource.STORE_TYPE, store.getId());
+        this.manager.removeResource(resource);
+        resource = this.manager.addResource(resource);
+        var owner = this.manager.createPrincipal(Principal.USER_TYPE, store.getOwnerId());
+        owner = this.manager.addPrincipal(owner);
+        var accessControl = this.manager.createAccessControl(owner, resource);
+        this.manager.addAccessControl(accessControl);
     }
 }

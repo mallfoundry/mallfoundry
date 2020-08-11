@@ -18,37 +18,29 @@
 
 package org.mallfoundry.store.initializing;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.util.Positions;
 
 import java.util.List;
 
 public class DelegatingStoreInitializer implements StoreInitializer {
 
-    @Getter
-    @Setter
-    private int position = 0;
-
     private final List<StoreInitializer> initializes;
 
     public DelegatingStoreInitializer(List<StoreInitializer> initializes) {
         this.initializes = ListUtils.emptyIfNull(initializes);
-        Positions.sort(this.initializes);
     }
 
     @Override
     public void doInitialize(Store store) {
-        for (var initializer : initializes) {
+        for (var initializer : this.initializes) {
             initializer.doInitialize(store);
         }
     }
 
     @Override
     public void doConfigure(Store store) {
-        for (var initializer : initializes) {
+        for (var initializer : this.initializes) {
             initializer.doConfigure(store);
         }
     }

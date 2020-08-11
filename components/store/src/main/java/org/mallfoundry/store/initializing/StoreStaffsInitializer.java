@@ -24,7 +24,11 @@ import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.StaffService;
 import org.mallfoundry.store.staff.StaffType;
+import org.springframework.core.annotation.Order;
 
+import static org.mallfoundry.store.initializing.StoreInitializer.POSITION_STEP;
+
+@Order(POSITION_STEP * 4)
 public class StoreStaffsInitializer implements StoreInitializer {
 
     private final StaffService staffService;
@@ -37,11 +41,6 @@ public class StoreStaffsInitializer implements StoreInitializer {
         this.staffService = staffService;
         this.roleService = roleService;
         this.userService = userService;
-    }
-
-    @Override
-    public int getPosition() {
-        return POSITION_STEP * 3;
     }
 
     @Override

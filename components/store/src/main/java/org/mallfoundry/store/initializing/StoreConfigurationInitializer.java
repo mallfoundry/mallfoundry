@@ -22,12 +22,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.configuration.ConfigurationHolder;
 import org.mallfoundry.store.Store;
+import org.springframework.core.annotation.Order;
+
+import static org.mallfoundry.store.initializing.StoreInitializer.INITIAL_POSITION;
 
 @Getter
 @Setter
+@Order(INITIAL_POSITION)
 public class StoreConfigurationInitializer implements StoreInitializer {
-
-    private int position = INITIAL_POSITION;
 
     @Override
     public void doInitialize(Store store) {
