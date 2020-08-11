@@ -43,6 +43,8 @@ public class StringExpressionAuthorizeHolderStrategy implements AuthorizeHolderS
         var invocation = new StringExpressionMethodInvocation(expression);
         try {
             this.securityInterceptor.invoke(invocation);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable t) {
             throw new AccessDeniedException(t);
         }
