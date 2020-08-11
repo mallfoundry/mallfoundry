@@ -45,17 +45,18 @@ public class UserResourceV1 {
     }
 
     @GetMapping("/users/{id}")
-    public Optional<UserResponse> getUser(@PathVariable("id") String id) {
-        return this.userService.getUser(id).map(UserResponse::of);
+    public Optional<UserResponse> findUser(@PathVariable("id") String id) {
+        return this.userService.findUser(this.userService.createUserId(id)).map(UserResponse::of);
     }
 
     @GetMapping("/users/current")
-    public Optional<UserResponse> getCurrentUser() {
-        return this.userService.getCurrentUser().map(UserResponse::of);
+    public UserResponse getCurrentUser() {
+        var user = this.userService.getCurrentUser();
+        return UserResponse.of(user);
     }
 
     @PatchMapping("/users/{id}")
     public void updateUser(@PathVariable("id") String id, @RequestBody UserRequest request) {
-        this.userService.updateUser(request.assignTo(this.userService.createUser(id)));
+        this.userService.updateUser(request.assignTo(this.userService.createUser(this.userService.createUserId(id))));
     }
 }
