@@ -32,7 +32,7 @@ import java.util.List;
  */
 public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Builder> {
 
-    RoleId toRoleId();
+    RoleId toId();
 
     String getId();
 
