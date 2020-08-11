@@ -26,7 +26,9 @@ import java.io.Serializable;
  */
 public interface Position extends Comparable<Position>, Serializable {
 
-    void setPosition(int position);
+    default void setPosition(int position) {
+
+    }
 
     int getPosition();
 
