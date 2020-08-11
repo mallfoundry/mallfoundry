@@ -37,9 +37,11 @@ public interface RoleRepository {
 
     List<Role> findAllById(Collection<RoleId> ids);
 
+    List<Role> findAllByStoreId(StoreId storeId);
+
     SliceList<Role> findAll(RoleQuery query);
 
     void delete(Role role);
 
-    void deleteAllByStoreId(StoreId storeId);
+    void deleteAll(List<Role> roles);
 }
