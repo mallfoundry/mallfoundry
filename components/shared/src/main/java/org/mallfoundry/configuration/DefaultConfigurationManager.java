@@ -20,6 +20,8 @@ package org.mallfoundry.configuration;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 public class DefaultConfigurationManager implements ConfigurationManager {
 
     private final ConfigurationIdRetrievalStrategy idRetrievalStrategy;
@@ -38,6 +40,11 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     }
 
     @Override
+    public ConfigurationId createConfigurationId(ConfigurationScope scope, String id) {
+        return this.createConfigurationId(null, scope, id);
+    }
+
+    @Override
     public ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id) {
         return new ImmutableConfigurationId(tenantId, scope, id);
     }
@@ -47,10 +54,6 @@ public class DefaultConfigurationManager implements ConfigurationManager {
         return this.repository.create(configId);
     }
 
-    private Configuration requiredConfiguration(ConfigurationId configId) {
-        return this.repository.findById(configId).orElseThrow();
-    }
-
     @Override
     public Configuration getConfiguration(Object entity) {
         return this.getConfiguration(this.createConfigurationId(entity));
@@ -58,7 +61,7 @@ public class DefaultConfigurationManager implements ConfigurationManager {
 
     @Override
     public Configuration getConfiguration(ConfigurationId configId) {
-        return this.requiredConfiguration(configId);
+        return this.repository.findById(configId).orElseThrow();
     }
 
     @Transactional
@@ -72,14 +75,19 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     public void emptyConfiguration(Object entity) {
         var configId = this.createConfigurationId(entity);
         this.repository.findById(configId).ifPresent(this.repository::delete);
-        var config = this.createConfiguration(configId);
+        var tenantId = configId.getTenantId();
+        Configuration config =
+                Objects.isNull(tenantId)
+                        ? this.createConfiguration(configId)
+                        : this.getConfiguration(this.createConfigurationId(ConfigurationScope.TENANT, tenantId))
+                                .createConfiguration(configId);
         this.saveConfiguration(config);
     }
 
     @Transactional
     @Override
     public void deleteConfiguration(ConfigurationId configId) {
-        var config = this.requiredConfiguration(configId);
+        var config = this.getConfiguration(configId);
         this.repository.delete(config);
     }
 
