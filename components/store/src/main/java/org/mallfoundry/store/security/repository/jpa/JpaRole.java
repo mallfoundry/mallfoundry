@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.store.security.Role;
+import org.mallfoundry.store.security.RoleId;
 import org.mallfoundry.store.security.RoleSupport;
 import org.mallfoundry.store.security.RoleType;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +58,10 @@ public class JpaRole extends RoleSupport {
     private String storeId;
 
     @NotBlank
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @NotBlank
     @Column(name = "name_")
     private String name;
 
@@ -81,9 +86,10 @@ public class JpaRole extends RoleSupport {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public JpaRole(String storeId, String id) {
-        this.storeId = storeId;
-        this.id = id;
+    public JpaRole(RoleId id) {
+        this.tenantId = id.getTenantId();
+        this.storeId = id.getStoreId();
+        this.id = id.getId();
     }
 
     public static JpaRole of(Role role) {
