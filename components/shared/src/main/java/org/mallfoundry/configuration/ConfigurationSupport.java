@@ -46,13 +46,17 @@ public abstract class ConfigurationSupport implements Configuration {
     }
 
     @Override
-    public Object getProperty(String key) {
-        return null;
+    public String getProperty(String key) {
+        return this.getProperty(key, null);
     }
 
     @Override
-    public Object getProperty(String key, String defaultValue) {
-        return null;
+    public String getProperty(String key, String defaultValue) {
+        var value = this.getProperties().getOrDefault(key, defaultValue);
+        if (Objects.isNull(value) && Objects.nonNull(this.getParent())) {
+            return this.getParent().getProperty(key, defaultValue);
+        }
+        return value;
     }
 
     @Override
