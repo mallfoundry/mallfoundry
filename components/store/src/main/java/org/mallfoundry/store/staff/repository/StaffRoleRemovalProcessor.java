@@ -21,6 +21,9 @@ package org.mallfoundry.store.staff.repository;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleProcessor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class StaffRoleRemovalProcessor implements RoleProcessor {
 
     private final StaffRoleRepository repository;
@@ -33,5 +36,12 @@ public class StaffRoleRemovalProcessor implements RoleProcessor {
     public Role preProcessAfterDeleteRole(Role role) {
         this.repository.deleteAllByRoleId(role.toId());
         return role;
+    }
+
+    @Override
+    public List<Role> preProcessAfterClearRoles(List<Role> roles) {
+        var roleIds = roles.stream().map(Role::toId).collect(Collectors.toUnmodifiableSet());
+        this.repository.deleteAllByRoleIds(roleIds);
+        return roles;
     }
 }

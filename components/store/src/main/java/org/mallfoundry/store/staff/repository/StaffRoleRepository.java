@@ -20,6 +20,11 @@ package org.mallfoundry.store.staff.repository;
 
 import org.mallfoundry.store.security.RoleId;
 
+import java.util.Set;
+
 public interface StaffRoleRepository {
+
     void deleteAllByRoleId(RoleId roleId);
+
+    void deleteAllByRoleIds(Set<RoleId> roleIds);
 }

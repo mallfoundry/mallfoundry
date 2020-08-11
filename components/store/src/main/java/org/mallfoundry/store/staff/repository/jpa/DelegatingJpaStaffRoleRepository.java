@@ -21,6 +21,9 @@ package org.mallfoundry.store.staff.repository.jpa;
 import org.mallfoundry.store.security.RoleId;
 import org.mallfoundry.store.staff.repository.StaffRoleRepository;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class DelegatingJpaStaffRoleRepository implements StaffRoleRepository {
 
     private final JpaStaffRoleRepository repository;
@@ -32,5 +35,11 @@ public class DelegatingJpaStaffRoleRepository implements StaffRoleRepository {
     @Override
     public void deleteAllByRoleId(RoleId roleId) {
         this.repository.deleteAllByRoleId(roleId.getId());
+    }
+
+    @Override
+    public void deleteAllByRoleIds(Set<RoleId> roleIds) {
+        var ids = roleIds.stream().map(RoleId::getId).collect(Collectors.toUnmodifiableSet());
+        this.repository.deleteAllByRoleIdIn(ids);
     }
 }

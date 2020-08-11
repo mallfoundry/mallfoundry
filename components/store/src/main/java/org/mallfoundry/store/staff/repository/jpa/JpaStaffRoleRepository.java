@@ -20,6 +20,11 @@ package org.mallfoundry.store.staff.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Set;
+
 public interface JpaStaffRoleRepository extends JpaRepository<JpaStaffRole, JpaStaffRoleId> {
+
     void deleteAllByRoleId(String roleId);
+
+    void deleteAllByRoleIdIn(Set<String> roleIds);
 }
