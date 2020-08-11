@@ -18,12 +18,16 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.initializing.DelegatingStoreInitializer;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingExecutor;
 import org.mallfoundry.store.initializing.StoreAsyncInitializingManager;
 import org.mallfoundry.store.initializing.StoreConfigurationInitializer;
 import org.mallfoundry.store.initializing.StoreInitializer;
-import org.mallfoundry.store.initializing.StoreRoleInitializer;
+import org.mallfoundry.store.initializing.StoreRolesInitializer;
+import org.mallfoundry.store.initializing.StoreStaffsInitializer;
+import org.mallfoundry.store.security.RoleService;
+import org.mallfoundry.store.staff.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +60,12 @@ public class StoreInitializingConfiguration {
     }
 
     @Bean
-    public StoreRoleInitializer storeRoleInitializer() {
-        return new StoreRoleInitializer();
+    public StoreRolesInitializer storeRolesInitializer(RoleService roleService) {
+        return new StoreRolesInitializer(roleService);
+    }
+
+    @Bean
+    public StoreStaffsInitializer storeStaffsInitializer(StaffService staffService, RoleService roleService, UserService userService) {
+        return new StoreStaffsInitializer(staffService, roleService, userService);
     }
 }
