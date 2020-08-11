@@ -27,10 +27,17 @@ import org.mallfoundry.store.Store;
 @Setter
 public class StoreConfigurationInitializer implements StoreInitializer {
 
-    private int position = 200;
+    private int position = INITIAL_POSITION;
 
     @Override
     public void doInitialize(Store store) {
-        ConfigurationHolder.emptyConfiguration(store);
+        var stage = StoreInitializingResources.getStoreInitializing(store.getId()).addStage("商铺配置信息初始化");
+        try {
+            ConfigurationHolder.emptyConfiguration(store);
+            stage.success();
+        } catch (RuntimeException e) {
+            stage.failure();
+            throw e;
+        }
     }
 }
