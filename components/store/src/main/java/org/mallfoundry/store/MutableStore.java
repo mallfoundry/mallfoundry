@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface MutableStore extends Store {
 
+    void setTenantId(String tenantId);
+
     void setOwnerId(String ownerId);
 
     void setStatus(StoreStatus status);
