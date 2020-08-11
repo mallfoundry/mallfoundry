@@ -20,6 +20,7 @@ package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.store.DefaultStoreConfiguration;
 import org.mallfoundry.store.DefaultStoreService;
+import org.mallfoundry.store.StoreAuthorizeProcessor;
 import org.mallfoundry.store.StoreConfiguration;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
@@ -72,5 +73,10 @@ public class StoreAutoConfiguration {
     @Bean
     public StoreIdentityProcessor storeIdentityProcessor() {
         return new StoreIdentityProcessor();
+    }
+
+    @Bean
+    public StoreAuthorizeProcessor storeAuthorizeProcessor() {
+        return new StoreAuthorizeProcessor();
     }
 }
