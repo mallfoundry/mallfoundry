@@ -21,7 +21,7 @@ package org.mallfoundry.identity.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.mallfoundry.identity.Gender;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserId;
@@ -33,9 +33,9 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 @Getter
 @Setter
@@ -81,9 +81,9 @@ public class JpaUser extends UserSupport {
     @Column(name = "enabled_")
     private boolean enabled;
 
-    @Convert(converter = StringListConverter.class)
+    @Convert(converter = StringSetConverter.class)
     @Column(name = "authorities_")
-    private List<String> authorities = new ArrayList<>();
+    private Collection<String> authorities = new HashSet<>();
 
     @Column(name = "created_time_")
     private Date createdTime;

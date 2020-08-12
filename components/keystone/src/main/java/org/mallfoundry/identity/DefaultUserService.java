@@ -21,12 +21,12 @@ package org.mallfoundry.identity;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.processor.Processors;
+import org.mallfoundry.security.CryptoUtils;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,30 +34,35 @@ import java.util.Optional;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
-@Service
-public class DefaultUserService implements UserService {
+public class DefaultUserService implements UserService, UserProcessorInvoker, ApplicationEventPublisherAware {
 
     private static final String USER_ID_VALUE_NAME = "identity.user.id";
 
     private final UserConfiguration userConfiguration;
 
+    private List<UserProcessor> processors;
+
     private final List<UserValidator> userValidators;
 
-    private final ApplicationEventPublisher eventPublisher;
-
-    private final PasswordEncoder passwordEncoder;
+    private ApplicationEventPublisher eventPublisher;
 
     private final UserRepository userRepository;
 
     public DefaultUserService(UserConfiguration userConfiguration,
                               List<UserValidator> userValidators,
-                              ApplicationEventPublisher eventPublisher,
                               UserRepository userRepository) {
         this.userConfiguration = userConfiguration;
         this.userValidators = ListUtils.emptyIfNull(userValidators);
-        this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
-        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    public void setProcessors(List<UserProcessor> processors) {
+        this.processors = ListUtils.emptyIfNull(processors);
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -103,8 +108,36 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    public User getCurrentUser() {
+        var subject = SubjectHolder.getSubject();
+        return this.getUser(this.createUserId(subject.getTenantId(), subject.getId()));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public User getUser(UserId userId) {
-        return this.userRepository.findById(userId).orElseThrow(() -> UserExceptions.notExists(userId.getId()));
+        return this.findUser(userId)
+                .orElseThrow(() -> UserExceptions.notExists(userId.getId()));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findUser(UserId userId) {
+        return this.userRepository.findById(userId)
+                .map(this::invokePostProcessAfterGetUser);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return this.userRepository.findByUsername(username)
+                .map(this::invokePostProcessAfterGetUserByUsername);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<User> findUserByPhone(String countryCode, String phone) {
+        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone)
+                .map(this::invokePostProcessAfterGetUserByPhone);
     }
 
     @Transactional
@@ -118,11 +151,11 @@ public class DefaultUserService implements UserService {
     }
 
     private String encodePassword(String password) {
-        return this.passwordEncoder.encode(password);
+        return CryptoUtils.encode(password);
     }
 
     private boolean matchesPassword(String rawPassword, String encodedPassword) {
-        return this.passwordEncoder.matches(rawPassword, encodedPassword);
+        return CryptoUtils.matches(rawPassword, encodedPassword);
     }
 
     private void setPassword(User user, String password) {
@@ -159,23 +192,23 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User getCurrentUser() {
-        var subject = SubjectHolder.getSubject();
-        return this.getUser(this.createUserId(subject.getTenantId(), subject.getId()));
-    }
-
-    @Transactional
-    public Optional<User> findUser(UserId userId) {
-        return this.userRepository.findById(userId);
+    public User invokePostProcessAfterGetUser(User user) {
+        return Processors.stream(processors)
+                .map(UserProcessor::postProcessAfterGetUser)
+                .apply(user);
     }
 
     @Override
-    public Optional<User> getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username);
+    public User invokePostProcessAfterGetUserByUsername(User user) {
+        return Processors.stream(processors)
+                .map(UserProcessor::postProcessAfterGetUserByUsername)
+                .apply(user);
     }
 
     @Override
-    public Optional<User> getUserByPhone(String countryCode, String phone) {
-        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone);
+    public User invokePostProcessAfterGetUserByPhone(User user) {
+        return Processors.stream(processors)
+                .map(UserProcessor::postProcessAfterGetUserByPhone)
+                .apply(user);
     }
 }
