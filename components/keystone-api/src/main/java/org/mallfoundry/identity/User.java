@@ -20,6 +20,7 @@ package org.mallfoundry.identity;
 
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -67,9 +68,9 @@ public interface User extends TenantOwnership, ObjectBuilder.ToBuilder<User.Buil
 
     void changePassword(String password);
 
-    List<String> getAuthorities();
+    Collection<String> getAuthorities();
 
-    void setAuthorities(List<String> authorities);
+    void setAuthorities(Collection<String> authorities);
 
     Date getCreatedTime();
 

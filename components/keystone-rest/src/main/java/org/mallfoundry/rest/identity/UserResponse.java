@@ -23,8 +23,8 @@ import lombok.Setter;
 import org.mallfoundry.identity.User;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Getter
 @Setter
@@ -44,7 +44,7 @@ public class UserResponse {
 
     private String email;
 
-    private List<String> authorities;
+    private Collection<String> authorities;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -56,7 +56,7 @@ public class UserResponse {
         this.email = user.getEmail();
         this.authorities = CollectionUtils.isEmpty(user.getAuthorities())
                 ? Collections.emptyList()
-                : Collections.unmodifiableList(user.getAuthorities());
+                : Collections.unmodifiableCollection(user.getAuthorities());
     }
 
     public static UserResponse of(User user) {
