@@ -19,6 +19,7 @@
 package org.mallfoundry.security.access;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,6 +35,8 @@ public interface AccessControlManager {
     Optional<Principal> findPrincipal(Principal principal);
 
     Principal getPrincipal(Principal principal);
+
+    List<Principal> getPrincipals(Collection<Principal> principals);
 
     void removePrincipal(Principal principal);
 
