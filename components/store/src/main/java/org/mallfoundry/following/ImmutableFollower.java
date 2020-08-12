@@ -21,7 +21,7 @@ package org.mallfoundry.following;
 import org.mallfoundry.identity.Gender;
 import org.mallfoundry.identity.UserId;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface ImmutableFollower extends Follower {
 
@@ -81,7 +81,7 @@ public interface ImmutableFollower extends Follower {
     }
 
     @Override
-    default void setAuthorities(List<String> authorities) {
+    default void setAuthorities(Collection<String> authorities) {
 
     }
 
