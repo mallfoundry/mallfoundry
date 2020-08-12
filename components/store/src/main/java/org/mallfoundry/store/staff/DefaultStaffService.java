@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserId;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.StoreId;
@@ -114,6 +115,11 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     public Optional<Staff> findStaff(StaffId staffId) {
         return this.staffRepository.findById(staffId)
                 .map(this::invokePostProcessAfterGetStaff);
+    }
+
+    @Override
+    public List<Staff> getStaffs(UserId userId) {
+        return this.staffRepository.findAllByUserId(userId);
     }
 
     @Override

@@ -38,10 +38,6 @@ public class RoleAccessControlEventListener {
         this.manager = manager;
     }
 
-    private String getRoleAuthorityId(Role role) {
-        return "store_role_" + role.getId();
-    }
-
     private Set<Permission> createPermissions(Role role) {
         return role.getAuthorities().stream()
                 .map(this.manager::createPermission)
@@ -52,7 +48,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onAddRole(RoleAddedEvent event) {
         var role = event.getRole();
-        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, this.getRoleAuthorityId(role));
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
         rolePrincipal = this.manager.addPrincipal(rolePrincipal);
         var resource = this.manager.getResource(this.manager.createResource(Resource.STORE_TYPE, role.getStoreId()));
         this.manager.grantPermissions(this.createPermissions(role), resource, rolePrincipal);
@@ -62,7 +58,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onDeleteRole(RoleDeletedEvent event) {
         var role = event.getRole();
-        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, this.getRoleAuthorityId(role));
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
         this.manager.removePrincipal(rolePrincipal);
     }
 
@@ -70,7 +66,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onClearRole(RolesDeletedEvent event) {
         var rolePrincipals = event.getRoles().stream()
-                .map(role -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, this.getRoleAuthorityId(role)))
+                .map(role -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role)))
                 .collect(Collectors.toUnmodifiableList());
         this.manager.removePrincipals(rolePrincipals);
     }

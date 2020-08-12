@@ -28,6 +28,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
+import java.util.List;
 import java.util.Objects;
 
 public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>, JpaSpecificationExecutor<JpaStaff> {
@@ -48,6 +49,8 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>,
             return predicate;
         };
     }
+
+    List<JpaStaff> findAllByTenantIdAndId(String tenantId, String id);
 
     default Page<JpaStaff> findAll(StaffQuery query) {
         return this.findAll(this.createSpecification(query),
