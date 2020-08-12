@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public interface JpaPrincipalRepository extends JpaRepository<JpaPrincipal, Stri
     Optional<Principal> findByTypeAndName(String type, String name);
 
 
-    default Specification<JpaPrincipal> createSpecification(List<Principal> principals) {
+    default Specification<JpaPrincipal> createSpecification(Collection<Principal> principals) {
         return (Specification<JpaPrincipal>) (root, query, criteriaBuilder) -> {
             var predicates = principals.stream()
                     .map(principal -> criteriaBuilder.and(criteriaBuilder.equal(root.get("type"),
@@ -41,7 +42,7 @@ public interface JpaPrincipalRepository extends JpaRepository<JpaPrincipal, Stri
         };
     }
 
-    default List<JpaPrincipal> findAll(List<Principal> principals) {
+    default List<JpaPrincipal> findAll(Collection<Principal> principals) {
         return this.findAll(this.createSpecification(principals));
     }
 }

@@ -93,19 +93,20 @@ public class JpaResource implements MutableResource {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(object instanceof JpaResource)) {
             return false;
         }
-        JpaResource that = (JpaResource) o;
-        return Objects.equals(id, that.id);
+        JpaResource that = (JpaResource) object;
+        return Objects.equals(type, that.type)
+                && Objects.equals(identifier, that.identifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(type, identifier);
     }
 }

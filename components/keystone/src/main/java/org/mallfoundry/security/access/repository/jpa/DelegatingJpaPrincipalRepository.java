@@ -23,6 +23,7 @@ import org.mallfoundry.security.access.PrincipalRepository;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,11 @@ public class DelegatingJpaPrincipalRepository implements PrincipalRepository {
     @Override
     public Optional<Principal> findByTypeAndName(String type, String name) {
         return CastUtils.cast(this.principalRepository.findByTypeAndName(type, name));
+    }
+
+    @Override
+    public List<Principal> findAllByPrincipals(Collection<Principal> principals) {
+        return CastUtils.cast(this.principalRepository.findAll(principals));
     }
 
     @Override

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security.access;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public interface PrincipalRepository {
     List<Principal> saveAll(List<Principal> principals);
 
     Optional<Principal> findByTypeAndName(String type, String name);
+
+    List<Principal> findAllByPrincipals(Collection<Principal> principals);
 
     void delete(Principal principal);
 

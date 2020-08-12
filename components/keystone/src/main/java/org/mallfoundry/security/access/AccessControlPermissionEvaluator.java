@@ -18,13 +18,11 @@
 
 package org.mallfoundry.security.access;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.SetUtils;
 import org.mallfoundry.security.Subject;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
@@ -69,10 +67,6 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean hasPermission(Authentication authentication, Resource resource, Object permission) {
-        if (CollectionUtils.containsAny(authentication.getAuthorities(), AuthorityUtils.createAuthorityList("ADMIN"))) {
-            return true;
-        }
-
         var principals = this.getPrincipals(authentication);
         return this.authorizer.hasAnyPermissions(principals, resource, this.createPermissions(permission));
     }
@@ -90,9 +84,7 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
     }
 
     private Principal createPrimaryPrincipal(Object principal) {
-        if (Objects.isNull(principal)) {
-            return this.manager.createPrincipal(Principal.USER_TYPE, "anonymousUser");
-        } else if (principal instanceof Subject) {
+        if (principal instanceof Subject) {
             return this.manager.createPrincipal(Principal.USER_TYPE, ((Subject) principal).getId());
         } else if (principal instanceof UserDetails) {
             return this.manager.createPrincipal(Principal.USER_TYPE, ((UserDetails) principal).getUsername());

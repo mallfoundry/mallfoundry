@@ -68,19 +68,20 @@ public class JpaPrincipal extends PrincipalSupport {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(object instanceof JpaPrincipal)) {
             return false;
         }
-        JpaPrincipal that = (JpaPrincipal) o;
-        return Objects.equals(id, that.id);
+        JpaPrincipal that = (JpaPrincipal) object;
+        return Objects.equals(type, that.type)
+                && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(type, name);
     }
 }

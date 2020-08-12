@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -82,6 +83,11 @@ public class DefaultAccessControlManager implements AccessControlManager {
     @Override
     public Principal getPrincipal(Principal principal) {
         return this.findPrincipal(principal).orElseThrow();
+    }
+
+    @Override
+    public List<Principal> getPrincipals(Collection<Principal> principals) {
+        return this.principalRepository.findAllByPrincipals(principals);
     }
 
     @Override

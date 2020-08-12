@@ -33,15 +33,13 @@ public class PermissionSetConverter implements AttributeConverter<Set<Permission
 
     @Override
     public String convertToDatabaseColumn(Set<Permission> attribute) {
-        return CollectionUtils.isEmpty(attribute)
-                ? null
+        return CollectionUtils.isEmpty(attribute) ? null
                 : attribute.stream().map(Permission::getMask).collect(Collectors.joining(","));
     }
 
     @Override
     public Set<Permission> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData)
-                ? new HashSet<>()
+        return Objects.isNull(dbData) ? new HashSet<>()
                 : Arrays.stream(dbData.split(",")).map(ImmutablePermission::new).collect(Collectors.toSet());
     }
 }

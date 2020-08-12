@@ -16,34 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.security.access;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Getter
-@Setter
-public class PhonePasswordCredentialsAuthenticationToken extends AbstractAuthenticationToken {
-    private String countryCode;
-    private String phone;
-    private String password;
+public class PermissionFactory {
+    //
+    private final Map<String, Permission> permissionMap = new ConcurrentHashMap<>();
 
-    public PhonePasswordCredentialsAuthenticationToken(String countryCode, String phone, String password) {
-        super(null);
-        this.countryCode = countryCode;
-        this.phone = phone;
-        this.password = password;
+    public Permission getPermission(String mask) {
+        var permission = this.permissionMap.get(mask);
+        if (Objects.isNull(permission)) {
+            permission = new ImmutablePermission(mask);
+            this.permissionMap.put(mask, permission);
+        }
+        return permission;
     }
-
-    @Override
-    public Object getPrincipal() {
-        return this.phone;
-    }
-
-    @Override
-    public Object getCredentials() {
-        return this.password;
-    }
-
 }

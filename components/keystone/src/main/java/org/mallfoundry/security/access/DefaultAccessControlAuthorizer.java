@@ -21,9 +21,9 @@ package org.mallfoundry.security.access;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
@@ -57,10 +57,7 @@ public class DefaultAccessControlAuthorizer implements AccessControlAuthorizer {
         if (Objects.isNull(resource)) {
             return false;
         }
-        principals = principals.stream()
-                .map(this.manager::getPrincipal)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toUnmodifiableSet());
+        principals = new HashSet<>(this.manager.getPrincipals(principals));
         if (CollectionUtils.isEmpty(principals)) {
             return false;
         }
