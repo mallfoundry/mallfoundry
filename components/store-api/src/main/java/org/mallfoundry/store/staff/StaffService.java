@@ -19,8 +19,10 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.identity.UserId;
 import org.mallfoundry.store.StoreId;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StaffService {
@@ -48,6 +50,8 @@ public interface StaffService {
     Staff getStaff(StaffId staffId);
 
     Optional<Staff> findStaff(StaffId staffId);
+
+    List<Staff> getStaffs(UserId userId);
 
     SliceList<Staff> getStaffs(StaffQuery query);
 
