@@ -44,8 +44,8 @@ public interface UserService {
 
     Optional<User> findUser(UserId userId);
 
-    Optional<User> getUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
 
-    Optional<User> getUserByPhone(String countryCode, String phone);
+    Optional<User> findUserByPhone(String countryCode, String phone);
 
 }
