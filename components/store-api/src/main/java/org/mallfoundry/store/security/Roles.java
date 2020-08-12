@@ -16,22 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.store.security;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+public abstract class Roles {
 
-@Getter
-@Setter(AccessLevel.PROTECTED)
-public class PhonePasswordCredentialsSupport implements PhonePasswordCredentials {
-    private String countryCode;
-    private String phone;
-    private String password;
+    public static final String ROLE_AUTHORITY_PREFIX = "store_role_";
 
-    public PhonePasswordCredentialsSupport(String countryCode, String phone, String password) {
-        this.countryCode = countryCode;
-        this.phone = phone;
-        this.password = password;
+    public static String getRoleAuthority(Role role) {
+        return ROLE_AUTHORITY_PREFIX + role.getId();
     }
 }

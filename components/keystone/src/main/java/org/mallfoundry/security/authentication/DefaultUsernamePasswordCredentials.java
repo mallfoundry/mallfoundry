@@ -18,9 +18,15 @@
 
 package org.mallfoundry.security.authentication;
 
-public class DefaultUsernamePasswordCredentials extends UsernamePasswordCredentialsSupport {
+import lombok.Getter;
+
+@Getter
+public class DefaultUsernamePasswordCredentials implements UsernamePasswordCredentials {
+    private final String username;
+    private final String password;
 
     public DefaultUsernamePasswordCredentials(String username, String password) {
-        super(username, password);
+        this.username = username;
+        this.password = password;
     }
 }

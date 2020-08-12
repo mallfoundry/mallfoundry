@@ -19,11 +19,20 @@
 package org.mallfoundry.autoconfigure.identity;
 
 
+import org.apache.catalina.startup.UserConfig;
 import org.mallfoundry.identity.DefaultUserConfiguration;
+import org.mallfoundry.identity.DefaultUserService;
 import org.mallfoundry.identity.UserConfiguration;
+import org.mallfoundry.identity.UserProcessor;
+import org.mallfoundry.identity.UserRepository;
+import org.mallfoundry.identity.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @EnableConfigurationProperties(UserProperties.class)
 @Configuration
@@ -36,5 +45,16 @@ public class UserAutoConfiguration {
         config.setDefaultNickname(properties.getDefaultNickname());
         config.setDefaultAvatar(properties.getDefaultAvatar());
         return config;
+    }
+
+    @Bean
+    public DefaultUserService defaultUserService(UserConfiguration configuration,
+                                                 @Autowired(required = false)
+                                                 @Lazy List<UserProcessor> processors,
+                                                 @Lazy List<UserValidator> userValidators,
+                                                 UserRepository userRepository) {
+        var service = new DefaultUserService(configuration, userValidators, userRepository);
+        service.setProcessors(processors);
+        return service;
     }
 }

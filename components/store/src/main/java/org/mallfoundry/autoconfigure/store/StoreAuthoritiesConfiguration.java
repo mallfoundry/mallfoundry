@@ -16,33 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.store.staff.StaffRoleAuthoritiesEnhancer;
+import org.mallfoundry.store.staff.StaffService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+@Configuration
+public class StoreAuthoritiesConfiguration {
 
-@Getter
-@Setter
-public class CaptchaCredentialsAuthenticationToken extends AbstractAuthenticationToken {
-    private String token;
-    private String code;
-
-    public CaptchaCredentialsAuthenticationToken(String token, String code) {
-        super(null);
-        this.token = token;
-        this.code = code;
+    @Bean
+    public StaffRoleAuthoritiesEnhancer staffRoleAuthoritiesEnhancer(StaffService staffService) {
+        return new StaffRoleAuthoritiesEnhancer(staffService);
     }
-
-    @Override
-    public Object getPrincipal() {
-        return this.token;
-    }
-
-    @Override
-    public Object getCredentials() {
-        return this.code;
-    }
-
 }

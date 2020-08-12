@@ -18,8 +18,17 @@
 
 package org.mallfoundry.security.authentication;
 
-public class DefaultPhonePasswordCredentials extends PhonePasswordCredentialsSupport {
-    public DefaultPhonePasswordCredentials(String countryCode, String mobile, String password) {
-        super(countryCode, mobile, password);
+import lombok.Getter;
+
+@Getter
+public class DefaultPhonePasswordCredentials implements PhonePasswordCredentials {
+    private final String countryCode;
+    private final String phone;
+    private final String password;
+
+    public DefaultPhonePasswordCredentials(String countryCode, String phone, String password) {
+        this.countryCode = countryCode;
+        this.phone = phone;
+        this.password = password;
     }
 }

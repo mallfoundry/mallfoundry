@@ -19,10 +19,8 @@
 package org.mallfoundry.security;
 
 import org.mallfoundry.security.access.LocaleAccessDeniedHandler;
-import org.mallfoundry.security.authentication.CaptchaCredentialsAuthenticationProvider;
-import org.mallfoundry.security.authentication.PhonePasswordCredentialsAuthenticationProvider;
+import org.mallfoundry.security.authentication.AccessTokenAuthenticationProvider;
 import org.mallfoundry.security.token.AccessTokenAuthenticationFilter;
-import org.mallfoundry.security.token.AccessTokenAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,22 +34,10 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final SecurityUserService securityUserService;
-
     private final AccessTokenAuthenticationProvider tokenAuthenticationProvider;
 
-    private final CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider;
-
-    private final PhonePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider;
-
-    public SecurityConfiguration(SecurityUserService securityUserService,
-                                 AccessTokenAuthenticationProvider tokenAuthenticationProvider,
-                                 CaptchaCredentialsAuthenticationProvider captchaCredentialsAuthenticationProvider,
-                                 PhonePasswordCredentialsAuthenticationProvider mobilePasswordCredentialsAuthenticationProvider) {
-        this.securityUserService = securityUserService;
+    public SecurityConfiguration(AccessTokenAuthenticationProvider tokenAuthenticationProvider) {
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
-        this.captchaCredentialsAuthenticationProvider = captchaCredentialsAuthenticationProvider;
-        this.mobilePasswordCredentialsAuthenticationProvider = mobilePasswordCredentialsAuthenticationProvider;
     }
 
     @Override
@@ -62,11 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.securityUserService);
-        auth.authenticationProvider(this.tokenAuthenticationProvider)
-                .authenticationProvider(this.captchaCredentialsAuthenticationProvider)
-                .authenticationProvider(this.mobilePasswordCredentialsAuthenticationProvider);
-
+        auth.authenticationProvider(this.tokenAuthenticationProvider);
     }
 
     @Override

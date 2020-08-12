@@ -18,9 +18,15 @@
 
 package org.mallfoundry.security.authentication;
 
-public class DefaultCaptchaCredentials extends CaptchaCredentialsSupport {
+import lombok.Getter;
+
+@Getter
+public class DefaultCaptchaCredentials implements CaptchaCredentials {
+    private final String token;
+    private final String code;
 
     public DefaultCaptchaCredentials(String token, String code) {
-        super(token, code);
+        this.token = token;
+        this.code = code;
     }
 }

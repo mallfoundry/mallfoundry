@@ -18,26 +18,25 @@
 
 package org.mallfoundry.security;
 
-import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.identity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 public class UserDetailsSubject implements UserDetails, Subject {
 
     private final User user;
 
-    private final List<GrantedAuthority> authorities;
+    private final Collection<GrantedAuthority> authorities;
 
-    public UserDetailsSubject(User user) {
+    public UserDetailsSubject(User user, Collection<String> authorities) {
         this.user = user;
         this.authorities =
                 AuthorityUtils.createAuthorityList(
-                        ListUtils.emptyIfNull(user.getAuthorities()).toArray(new String[0]));
+                        CollectionUtils.emptyIfNull(CollectionUtils.union(user.getAuthorities(), authorities)).toArray(String[]::new));
     }
 
     @Override
