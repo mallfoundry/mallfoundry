@@ -16,20 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.identity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+public interface UserProcessor {
 
-@Getter
-@Setter(AccessLevel.PROTECTED)
-public abstract class UsernamePasswordCredentialsSupport implements UsernamePasswordCredentials {
-    private String username;
-    private String password;
+    default User postProcessAfterGetUser(User user) {
+        return user;
+    }
 
-    public UsernamePasswordCredentialsSupport(String username, String password) {
-        this.username = username;
-        this.password = password;
+    default User postProcessAfterGetUserByUsername(User user) {
+        return user;
+    }
+
+    default User postProcessAfterGetUserByPhone(User user) {
+        return user;
     }
 }
