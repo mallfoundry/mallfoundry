@@ -268,4 +268,19 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     default void unpublish() {
 
     }
+
+    @Override
+    default BodyType getBodyType() {
+        return null;
+    }
+
+    @Override
+    default String getBody() {
+        return null;
+    }
+
+    @Override
+    default String getRawBody() {
+        return null;
+    }
 }

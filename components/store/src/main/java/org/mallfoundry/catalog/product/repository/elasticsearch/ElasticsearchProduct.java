@@ -109,6 +109,12 @@ public class ElasticsearchProduct extends ProductSupport {
     @Field(type = FieldType.Keyword)
     private String shippingRateId;
 
+    private String body;
+
+    private String rawBody;
+
+    private BodyType bodyType;
+
     private Date publishedTime;
 
     private Date createdTime;

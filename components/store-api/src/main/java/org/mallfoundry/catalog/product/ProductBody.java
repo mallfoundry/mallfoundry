@@ -20,7 +20,13 @@ package org.mallfoundry.catalog.product;
 
 public interface ProductBody {
 
-    String getType();
+    BodyType getBodyType();
 
     String getBody();
+
+    String getRawBody();
+
+    enum BodyType {
+        HTML
+    }
 }

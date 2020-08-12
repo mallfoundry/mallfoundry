@@ -158,6 +158,15 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "shipping_rate_id_")
     private String shippingRateId;
 
+    @Column(name = "body_")
+    private String body;
+
+    @Column(name = "raw_body_")
+    private String rawBody;
+
+    @Column(name = "body_type_")
+    private BodyType bodyType;
+
     @Column(name = "published_time_")
     private Date publishedTime;
 

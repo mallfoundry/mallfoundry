@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  *
  * @author Zhi Tang
  */
-public interface Product extends Serializable {
+public interface Product extends ProductBody, Serializable {
 
     String getId();
 
