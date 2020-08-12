@@ -29,8 +29,14 @@ import java.io.Serializable;
  */
 public interface Principal extends Serializable {
 
+    /**
+     * 用户类型。
+     */
     String USER_TYPE = "User";
 
+    /**
+     * 权限类型。
+     */
     String AUTHORITY_TYPE = "Authority";
 
     String getName();
