@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security.token;
 
+import org.mallfoundry.security.authentication.AccessTokenAuthentication;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,13 +64,10 @@ public class AccessTokenAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (authenticationIsRequired(token)) {
-                Authentication authResult = this.authenticationManager
-                        .authenticate(authRequest);
-
+                Authentication authResult = this.authenticationManager.authenticate(authRequest);
                 if (debug) {
                     this.logger.debug("Authentication success: " + authResult);
                 }
-
                 SecurityContextHolder.getContext().setAuthentication(authResult);
             }
 

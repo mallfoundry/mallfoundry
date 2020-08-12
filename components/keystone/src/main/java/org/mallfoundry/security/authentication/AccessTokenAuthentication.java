@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.token;
+package org.mallfoundry.security.authentication;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +30,6 @@ public class AccessTokenAuthentication implements Authentication {
 
     private Object details;
 
-
     public AccessTokenAuthentication(String token) {
         this.token = token;
     }
@@ -41,8 +40,18 @@ public class AccessTokenAuthentication implements Authentication {
     }
 
     @Override
-    public Object getCredentials() {
+    public String getName() {
         return this.token;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return this.token;
+    }
+
+    @Override
+    public Object getCredentials() {
+        return "N/A";
     }
 
     @Override
@@ -55,22 +64,11 @@ public class AccessTokenAuthentication implements Authentication {
     }
 
     @Override
-    public Object getPrincipal() {
-        return "N/A";
-    }
-
-    @Override
     public boolean isAuthenticated() {
         return false;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
-    }
-
-    @Override
-    public String getName() {
-        return this.token;
     }
 }

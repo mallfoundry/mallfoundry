@@ -16,10 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.token;
+package org.mallfoundry.security.authentication;
 
+import org.mallfoundry.identity.UserId;
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.security.UserAuthoritiesEnhancer;
 import org.mallfoundry.security.UserDetailsSubject;
+import org.mallfoundry.security.token.AccessTokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,23 +32,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AccessTokenAuthenticationProvider implements AuthenticationProvider {
+
+    private final List<UserAuthoritiesEnhancer> enhancers;
 
     private final AccessTokenService tokenService;
 
     private final UserService userService;
 
-    public AccessTokenAuthenticationProvider(AccessTokenService tokenService,
+    public AccessTokenAuthenticationProvider(@Autowired(required = false)
+                                             @Lazy List<UserAuthoritiesEnhancer> enhancers,
+                                             AccessTokenService tokenService,
                                              UserService userService) {
+        this.enhancers = enhancers;
         this.tokenService = tokenService;
         this.userService = userService;
     }
 
     @Override
-    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         AccessTokenAuthentication tokenAuthentication = (AccessTokenAuthentication) authentication;
         String username =
@@ -51,9 +63,18 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
                         .readAccessToken(tokenAuthentication.getName())
                         .orElseThrow(() -> new BadCredentialsException("Bad credentials"))
                         .getUsername();
-        var user = this.userService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
-        var securityUser = new UserDetailsSubject(user);
+        var user = this.userService.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
+        var enhancedAuthorities = this.getEnhancedAuthorities(user.toId());
+        var securityUser = new UserDetailsSubject(user, enhancedAuthorities);
         return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
+    }
+
+
+    private Collection<String> getEnhancedAuthorities(UserId userId) {
+        return this.enhancers.stream().map(enhancer -> enhancer.getAuthorities(userId))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

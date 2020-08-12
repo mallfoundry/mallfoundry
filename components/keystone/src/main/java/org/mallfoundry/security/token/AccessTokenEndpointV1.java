@@ -34,26 +34,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 
 @RestController
 @RequestMapping("/v1")
 public class AccessTokenEndpointV1 {
 
-    private final AccessTokenAuthenticationManager tokenAuthenticationManager;
+    private final AccessTokenManager accessTokenManager;
 
-    private final AccessTokenService tokenService;
-
-    public AccessTokenEndpointV1(AccessTokenAuthenticationManager tokenAuthenticationManager,
-                                 AccessTokenService tokenService) {
-        this.tokenAuthenticationManager = tokenAuthenticationManager;
-        this.tokenService = tokenService;
+    public AccessTokenEndpointV1(AccessTokenManager accessTokenManager) {
+        this.accessTokenManager = accessTokenManager;
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> authenticate(@RequestParam(name = "grant_type", required = false) String grantType,
-                                          HttpServletRequest request) {
-        var type = CredentialsType.valueOf(StringUtils.upperCase(grantType));
+    public ResponseEntity<?> createAccessToken(@RequestParam(name = "grant_type", required = false) String grantType,
+                                               @RequestParam(name = "credentials_type", required = false) String credentialsType,
+                                               HttpServletRequest request) {
+        var type = CredentialsType.valueOf(StringUtils.upperCase(Objects.requireNonNullElse(credentialsType, grantType)));
         Credentials credentials = null;
         if (type == CredentialsType.USERNAME_PASSWORD) {
             credentials = new DefaultUsernamePasswordCredentials(request.getParameter("username"), request.getParameter("password"));
@@ -66,7 +64,7 @@ public class AccessTokenEndpointV1 {
             credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));
         }
         try {
-            var token = this.tokenAuthenticationManager.authenticate(credentials);
+            var token = this.accessTokenManager.createAccessToken(credentials);
             return ResponseEntity.ok(token);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +75,6 @@ public class AccessTokenEndpointV1 {
     @DeleteMapping("/token")
     public void deleteToken(HttpServletRequest request) {
         String token = AccessTokenConverter.convert(request);
-        this.tokenService.deleteAccessToken(token);
+        this.accessTokenManager.deleteAccessToken(token);
     }
 }

@@ -16,20 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.security.token;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter(AccessLevel.PROTECTED)
-public class CaptchaCredentialsSupport implements CaptchaCredentials {
-    private String token;
-    private String code;
-
-    public CaptchaCredentialsSupport(String token, String code) {
-        this.token = token;
-        this.code = code;
+public class AccessTokenException extends RuntimeException {
+    public AccessTokenException(String message) {
+        super(message);
     }
 }

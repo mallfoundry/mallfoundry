@@ -18,38 +18,14 @@
 
 package org.mallfoundry.security.token;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Getter
-@Setter
-@Entity
-@Table(name = "mf_access_token")
-public class AccessToken {
+public class AccessTokenId {
 
-    @Id
-    @Column(name = "username_")
-    private String username;
+    private final String username;
 
-    @Column(name = "token_")
-    @JsonProperty("access_token")
-    private String token;
-
-    @Column(name = "type_")
-    @JsonProperty("token_type")
-    private String type;
-
-    public static AccessToken newToken(String username, String tokenValue) {
-        AccessToken token = new AccessToken();
-        token.setUsername(username);
-        token.setToken(tokenValue);
-        token.setType("Bearer");
-        return token;
+    public AccessTokenId(String username) {
+        this.username = username;
     }
 }

@@ -16,38 +16,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.authentication;
+package org.mallfoundry.security.token.providers;
 
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaException;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.captcha.CaptchaType;
 import org.mallfoundry.identity.UserService;
-import org.mallfoundry.security.UserDetailsSubject;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.mallfoundry.security.authentication.CaptchaCredentials;
+import org.mallfoundry.security.authentication.Credentials;
+import org.mallfoundry.security.token.AccessTokenId;
+import org.mallfoundry.security.token.AccessTokenProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaptchaCredentialsAuthenticationProvider implements AuthenticationProvider {
+public class CaptchaCredentialsAccessTokenProvider implements AccessTokenProvider {
 
     private final CaptchaService captchaService;
 
     private final UserService userService;
 
-    public CaptchaCredentialsAuthenticationProvider(CaptchaService captchaService, UserService userService) {
+    public CaptchaCredentialsAccessTokenProvider(CaptchaService captchaService, UserService userService) {
         this.captchaService = captchaService;
         this.userService = userService;
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String token = (String) authentication.getPrincipal();
-        String code = (String) authentication.getCredentials();
+    public AccessTokenId authenticate(Credentials credentials) throws AuthenticationException {
+        var cCredentials = (CaptchaCredentials) credentials;
+        String token = cCredentials.getToken();
+        String code = cCredentials.getCode();
         var captcha = this.captchaService.getCaptcha(token)
                 .orElseThrow(() -> CaptchaException.INVALID_CAPTCHA);
         if (captcha.getType() != CaptchaType.SMS) {
@@ -57,15 +58,14 @@ public class CaptchaCredentialsAuthenticationProvider implements AuthenticationP
             throw new BadCredentialsException("Invalid captcha");
         }
         var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
-        var mobile = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
-        var user = this.userService.getUserByPhone(countryCode, mobile)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone %s not found", mobile)));
-        var securityUser = new UserDetailsSubject(user);
-        return new UsernamePasswordAuthenticationToken(securityUser, "N/A", securityUser.getAuthorities());
+        var phone = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
+        var user = this.userService.findUserByPhone(countryCode, phone)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone +%s-%s not found", countryCode, phone)));
+        return new AccessTokenId(user.getUsername());
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
-        return CaptchaCredentialsAuthenticationToken.class.isAssignableFrom(authentication);
+    public boolean supports(Credentials credentials) {
+        return credentials instanceof CaptchaCredentials;
     }
 }

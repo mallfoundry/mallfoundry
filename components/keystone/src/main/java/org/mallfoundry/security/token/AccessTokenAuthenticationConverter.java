@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security.token;
 
+import org.mallfoundry.security.authentication.AccessTokenAuthentication;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
