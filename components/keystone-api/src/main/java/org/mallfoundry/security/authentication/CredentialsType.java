@@ -18,11 +18,19 @@
 
 package org.mallfoundry.security.authentication;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * 安全认证凭证类型。
  *
  * @author Zhi Tang
  */
 public enum CredentialsType {
-    CAPTCHA, USERNAME_PASSWORD, PHONE_PASSWORD/*, QR_CODE*/
+    CAPTCHA, USERNAME_PASSWORD, PHONE_PASSWORD/*, QR_CODE*/;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
