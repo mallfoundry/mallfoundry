@@ -115,6 +115,11 @@ public class ProductResourceV1 {
         return this.productService.updateProduct(request.assignTo(this.productService.createProduct(id)));
     }
 
+    @DeleteMapping("/products/{id}")
+    public void deleteProduct(@PathVariable("id") String id) {
+        this.productService.deleteProduct(id);
+    }
+
     @PostMapping("/products/{id}/publish")
     public void publishProduct(@PathVariable("id") String id) {
         this.productService.publishProduct(id);

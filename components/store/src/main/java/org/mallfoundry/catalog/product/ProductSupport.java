@@ -277,6 +277,7 @@ public abstract class ProductSupport implements MutableProduct {
 
     @Override
     public void create() {
+        this.setStatus(ProductStatus.ACTIVE);
         this.setCreatedTime(new Date());
     }
 

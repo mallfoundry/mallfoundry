@@ -28,13 +28,13 @@ import org.mallfoundry.validation.ValidationHolder;
 public class ProductValidateProcessor implements ProductProcessor {
 
     @Override
-    public Product preProcessBeforeAddProduct(Product product) {
+    public Product preProcessAfterAddProduct(Product product) {
         ValidationHolder.validate(product, "product");
         return product;
     }
 
     @Override
-    public Product preProcessBeforeUpdateProduct(Product product) {
+    public Product preProcessAfterUpdateProduct(Product product) {
         ValidationHolder.validate(product, "product");
         return product;
     }

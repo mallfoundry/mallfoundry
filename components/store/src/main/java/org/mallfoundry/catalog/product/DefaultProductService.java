@@ -68,9 +68,12 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
     @Transactional
     @Override
     public Product addProduct(Product product) {
-        var addedProduct = this.productRepository.save(this.invokePreProcessBeforeAddProduct(product));
-        this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(addedProduct));
-        return addedProduct;
+        product = this.invokePreProcessBeforeAddProduct(product);
+        product.create();
+        product = this.invokePreProcessAfterAddProduct(product);
+        product = this.productRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductAddedEvent(product));
+        return product;
     }
 
     @Transactional(readOnly = true)
@@ -254,6 +257,13 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
     public Product invokePreProcessBeforeAddProduct(Product product) {
         return Processors.stream(this.processors)
                 .map(ProductProcessor::preProcessBeforeAddProduct)
+                .apply(product);
+    }
+
+    @Override
+    public Product invokePreProcessAfterAddProduct(Product product) {
+        return Processors.stream(this.processors)
+                .map(ProductProcessor::preProcessAfterAddProduct)
                 .apply(product);
     }
 

@@ -28,6 +28,8 @@ interface ProductProcessorInvoker {
 
     Product invokePreProcessBeforeAddProduct(Product product);
 
+    Product invokePreProcessAfterAddProduct(Product product);
+
     Product invokePreProcessBeforeUpdateProduct(Product product);
 
     Product invokePreProcessAfterUpdateProduct(Product product);

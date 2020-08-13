@@ -39,6 +39,10 @@ public interface ProductProcessor {
         return product;
     }
 
+    default Product preProcessAfterAddProduct(Product product) {
+        return product;
+    }
+
     default Product preProcessBeforeUpdateProduct(Product product) {
         return product;
     }
