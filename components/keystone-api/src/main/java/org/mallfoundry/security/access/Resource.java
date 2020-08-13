@@ -26,7 +26,6 @@ import java.io.Serializable;
  *
  * @author Zhi Tang
  * @see Principal
- * @see Permission
  */
 public interface Resource extends Serializable {
 
