@@ -88,11 +88,11 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "description_")
     private String description;
 
-    @NotBlank
+    //    @NotBlank
     @Column(name = "category_id_")
     private String categoryId;
 
-    @NotBlank
+    //    @NotBlank
     @Column(name = "brand_id_")
     private String brandId;
 
