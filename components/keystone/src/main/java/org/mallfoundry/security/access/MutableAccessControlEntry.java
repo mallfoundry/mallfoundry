@@ -28,5 +28,5 @@ public interface MutableAccessControlEntry extends AccessControlEntry {
 
     void setPrincipal(Principal principal);
 
-    void setPermissions(Set<Permission> permissions);
+    void setPermissions(Set<String> permissions);
 }

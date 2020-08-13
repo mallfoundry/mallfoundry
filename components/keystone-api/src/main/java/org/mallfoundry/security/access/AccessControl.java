@@ -43,17 +43,17 @@ public interface AccessControl extends Serializable {
 
     List<AccessControlEntry> getEntries();
 
-    void grant(Permission permission, Principal principal);
+    void grant(String permission, Principal principal);
 
-    void grants(Set<Permission> permissions, Principal principal);
+    void grant(Set<String> permissions, Principal principal);
 
-    void revoke(Permission permission, Principal principal);
+    void revoke(String permission, Principal principal);
 
-    void revoke(Set<Permission> permissions, Principal principal);
+    void revoke(Set<String> permissions, Principal principal);
 
-    boolean granted(Permission permission, Principal principal);
+    boolean granted(String permission, Principal principal);
 
-    boolean granted(Set<Permission> permissions, Principal principal);
+    boolean granted(Set<String> permissions, Principal principal);
 
-    boolean granted(Set<Permission> permissions, Set<Principal> principals);
+    boolean granted(Set<String> permissions, Set<Principal> principals);
 }

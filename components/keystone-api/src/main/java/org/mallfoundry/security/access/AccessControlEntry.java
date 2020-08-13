@@ -25,17 +25,17 @@ public interface AccessControlEntry extends Serializable {
 
     Principal getPrincipal();
 
-    Set<Permission> getPermissions();
+    Set<String> getPermissions();
 
-    void addPermission(Permission permission);
+    void addPermission(String permission);
 
-    void addPermissions(Set<Permission> permissions);
+    void addPermissions(Set<String> permissions);
 
-    void removePermission(Permission permission);
+    void removePermission(String permission);
 
-    void removePermissions(Set<Permission> permissions);
+    void removePermissions(Set<String> permissions);
 
-    boolean checkPermission(Permission permission);
+    boolean checkPermission(String permission);
 
-    boolean checkAnyPermission(Set<Permission> permissions);
+    boolean checkAnyPermission(Set<String> permissions);
 }

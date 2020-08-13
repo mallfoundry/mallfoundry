@@ -54,9 +54,9 @@ public interface AccessControlManager {
 
     void removeResource(Resource resource);
 
-    Permission createPermission(String mask);
-
     AccessControl createAccessControl(Principal owner, Resource resource);
+
+    AccessControl createAccessControl(Resource resource);
 
     AccessControl addAccessControl(AccessControl accessControl);
 
@@ -68,11 +68,7 @@ public interface AccessControlManager {
 
     AccessControl getAccessControl(Resource resource, Set<Principal> principals);
 
-    void grantPermission(Permission permission, Resource resource, Principal principal);
+    void grantAccessControl(AccessControl accessControl);
 
-    void grantPermissions(Set<Permission> permissions, Resource resource, Principal principal);
-
-    void revokePermission(Permission permission, Resource resource, Principal principal);
-
-    void revokePermissions(Set<Permission> permissions, Resource resource, Principal principal);
+    void revokeAccessControl(AccessControl accessControl);
 }

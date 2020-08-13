@@ -19,7 +19,6 @@
 package org.mallfoundry.store.security;
 
 import org.mallfoundry.security.access.AccessControlManager;
-import org.mallfoundry.security.access.Permission;
 import org.mallfoundry.security.access.Principal;
 import org.mallfoundry.security.access.Resource;
 import org.springframework.context.annotation.Configuration;
@@ -38,10 +37,8 @@ public class RoleAccessControlEventListener {
         this.manager = manager;
     }
 
-    private Set<Permission> createPermissions(Role role) {
-        return role.getAuthorities().stream()
-                .map(this.manager::createPermission)
-                .collect(Collectors.toUnmodifiableSet());
+    private Set<String> createPermissions(Role role) {
+        return role.getAuthorities().stream().collect(Collectors.toUnmodifiableSet());
     }
 
     @Transactional
@@ -51,7 +48,8 @@ public class RoleAccessControlEventListener {
         var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
         rolePrincipal = this.manager.addPrincipal(rolePrincipal);
         var resource = this.manager.getResource(this.manager.createResource(Resource.STORE_TYPE, role.getStoreId()));
-        this.manager.grantPermissions(this.createPermissions(role), resource, rolePrincipal);
+        var accessControl = this.manager.createAccessControl(resource);
+        accessControl.grant(this.createPermissions(role), rolePrincipal);
     }
 
     @Transactional

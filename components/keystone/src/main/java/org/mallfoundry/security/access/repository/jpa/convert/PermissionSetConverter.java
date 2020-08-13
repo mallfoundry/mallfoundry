@@ -19,27 +19,23 @@
 package org.mallfoundry.security.access.repository.jpa.convert;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.security.access.ImmutablePermission;
-import org.mallfoundry.security.access.Permission;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.AttributeConverter;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class PermissionSetConverter implements AttributeConverter<Set<Permission>, String> {
+public class PermissionSetConverter implements AttributeConverter<Set<String>, String> {
 
     @Override
-    public String convertToDatabaseColumn(Set<Permission> attribute) {
+    public String convertToDatabaseColumn(Set<String> attribute) {
         return CollectionUtils.isEmpty(attribute) ? null
-                : attribute.stream().map(Permission::getMask).collect(Collectors.joining(","));
+                : StringUtils.collectionToCommaDelimitedString(attribute);
     }
 
     @Override
-    public Set<Permission> convertToEntityAttribute(String dbData) {
-        return Objects.isNull(dbData) ? new HashSet<>()
-                : Arrays.stream(dbData.split(",")).map(ImmutablePermission::new).collect(Collectors.toSet());
+    public Set<String> convertToEntityAttribute(String dbData) {
+        return Objects.isNull(dbData) ? new HashSet<>() : StringUtils.commaDelimitedListToSet(dbData);
     }
 }

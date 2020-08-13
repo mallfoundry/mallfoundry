@@ -71,10 +71,8 @@ public class AccessControlPermissionEvaluator implements PermissionEvaluator {
         return this.authorizer.hasAnyPermissions(principals, resource, this.createPermissions(permission));
     }
 
-    private Set<Permission> createPermissions(Object object) {
-        return StringUtils.commaDelimitedListToSet(Objects.toString(object))
-                .stream().map(this.manager::createPermission)
-                .collect(Collectors.toUnmodifiableSet());
+    private Set<String> createPermissions(Object object) {
+        return StringUtils.commaDelimitedListToSet(Objects.toString(object));
     }
 
     private Set<Principal> getPrincipals(Authentication authentication) {

@@ -150,16 +150,16 @@ public class DefaultAccessControlManager implements AccessControlManager {
     }
 
     @Override
-    public Permission createPermission(String mask) {
-        return new ImmutablePermission(mask);
-    }
-
-    @Override
     public AccessControl createAccessControl(Principal owner, Resource resource) {
         var acl = (MutableAccessControl) this.accessControlRepository.create(null);
         acl.setOwner(owner);
         acl.setResource(resource);
         return acl;
+    }
+
+    @Override
+    public AccessControl createAccessControl(Resource resource) {
+        return this.createAccessControl(null, resource);
     }
 
     @Override
@@ -196,33 +196,17 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Transactional
     @Override
-    public void grantPermission(Permission permission, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource);
-        accessControl.grant(permission, principal);
+    public void grantAccessControl(AccessControl source) {
+        var accessControl = this.getAccessControl(source.getResource());
+        source.getEntries().forEach(entry -> accessControl.grant(entry.getPermissions(), entry.getPrincipal()));
         this.updateAccessControl(accessControl);
     }
 
     @Transactional
     @Override
-    public void grantPermissions(Set<Permission> permissions, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource);
-        accessControl.grants(permissions, principal);
-        this.updateAccessControl(accessControl);
-    }
-
-    @Transactional
-    @Override
-    public void revokePermission(Permission permission, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource);
-        accessControl.revoke(permission, principal);
-        this.updateAccessControl(accessControl);
-    }
-
-    @Transactional
-    @Override
-    public void revokePermissions(Set<Permission> permissions, Resource resource, Principal principal) {
-        var accessControl = this.getAccessControl(resource);
-        accessControl.revoke(permissions, principal);
+    public void revokeAccessControl(AccessControl source) {
+        var accessControl = this.getAccessControl(source.getResource());
+        source.getEntries().forEach(entry -> accessControl.revoke(entry.getPermissions(), entry.getPrincipal()));
         this.updateAccessControl(accessControl);
     }
 
