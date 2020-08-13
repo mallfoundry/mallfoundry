@@ -150,8 +150,13 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
-    public Optional<ProductVariant> getVariant(String variantId) {
-        return this.product.getVariant(variantId);
+    public ProductVariant getVariant(String variantId) {
+        return null;
+    }
+
+    @Override
+    public Optional<ProductVariant> findVariant(String variantId) {
+        return Optional.empty();
     }
 
     @Override

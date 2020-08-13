@@ -48,7 +48,7 @@ public class DefaultBrowsingProductService implements BrowsingProductService {
     }
 
     private BrowsingProduct hitBrowsingProduct(BrowsingProduct browsingProduct) {
-        var product = this.productService.getProduct(browsingProduct.getId()).orElseThrow();
+        var product = this.productService.getProduct(browsingProduct.getId());
         return browsingProduct.toBuilder().price(product.getPrice())
                 .name(product.getName())
                 .imageUrl(CollectionUtils.firstElement(product.getImageUrls()))

@@ -235,7 +235,9 @@ public interface Product extends ProductBody, Serializable {
 
     List<ProductVariant> getVariants();
 
-    Optional<ProductVariant> getVariant(String variantId);
+    ProductVariant getVariant(String variantId);
+
+    Optional<ProductVariant> findVariant(String variantId);
 
     Optional<ProductVariant> selectionVariant(List<OptionSelection> selections);
 

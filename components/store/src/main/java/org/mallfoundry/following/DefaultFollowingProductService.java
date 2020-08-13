@@ -61,7 +61,7 @@ public class DefaultFollowingProductService implements FollowingProductService, 
     }
 
     private FollowingProduct requiredFollowingProduct(ProductFollowing following) {
-        return this.productService.getProduct(following.getProductId())
+        return this.productService.findProduct(following.getProductId())
                 .<FollowingProduct>map(product -> new DelegatingImmutableFollowingProduct(product, following))
                 .orElseGet(() -> new NullFollowingProduct(following));
     }

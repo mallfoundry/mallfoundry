@@ -18,6 +18,8 @@
 
 package org.mallfoundry.catalog.product;
 
+import java.util.List;
+
 /**
  * 商品对象处理器，用于增强商品对象。
  *
@@ -25,39 +27,43 @@ package org.mallfoundry.catalog.product;
  */
 public interface ProductProcessor {
 
-    default Product postProcessGetProduct(Product product) {
+    default Product postProcessAfterGetProduct(Product product) {
         return product;
     }
 
-    default ProductQuery preProcessGetProducts(ProductQuery query) {
+    default ProductQuery preProcessBeforeGetProducts(ProductQuery query) {
         return query;
     }
 
-    default Product preProcessAddProduct(Product product) {
+    default Product preProcessBeforeAddProduct(Product product) {
         return product;
     }
 
-    default Product preProcessUpdateProduct(Product product) {
+    default Product preProcessBeforeUpdateProduct(Product product) {
         return product;
     }
 
-    default Product postProcessUpdateProduct(Product product) {
+    default Product preProcessAfterUpdateProduct(Product product) {
         return product;
     }
 
-    default Product preProcessPublishProduct(Product product) {
+    default Product preProcessBeforePublishProduct(Product product) {
         return product;
     }
 
-    default Product preProcessUnpublishProduct(Product product) {
+    default List<Product> preProcessBeforePublishProducts(List<Product> products) {
+        return products;
+    }
+
+    default Product preProcessBeforeUnpublishProduct(Product product) {
         return product;
     }
 
- /*   default Product preProcessAdjustProductInventory(Product product) {
-        return product;
+    default List<Product> preProcessBeforeUnpublishProducts(List<Product> products) {
+        return products;
     }
-*/
-    default Product preProcessDeleteProduct(Product product) {
+
+    default Product preProcessBeforeDeleteProduct(Product product) {
         return product;
     }
 }

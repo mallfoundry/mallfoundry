@@ -18,24 +18,24 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.junit.jupiter.api.Test;
-import org.mallfoundry.test.StandaloneTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.mallfoundry.validation.ValidationHolder;
 
-@StandaloneTest
-public class ProductAuthorizerTests {
+/**
+ * 使用 Spring SmartValidator 校验商品对象。
+ *
+ * @author Zhi Tang
+ */
+public class ProductValidateProcessor implements ProductProcessor {
 
-    @Autowired
-    private ProductService productService;
+    @Override
+    public Product preProcessBeforeAddProduct(Product product) {
+        ValidationHolder.validate(product, "product");
+        return product;
+    }
 
-    @Autowired
-    private ProductAuthorizeProcessor productAuthorizer;
-
-    @WithMockUser(username = "MockUser", password = "N/A", authorities = {"ADMIN"})
-    @Test
-    public void testPreAddProduct() {
-        var product = this.productService.createProduct("1").toBuilder().storeId("mi").build();
-        this.productAuthorizer.preProcessBeforeAddProduct(product);
+    @Override
+    public Product preProcessBeforeUpdateProduct(Product product) {
+        ValidationHolder.validate(product, "product");
+        return product;
     }
 }

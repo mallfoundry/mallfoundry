@@ -147,11 +147,6 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
-    public Optional<ProductVariant> getVariant(String variantId) {
-        return Optional.empty();
-    }
-
-    @Override
     public List<ProductOption> getOptions() {
         return Collections.emptyList();
     }

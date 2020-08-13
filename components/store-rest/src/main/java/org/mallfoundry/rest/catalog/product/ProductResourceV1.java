@@ -83,8 +83,8 @@ public class ProductResourceV1 {
     }
 
     @GetMapping("/products/{id}")
-    public Optional<Product> getProduct(@PathVariable("id") String id) {
-        return this.productService.getProduct(id);
+    public Optional<Product> findProduct(@PathVariable("id") String id) {
+        return this.productService.findProduct(id);
     }
 
     @GetMapping("/products/{product_id}/reviews/{review_id}")

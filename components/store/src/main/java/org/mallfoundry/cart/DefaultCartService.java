@@ -76,8 +76,8 @@ public class DefaultCartService implements CartService {
 
     private JpaCartItem setCartItem(CartItem newItem) {
         var item = JpaCartItem.of(newItem);
-        var product = this.productService.getProduct(item.getProductId()).orElseThrow();
-        var variant = product.getVariant(item.getVariantId()).orElseThrow();
+        var product = this.productService.getProduct(item.getProductId());
+        var variant = product.getVariant(item.getVariantId());
         item.setOptionSelections(variant.getOptionSelections());
         item.setStoreId(product.getStoreId());
         item.setPrice(variant.getPrice());

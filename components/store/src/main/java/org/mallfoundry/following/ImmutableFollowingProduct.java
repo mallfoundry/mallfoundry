@@ -35,6 +35,16 @@ import java.util.Set;
 public interface ImmutableFollowingProduct extends FollowingProduct {
 
     @Override
+    default ProductVariant getVariant(String variantId) {
+        return null;
+    }
+
+    @Override
+    default Optional<ProductVariant> findVariant(String variantId) {
+        return Optional.empty();
+    }
+
+    @Override
     default void removeImageUrl(String imageUrl) {
 
     }

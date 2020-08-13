@@ -116,6 +116,7 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "inventory_status_")
     private InventoryStatus inventoryStatus;
 
+    @NotEmpty
     @Valid
     @OneToMany(targetEntity = JpaProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
@@ -128,6 +129,7 @@ public class JpaProduct extends ProductSupport {
     @JsonDeserialize(contentAs = DefaultProductAttribute.class)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
+    @NotEmpty
     @Valid
     @OneToMany(targetEntity = JpaProductVariant.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")

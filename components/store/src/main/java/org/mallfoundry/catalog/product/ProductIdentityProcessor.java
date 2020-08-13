@@ -31,7 +31,7 @@ import java.util.Objects;
  * @author Zhi Tang
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ProductIdentifier implements ProductProcessor {
+public class ProductIdentityProcessor implements ProductProcessor {
 
     /**
      * 商品对象标识值名称。
@@ -54,13 +54,13 @@ public class ProductIdentifier implements ProductProcessor {
     private static final String PRODUCT_OPTION_VALUE_ID_VALUE_NAME = "catalog.product.option.value.id";
 
     @Override
-    public Product preProcessAddProduct(Product product) {
+    public Product preProcessBeforeAddProduct(Product product) {
         this.setProduct(product);
         return product;
     }
 
     @Override
-    public Product postProcessUpdateProduct(Product product) {
+    public Product preProcessBeforeUpdateProduct(Product product) {
         this.setProduct(product);
         return product;
     }

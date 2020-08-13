@@ -21,6 +21,7 @@ package org.mallfoundry.catalog.product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
@@ -71,7 +72,7 @@ public abstract class ProductSupport implements MutableProduct {
                 .map(ProductVariant::getPrice)
                 .mapToDouble(BigDecimal::doubleValue)
                 .min()
-                .orElseThrow();
+                .orElse(0);
         this.setPrice(BigDecimal.valueOf(minPrice));
     }
 
@@ -123,7 +124,13 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public Optional<ProductVariant> getVariant(String id) {
+    public ProductVariant getVariant(String variantId) {
+        return this.findVariant(variantId)
+                .orElseThrow(() -> new ProductException(ProductMessages.Variant.notFound()));
+    }
+
+    @Override
+    public Optional<ProductVariant> findVariant(String id) {
         return this.getVariants()
                 .stream()
                 .filter(variant -> Objects.equals(variant.getId(), id))
@@ -163,9 +170,7 @@ public abstract class ProductSupport implements MutableProduct {
 
     @Override
     public void adjustInventoryQuantity(String variantId, int quantityDelta) {
-        this.getVariant(variantId)
-                .orElseThrow(() -> new ProductException(ProductMessages.Variant.notFound()))
-                .adjustInventoryQuantity(quantityDelta);
+        this.getVariant(variantId).adjustInventoryQuantity(quantityDelta);
         this.checkInventory();
     }
 

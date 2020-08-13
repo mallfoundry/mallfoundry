@@ -20,11 +20,11 @@ package org.mallfoundry.autoconfigure.catalog;
 
 
 import org.mallfoundry.catalog.product.DefaultProductService;
-import org.mallfoundry.catalog.product.ProductAuthorizer;
-import org.mallfoundry.catalog.product.ProductIdentifier;
-import org.mallfoundry.catalog.product.ProductProcessorsInvoker;
+import org.mallfoundry.catalog.product.ProductAuthorizeProcessor;
+import org.mallfoundry.catalog.product.ProductIdentityProcessor;
+import org.mallfoundry.catalog.product.ProductProcessor;
 import org.mallfoundry.catalog.product.ProductService;
-import org.mallfoundry.catalog.product.SmartProductValidator;
+import org.mallfoundry.catalog.product.ProductValidateProcessor;
 import org.mallfoundry.catalog.product.repository.DelegatingProductRepository;
 import org.mallfoundry.catalog.product.repository.JdbcProductRepository;
 import org.mallfoundry.catalog.product.repository.SearchProductRepository;
@@ -36,12 +36,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.validation.SmartValidator;
+
+import java.util.List;
 
 @Configuration
 @Import(ProductReviewConfiguration.class)
@@ -80,25 +81,27 @@ public class ProductAutoConfiguration {
     }
 
     @Bean
-    public ProductAuthorizer productAuthorizer() {
-        return new ProductAuthorizer();
+    public ProductAuthorizeProcessor productAuthorizeProcessor() {
+        return new ProductAuthorizeProcessor();
     }
 
     @Bean
-    public SmartProductValidator smartProductValidator(SmartValidator validator) {
-        return new SmartProductValidator(validator);
+    public ProductValidateProcessor productValidateProcessor() {
+        return new ProductValidateProcessor();
     }
 
     @Bean
-    public ProductIdentifier productIdentifier() {
-        return new ProductIdentifier();
+    public ProductIdentityProcessor productIdentityProcessor() {
+        return new ProductIdentityProcessor();
     }
 
     @Bean
     @ConditionalOnMissingBean(ProductService.class)
-    public DefaultProductService defaultProductService(ProductProcessorsInvoker processorsInvoker,
-                                                       DelegatingProductRepository delegatingProductRepository,
-                                                       ApplicationEventPublisher publisher) {
-        return new DefaultProductService(processorsInvoker, delegatingProductRepository, publisher);
+    public DefaultProductService defaultProductService(@Autowired(required = false)
+                                                       @Lazy List<ProductProcessor> processors,
+                                                       DelegatingProductRepository repository) {
+        var service = new DefaultProductService(repository);
+        service.setProcessors(processors);
+        return service;
     }
 }

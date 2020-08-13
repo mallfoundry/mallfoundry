@@ -26,7 +26,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  *
  * @author Zhi Tang
  */
-public class ProductAuthorizer implements ProductProcessor {
+public class ProductAuthorizeProcessor implements ProductProcessor {
 
     // hasPermission(storeId, 'storeType', 'product_add,product_manage')
     private static final String HAS_PERMISSION_ADD = "hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -50,31 +50,31 @@ public class ProductAuthorizer implements ProductProcessor {
 
     @PreAuthorize(HAS_PERMISSION_ADD)
     @Override
-    public Product preProcessAddProduct(Product product) {
+    public Product preProcessBeforeAddProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_UPDATE)
     @Override
-    public Product preProcessUpdateProduct(Product product) {
+    public Product preProcessBeforeUpdateProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_PUBLISH)
     @Override
-    public Product preProcessPublishProduct(Product product) {
+    public Product preProcessBeforePublishProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_UNPUBLISH)
     @Override
-    public Product preProcessUnpublishProduct(Product product) {
+    public Product preProcessBeforeUnpublishProduct(Product product) {
         return product;
     }
 
     @PreAuthorize(HAS_PERMISSION_DELETE)
     @Override
-    public Product preProcessDeleteProduct(Product product) {
+    public Product preProcessBeforeDeleteProduct(Product product) {
         return product;
     }
 }

@@ -56,7 +56,9 @@ public interface ProductService {
      */
     Product addProduct(Product product);
 
-    Optional<Product> getProduct(String id);
+    Product getProduct(String id);
+
+    Optional<Product> findProduct(String id);
 
     List<Product> getProducts(Collection<String> ids);
 
