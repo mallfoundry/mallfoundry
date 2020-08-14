@@ -21,5 +21,8 @@ package org.mallfoundry.catalog.collection;
 import java.util.Date;
 
 public interface MutableProductCollection extends ProductCollection {
+
+    void setProductsCount(int productsCount);
+
     void setCreatedTime(Date createdTime);
 }
