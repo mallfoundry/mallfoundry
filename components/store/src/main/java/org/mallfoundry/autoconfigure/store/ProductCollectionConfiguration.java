@@ -18,13 +18,13 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.DefaultProductCollectionService;
-import org.mallfoundry.store.ProductCollectionAuthorizeProcessor;
-import org.mallfoundry.store.ProductCollectionIdentityProcessor;
-import org.mallfoundry.store.ProductCollectionProcessor;
-import org.mallfoundry.store.ProductCollectionRepository;
-import org.mallfoundry.store.repository.jpa.DelegatingJpaProductCollectionRepository;
-import org.mallfoundry.store.repository.jpa.JpaProductCollectionRepository;
+import org.mallfoundry.catalog.collection.DefaultProductCollectionService;
+import org.mallfoundry.catalog.collection.ProductCollectionAuthorizeProcessor;
+import org.mallfoundry.catalog.collection.ProductCollectionIdentityProcessor;
+import org.mallfoundry.catalog.collection.ProductCollectionProcessor;
+import org.mallfoundry.catalog.collection.ProductCollectionRepository;
+import org.mallfoundry.catalog.collection.repository.jpa.DelegatingJpaProductCollectionRepository;
+import org.mallfoundry.catalog.collection.repository.jpa.JpaProductCollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

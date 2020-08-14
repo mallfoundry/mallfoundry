@@ -16,17 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection.repository.jpa;
 
-public interface ProductCollectionProcessorInvoker {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection);
+import java.util.List;
 
-    ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection);
-
-    ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection);
-
-    ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query);
-
-    ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection);
+@Repository
+public interface JpaProductCollectionRepository extends JpaRepository<JpaProductCollection, String> {
+    List<JpaProductCollection> findAllByStoreId(String storeId);
 }

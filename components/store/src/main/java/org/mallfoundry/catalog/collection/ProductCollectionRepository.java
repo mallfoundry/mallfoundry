@@ -16,7 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection;
 
-public class ProductCollectionAuthorizeProcessor implements ProductCollectionProcessor {
+import java.util.List;
+import java.util.Optional;
+
+public interface ProductCollectionRepository {
+
+    ProductCollection create(String id);
+
+    ProductCollection save(ProductCollection collection);
+
+    void delete(ProductCollection collection);
+
+    Optional<ProductCollection> findById(String id);
+
+    List<ProductCollection> findAllByStoreId(String storeId);
 }

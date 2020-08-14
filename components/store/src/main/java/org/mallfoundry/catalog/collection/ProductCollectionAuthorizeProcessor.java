@@ -16,20 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection;
 
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class ProductCollectionIdentityProcessor implements ProductCollectionProcessor {
-
-    private static final String PRODUCT_COLLECTION_ID_VALUE_NAME = "product.collection.id";
-
-    @Override
-    public ProductCollection preProcessBeforeAddCollection(ProductCollection collection) {
-        collection.setId(PrimaryKeyHolder.next(PRODUCT_COLLECTION_ID_VALUE_NAME));
-        return collection;
-    }
+public class ProductCollectionAuthorizeProcessor implements ProductCollectionProcessor {
 }

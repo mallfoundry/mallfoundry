@@ -18,8 +18,8 @@
 
 package org.mallfoundry.rest.store;
 
-import org.mallfoundry.store.ProductCollection;
-import org.mallfoundry.store.ProductCollectionService;
+import org.mallfoundry.catalog.collection.ProductCollection;
+import org.mallfoundry.catalog.collection.ProductCollectionService;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

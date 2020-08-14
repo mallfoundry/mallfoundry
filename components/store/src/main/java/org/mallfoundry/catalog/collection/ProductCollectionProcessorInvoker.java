@@ -16,7 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection;
 
-public interface ProductCollectionQuery extends StoreQueryBase {
+public interface ProductCollectionProcessorInvoker {
+
+    ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection);
+
+    ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection);
+
+    ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection);
+
+    ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query);
+
+    ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection);
 }

@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.repository.jpa;
+package org.mallfoundry.catalog.collection.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.store.ProductCollection;
-import org.mallfoundry.store.ProductCollectionSupport;
+import org.mallfoundry.catalog.collection.ProductCollection;
+import org.mallfoundry.catalog.collection.ProductCollectionSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;

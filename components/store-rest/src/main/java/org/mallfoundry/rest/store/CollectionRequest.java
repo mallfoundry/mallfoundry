@@ -20,7 +20,7 @@ package org.mallfoundry.rest.store;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.store.ProductCollection;
+import org.mallfoundry.catalog.collection.ProductCollection;
 
 @Getter
 @Setter

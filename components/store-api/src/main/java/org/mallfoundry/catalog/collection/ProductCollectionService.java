@@ -16,27 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection;
 
-public interface ProductCollectionProcessor {
+import java.util.List;
+import java.util.Optional;
 
-    default ProductCollection preProcessBeforeAddCollection(ProductCollection collection) {
-        return collection;
-    }
+public interface ProductCollectionService {
 
-    default ProductCollection preProcessBeforeUpdateCollection(ProductCollection collection) {
-        return collection;
-    }
+    ProductCollection createCollection(String id);
 
-    default ProductCollection preProcessBeforeDeleteCollection(ProductCollection collection) {
-        return collection;
-    }
+    ProductCollection addCollection(ProductCollection collection);
 
-    default ProductCollectionQuery preProcessBeforeGetCollections(ProductCollectionQuery query) {
-        return query;
-    }
+    ProductCollection updateCollection(ProductCollection collection);
 
-    default ProductCollection postProcessAfterGetCollection(ProductCollection collection) {
-        return collection;
-    }
+    void deleteCollection(String id);
+
+    Optional<ProductCollection> getCollection(String id);
+
+    List<ProductCollection> getCollections(String storeId);
 }

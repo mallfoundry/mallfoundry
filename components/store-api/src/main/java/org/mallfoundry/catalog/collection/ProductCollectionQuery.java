@@ -16,20 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.catalog.collection;
 
-import java.util.List;
-import java.util.Optional;
+import org.mallfoundry.store.StoreQueryBase;
 
-public interface ProductCollectionRepository {
-
-    ProductCollection create(String id);
-
-    ProductCollection save(ProductCollection collection);
-
-    void delete(ProductCollection collection);
-
-    Optional<ProductCollection> findById(String id);
-
-    List<ProductCollection> findAllByStoreId(String storeId);
+public interface ProductCollectionQuery extends StoreQueryBase {
 }
