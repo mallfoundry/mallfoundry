@@ -16,13 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.store;
+package org.mallfoundry.autoconfigure.catalog;
 
 import org.mallfoundry.catalog.collection.DefaultProductCollectionService;
 import org.mallfoundry.catalog.collection.ProductCollectionAuthorizeProcessor;
 import org.mallfoundry.catalog.collection.ProductCollectionIdentityProcessor;
 import org.mallfoundry.catalog.collection.ProductCollectionProcessor;
 import org.mallfoundry.catalog.collection.ProductCollectionRepository;
+import org.mallfoundry.catalog.collection.ProductCollectionService;
+import org.mallfoundry.catalog.collection.repository.ProductCollectionProductsCountProcessor;
 import org.mallfoundry.catalog.collection.repository.jpa.DelegatingJpaProductCollectionRepository;
 import org.mallfoundry.catalog.collection.repository.jpa.JpaProductCollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,10 @@ public class ProductCollectionConfiguration {
     @Bean
     public ProductCollectionAuthorizeProcessor productCollectionAuthorizeProcessor() {
         return new ProductCollectionAuthorizeProcessor();
+    }
+
+    @Bean
+    public ProductCollectionProductsCountProcessor productCollectionProductsCountProcessor(ProductCollectionService collectionService) {
+        return new ProductCollectionProductsCountProcessor(collectionService);
     }
 }
