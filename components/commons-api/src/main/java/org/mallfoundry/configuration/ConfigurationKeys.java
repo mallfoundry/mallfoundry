@@ -33,6 +33,8 @@ public abstract class ConfigurationKeys {
     // Store key prefix
     private static final String STORE_KEY_PREFIX = "store.";
 
+    public static final String STORE_DEFAULT_LOGO = STORE_KEY_PREFIX + "default-logo";
+
     public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + "member.auto-join-conditional";
 
     // Store Property keys
