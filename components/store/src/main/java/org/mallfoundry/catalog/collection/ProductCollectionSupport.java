@@ -18,9 +18,21 @@
 
 package org.mallfoundry.catalog.collection;
 
+import org.mallfoundry.catalog.product.Product;
+
 import java.util.Date;
 
 public abstract class ProductCollectionSupport implements MutableProductCollection {
+
+    @Override
+    public void addProduct(Product product) {
+        this.setProductsCount(this.getProductsCount() + 1);
+    }
+
+    @Override
+    public void removeProduct(Product product) {
+        this.setProductsCount(this.getProductsCount() - 1);
+    }
 
     @Override
     public void create() {
@@ -56,12 +68,6 @@ public abstract class ProductCollectionSupport implements MutableProductCollecti
         @Override
         public Builder name(String name) {
             this.collection.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder products(int products) {
-            this.collection.setProducts(products);
             return this;
         }
 
