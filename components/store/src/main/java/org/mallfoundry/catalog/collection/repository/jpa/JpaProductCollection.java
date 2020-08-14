@@ -18,8 +18,6 @@
 
 package org.mallfoundry.catalog.collection.repository.jpa;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +36,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_store_collection")
+@Table(name = "mf_catalog_collection")
 public class JpaProductCollection extends ProductCollectionSupport {
 
     @Id
@@ -54,15 +52,12 @@ public class JpaProductCollection extends ProductCollectionSupport {
     @Column(name = "name_")
     private String name;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Column(name = "products_")
-    private int products;
+    @Column(name = "products_count_")
+    private int productsCount;
 
     @Column(name = "position_")
     private int position;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty("created_time")
     @Column(name = "created_time_")
     private Date createdTime;
 
