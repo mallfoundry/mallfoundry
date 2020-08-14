@@ -20,7 +20,7 @@ package org.mallfoundry.data.repository;
 
 public abstract class RepositoryUtils {
 
-    public static boolean isJpa(Repository repository) {
+    public static boolean isJpaRepository(Repository repository) {
         return repository instanceof JpaRepository;
     }
 }
