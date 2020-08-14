@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.collection;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,13 @@ public interface ProductCollectionRepository {
 
     ProductCollection save(ProductCollection collection);
 
+    List<ProductCollection> saveAll(List<ProductCollection> collections);
+
     void delete(ProductCollection collection);
 
     Optional<ProductCollection> findById(String id);
+
+    List<ProductCollection> findAllById(Collection<String> ids);
 
     List<ProductCollection> findAllByStoreId(String storeId);
 }
