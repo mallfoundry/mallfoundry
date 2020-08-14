@@ -108,9 +108,7 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
                 .notBlank(source::getBrandId).trim(dest::setBrandId)
                 .notBlank(source::getDescription).trim(dest::setDescription)
                 .notBlank(source::getCategoryId).trim(dest::setCategoryId)
-                .notBlank(source::getShippingRateId).trim(dest::setShippingRateId)
-        /*.notNull(source.getOrigin()).set()*/;
-
+                .notBlank(source::getShippingRateId).trim(dest::setShippingRateId);
         if (Objects.nonNull(source.getImageUrls())) {
             dest.setImageUrls(source.getImageUrls());
         }

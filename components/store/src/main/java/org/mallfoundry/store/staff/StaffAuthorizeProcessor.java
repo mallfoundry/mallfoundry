@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.staff;
 
+import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -29,21 +30,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class StaffAuthorizeProcessor implements StaffProcessor {
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_MANAGE + "')")
     @Override
     public Staff preProcessBeforeAddStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STORE_STAFF_WRITE + "," + StaffAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_WRITE + "," + AllAuthorities.STORE_STAFF_MANAGE + "')")
     @Override
     public Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + StaffAuthorities.STORE_STAFF_DELETE + "," + StaffAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_DELETE + "," + AllAuthorities.STORE_STAFF_MANAGE + "')")
     @Override
     public Staff preProcessBeforeDeleteStaff(Staff staff) {
         return staff;
