@@ -20,6 +20,12 @@ package org.mallfoundry.security.access;
 
 public abstract class AllAuthorities extends StoreAuthorities {
 
+    // Product collection Authorities
+    public static final String PRODUCT_COLLECTION_READ = "product_collection:read";
+    public static final String PRODUCT_COLLECTION_WRITE = "product_collection:write";
+    public static final String PRODUCT_COLLECTION_DELETE = "product_collection:delete";
+    public static final String PRODUCT_COLLECTION_MANAGE = "product_collection:manage";
+
     // Product Authorities
     public static final String PRODUCT_READ = "product:read";
     public static final String PRODUCT_WRITE = "product:write";

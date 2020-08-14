@@ -31,11 +31,6 @@ public abstract class StoreAuthorities {
     public static final String STORE_ADDRESS_DELETE = "store:address:delete";
     public static final String STORE_ADDRESS_MANAGE = "store:address:manage";
 
-    // Store product collection Authorities
-    public static final String STORE_PRODUCT_COLLECTION_READ = "store:product_collection:read";
-    public static final String STORE_PRODUCT_COLLECTION_WRITE = "store:product_collection:write";
-    public static final String STORE_PRODUCT_COLLECTION_MANAGE = "store:product_collection:manage";
-
     // Store staff Authorities
     public static final String STORE_STAFF_READ = "store:staff:read";
     public static final String STORE_STAFF_WRITE = "store:staff:write";
