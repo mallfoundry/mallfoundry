@@ -19,10 +19,12 @@
 package org.mallfoundry.store;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
-import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,32 +34,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 public class DefaultStoreService implements StoreService, StoreProcessorInvoker, ApplicationEventPublisherAware {
 
-    private final StoreConfiguration storeConfiguration;
-
     private final StoreInitializingManager storeInitializingManager;
 
     private List<StoreProcessor> processors = Collections.emptyList();
-
-    private final StoreBlobService storeBlobService;
 
     private final StoreRepository storeRepository;
 
     private ApplicationEventPublisher eventPublisher;
 
-    public DefaultStoreService(StoreConfiguration storeConfiguration,
-                               StoreInitializingManager storeInitializingManager,
-                               StoreBlobService storeBlobService,
-                               StoreRepository storeRepository) {
-        this.storeConfiguration = storeConfiguration;
+    public DefaultStoreService(StoreInitializingManager storeInitializingManager, StoreRepository storeRepository) {
         this.storeInitializingManager = storeInitializingManager;
         this.storeRepository = storeRepository;
-        this.storeBlobService = storeBlobService;
     }
 
     public void setProcessors(List<StoreProcessor> processors) {
@@ -68,7 +60,6 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
     }
-
 
     @Override
     public StoreQuery createStoreQuery() {
@@ -95,12 +86,12 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public Store createStore(Store store) {
         store = this.invokePreProcessBeforeCreateStore(store);
         store.changeOwner(SubjectHolder.getSubject().toUser());
-        if (Objects.isNull(store.getLogo())) {
-            store.setLogo(storeConfiguration.getDefaultLogo());
+        if (StringUtils.isBlank(store.getLogo())) {
+            var config = ConfigurationHolder.getConfiguration(store);
+            store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
         }
         store.create();
         store = this.storeRepository.save(store);
-        this.storeBlobService.initializeBucket(store.getId());
         this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
         return store;
     }
@@ -120,11 +111,40 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         return this.storeInitializingManager.getStoreInitializing(id);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsStore(String id) {
+        return this.storeRepository.findById(id)
+                .map(this::invokePreProcessBeforeExistsStore)
+                .isPresent();
+    }
+
     @Override
     public Store getStore(String storeId) {
-        return this.storeRepository
-                .findById(storeId)
+        return this.findStore(storeId)
                 .orElseThrow(() -> StoreExceptions.notFound(storeId));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Store> findStore(String storeId) {
+        return this.storeRepository.findById(storeId)
+                .map(this::invokePostProcessAfterGetStore);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public SliceList<Store> getStores(StoreQuery query) {
+        return Function.<SliceList<Store>>identity()
+                .compose(this.storeRepository::findAll)
+                .compose(this::invokePreProcessBeforeGetStores)
+                .apply(query);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Store> getStores(Collection<String> ids) {
+        return this.storeRepository.findAllById(ids);
     }
 
     private Store updateStore(final Store source, final Store dest) {
@@ -156,36 +176,6 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .apply(storeId);
         this.storeRepository.delete(store);
         this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean existsStore(String id) {
-        return this.storeRepository.findById(id)
-                .map(this::invokePreProcessBeforeExistsStore)
-                .isPresent();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Store> findStore(String id) {
-        return this.storeRepository.findById(id)
-                .map(this::invokePostProcessAfterGetStore);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public SliceList<Store> getStores(StoreQuery query) {
-        return Function.<SliceList<Store>>identity()
-                .compose(this.storeRepository::findAll)
-                .compose(this::invokePreProcessBeforeGetStores)
-                .apply(query);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Store> getStores(Collection<String> ids) {
-        return this.storeRepository.findAllById(ids);
     }
 
     @Override
