@@ -18,18 +18,14 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.store.DefaultStoreConfiguration;
 import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreAuthorizeProcessor;
-import org.mallfoundry.store.StoreConfiguration;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
-import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.store.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -38,7 +34,6 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties(StoreProperties.class)
 @Import({ProductCollectionConfiguration.class,
         StoreInitializingConfiguration.class,
         StoreAddressConfiguration.class,
@@ -52,20 +47,11 @@ public class StoreAutoConfiguration {
     }
 
     @Bean
-    public StoreConfiguration storeConfiguration(StoreProperties properties) {
-        var config = new DefaultStoreConfiguration();
-        config.setDefaultLogo(properties.getDefaultLogo());
-        return config;
-    }
-
-    @Bean
-    public DefaultStoreService defaultStoreService(StoreConfiguration storeConfiguration,
-                                                   StoreInitializingManager storeInitializingManager,
-                                                   @Autowired(required = false)
+    public DefaultStoreService defaultStoreService(@Autowired(required = false)
                                                    @Lazy List<StoreProcessor> processors,
-                                                   StoreBlobService storeBlobService,
+                                                   StoreInitializingManager storeInitializingManager,
                                                    StoreRepository storeRepository) {
-        var service = new DefaultStoreService(storeConfiguration, storeInitializingManager, storeBlobService, storeRepository);
+        var service = new DefaultStoreService(storeInitializingManager, storeRepository);
         service.setProcessors(processors);
         return service;
     }
