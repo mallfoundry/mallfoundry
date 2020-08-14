@@ -23,6 +23,7 @@ import org.mallfoundry.processor.Processors;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -49,10 +50,23 @@ public class DefaultProductCollectionService implements ProductCollectionService
 
     @Transactional
     public ProductCollection addCollection(ProductCollection collection) {
-        return Function.<ProductCollection>identity()
-                .compose(this.collectionRepository::save)
-                .compose(this::invokePreProcessBeforeAddCollection)
-                .apply(collection);
+        collection = this.invokePreProcessBeforeAddCollection(collection);
+        collection.create();
+        return this.collectionRepository.save(collection);
+    }
+
+    public Optional<ProductCollection> findCollection(String id) {
+        return this.collectionRepository.findById(id)
+                .map(this::invokePostProcessAfterGetCollection);
+    }
+
+    public List<ProductCollection> getCollections(String storeId) {
+        return this.collectionRepository.findAllByStoreId(storeId);
+    }
+
+    @Override
+    public List<ProductCollection> getCollections(Collection<String> ids) {
+        return this.collectionRepository.findAllById(ids);
     }
 
     private ProductCollection updateCollection(final ProductCollection source, final ProductCollection dest) {
@@ -60,6 +74,7 @@ public class DefaultProductCollectionService implements ProductCollectionService
         return dest;
     }
 
+    @Transactional
     @Override
     public ProductCollection updateCollection(ProductCollection source) {
         return Function.<ProductCollection>identity()
@@ -67,6 +82,12 @@ public class DefaultProductCollectionService implements ProductCollectionService
                 .compose(this::invokePreProcessBeforeUpdateCollection)
                 .compose(this::requiredCollection)
                 .apply(source.getId());
+    }
+
+    @Transactional
+    @Override
+    public List<ProductCollection> updateCollections(List<ProductCollection> collections) {
+        return this.collectionRepository.saveAll(collections);
     }
 
     private ProductCollection requiredCollection(String id) {
@@ -80,15 +101,6 @@ public class DefaultProductCollectionService implements ProductCollectionService
                 .compose(this::requiredCollection)
                 .apply(id);
         this.collectionRepository.delete(collection);
-    }
-
-    public Optional<ProductCollection> getCollection(String id) {
-        return this.collectionRepository.findById(id)
-                .map(this::invokePostProcessAfterGetCollection);
-    }
-
-    public List<ProductCollection> getCollections(String storeId) {
-        return this.collectionRepository.findAllByStoreId(storeId);
     }
 
     @Override
