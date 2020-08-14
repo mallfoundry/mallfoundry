@@ -45,7 +45,7 @@ public interface JpaProductRepository extends JpaRepository<JpaProduct, String>,
                                 ? Sort.Order.desc(sortOrder.getProperty())
                                 : Sort.Order.asc(sortOrder.getProperty()))
                         .collect(Collectors.toUnmodifiableList())))
-                .orElseGet(Sort::unsorted);
+                .orElseGet(() -> Sort.by("createdTime"));
     }
 
     default Specification<JpaProduct> createSpecification(ProductQuery productQuery) {
