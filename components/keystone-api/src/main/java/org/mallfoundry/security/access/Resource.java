@@ -29,13 +29,11 @@ import java.io.Serializable;
  */
 public interface Resource extends Serializable {
 
+    String TENANT_TYPE = "Tenant";
+
     String STORE_TYPE = "Store";
 
-    String PRODUCT_TYPE = "Product";
-
     String CUSTOMER_TYPE = "Customer";
-
-    String ORDER_TYPE = "Order";
 
     String getIdentifier();
 
