@@ -21,7 +21,6 @@ package org.mallfoundry.catalog.product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
@@ -60,11 +59,17 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException {
         this.setFreeShipping(Objects.isNull(fixedShippingCost) || BigDecimal.ZERO.equals(fixedShippingCost));
+        if (Objects.nonNull(fixedShippingCost)) {
+            this.setShippingRateId(null);
+        }
     }
 
     @Override
     public void setShippingRateId(String shippingRateId) throws ProductException {
         this.setFreeShipping(StringUtils.isEmpty(shippingRateId));
+        if (Objects.nonNull(shippingRateId)) {
+            this.setFixedShippingCost(null);
+        }
     }
 
     private void setMinPrice() {
@@ -197,11 +202,6 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void addOptions(List<ProductOption> options) {
-        ListUtils.emptyIfNull(options).forEach(this::addOption);
-    }
-
-    @Override
     public Optional<ProductOption> getOption(String name) {
         return this.getOptions().stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
     }
@@ -209,19 +209,14 @@ public abstract class ProductSupport implements MutableProduct {
     @Override
     public Optional<OptionSelection> selectOption(final String name, final String label) {
         return this.getOption(name)
-                .map(option -> Map.entry(option, option.getValue(label).orElseThrow()))
+                .map(option -> Map.entry(option, option.getValue(label)))
                 .map(entry -> new DefaultOptionSelection(entry.getKey().getId(), name, entry.getValue().getId(), label));
     }
 
     @Override
-    public void removeOption(ProductOption option) {
-        var removed = this.getOptions().remove(option);
-        Assert.state(removed, ProductMessages.Option::notFound);
-    }
-
-    @Override
-    public void clearOptions() {
+    public void updateOptions(List<ProductOption> options) {
         this.getOptions().clear();
+        ListUtils.emptyIfNull(options).forEach(this::addOption);
     }
 
     @Override
@@ -457,7 +452,7 @@ public abstract class ProductSupport implements MutableProduct {
 
         @Override
         public Builder options(List<ProductOption> options) {
-            this.product.addOptions(options);
+            this.product.updateOptions(options);
             return this;
         }
 

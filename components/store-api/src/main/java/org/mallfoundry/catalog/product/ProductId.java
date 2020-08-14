@@ -16,27 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.catalog.product;
+package org.mallfoundry.catalog.product;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.catalog.product.ProductOrigin;
+import org.mallfoundry.store.StoreOwnership;
 
-@Getter
-@Setter
-public class ProductShippingOriginRequest {
-    private String provinceId;
-    private String province;
-    private String cityId;
-    private String city;
-    private String countyId;
-    private String county;
-
-    public ProductOrigin assignTo(ProductOrigin shippingOrigin) {
-        return shippingOrigin.toBuilder()
-                .provinceId(this.provinceId).province(this.province)
-                .cityId(this.cityId).city(this.city)
-                .countyId(this.countyId).county(this.county)
-                .build();
-    }
+public interface ProductId extends StoreOwnership {
+    String getId();
 }

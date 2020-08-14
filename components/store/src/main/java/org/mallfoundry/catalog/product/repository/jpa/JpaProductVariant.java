@@ -100,7 +100,7 @@ public class JpaProductVariant extends ProductVariantSupport {
     private List<OptionSelection> optionSelections = new ArrayList<>();
 
     @Convert(converter = StringListConverter.class)
-    @Column(name = "image_urls_", length = 521)
+    @Column(name = "image_urls_", length = 1024 * 2)
     private List<String> imageUrls;
 
     @Column(name = "position_")

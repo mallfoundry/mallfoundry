@@ -46,7 +46,12 @@ public abstract class ProductOptionSupport implements MutableProductOption {
     }
 
     @Override
-    public Optional<ProductOptionValue> getValue(String label) {
+    public ProductOptionValue getValue(String label) {
+        return this.findValue(label).orElseThrow();
+    }
+
+    @Override
+    public Optional<ProductOptionValue> findValue(String label) {
         return this.getValues().stream().filter(value -> Objects.equals(value.getLabel(), label)).findFirst();
     }
 

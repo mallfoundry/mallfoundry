@@ -40,7 +40,9 @@ public interface ProductOption extends Serializable, Position, ObjectBuilder.ToB
 
     ProductOptionValue createValue(String valueId);
 
-    Optional<ProductOptionValue> getValue(String label);
+    ProductOptionValue getValue(String label);
+
+    Optional<ProductOptionValue> findValue(String label);
 
     List<ProductOptionValue> getValues();
 

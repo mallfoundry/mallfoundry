@@ -46,14 +46,14 @@ public class ProductRequest {
     private Boolean freeShipping;
     private BigDecimal fixedShippingCost;
     private String shippingRateId;
-    private ProductShippingOriginRequest shippingOrigin;
+    private ProductOriginRequest origin;
     private List<ProductAttributeRequest> attributes;
     private List<ProductOptionRequest> options;
     private List<ProductVariantRequest> variants;
 
     private ProductOrigin createOrigin(Product product) {
-        return Objects.isNull(this.shippingOrigin) ? null
-                : this.shippingOrigin.assignTo(product.createOrigin());
+        return Objects.isNull(this.origin) ? null
+                : this.origin.assignTo(product.createOrigin());
     }
 
     private List<ProductAttribute> createAttributes(Product product) {

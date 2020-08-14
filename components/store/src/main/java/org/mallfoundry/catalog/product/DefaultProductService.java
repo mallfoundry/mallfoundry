@@ -159,8 +159,7 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
         }
 
         if (Objects.nonNull(product.getOptions())) {
-            oldProduct.clearOptions();
-            oldProduct.addOptions(product.getOptions());
+            oldProduct.updateOptions(product.getOptions());
         }
 
         if (Objects.nonNull(product.getVariants())) {

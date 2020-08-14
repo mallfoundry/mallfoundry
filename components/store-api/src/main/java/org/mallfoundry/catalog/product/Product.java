@@ -64,38 +64,18 @@ public interface Product extends ProductBody, Serializable {
 
     BigDecimal getPrice();
 
-    /**
-     * 获得关联商品类目标识。
-     *
-     * @return 商品类目标识
-     */
     String getCategoryId();
 
     void setCategoryId(String categoryId);
 
-    /**
-     * 获得商品品牌。
-     *
-     * @return 商品品牌标识。
-     */
     String getBrandId();
 
     void setBrandId(String brandId);
 
-    /**
-     * 获得商家自定义的商品类目集合。
-     *
-     * @return 商家自定义的商品类目集合
-     */
     Set<String> getCollections();
 
     void setCollections(Set<String> collections);
 
-    /**
-     * 获得商品的总销售量。
-     *
-     * @return 商品的总销售量
-     */
     long getTotalSales();
 
     /**
@@ -118,27 +98,12 @@ public interface Product extends ProductBody, Serializable {
      */
     void adjustMonthlySales(long sales) throws ProductException;
 
-    /**
-     * 添加一个商品图片URL链接。
-     *
-     * @param imageUrl 商品图片URL
-     */
     void addImageUrl(String imageUrl);
 
-    /**
-     * 获得商品图片URL链接集合。
-     *
-     * @return 商品图片URL链接集合
-     */
     List<String> getImageUrls();
 
     void setImageUrls(List<String> imageUrls);
 
-    /**
-     * 删除给定的商品图片URL链接。
-     *
-     * @param imageUrl 商品图片URL
-     */
     void removeImageUrl(String imageUrl);
 
     void addVideoUrl(String url);
@@ -149,63 +114,22 @@ public interface Product extends ProductBody, Serializable {
 
     void removeVideoUrl(String url);
 
-    /**
-     * 创建一个商品发货地址。
-     *
-     * @return 商品发货地址实例
-     */
     ProductOrigin createOrigin();
 
-    /**
-     * 获得商品关联的发货地址。
-     *
-     * @return 商品发货地址实例
-     */
     ProductOrigin getOrigin();
 
     void setOrigin(ProductOrigin origin);
 
-    /**
-     * 获得商品是否包邮。
-     *
-     * @return {@code true} 表示包邮，{@code false} 表示不包邮
-     */
     boolean isFreeShipping();
 
-    /**
-     * 设置商品包邮，调用此方法后 {@link #getFixedShippingCost()}
-     * 和 {@link #getShippingRateId()} 将被设置为 null。
-     */
     void freeShipping();
 
-    /**
-     * 获得固定运费。
-     *
-     * @return 固定运费
-     */
     BigDecimal getFixedShippingCost();
 
-    /**
-     * 设置固定运费。
-     *
-     * @param fixedShippingCost 固定运费
-     * @throws ProductException 如果运费为 null
-     */
     void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException;
 
-    /**
-     * 获得商品所关联的商家自定义的运费对象标识。
-     *
-     * @return 运费标识。
-     */
     String getShippingRateId();
 
-    /**
-     * 设置商家自定义的运费对象标识。
-     *
-     * @param shippingRateId 运费对象标识
-     * @throws ProductException 如果运费对象标识为 null
-     */
     void setShippingRateId(String shippingRateId) throws ProductException;
 
     /**
@@ -233,6 +157,8 @@ public interface Product extends ProductBody, Serializable {
 
     void addVariants(List<ProductVariant> variants);
 
+    /*void updateVariants(List<ProductVariant> variants);*/
+
     List<ProductVariant> getVariants();
 
     ProductVariant getVariant(String variantId);
@@ -251,22 +177,13 @@ public interface Product extends ProductBody, Serializable {
 
     void addOption(ProductOption option);
 
-    void addOptions(List<ProductOption> options);
-
-    /**
-     * 获得商品的规格选项集合。
-     *
-     * @return 商品的规格选项集合
-     */
     List<ProductOption> getOptions();
 
     Optional<ProductOption> getOption(String name);
 
     Optional<OptionSelection> selectOption(String name, String label);
 
-    void removeOption(ProductOption option);
-
-    void clearOptions();
+    void updateOptions(List<ProductOption> options);
 
     ProductAttribute createAttribute();
 
