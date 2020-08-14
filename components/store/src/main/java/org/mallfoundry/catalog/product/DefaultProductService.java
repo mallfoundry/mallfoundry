@@ -18,12 +18,11 @@
 
 package org.mallfoundry.catalog.product;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,76 +103,63 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
                 this.invokePreProcessBeforeGetProducts(query));
     }
 
+    private void updateProduct(Product source, Product dest) {
+        Copies.notBlank(source::getName).trim(dest::setName)
+                .notBlank(source::getBrandId).trim(dest::setBrandId)
+                .notBlank(source::getDescription).trim(dest::setDescription)
+                .notBlank(source::getCategoryId).trim(dest::setCategoryId)
+                .notBlank(source::getShippingRateId).trim(dest::setShippingRateId)
+                /*.notNull(source.getOrigin()).set()*/;
+
+        if (Objects.nonNull(source.getImageUrls())) {
+            dest.setImageUrls(source.getImageUrls());
+        }
+
+        if (Objects.nonNull(source.getCollections())) {
+            dest.setCollections(source.getCollections());
+        }
+
+        if (Objects.nonNull(source.getOrigin())) {
+            dest.setOrigin(source.getOrigin());
+        }
+
+        if (Objects.nonNull(source.getFixedShippingCost())) {
+            dest.setFixedShippingCost(source.getFixedShippingCost());
+        }
+
+        if (source.isFreeShipping()) {
+            dest.freeShipping();
+        }
+
+        if (Objects.nonNull(source.getOptions())) {
+            dest.updateOptions(source.getOptions());
+        }
+
+        if (Objects.nonNull(source.getVariants())) {
+            dest.clearVariants();
+            dest.addVariants(source.getVariants());
+        }
+
+        if (Objects.nonNull(source.getAttributes())) {
+            dest.clearAttributes();
+            dest.addAttributes(source.getAttributes());
+        }
+    }
+
     @Transactional
     @Override
-    public Product updateProduct(Product product) {
-        var oldProduct = this.invokePreProcessBeforeUpdateProduct(this.requiredProduct(product.getId()));
-
-        if (Objects.nonNull(product.getName())
-                && ObjectUtils.notEqual(product.getName(), oldProduct.getName())) {
-            oldProduct.setName(product.getName());
+    public Product updateProduct(Product source) {
+        var product = this.requiredProduct(source.getId());
+        try {
+            product = this.invokePreProcessBeforeUpdateProduct(product);
+            this.updateProduct(source, product);
+            product = this.invokePreProcessAfterUpdateProduct(product);
+        } finally {
+            this.invokePreProcessAfterCompletion();
         }
-
-        if (Objects.nonNull(product.getImageUrls())
-                && !ListUtils.isEqualList(product.getImageUrls(), oldProduct.getImageUrls())) {
-            oldProduct.setImageUrls(product.getImageUrls());
-        }
-
-        if (Objects.nonNull(product.getBrandId())
-                && ObjectUtils.notEqual(product.getBrandId(), oldProduct.getBrandId())) {
-            oldProduct.setBrandId(product.getBrandId());
-        }
-
-        if (Objects.nonNull(product.getDescription())
-                && ObjectUtils.notEqual(product.getDescription(), oldProduct.getDescription())) {
-            oldProduct.setDescription(product.getDescription());
-        }
-
-        if (Objects.nonNull(product.getCollections())
-                && !CollectionUtils.isEqualCollection(product.getCollections(), oldProduct.getCollections())) {
-            oldProduct.setCollections(product.getCollections());
-        }
-
-        if (Objects.nonNull(product.getCategoryId())
-                && ObjectUtils.notEqual(product.getCategoryId(), oldProduct.getCategoryId())) {
-            oldProduct.setCategoryId(product.getCategoryId());
-        }
-
-        if (Objects.nonNull(product.getOrigin())
-                && ObjectUtils.notEqual(product.getOrigin(), oldProduct.getOrigin())) {
-            oldProduct.setOrigin(product.getOrigin());
-        }
-
-        if (Objects.nonNull(product.getFixedShippingCost())
-                && ObjectUtils.notEqual(product.getFixedShippingCost(), oldProduct.getFixedShippingCost())) {
-            oldProduct.setFixedShippingCost(product.getFixedShippingCost());
-        }
-
-        if (Objects.nonNull(product.getShippingRateId())
-                && ObjectUtils.notEqual(product.getShippingRateId(), oldProduct.getShippingRateId())) {
-            oldProduct.setShippingRateId(product.getShippingRateId());
-        }
-
-        if (product.isFreeShipping() && !oldProduct.isFreeShipping()) {
-            oldProduct.freeShipping();
-        }
-
-        if (Objects.nonNull(product.getOptions())) {
-            oldProduct.updateOptions(product.getOptions());
-        }
-
-        if (Objects.nonNull(product.getVariants())) {
-            oldProduct.clearVariants();
-            oldProduct.addVariants(product.getVariants());
-        }
-
-        if (Objects.nonNull(product.getAttributes())) {
-            oldProduct.clearAttributes();
-            oldProduct.addAttributes(product.getAttributes());
-        }
-        var savedProduct = this.productRepository.save(this.invokePreProcessAfterUpdateProduct(oldProduct));
-        this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(savedProduct));
-        return savedProduct;
+        product = this.productRepository.save(product);
+        this.eventPublisher.publishEvent(new ImmutableProductChangedEvent(product));
+        return product;
     }
 
     @Transactional
@@ -313,5 +299,10 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
         return Processors.stream(this.processors)
                 .map(ProductProcessor::preProcessBeforeDeleteProduct)
                 .apply(product);
+    }
+
+    @Override
+    public void invokePreProcessAfterCompletion() {
+        this.processors.forEach(ProductProcessor::preProcessAfterCompletion);
     }
 }
