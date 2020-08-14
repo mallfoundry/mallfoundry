@@ -37,6 +37,8 @@ public interface AccessControl extends Serializable {
 
     AccessControl getParent();
 
+    AccessControl createAccessControl(Principal owner, Resource resource);
+
     boolean isInherit();
 
     void setInherit(boolean inherit);

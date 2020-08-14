@@ -103,6 +103,15 @@ public class JpaAccessControl extends AccessControlSupport {
     }
 
     @Override
+    public AccessControl createAccessControl(Principal owner, Resource resource) {
+        var childControl = new JpaAccessControl();
+        childControl.setOwner(owner);
+        childControl.setResource(resource);
+        childControl.setParent(this);
+        return childControl;
+    }
+
+    @Override
     public void grant(String permission, Principal principal) {
         this.getEntry(principal).addPermission(permission);
     }
