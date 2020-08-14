@@ -44,4 +44,13 @@ public class DefaultConfigurationTests {
         var defaultTenantConf = appConf.createConfiguration(defaultTenantConfId);
         this.manager.saveConfiguration(defaultTenantConf);
     }
+
+    @Test
+    public void testSetDefaultTenantConfiguration() {
+        var tenantConfId = this.manager.createConfigurationId(ConfigurationScope.TENANT, Configuration.DEFAULT_TENANT_ID);
+        var tenantConf = this.manager.getConfiguration(tenantConfId);
+        tenantConf.setProperty(ConfigurationKeys.STORE_DEFAULT_LOGO, "http://static.mallfoundry.org/store/logos/default.png");
+        this.manager.saveConfiguration(tenantConf);
+    }
+
 }
