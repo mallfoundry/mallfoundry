@@ -18,18 +18,24 @@
 
 package org.mallfoundry.security;
 
+import org.mallfoundry.util.Positions;
+
 import java.util.List;
 
 public abstract class AuthorityDescriptionSupport implements MutableAuthorityDescription {
 
     @Override
     public void addAuthority(AuthorityDescription authority) {
+        authority.setPosition(Integer.MAX_VALUE);
         this.getChildren().add(authority);
+        Positions.sort(this.getChildren());
     }
 
     @Override
     public void addAuthorities(List<AuthorityDescription> authorities) {
+        authorities.forEach(authority -> authority.setPosition(Integer.MAX_VALUE));
         this.getChildren().addAll(authorities);
+        Positions.sort(this.getChildren());
     }
 
     @Override
@@ -70,6 +76,12 @@ public abstract class AuthorityDescriptionSupport implements MutableAuthorityDes
         @Override
         public Builder name(String name) {
             this.authority.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder position(int position) {
+            this.authority.setPosition(position);
             return this;
         }
 

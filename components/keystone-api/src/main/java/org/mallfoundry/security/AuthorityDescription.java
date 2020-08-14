@@ -59,6 +59,8 @@ public interface AuthorityDescription extends Position, ObjectBuilder.ToBuilder<
 
         Builder name(String name);
 
+        Builder position(int position);
+
         Builder addAuthority(AuthorityDescription authority);
 
         Builder addAuthorities(List<AuthorityDescription> authorities);

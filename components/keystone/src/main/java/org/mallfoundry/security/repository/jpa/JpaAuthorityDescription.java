@@ -32,6 +32,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class JpaAuthorityDescription extends AuthorityDescriptionSupport {
 
     @OneToMany(targetEntity = JpaAuthorityDescription.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_authority_")
+    @OrderBy("position")
     private List<AuthorityDescription> children = new ArrayList<>();
 
     @Column(name = "position_")
