@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.collection;
 
+import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
@@ -36,9 +37,11 @@ public interface ProductCollection extends StoreOwnership, Position, ObjectBuild
 
     void setName(String name);
 
-    int getProducts();
+    int getProductsCount();
 
-    void setProducts(int products);
+    void addProduct(Product product);
+
+    void removeProduct(Product product);
 
     Date getCreatedTime();
 
@@ -51,7 +54,5 @@ public interface ProductCollection extends StoreOwnership, Position, ObjectBuild
         Builder storeId(String storeId);
 
         Builder name(String name);
-
-        Builder products(int products);
     }
 }
