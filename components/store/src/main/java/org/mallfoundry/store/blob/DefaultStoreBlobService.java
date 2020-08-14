@@ -25,6 +25,7 @@ import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
+import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +38,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class DefaultStoreBlobService implements StoreBlobService {
-
-    private static final String STORE_OWNER_TYPE = "store";
 
     private static final String STORE_BUCKET_PREFIX = "store-";
 
@@ -66,7 +65,7 @@ public class DefaultStoreBlobService implements StoreBlobService {
     @Transactional
     @Override
     public void initializeBucket(String storeId) {
-        var owner = this.storageService.createOwner(STORE_OWNER_TYPE, storeId);
+        var owner = this.storageService.createOwner(OwnerType.STORE, storeId);
         var bucket = this.storageService.createBucket(this.getBucketName(storeId), owner);
         this.storageService.addBucket(bucket);
     }
