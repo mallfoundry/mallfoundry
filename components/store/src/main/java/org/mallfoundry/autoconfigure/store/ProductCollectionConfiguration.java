@@ -19,6 +19,8 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.store.DefaultProductCollectionService;
+import org.mallfoundry.store.ProductCollectionAuthorizeProcessor;
+import org.mallfoundry.store.ProductCollectionIdentityProcessor;
 import org.mallfoundry.store.ProductCollectionProcessor;
 import org.mallfoundry.store.ProductCollectionRepository;
 import org.mallfoundry.store.repository.jpa.DelegatingJpaProductCollectionRepository;
@@ -32,17 +34,28 @@ import java.util.List;
 
 @Configuration
 public class ProductCollectionConfiguration {
+
     @Bean
     public DelegatingJpaProductCollectionRepository delegatingJpaProductCollectionRepository(JpaProductCollectionRepository repositoryDelegate) {
         return new DelegatingJpaProductCollectionRepository(repositoryDelegate);
     }
 
     @Bean
-    @Autowired(required = false)
-    public DefaultProductCollectionService defaultProductCollectionService(@Lazy List<ProductCollectionProcessor> processors,
+    public DefaultProductCollectionService defaultProductCollectionService(@Autowired(required = false)
+                                                                           @Lazy List<ProductCollectionProcessor> processors,
                                                                            ProductCollectionRepository repository) {
         var service = new DefaultProductCollectionService(repository);
         service.setProcessors(processors);
         return service;
+    }
+
+    @Bean
+    public ProductCollectionIdentityProcessor productCollectionIdentityProcessor() {
+        return new ProductCollectionIdentityProcessor();
+    }
+
+    @Bean
+    public ProductCollectionAuthorizeProcessor productCollectionAuthorizeProcessor() {
+        return new ProductCollectionAuthorizeProcessor();
     }
 }
