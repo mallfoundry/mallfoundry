@@ -31,7 +31,7 @@ import java.util.List;
 
 public class RoleStaffsCountProcessor implements StaffProcessor {
 
-    private final ThreadLocal<List<Role>> localRoles = new NamedThreadLocal<>("RoleStaffsCount");
+    private final ThreadLocal<List<Role>> localRoles = new NamedThreadLocal<>("Role staffs count");
 
     private final RoleService roleService;
 
