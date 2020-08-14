@@ -127,10 +127,6 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
             dest.setFixedShippingCost(source.getFixedShippingCost());
         }
 
-        if (source.isFreeShipping()) {
-            dest.freeShipping();
-        }
-
         if (Objects.nonNull(source.getOptions())) {
             dest.updateOptions(source.getOptions());
         }

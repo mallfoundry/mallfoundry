@@ -215,12 +215,12 @@ public class JpaProduct extends ProductSupport {
     }
 
     public void setFixedShippingCost(BigDecimal fixedShippingCost) {
-        super.setFixedShippingCost(fixedShippingCost);
         this.fixedShippingCost = fixedShippingCost;
+        super.setFixedShippingCost(fixedShippingCost);
     }
 
     public void setShippingRateId(String shippingRateId) {
-        super.setShippingRateId(shippingRateId);
         this.shippingRateId = shippingRateId;
+        super.setShippingRateId(shippingRateId);
     }
 }

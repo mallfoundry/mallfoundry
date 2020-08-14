@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.OptionSelections;
@@ -58,18 +57,19 @@ public abstract class ProductSupport implements MutableProduct {
 
     @Override
     public void setFixedShippingCost(BigDecimal fixedShippingCost) throws ProductException {
-        this.setFreeShipping(Objects.isNull(fixedShippingCost) || BigDecimal.ZERO.equals(fixedShippingCost));
         if (Objects.nonNull(fixedShippingCost)) {
             this.setShippingRateId(null);
+        } else {
+            this.setFreeShipping(Objects.isNull(this.getShippingRateId()));
         }
     }
 
     @Override
     public void setShippingRateId(String shippingRateId) throws ProductException {
-        this.setFreeShipping(StringUtils.isEmpty(shippingRateId));
         if (Objects.nonNull(shippingRateId)) {
             this.setFixedShippingCost(null);
         }
+        this.setFreeShipping(Objects.isNull(shippingRateId) && Objects.isNull(this.getFixedShippingCost()));
     }
 
     private void setMinPrice() {
