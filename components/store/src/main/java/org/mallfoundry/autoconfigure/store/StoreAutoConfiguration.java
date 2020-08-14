@@ -34,8 +34,7 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 @Configuration
-@Import({ProductCollectionConfiguration.class,
-        StoreInitializingConfiguration.class,
+@Import({StoreInitializingConfiguration.class,
         StoreAddressConfiguration.class,
         StoreSecurityConfiguration.class,
         StoreStaffConfiguration.class})

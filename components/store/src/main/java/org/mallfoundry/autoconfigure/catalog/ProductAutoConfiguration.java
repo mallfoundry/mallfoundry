@@ -32,6 +32,7 @@ import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchPro
 import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.DelegatingJpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
+import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositorySessionProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -45,7 +46,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import java.util.List;
 
 @Configuration
-@Import(ProductReviewConfiguration.class)
+@Import({ProductCollectionConfiguration.class,
+        ProductReviewConfiguration.class})
 public class ProductAutoConfiguration {
 
     @Bean
@@ -78,6 +80,11 @@ public class ProductAutoConfiguration {
     public DelegatingProductRepository delegatingProductRepository(DelegatingJpaProductRepository primaryRepository,
                                                                    @Autowired(required = false) SearchProductRepository searchRepository) {
         return new DelegatingProductRepository(primaryRepository, searchRepository);
+    }
+
+    @Bean
+    public JpaProductRepositorySessionProcessor jpaProductRepositorySessionProcessor(DelegatingJpaProductRepository repository) {
+        return new JpaProductRepositorySessionProcessor(repository);
     }
 
     @Bean
