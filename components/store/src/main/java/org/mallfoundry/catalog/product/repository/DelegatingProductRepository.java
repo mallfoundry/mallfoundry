@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.product.repository;
 
+import lombok.Getter;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
 import org.mallfoundry.catalog.product.ProductRepository;
@@ -30,9 +31,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class DelegatingProductRepository implements ProductRepository {
-
+    @Getter
     private final ProductRepository primaryRepository;
-
+    @Getter
     private final ProductRepository searchRepository;
 
     public DelegatingProductRepository(ProductRepository primaryRepository, ProductRepository searchRepository) {
