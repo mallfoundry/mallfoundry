@@ -22,6 +22,7 @@ import org.mallfoundry.catalog.collection.ProductCollection;
 import org.mallfoundry.catalog.collection.ProductCollectionRepository;
 import org.springframework.data.util.CastUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,11 @@ public class DelegatingJpaProductCollectionRepository implements ProductCollecti
     }
 
     @Override
+    public List<ProductCollection> saveAll(List<ProductCollection> collections) {
+        return CastUtils.cast(this.repository.saveAll(CastUtils.cast(collections)));
+    }
+
+    @Override
     public void delete(ProductCollection collection) {
         this.repository.delete(JpaProductCollection.of(collection));
     }
@@ -51,6 +57,11 @@ public class DelegatingJpaProductCollectionRepository implements ProductCollecti
     @Override
     public Optional<ProductCollection> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public List<ProductCollection> findAllById(Collection<String> ids) {
+        return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override
