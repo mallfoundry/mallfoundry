@@ -26,9 +26,7 @@ import java.io.Serializable;
 
 public interface Blob extends Serializable, Closeable {
 
-    BlobId getBlobId();
-
-    void setBlobId(BlobId blobId);
+    BlobId toId();
 
     String getBucket();
 

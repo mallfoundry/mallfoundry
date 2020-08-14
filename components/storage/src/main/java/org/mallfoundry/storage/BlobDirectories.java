@@ -40,8 +40,7 @@ public abstract class BlobDirectories {
         if (PathUtils.isRootPath(parentPath)) {
             return null;
         }
-        var parent = new InternalBlob();
-        parent.setBlobId(new InternalBlobId(blob.getBucket(), parentPath));
+        var parent = new InternalBlob(new InternalBlobId(blob.getBucket(), parentPath));
         parent.createDirectory();
         return parent;
     }

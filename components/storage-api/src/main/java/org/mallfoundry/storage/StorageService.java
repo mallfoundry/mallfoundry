@@ -20,6 +20,7 @@ package org.mallfoundry.storage;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.acl.Owner;
+import org.mallfoundry.storage.acl.OwnerType;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.Optional;
 
 public interface StorageService {
 
-    Owner createOwner(String type, String name);
+    Owner createOwner(OwnerType type, String name);
 
     Bucket createBucket(String bucketName, Owner owner);
 

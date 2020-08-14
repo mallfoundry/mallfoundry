@@ -21,6 +21,7 @@ package org.mallfoundry.storage;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.acl.InternalOwner;
 import org.mallfoundry.storage.acl.Owner;
+import org.mallfoundry.storage.acl.OwnerType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class InternalStorageService implements StorageService {
     }
 
     @Override
-    public Owner createOwner(String type, String name) {
+    public Owner createOwner(OwnerType type, String name) {
         return new InternalOwner(type, name);
     }
 
@@ -105,7 +106,7 @@ public class InternalStorageService implements StorageService {
     private void makeDirectories(InternalBlob blob) throws IOException {
         Blob parentBlob = BlobDirectories.getParent(blob);
         if (Objects.nonNull(parentBlob)) {
-            if (!this.blobRepository.existsById(InternalBlobId.of(parentBlob.getBlobId()))) {
+            if (!this.blobRepository.existsById(InternalBlobId.of(parentBlob.toId()))) {
                 storeBlob(parentBlob);
             }
             blob.setParent(InternalBlob.of(parentBlob));

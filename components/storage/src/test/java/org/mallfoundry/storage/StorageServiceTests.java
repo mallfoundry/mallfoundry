@@ -21,6 +21,7 @@ package org.mallfoundry.storage;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -50,7 +51,7 @@ public class StorageServiceTests {
 
     @Test
     public void testAddBucket() {
-        var owner = this.storageService.createOwner("store", "mi");
+        var owner = this.storageService.createOwner(OwnerType.STORE, "mi");
         var bucket = this.storageService.createBucket("test", owner);
         if (!this.storageService.existsBucket("test")) {
             Bucket newBucket = this.storageService.addBucket(bucket);
@@ -65,7 +66,7 @@ public class StorageServiceTests {
                 .ifPresent(blob -> {
                     System.out.println(blob);
                     Blob parent = blob.getParent();
-                    System.out.println(parent.getBlobId());
+                    System.out.println(parent.toId());
                 });
     }
 

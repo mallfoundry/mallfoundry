@@ -19,7 +19,6 @@
 package org.mallfoundry.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,13 +56,11 @@ import java.util.Optional;
 @IdClass(InternalBlobId.class)
 public class InternalBlob implements Blob {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "bucket_")
     @Setter(AccessLevel.PRIVATE)
     private String bucket;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "path_")
     private String path;
@@ -84,10 +81,6 @@ public class InternalBlob implements Blob {
     @Column(name = "content_type_")
     private String contentType;
 
-    /*@Column(name = "metadata_", length = 1024)
-    @Convert(converter = StringStringMapConverter.class)
-    private Map<String, String> metadata = new HashMap<>();*/
-
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private InternalBlob parent;
@@ -101,18 +94,21 @@ public class InternalBlob implements Blob {
     private boolean temporaryFile;
 
     public InternalBlob(BlobId blobId) {
-        this.setBlobId(InternalBlobId.of(blobId));
+        this.setBucket(blobId.getBucket());
+        this.setPath(blobId.getPath());
         this.createDirectory();
     }
 
     public InternalBlob(BlobId blobId, File file) {
-        this.setBlobId(InternalBlobId.of(blobId));
+        this.setBucket(blobId.getBucket());
+        this.setPath(blobId.getPath());
         this.setFile(file);
         this.createFile();
     }
 
     public InternalBlob(BlobId blobId, InputStream inputStream) throws IOException {
-        this.setBlobId(InternalBlobId.of(blobId));
+        this.setBucket(blobId.getBucket());
+        this.setPath(blobId.getPath());
         this.setFile(this.streamToTemporaryFile(inputStream));
         this.createFile();
     }
@@ -132,16 +128,10 @@ public class InternalBlob implements Blob {
         return internalBlob;
     }
 
-    @JsonIgnore
-    @Override
-    public BlobId getBlobId() {
-        return new InternalBlobId(this.bucket, this.path);
-    }
 
     @Override
-    public void setBlobId(BlobId blobId) {
-        this.setBucket(blobId.getBucket());
-        this.setPath(blobId.getPath());
+    public BlobId toId() {
+        return new InternalBlobId(this.bucket, this.path);
     }
 
     private void setPath(String path) {

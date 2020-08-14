@@ -24,6 +24,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Objects;
 
 @Getter
@@ -32,13 +34,14 @@ import java.util.Objects;
 @Embeddable
 public class InternalOwner implements Owner {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "owner_type_")
-    private String type;
+    private OwnerType type;
 
     @Column(name = "owner_name_")
     private String name;
 
-    public InternalOwner(String type, String name) {
+    public InternalOwner(OwnerType type, String name) {
         this.setType(type);
         this.setName(name);
     }
@@ -56,9 +59,7 @@ public class InternalOwner implements Owner {
             return false;
         }
         InternalOwner that = (InternalOwner) o;
-
-        return Objects.equals(type, that.type)
-                && Objects.equals(name, that.name);
+        return Objects.equals(type, that.type) && Objects.equals(name, that.name);
     }
 
 

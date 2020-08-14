@@ -22,5 +22,5 @@ public interface Owner {
 
     String getName();
 
-    String getType();
+    OwnerType getType();
 }
