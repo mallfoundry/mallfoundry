@@ -75,7 +75,7 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default void removeOption(ProductOption option) {
+    default void updateOptions(List<ProductOption> options) {
 
     }
 
@@ -156,16 +156,6 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
 
     @Override
     default void addOption(ProductOption option) {
-
-    }
-
-    @Override
-    default void addOptions(List<ProductOption> options) {
-
-    }
-
-    @Override
-    default void clearOptions() {
 
     }
 
