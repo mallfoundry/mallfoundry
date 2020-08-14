@@ -27,20 +27,20 @@ import java.util.List;
  */
 public interface ProductProcessor {
 
-    default Product postProcessAfterGetProduct(Product product) {
-        return product;
-    }
-
-    default ProductQuery preProcessBeforeGetProducts(ProductQuery query) {
-        return query;
-    }
-
     default Product preProcessBeforeAddProduct(Product product) {
         return product;
     }
 
     default Product preProcessAfterAddProduct(Product product) {
         return product;
+    }
+
+    default Product postProcessAfterGetProduct(Product product) {
+        return product;
+    }
+
+    default ProductQuery preProcessBeforeGetProducts(ProductQuery query) {
+        return query;
     }
 
     default Product preProcessBeforeUpdateProduct(Product product) {
@@ -69,5 +69,12 @@ public interface ProductProcessor {
 
     default Product preProcessBeforeDeleteProduct(Product product) {
         return product;
+    }
+
+    default Product preProcessAfterDeleteProduct(Product product) {
+        return product;
+    }
+
+    default void preProcessAfterCompletion() {
     }
 }

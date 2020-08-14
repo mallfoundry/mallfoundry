@@ -109,7 +109,7 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
                 .notBlank(source::getDescription).trim(dest::setDescription)
                 .notBlank(source::getCategoryId).trim(dest::setCategoryId)
                 .notBlank(source::getShippingRateId).trim(dest::setShippingRateId)
-                /*.notNull(source.getOrigin()).set()*/;
+        /*.notNull(source.getOrigin()).set()*/;
 
         if (Objects.nonNull(source.getImageUrls())) {
             dest.setImageUrls(source.getImageUrls());
@@ -220,6 +220,8 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
     @Override
     public void deleteProduct(String id) {
         var product = this.invokePreProcessBeforeDeleteProduct(this.requiredProduct(id));
+        // ....
+        product = this.invokePreProcessAfterDeleteProduct(product);
         this.productRepository.delete(product);
         this.eventPublisher.publishEvent(new ImmutableProductDeletedEvent(product));
     }
@@ -298,6 +300,13 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
     public Product invokePreProcessBeforeDeleteProduct(Product product) {
         return Processors.stream(this.processors)
                 .map(ProductProcessor::preProcessBeforeDeleteProduct)
+                .apply(product);
+    }
+
+    @Override
+    public Product invokePreProcessAfterDeleteProduct(Product product) {
+        return Processors.stream(this.processors)
+                .map(ProductProcessor::preProcessAfterDeleteProduct)
                 .apply(product);
     }
 

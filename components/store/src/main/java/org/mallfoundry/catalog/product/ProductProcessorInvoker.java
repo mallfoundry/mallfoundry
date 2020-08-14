@@ -43,4 +43,8 @@ interface ProductProcessorInvoker {
     List<Product> invokePreProcessBeforeUnpublishProducts(List<Product> products);
 
     Product invokePreProcessBeforeDeleteProduct(Product product);
+
+    Product invokePreProcessAfterDeleteProduct(Product product);
+
+    void invokePreProcessAfterCompletion();
 }
