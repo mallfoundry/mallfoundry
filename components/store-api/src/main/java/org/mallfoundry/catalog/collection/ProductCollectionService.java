@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.collection;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +28,15 @@ public interface ProductCollectionService {
 
     ProductCollection addCollection(ProductCollection collection);
 
-    ProductCollection updateCollection(ProductCollection collection);
-
-    void deleteCollection(String id);
-
-    Optional<ProductCollection> getCollection(String id);
+    Optional<ProductCollection> findCollection(String id);
 
     List<ProductCollection> getCollections(String storeId);
+
+    List<ProductCollection> getCollections(Collection<String> ids);
+
+    ProductCollection updateCollection(ProductCollection collection);
+
+    List<ProductCollection> updateCollections(List<ProductCollection> collections);
+
+    void deleteCollection(String id);
 }
