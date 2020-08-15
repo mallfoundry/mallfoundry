@@ -35,6 +35,10 @@ public interface Resource extends Serializable {
 
     String CUSTOMER_TYPE = "Customer";
 
+    String getId();
+
+    void setId(String id);
+
     String getIdentifier();
 
     String getType();
