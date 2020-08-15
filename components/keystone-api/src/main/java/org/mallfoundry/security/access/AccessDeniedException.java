@@ -21,6 +21,7 @@ package org.mallfoundry.security.access;
 import org.mallfoundry.security.SecurityException;
 
 public class AccessDeniedException extends SecurityException {
+
     public AccessDeniedException(String message) {
         super(message);
     }
