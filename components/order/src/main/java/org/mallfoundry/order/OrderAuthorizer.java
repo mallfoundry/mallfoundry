@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.security.access.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -28,7 +29,7 @@ public class OrderAuthorizer implements OrderProcessor {
     @PreAuthorize("hasPermission(#query.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
-            + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "')")
+            + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public OrderQuery preProcessGetOrders(OrderQuery query) {
         return query;
