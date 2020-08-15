@@ -18,7 +18,6 @@
 
 package org.mallfoundry.security.access.repository.jpa;
 
-import org.mallfoundry.security.access.MutableResource;
 import org.mallfoundry.security.access.Resource;
 import org.mallfoundry.security.access.ResourceRepository;
 import org.springframework.data.util.CastUtils;
@@ -51,7 +50,7 @@ public class DelegatingJpaResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public Resource save(MutableResource resource) {
+    public Resource save(Resource resource) {
         return this.repository.save(JpaResource.of(resource));
     }
 
