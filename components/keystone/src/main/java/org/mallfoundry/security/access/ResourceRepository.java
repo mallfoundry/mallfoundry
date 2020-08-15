@@ -28,7 +28,7 @@ public interface ResourceRepository {
 
     Resource create(String id, String identifier, String type);
 
-    Resource save(MutableResource resource);
+    Resource save(Resource resource);
 
     Optional<Resource> findByTypeAndIdentifier(String type, String identifier);
 
