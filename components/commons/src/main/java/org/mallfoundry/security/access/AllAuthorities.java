@@ -37,4 +37,7 @@ public abstract class AllAuthorities extends StoreAuthorities {
     public static final String ORDER_WRITE = "order:write";
     public static final String ORDER_DELETE = "order:delete";
     public static final String ORDER_MANAGE = "order:manage";
+
+    // Customer Authorities
+    public static final String CUSTOMER_MANAGE = "customer:manage";
 }
