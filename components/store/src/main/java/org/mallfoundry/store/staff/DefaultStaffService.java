@@ -26,6 +26,7 @@ import org.mallfoundry.identity.UserId;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -33,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 public class DefaultStaffService implements StaffService, StaffProcessorInvoker, ApplicationEventPublisherAware {
@@ -42,12 +45,15 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
 
     private final UserService userService;
 
+    private final StoreService storeService;
+
     private final StaffRepository staffRepository;
 
     private ApplicationEventPublisher eventPublisher;
 
-    public DefaultStaffService(UserService userService, StaffRepository staffRepository) {
+    public DefaultStaffService(UserService userService, StoreService storeService, StaffRepository staffRepository) {
         this.userService = userService;
+        this.storeService = storeService;
         this.staffRepository = staffRepository;
     }
 
@@ -85,30 +91,26 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         return this.userService.getUser(userId);
     }
 
-    private Staff addStaffPeek(Staff staff) {
-        var exists = this.staffRepository.findById(this.createStaffId(staff.getStoreId(), staff.getId())).isPresent();
+    @Transactional
+    @Override
+    public Staff addStaff(Staff staff) {
+        var store = this.storeService.getStore(staff.getStoreId());
+        staff = staff.toBuilder().tenantId(store.getTenantId()).build();
+        staff = this.invokePreProcessBeforeAddStaff(staff);
+        var exists = this.staffRepository.findById(staff.toId()).isPresent();
         if (exists) {
             throw StaffExceptions.alreadyExists(staff.getId());
         }
         var user = this.getUser(staff);
         staff.setAvatar(user.getAvatar());
+        if (Objects.isNull(staff.getType())) {
+            staff.setType(StaffType.STAFF);
+        }
         staff.create();
+        staff = this.invokePreProcessAfterAddStaff(staff);
+        staff = this.staffRepository.save(staff);
+        this.eventPublisher.publishEvent(new ImmutableStaffAddedEvent(staff));
         return staff;
-    }
-
-    @Transactional
-    @Override
-    public Staff addStaff(Staff staff) {
-        return Function.<Staff>identity()
-                .<Staff>compose(aStaff -> {
-                    this.eventPublisher.publishEvent(new ImmutableStaffAddedEvent(aStaff));
-                    return aStaff;
-                })
-                .compose(this.staffRepository::save)
-                .compose(this::invokePreProcessAfterAddStaff)
-                .compose(this::addStaffPeek)
-                .compose(this::invokePreProcessBeforeAddStaff)
-                .apply(staff);
     }
 
     @Override
@@ -118,8 +120,14 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     }
 
     @Override
-    public List<Staff> getStaffs(UserId userId) {
-        return this.staffRepository.findAllByUserId(userId);
+    public List<Staff> getActiveStaffs(UserId userId) {
+        var query = this.createStaffQuery().toBuilder()
+                .limit(100)
+                .tenantId(userId.getTenantId())
+                .ids(Set.of(userId.getId()))
+                .statuses(Set.of(StaffStatus.ACTIVE))
+                .build();
+        return this.staffRepository.findAll(query).getElements();
     }
 
     @Override
@@ -143,59 +151,48 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         return this.findStaff(staffId).orElseThrow();
     }
 
-    private Staff updateStaff(Staff source, Staff dest) {
+    private void updateStaff(Staff source, Staff dest) {
         Copies.notBlank(source::getName).trim(dest::setName);
         Copies.notBlank(source::getNumber).trim(dest::setNumber);
         Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
         Copies.notBlank(source::getPhone).trim(dest::setPhone);
-        if (CollectionUtils.isNotEmpty(source.getRoles())) {
+        if (!StaffType.OWNER.equals(dest.getType())
+                && CollectionUtils.isNotEmpty(source.getRoles())) {
             dest.setRoles(source.getRoles());
         }
-        return dest;
     }
 
     @Transactional
     @Override
     public Staff updateStaff(Staff newStaff) {
-        Staff preStaff;
+        Staff staff;
         try {
-            preStaff = Function.<Staff>identity()
-                    .compose(this.staffRepository::save)
-                    .compose(this::invokePreProcessAfterUpdateStaff)
-                    .<Staff>compose(target -> this.updateStaff(newStaff, target))
-                    .compose(this::invokePreProcessBeforeUpdateStaff)
-                    .compose(this::getStaff)
-                    .apply(this.createStaffId(newStaff.getStoreId(), newStaff.getId()));
+            staff = this.getStaff(newStaff.toId());
+            staff = this.invokePreProcessBeforeUpdateStaff(staff);
+            this.updateStaff(newStaff, staff);
+            this.invokePreProcessBeforeUpdateStaff(staff);
         } finally {
             this.invokePreProcessAfterCompletion();
         }
-
-        return Function.<Staff>identity()
-                .<Staff>compose(staff -> {
-                    this.eventPublisher.publishEvent(new ImmutableStaffChangedEvent(staff));
-                    return staff;
-                })
-                .compose(this.staffRepository::save)
-                .apply(preStaff);
+        staff = this.staffRepository.save(staff);
+        this.eventPublisher.publishEvent(new ImmutableStaffChangedEvent(staff));
+        return staff;
     }
 
     @Transactional
     @Override
     public void activeStaff(StaffId staffId) {
-        var staff = Function.<Staff>identity()
-                .compose(this::invokePreProcessBeforeActiveStaff)
-                .compose(this::getStaff)
-                .apply(staffId);
+        var staff = this.getStaff(staffId);
+        staff = this.invokePreProcessBeforeActiveStaff(staff);
         staff.active();
         this.staffRepository.save(staff);
     }
 
+    @Transactional
     @Override
     public void inactiveStaff(StaffId staffId) {
-        var staff = Function.<Staff>identity()
-                .compose(this::invokePreProcessBeforeInactiveStaff)
-                .compose(this::getStaff)
-                .apply(staffId);
+        var staff = this.getStaff(staffId);
+        staff = this.invokePreProcessBeforeInactiveStaff(staff);
         staff.inactive();
         this.staffRepository.save(staff);
     }
@@ -203,12 +200,12 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     @Transactional
     @Override
     public void deleteStaff(StaffId staffId) {
-        var staff = Function.<Staff>identity()
-                .compose(this::invokePreProcessAfterDeleteStaff)
-                // invoke peek...
-                .compose(this::invokePreProcessBeforeDeleteStaff)
-                .compose(this::getStaff)
-                .apply(staffId);
+        var staff = this.getStaff(staffId);
+        staff = this.invokePreProcessBeforeDeleteStaff(staff);
+        if (StaffType.OWNER.equals(staff.getType())) {
+            throw StaffExceptions.notDeleteOwner();
+        }
+        staff = this.invokePreProcessAfterDeleteStaff(staff);
         this.staffRepository.delete(staff);
         this.eventPublisher.publishEvent(new ImmutableStaffDeletedEvent(staff));
     }

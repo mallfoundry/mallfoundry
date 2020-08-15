@@ -25,5 +25,6 @@ import org.mallfoundry.data.QuerySupport;
 @Getter
 @Setter
 public class DefaultProductCollectionQuery extends QuerySupport implements ProductCollectionQuery {
+    private String tenantId;
     private String storeId;
 }

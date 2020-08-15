@@ -30,21 +30,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class StaffAuthorizeProcessor implements StaffProcessor {
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Staff preProcessBeforeAddStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_STAFF_WRITE + "," + AllAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_WRITE + "," + AllAuthorities.STORE_STAFF_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Staff preProcessBeforeUpdateStaff(Staff staff) {
         return staff;
     }
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_STAFF_DELETE + "," + AllAuthorities.STORE_STAFF_MANAGE + "')")
+            + AllAuthorities.STORE_STAFF_DELETE + "," + AllAuthorities.STORE_STAFF_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Staff preProcessBeforeDeleteStaff(Staff staff) {
         return staff;

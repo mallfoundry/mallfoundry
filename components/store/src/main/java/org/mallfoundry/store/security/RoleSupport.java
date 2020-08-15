@@ -107,6 +107,18 @@ public abstract class RoleSupport implements MutableRole {
         }
 
         @Override
+        public Builder tenantId(String tenantId) {
+            this.role.setTenantId(tenantId);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.role.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
         public Builder id(String id) {
             this.role.setId(id);
             return this;

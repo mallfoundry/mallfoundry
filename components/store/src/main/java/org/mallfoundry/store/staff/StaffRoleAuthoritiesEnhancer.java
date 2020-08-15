@@ -37,7 +37,7 @@ public class StaffRoleAuthoritiesEnhancer implements UserAuthoritiesEnhancer {
     @Transactional
     @Override
     public Collection<String> getAuthorities(UserId userId) {
-        var staffs = this.staffService.getStaffs(userId);
+        var staffs = this.staffService.getActiveStaffs(userId);
         return staffs.stream().map(Staff::getRoles)
                 .flatMap(Collection::stream)
                 .map(Roles::getRoleAuthority)

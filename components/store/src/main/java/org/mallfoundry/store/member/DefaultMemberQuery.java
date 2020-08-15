@@ -26,6 +26,7 @@ import org.mallfoundry.data.QuerySupport;
 @Getter
 @Setter
 public class DefaultMemberQuery extends QuerySupport implements MemberQuery {
+    private String tenantId;
     private String storeId;
 
     @Override

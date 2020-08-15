@@ -27,6 +27,8 @@ import java.util.List;
 
 public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Builder> {
 
+    StaffId toId();
+
     String getId();
 
     void setId(String id);
@@ -75,9 +77,13 @@ public interface Staff extends StoreOwnership, ObjectBuilder.ToBuilder<Staff.Bui
 
     void active();
 
-    void inactive();
+    void inactive() throws StaffException;
 
     interface Builder extends ObjectBuilder<Staff> {
+
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
 
         Builder id(String id);
 

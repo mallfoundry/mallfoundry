@@ -23,7 +23,7 @@ import org.mallfoundry.validation.ValidationHolder;
 public class RoleValidateProcessor implements RoleProcessor {
 
     @Override
-    public Role preProcessBeforeAddRole(Role role) {
+    public Role preProcessAfterAddRole(Role role) {
         this.validate(role);
         return role;
     }

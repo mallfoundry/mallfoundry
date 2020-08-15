@@ -26,14 +26,28 @@ import java.util.Set;
 
 public interface StaffQuery extends StoreQueryBase, ObjectBuilder.ToBuilder<StaffQuery.Builder> {
 
+    Set<String> getIds();
+
+    void setIds(Set<String> ids);
+
+    Set<StaffStatus> getStatuses();
+
+    void setStatuses(Set<StaffStatus> statuses);
+
     Set<String> getRoleIds();
 
     void setRoleIds(Set<String> roleIds);
 
     interface Builder extends QueryBuilder<StaffQuery, Builder> {
 
+        Builder tenantId(String tenantId);
+
         Builder storeId(String storeId);
 
+        Builder ids(Set<String> ids);
+
         Builder roleIds(Set<String> roleIds);
+
+        Builder statuses(Set<StaffStatus> statuses);
     }
 }

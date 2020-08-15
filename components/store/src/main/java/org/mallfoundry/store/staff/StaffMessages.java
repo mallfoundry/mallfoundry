@@ -24,7 +24,11 @@ import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class StaffMessages {
     private static final String STORE_STAFF_ALREADY_EXISTS_MESSAGE_CODE_KEY = "store.staff.Staff.alreadyExists";
+
     private static final String STORE_STAFF_NOT_FOUND_MESSAGE_CODE_KEY = "store.staff.Staff.notFound";
+
+    private static final String STORE_STAFF_NOT_DELETE_OWNER_MESSAGE_CODE_KEY = "store.staff.Staff.notDeleteOwner";
+    private static final String STORE_STAFF_NOT_DELETE_INACTIVE_MESSAGE_CODE_KEY = "store.staff.Staff.notInactiveOwner";
 
     public static String alreadyExists(String staffId) {
         return message(STORE_STAFF_ALREADY_EXISTS_MESSAGE_CODE_KEY, List.of(staffId), String.format("Staff %s already exists", staffId));
@@ -32,5 +36,13 @@ public abstract class StaffMessages {
 
     public static String notFound(String staffId) {
         return message(STORE_STAFF_NOT_FOUND_MESSAGE_CODE_KEY, List.of(staffId), String.format("User %s not found", staffId));
+    }
+
+    public static String notDeleteOwner() {
+        return message(STORE_STAFF_NOT_DELETE_OWNER_MESSAGE_CODE_KEY, "Cannot delete owner");
+    }
+
+    public static String notInactiveOwner() {
+        return message(STORE_STAFF_NOT_DELETE_INACTIVE_MESSAGE_CODE_KEY, "Cannot inactive owner");
     }
 }

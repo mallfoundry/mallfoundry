@@ -20,7 +20,6 @@ package org.mallfoundry.store.staff.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.identity.UserId;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffId;
@@ -28,7 +27,6 @@ import org.mallfoundry.store.staff.StaffQuery;
 import org.mallfoundry.store.staff.StaffRepository;
 import org.springframework.data.util.CastUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 public class DelegatingJpaStaffRepository implements StaffRepository {
@@ -52,11 +50,6 @@ public class DelegatingJpaStaffRepository implements StaffRepository {
     @Override
     public Optional<Staff> findById(StaffId id) {
         return CastUtils.cast(this.repository.findById(new JpaStaffId(id.getStoreId(), id.getId())));
-    }
-
-    @Override
-    public List<Staff> findAllByUserId(UserId userId) {
-        return CastUtils.cast(this.repository.findAllByTenantIdAndId(userId.getTenantId(), userId.getId()));
     }
 
     @Override

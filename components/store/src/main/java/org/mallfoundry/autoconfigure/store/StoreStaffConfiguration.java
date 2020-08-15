@@ -19,6 +19,7 @@
 package org.mallfoundry.autoconfigure.store;
 
 import org.mallfoundry.identity.UserService;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
@@ -47,8 +48,9 @@ public class StoreStaffConfiguration {
     public DefaultStaffService defaultStaffService(@Autowired(required = false)
                                                    @Lazy List<StaffProcessor> processors,
                                                    UserService userService,
+                                                   StoreService storeService,
                                                    StaffRepository repository) {
-        var service = new DefaultStaffService(userService, repository);
+        var service = new DefaultStaffService(userService, storeService, repository);
         service.setProcessors(processors);
         return service;
     }

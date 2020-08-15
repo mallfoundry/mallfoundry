@@ -28,6 +28,10 @@ public interface RoleProcessor {
         return role;
     }
 
+    default Role preProcessAfterAddRole(Role role) {
+        return role;
+    }
+
     default Role preProcessBeforeUpdateRole(Role role) {
         return role;
     }

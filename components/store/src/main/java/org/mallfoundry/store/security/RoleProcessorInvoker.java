@@ -26,6 +26,8 @@ public interface RoleProcessorInvoker {
 
     Role invokePreProcessBeforeAddRole(Role role);
 
+    Role invokePreProcessAfterAddRole(Role role);
+
     Role invokePreProcessBeforeUpdateRole(Role role);
 
     Role invokePreProcessAfterUpdateRole(Role role);

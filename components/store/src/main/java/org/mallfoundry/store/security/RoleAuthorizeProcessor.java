@@ -31,21 +31,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class RoleAuthorizeProcessor implements RoleProcessor {
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_ROLE_MANAGE + "')")
+            + AllAuthorities.STORE_ROLE_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Role preProcessBeforeAddRole(Role role) {
         return role;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + "')")
+            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + ","
+            + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Role preProcessBeforeUpdateRole(Role role) {
         return role;
     }
 
     @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.STORE_ROLE_DELETE + "," + AllAuthorities.STORE_ROLE_MANAGE + "')")
+            + AllAuthorities.STORE_ROLE_DELETE + "," + AllAuthorities.STORE_ROLE_MANAGE + ","
+            + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Role preProcessBeforeDeleteRole(Role role) {
         return role;
@@ -53,7 +55,8 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_WRITE + "," + AllAuthorities.STORE_STAFF_MANAGE + ","
-            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + "')")
+            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + ","
+            + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Staff preProcessBeforeAddRoleStaff(Role role, Staff staff) {
         return staff;
@@ -61,7 +64,8 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
 
     @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_WRITE + "," + AllAuthorities.STORE_STAFF_MANAGE + ","
-            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + "')")
+            + AllAuthorities.STORE_ROLE_WRITE + "," + AllAuthorities.STORE_ROLE_MANAGE + ","
+            + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Staff preProcessBeforeRemoveRoleStaff(Role role, Staff staff) {
         return staff;

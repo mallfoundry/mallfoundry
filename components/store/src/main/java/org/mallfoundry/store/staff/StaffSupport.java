@@ -26,6 +26,11 @@ import java.util.List;
 public abstract class StaffSupport implements MutableStaff {
 
     @Override
+    public StaffId toId() {
+        return new ImmutableStaffId(this.getTenantId(), this.getStoreId(), this.getId());
+    }
+
+    @Override
     public void addRole(Role role) {
         this.getRoles().add(role);
     }
@@ -57,7 +62,10 @@ public abstract class StaffSupport implements MutableStaff {
     }
 
     @Override
-    public void inactive() {
+    public void inactive() throws StaffException {
+        if (StaffType.OWNER.equals(this.getType())) {
+            throw StaffExceptions.notInactiveOwner();
+        }
         this.setStatus(StaffStatus.INACTIVE);
     }
 
@@ -72,6 +80,18 @@ public abstract class StaffSupport implements MutableStaff {
 
         protected BuilderSupport(StaffSupport staff) {
             this.staff = staff;
+        }
+
+        @Override
+        public Builder tenantId(String tenantId) {
+            this.staff.setTenantId(tenantId);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.staff.setStoreId(storeId);
+            return this;
         }
 
         @Override

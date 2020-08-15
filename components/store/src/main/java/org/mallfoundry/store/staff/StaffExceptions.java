@@ -27,4 +27,12 @@ public abstract class StaffExceptions {
     public static StaffException notFound(String id) {
         return new StaffException(StaffMessages.notFound(id));
     }
+
+    public static StaffException notDeleteOwner() {
+        return new StaffException(StaffMessages.notDeleteOwner());
+    }
+
+    public static StaffException notInactiveOwner() {
+        return new StaffException(StaffMessages.notInactiveOwner());
+    }
 }

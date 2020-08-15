@@ -25,6 +25,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -43,9 +45,12 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
 
     private ApplicationEventPublisher eventPublisher;
 
+    private final StoreService storeService;
+
     private final RoleRepository roleRepository;
 
-    public DefaultRoleService(RoleRepository roleRepository) {
+    public DefaultRoleService(StoreService storeService, RoleRepository roleRepository) {
+        this.storeService = storeService;
         this.roleRepository = roleRepository;
     }
 
@@ -86,12 +91,14 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
     @Transactional
     @Override
     public Role addRole(Role role) {
-        role.addStaff(null);
-        role.custom();
-        role = Function.<Role>identity()
-                .compose(this.roleRepository::save)
-                .compose(this::invokePreProcessBeforeAddRole)
-                .apply(role);
+        var store = this.storeService.getStore(role.getStoreId());
+        role = role.toBuilder().tenantId(store.getTenantId()).build();
+        role = this.invokePreProcessBeforeAddRole(role);
+        if (Objects.isNull(role.getType())) {
+            role.custom();
+        }
+        role = this.invokePreProcessAfterAddRole(role);
+        role = this.roleRepository.save(role);
         this.eventPublisher.publishEvent(new ImmutableRoleAddedEvent(role));
         return role;
     }
@@ -204,6 +211,13 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
     public Role invokePreProcessBeforeAddRole(Role role) {
         return Processors.stream(this.processors)
                 .map(RoleProcessor::preProcessBeforeAddRole)
+                .apply(role);
+    }
+
+    @Override
+    public Role invokePreProcessAfterAddRole(Role role) {
+        return Processors.stream(this.processors)
+                .map(RoleProcessor::preProcessAfterAddRole)
                 .apply(role);
     }
 

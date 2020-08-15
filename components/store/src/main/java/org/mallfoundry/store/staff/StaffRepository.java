@@ -19,10 +19,8 @@
 package org.mallfoundry.store.staff;
 
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.identity.UserId;
 import org.mallfoundry.store.StoreId;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface StaffRepository {
@@ -32,8 +30,6 @@ public interface StaffRepository {
     Staff save(Staff staff);
 
     Optional<Staff> findById(StaffId id);
-
-    List<Staff> findAllByUserId(UserId userId);
 
     SliceList<Staff> findAll(StaffQuery query);
 

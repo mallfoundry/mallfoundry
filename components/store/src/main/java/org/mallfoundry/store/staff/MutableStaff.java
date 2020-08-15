@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface MutableStaff extends Staff {
 
+    void setTenantId(String tenantId);
+
     void setStoreId(String storeId);
 
     void setStatus(StaffStatus status);

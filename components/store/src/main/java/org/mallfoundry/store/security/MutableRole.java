@@ -22,6 +22,10 @@ import java.util.Date;
 
 public interface MutableRole extends Role {
 
+    void setTenantId(String tenantId);
+
+    void setStoreId(String storeId);
+
     void setType(RoleType type);
 
     void setStaffsCount(int staffsCount);

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.staff.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.store.staff.StaffQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +29,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
-import java.util.List;
 import java.util.Objects;
 
 public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>, JpaSpecificationExecutor<JpaStaff> {
@@ -36,21 +36,25 @@ public interface JpaStaffRepository extends JpaRepository<JpaStaff, JpaStaffId>,
     default Specification<JpaStaff> createSpecification(StaffQuery staffQuery) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
-
+            if (Objects.nonNull(staffQuery.getTenantId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("tenantId"), staffQuery.getTenantId()));
+            }
             if (Objects.nonNull(staffQuery.getStoreId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), staffQuery.getStoreId()));
             }
-
             if (Objects.nonNull(staffQuery.getRoleIds())) {
                 var rolesIn = root.join("roles", JoinType.LEFT).get("id").as(String.class).in(staffQuery.getRoleIds());
                 predicate.getExpressions().add(rolesIn);
             }
-
+            if (CollectionUtils.isNotEmpty(staffQuery.getIds())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("id")).value(staffQuery.getIds()));
+            }
+            if (CollectionUtils.isNotEmpty(staffQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(staffQuery.getStatuses()));
+            }
             return predicate;
         };
     }
-
-    List<JpaStaff> findAllByTenantIdAndId(String tenantId, String id);
 
     default Page<JpaStaff> findAll(StaffQuery query) {
         return this.findAll(this.createSpecification(query),

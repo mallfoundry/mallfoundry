@@ -82,6 +82,10 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
 
     interface Builder extends ObjectBuilder<Role> {
 
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
+
         Builder id(String id);
 
         Builder name(String name);

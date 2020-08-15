@@ -25,5 +25,6 @@ import org.mallfoundry.data.QuerySupport;
 @Getter
 @Setter
 public class DefaultStoreAddressQuery extends QuerySupport implements StoreAddressQuery {
+    private String tenantId;
     private String storeId;
 }

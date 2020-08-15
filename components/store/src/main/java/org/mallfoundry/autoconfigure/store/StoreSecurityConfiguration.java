@@ -18,6 +18,7 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.security.DefaultRoleService;
 import org.mallfoundry.store.security.RoleAccessControlEventListener;
 import org.mallfoundry.store.security.RoleAuthorizeProcessor;
@@ -49,8 +50,9 @@ public class StoreSecurityConfiguration {
     @Bean
     public DefaultRoleService defaultStoreRoleService(@Autowired(required = false)
                                                       @Lazy List<RoleProcessor> processors,
+                                                      StoreService storeService,
                                                       RoleRepository repository) {
-        var service = new DefaultRoleService(repository);
+        var service = new DefaultRoleService(storeService, repository);
         service.setProcessors(processors);
         return service;
     }

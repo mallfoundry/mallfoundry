@@ -51,7 +51,7 @@ public interface StaffService {
 
     Optional<Staff> findStaff(StaffId staffId);
 
-    List<Staff> getStaffs(UserId userId);
+    List<Staff> getActiveStaffs(UserId userId);
 
     SliceList<Staff> getStaffs(StaffQuery query);
 

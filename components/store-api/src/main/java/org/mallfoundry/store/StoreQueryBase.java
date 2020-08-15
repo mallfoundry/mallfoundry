@@ -22,6 +22,10 @@ import org.mallfoundry.data.Query;
 
 public interface StoreQueryBase extends Query {
 
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
     String getStoreId();
 
     void setStoreId(String storeId);

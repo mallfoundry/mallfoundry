@@ -28,10 +28,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
-
+    private String tenantId;
     private String storeId;
-
+    private Set<String> ids;
     private Set<String> roleIds;
+    private Set<StaffStatus> statuses;
 
     @Override
     public Builder toBuilder() {
@@ -47,14 +48,32 @@ public class DefaultStaffQuery extends QuerySupport implements StaffQuery {
         }
 
         @Override
+        public Builder tenantId(String tenantId) {
+            this.query.setTenantId(tenantId);
+            return this;
+        }
+
+        @Override
         public Builder storeId(String storeId) {
             this.query.setStoreId(storeId);
             return this;
         }
 
         @Override
+        public Builder ids(Set<String> ids) {
+            this.query.setIds(ids);
+            return this;
+        }
+
+        @Override
         public Builder roleIds(Set<String> roleIds) {
             this.query.setRoleIds(roleIds);
+            return this;
+        }
+
+        @Override
+        public Builder statuses(Set<StaffStatus> statuses) {
+            this.query.setStatuses(statuses);
             return this;
         }
     }
