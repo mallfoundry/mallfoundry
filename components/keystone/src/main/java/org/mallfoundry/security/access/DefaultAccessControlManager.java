@@ -82,7 +82,8 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Override
     public Principal getPrincipal(Principal principal) {
-        return this.findPrincipal(principal).orElseThrow();
+        return this.findPrincipal(principal)
+                .orElseThrow(() -> new AccessException(AccessMessages.Principal.notFound(principal.getType(), principal.getName())));
     }
 
     @Override
@@ -113,11 +114,10 @@ public class DefaultAccessControlManager implements AccessControlManager {
     }
 
     private Resource addNewResource(Resource resource) {
-        var mutableResource = (MutableResource) resource;
-        if (Objects.isNull(mutableResource.getId())) {
-            mutableResource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
+        if (Objects.isNull(resource.getId())) {
+            resource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
         }
-        return this.resourceRepository.save(mutableResource);
+        return this.resourceRepository.save(resource);
     }
 
     @Transactional
@@ -130,7 +130,8 @@ public class DefaultAccessControlManager implements AccessControlManager {
     @Transactional(readOnly = true)
     @Override
     public Resource getResource(Resource resource) {
-        return this.findResource(resource).orElseThrow();
+        return this.findResource(resource)
+                .orElseThrow(() -> new AccessException(AccessMessages.Resource.notFound(resource.getType(), resource.getIdentifier())));
     }
 
     @Transactional(readOnly = true)
@@ -176,6 +177,9 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Override
     public Optional<AccessControl> findAccessControl(Resource resource) {
+        if (Objects.isNull(resource.getId())) {
+            resource = this.getResource(resource);
+        }
         return this.accessControlRepository.findByResource(resource);
     }
 
@@ -186,12 +190,14 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     @Override
     public AccessControl getAccessControl(Resource resource) {
-        return this.findAccessControl(resource).orElseThrow();
+        return this.findAccessControl(resource)
+                .orElseThrow(() -> new AccessException(AccessMessages.AccessControl.notFound(resource.getType(), resource.getIdentifier())));
     }
 
     @Override
     public AccessControl getAccessControl(Resource resource, Set<Principal> principals) {
-        return this.findAccessControl(resource, principals).orElseThrow();
+        return this.findAccessControl(resource, principals)
+                .orElseThrow(() -> new AccessException(AccessMessages.AccessControl.notFound(resource.getType(), resource.getIdentifier())));
     }
 
     @Transactional
