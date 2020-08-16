@@ -23,7 +23,7 @@ import org.mallfoundry.keygen.PrimaryKeyHolder;
 
 import java.util.List;
 
-public class OrderIdentifier implements OrderProcessor {
+public class OrderIdentityProcessor implements OrderProcessor {
 
     private static final String ORDER_ID_VALUE_NAME = "order.id";
 
@@ -40,14 +40,14 @@ public class OrderIdentifier implements OrderProcessor {
     private static final String ORDER_REVIEW_ID_VALUE_NAME = "order.review.id";
 
     @Override
-    public List<Order> preProcessPlaceOrders(List<Order> orders) {
+    public List<Order> preProcessAfterPlaceOrders(List<Order> orders) {
         orders.stream().peek(order -> order.setId(PrimaryKeyHolder.next(ORDER_ID_VALUE_NAME)))
                 .forEach(order -> order.getItems().forEach(item -> item.setId(PrimaryKeyHolder.next(ORDER_ITEM_ID_VALUE_NAME))));
         return orders;
     }
 
     @Override
-    public OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
+    public OrderShipment preProcessBeforeAddOrderShipment(Order order, OrderShipment shipment) {
         if (StringUtils.isBlank(shipment.getId())) {
             shipment.setId(PrimaryKeyHolder.next(ORDER_SHIPMENT_ID_VALUE_NAME));
         }
@@ -56,7 +56,7 @@ public class OrderIdentifier implements OrderProcessor {
     }
 
     @Override
-    public OrderRefund preProcessApplyOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
         if (StringUtils.isBlank(refund.getId())) {
             refund.setId(PrimaryKeyHolder.next(ORDER_REFUND_ID_VALUE_NAME));
         }
@@ -65,18 +65,18 @@ public class OrderIdentifier implements OrderProcessor {
     }
 
     @Override
-    public OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
-        return this.preProcessApplyOrderRefund(order, refund);
+    public OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
+        return this.preProcessBeforeApplyOrderRefund(order, refund);
     }
 
     @Override
-    public OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+    public OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
         review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME));
         return review;
     }
 
     @Override
-    public List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+    public List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
         reviews.forEach(review -> review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME)));
         return reviews;
     }

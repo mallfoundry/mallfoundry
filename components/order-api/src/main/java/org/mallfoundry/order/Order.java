@@ -107,7 +107,9 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
 
     List<OrderShipment> getShipments();
 
-    Optional<OrderShipment> getShipment(String shipmentId);
+    OrderShipment getShipment(String shipmentId);
+
+    Optional<OrderShipment> findShipment(String shipmentId);
 
     List<OrderShipment> getShipments(Set<String> shipmentIds);
 

@@ -22,15 +22,15 @@ import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.DeductingInventoryConnector;
 import org.mallfoundry.order.DefaultOrderConfiguration;
 import org.mallfoundry.order.DefaultOrderService;
-import org.mallfoundry.order.OrderAuthorizer;
+import org.mallfoundry.order.OrderAuthorizeProcessor;
 import org.mallfoundry.order.OrderConfiguration;
-import org.mallfoundry.order.OrderIdentifier;
+import org.mallfoundry.order.OrderIdentityProcessor;
 import org.mallfoundry.order.OrderProcessor;
-import org.mallfoundry.order.OrderProcessorsInvoker;
+import org.mallfoundry.order.OrderProcessorInvoker;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
-import org.mallfoundry.order.SmartOrderValidator;
+import org.mallfoundry.order.OrderValidateProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
@@ -46,7 +46,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.validation.SmartValidator;
 
 import java.util.List;
 
@@ -66,14 +65,18 @@ public class OrderAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(OrderService.class)
-    public DefaultOrderService defaultOrderService(OrderConfiguration orderConfiguration,
-                                                   OrderProcessorsInvoker processorsInvoker,
+    public DefaultOrderService defaultOrderService(@Autowired(required = false)
+                                                   @Lazy List<OrderProcessor> processors,
+                                                   OrderConfiguration orderConfiguration,
+                                                   OrderProcessorInvoker processorsInvoker,
                                                    OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
                                                    PaymentService paymentService,
                                                    ApplicationEventPublisher eventPublisher) {
-        return new DefaultOrderService(orderConfiguration, processorsInvoker, orderRepository, orderSplitter, carrierService, paymentService, eventPublisher);
+        var service = new DefaultOrderService(orderConfiguration, orderRepository, orderSplitter, carrierService, paymentService);
+        service.setProcessors(processors);
+        return service;
     }
 
     @Bean
@@ -95,32 +98,23 @@ public class OrderAutoConfiguration {
         return new OrderExpiredCancellationProcessor(canceller);
     }
 
-    @Autowired(required = false)
-    @Bean
-    public OrderProcessorsInvoker orderProcessorsInvoker(@Lazy List<OrderProcessor> processors) {
-        return new OrderProcessorsInvoker(processors);
-    }
-
     @Bean
     public DeductingInventoryConnector deductingInventoryConnector(InventoryService inventoryService) {
         return new DeductingInventoryConnector(inventoryService);
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public OrderIdentifier orderIdentifier() {
-        return new OrderIdentifier();
+    public OrderIdentityProcessor orderIdentityProcessor() {
+        return new OrderIdentityProcessor();
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public OrderAuthorizer orderAuthorizer() {
-        return new OrderAuthorizer();
+    public OrderAuthorizeProcessor orderAuthorizeProcessor() {
+        return new OrderAuthorizeProcessor();
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public SmartOrderValidator smartOrderValidator(SmartValidator validator) {
-        return new SmartOrderValidator(validator);
+    public OrderValidateProcessor orderValidateProcessor() {
+        return new OrderValidateProcessor();
     }
 }

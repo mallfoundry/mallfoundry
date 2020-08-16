@@ -68,7 +68,7 @@ public class DeductingInventoryConnector implements OrderProcessor {
     }
 
     @Override
-    public List<Order> postProcessPlaceOrders(List<Order> orders) {
+    public List<Order> postProcessAfterPlaceOrders(List<Order> orders) {
         this.deductingInventories(orders);
         return orders;
     }

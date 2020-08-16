@@ -97,7 +97,7 @@ public class OrderResourceV1 {
 
     @GetMapping("/orders/{order_id}")
     public Optional<Order> getOrder(@PathVariable("order_id") String orderId) {
-        return this.orderService.getOrder(orderId);
+        return this.orderService.findOrder(orderId);
     }
 
     @GetMapping("/orders")

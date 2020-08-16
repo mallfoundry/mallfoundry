@@ -53,7 +53,7 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
     }
 
     @Override
-    public Order postProcessGetOrder(Order order) {
+    public Order postProcessAfterGetOrder(Order order) {
         if (this.mustCancel(order)) {
             this.canceller.cancelOrders(List.of(order));
         }
@@ -61,7 +61,7 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
     }
 
     @Override
-    public OrderQuery preProcessGetOrders(OrderQuery query) {
+    public OrderQuery preProcessBeforeGetOrders(OrderQuery query) {
         queryFor.set(query);
         return query;
     }
@@ -75,7 +75,7 @@ public class OrderExpiredCancellationProcessor implements OrderProcessor {
     // 如果存在过期订单，此流程将会执行两次。
     // 第一次为正常流程，第二次为 canceller.getOrders(query)。
     @Override
-    public SliceList<Order> postProcessGetOrders(SliceList<Order> orders) {
+    public SliceList<Order> postProcessAfterGetOrders(SliceList<Order> orders) {
         if (CollectionUtils.isEmpty(orders.getElements())) {
             return orders;
         }

@@ -118,7 +118,12 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public Optional<OrderShipment> getShipment(String id) {
+    public OrderShipment getShipment(String id) {
+        return null;
+    }
+
+    @Override
+    public Optional<OrderShipment> findShipment(String id) {
         return Optional.empty();
     }
 

@@ -29,104 +29,116 @@ import java.util.List;
  */
 public interface OrderProcessor {
 
-    default Order postProcessGetOrder(Order order) {
+    default Order postProcessAfterGetOrder(Order order) {
         return order;
     }
 
-    default OrderQuery preProcessGetOrders(OrderQuery query) {
+    default OrderQuery preProcessBeforeGetOrders(OrderQuery query) {
         return query;
     }
 
-    default SliceList<Order> postProcessGetOrders(SliceList<Order> orders) {
+    default SliceList<Order> postProcessAfterGetOrders(SliceList<Order> orders) {
         return orders;
     }
 
-    default List<Order> preProcessPlaceOrders(List<Order> orders) {
+    default List<Order> preProcessBeforePlaceOrders(List<Order> orders) {
         return orders;
     }
 
-    default List<Order> postProcessPlaceOrders(List<Order> orders) {
+    default List<Order> preProcessAfterPlaceOrders(List<Order> orders) {
         return orders;
     }
 
-    default Order preProcessUpdateOrder(Order order) {
+    default List<Order> postProcessAfterPlaceOrders(List<Order> orders) {
+        return orders;
+    }
+
+    default Order preProcessBeforeUpdateOrder(Order order) {
         return order;
     }
 
-    default Order preProcessFulfilOrder(Order order) {
+    default Order preProcessAfterUpdateOrder(Order order) {
         return order;
     }
 
-    default String preProcessSignOrder(Order order, String message) {
+    default Order preProcessBeforeFulfilOrder(Order order) {
+        return order;
+    }
+
+    default String preProcessBeforeSignOrder(Order order, String message) {
         return message;
     }
 
-    default Order preProcessReceiptOrder(Order order) {
+    default Order preProcessBeforeReceiptOrder(Order order) {
         return order;
     }
 
-    default String preProcessCancelOrder(Order order, String reason) {
+    default String preProcessBeforeCancelOrder(Order order, String reason) {
         return reason;
     }
 
-    default OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
+    default String preProcessBeforeCancelOrders(List<Order> orders, String reason) {
+        return reason;
+    }
+
+    default OrderShipment preProcessBeforeAddOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
-    default Order preProcessGetOrderShipment(Order order) {
-        return order;
-    }
-
-    default Order preProcessGetOrderShipments(Order order) {
-        return order;
-    }
-
-    default OrderShipment preProcessUpdateOrderShipment(Order order, OrderShipment shipment) {
+    default OrderShipment postProcessAfterGetOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
-    default List<OrderShipment> preProcessUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
+    default List<OrderShipment> postProcessAfterGetOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
-    default OrderShipment preProcessRemoveOrderShipment(Order order, OrderShipment shipment) {
+    default OrderShipment preProcessBeforeUpdateOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
-    default List<OrderShipment> preProcessRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
+    default List<OrderShipment> preProcessBeforeUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
-    default OrderRefund preProcessApplyOrderRefund(Order order, OrderRefund refund) {
+    default OrderShipment preProcessBeforeRemoveOrderShipment(Order order, OrderShipment shipment) {
+        return shipment;
+    }
+
+    default List<OrderShipment> preProcessBeforeRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
+        return shipments;
+    }
+
+    default OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
-    default OrderRefund preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund preProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
-    default OrderRefund preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund preProcessBeforeApproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
 
     }
 
-    default OrderRefund preProcessDisapproveOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund preProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
-    default OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
-    default OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
+    default OrderRefund postProcessAfterGetOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
-    default OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+    default OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
         return review;
     }
 
-    default List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+    default List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
         return reviews;
     }
 

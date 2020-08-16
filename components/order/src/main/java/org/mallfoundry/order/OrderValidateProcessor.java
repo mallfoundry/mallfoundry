@@ -20,39 +20,21 @@ package org.mallfoundry.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.validation.BindRuntimeException;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.ValidationUtils;
+import org.mallfoundry.validation.ValidationHolder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-public class SmartOrderValidator implements OrderProcessor {
-
-    private final SmartValidator validator;
-
-    public SmartOrderValidator(SmartValidator validator) {
-        this.validator = validator;
-    }
-
-    private BindingResult createError(PlaceOrders orders) {
-        return new BeanPropertyBindingResult(orders, "place");
-    }
+public class OrderValidateProcessor implements OrderProcessor {
 
     private void validate(List<Order> orders) {
         var target = new PlaceOrders(orders);
-        var error = this.createError(target);
-        ValidationUtils.invokeValidator(this.validator, target, error);
-        if (error.hasErrors()) {
-            throw new BindRuntimeException(error);
-        }
+        ValidationHolder.validate(target, "place");
     }
 
     @Override
-    public List<Order> preProcessPlaceOrders(List<Order> orders) {
+    public List<Order> preProcessAfterPlaceOrders(List<Order> orders) {
         this.validate(orders);
         return orders;
     }

@@ -38,9 +38,8 @@ public class CheckoutRequest {
 
     public Checkout assignToCheckout(Checkout checkout) {
         if (Objects.nonNull(this.shippingAddress)) {
-            var address = new DefaultAddress();
-            this.shippingAddress.assignToAddress(address);
-            checkout.setShippingAddress(address);
+            checkout.setShippingAddress(
+                    this.shippingAddress.assignTo(new DefaultAddress()));
         }
         checkout.setCartId(this.cartId);
         checkout.setSource(this.source);

@@ -21,14 +21,16 @@ package org.mallfoundry.order;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;
 import org.mallfoundry.discuss.DefaultAuthor;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentService;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -42,13 +44,13 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
 
-public class DefaultOrderService implements OrderService {
+public class DefaultOrderService implements OrderService, OrderProcessorInvoker, ApplicationEventPublisherAware {
 
     private final OrderConfiguration orderConfiguration;
 
-    private final OrderProcessorsInvoker processorsInvoker;
+    private List<OrderProcessor> processors;
 
-    private final OrderRepository orderRepository;
+    private ApplicationEventPublisher eventPublisher;
 
     private final OrderSplitter orderSplitter;
 
@@ -56,21 +58,26 @@ public class DefaultOrderService implements OrderService {
 
     private final PaymentService paymentService;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private final OrderRepository orderRepository;
 
     public DefaultOrderService(OrderConfiguration orderConfiguration,
-                               OrderProcessorsInvoker processorsInvoker,
                                OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
                                CarrierService carrierService,
-                               PaymentService paymentService,
-                               ApplicationEventPublisher eventPublisher) {
+                               PaymentService paymentService) {
         this.orderConfiguration = orderConfiguration;
-        this.processorsInvoker = processorsInvoker;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
         this.paymentService = paymentService;
+    }
+
+    public void setProcessors(List<OrderProcessor> processors) {
+        this.processors = processors;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
     }
 
@@ -94,65 +101,54 @@ public class DefaultOrderService implements OrderService {
         return this.orderSplitter.splitting(orders);
     }
 
-    private <T, R> Function<List<T>, List<T>> publishOrdersEvent(Function<List<T>, R> function) {
-        return ts -> {
-            this.eventPublisher.publishEvent(function.apply(ts));
-            return ts;
-        };
-    }
-
-    private <T, R> Function<T, T> publishOrderEvent(Function<T, R> function) {
-        return t -> {
-            this.eventPublisher.publishEvent(function.apply(t));
-            return t;
-        };
-    }
-
     @Transactional
     @Override
     public List<Order> placeOrder(Order order) {
         return this.placeOrders(List.of(order));
     }
 
-    private List<Order> invokePlaceOrders(List<Order> orders) {
-        orders.forEach(order -> {
+    @Transactional
+    @Override
+    public List<Order> placeOrders(List<Order> orders) {
+        orders = this.orderSplitter.splitting(orders);
+        orders = this.invokePreProcessBeforePlaceOrders(orders);
+        for (var order : orders) {
             // 设置订单对象的扣减库存方式。
             // 当订单对象下单后或支付后，对订单所持有的库存判断其如何扣减或者归还。
             order.setInventoryDeduction(this.orderConfiguration.getInventoryDeduction());
             order.place(this.orderConfiguration.getPlacingExpires());
-        });
+        }
+        orders = this.invokePreProcessAfterPlaceOrders(orders);
+        orders = this.orderRepository.saveAll(orders);
+        orders = this.invokePostProcessAfterPlaceOrders(orders);
+        this.eventPublisher.publishEvent(new ImmutableOrdersPlacedEvent(orders));
         return orders;
     }
 
-    @Transactional
-    @Override
-    public List<Order> placeOrders(List<Order> orders) {
-        return Function.<List<Order>>identity()
-                .compose(this.publishOrdersEvent(ImmutableOrdersPlacedEvent::new))
-                .compose(this.processorsInvoker::invokePostProcessPlaceOrders)
-                .compose(this.orderRepository::saveAll)
-                .compose(this::invokePlaceOrders)
-                .compose(this.processorsInvoker::invokePreProcessPlaceOrders)
-                .<List<Order>>compose(this.orderSplitter::splitting)
-                .apply(orders);
+    private Order requiredOrder(String orderId) {
+        return this.orderRepository.findById(orderId)
+                .orElseThrow(OrderExceptions::notFound);
     }
 
     @Override
-    public Optional<Order> getOrder(String orderId) {
+    public Order getOrder(String orderId) {
+        return this.findOrder(orderId).orElseThrow(OrderExceptions::notFound);
+    }
+
+    @Override
+    public Optional<Order> findOrder(String orderId) {
         return this.orderRepository.findById(orderId)
-                .map(this.processorsInvoker::invokePostProcessGetOrder);
+                .map(this::invokePostProcessAfterGetOrder);
     }
 
     @Override
     public SliceList<Order> getOrders(OrderQuery query) {
         try {
-            return Function.<SliceList<Order>>identity()
-                    .compose(this.processorsInvoker::invokePostProcessGetOrders)
-                    .compose(this.orderRepository::findAll)
-                    .compose(this.processorsInvoker::invokePreProcessGetOrders)
-                    .apply(query);
+            query = this.invokePreProcessBeforeGetOrders(query);
+            var orders = this.orderRepository.findAll(query);
+            return this.invokePostProcessAfterGetOrders(orders);
         } finally {
-            this.processorsInvoker.invokePostProcessAfterCompletion();
+            this.invokePostProcessAfterCompletion();
         }
     }
 
@@ -161,30 +157,25 @@ public class DefaultOrderService implements OrderService {
         return this.orderRepository.count(query);
     }
 
-    private Order requiredOrder(String orderId) {
-        return this.orderRepository.findById(orderId).orElseThrow(OrderExceptions::notFound);
-    }
-
-    private Order copyOrder(final Order source, final Order target) {
+    private void updateOrder(final Order source, final Order target) {
         if (isNotBlank(source.getStaffNotes())) {
             target.setStaffNotes(trim(source.getStaffNotes()));
         }
         if (nonNull(source.getStaffStars())) {
             target.setStaffStars(source.getStaffStars());
         }
-        return target;
     }
 
     @Transactional
     @Override
     public Order updateOrder(final Order source) {
-        return Function.<Order>identity()
-                .compose(this.publishOrderEvent(ImmutableOrderChangedEvent::new))
-                .compose(this.orderRepository::save)
-                .<Order>compose(target -> copyOrder(source, target))
-                .compose(this.processorsInvoker::invokePreProcessUpdateOrder)
-                .compose(this::requiredOrder)
-                .apply(source.getId());
+        var order = this.requiredOrder(source.getId());
+        order = this.invokePreProcessBeforeUpdateOrder(order);
+        this.updateOrder(source, order);
+        order = this.invokePreProcessAfterUpdateOrder(order);
+        order = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderChangedEvent(order));
+        return order;
     }
 
     @Transactional
@@ -208,7 +199,7 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public void fulfilOrder(String orderId) {
-        var order = this.processorsInvoker.invokePreProcessFulfilOrder(requiredOrder(orderId));
+        var order = this.invokePreProcessBeforeFulfilOrder(requiredOrder(orderId));
         order.fulfil();
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderFulfilledEvent(savedOrder));
@@ -218,7 +209,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void signOrder(String orderId, String message) {
         var order = this.requiredOrder(orderId);
-        message = this.processorsInvoker.invokePreProcessSignOrder(order, message);
+        message = this.invokePreProcessBeforeSignOrder(order, message);
         order.sign(message);
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderSignedEvent(savedOrder));
@@ -227,7 +218,8 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public void receiptOrder(String orderId) {
-        var order = this.processorsInvoker.invokePreProcessReceiptOrder(this.requiredOrder(orderId));
+        var order = this.requiredOrder(orderId);
+        order = this.invokePreProcessBeforeReceiptOrder(order);
         order.receipt();
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReceivedEvent(savedOrder));
@@ -237,7 +229,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void cancelOrder(String orderId, String reason) {
         var order = requiredOrder(orderId);
-        reason = this.processorsInvoker.invokePreProcessCancelOrder(order, reason);
+        reason = this.invokePreProcessBeforeCancelOrder(order, reason);
         order.cancel(reason);
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderCancelledEvent(savedOrder));
@@ -248,7 +240,8 @@ public class DefaultOrderService implements OrderService {
     public void cancelOrders(Set<String> orderIds, String reason) {
         var orders = this.orderRepository.findAllById(orderIds);
         if (CollectionUtils.isNotEmpty(orders)) {
-            orders.forEach(order -> order.cancel(this.processorsInvoker.invokePreProcessCancelOrder(order, reason)));
+            String finalReason = this.invokePreProcessBeforeCancelOrders(orders, reason);
+            orders.forEach(order -> order.cancel(finalReason));
             var savedOrders = this.orderRepository.saveAll(orders);
             this.eventPublisher.publishEvent(new ImmutableOrdersCancelledEvent(savedOrders));
         }
@@ -258,7 +251,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public OrderShipment addOrderShipment(String orderId, OrderShipment shipment) {
         var order = this.requiredOrder(orderId);
-        shipment = this.processorsInvoker.invokePreProcessAddOrderShipment(order, shipment);
+        shipment = this.invokePreProcessBeforeAddOrderShipment(order, shipment);
         shipment.setConsignorId(SubjectHolder.getSubject().getId());
         if (StringUtils.isBlank(shipment.getConsignor())) {
             shipment.setConsignor(SubjectHolder.getSubject().getNickname());
@@ -275,27 +268,22 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public Optional<OrderShipment> getOrderShipment(String orderId, String shipmentId) {
-        return Function.<Optional<OrderShipment>>identity()
-                .<Order>compose(order -> order.getShipment(shipmentId))
-                .compose(this.processorsInvoker::invokePreProcessGetOrderShipment)
-                .compose(this::requiredOrder)
-                .apply(orderId);
+        var order = this.requiredOrder(orderId);
+        return order.findShipment(shipmentId)
+                .map(shipment -> this.invokePostProcessAfterGetOrderShipment(order, shipment));
     }
 
     @Override
     public List<OrderShipment> getOrderShipments(String orderId) {
-        return Function.<List<OrderShipment>>identity()
-                .<Order>compose(Order::getShipments)
-                .compose(this.processorsInvoker::invokePreProcessGetOrderShipments)
-                .compose(this::requiredOrder)
-                .apply(orderId);
+        var order = this.requiredOrder(orderId);
+        return this.invokePostProcessAfterGetOrderShipments(order, order.getShipments());
     }
 
     @Transactional
     @Override
     public void updateOrderShipment(String orderId, OrderShipment shipment) {
         var order = this.requiredOrder(orderId);
-        shipment = this.processorsInvoker.invokePreProcessUpdateOrderShipment(order, shipment);
+        shipment = this.invokePreProcessBeforeUpdateOrderShipment(order, shipment);
         order.updateShipment(shipment);
         this.orderRepository.save(order);
     }
@@ -304,20 +292,17 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void updateOrderShipments(String orderId, List<OrderShipment> shipments) {
         var order = this.requiredOrder(orderId);
-        shipments = this.processorsInvoker.invokePreProcessUpdateOrderShipments(order, shipments);
+        shipments = this.invokePreProcessBeforeUpdateOrderShipments(order, shipments);
         order.updateShipments(shipments);
         this.orderRepository.save(order);
-    }
-
-    private OrderShipment requiredOrderShipment(Order order, String shipmentId) {
-        return order.getShipment(shipmentId).orElseThrow();
     }
 
     @Transactional
     @Override
     public void removeOrderShipment(String orderId, String shipmentId) {
         var order = this.requiredOrder(orderId);
-        var shipment = this.processorsInvoker.invokePreProcessRemoveOrderShipment(order, this.requiredOrderShipment(order, shipmentId));
+        var shipment = order.getShipment(shipmentId);
+        shipment = this.invokePreProcessBeforeRemoveOrderShipment(order, shipment);
         order.removeShipment(shipment);
         this.orderRepository.save(order);
     }
@@ -326,7 +311,8 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void removeOrderShipments(String orderId, Set<String> shipmentIds) {
         var order = this.requiredOrder(orderId);
-        var shipments = this.processorsInvoker.invokePreProcessRemoveOrderShipments(order, order.getShipments(shipmentIds));
+        var shipments = order.getShipments(shipmentIds);
+        shipments = this.invokePreProcessBeforeRemoveOrderShipments(order, shipments);
         order.removeShipments(shipments);
         this.orderRepository.save(order);
     }
@@ -365,7 +351,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
-        refund = this.processorsInvoker.invokePreProcessApplyOrderRefund(order, refund);
+        refund = this.invokePreProcessBeforeApplyOrderRefund(order, refund);
         refund = order.applyRefund(refund);
         this.orderRepository.save(order);
         return refund;
@@ -375,7 +361,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void cancelOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
-        var refund = this.processorsInvoker.invokePreProcessCancelOrderRefund(order, order.createRefund(refundId));
+        var refund = this.invokePreProcessBeforeCancelOrderRefund(order, order.createRefund(refundId));
         order.cancelRefund(refund);
         this.orderRepository.save(order);
     }
@@ -396,7 +382,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void approveOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
-        var refund = this.processorsInvoker.invokePreProcessApproveOrderRefund(order, order.createRefund(refundId));
+        var refund = this.invokePreProcessBeforeApproveOrderRefund(order, order.createRefund(refundId));
         order.approveRefund(refund);
         this.refundOrderPayment(order, refund.getId(), refund.getTotalAmount());
         this.orderRepository.save(order);
@@ -407,7 +393,7 @@ public class DefaultOrderService implements OrderService {
     public void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason) {
         var order = this.requiredOrder(orderId);
         var refund = Function.<OrderRefund>identity()
-                .<OrderRefund>compose(aRefund -> this.processorsInvoker.invokePreProcessDisapproveOrderRefund(order, aRefund))
+                .<OrderRefund>compose(aRefund -> this.invokePreProcessBeforeDisapproveOrderRefund(order, aRefund))
                 .<OrderRefund>compose(aRefund -> aRefund.toBuilder().disapprovalReason(disapprovedReason).build())
                 .compose(order::createRefund)
                 .apply(refundId);
@@ -419,7 +405,7 @@ public class DefaultOrderService implements OrderService {
     @Override
     public void activeOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
-        refund = this.processorsInvoker.invokePreProcessActiveOrderRefund(order, refund);
+        refund = this.invokePreProcessBeforeActiveOrderRefund(order, refund);
         var fetchRefund = order.activeRefund(refund);
         this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getTotalAmount());
         this.orderRepository.save(order);
@@ -429,7 +415,7 @@ public class DefaultOrderService implements OrderService {
     public Optional<OrderRefund> getOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
         return order.getRefund(refundId)
-                .map(refund -> this.processorsInvoker.invokePostProcessGetOrderRefund(order, refund));
+                .map(refund -> this.invokePostProcessAfterGetOrderRefund(order, refund));
     }
 
     private Author createNewReviewer(Author author) {
@@ -450,7 +436,7 @@ public class DefaultOrderService implements OrderService {
     public OrderReview addOrderReview(String orderId, OrderReview newReview) {
         var order = this.requiredOrder(orderId);
         var review = order.addReview(
-                this.processorsInvoker.invokePreProcessAddOrderReview(order,
+                this.invokePreProcessBeforeAddOrderReview(order,
                         newReview.toBuilder()
                                 .author(this.createNewReviewer(newReview.getAuthor()))
                                 .build()));
@@ -464,9 +450,211 @@ public class DefaultOrderService implements OrderService {
     public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
         var order = this.requiredOrder(orderId);
         newReviews.forEach(review -> review.toBuilder().author(this.createNewReviewer(review.getAuthor())).build());
-        var reviews = order.addReviews(this.processorsInvoker.invokePreProcessAddOrderReviews(order, newReviews));
+        var reviews = order.addReviews(this.invokePreProcessBeforeAddOrderReviews(order, newReviews));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));
         return reviews;
+    }
+
+
+    @Override
+    public List<Order> invokePreProcessBeforePlaceOrders(List<Order> orders) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessBeforePlaceOrders)
+                .apply(orders);
+    }
+
+    @Override
+    public List<Order> invokePreProcessAfterPlaceOrders(List<Order> orders) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessAfterPlaceOrders)
+                .apply(orders);
+    }
+
+    @Override
+    public List<Order> invokePostProcessAfterPlaceOrders(List<Order> orders) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::postProcessAfterPlaceOrders)
+                .apply(orders);
+    }
+
+    @Override
+    public Order invokePostProcessAfterGetOrder(Order order) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::postProcessAfterGetOrder)
+                .apply(order);
+    }
+
+    @Override
+    public OrderQuery invokePreProcessBeforeGetOrders(OrderQuery query) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessBeforeGetOrders)
+                .apply(query);
+    }
+
+    @Override
+    public SliceList<Order> invokePostProcessAfterGetOrders(SliceList<Order> orders) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::postProcessAfterGetOrders)
+                .apply(orders);
+    }
+
+    @Override
+    public Order invokePreProcessBeforeUpdateOrder(Order order) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessBeforeUpdateOrder)
+                .apply(order);
+    }
+
+    @Override
+    public Order invokePreProcessBeforeFulfilOrder(Order order) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessBeforeFulfilOrder)
+                .apply(order);
+    }
+
+    @Override
+    public Order invokePreProcessAfterUpdateOrder(Order order) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessAfterUpdateOrder)
+                .apply(order);
+    }
+
+    @Override
+    public String invokePreProcessBeforeSignOrder(Order order, String message) {
+        return Processors.stream(this.processors)
+                .<String>map((processor, identity) -> processor.preProcessBeforeSignOrder(order, identity))
+                .apply(message);
+    }
+
+    @Override
+    public Order invokePreProcessBeforeReceiptOrder(Order order) {
+        return Processors.stream(this.processors)
+                .map(OrderProcessor::preProcessBeforeReceiptOrder)
+                .apply(order);
+    }
+
+    @Override
+    public String invokePreProcessBeforeCancelOrder(Order order, String reason) {
+        return Processors.stream(this.processors)
+                .<String>map((processor, identity) -> processor.preProcessBeforeCancelOrder(order, identity))
+                .apply(reason);
+    }
+
+    @Override
+    public String invokePreProcessBeforeCancelOrders(List<Order> orders, String reason) {
+        return Processors.stream(this.processors)
+                .<String>map((processor, identity) -> processor.preProcessBeforeCancelOrders(orders, identity))
+                .apply(reason);
+    }
+
+    @Override
+    public OrderShipment invokePreProcessBeforeAddOrderShipment(Order order, OrderShipment shipment) {
+        return Processors.stream(this.processors)
+                .<OrderShipment>map((processor, identity) -> processor.preProcessBeforeAddOrderShipment(order, identity))
+                .apply(shipment);
+    }
+
+    @Override
+    public OrderShipment invokePostProcessAfterGetOrderShipment(Order order, OrderShipment shipment) {
+        return Processors.stream(this.processors)
+                .<OrderShipment>map((processor, identity) -> processor.postProcessAfterGetOrderShipment(order, identity))
+                .apply(shipment);
+    }
+
+    @Override
+    public List<OrderShipment> invokePostProcessAfterGetOrderShipments(Order order, List<OrderShipment> shipments) {
+        return Processors.stream(this.processors)
+                .<List<OrderShipment>>map((processor, identity) -> processor.postProcessAfterGetOrderShipments(order, identity))
+                .apply(shipments);
+    }
+
+    @Override
+    public OrderShipment invokePreProcessBeforeUpdateOrderShipment(Order order, OrderShipment shipment) {
+        return Processors.stream(this.processors)
+                .<OrderShipment>map((processor, identity) -> processor.preProcessBeforeUpdateOrderShipment(order, identity))
+                .apply(shipment);
+    }
+
+    @Override
+    public List<OrderShipment> invokePreProcessBeforeUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
+        return Processors.stream(this.processors)
+                .<List<OrderShipment>>map((processor, identity) -> processor.preProcessBeforeUpdateOrderShipments(order, identity))
+                .apply(shipments);
+    }
+
+    @Override
+    public OrderShipment invokePreProcessBeforeRemoveOrderShipment(Order order, OrderShipment shipment) {
+        return Processors.stream(this.processors)
+                .<OrderShipment>map((processor, identity) -> processor.preProcessBeforeRemoveOrderShipment(order, identity))
+                .apply(shipment);
+    }
+
+    @Override
+    public List<OrderShipment> invokePreProcessBeforeRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
+        return Processors.stream(this.processors)
+                .<List<OrderShipment>>map((processor, identity) -> processor.preProcessBeforeRemoveOrderShipments(order, identity))
+                .apply(shipments);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessBeforeApproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeApproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeDisapproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeActiveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePostProcessAfterGetOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterGetOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderReview invokePreProcessBeforeAddOrderReview(Order order, OrderReview review) {
+        return Processors.stream(this.processors)
+                .<OrderReview>map((processor, identity) -> processor.preProcessBeforeAddOrderReview(order, identity))
+                .apply(review);
+    }
+
+    @Override
+    public List<OrderReview> invokePreProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
+        return Processors.stream(this.processors)
+                .<List<OrderReview>>map((processor, identity) -> processor.preProcessBeforeAddOrderReviews(order, identity))
+                .apply(reviews);
+    }
+
+    @Override
+    public void invokePostProcessAfterCompletion() {
+        this.processors.forEach(OrderProcessor::postProcessAfterCompletion);
     }
 }

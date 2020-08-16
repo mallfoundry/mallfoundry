@@ -103,7 +103,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     protected OrderShipment requiredShipment(String shipmentId) {
-        return this.getShipment(shipmentId).orElseThrow(OrderExceptions.Shipment::notFound);
+        return this.findShipment(shipmentId).orElseThrow(OrderExceptions.Shipment::notFound);
     }
 
     @Override
@@ -144,7 +144,12 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public Optional<OrderShipment> getShipment(String shipmentId) {
+    public OrderShipment getShipment(String shipmentId) {
+        return this.requiredShipment(shipmentId);
+    }
+
+    @Override
+    public Optional<OrderShipment> findShipment(String shipmentId) {
         return this.getShipments()
                 .stream()
                 .filter(shipment -> Objects.equals(shipment.getId(), shipmentId))

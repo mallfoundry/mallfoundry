@@ -24,14 +24,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
-public class OrderAuthorizer implements OrderProcessor {
+public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#query.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "') or "
             + "hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_SEARCH + "," + OrderAuthorities.ORDER_MANAGE + "," + AllAuthorities.STORE_MANAGE + "')")
     @Override
-    public OrderQuery preProcessGetOrders(OrderQuery query) {
+    public OrderQuery preProcessBeforeGetOrders(OrderQuery query) {
         return query;
     }
 
@@ -40,7 +40,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_READ + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order postProcessGetOrder(Order order) {
+    public Order postProcessAfterGetOrder(Order order) {
         return order;
     }
 
@@ -49,28 +49,28 @@ public class OrderAuthorizer implements OrderProcessor {
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_WRITE + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order preProcessUpdateOrder(Order order) {
+    public Order preProcessBeforeUpdateOrder(Order order) {
         return order;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_FULFIL + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order preProcessFulfilOrder(Order order) {
+    public Order preProcessBeforeFulfilOrder(Order order) {
         return order;
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_SIGN + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public String preProcessSignOrder(Order order, String message) {
+    public String preProcessBeforeSignOrder(Order order, String message) {
         return message;
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_RECEIPT + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order preProcessReceiptOrder(Order order) {
+    public Order preProcessBeforeReceiptOrder(Order order) {
         return order;
     }
 
@@ -79,7 +79,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + OrderAuthorities.ORDER_CANCEL + "," + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public String preProcessCancelOrder(Order order, String reason) {
+    public String preProcessBeforeCancelOrder(Order order, String reason) {
         return reason;
     }
 
@@ -88,7 +88,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderShipment preProcessAddOrderShipment(Order order, OrderShipment shipment) {
+    public OrderShipment preProcessBeforeAddOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -97,8 +97,8 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order preProcessGetOrderShipment(Order order) {
-        return order;
+    public OrderShipment postProcessAfterGetOrderShipment(Order order, OrderShipment shipment) {
+        return shipment;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -106,8 +106,8 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public Order preProcessGetOrderShipments(Order order) {
-        return order;
+    public List<OrderShipment> postProcessAfterGetOrderShipments(Order order, List<OrderShipment> shipments) {
+        return shipments;
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
@@ -115,7 +115,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderShipment preProcessUpdateOrderShipment(Order order, OrderShipment shipment) {
+    public OrderShipment preProcessBeforeUpdateOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -124,7 +124,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public List<OrderShipment> preProcessUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
+    public List<OrderShipment> preProcessBeforeUpdateOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
@@ -133,7 +133,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderShipment preProcessRemoveOrderShipment(Order order, OrderShipment shipment) {
+    public OrderShipment preProcessBeforeRemoveOrderShipment(Order order, OrderShipment shipment) {
         return shipment;
     }
 
@@ -142,7 +142,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_SHIPMENT_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public List<OrderShipment> preProcessRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
+    public List<OrderShipment> preProcessBeforeRemoveOrderShipments(Order order, List<OrderShipment> shipments) {
         return shipments;
     }
 
@@ -151,7 +151,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund preProcessApplyOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -160,7 +160,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund preProcessCancelOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -169,7 +169,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund preProcessApproveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeApproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -178,7 +178,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund preProcessDisapproveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -187,7 +187,7 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund preProcessActiveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -200,21 +200,21 @@ public class OrderAuthorizer implements OrderProcessor {
             + OrderAuthorities.ORDER_REFUND_MANAGE + ","
             + OrderAuthorities.ORDER_MANAGE + "')")
     @Override
-    public OrderRefund postProcessGetOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterGetOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_REVIEW_ADD + "')")
     @Override
-    public OrderReview preProcessAddOrderReview(Order order, OrderReview review) {
+    public OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
         return review;
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + OrderAuthorities.ORDER_REVIEW_ADD + "')")
     @Override
-    public List<OrderReview> preProcessAddOrderReviews(Order order, List<OrderReview> reviews) {
+    public List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
         return reviews;
     }
 }

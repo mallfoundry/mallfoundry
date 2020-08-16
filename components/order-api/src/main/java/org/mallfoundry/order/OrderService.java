@@ -61,7 +61,9 @@ public interface OrderService {
 
     List<Order> placeOrders(List<Order> orders);
 
-    Optional<Order> getOrder(String orderId);
+    Order getOrder(String orderId);
+
+    Optional<Order> findOrder(String orderId);
 
     SliceList<Order> getOrders(OrderQuery query);
 
