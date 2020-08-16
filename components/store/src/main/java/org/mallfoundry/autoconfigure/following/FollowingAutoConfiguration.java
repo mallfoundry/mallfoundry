@@ -52,8 +52,8 @@ public class FollowingAutoConfiguration {
     }
 
     @Bean
-    @Autowired(required = false)
-    public DefaultFollowingProductService defaultFollowingProductService(@Lazy List<FollowingProductProcessor> processors,
+    public DefaultFollowingProductService defaultFollowingProductService(@Autowired(required = false)
+                                                                         @Lazy List<FollowingProductProcessor> processors,
                                                                          UserService userService,
                                                                          ProductService productService,
                                                                          ProductFollowingRepository productFollowingRepository) {
@@ -63,8 +63,8 @@ public class FollowingAutoConfiguration {
     }
 
     @Bean
-    @Autowired(required = false)
-    public DefaultFollowingStoreService defaultFollowingStoreService(@Lazy List<FollowingStoreProcessor> processors,
+    public DefaultFollowingStoreService defaultFollowingStoreService(@Autowired(required = false)
+                                                                     @Lazy List<FollowingStoreProcessor> processors,
                                                                      UserService userService,
                                                                      StoreService storeService,
                                                                      StoreFollowingRepository storeFollowingRepository) {
