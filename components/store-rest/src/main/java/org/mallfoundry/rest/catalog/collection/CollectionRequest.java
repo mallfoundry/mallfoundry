@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.store;
+package org.mallfoundry.rest.catalog.collection;
 
 import lombok.Getter;
 import lombok.Setter;
