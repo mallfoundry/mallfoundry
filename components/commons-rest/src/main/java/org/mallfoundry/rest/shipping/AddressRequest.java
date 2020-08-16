@@ -33,7 +33,7 @@ public class AddressRequest {
 
     private String lastName;
 
-    private String mobile;
+    private String phone;
 
     private String zip;
 
@@ -53,8 +53,9 @@ public class AddressRequest {
 
     private String address;
 
-    public void assignToAddress(Address address) {
+    public Address assignTo(Address address) {
         BeanUtils.copyProperties(this, address);
+        return address;
     }
 
 }
