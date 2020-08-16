@@ -21,6 +21,7 @@ package org.mallfoundry.cart.repository.jpa;
 
 import org.mallfoundry.cart.Cart;
 import org.mallfoundry.cart.CartRepository;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -51,6 +52,6 @@ public class DelegatingJpaCartRepository implements CartRepository {
 
     @Override
     public Optional<Cart> findById(String id) {
-        return Optional.empty();
+        return CastUtils.cast(this.repository.findById(id));
     }
 }
