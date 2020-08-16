@@ -51,7 +51,7 @@ public class JpaCart extends CartSupport {
     @Column(name = "customer_id_")
     private String customerId;
 
-    @OneToMany(targetEntity = JpaCartItem.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = JpaCartItem.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_id_")
     @OrderBy("addedTime ASC")
     private List<CartItem> items = new ArrayList<>();
