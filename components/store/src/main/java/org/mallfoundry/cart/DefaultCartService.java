@@ -23,6 +23,7 @@ import org.mallfoundry.cart.repository.jpa.JpaCart;
 import org.mallfoundry.cart.repository.jpa.JpaCartItem;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -49,7 +50,9 @@ public class DefaultCartService implements CartService {
     }
 
     private Cart createEmptyCart(String id) {
-        return this.cartRepository.save(this.createCart(id));
+        var cart = this.createCart(id);
+        cart.setCustomerId(SubjectHolder.getSubject().getId());
+        return this.cartRepository.save(cart);
     }
 
     @Override
