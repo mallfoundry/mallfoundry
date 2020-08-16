@@ -24,6 +24,10 @@ public interface MemberProcessor {
         return member;
     }
 
+    default Member preProcessAfterAddMember(Member member) {
+        return member;
+    }
+
     default Member postProcessAfterGetMember(Member member) {
         return member;
     }
