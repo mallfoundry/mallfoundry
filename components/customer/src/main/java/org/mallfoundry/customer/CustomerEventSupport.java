@@ -18,19 +18,16 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.identity.User;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-import java.util.Optional;
+@Getter
+public class CustomerEventSupport extends ApplicationEvent implements CustomerEvent {
 
-public interface CustomerRepository {
+    private final Customer customer;
 
-    Customer create(User user);
-
-    Customer create(CustomerId customerId);
-
-    Customer save(Customer customer);
-
-    Optional<Customer> findById(String id);
-
-    void delete(Customer customer);
+    public CustomerEventSupport(Customer customer) {
+        super(customer);
+        this.customer = customer;
+    }
 }

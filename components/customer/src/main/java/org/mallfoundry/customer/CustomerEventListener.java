@@ -19,6 +19,10 @@
 package org.mallfoundry.customer;
 
 import org.mallfoundry.identity.UserCreatedEvent;
+import org.mallfoundry.security.access.AccessControlManager;
+import org.mallfoundry.security.access.AllAuthorities;
+import org.mallfoundry.security.access.Principal;
+import org.mallfoundry.security.access.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
@@ -26,28 +30,31 @@ import org.springframework.context.event.EventListener;
 public class CustomerEventListener {
 
     private final CustomerService customerService;
+    private final AccessControlManager accessControlManager;
 
-    public CustomerEventListener(CustomerService customerService) {
+    public CustomerEventListener(CustomerService customerService, AccessControlManager accessControlManager) {
         this.customerService = customerService;
+        this.accessControlManager = accessControlManager;
     }
 
     @EventListener
-    public void onUserCreated(UserCreatedEvent createdEvent) {
+    public void onUserCreatedEvent(UserCreatedEvent createdEvent) {
         var user = createdEvent.getUser();
-        var customer = this.customerService.createCustomer(user.getId())
-                .toBuilder()
-                .username(user.getUsername())
-                .avatar(user.getAvatar())
-                .nickname(user.getNickname())
-                .gender(user.getGender()).build();
+        var customer = this.customerService.createCustomer(user);
         this.customerService.addCustomer(customer);
     }
 
-
-/*    private String getNickname(User user) {
-        if (StringUtils.isNotBlank(user.getNickname())) {
-            return user.getNickname();
-        }
-    }*/
-
+    @EventListener
+    public void onCustomerAddedEvent(CustomerAddedEvent event) {
+        var customer = event.getCustomer();
+        var customerId = customer.getId();
+        var tenantResource = this.accessControlManager.createResource(Resource.TENANT_TYPE, customer.getTenantId());
+        var resource = this.accessControlManager.createResource(Resource.CUSTOMER_TYPE, customerId);
+        var principal = this.accessControlManager.createPrincipal(Principal.USER_TYPE, customerId);
+        var accessControl = this.accessControlManager.getAccessControl(tenantResource)
+                .createAccessControl(principal, resource);
+        this.accessControlManager.deleteAccessControl(accessControl);
+        accessControl.grant(AllAuthorities.CUSTOMER_MANAGE, principal);
+        this.accessControlManager.addAccessControl(accessControl);
+    }
 }

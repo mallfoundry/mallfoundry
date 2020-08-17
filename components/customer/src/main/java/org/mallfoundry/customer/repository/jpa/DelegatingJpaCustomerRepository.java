@@ -19,7 +19,9 @@
 package org.mallfoundry.customer.repository.jpa;
 
 import org.mallfoundry.customer.Customer;
+import org.mallfoundry.customer.CustomerId;
 import org.mallfoundry.customer.CustomerRepository;
+import org.mallfoundry.identity.User;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
@@ -33,8 +35,13 @@ public class DelegatingJpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Customer create(String id) {
-        return new JpaCustomer(id);
+    public Customer create(User user) {
+        return new JpaCustomer(user);
+    }
+
+    @Override
+    public Customer create(CustomerId customerId) {
+        return new JpaCustomer(customerId);
     }
 
     @Override

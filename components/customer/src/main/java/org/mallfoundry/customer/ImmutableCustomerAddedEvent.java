@@ -18,19 +18,8 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.identity.User;
-
-import java.util.Optional;
-
-public interface CustomerRepository {
-
-    Customer create(User user);
-
-    Customer create(CustomerId customerId);
-
-    Customer save(Customer customer);
-
-    Optional<Customer> findById(String id);
-
-    void delete(Customer customer);
+public class ImmutableCustomerAddedEvent extends CustomerEventSupport implements CustomerAddedEvent {
+    public ImmutableCustomerAddedEvent(Customer customer) {
+        super(customer);
+    }
 }

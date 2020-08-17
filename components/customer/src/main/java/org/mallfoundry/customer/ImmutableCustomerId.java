@@ -18,19 +18,15 @@
 
 package org.mallfoundry.customer;
 
-import org.mallfoundry.identity.User;
+import lombok.Getter;
 
-import java.util.Optional;
+@Getter
+public class ImmutableCustomerId implements CustomerId {
+    private final String tenantId;
+    private final String id;
 
-public interface CustomerRepository {
-
-    Customer create(User user);
-
-    Customer create(CustomerId customerId);
-
-    Customer save(Customer customer);
-
-    Optional<Customer> findById(String id);
-
-    void delete(Customer customer);
+    public ImmutableCustomerId(String tenantId, String id) {
+        this.tenantId = tenantId;
+        this.id = id;
+    }
 }

@@ -18,31 +18,50 @@
 
 package org.mallfoundry.customer;
 
+import org.mallfoundry.identity.User;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
-public class DefaultCustomerService implements CustomerService, CustomerProcessorInvoker {
+public class DefaultCustomerService implements CustomerService, CustomerProcessorInvoker, ApplicationEventPublisherAware {
 
     private static final String ADDRESS_ID_VALUE_NAME = "customer.address.id";
 
     private final CustomerRepository customerRepository;
+
+    private ApplicationEventPublisher eventPublisher;
 
     public DefaultCustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
     @Override
-    public Customer createCustomer(String customerId) {
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
+    @Override
+    public CustomerId createCustomerId(String tenantId, String customerId) {
+        return new ImmutableCustomerId(tenantId, customerId);
+    }
+
+    @Override
+    public Customer createCustomer(User user) {
+        return this.customerRepository.create(user);
+    }
+
+    @Override
+    public Customer createCustomer(CustomerId customerId) {
         return this.customerRepository.create(customerId);
     }
 
     @Override
-    public Optional<Customer> getCustomer(String customerId) {
+    public Optional<Customer> findCustomer(String customerId) {
         return this.customerRepository.findById(customerId)
                 .map(this::invokePostProcessAfterGetCustomer);
     }
@@ -50,14 +69,14 @@ public class DefaultCustomerService implements CustomerService, CustomerProcesso
     @Transactional
     @Override
     public Customer addCustomer(Customer customer) {
-        return Function.<Customer>identity()
-                .compose(this.customerRepository::save)
-                .compose(this::invokePreProcessBeforeAddCustomer)
-                .apply(customer);
+        customer = this.invokePreProcessBeforeAddCustomer(customer);
+        customer = this.customerRepository.save(customer);
+        this.eventPublisher.publishEvent(new ImmutableCustomerAddedEvent(customer));
+        return customer;
     }
 
     public Customer requiredCustomer(String customerId) {
-        return this.getCustomer(customerId).orElseThrow();
+        return this.findCustomer(customerId).orElseThrow();
     }
 
     @Transactional
@@ -98,12 +117,17 @@ public class DefaultCustomerService implements CustomerService, CustomerProcesso
     }
 
     @Override
-    public Optional<CustomerAddress> getCustomerAddress(String customerId, String addressId) {
+    public Optional<CustomerAddress> findCustomerAddress(String customerId, String addressId) {
         return this.requiredCustomer(customerId).getAddress(addressId);
     }
 
     @Override
-    public Optional<CustomerAddress> getDefaultCustomerAddress(String customerId) {
+    public CustomerAddress getDefaultCustomerAddress(String customerId) {
+        return this.findDefaultCustomerAddress(customerId).orElseThrow();
+    }
+
+    @Override
+    public Optional<CustomerAddress> findDefaultCustomerAddress(String customerId) {
         return this.requiredCustomer(customerId).getDefaultAddress();
     }
 

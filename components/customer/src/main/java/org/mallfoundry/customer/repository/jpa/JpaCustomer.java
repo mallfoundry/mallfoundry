@@ -23,8 +23,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.customer.Customer;
 import org.mallfoundry.customer.CustomerAddress;
+import org.mallfoundry.customer.CustomerId;
 import org.mallfoundry.customer.CustomerSupport;
 import org.mallfoundry.identity.Gender;
+import org.mallfoundry.identity.User;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -52,6 +54,9 @@ public class JpaCustomer extends CustomerSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @Column(name = "username_")
     private String username;
 
@@ -73,10 +78,19 @@ public class JpaCustomer extends CustomerSupport {
     @OrderBy("defaulted DESC , createdTime ASC")
     private List<CustomerAddress> addresses = new ArrayList<>();
 
-    public JpaCustomer(String userId) {
-        this.id = userId;
-        this.gender = Gender.UNKNOWN;
+    public JpaCustomer(User user) {
+        this.id = user.getId();
+        this.tenantId = user.getTenantId();
+        this.username = user.getUsername();
+        this.avatar = user.getAvatar();
+        this.nickname = user.getNickname();
+        this.gender = user.getGender();
         this.birthdate = new Date();
+    }
+
+    public JpaCustomer(CustomerId customerId) {
+        this.tenantId = customerId.getTenantId();
+        this.id = customerId.getId();
     }
 
     public static JpaCustomer of(Customer customer) {
