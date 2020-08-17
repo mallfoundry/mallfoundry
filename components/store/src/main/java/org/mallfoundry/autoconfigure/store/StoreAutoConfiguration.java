@@ -23,7 +23,7 @@ import org.mallfoundry.store.StoreAuthorizeProcessor;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
-import org.mallfoundry.store.configuration.StoreConfigurationIdRetrievalStrategy;
+import org.mallfoundry.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

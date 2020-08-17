@@ -46,7 +46,6 @@ public class RoleAccessControlEventListener {
     public void onAddRole(RoleAddedEvent event) {
         var role = event.getRole();
         var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
-        rolePrincipal = this.manager.addPrincipal(rolePrincipal);
         var resource = this.manager.createResource(Resource.STORE_TYPE, role.getStoreId());
         var accessControl = this.manager.createAccessControl(resource);
         accessControl.grant(this.createPermissions(role), rolePrincipal);

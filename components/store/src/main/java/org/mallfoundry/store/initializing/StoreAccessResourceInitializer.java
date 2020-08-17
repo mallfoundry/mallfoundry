@@ -37,12 +37,12 @@ public class StoreAccessResourceInitializer implements StoreInitializer {
 
     @Override
     public void doInitialize(Store store) {
+        var tenantResource = this.manager.createResource(Resource.TENANT_TYPE, store.getTenantId());
         var resource = this.manager.createResource(Resource.STORE_TYPE, store.getId());
-        this.manager.removeResource(resource);
-        resource = this.manager.addResource(resource);
         var owner = this.manager.createPrincipal(Principal.USER_TYPE, store.getOwnerId());
-        owner = this.manager.addPrincipal(owner);
-        var accessControl = this.manager.createAccessControl(owner, resource);
+        // Create AccessControl by parent access control object.
+        var accessControl = this.manager.getAccessControl(tenantResource).createAccessControl(owner, resource);
+        this.manager.deleteAccessControl(accessControl);
         this.manager.addAccessControl(accessControl);
     }
 }

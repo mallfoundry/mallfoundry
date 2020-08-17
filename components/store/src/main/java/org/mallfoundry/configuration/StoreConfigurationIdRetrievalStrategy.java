@@ -16,12 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.configuration;
+package org.mallfoundry.configuration;
 
-import org.mallfoundry.configuration.ConfigurationId;
-import org.mallfoundry.configuration.ConfigurationIdRetrievalStrategy;
-import org.mallfoundry.configuration.ConfigurationScope;
-import org.mallfoundry.configuration.ImmutableConfigurationId;
 import org.mallfoundry.store.ImmutableStoreId;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;

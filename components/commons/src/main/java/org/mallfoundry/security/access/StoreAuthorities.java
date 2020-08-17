@@ -21,31 +21,36 @@ package org.mallfoundry.security.access;
 public abstract class StoreAuthorities {
 
     // Store Authorities
-    public static final String STORE_READ = "store:read";
-    public static final String STORE_WRITE = "store:write";
-    public static final String STORE_MANAGE = "store:manage";
+    public static final String STORE_CREATE = "store_create";
+    public static final String STORE_READ = "store_read";
+    public static final String STORE_WRITE = "store_write";
+    public static final String STORE_MANAGE = "store_manage";
 
     // Store address Authorities
-    public static final String STORE_ADDRESS_READ = "store:address:read";
-    public static final String STORE_ADDRESS_WRITE = "store:address:write";
-    public static final String STORE_ADDRESS_DELETE = "store:address:delete";
-    public static final String STORE_ADDRESS_MANAGE = "store:address:manage";
+    public static final String STORE_ADDRESS_ADD = "store_address_add";
+    public static final String STORE_ADDRESS_READ = "store_address_read";
+    public static final String STORE_ADDRESS_WRITE = "store_address_write";
+    public static final String STORE_ADDRESS_DELETE = "store_address_delete";
+    public static final String STORE_ADDRESS_MANAGE = "store_address_manage";
 
     // Store staff Authorities
-    public static final String STORE_STAFF_READ = "store:staff:read";
-    public static final String STORE_STAFF_WRITE = "store:staff:write";
-    public static final String STORE_STAFF_DELETE = "store:staff:delete";
-    public static final String STORE_STAFF_MANAGE = "store:staff:manage";
+    public static final String STORE_STAFF_ADD = "store_staff_add";
+    public static final String STORE_STAFF_READ = "store_staff_read";
+    public static final String STORE_STAFF_WRITE = "store_staff_write";
+    public static final String STORE_STAFF_DELETE = "store_staff_delete";
+    public static final String STORE_STAFF_MANAGE = "store_staff_manage";
 
     // Store role Authorities
-    public static final String STORE_ROLE_READ = "store:role:read";
-    public static final String STORE_ROLE_WRITE = "store:role:write";
-    public static final String STORE_ROLE_DELETE = "store:role:delete";
-    public static final String STORE_ROLE_MANAGE = "store:role:manage";
+    public static final String STORE_ROLE_ADD = "store_role_add";
+    public static final String STORE_ROLE_READ = "store_role_read";
+    public static final String STORE_ROLE_WRITE = "store_role_write";
+    public static final String STORE_ROLE_DELETE = "store_role_delete";
+    public static final String STORE_ROLE_MANAGE = "store_role_manage";
 
     // Store member Authorities
-    public static final String STORE_MEMBER_READ = "store:member:read";
-    public static final String STORE_MEMBER_WRITE = "store:member:write";
-    public static final String STORE_MEMBER_DELETE = "store:member:delete";
-    public static final String STORE_MEMBER_MANAGE = "store:member:manage";
+    public static final String STORE_MEMBER_ADD = "store_member_add";
+    public static final String STORE_MEMBER_READ = "store_member_read";
+    public static final String STORE_MEMBER_WRITE = "store_member_write";
+    public static final String STORE_MEMBER_DELETE = "store_member_delete";
+    public static final String STORE_MEMBER_MANAGE = "store_member_manage";
 }
