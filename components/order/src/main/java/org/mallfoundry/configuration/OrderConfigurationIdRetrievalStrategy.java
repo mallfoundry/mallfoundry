@@ -16,9 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.configuration;
 
-import org.mallfoundry.util.Configuration;
+import org.mallfoundry.order.Order;
 
-public interface OrderConfiguration extends Configuration {
+public class OrderConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
+
+    @Override
+    public ConfigurationId getConfigurationId(Object entity) {
+        if (entity instanceof Order) {
+            return this.getConfigurationId((Order) entity);
+        }
+        return null;
+    }
+
+    private ConfigurationId getConfigurationId(Order order) {
+        return new ImmutableConfigurationId(order.getTenantId(), ConfigurationScope.STORE, order.getStoreId());
+    }
 }

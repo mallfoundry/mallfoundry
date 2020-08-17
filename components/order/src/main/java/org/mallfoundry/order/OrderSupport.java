@@ -59,6 +59,11 @@ import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 public abstract class OrderSupport implements MutableOrder {
 
     @Override
+    public OrderId toId() {
+        return new ImmutableOrderId(this.getTenantId(), this.getStoreId(), this.getId());
+    }
+
+    @Override
     public boolean isPlacingExpired() {
         return Objects.nonNull(this.getPlacedTime())
                 && System.currentTimeMillis() >= (this.getPlacedTime().getTime() + this.getPlacingExpires());

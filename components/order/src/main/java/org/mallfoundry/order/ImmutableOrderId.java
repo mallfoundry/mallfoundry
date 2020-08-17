@@ -18,7 +18,19 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.util.Configuration;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface OrderConfiguration extends Configuration {
+@Getter
+@Setter
+public class ImmutableOrderId implements OrderId {
+    private final String tenantId;
+    private final String storeId;
+    private final String id;
+
+    public ImmutableOrderId(String tenantId, String storeId, String id) {
+        this.tenantId = tenantId;
+        this.storeId = storeId;
+        this.id = id;
+    }
 }

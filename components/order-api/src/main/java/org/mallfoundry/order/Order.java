@@ -22,6 +22,7 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
@@ -37,7 +38,9 @@ import java.util.function.Function;
  *
  * @author Zhi Tang
  */
-public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
+public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Builder> {
+
+    OrderId toId();
 
     String getId();
 
@@ -55,10 +58,6 @@ public interface Order extends ObjectBuilder.ToBuilder<Order.Builder> {
     String getCustomerId();
 
     void setCustomerId(String customerId);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
 
     String getStoreName();
 

@@ -86,7 +86,7 @@ public class DefaultCheckoutService implements CheckoutService {
             var product = this.productService.getProduct(item.getProductId());
             var variant = product.getVariant(item.getVariantId());
             var order = this.findOrderByStoreId(orders, product.getStoreId())
-                    .orElseGet(() -> this.orderService.createOrder((String) null).toBuilder()
+                    .orElseGet(() -> this.orderService.createOrder(null).toBuilder()
                             .shippingAddress(checkout.getShippingAddress()).build());
             var store = this.storeService.getStore(product.getStoreId());
             order.setStoreId(store.getId());
@@ -117,7 +117,7 @@ public class DefaultCheckoutService implements CheckoutService {
     }
 
     private Address getDefaultCustomerAddress() {
-        var customerAddress = this.customerService.getDefaultCustomerAddress(SubjectHolder.getSubject().getId()).orElseThrow();
+        var customerAddress = this.customerService.getDefaultCustomerAddress(SubjectHolder.getSubject().getId());
         var address = new DefaultAddress();
         BeanUtils.copyProperties(customerAddress, address);
         return address;

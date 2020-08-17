@@ -18,7 +18,7 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.util.Configuration;
+import org.mallfoundry.store.StoreOwnership;
 
-public interface OrderConfiguration extends Configuration {
+public interface OrderId extends StoreOwnership {
 }

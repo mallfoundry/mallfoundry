@@ -27,8 +27,8 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.util.Objects;
 
-@EnableConfigurationProperties(OrderProperties.class)
 @Configuration
+@EnableConfigurationProperties(OrderProperties.class)
 public class OrderTaskAutoConfiguration implements SchedulingConfigurer {
 
     private final OrderProperties properties;

@@ -20,13 +20,18 @@ package org.mallfoundry.order;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.configuration.Configuration;
+import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;
 import org.mallfoundry.discuss.DefaultAuthor;
+import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.security.Subject;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
@@ -34,7 +39,9 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -45,8 +52,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class DefaultOrderService implements OrderService, OrderProcessorInvoker, ApplicationEventPublisherAware {
-
-    private final OrderConfiguration orderConfiguration;
 
     private List<OrderProcessor> processors;
 
@@ -60,12 +65,10 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     private final OrderRepository orderRepository;
 
-    public DefaultOrderService(OrderConfiguration orderConfiguration,
-                               OrderRepository orderRepository,
+    public DefaultOrderService(OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
                                CarrierService carrierService,
                                PaymentService paymentService) {
-        this.orderConfiguration = orderConfiguration;
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
@@ -112,11 +115,16 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public List<Order> placeOrders(List<Order> orders) {
         orders = this.orderSplitter.splitting(orders);
         orders = this.invokePreProcessBeforePlaceOrders(orders);
+//        Map<String, Configuration> configurations = new HashMap<>();
+        var customerId = SubjectHolder.getSubject().getId();
         for (var order : orders) {
+            var config = ConfigurationHolder.getConfiguration(order);
+            order.setTenantId(config.getTenantId());
+            order.setCustomerId(customerId);
             // 设置订单对象的扣减库存方式。
             // 当订单对象下单后或支付后，对订单所持有的库存判断其如何扣减或者归还。
-            order.setInventoryDeduction(this.orderConfiguration.getInventoryDeduction());
-            order.place(this.orderConfiguration.getPlacingExpires());
+            order.setInventoryDeduction(config.getEnum(ConfigurationKeys.ORDER_INVENTORY_DEDUCTION_KEY, InventoryDeduction.PLACED));
+            order.place(config.getInt(ConfigurationKeys.ORDER_PLACING_EXPIRES_KEY));
         }
         orders = this.invokePreProcessAfterPlaceOrders(orders);
         orders = this.orderRepository.saveAll(orders);

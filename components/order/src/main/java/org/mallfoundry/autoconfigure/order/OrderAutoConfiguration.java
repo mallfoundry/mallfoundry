@@ -18,15 +18,13 @@
 
 package org.mallfoundry.autoconfigure.order;
 
+import org.mallfoundry.configuration.OrderConfigurationIdRetrievalStrategy;
 import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.DeductingInventoryConnector;
-import org.mallfoundry.order.DefaultOrderConfiguration;
 import org.mallfoundry.order.DefaultOrderService;
 import org.mallfoundry.order.OrderAuthorizeProcessor;
-import org.mallfoundry.order.OrderConfiguration;
 import org.mallfoundry.order.OrderIdentityProcessor;
 import org.mallfoundry.order.OrderProcessor;
-import org.mallfoundry.order.OrderProcessorInvoker;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
@@ -40,8 +38,6 @@ import org.mallfoundry.shipping.CarrierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -49,32 +45,24 @@ import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
-@EnableConfigurationProperties(OrderProperties.class)
 @Configuration
 @Import(OrderReviewedToProductReviewer.class)
 public class OrderAutoConfiguration {
 
-    @ConditionalOnMissingBean(OrderConfiguration.class)
     @Bean
-    public DefaultOrderConfiguration defaultOrderConfiguration(OrderProperties properties) {
-        var config = new DefaultOrderConfiguration();
-        config.setPlacingExpires(properties.getPlacingExpires());
-        config.setInventoryDeduction(properties.getInventoryDeduction());
-        return config;
+    public OrderConfigurationIdRetrievalStrategy orderConfigurationIdRetrievalStrategy() {
+        return new OrderConfigurationIdRetrievalStrategy();
     }
 
     @Bean
     @ConditionalOnMissingBean(OrderService.class)
     public DefaultOrderService defaultOrderService(@Autowired(required = false)
                                                    @Lazy List<OrderProcessor> processors,
-                                                   OrderConfiguration orderConfiguration,
-                                                   OrderProcessorInvoker processorsInvoker,
                                                    OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
-                                                   PaymentService paymentService,
-                                                   ApplicationEventPublisher eventPublisher) {
-        var service = new DefaultOrderService(orderConfiguration, orderRepository, orderSplitter, carrierService, paymentService);
+                                                   PaymentService paymentService) {
+        var service = new DefaultOrderService(orderRepository, orderSplitter, carrierService, paymentService);
         service.setProcessors(processors);
         return service;
     }

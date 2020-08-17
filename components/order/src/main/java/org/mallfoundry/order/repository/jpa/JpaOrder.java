@@ -75,6 +75,10 @@ public class JpaOrder extends OrderSupport {
     private OrderStatus status = INCOMPLETE;
 
     @NotBlank
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @NotBlank
     @Column(name = "store_id_")
     private String storeId;
 

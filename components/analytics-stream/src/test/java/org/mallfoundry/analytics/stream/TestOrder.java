@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderException;
+import org.mallfoundry.order.OrderId;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaymentResult;
 import org.mallfoundry.order.OrderRefund;
@@ -85,6 +86,11 @@ public class TestOrder implements Order {
     @Override
     public boolean isPlacingExpired() {
         return false;
+    }
+
+    @Override
+    public OrderId toId() {
+        return null;
     }
 
     @Override
@@ -330,6 +336,11 @@ public class TestOrder implements Order {
 
     @Override
     public Builder toBuilder() {
+        return null;
+    }
+
+    @Override
+    public String getTenantId() {
         return null;
     }
 }
