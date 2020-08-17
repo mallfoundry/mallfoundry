@@ -21,5 +21,9 @@ package org.mallfoundry.store;
 import org.mallfoundry.identity.TenantOwnership;
 
 public interface StoreOwnership extends TenantOwnership {
+
     String getStoreId();
+
+    default void setStoreId(String storeId) {
+    }
 }

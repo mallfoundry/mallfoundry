@@ -24,4 +24,8 @@ public interface TenantOwnership extends Serializable {
     String DEFAULT_TENANT_ID = "0";
 
     String getTenantId();
+
+    default void setTenantId(String tenantId) {
+
+    }
 }
