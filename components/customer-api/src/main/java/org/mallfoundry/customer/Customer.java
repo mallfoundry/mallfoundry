@@ -19,13 +19,14 @@
 package org.mallfoundry.customer;
 
 import org.mallfoundry.identity.Gender;
+import org.mallfoundry.identity.TenantOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public interface Customer {
+public interface Customer extends TenantOwnership {
 
     String getId();
 
@@ -70,8 +71,6 @@ public interface Customer {
 
     interface Builder extends ObjectBuilder<Customer> {
 
-        Builder username(String username);
-
         Builder avatar(String avatar);
 
         Builder nickname(String nickname);
@@ -82,16 +81,11 @@ public interface Customer {
     }
 
     class BuilderSupport implements Builder {
+
         private final Customer customer;
 
         public BuilderSupport(Customer customer) {
             this.customer = customer;
-        }
-
-        @Override
-        public Builder username(String username) {
-            this.customer.setUsername(username);
-            return this;
         }
 
         @Override
