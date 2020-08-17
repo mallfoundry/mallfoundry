@@ -18,16 +18,22 @@
 
 package org.mallfoundry.customer;
 
+import org.mallfoundry.identity.User;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
 
-    Customer createCustomer(String customerId);
+    CustomerId createCustomerId(String tenantId, String customerId);
+
+    Customer createCustomer(User user);
+
+    Customer createCustomer(CustomerId customerId);
 
     Customer addCustomer(Customer customer);
 
-    Optional<Customer> getCustomer(String customerId);
+    Optional<Customer> findCustomer(String customerId);
 
     Customer updateCustomer(Customer customer);
 
@@ -37,9 +43,11 @@ public interface CustomerService {
 
     List<CustomerAddress> getCustomerAddresses(String customerId);
 
-    Optional<CustomerAddress> getCustomerAddress(String customerId, String addressId);
+    Optional<CustomerAddress> findCustomerAddress(String customerId, String addressId);
 
-    Optional<CustomerAddress> getDefaultCustomerAddress(String customerId);
+    CustomerAddress getDefaultCustomerAddress(String customerId);
+
+    Optional<CustomerAddress> findDefaultCustomerAddress(String customerId);
 
     void updateCustomerAddress(String customerId, CustomerAddress address);
 
