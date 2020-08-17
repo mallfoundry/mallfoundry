@@ -22,22 +22,21 @@ import java.util.Set;
 
 public abstract class ConfigurationKeys {
 
-    private static final String TENANT_KEY_PREFIX = "tenant.";
+    // Order key prefix
+    private static final String ORDER_KEY_PREFIX = "order.";
 
-    //
-    private static final String TENANT_STORES_KEY_PREFIX = TENANT_KEY_PREFIX + "stores.";
-
-    public static final String TENANT_STORES_DEFAULT_EDITION_KEY = TENANT_STORES_KEY_PREFIX + "default-edition";
-
+    // Order Property Keys
+    public static final String ORDER_PLACING_EXPIRES_KEY = ORDER_KEY_PREFIX + "placing-expires";
+    public static final String ORDER_AUTO_APPROVAL_REFUND_KEY = ORDER_KEY_PREFIX + "auto-approval-refund";
+    public static final String ORDER_AUTO_APPROVAL_REVIEW_KEY = ORDER_KEY_PREFIX + "auto-approval-review";
+    public static final String ORDER_INVENTORY_DEDUCTION_KEY = ORDER_KEY_PREFIX + "inventory-deduction";
 
     // Store key prefix
     private static final String STORE_KEY_PREFIX = "store.";
 
+    // Store Property Keys
     public static final String STORE_DEFAULT_LOGO = STORE_KEY_PREFIX + "default-logo";
-
     public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + "member.auto-join-conditional";
-
-    // Store Property keys
     public static final String STORE_PRODUCTS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "products.max-size";
     public static final String STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "product-collections.max-size";
     public static final String STORE_STAFFS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "staffs.max-size";

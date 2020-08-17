@@ -49,6 +49,11 @@ public class DefaultConfigurationTests {
     public void testSetDefaultTenantConfiguration() {
         var tenantConfId = this.manager.createConfigurationId(ConfigurationScope.TENANT, Configuration.DEFAULT_TENANT_ID);
         var tenantConf = this.manager.getConfiguration(tenantConfId);
+        tenantConf.setInt(ConfigurationKeys.ORDER_PLACING_EXPIRES_KEY, 60 * 60 * 1000);
+        tenantConf.setString(ConfigurationKeys.ORDER_INVENTORY_DEDUCTION_KEY, "PLACED");
+        tenantConf.setBoolean(ConfigurationKeys.ORDER_AUTO_APPROVAL_REFUND_KEY, true);
+        tenantConf.setBoolean(ConfigurationKeys.ORDER_AUTO_APPROVAL_REVIEW_KEY, true);
+
         tenantConf.setProperty(ConfigurationKeys.STORE_DEFAULT_LOGO, "http://static.mallfoundry.org/store/logos/default.png");
         this.manager.saveConfiguration(tenantConf);
     }

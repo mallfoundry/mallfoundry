@@ -43,15 +43,33 @@ public interface Configuration extends TenantOwnership, Serializable {
 
     Map<String, String> toMap();
 
-    void setProperty(String key, Object value);
-
-    void removeProperty(String key);
-
     String getProperty(String key);
 
     String getProperty(String key, String defaultValue);
 
+    void setProperty(String key, Object value);
+
+    void removeProperty(String key);
+
     String getString(String key);
 
     String getString(String key, String defaultValue);
+
+    void setString(String key, String value);
+
+    boolean getBoolean(String key);
+
+    boolean getBoolean(String key, boolean defaultValue);
+
+    void setBoolean(String key, boolean value);
+
+    int getInt(String key);
+
+    int getInt(String key, int defaultValue);
+
+    void setInt(String key, int value);
+
+    <T extends Enum<T>> T getEnum(String key, T defaultValue);
+
+    <T extends Enum<T>> void setEnum(String key, T value);
 }

@@ -68,4 +68,53 @@ public abstract class ConfigurationSupport implements Configuration {
     public String getString(String key, String defaultValue) {
         return Objects.toString(this.getProperty(key, defaultValue));
     }
+
+    @Override
+    public void setString(String key, String value) {
+        this.setProperty(key, value);
+    }
+
+    @Override
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return Objects.requireNonNullElse(this.getBoolean(key), defaultValue);
+    }
+
+    @Override
+    public boolean getBoolean(String key) {
+        return Boolean.parseBoolean(this.getString(key));
+    }
+
+    @Override
+    public void setBoolean(String key, boolean value) {
+        this.setProperty(key, Boolean.toString(value));
+    }
+
+    @Override
+    public int getInt(String key, int defaultValue) {
+        return Objects.requireNonNullElse(this.getInt(key), defaultValue);
+    }
+
+    @Override
+    public int getInt(String key) {
+        return Integer.parseInt(this.getString(key));
+    }
+
+    @Override
+    public void setInt(String key, int value) {
+        this.setProperty(key, Integer.toString(value));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Enum<T>> T getEnum(String key, T defaultValue) {
+        var clazz = defaultValue.getClass();
+        var name = this.getString(key);
+        T enumValue = (T) Enum.valueOf(clazz, name);
+        return Objects.requireNonNullElse(enumValue, defaultValue);
+    }
+
+    @Override
+    public <T extends Enum<T>> void setEnum(String key, T value) {
+        this.setProperty(key, value.name());
+    }
 }
