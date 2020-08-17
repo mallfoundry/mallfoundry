@@ -21,23 +21,45 @@ package org.mallfoundry.security.access;
 public abstract class AllAuthorities extends StoreAuthorities {
 
     // Product collection Authorities
-    public static final String PRODUCT_COLLECTION_READ = "product_collection:read";
-    public static final String PRODUCT_COLLECTION_WRITE = "product_collection:write";
-    public static final String PRODUCT_COLLECTION_DELETE = "product_collection:delete";
-    public static final String PRODUCT_COLLECTION_MANAGE = "product_collection:manage";
+    public static final String PRODUCT_COLLECTION_ADD = "product_collection_add";
+    public static final String PRODUCT_COLLECTION_READ = "product_collection_read";
+    public static final String PRODUCT_COLLECTION_WRITE = "product_collection_write";
+    public static final String PRODUCT_COLLECTION_DELETE = "product_collection_delete";
+    public static final String PRODUCT_COLLECTION_MANAGE = "product_collection_manage";
 
     // Product Authorities
-    public static final String PRODUCT_READ = "product:read";
-    public static final String PRODUCT_WRITE = "product:write";
-    public static final String PRODUCT_DELETE = "product:delete";
-    public static final String PRODUCT_MANAGE = "product:manage";
+    public static final String PRODUCT_ADD = "product_add";
+    public static final String PRODUCT_READ = "product_read";
+    public static final String PRODUCT_WRITE = "product_write";
+    public static final String PRODUCT_DELETE = "product_delete";
+    public static final String PRODUCT_MANAGE = "product_manage";
 
     // Order Authorities
-    public static final String ORDER_READ = "order:read";
-    public static final String ORDER_WRITE = "order:write";
-    public static final String ORDER_DELETE = "order:delete";
-    public static final String ORDER_MANAGE = "order:manage";
+    public static final String ORDER_READ = "order_read";
+    public static final String ORDER_WRITE = "order_write";
+    public static final String ORDER_DELETE = "order_delete";
+    public static final String ORDER_FULFIL = "order_fulfil";
+    public static final String ORDER_SIGN = "order_sign";
+    public static final String ORDER_RECEIPT = "order_receipt";
+    public static final String ORDER_CANCEL = "order_cancel";
+    public static final String ORDER_MANAGE = "order_manage";
+
+    public static final String ORDER_SHIPMENT_ADD = "order_shipment_add";
+    public static final String ORDER_SHIPMENT_READ = "order_shipment_read";
+    public static final String ORDER_SHIPMENT_WRITE = "order_shipment_write";
+    public static final String ORDER_SHIPMENT_REMOVE = "order_shipment_remove";
+    public static final String ORDER_SHIPMENT_MANAGE = "order_shipment_manage";
+
+    public static final String ORDER_REFUND_READ = "order_refund_read";
+    public static final String ORDER_REFUND_APPLY = "order_refund_apply";
+    public static final String ORDER_REFUND_CANCEL = "order_refund_cancel";
+    public static final String ORDER_REFUND_APPROVE = "order_refund_approve";
+    public static final String ORDER_REFUND_DISAPPROVE = "order_refund_disapprove";
+    public static final String ORDER_REFUND_ACTIVE = "order_refund_active";
+    public static final String ORDER_REFUND_MANAGE = "order_refund_manage";
+
+    public static final String ORDER_REVIEW_ADD = "order_review_add";
 
     // Customer Authorities
-    public static final String CUSTOMER_MANAGE = "customer:manage";
+    public static final String CUSTOMER_MANAGE = "customer_manage";
 }
