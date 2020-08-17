@@ -56,8 +56,8 @@ public class DelegatingJpaPrincipalRepository implements PrincipalRepository {
     }
 
     @Override
-    public Optional<Principal> findByTypeAndName(String type, String name) {
-        return CastUtils.cast(this.principalRepository.findByTypeAndName(type, name));
+    public Optional<Principal> findByPrincipal(Principal principal) {
+        return CastUtils.cast(this.principalRepository.findByTypeAndName(principal.getType(), principal.getName()));
     }
 
     @Override

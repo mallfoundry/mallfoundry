@@ -31,9 +31,17 @@ import java.util.Set;
  */
 public interface AccessControl extends Serializable {
 
+    String getId();
+
+    void setId(String id);
+
     Resource getResource();
 
+    void setResource(Resource resource);
+
     Principal getOwner();
+
+    void setOwner(Principal owner);
 
     AccessControl getParent();
 
@@ -52,6 +60,8 @@ public interface AccessControl extends Serializable {
     void revoke(String permission, Principal principal);
 
     void revoke(Set<String> permissions, Principal principal);
+
+    /*void revokeAll(Principal principal);*/
 
     boolean granted(String permission, Principal principal);
 

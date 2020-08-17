@@ -16,11 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.access;
+package org.mallfoundry.security;
 
-public interface MutablePrincipal extends Principal {
-
-    void setName(String name);
-
-    void setType(String type);
+public class EmptyAccessControl {
 }

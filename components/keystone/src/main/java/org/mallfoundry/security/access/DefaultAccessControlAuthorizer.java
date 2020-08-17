@@ -21,7 +21,6 @@ package org.mallfoundry.security.access;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -53,11 +52,9 @@ public class DefaultAccessControlAuthorizer implements AccessControlAuthorizer {
 
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<String> permissions) {
-        resource = this.manager.getResource(resource);
         if (Objects.isNull(resource)) {
             return false;
         }
-        principals = new HashSet<>(this.manager.getPrincipals(principals));
         if (CollectionUtils.isEmpty(principals)) {
             return false;
         }

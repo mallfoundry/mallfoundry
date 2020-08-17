@@ -39,6 +39,10 @@ public interface Principal extends Serializable {
      */
     String AUTHORITY_TYPE = "Authority";
 
+    String getId();
+
+    void setId(String id);
+
     String getName();
 
     String getType();

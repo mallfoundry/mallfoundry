@@ -24,12 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class DefaultAccessControlManager implements AccessControlManager {
@@ -61,41 +59,23 @@ public class DefaultAccessControlManager implements AccessControlManager {
         return this.principalRepository.create(null).toBuilder().type(type).name(name).build();
     }
 
-    @Override
-    public Principal addPrincipal(Principal principal) {
-        return this.principalRepository.findByTypeAndName(principal.getType(), principal.getName())
-                .orElseGet(() -> this.principalRepository.save(principal.toBuilder().id(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME)).build()));
+    private Principal createNewPrincipal(Principal principal) {
+        return this.principalRepository.save(
+                principal.toBuilder().id(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME)).build());
     }
 
-    @Override
-    public List<Principal> addPrincipals(List<Principal> principals) {
-        principals = principals.stream()
-                .map(principal -> principal.toBuilder().id(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME)).build())
-                .collect(Collectors.toUnmodifiableList());
-        return this.principalRepository.saveAll(principals);
+    public Principal requiredPrincipal(Principal principal) {
+        return this.principalRepository.findByPrincipal(principal)
+                .orElseGet(() -> this.createNewPrincipal(principal));
     }
 
-    @Override
-    public Optional<Principal> findPrincipal(Principal principal) {
-        return this.principalRepository.findByTypeAndName(principal.getType(), principal.getName());
-    }
-
-    @Override
-    public Principal getPrincipal(Principal principal) {
-        return this.findPrincipal(principal)
-                .orElseThrow(() -> new AccessException(AccessMessages.Principal.notFound(principal.getType(), principal.getName())));
-    }
-
-    @Override
-    public List<Principal> getPrincipals(Collection<Principal> principals) {
-        return this.principalRepository.findAllByPrincipals(principals);
-    }
-
+    @Transactional
     @Override
     public void removePrincipal(Principal principal) {
         this.principalRepository.delete(principal);
     }
 
+    @Transactional
     @Override
     public void removePrincipals(List<Principal> principals) {
         this.principalRepository.deleteAll(principals);
@@ -113,31 +93,27 @@ public class DefaultAccessControlManager implements AccessControlManager {
         return this.resourceRepository.create(null, type, String.valueOf(identifier));
     }
 
-    private Resource addNewResource(Resource resource) {
-        if (Objects.isNull(resource.getId())) {
-            resource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
-        }
-        return this.resourceRepository.save(resource);
+    private Optional<Resource> findResource(Resource resource) {
+        return this.resourceRepository.findByResource(resource);
     }
 
-    @Transactional
-    @Override
-    public Resource addResource(Resource resource) {
-        return this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier())
-                .orElseGet(() -> this.addNewResource(resource));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Resource getResource(Resource resource) {
+    private Resource getResource(Resource resource) {
         return this.findResource(resource)
                 .orElseThrow(() -> new AccessException(AccessMessages.Resource.notFound(resource.getType(), resource.getIdentifier())));
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Resource> findResource(Resource resource) {
-        return this.resourceRepository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier());
+    private Resource createNewResource(Resource resource) {
+        resource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
+        return this.resourceRepository.save(resource);
+    }
+
+    private Resource requiredResource(Resource resource) {
+        if (Objects.isNull(resource.getId())) {
+            final var newResource = resource;
+            resource = this.resourceRepository.findByResource(resource)
+                    .orElseGet(() -> createNewResource(newResource));
+        }
+        return resource;
     }
 
     @Transactional
@@ -151,40 +127,39 @@ public class DefaultAccessControlManager implements AccessControlManager {
     }
 
     @Override
-    public AccessControl createAccessControl(Principal owner, Resource resource) {
-        var acl = (MutableAccessControl) this.accessControlRepository.create(null);
-        acl.setOwner(owner);
-        acl.setResource(resource);
-        return acl;
+    public AccessControl createAccessControl(Resource resource) {
+        return this.accessControlRepository.create(null, resource);
     }
 
     @Override
-    public AccessControl createAccessControl(Resource resource) {
-        return this.createAccessControl(null, resource);
+    public AccessControl createAccessControl(Principal owner, Resource resource) {
+        return this.accessControlRepository.create(owner, resource);
     }
 
+    @Transactional
     @Override
     public AccessControl addAccessControl(AccessControl accessControl) {
-        Assert.notNull(accessControl.getOwner(), "The owner must not be null");
-        Assert.isInstanceOf(MutableAccessControl.class, accessControl);
-        return this.addAccessControl((MutableAccessControl) accessControl);
-    }
-
-    public AccessControl addAccessControl(MutableAccessControl accessControl) {
+        accessControl.setResource(this.requiredResource(accessControl.getResource()));
+        accessControl.setOwner(this.requiredPrincipal(accessControl.getOwner()));
+        var existsAccessControl = this.findAccessControl(accessControl.getResource()).orElse(null);
+        if (Objects.nonNull(existsAccessControl)) {
+            return existsAccessControl;
+        }
         this.setIdentity(accessControl);
         return this.accessControlRepository.save(accessControl);
     }
 
-    @Override
-    public Optional<AccessControl> findAccessControl(Resource resource) {
+    private Optional<AccessControl> findAccessControl(Resource resource) {
         if (Objects.isNull(resource.getId())) {
             resource = this.getResource(resource);
         }
         return this.accessControlRepository.findByResource(resource);
     }
 
-    @Override
-    public Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals) {
+    private Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals) {
+        if (Objects.isNull(resource.getId())) {
+            resource = this.getResource(resource);
+        }
         return this.accessControlRepository.findByResourceAndPrincipals(resource, principals);
     }
 
@@ -218,25 +193,20 @@ public class DefaultAccessControlManager implements AccessControlManager {
 
     private void updateAccessControl(AccessControl accessControl) {
         Assert.notNull(accessControl.getOwner(), "The owner must not be null");
-        Assert.isInstanceOf(MutableAccessControl.class, accessControl);
-        this.updateAccessControl((MutableAccessControl) accessControl);
-    }
-
-    private void updateAccessControl(MutableAccessControl accessControl) {
         this.setIdentity(accessControl);
         this.accessControlRepository.save(accessControl);
     }
 
-    private void setIdentity(MutableAccessControl accessControl) {
+    private void setIdentity(AccessControl accessControl) {
         if (Objects.isNull(accessControl.getId())) {
             accessControl.setId(PrimaryKeyHolder.next(AC_ID_VALUE_NAME));
         }
-        var resource = (MutableResource) accessControl.getResource();
+        var resource = accessControl.getResource();
         if (Objects.isNull(resource.getId())) {
             resource.setId(PrimaryKeyHolder.next(RESOURCE_ID_VALUE_NAME));
             accessControl.setResource(resource);
         }
-        var owner = (MutablePrincipal) accessControl.getOwner();
+        var owner = accessControl.getOwner();
         if (Objects.isNull(owner.getId())) {
             owner.setId(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME));
         }
@@ -250,5 +220,13 @@ public class DefaultAccessControlManager implements AccessControlManager {
                 })
                 .filter(entry -> Objects.isNull(entry.getId()))
                 .forEach(entry -> entry.setId(PrimaryKeyHolder.next(ENTRY_ID_VALUE_NAME)));
+    }
+
+    @Transactional
+    @Override
+    public void deleteAccessControl(AccessControl accessControl) {
+        this.findResource(accessControl.getResource())
+                .flatMap(this.accessControlRepository::findByResource)
+                .ifPresent(this.accessControlRepository::delete);
     }
 }

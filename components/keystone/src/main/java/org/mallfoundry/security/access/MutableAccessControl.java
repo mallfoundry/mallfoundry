@@ -19,12 +19,4 @@
 package org.mallfoundry.security.access;
 
 public interface MutableAccessControl extends AccessControl {
-
-    String getId();
-
-    void setId(String id);
-
-    void setOwner(Principal owner);
-
-    void setResource(Resource resource);
 }

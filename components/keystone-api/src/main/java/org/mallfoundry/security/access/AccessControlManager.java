@@ -19,24 +19,12 @@
 package org.mallfoundry.security.access;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface AccessControlManager {
 
     Principal createPrincipal(String type, String name);
-
-    Principal addPrincipal(Principal principal);
-
-    List<Principal> addPrincipals(List<Principal> principals);
-
-    Optional<Principal> findPrincipal(Principal principal);
-
-    Principal getPrincipal(Principal principal);
-
-    List<Principal> getPrincipals(Collection<Principal> principals);
 
     void removePrincipal(Principal principal);
 
@@ -46,23 +34,13 @@ public interface AccessControlManager {
 
     Resource createResource(String type, Serializable identifier);
 
-    Resource addResource(Resource resource);
-
-    Resource getResource(Resource resource);
-
-    Optional<Resource> findResource(Resource resource);
-
     void removeResource(Resource resource);
-
-    AccessControl createAccessControl(Principal owner, Resource resource);
 
     AccessControl createAccessControl(Resource resource);
 
+    AccessControl createAccessControl(Principal owner, Resource resource);
+
     AccessControl addAccessControl(AccessControl accessControl);
-
-    Optional<AccessControl> findAccessControl(Resource resource);
-
-    Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals);
 
     AccessControl getAccessControl(Resource resource);
 
@@ -71,4 +49,6 @@ public interface AccessControlManager {
     void grantAccessControl(AccessControl accessControl);
 
     void revokeAccessControl(AccessControl accessControl);
+
+    void deleteAccessControl(AccessControl accessControl);
 }

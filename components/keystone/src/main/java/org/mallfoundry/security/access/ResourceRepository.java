@@ -30,7 +30,7 @@ public interface ResourceRepository {
 
     Resource save(Resource resource);
 
-    Optional<Resource> findByTypeAndIdentifier(String type, String identifier);
+    Optional<Resource> findByResource(Resource resource);
 
     void delete(Resource resource);
 }

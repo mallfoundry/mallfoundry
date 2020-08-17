@@ -23,6 +23,10 @@ import java.util.Set;
 
 public interface AccessControlEntry extends Serializable {
 
+    String getId();
+
+    void setId(String id);
+
     Principal getPrincipal();
 
     Set<String> getPermissions();

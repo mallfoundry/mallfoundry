@@ -55,8 +55,8 @@ public class DelegatingJpaResourceRepository implements ResourceRepository {
     }
 
     @Override
-    public Optional<Resource> findByTypeAndIdentifier(String type, String identifier) {
-        return CastUtils.cast(this.repository.findByTypeAndIdentifier(type, identifier));
+    public Optional<Resource> findByResource(Resource resource) {
+        return CastUtils.cast(this.repository.findByTypeAndIdentifier(resource.getType(), resource.getIdentifier()));
     }
 
     @Override

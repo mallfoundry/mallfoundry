@@ -23,7 +23,7 @@ import java.util.Set;
 
 public interface AccessControlRepository {
 
-    AccessControl create(String id);
+    AccessControl create(Principal owner, Resource resource);
 
     Optional<AccessControl> findByResource(Resource resource);
 

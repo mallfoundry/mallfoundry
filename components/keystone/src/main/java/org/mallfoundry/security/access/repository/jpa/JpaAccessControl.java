@@ -71,8 +71,9 @@ public class JpaAccessControl extends AccessControlSupport {
     @JoinColumn(name = "parent_id_")
     private AccessControl parent;
 
-    public JpaAccessControl(String id) {
-        this.id = id;
+    public JpaAccessControl(Principal owner, Resource resource) {
+        this.owner = owner;
+        this.resource = resource;
     }
 
     public static JpaAccessControl of(AccessControl acl) {

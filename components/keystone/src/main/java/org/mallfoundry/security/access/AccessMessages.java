@@ -18,6 +18,8 @@
 
 package org.mallfoundry.security.access;
 
+import java.util.List;
+
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class AccessMessages {
@@ -27,19 +29,19 @@ public abstract class AccessMessages {
 
     public abstract static class AccessControl {
         public static String notFound(String type, String name) {
-            return message(SECURITY_ACCESS_CONTROL_NOT_FOUND_MESSAGE_CODE_KEY, String.format("AccessControl %s %s not found", type, name));
+            return message(SECURITY_ACCESS_CONTROL_NOT_FOUND_MESSAGE_CODE_KEY, List.of(type, name), String.format("AccessControl %s %s not found", type, name));
         }
     }
 
     public abstract static class Principal {
         public static String notFound(String type, String name) {
-            return message(SECURITY_ACCESS_PRINCIPAL_NOT_FOUND_MESSAGE_CODE_KEY, String.format("Principal %s %s not found", type, name));
+            return message(SECURITY_ACCESS_PRINCIPAL_NOT_FOUND_MESSAGE_CODE_KEY, List.of(type, name), String.format("Principal %s %s not found", type, name));
         }
     }
 
     public abstract static class Resource {
         public static String notFound(String type, String name) {
-            return message(SECURITY_ACCESS_RESOURCE_NOT_FOUND_MESSAGE_CODE_KEY, String.format("Resource %s %s not found", type, name));
+            return message(SECURITY_ACCESS_RESOURCE_NOT_FOUND_MESSAGE_CODE_KEY, List.of(type, name), String.format("Resource %s %s not found", type, name));
         }
     }
 }

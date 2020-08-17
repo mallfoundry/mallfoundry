@@ -38,8 +38,8 @@ public class DelegatingJpaAccessControlRepository implements AccessControlReposi
     }
 
     @Override
-    public AccessControl create(String id) {
-        return new JpaAccessControl(id);
+    public AccessControl create(Principal owner, Resource resource) {
+        return new JpaAccessControl(owner, resource);
     }
 
     @Override

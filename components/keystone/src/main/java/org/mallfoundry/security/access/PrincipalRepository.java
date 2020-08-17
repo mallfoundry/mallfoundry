@@ -30,7 +30,7 @@ public interface PrincipalRepository {
 
     List<Principal> saveAll(List<Principal> principals);
 
-    Optional<Principal> findByTypeAndName(String type, String name);
+    Optional<Principal> findByPrincipal(Principal principal);
 
     List<Principal> findAllByPrincipals(Collection<Principal> principals);
 
