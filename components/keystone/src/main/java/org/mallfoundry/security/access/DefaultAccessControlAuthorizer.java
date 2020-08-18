@@ -52,17 +52,9 @@ public class DefaultAccessControlAuthorizer implements AccessControlAuthorizer {
 
     @Override
     public boolean hasAnyPermissions(Set<Principal> principals, Resource resource, Set<String> permissions) {
-        if (Objects.isNull(resource)) {
-            return false;
-        }
-        if (CollectionUtils.isEmpty(principals)) {
-            return false;
-        }
-        var accessControl = this.manager.getAccessControl(resource, principals);
-        if (Objects.isNull(accessControl)) {
-            return false;
-        }
-        return accessControl.granted(permissions, principals);
+        return this.manager.findAccessControl(resource, principals)
+                .map(ac -> ac.granted(permissions, principals))
+                .orElse(false);
     }
 
     @Override

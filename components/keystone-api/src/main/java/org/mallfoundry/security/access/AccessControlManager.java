@@ -20,6 +20,7 @@ package org.mallfoundry.security.access;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface AccessControlManager {
@@ -42,9 +43,9 @@ public interface AccessControlManager {
 
     AccessControl addAccessControl(AccessControl accessControl);
 
-    AccessControl getAccessControl(Resource resource);
+    Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals);
 
-    AccessControl getAccessControl(Resource resource, Set<Principal> principals);
+    AccessControl getAccessControl(Resource resource);
 
     void grantAccessControl(AccessControl accessControl);
 
