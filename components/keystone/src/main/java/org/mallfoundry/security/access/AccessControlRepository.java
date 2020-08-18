@@ -18,8 +18,8 @@
 
 package org.mallfoundry.security.access;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 public interface AccessControlRepository {
 
@@ -27,7 +27,7 @@ public interface AccessControlRepository {
 
     Optional<AccessControl> findByResource(Resource resource);
 
-    Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals);
+    Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Collection<Principal> principals);
 
     AccessControl save(AccessControl control);
 
