@@ -19,6 +19,7 @@
 package org.mallfoundry.security;
 
 import lombok.Getter;
+import org.mallfoundry.security.access.AllAuthorities;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +32,7 @@ public class SystemUserAuthentication extends UsernamePasswordAuthenticationToke
     private static final String PASSWORD = "N/A";
 
     private static final Collection<GrantedAuthority> AUTHORITIES =
-            AuthorityUtils.createAuthorityList("ADMIN", "SYSTEM_ADMIN");
+            AuthorityUtils.createAuthorityList(AllAuthorities.SUPER_ADMIN, AllAuthorities.ADMIN);
 
     @Getter
     private final Authentication suspended;
