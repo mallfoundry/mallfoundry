@@ -58,7 +58,7 @@ public class JpaUser extends UserSupport {
     private String avatar;
 
     @Column(name = "gender_")
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
 
     @Column(name = "nickname_")
     private String nickname;
