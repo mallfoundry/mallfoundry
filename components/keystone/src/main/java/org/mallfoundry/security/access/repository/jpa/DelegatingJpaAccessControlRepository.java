@@ -25,8 +25,8 @@ import org.mallfoundry.security.access.Resource;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public class DelegatingJpaAccessControlRepository implements AccessControlRepository {
@@ -48,7 +48,7 @@ public class DelegatingJpaAccessControlRepository implements AccessControlReposi
     }
 
     @Override
-    public Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Set<Principal> principals) {
+    public Optional<AccessControl> findByResourceAndPrincipals(Resource resource, Collection<Principal> principals) {
         return CastUtils.cast(this.repository.findByResourceAndPrincipals(JpaResource.of(resource), principals));
     }
 
