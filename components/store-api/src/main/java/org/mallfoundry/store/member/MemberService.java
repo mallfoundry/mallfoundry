@@ -33,13 +33,13 @@ public interface MemberService {
 
     Member createMember(MemberId memberId);
 
-    Member addMember(Member member);
+    Member joinMember(Member member);
 
-    Optional<Member> getMember(String id);
+    Optional<Member> getMember(MemberId id);
 
     SliceList<Member> getMembers(MemberQuery query);
 
     Member updateMember(Member member);
 
-    void deleteMember(String id);
+    void deleteMember(MemberId id);
 }
