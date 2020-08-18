@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public interface Customer extends TenantOwnership {
+public interface Customer extends TenantOwnership, ObjectBuilder.ToBuilder<Customer.Builder> {
 
     String getId();
 
@@ -64,11 +64,6 @@ public interface Customer extends TenantOwnership {
 
     void removeAddress(CustomerAddress address);
 
-    default Builder toBuilder() {
-        return new BuilderSupport(this) {
-        };
-    }
-
     interface Builder extends ObjectBuilder<Customer> {
 
         Builder avatar(String avatar);
@@ -79,43 +74,4 @@ public interface Customer extends TenantOwnership {
 
         Builder birthdate(Date birthdate);
     }
-
-    class BuilderSupport implements Builder {
-
-        private final Customer customer;
-
-        public BuilderSupport(Customer customer) {
-            this.customer = customer;
-        }
-
-        @Override
-        public Builder avatar(String avatar) {
-            this.customer.setAvatar(avatar);
-            return this;
-        }
-
-        @Override
-        public Builder nickname(String nickname) {
-            this.customer.setNickname(nickname);
-            return this;
-        }
-
-        @Override
-        public Builder gender(Gender gender) {
-            this.customer.setGender(gender);
-            return this;
-        }
-
-        @Override
-        public Builder birthdate(Date birthdate) {
-            this.customer.setBirthdate(birthdate);
-            return this;
-        }
-
-        @Override
-        public Customer build() {
-            return this.customer;
-        }
-    }
-
 }

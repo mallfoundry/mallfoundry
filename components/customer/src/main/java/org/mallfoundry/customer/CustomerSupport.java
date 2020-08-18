@@ -19,7 +19,9 @@
 package org.mallfoundry.customer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.identity.Gender;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -128,5 +130,49 @@ public abstract class CustomerSupport implements MutableCustomer {
     @Override
     public void removeAddress(CustomerAddress address) {
         this.getAddresses().remove(address);
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final CustomerSupport customer;
+
+        public BuilderSupport(CustomerSupport customer) {
+            this.customer = customer;
+        }
+
+        @Override
+        public Builder avatar(String avatar) {
+            this.customer.setAvatar(avatar);
+            return this;
+        }
+
+        @Override
+        public Builder nickname(String nickname) {
+            this.customer.setNickname(nickname);
+            return this;
+        }
+
+        @Override
+        public Builder gender(Gender gender) {
+            this.customer.setGender(gender);
+            return this;
+        }
+
+        @Override
+        public Builder birthdate(Date birthdate) {
+            this.customer.setBirthdate(birthdate);
+            return this;
+        }
+
+        @Override
+        public Customer build() {
+            return this.customer;
+        }
     }
 }
