@@ -23,13 +23,13 @@ import org.mallfoundry.security.access.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 public interface JpaAccessControlRepository extends JpaRepository<JpaAccessControl, String> {
 
     Optional<JpaAccessControl> findByResource(Resource resource);
 
     @Query("select ac from JpaAccessControl ac JOIN ac.entries ace where ac.resource = ?1 and ace.principal in (?2)")
-    Optional<JpaAccessControl> findByResourceAndPrincipals(JpaResource resource, Set<Principal> principals);
+    Optional<JpaAccessControl> findByResourceAndPrincipals(JpaResource resource, Collection<Principal> principals);
 }
