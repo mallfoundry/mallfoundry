@@ -44,18 +44,20 @@ public class MemberResourceV1 {
     }
 
     @PostMapping("stores/{store_id}/members")
-    public Member addMember(@PathVariable("store_id") String storeId,
-                            @RequestBody MemberRequest request) {
+    public Member joinMember(@PathVariable("store_id") String storeId,
+                             @RequestBody MemberRequest request) {
         return Function.<Member>identity()
-                .compose(this.memberService::addMember)
+                .compose(this.memberService::joinMember)
                 .compose(request::assignTo)
                 .compose(this.memberService::createMember)
                 .apply(this.memberService.createMemberId(storeId, request.getId()));
     }
 
     @GetMapping("stores/{store_id}/members/{member_id}")
-    public Optional<Member> getMember(@PathVariable("member_id") String memberId) {
-        return this.memberService.getMember(memberId);
+    public Optional<Member> getMember(@PathVariable("store_id") String storeId,
+                                      @PathVariable("member_id") String memberId) {
+        return this.memberService.getMember(
+                this.memberService.createMemberId(storeId, memberId));
     }
 
     @GetMapping("stores/{store_id}/members")
