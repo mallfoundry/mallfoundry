@@ -29,7 +29,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
-public interface JpaMemberRepository extends JpaRepository<JpaMember, String>, JpaSpecificationExecutor<JpaMember> {
+public interface JpaMemberRepository extends JpaRepository<JpaMember, JpaMemberId>, JpaSpecificationExecutor<JpaMember> {
 
     default Specification<JpaMember> createSpecification(MemberQuery memberQuery) {
         return (root, query, criteriaBuilder) -> {

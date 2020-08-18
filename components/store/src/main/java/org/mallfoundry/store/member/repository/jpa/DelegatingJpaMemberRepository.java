@@ -42,8 +42,8 @@ public class DelegatingJpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
+    public Optional<Member> findById(MemberId id) {
+        return CastUtils.cast(this.repository.findById(new JpaMemberId(id)));
     }
 
     @Override
