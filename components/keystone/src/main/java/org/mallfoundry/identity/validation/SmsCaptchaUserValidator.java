@@ -36,7 +36,7 @@ public class SmsCaptchaUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        if (registration.getMode() == UserRegistration.Mode.MOBILE) {
+        if (registration.getMode() == UserRegistration.Mode.PHONE) {
             var token = registration.getParameter("captcha_token");
             var code = registration.getParameter("captcha_code");
             var checked = this.captchaService.checkCaptcha(token, code);

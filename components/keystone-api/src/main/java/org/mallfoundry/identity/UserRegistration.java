@@ -51,7 +51,7 @@ public interface UserRegistration {
     User assignToUser(User user);
 
     enum Mode {
-        EMAIL, MOBILE;
+        EMAIL, PHONE;
 
         @JsonValue
         @Override

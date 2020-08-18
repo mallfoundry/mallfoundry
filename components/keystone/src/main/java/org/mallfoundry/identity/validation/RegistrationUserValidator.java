@@ -18,14 +18,16 @@
 
 package org.mallfoundry.identity.validation;
 
+import lombok.Getter;
 import org.mallfoundry.identity.UserRegistration;
 import org.mallfoundry.identity.UserRepository;
 import org.mallfoundry.identity.UserValidator;
 import org.mallfoundry.identity.UserValidatorException;
+import org.mallfoundry.validation.ValidationHolder;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
-import java.util.Objects;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
@@ -40,16 +42,33 @@ public class RegistrationUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        var phone = registration.getPhone();
-        if (Objects.nonNull(phone)) {
+        if (UserRegistration.Mode.PHONE.equals(registration.getMode())) {
+            this.validatePhone(registration);
             this.userRepository.findByCountryCodeAndPhone(registration.getCountryCode(), registration.getPhone())
                     .ifPresent(user -> {
                         throw new UserValidatorException(
-                                message("identity.user.validation.mobileRegistered",
-                                        List.of(phone),
-                                        "Phone has been registered"));
+                                message("identity.user.validation.phoneRegistered",
+                                        List.of(registration.getPhone()),
+                                        String.format("Phone %s has been registered", registration.getPhone())));
                     });
         }
-
     }
+
+    private void validatePhone(UserRegistration registration) {
+        ValidationHolder.validate(new ValidatePhone(registration.getCountryCode(), registration.getPhone()), "registration");
+    }
+
+    @Getter
+    private static class ValidatePhone {
+        @NotEmpty
+        private final String countryCode;
+        @NotEmpty
+        private final String phone;
+
+        private ValidatePhone(String countryCode, String phone) {
+            this.countryCode = countryCode;
+            this.phone = phone;
+        }
+    }
+
 }
