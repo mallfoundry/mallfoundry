@@ -84,6 +84,12 @@ public class OrderResourceV1 {
         this.orderService.cancelOrder(orderId, request.getCancelReason());
     }
 
+    @PostMapping("/orders/{order_id}/decline")
+    public void declineOrder(@PathVariable("order_id") String orderId,
+                             @RequestBody OrderRequest.DeclineRequest request) {
+        this.orderService.declineOrder(orderId, request.getDeclineReason());
+    }
+
     @PostMapping("/orders/{order_id}/sign")
     public void signOrder(@PathVariable("order_id") String orderId,
                           @RequestBody OrderRequest.SignRequest request) {

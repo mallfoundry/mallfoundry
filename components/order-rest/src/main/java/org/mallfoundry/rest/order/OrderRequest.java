@@ -86,6 +86,12 @@ public class OrderRequest {
 
     @Getter
     @Setter
+    public static class DeclineRequest {
+        private String declineReason;
+    }
+
+    @Getter
+    @Setter
     public static class SignRequest {
         private String signMessage;
     }
