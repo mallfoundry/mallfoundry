@@ -22,11 +22,20 @@ import org.mallfoundry.identity.Gender;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class MemberSupport implements MutableMember {
 
     @Override
+    public MemberId toId() {
+        return new ImmutableMemberId(this.getTenantId(), this.getStoreId(), this.getId());
+    }
+
+    @Override
     public void join() {
+        if (Objects.isNull(this.getBirthdate())) {
+            this.setBirthdate(new Date());
+        }
         this.setJoinedTime(new Date());
     }
 
