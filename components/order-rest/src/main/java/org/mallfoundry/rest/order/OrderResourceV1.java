@@ -140,11 +140,11 @@ public class OrderResourceV1 {
     }
 
     @GetMapping("/orders/count")
-    public long getOrderCount(@RequestParam(name = "customer_id", required = false) String customerId,
-                              @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                              @RequestParam(name = "refund_statuses", required = false) Set<String> refundStatuses,
-                              @RequestParam(name = "store_id", required = false) String storeId) {
-        return this.orderService.getOrderCount(this.orderService.createOrderQuery().toBuilder()
+    public long countOrders(@RequestParam(name = "customer_id", required = false) String customerId,
+                            @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                            @RequestParam(name = "refund_statuses", required = false) Set<String> refundStatuses,
+                            @RequestParam(name = "store_id", required = false) String storeId) {
+        return this.orderService.countOrders(this.orderService.createOrderQuery().toBuilder()
                 .customerId(customerId).storeId(storeId)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)

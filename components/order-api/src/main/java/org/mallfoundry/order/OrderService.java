@@ -67,7 +67,7 @@ public interface OrderService {
 
     SliceList<Order> getOrders(OrderQuery query);
 
-    long getOrderCount(OrderQuery query);
+    long countOrders(OrderQuery query);
 
     Order updateOrder(Order order);
 

@@ -156,7 +156,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
-    public long getOrderCount(OrderQuery query) {
+    public long countOrders(OrderQuery query) {
         return this.orderRepository.count(query);
     }
 
