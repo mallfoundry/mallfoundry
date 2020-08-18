@@ -27,6 +27,8 @@ import java.util.List;
 
 public interface Member extends StoreOwnership, ObjectBuilder.ToBuilder<Member.Builder> {
 
+    MemberId toId();
+
     String getId();
 
     void setId(String id);
