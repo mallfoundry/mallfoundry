@@ -20,9 +20,11 @@ package org.mallfoundry.order;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.core.Ordered;
 
 import java.util.List;
 
+@org.springframework.core.annotation.Order(Ordered.HIGHEST_PRECEDENCE)
 public class OrderIdentityProcessor implements OrderProcessor {
 
     private static final String ORDER_ID_VALUE_NAME = "order.id";

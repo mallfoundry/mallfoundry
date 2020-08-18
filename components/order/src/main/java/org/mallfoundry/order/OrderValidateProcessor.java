@@ -21,11 +21,13 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.validation.ValidationHolder;
+import org.springframework.core.Ordered;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
+@org.springframework.core.annotation.Order(Ordered.HIGHEST_PRECEDENCE + 200)
 public class OrderValidateProcessor implements OrderProcessor {
 
     private void validate(List<Order> orders) {

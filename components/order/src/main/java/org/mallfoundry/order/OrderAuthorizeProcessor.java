@@ -20,15 +20,18 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.security.access.Resource;
+import org.springframework.core.Ordered;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
+@org.springframework.core.annotation.Order(Ordered.HIGHEST_PRECEDENCE + 100)
 public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#query.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_READ + ","
-            + AllAuthorities.ORDER_MANAGE + "') or "
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "') or "
             + "hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_READ + ","
             + AllAuthorities.ORDER_MANAGE + ","
@@ -40,7 +43,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_READ + ","
-            + AllAuthorities.ORDER_MANAGE + "') or "
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_READ + ","
             + AllAuthorities.ORDER_MANAGE + ","
@@ -52,7 +56,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_WRITE + ","
-            + AllAuthorities.ORDER_MANAGE + "') or "
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_WRITE + ","
             + AllAuthorities.ORDER_MANAGE + ","
@@ -81,7 +86,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_RECEIPT + ","
-            + AllAuthorities.ORDER_MANAGE + "')")
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
     @Override
     public Order preProcessBeforeReceiptOrder(Order order) {
         return order;
@@ -89,7 +95,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_CANCEL + ","
-            + AllAuthorities.ORDER_MANAGE + "') or "
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_CANCEL + ","
             + AllAuthorities.ORDER_MANAGE + ","
@@ -172,7 +179,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_REFUND_APPLY + ","
             + AllAuthorities.ORDER_REFUND_MANAGE + ","
-            + AllAuthorities.ORDER_MANAGE + "')")
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
     @Override
     public OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
         return refund;
@@ -181,7 +189,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_REFUND_CANCEL + ","
             + AllAuthorities.ORDER_REFUND_MANAGE + ","
-            + AllAuthorities.ORDER_MANAGE + "')")
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
     @Override
     public OrderRefund preProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
         return refund;
@@ -220,7 +229,8 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_REFUND_READ + ","
             + AllAuthorities.ORDER_REFUND_MANAGE + ","
-            + AllAuthorities.ORDER_MANAGE + "') or "
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "') or "
             + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_REFUND_READ + ","
             + AllAuthorities.ORDER_REFUND_MANAGE + ","
