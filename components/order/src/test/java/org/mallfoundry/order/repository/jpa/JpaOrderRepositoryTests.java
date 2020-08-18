@@ -38,7 +38,7 @@ public class JpaOrderRepositoryTests {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private JpaOrderRepositoryDelegate repository;
+    private JpaOrderRepository repository;
 
     @Transactional
     @Rollback(false)

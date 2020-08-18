@@ -18,61 +18,88 @@
 
 package org.mallfoundry.order.repository.jpa;
 
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.order.Order;
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.order.OrderQuery;
-import org.mallfoundry.order.OrderRepository;
-import org.springframework.data.util.CastUtils;
+import org.mallfoundry.util.CaseUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class JpaOrderRepository implements OrderRepository {
+public interface JpaOrderRepository extends JpaRepository<JpaOrder, String>, JpaSpecificationExecutor<JpaOrder> {
 
-    private final JpaOrderRepositoryDelegate repository;
+    default Specification<JpaOrder> createSpecification(OrderQuery orderQuery) {
+        return (Specification<JpaOrder>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
 
-    public JpaOrderRepository(JpaOrderRepositoryDelegate repository) {
-        this.repository = repository;
+            if (Objects.nonNull(orderQuery.getCustomerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), orderQuery.getCustomerId()));
+            }
+            if (Objects.nonNull(orderQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), orderQuery.getStoreId()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getIds())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("id")).value(orderQuery.getIds()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getRefundStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("refundStatus")).value(orderQuery.getRefundStatuses()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getTypes())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(orderQuery.getTypes()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getSources())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("source")).value(orderQuery.getSources()));
+            }
+            if (CollectionUtils.isNotEmpty(orderQuery.getPaymentMethods())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(orderQuery.getPaymentMethods()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacedTimeMin())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMin()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacedTimeMax())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("placedTime"), orderQuery.getPlacedTimeMax()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacingExpiredTimeMin())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("placingExpiredTime"), orderQuery.getPlacingExpiredTimeMin()));
+            }
+            if (Objects.nonNull(orderQuery.getPlacingExpiredTimeMax())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("placingExpiredTime"), orderQuery.getPlacingExpiredTimeMax()));
+            }
+            return predicate;
+        };
     }
 
-    @Override
-    public Order create(String id) {
-        return new JpaOrder(id);
+    private Sort createSort(OrderQuery query) {
+        return Optional.ofNullable(query.getSort())
+                .map(org.mallfoundry.data.Sort::getOrders)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(orders -> Sort.by(orders.stream()
+                        .peek(sortOrder -> sortOrder.setProperty(CaseUtils.camelCase(sortOrder.getProperty())))
+                        .map(sortOrder -> sortOrder.getDirection().isDescending()
+                                ? Sort.Order.desc(sortOrder.getProperty())
+                                : Sort.Order.asc(sortOrder.getProperty()))
+                        .collect(Collectors.toUnmodifiableList())))
+                .orElseGet(() -> Sort.by("placedTime").descending());
     }
 
-    @Override
-    public Order save(Order order) {
-        return this.repository.save(JpaOrder.of(order));
+    default Page<JpaOrder> findAll(OrderQuery query) {
+        var sort = this.createSort(query);
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
     }
 
-    @Override
-    public List<Order> saveAll(Collection<Order> orders) {
-        return CastUtils.cast(
-                this.repository.saveAll(
-                        orders.stream().map(JpaOrder::of).collect(Collectors.toUnmodifiableList())));
-    }
-
-    @Override
-    public Optional<Order> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public List<Order> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
-    }
-
-    @Override
-    public SliceList<Order> findAll(OrderQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
-    }
-
-    @Override
-    public long count(OrderQuery query) {
-        return this.repository.count(query);
+    default long count(OrderQuery orderQuery) {
+        return this.count(this.createSpecification(orderQuery));
     }
 }
