@@ -29,7 +29,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 public class StaffAuthorizeProcessor implements StaffProcessor {
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_ADD + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -38,7 +40,9 @@ public class StaffAuthorizeProcessor implements StaffProcessor {
         return staff;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_READ + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -47,7 +51,9 @@ public class StaffAuthorizeProcessor implements StaffProcessor {
         return staff;
     }
 
-    @PreAuthorize("hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#query.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_READ + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -56,7 +62,9 @@ public class StaffAuthorizeProcessor implements StaffProcessor {
         return query;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_WRITE + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -65,7 +73,9 @@ public class StaffAuthorizeProcessor implements StaffProcessor {
         return staff;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_DELETE + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")

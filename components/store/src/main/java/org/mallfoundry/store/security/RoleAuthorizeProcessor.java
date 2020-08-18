@@ -30,7 +30,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 public class RoleAuthorizeProcessor implements RoleProcessor {
 
-    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_ROLE_ADD + ","
             + AllAuthorities.STORE_ROLE_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -39,7 +41,9 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
         return role;
     }
 
-    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_ROLE_WRITE + ","
             + AllAuthorities.STORE_ROLE_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -48,7 +52,9 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
         return role;
     }
 
-    @PreAuthorize("hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_ROLE_DELETE + ","
             + AllAuthorities.STORE_ROLE_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
@@ -57,7 +63,9 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
         return role;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_WRITE + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_ROLE_WRITE + ","
@@ -68,7 +76,9 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
         return staff;
     }
 
-    @PreAuthorize("hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+            + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
+            + " or hasPermission(#staff.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_STAFF_WRITE + ","
             + AllAuthorities.STORE_STAFF_MANAGE + ","
             + AllAuthorities.STORE_ROLE_WRITE + ","
