@@ -26,7 +26,7 @@ public interface MemberRepository {
 
     Member create(MemberId id);
 
-    Optional<Member> findById(String id);
+    Optional<Member> findById(MemberId id);
 
     SliceList<Member> findAll(MemberQuery query);
 
