@@ -34,6 +34,7 @@ public class StoreAsyncInitializingManager implements StoreInitializingManager {
 
     @Override
     public StoreInitializing initializeStore(Store store) {
+        StoreInitializingResources.removeStoreInitializing(store.getId());
         this.initializingExecutor.initializingStore(store);
         StoreInitializing nullableInitializing = null;
         while (Objects.isNull(nullableInitializing)) {
