@@ -18,12 +18,14 @@
 
 package org.mallfoundry.security.access;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,6 +69,10 @@ public class DefaultAccessControlManager implements AccessControlManager {
     public Principal requiredPrincipal(Principal principal) {
         return this.principalRepository.findByPrincipal(principal)
                 .orElseGet(() -> this.createNewPrincipal(principal));
+    }
+
+    private List<Principal> getPrincipals(Collection<Principal> principals) {
+        return this.principalRepository.findAllByPrincipals(principals);
     }
 
     @Transactional
@@ -156,22 +162,28 @@ public class DefaultAccessControlManager implements AccessControlManager {
         return this.accessControlRepository.findByResource(resource);
     }
 
-    private Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals) {
-        if (Objects.isNull(resource.getId())) {
-            resource = this.getResource(resource);
+    @Override
+    public Optional<AccessControl> findAccessControl(Resource resource, Set<Principal> principals) {
+        if (Objects.isNull(resource)) {
+            return Optional.empty();
         }
-        return this.accessControlRepository.findByResourceAndPrincipals(resource, principals);
+        if (CollectionUtils.isEmpty(principals)) {
+            return Optional.empty();
+        }
+        var idResource = this.getResource(resource);
+        if (Objects.isNull(idResource)) {
+            return Optional.empty();
+        }
+        var idPrincipals = this.getPrincipals(principals);
+        if (CollectionUtils.isEmpty(idPrincipals)) {
+            return Optional.empty();
+        }
+        return this.accessControlRepository.findByResourceAndPrincipals(idResource, idPrincipals);
     }
 
     @Override
     public AccessControl getAccessControl(Resource resource) {
         return this.findAccessControl(resource)
-                .orElseThrow(() -> new AccessException(AccessMessages.AccessControl.notFound(resource.getType(), resource.getIdentifier())));
-    }
-
-    @Override
-    public AccessControl getAccessControl(Resource resource, Set<Principal> principals) {
-        return this.findAccessControl(resource, principals)
                 .orElseThrow(() -> new AccessException(AccessMessages.AccessControl.notFound(resource.getType(), resource.getIdentifier())));
     }
 
