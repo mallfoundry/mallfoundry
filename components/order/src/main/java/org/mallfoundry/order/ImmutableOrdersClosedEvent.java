@@ -20,8 +20,8 @@ package org.mallfoundry.order;
 
 import java.util.List;
 
-public class ImmutableOrdersCancelledEvent extends OrdersEventSupport implements OrdersCancelledEvent {
-    public ImmutableOrdersCancelledEvent(List<Order> orders) {
+public class ImmutableOrdersClosedEvent extends OrdersEventSupport implements OrdersClosedEvent {
+    public ImmutableOrdersClosedEvent(List<Order> orders) {
         super(orders);
     }
 }
