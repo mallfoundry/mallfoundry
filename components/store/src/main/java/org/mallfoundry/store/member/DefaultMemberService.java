@@ -28,7 +28,6 @@ import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.Copies;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,6 +38,7 @@ import java.util.function.Function;
 public class DefaultMemberService implements MemberService, MemberProcessorInvoker {
 
     private List<MemberProcessor> processors = Collections.emptyList();
+
 
     private final UserService userService;
 
@@ -78,8 +78,9 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
         return this.userService.getUser(userId);
     }
 
-    private Member addMemberPeek(Member member) {
+    private Member joinMemberPeek(Member member) {
         var user = this.requiredUser(member);
+        member.setTenantId(user.getTenantId());
         member.setAvatar(user.getAvatar());
         member.setCountryCode(user.getCountryCode());
         member.setPhone(user.getPhone());
@@ -90,24 +91,23 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
         if (Objects.isNull(member.getGender())) {
             member.setGender(user.getGender());
         }
-        if (Objects.isNull(member.getBirthdate())) {
-            member.setBirthdate(new Date());
-        }
         member.join();
         return member;
     }
 
     @Override
-    public Member addMember(Member member) {
-        return Function.<Member>identity()
-                .compose(this.memberRepository::save)
-                .compose(this::addMemberPeek)
-                .compose(this::invokePreProcessBeforeAddMember)
-                .apply(member);
+    public Member joinMember(Member member) {
+        return this.memberRepository.findById(member.toId())
+                .orElseGet(() -> Function.<Member>identity()
+                        .compose(this.memberRepository::save)
+                        .compose(this::joinMemberPeek)
+                        .compose(this::invokePreProcessBeforeAddMember)
+                        .apply(member));
+
     }
 
     @Override
-    public Optional<Member> getMember(String id) {
+    public Optional<Member> getMember(MemberId id) {
         return this.memberRepository.findById(id)
                 .map(this::invokePostProcessAfterGetMember);
     }
@@ -120,7 +120,7 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
                 .apply(query);
     }
 
-    private Member requiredMember(String id) {
+    private Member requiredMember(MemberId id) {
         return this.memberRepository.findById(id)
                 .orElseThrow();
     }
@@ -140,11 +140,11 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
                 .compose(this.memberRepository::save)
                 .<Member>compose(aMember -> this.updateMember(source, aMember))
                 .compose(this::requiredMember)
-                .apply(source.getId());
+                .apply(this.createMemberId(source.getStoreId(), source.getId()));
     }
 
     @Override
-    public void deleteMember(String id) {
+    public void deleteMember(MemberId id) {
         var member = Function.<Member>identity()
                 .compose(this::invokePreProcessBeforeDeleteMember)
                 .compose(this::requiredMember)
