@@ -20,7 +20,6 @@ package org.mallfoundry.order;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.configuration.Configuration;
 import org.mallfoundry.configuration.ConfigurationHolder;
 import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
@@ -31,7 +30,6 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.processor.Processors;
-import org.mallfoundry.security.Subject;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.context.ApplicationEventPublisher;
@@ -39,9 +37,7 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -115,7 +111,6 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public List<Order> placeOrders(List<Order> orders) {
         orders = this.orderSplitter.splitting(orders);
         orders = this.invokePreProcessBeforePlaceOrders(orders);
-//        Map<String, Configuration> configurations = new HashMap<>();
         var customerId = SubjectHolder.getSubject().getId();
         for (var order : orders) {
             var config = ConfigurationHolder.getConfiguration(order);
