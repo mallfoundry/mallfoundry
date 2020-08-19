@@ -18,5 +18,5 @@
 
 package org.mallfoundry.order;
 
-public interface OrdersCancelledEvent extends OrdersEvent {
+public interface OrderDeclinedEvent extends OrderEvent {
 }
