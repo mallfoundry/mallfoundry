@@ -74,9 +74,9 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     void setStaffNotes(String staffNotes);
 
-    Integer getStaffStars();
+    int getStaffStars();
 
-    void setStaffStars(Integer staffStars);
+    void setStaffStars(int staffStars);
 
     String getSourceName();
 
@@ -271,6 +271,10 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     Date getClosedTime();
 
+    String getDeclineReason();
+
+    Date getDeclinedTime();
+
     Date getRefundedTime();
 
     void discounts(Map<String, BigDecimal> amounts);
@@ -307,6 +311,8 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
     void cancel(String cancelReason) throws OrderException;
 
     void close(String closeReason) throws OrderException;
+
+    void decline(String declineReason);
 
     interface Builder extends ObjectBuilder<Order> {
 

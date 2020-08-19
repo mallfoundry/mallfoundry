@@ -44,6 +44,7 @@ import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
 import static org.mallfoundry.order.OrderStatus.CLOSED;
 import static org.mallfoundry.order.OrderStatus.COMPLETED;
+import static org.mallfoundry.order.OrderStatus.DECLINED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
@@ -446,6 +447,13 @@ public abstract class OrderSupport implements MutableOrder {
     public void receipt() throws OrderException {
         this.setReceivedTime(new Date());
         this.setStatus(COMPLETED);
+    }
+
+    @Override
+    public void decline(String declineReason) {
+        this.setDeclineReason(declineReason);
+        this.setDeclinedTime(new Date());
+        this.setStatus(DECLINED);
     }
 
     @Override
