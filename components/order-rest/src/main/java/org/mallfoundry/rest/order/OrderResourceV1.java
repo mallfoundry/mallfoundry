@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -64,18 +63,7 @@ public class OrderResourceV1 {
     @PatchMapping("/orders/{order_id}")
     public Order updateOrder(@PathVariable("order_id") String orderId, @RequestBody OrderRequest request) {
         var order = this.orderService.createOrder(orderId);
-        if (Objects.nonNull(request.getStaffNotes())) {
-            order.setStaffNotes(request.getStaffNotes());
-        }
-
-        if (request.isDiscountAmountsChanged()) {
-            order.discounts(request.getDiscountAmounts());
-        }
-
-        if (request.isDiscountShippingCostsChanged()) {
-            order.discountShippingCosts(request.getDiscountShippingCosts());
-        }
-        return this.orderService.updateOrder(order);
+        return this.orderService.updateOrder(request.assignTo(order));
     }
 
     @PostMapping("/orders/{order_id}/cancel")
