@@ -32,6 +32,7 @@ import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.shipping.CarrierService;
+import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,6 @@ import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.trim;
 
 public class DefaultOrderService implements OrderService, OrderProcessorInvoker, ApplicationEventPublisherAware {
 
@@ -161,9 +161,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     private void updateOrder(final Order source, final Order target) {
-        if (isNotBlank(source.getStaffNotes())) {
-            target.setStaffNotes(trim(source.getStaffNotes()));
-        }
+        Copies.notBlank(source::getStaffNotes).trim(target::setStaffNotes);
         if (nonNull(source.getStaffStars())) {
             target.setStaffStars(source.getStaffStars());
         }
@@ -240,14 +238,23 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     @Transactional
     @Override
-    public void cancelOrders(Set<String> orderIds, String reason) {
+    public void closeOrders(Set<String> orderIds, String closeReason) {
         var orders = this.orderRepository.findAllById(orderIds);
         if (CollectionUtils.isNotEmpty(orders)) {
-            String finalReason = this.invokePreProcessBeforeCancelOrders(orders, reason);
-            orders.forEach(order -> order.cancel(finalReason));
+            String finalReason = this.invokePreProcessBeforeCloseOrders(orders, closeReason);
+            orders.forEach(order -> order.close(finalReason));
             var savedOrders = this.orderRepository.saveAll(orders);
-            this.eventPublisher.publishEvent(new ImmutableOrdersCancelledEvent(savedOrders));
+            this.eventPublisher.publishEvent(new ImmutableOrdersClosedEvent(savedOrders));
         }
+    }
+
+    @Override
+    public void declineOrder(String orderId, String declineReason) {
+        var order = requiredOrder(orderId);
+        declineReason = this.invokePreProcessBeforeDeclineOrder(order, declineReason);
+        order.decline(declineReason);
+        order = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderDeclinedEvent(order));
     }
 
     @Transactional
@@ -545,9 +552,16 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
-    public String invokePreProcessBeforeCancelOrders(List<Order> orders, String reason) {
+    public String invokePreProcessBeforeCloseOrders(List<Order> orders, String reason) {
         return Processors.stream(this.processors)
-                .<String>map((processor, identity) -> processor.preProcessBeforeCancelOrders(orders, identity))
+                .<String>map((processor, identity) -> processor.preProcessBeforeCloseOrders(orders, identity))
+                .apply(reason);
+    }
+
+    @Override
+    public String invokePreProcessBeforeDeclineOrder(Order order, String reason) {
+        return Processors.stream(this.processors)
+                .<String>map((processor, identity) -> processor.preProcessBeforeDeclineOrder(order, identity))
                 .apply(reason);
     }
 
