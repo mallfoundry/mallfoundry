@@ -103,7 +103,7 @@ public class JpaOrder extends OrderSupport {
     private String staffNotes;
 
     @Column(name = "staff_stars_")
-    private Integer staffStars;
+    private int staffStars;
 
     @NotNull
     @Convert(converter = AddressConverter.class)
@@ -120,6 +120,7 @@ public class JpaOrder extends OrderSupport {
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderShipment.class)
     @JoinColumn(name = "order_id_")
+    @OrderBy("shippedTime ASC")
     private List<OrderShipment> shipments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -164,6 +165,9 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "close_reason_")
     private String closeReason;
 
+    @Column(name = "decline_reason_")
+    private String declineReason;
+
     @Column(name = "placed_time_")
     private Date placedTime;
 
@@ -193,6 +197,9 @@ public class JpaOrder extends OrderSupport {
 
     @Column(name = "closed_time_")
     private Date closedTime;
+
+    @Column(name = "declined_time_")
+    private Date declinedTime;
 
     @Column(name = "refunded_time_")
     private Date refundedTime;

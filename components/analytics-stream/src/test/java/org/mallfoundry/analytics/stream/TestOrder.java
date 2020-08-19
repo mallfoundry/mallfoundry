@@ -57,7 +57,7 @@ public class TestOrder implements Order {
     private String customerId;
     private String customerMessage;
     private String staffNotes;
-    private Integer staffStars;
+    private int staffStars;
     private Address shippingAddress;
     private List<OrderItem> items = new ArrayList<>();
     private List<OrderShipment> shipments = new ArrayList<>();
@@ -71,6 +71,7 @@ public class TestOrder implements Order {
     private InventoryDeduction inventoryDeduction;
     private String cancelReason;
     private String closeReason;
+    private String declineReason;
     private Date placedTime;
     private int placingExpires = 60 * 1000;
     private Date placingExpiredTime;
@@ -82,6 +83,7 @@ public class TestOrder implements Order {
     private Date cancelledTime;
     private Date closedTime;
     private Date refundedTime;
+    private Date declinedTime;
 
     @Override
     public boolean isPlacingExpired() {
@@ -321,6 +323,11 @@ public class TestOrder implements Order {
 
     @Override
     public void close(String closeReason) throws OrderException {
+
+    }
+
+    @Override
+    public void decline(String declineReason) {
 
     }
 
