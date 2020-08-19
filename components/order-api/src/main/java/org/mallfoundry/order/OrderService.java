@@ -88,7 +88,9 @@ public interface OrderService {
 
     void cancelOrder(String orderId, String cancelReason);
 
-    void cancelOrders(Set<String> orderIds, String cancelReason);
+    void closeOrders(Set<String> orderIds, String closeReason);
+
+    void declineOrder(String orderId, String declineReason);
 
     OrderShipment addOrderShipment(String orderId, OrderShipment shipment);
 
