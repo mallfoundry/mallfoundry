@@ -54,5 +54,9 @@ public interface MutableOrder extends Order {
 
     void setReceivedTime(Date receivedTime);
 
+    void setDeclineReason(String declineReason);
+
+    void setDeclinedTime(Date declinedTime);
+
     void setRefundedTime(Date refundedTime);
 }
