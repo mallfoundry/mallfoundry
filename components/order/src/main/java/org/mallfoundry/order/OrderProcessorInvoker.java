@@ -48,7 +48,9 @@ public interface OrderProcessorInvoker {
 
     String invokePreProcessBeforeCancelOrder(Order order, String reason);
 
-    String invokePreProcessBeforeCancelOrders(List<Order> orders, String reason);
+    String invokePreProcessBeforeCloseOrders(List<Order> orders, String reason);
+
+    String invokePreProcessBeforeDeclineOrder(Order order, String reason);
 
     OrderShipment invokePreProcessBeforeAddOrderShipment(Order order, OrderShipment shipment);
 

@@ -77,7 +77,11 @@ public interface OrderProcessor {
         return reason;
     }
 
-    default String preProcessBeforeCancelOrders(List<Order> orders, String reason) {
+    default String preProcessBeforeCloseOrders(List<Order> orders, String reason) {
+        return reason;
+    }
+
+    default String preProcessBeforeDeclineOrder(Order order, String reason) {
         return reason;
     }
 
