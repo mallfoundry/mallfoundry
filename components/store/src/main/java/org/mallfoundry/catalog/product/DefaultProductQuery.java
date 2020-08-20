@@ -31,25 +31,14 @@ import java.util.function.Supplier;
 @Getter
 @Setter
 public class DefaultProductQuery extends QuerySupport implements ProductQuery {
-
-    private Set<String> fields;
-
     private Set<String> ids;
-
     private String name;
-
     private String storeId;
-
     private BigDecimal priceMin;
-
     private BigDecimal priceMax;
-
     private Set<String> collections;
-
     private Set<ProductType> types;
-
     private Set<ProductStatus> statuses;
-
     private Set<InventoryStatus> inventoryStatuses;
 
     @Override
