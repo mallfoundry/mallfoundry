@@ -22,6 +22,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryAdjustment;
 import org.mallfoundry.processor.Processors;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -34,14 +35,13 @@ import java.util.Optional;
 import java.util.Set;
 
 public class DefaultProductService implements ProductService, ProductProcessorInvoker, ApplicationEventPublisherAware {
-
     private List<ProductProcessor> processors;
-
+    private ApplicationEventPublisher eventPublisher;
+    private final StoreService storeService;
     private final ProductRepository productRepository;
 
-    private ApplicationEventPublisher eventPublisher;
-
-    public DefaultProductService(ProductRepository productRepository) {
+    public DefaultProductService(StoreService storeService, ProductRepository productRepository) {
+        this.storeService = storeService;
         this.productRepository = productRepository;
     }
 
@@ -68,6 +68,9 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
     @Override
     public Product addProduct(Product product) {
         product = this.invokePreProcessBeforeAddProduct(product);
+        // 获得商铺对象，设置租户标识。
+        var store = this.storeService.getStore(this.storeService.createStoreId(product.getStoreId()));
+        product.setTenantId(store.getTenantId());
         product.create();
         product = this.invokePreProcessAfterAddProduct(product);
         product = this.productRepository.save(product);

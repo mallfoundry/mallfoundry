@@ -33,6 +33,7 @@ import org.mallfoundry.catalog.product.repository.elasticsearch.ElasticsearchPro
 import org.mallfoundry.catalog.product.repository.jpa.DelegatingJpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepository;
 import org.mallfoundry.catalog.product.repository.jpa.JpaProductRepositorySessionProcessor;
+import org.mallfoundry.store.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -106,8 +107,9 @@ public class ProductAutoConfiguration {
     @ConditionalOnMissingBean(ProductService.class)
     public DefaultProductService defaultProductService(@Autowired(required = false)
                                                        @Lazy List<ProductProcessor> processors,
+                                                       StoreService storeService,
                                                        DelegatingProductRepository repository) {
-        var service = new DefaultProductService(repository);
+        var service = new DefaultProductService(storeService, repository);
         service.setProcessors(processors);
         return service;
     }
