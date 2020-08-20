@@ -35,6 +35,16 @@ import java.util.Set;
 public interface ImmutableFollowingProduct extends FollowingProduct {
 
     @Override
+    default String getTenantId() {
+        return null;
+    }
+
+    @Override
+    default void setTenantId(String tenantId) {
+
+    }
+
+    @Override
     default ProductVariant getVariant(String variantId) {
         return null;
     }
@@ -231,6 +241,11 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
 
     @Override
     default void setBrandId(String brandId) {
+
+    }
+
+    @Override
+    default void setBody(String body) {
 
     }
 

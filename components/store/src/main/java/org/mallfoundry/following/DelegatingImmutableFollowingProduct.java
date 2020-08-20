@@ -50,6 +50,11 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
+    public String getTenantId() {
+        return this.product.getTenantId();
+    }
+
+    @Override
     public String getStoreId() {
         return this.product.getStoreId();
     }

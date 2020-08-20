@@ -72,6 +72,10 @@ public class JpaProduct extends ProductSupport {
     private String id;
 
     @NotBlank
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @NotBlank
     @Column(name = "store_id_")
     private String storeId;
 
@@ -160,10 +164,10 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "shipping_rate_id_")
     private String shippingRateId;
 
-    @Column(name = "body_")
+    @Column(name = "body_", length = 1024 * 4)
     private String body;
 
-    @Column(name = "raw_body_")
+    @Column(name = "raw_body_", length = 1024 * 4)
     private String rawBody;
 
     @Column(name = "body_type_")

@@ -57,6 +57,9 @@ public class ElasticsearchProduct extends ProductSupport {
     private String id;
 
     @Field(type = FieldType.Keyword)
+    private String tenantId;
+
+    @Field(type = FieldType.Keyword)
     private String storeId;
 
     @Field(type = FieldType.Keyword)
