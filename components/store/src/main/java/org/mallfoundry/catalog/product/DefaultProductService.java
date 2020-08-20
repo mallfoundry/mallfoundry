@@ -108,32 +108,27 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
                 .notBlank(source::getBrandId).trim(dest::setBrandId)
                 .notBlank(source::getDescription).trim(dest::setDescription)
                 .notBlank(source::getCategoryId).trim(dest::setCategoryId)
-                .notBlank(source::getShippingRateId).trim(dest::setShippingRateId);
+                .notBlank(source::getShippingRateId).trim(dest::setShippingRateId)
+                .notBlank(source::getBody).trim(dest::setBody);
         if (Objects.nonNull(source.getImageUrls())) {
             dest.setImageUrls(source.getImageUrls());
         }
-
         if (Objects.nonNull(source.getCollections())) {
             dest.setCollections(source.getCollections());
         }
-
         if (Objects.nonNull(source.getOrigin())) {
             dest.setOrigin(source.getOrigin());
         }
-
         if (Objects.nonNull(source.getFixedShippingCost())) {
             dest.setFixedShippingCost(source.getFixedShippingCost());
         }
-
         if (Objects.nonNull(source.getOptions())) {
             dest.updateOptions(source.getOptions());
         }
-
         if (Objects.nonNull(source.getVariants())) {
             dest.clearVariants();
             dest.addVariants(source.getVariants());
         }
-
         if (Objects.nonNull(source.getAttributes())) {
             dest.clearAttributes();
             dest.addAttributes(source.getAttributes());

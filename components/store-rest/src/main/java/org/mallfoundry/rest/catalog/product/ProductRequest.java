@@ -50,6 +50,7 @@ public class ProductRequest {
     private List<ProductAttributeRequest> attributes;
     private List<ProductOptionRequest> options;
     private List<ProductVariantRequest> variants;
+    private String body;
 
     private ProductOrigin createOrigin(Product product) {
         return Objects.isNull(this.origin) ? null
@@ -99,6 +100,7 @@ public class ProductRequest {
                 .attributes(this::createAttributes)
                 .options(this::createOptions)
                 .variants(this::createVariants)
+                .body(this.body)
                 .build();
     }
 
