@@ -19,7 +19,7 @@
 package org.mallfoundry.store;
 
 public abstract class StoreExceptions {
-    public static StoreException notFound(String id) {
+    public static StoreException notFound(StoreId id) {
         return new StoreException(StoreMessages.notFound(id));
     }
 }

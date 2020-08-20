@@ -19,6 +19,7 @@
 package org.mallfoundry.store.initializing;
 
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 
 import java.util.Objects;
@@ -34,17 +35,18 @@ public class StoreAsyncInitializingManager implements StoreInitializingManager {
 
     @Override
     public StoreInitializing initializeStore(Store store) {
-        StoreInitializingResources.removeStoreInitializing(store.getId());
+        var storeId = store.toId();
+        StoreInitializingResources.removeStoreInitializing(storeId);
         this.initializingExecutor.initializingStore(store);
         StoreInitializing nullableInitializing = null;
         while (Objects.isNull(nullableInitializing)) {
-            nullableInitializing = this.initializingExecutor.getStoreInitializing(store.getId());
+            nullableInitializing = this.initializingExecutor.getStoreInitializing(storeId);
         }
         return nullableInitializing;
     }
 
     @Override
-    public Optional<StoreInitializing> getStoreInitializing(String storeId) {
+    public Optional<StoreInitializing> getStoreInitializing(StoreId storeId) {
         return Optional.ofNullable(this.initializingExecutor.getStoreInitializing(storeId));
     }
 }

@@ -77,7 +77,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     }
 
     @Override
-    public Store createStore(String id) {
+    public Store createStore(StoreId id) {
         return this.storeRepository.create(id);
     }
 
@@ -98,7 +98,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional
     @Override
-    public StoreInitializing initializeStore(String id) {
+    public StoreInitializing initializeStore(StoreId id) {
         var store = this.getStore(id);
         store = this.invokePreProcessBeforeInitializeStore(store);
         store.initialize();
@@ -107,27 +107,27 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     }
 
     @Override
-    public Optional<StoreInitializing> getStoreInitializing(String id) {
+    public Optional<StoreInitializing> getStoreInitializing(StoreId id) {
         return this.storeInitializingManager.getStoreInitializing(id);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean existsStore(String id) {
+    public boolean existsStore(StoreId id) {
         return this.storeRepository.findById(id)
                 .map(this::invokePreProcessBeforeExistsStore)
                 .isPresent();
     }
 
     @Override
-    public Store getStore(String storeId) {
+    public Store getStore(StoreId storeId) {
         return this.findStore(storeId)
                 .orElseThrow(() -> StoreExceptions.notFound(storeId));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Store> findStore(String storeId) {
+    public Optional<Store> findStore(StoreId storeId) {
         return this.storeRepository.findById(storeId)
                 .map(this::invokePostProcessAfterGetStore);
     }
@@ -143,7 +143,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional(readOnly = true)
     @Override
-    public List<Store> getStores(Collection<String> ids) {
+    public List<Store> getStores(Collection<StoreId> ids) {
         return this.storeRepository.findAllById(ids);
     }
 
@@ -163,13 +163,13 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .<Store>compose(aStore -> this.updateStore(source, aStore))
                 .compose(this::invokePreProcessBeforeUpdateStore)
                 .compose(this::getStore)
-                .compose(Store::getId)
+                .compose(Store::toId)
                 .apply(source);
     }
 
     @Transactional
     @Override
-    public void cancelStore(String storeId) {
+    public void cancelStore(StoreId storeId) {
         var store = Function.<Store>identity()
                 .compose(this::invokePreProcessBeforeCancelStore)
                 .compose(this::getStore)

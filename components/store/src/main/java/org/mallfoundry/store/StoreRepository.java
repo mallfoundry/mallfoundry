@@ -26,15 +26,15 @@ import java.util.Optional;
 
 public interface StoreRepository {
 
-    Store create(String id);
+    Store create(StoreId id);
 
     Store save(Store store);
 
     void delete(Store store);
 
-    Optional<Store> findById(String id);
+    Optional<Store> findById(StoreId id);
 
     SliceList<Store> findAll(StoreQuery query);
 
-    List<Store> findAllById(Collection<String> ids);
+    List<Store> findAllById(Collection<StoreId> ids);
 }

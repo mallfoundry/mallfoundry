@@ -33,7 +33,7 @@ public class StoreConfigurationInitializer implements StoreInitializer {
 
     @Override
     public void doInitialize(Store store) {
-        var stage = StoreInitializingResources.getStoreInitializing(store.getId()).addStage("商铺配置信息初始化");
+        var stage = StoreInitializingResources.getStoreInitializing(store.toId()).addStage("商铺配置信息初始化");
         try {
             ConfigurationHolder.emptyConfiguration(store);
             stage.success();

@@ -25,7 +25,7 @@ import static org.mallfoundry.i18n.MessageHolder.message;
 public abstract class StoreMessages {
     private static final String STORE_NOT_FOUND_MESSAGE_CODE_KEY = "store.Store.notFound";
 
-    public static String notFound(String storeId) {
-        return message(STORE_NOT_FOUND_MESSAGE_CODE_KEY, List.of(storeId), String.format("Store %s not found", storeId));
+    public static String notFound(StoreId storeId) {
+        return message(STORE_NOT_FOUND_MESSAGE_CODE_KEY, List.of(storeId), String.format("Store %s not found", storeId.getId()));
     }
 }

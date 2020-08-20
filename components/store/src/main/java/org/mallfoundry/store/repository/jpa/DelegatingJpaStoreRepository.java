@@ -20,6 +20,7 @@ package org.mallfoundry.store.repository.jpa;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreQuery;
 import org.mallfoundry.store.StoreRepository;
 import org.springframework.data.util.CastUtils;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class DelegatingJpaStoreRepository implements StoreRepository {
@@ -39,7 +41,7 @@ public class DelegatingJpaStoreRepository implements StoreRepository {
     }
 
     @Override
-    public Store create(String id) {
+    public Store create(StoreId id) {
         return new JpaStore(id);
     }
 
@@ -54,13 +56,15 @@ public class DelegatingJpaStoreRepository implements StoreRepository {
     }
 
     @Override
-    public Optional<Store> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
+    public Optional<Store> findById(StoreId id) {
+        return CastUtils.cast(this.repository.findById(id.getId()));
     }
 
     @Override
-    public List<Store> findAllById(Collection<String> ids) {
-        return CastUtils.cast(this.repository.findAllById(ids));
+    public List<Store> findAllById(Collection<StoreId> ids) {
+        return CastUtils.cast(
+                this.repository.findAllById(
+                        ids.stream().map(StoreId::getId).collect(Collectors.toUnmodifiableSet())));
     }
 
     @Override

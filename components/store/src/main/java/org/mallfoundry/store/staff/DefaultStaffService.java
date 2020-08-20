@@ -94,7 +94,8 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
     @Transactional
     @Override
     public Staff addStaff(Staff staff) {
-        var store = this.storeService.getStore(staff.getStoreId());
+        var storeId = this.storeService.createStoreId(staff.getTenantId(), staff.getStoreId());
+        var store = this.storeService.getStore(storeId);
         staff = staff.toBuilder().tenantId(store.getTenantId()).build();
         staff = this.invokePreProcessBeforeAddStaff(staff);
         var exists = this.staffRepository.findById(staff.toId()).isPresent();

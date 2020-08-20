@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreEdition;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreStatus;
 import org.mallfoundry.store.StoreSupport;
 import org.springframework.beans.BeanUtils;
@@ -105,15 +106,15 @@ public class JpaStore extends StoreSupport {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public JpaStore(String id) {
-        this.setId(id);
+    public JpaStore(StoreId id) {
+        this.tenantId = id.getTenantId();
+        this.id = id.getId();
     }
 
     public static JpaStore of(Store store) {
         if (store instanceof JpaStore) {
             return (JpaStore) store;
         }
-
         var target = new JpaStore();
         BeanUtils.copyProperties(store, target);
         return target;

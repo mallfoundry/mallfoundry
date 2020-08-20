@@ -91,7 +91,8 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
     @Transactional
     @Override
     public Role addRole(Role role) {
-        var store = this.storeService.getStore(role.getStoreId());
+        var storeId = this.storeService.createStoreId(role.getTenantId(), role.getStoreId());
+        var store = this.storeService.getStore(storeId);
         role = role.toBuilder().tenantId(store.getTenantId()).build();
         role = this.invokePreProcessBeforeAddRole(role);
         if (Objects.isNull(role.getType())) {
