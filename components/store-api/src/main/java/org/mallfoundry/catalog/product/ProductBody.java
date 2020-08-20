@@ -24,6 +24,8 @@ public interface ProductBody {
 
     String getBody();
 
+    void setBody(String body);
+
     String getRawBody();
 
     enum BodyType {
