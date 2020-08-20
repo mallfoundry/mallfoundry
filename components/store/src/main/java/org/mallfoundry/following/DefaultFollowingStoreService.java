@@ -60,7 +60,7 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
     }
 
     private FollowingStore requiredFollowingStore(StoreFollowing following) {
-        return this.storeService.findStore(following.getStoreId())
+        return this.storeService.findStore(this.storeService.createStoreId(following.getStoreId()))
                 .<FollowingStore>map(store -> new DelegatingImmutableFollowingStore(store, following))
                 .orElseGet(() -> new NullFollowingStore(following));
     }
@@ -121,6 +121,7 @@ public class DefaultFollowingStoreService implements FollowingStoreService, Foll
                 .apply(query);
         var storeIds = ListUtils.emptyIfNull(sliceFollowings.getElements()).stream()
                 .map(StoreFollowing::getStoreId)
+                .map(this.storeService::createStoreId)
                 .collect(Collectors.toUnmodifiableList());
         if (CollectionUtils.isEmpty(storeIds)) {
             return sliceFollowings.elements(Collections.emptyList());

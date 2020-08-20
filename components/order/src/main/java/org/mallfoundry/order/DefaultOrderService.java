@@ -114,7 +114,6 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var customerId = SubjectHolder.getSubject().getId();
         for (var order : orders) {
             var config = ConfigurationHolder.getConfiguration(order);
-            order.setTenantId(config.getTenantId());
             order.setCustomerId(customerId);
             // 设置订单对象的扣减库存方式。
             // 当订单对象下单后或支付后，对订单所持有的库存判断其如何扣减或者归还。
