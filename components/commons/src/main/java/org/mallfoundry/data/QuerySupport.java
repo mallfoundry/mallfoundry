@@ -21,10 +21,11 @@ package org.mallfoundry.data;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class QuerySupport extends PageableSupport implements Query {
-
     protected Sort sort;
+    protected Set<String> fields;
 
     @Override
     public void setSort(Sort sort) {
@@ -38,5 +39,14 @@ public abstract class QuerySupport extends PageableSupport implements Query {
             sort = new DefaultSort();
         }
         return this.sort;
+    }
+
+    @Override
+    public Set<String> getFields() {
+        return fields;
+    }
+
+    public void setFields(Set<String> fields) {
+        this.fields = fields;
     }
 }

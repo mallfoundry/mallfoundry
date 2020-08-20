@@ -18,9 +18,15 @@
 
 package org.mallfoundry.data;
 
+import java.util.Set;
+
 public interface Query extends Pageable {
+
+    Sort getSort();
 
     void setSort(Sort sort);
 
-    Sort getSort();
+    Set<String> getFields();
+
+    void setFields(Set<String> fields);
 }
