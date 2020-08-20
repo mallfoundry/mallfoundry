@@ -20,9 +20,9 @@ package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.inventory.InventoryStatus;
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -36,15 +36,11 @@ import java.util.function.Supplier;
  *
  * @author Zhi Tang
  */
-public interface Product extends ProductBody, Serializable {
+public interface Product extends ProductBody, StoreOwnership {
 
     String getId();
 
     void setId(String id);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
 
     String getName();
 
@@ -261,6 +257,8 @@ public interface Product extends ProductBody, Serializable {
         Builder adjustMonthlySales(long sales);
 
         Builder collections(Set<String> collections);
+
+        Builder body(String body);
 
         Builder imageUrl(String image);
 
