@@ -20,6 +20,7 @@ package org.mallfoundry.rest.store;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 import org.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,32 +45,37 @@ public class StoreResourceV1 {
         this.storeService = storeService;
     }
 
+    private StoreId createStoreId(String id) {
+        return this.storeService.createStoreId(id);
+    }
+
     @PostMapping("/stores")
     public Store createStore(@RequestBody StoreRequest request) {
         return this.storeService.createStore(
                 request.assignToStore(
-                        this.storeService.createStore(request.getId())));
+                        this.storeService.createStore(
+                                this.createStoreId(request.getId()))));
     }
 
     @GetMapping("/stores/{id}")
     public Optional<Store> getStore(@PathVariable("id") String id) {
-        return this.storeService.findStore(id);
+        return this.storeService.findStore(this.createStoreId(id));
     }
 
 
     @PostMapping("/stores/{id}/initialize")
-    public StoreInitializing initializeStore(@PathVariable("id") String storeId) {
-        return this.storeService.initializeStore(storeId);
+    public StoreInitializing initializeStore(@PathVariable("id") String id) {
+        return this.storeService.initializeStore(this.createStoreId(id));
     }
 
     @GetMapping("/stores/{id}/initializing")
-    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String storeId) {
-        return this.storeService.getStoreInitializing(storeId);
+    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
+        return this.storeService.getStoreInitializing(this.createStoreId(id));
     }
 
     @GetMapping("/stores/{id}/exists")
     public boolean existsStore(@PathVariable("id") String id) {
-        return this.storeService.existsStore(id);
+        return this.storeService.existsStore(this.createStoreId(id));
     }
 
     @GetMapping("/stores")
@@ -80,16 +86,16 @@ public class StoreResourceV1 {
     }
 
     @PatchMapping("/stores/{store_id}")
-    public Store updateStore(@PathVariable("store_id") String storeId,
+    public Store updateStore(@PathVariable("store_id") String id,
                              @RequestBody StoreRequest request) {
         return this.storeService.updateStore(
                 request.assignToStore(
-                        this.storeService.createStore(storeId)));
+                        this.storeService.createStore(this.createStoreId(id))));
     }
 
     @DeleteMapping("/stores/{store_id}")
-    public void cancelStore(@PathVariable("store_id") String storeId) {
-        this.storeService.cancelStore(storeId);
+    public void cancelStore(@PathVariable("store_id") String id) {
+        this.storeService.cancelStore(this.createStoreId(id));
     }
 
 }

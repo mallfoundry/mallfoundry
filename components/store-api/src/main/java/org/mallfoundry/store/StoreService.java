@@ -32,25 +32,25 @@ public interface StoreService {
 
     StoreId createStoreId(String id);
 
-    Store createStore(String id);
+    Store createStore(StoreId id);
 
     Store createStore(Store store);
 
-    StoreInitializing initializeStore(String id);
+    StoreInitializing initializeStore(StoreId id);
 
-    Optional<StoreInitializing> getStoreInitializing(String id);
+    Optional<StoreInitializing> getStoreInitializing(StoreId id);
 
     Store updateStore(Store store);
 
-    void cancelStore(String id);
+    void cancelStore(StoreId id);
 
-    boolean existsStore(String id);
+    boolean existsStore(StoreId id);
 
-    Store getStore(String id);
+    Store getStore(StoreId id);
 
-    Optional<Store> findStore(String id);
+    Optional<Store> findStore(StoreId id);
 
     SliceList<Store> getStores(StoreQuery query);
 
-    List<Store> getStores(Collection<String> ids);
+    List<Store> getStores(Collection<StoreId> ids);
 }
