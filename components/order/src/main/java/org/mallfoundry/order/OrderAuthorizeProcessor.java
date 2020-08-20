@@ -54,11 +54,7 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
         return order;
     }
 
-    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + AllAuthorities.ORDER_WRITE + ","
-            + AllAuthorities.ORDER_MANAGE + ","
-            + AllAuthorities.CUSTOMER_MANAGE + "') or "
-            + "hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_WRITE + ","
             + AllAuthorities.ORDER_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
