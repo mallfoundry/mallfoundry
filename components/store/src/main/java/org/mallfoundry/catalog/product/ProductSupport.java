@@ -416,6 +416,12 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
+        public Builder body(String body) {
+            this.product.setBody(body);
+            return this;
+        }
+
+        @Override
         public Builder imageUrl(String image) {
             this.product.addImageUrl(image);
             return this;
