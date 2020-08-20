@@ -57,7 +57,7 @@ public class OrderExpiredCanceller {
                 .collect(Collectors.toUnmodifiableSet());
         if (CollectionUtils.isNotEmpty(orderIds)) {
             var reason = this.getCancelReason();
-            this.orderService.cancelOrders(orderIds, reason);
+            this.orderService.closeOrders(orderIds, reason);
             if (logger.isDebugEnabled()) {
                 logger.debug("Automatically cancels the expired orders({})", orderIds);
             }
