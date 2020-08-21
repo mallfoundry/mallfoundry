@@ -25,24 +25,18 @@ import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.repository.jpa.JpaRole;
 import org.mallfoundry.store.staff.Staff;
 import org.mallfoundry.store.staff.StaffId;
-import org.mallfoundry.store.staff.StaffStatus;
-import org.mallfoundry.store.staff.StaffSupport;
-import org.mallfoundry.store.staff.StaffType;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -51,51 +45,10 @@ import java.util.List;
 @Entity
 @IdClass(JpaStaffId.class)
 @Table(name = "mf_store_staff")
-public class JpaStaff extends StaffSupport {
-
-    @Id
-    @NotBlank
-    @Column(name = "id_")
-    private String id;
-
-    @Id
-    @NotBlank
-    @Column(name = "store_id_")
-    private String storeId;
-
-    @NotBlank
-    @Column(name = "tenant_id_")
-    private String tenantId;
+public class JpaStaff extends JpaStaffBase {
 
     @NotNull
-    @Column(name = "type_")
-    private StaffType type;
-
-    @NotNull
-    @Column(name = "status_")
-    private StaffStatus status;
-
-    @NotBlank
-    @Column(name = "name_")
-    private String name;
-
-    @Column(name = "number_")
-    private String number;
-
-    @NotBlank
-    @Column(name = "avatar_")
-    private String avatar;
-
-    @NotBlank
-    @Column(name = "country_code_")
-    private String countryCode;
-
-    @NotBlank
-    @Column(name = "phone_")
-    private String phone;
-
-    @NotNull
-    @ManyToMany(targetEntity = JpaRole.class)
+    @ManyToMany(targetEntity = JpaRole.class, fetch = FetchType.EAGER)
     @JoinTable(name = "mf_store_staff_role",
             joinColumns = {@JoinColumn(name = "staff_id_", referencedColumnName = "id_"),
                     @JoinColumn(name = "store_id_", referencedColumnName = "store_id_")},
@@ -103,14 +56,10 @@ public class JpaStaff extends StaffSupport {
     @OrderBy("createdTime")
     private List<Role> roles = new ArrayList<>();
 
-    @NotNull
-    @Column(name = "created_time_")
-    private Date createdTime;
-
     public JpaStaff(StaffId staffId) {
-        this.tenantId = staffId.getTenantId();
-        this.storeId = staffId.getStoreId();
-        this.id = staffId.getId();
+        this.setTenantId(staffId.getTenantId());
+        this.setStoreId(staffId.getStoreId());
+        this.setId(staffId.getId());
     }
 
     public static JpaStaff of(Staff staff) {
