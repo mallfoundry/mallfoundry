@@ -61,7 +61,8 @@ public class DefaultConfigurationManager implements ConfigurationManager {
 
     @Override
     public Configuration getConfiguration(ConfigurationId configId) {
-        return this.repository.findById(configId).orElseThrow();
+        return this.repository.findById(configId)
+                .orElseThrow(ConfigurationExceptions::notFound);
     }
 
     @Transactional
