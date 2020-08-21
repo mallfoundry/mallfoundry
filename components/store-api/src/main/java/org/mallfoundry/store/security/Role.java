@@ -24,6 +24,7 @@ import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 店铺角色对象。
@@ -44,9 +45,9 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
 
     void setName(String name);
 
-    List<String> getAuthorities();
+    Set<String> getAuthorities();
 
-    void setAuthorities(List<String> authorities);
+    void setAuthorities(Set<String> authorities);
 
     String getDescription();
 
@@ -92,7 +93,7 @@ public interface Role extends StoreOwnership, ObjectBuilder.ToBuilder<Role.Build
 
         Builder description(String description);
 
-        Builder authorities(List<String> authorities);
+        Builder authorities(Set<String> authorities);
 
         Builder primitive();
 
