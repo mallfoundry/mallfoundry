@@ -18,8 +18,20 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.Store;
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface StaffStore extends Store {
-    Staff getStaff();
+import java.util.Set;
+
+public interface StaffStoreQuery extends TenantOwnership, Query, ObjectBuilder.ToBuilder<StaffStoreQuery.Builder> {
+
+    Set<String> getStaffIds();
+
+    void setStaffIds(Set<String> staffIds);
+
+    interface Builder extends QueryBuilder<StaffStoreQuery, Builder> {
+        Builder staffIds(Set<String> staffIds);
+    }
 }

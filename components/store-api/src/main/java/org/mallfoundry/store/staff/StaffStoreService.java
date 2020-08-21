@@ -18,8 +18,11 @@
 
 package org.mallfoundry.store.staff;
 
-import org.mallfoundry.store.Store;
+import org.mallfoundry.data.SliceList;
 
-public interface StaffStore extends Store {
-    Staff getStaff();
+public interface StaffStoreService {
+
+    StaffStoreQuery createStaffStoreQuery();
+
+    SliceList<StaffStore> getStaffStores(StaffStoreQuery query);
 }
