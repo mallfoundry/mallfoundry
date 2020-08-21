@@ -26,6 +26,7 @@ import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.storage.acl.OwnerType;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +91,12 @@ public class DefaultStoreBlobService implements StoreBlobService {
     public void deleteBlobs(String storeId, List<String> paths) {
         this.storageService.deleteBlobs(getBucketName(storeId),
                 paths.stream().map(PathUtils::normalize).collect(Collectors.toList()));
+    }
+
+    @Override
+    public void clearBlobs(StoreId storeId) {
+
+
     }
 
     @Override

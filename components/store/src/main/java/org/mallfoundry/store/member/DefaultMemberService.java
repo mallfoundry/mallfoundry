@@ -153,6 +153,11 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
     }
 
     @Override
+    public void clearMembers(StoreId id) {
+
+    }
+
+    @Override
     public Member invokePreProcessBeforeAddMember(Member member) {
         return Processors.stream(this.processors)
                 .map(MemberProcessor::preProcessBeforeAddMember)

@@ -22,6 +22,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.Bucket;
+import org.mallfoundry.store.StoreId;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,9 +40,11 @@ public interface StoreBlobService {
 
     Blob storeBlob(Blob blob) throws IOException, StoreBlobException;
 
+    SliceList<Blob> getBlobs(BlobQuery query);
+
     void deleteBlob(String storeId, String path);
 
     void deleteBlobs(String storeId, List<String> paths);
 
-    SliceList<Blob> getBlobs(BlobQuery query);
+    void clearBlobs(StoreId storeId);
 }

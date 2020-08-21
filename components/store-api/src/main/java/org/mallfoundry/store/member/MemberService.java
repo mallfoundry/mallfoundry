@@ -42,4 +42,6 @@ public interface MemberService {
     Member updateMember(Member member);
 
     void deleteMember(MemberId id);
+
+    void clearMembers(StoreId id);
 }
