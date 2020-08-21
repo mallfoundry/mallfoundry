@@ -20,8 +20,8 @@ package org.mallfoundry.store.security;
 
 import java.util.List;
 
-public class ImmutableRolesDeletedEvent extends RolesEventSupport implements RolesDeletedEvent {
-    public ImmutableRolesDeletedEvent(List<Role> roles) {
+public class ImmutableRolesClearedEvent extends RolesEventSupport implements RolesClearedEvent {
+    public ImmutableRolesClearedEvent(List<Role> roles) {
         super(roles);
     }
 }
