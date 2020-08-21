@@ -20,7 +20,9 @@ package org.mallfoundry.store.initializing;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.store.Store;
 import org.springframework.core.annotation.Order;
 
@@ -36,6 +38,10 @@ public class StoreConfigurationInitializer implements StoreInitializer {
         var stage = StoreInitializingResources.getStoreInitializing(store.toId()).addStage("商铺配置信息初始化");
         try {
             ConfigurationHolder.emptyConfiguration(store);
+            if (StringUtils.isBlank(store.getLogo())) {
+                var config = ConfigurationHolder.getConfiguration(store);
+                store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
+            }
             stage.success();
         } catch (RuntimeException e) {
             stage.failure();

@@ -19,9 +19,6 @@
 package org.mallfoundry.store;
 
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
@@ -86,10 +83,6 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public Store createStore(Store store) {
         store = this.invokePreProcessBeforeCreateStore(store);
         store.changeOwner(SubjectHolder.getSubject().toUser());
-        if (StringUtils.isBlank(store.getLogo())) {
-            var config = ConfigurationHolder.getConfiguration(store);
-            store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
-        }
         store.create();
         store = this.storeRepository.save(store);
         this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
