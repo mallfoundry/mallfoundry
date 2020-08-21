@@ -23,6 +23,7 @@ import org.mallfoundry.store.staff.Staff;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.mallfoundry.store.security.RoleType.CUSTOM;
 import static org.mallfoundry.store.security.RoleType.PREDEFINED;
@@ -131,7 +132,7 @@ public abstract class RoleSupport implements MutableRole {
         }
 
         @Override
-        public Builder authorities(List<String> authorities) {
+        public Builder authorities(Set<String> authorities) {
             this.role.setAuthorities(authorities);
             return this;
         }
@@ -144,19 +145,19 @@ public abstract class RoleSupport implements MutableRole {
 
         @Override
         public Builder primitive() {
-            this.role.setType(PRIMITIVE);
+            this.role.primitive();
             return this;
         }
 
         @Override
         public Builder predefine() {
-            this.role.setType(PREDEFINED);
+            this.role.predefine();
             return this;
         }
 
         @Override
         public Builder custom() {
-            this.role.setType(CUSTOM);
+            this.role.custom();
             return this;
         }
 
