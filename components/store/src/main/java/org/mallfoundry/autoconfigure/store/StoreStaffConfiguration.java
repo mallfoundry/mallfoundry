@@ -22,13 +22,18 @@ import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.DefaultStaffService;
+import org.mallfoundry.store.staff.DefaultStaffStoreService;
 import org.mallfoundry.store.staff.StaffAuthorizeProcessor;
 import org.mallfoundry.store.staff.StaffProcessor;
 import org.mallfoundry.store.staff.StaffRepository;
+import org.mallfoundry.store.staff.StaffStoreRepository;
 import org.mallfoundry.store.staff.StaffValidateProcessor;
 import org.mallfoundry.store.staff.repository.RoleStaffsCountProcessor;
 import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffRepository;
+import org.mallfoundry.store.staff.repository.jpa.DelegatingJpaStaffStoreRepository;
+import org.mallfoundry.store.staff.repository.jpa.JpaOnlyStaffRepository;
 import org.mallfoundry.store.staff.repository.jpa.JpaStaffRepository;
+import org.mallfoundry.store.staff.repository.jpa.JpaStaffStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,4 +74,16 @@ public class StoreStaffConfiguration {
     public RoleStaffsCountProcessor roleStaffsCountProcessor(RoleService roleService) {
         return new RoleStaffsCountProcessor(roleService);
     }
+
+    @Bean
+    public DelegatingJpaStaffStoreRepository delegatingJpaStaffStoreRepository(JpaOnlyStaffRepository staffRepository,
+                                                                               JpaStaffStoreRepository repository) {
+        return new DelegatingJpaStaffStoreRepository(staffRepository, repository);
+    }
+
+    @Bean
+    public DefaultStaffStoreService defaultStaffStoreService(StaffStoreRepository repository) {
+        return new DefaultStaffStoreService(repository);
+    }
+
 }
