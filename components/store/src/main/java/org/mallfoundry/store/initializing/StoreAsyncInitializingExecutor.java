@@ -22,22 +22,28 @@ import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
+import org.mallfoundry.store.StoreService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 public class StoreAsyncInitializingExecutor {
 
     private final StoreInitializer storeInitializer;
+    private final StoreService storeService;
 
-    public StoreAsyncInitializingExecutor(StoreInitializer storeInitializer) {
+    public StoreAsyncInitializingExecutor(StoreInitializer storeInitializer, StoreService storeService) {
         this.storeInitializer = storeInitializer;
+        this.storeService = storeService;
     }
 
     @Async
     @Transactional
     public void initializingStore(Store store) {
         SubjectHolder.switchTo().systemUser()
-                .doRun(() -> this.doInitializingStore(store));
+                .doRun(() -> {
+                    this.doInitializingStore(store);
+                    this.storeService.updateStore(store);
+                });
     }
 
     private void doInitializingStore(Store store) {
