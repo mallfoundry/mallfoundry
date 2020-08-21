@@ -23,8 +23,6 @@ import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreInitializing;
 import org.mallfoundry.store.StoreService;
-import org.mallfoundry.store.staff.StaffStore;
-import org.mallfoundry.store.staff.StaffStoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/v1")
@@ -44,11 +41,8 @@ public class StoreResourceV1 {
 
     private final StoreService storeService;
 
-    private final StaffStoreService staffStoreService;
-
-    public StoreResourceV1(StoreService storeService, StaffStoreService staffStoreService) {
+    public StoreResourceV1(StoreService storeService) {
         this.storeService = storeService;
-        this.staffStoreService = staffStoreService;
     }
 
     private StoreId createStoreId(String id) {
@@ -61,15 +55,6 @@ public class StoreResourceV1 {
                 request.assignToStore(
                         this.storeService.createStore(
                                 this.createStoreId(request.getId()))));
-    }
-
-    @GetMapping("/staffs/{staff_id}/stores")
-    public SliceList<StaffStore> getStaffStores(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                                @PathVariable("staff_id") String staffId) {
-        return this.staffStoreService.getStaffStores(
-                this.staffStoreService.createStaffStoreQuery()
-                        .toBuilder().page(page).limit(limit).staffIds(Set.of(staffId)).build());
     }
 
     @GetMapping("/stores/{id}")
