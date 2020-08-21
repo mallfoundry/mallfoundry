@@ -43,7 +43,7 @@ public class RoleAccessControlEventListener {
 
     @Transactional
     @EventListener
-    public void onAddRole(RoleAddedEvent event) {
+    public void onRoleAdded(RoleAddedEvent event) {
         var role = event.getRole();
         var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
         var resource = this.manager.createResource(Resource.STORE_TYPE, role.getStoreId());
@@ -54,7 +54,19 @@ public class RoleAccessControlEventListener {
 
     @Transactional
     @EventListener
-    public void onDeleteRole(RoleDeletedEvent event) {
+    public void onRoleChanged(RoleChangedEvent event) {
+        var role = event.getRole();
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
+        var resource = this.manager.createResource(Resource.STORE_TYPE, role.getStoreId());
+        var accessControl = this.manager.createAccessControl(resource);
+        accessControl.grant(this.createPermissions(role), rolePrincipal);
+        this.manager.updateAccessControl(accessControl);
+    }
+
+
+    @Transactional
+    @EventListener
+    public void onRoleDeleted(RoleDeletedEvent event) {
         var role = event.getRole();
         var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
         this.manager.removePrincipal(rolePrincipal);
@@ -62,7 +74,7 @@ public class RoleAccessControlEventListener {
 
     @Transactional
     @EventListener
-    public void onClearRole(RolesDeletedEvent event) {
+    public void onRolesCleared(RolesClearedEvent event) {
         var rolePrincipals = event.getRoles().stream()
                 .map(role -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role)))
                 .collect(Collectors.toUnmodifiableList());
