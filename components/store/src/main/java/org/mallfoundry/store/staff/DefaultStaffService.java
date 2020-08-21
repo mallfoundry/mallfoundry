@@ -18,7 +18,6 @@
 
 package org.mallfoundry.store.staff;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.identity.User;
@@ -157,8 +156,7 @@ public class DefaultStaffService implements StaffService, StaffProcessorInvoker,
         Copies.notBlank(source::getNumber).trim(dest::setNumber);
         Copies.notBlank(source::getCountryCode).trim(dest::setCountryCode);
         Copies.notBlank(source::getPhone).trim(dest::setPhone);
-        if (!StaffType.OWNER.equals(dest.getType())
-                && CollectionUtils.isNotEmpty(source.getRoles())) {
+        if (!StaffType.OWNER.equals(dest.getType()) && Objects.nonNull(source.getRoles())) {
             dest.setRoles(source.getRoles());
         }
     }
