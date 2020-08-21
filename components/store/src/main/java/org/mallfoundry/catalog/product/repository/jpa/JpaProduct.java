@@ -150,7 +150,6 @@ public class JpaProduct extends ProductSupport {
     @Convert(converter = StringListConverter.class)
     private List<String> videoUrls = new ArrayList<>();
 
-    //    @NotNull
     @Column(name = "origin_", length = 512)
     @Convert(converter = ProductOriginConverter.class)
     private ProductOrigin origin;
