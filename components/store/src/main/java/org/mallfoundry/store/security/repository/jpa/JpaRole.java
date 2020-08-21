@@ -21,7 +21,7 @@ package org.mallfoundry.store.security.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
+import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleId;
 import org.mallfoundry.store.security.RoleSupport;
@@ -36,10 +36,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -66,9 +66,9 @@ public class JpaRole extends RoleSupport {
     private String name;
 
     @NotNull
-    @Convert(converter = StringListConverter.class)
-    @Column(name = "authorities_", length = 1024 * 2)
-    private List<String> authorities = new ArrayList<>();
+    @Convert(converter = StringSetConverter.class)
+    @Column(name = "authorities_", length = 1024 * 4)
+    private Set<String> authorities = new HashSet<>();
 
     @NotBlank
     @Column(name = "description_")
