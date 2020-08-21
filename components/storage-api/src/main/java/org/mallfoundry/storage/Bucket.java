@@ -41,7 +41,7 @@ public interface Bucket {
     Blob createBlob(String path);
 
     class Builder {
-        private Bucket bucket;
+        private final Bucket bucket;
 
         public Builder(Bucket bucket) {
             this.bucket = bucket;
