@@ -21,7 +21,6 @@ package org.mallfoundry.security.access.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.mallfoundry.security.access.AccessControlEntry;
 import org.mallfoundry.security.access.AccessControlEntrySupport;
 import org.mallfoundry.security.access.Principal;
@@ -55,7 +54,7 @@ public class JpaAccessControlEntry extends AccessControlEntrySupport {
     private Principal principal;
 
     @Convert(converter = PermissionSetConverter.class)
-    @Column(name = "permissions_")
+    @Column(name = "permissions_", length = 1024 * 4)
     private Set<String> permissions = new HashSet<>();
 
     public JpaAccessControlEntry(Principal principal) {
