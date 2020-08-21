@@ -48,7 +48,12 @@ public abstract class AccessControlEntrySupport implements MutableAccessControlE
 
     @Override
     public void removePermissions(Set<String> permissions) {
-        SetUtils.emptyIfNull(permissions).forEach(this::removePermission);
+        this.getPermissions().removeAll(permissions);
+    }
+
+    @Override
+    public void clearPermissions() {
+        this.getPermissions().clear();
     }
 
     @Override
