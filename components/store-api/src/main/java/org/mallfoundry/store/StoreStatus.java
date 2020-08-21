@@ -24,7 +24,7 @@ public enum StoreStatus {
     PENDING, // 创建中
     INITIALIZING, // 初始化中
     ACTIVE, // 正常使用
-    EXPIRING; // 过期
+    PAUSED; // 过期
 
     public boolean isPending() {
         return this == PENDING;
