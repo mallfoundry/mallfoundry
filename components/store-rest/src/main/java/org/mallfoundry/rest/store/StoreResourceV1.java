@@ -96,12 +96,10 @@ public class StoreResourceV1 {
     @GetMapping("/stores")
     public SliceList<Store> getStores(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                      @RequestParam(name = "owner_id", required = false) String ownerId,
-                                      @RequestParam(name = "staff_id", required = false) String staffId) {
+                                      @RequestParam(name = "owner_id", required = false) String ownerId) {
         return this.storeService.getStores(
                 this.storeService.createStoreQuery().toBuilder()
-                        .page(page).limit(limit)
-                        .ownerId(ownerId).staffId(staffId).build());
+                        .page(page).limit(limit).ownerId(ownerId).build());
     }
 
     @PatchMapping("/stores/{store_id}")
