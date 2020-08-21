@@ -49,7 +49,7 @@ public interface AccessControlManager {
 
     void grantAccessControl(AccessControl accessControl);
 
-    void revokeAccessControl(AccessControl accessControl);
+    void updateAccessControl(AccessControl accessControl);
 
     void deleteAccessControl(AccessControl accessControl);
 }

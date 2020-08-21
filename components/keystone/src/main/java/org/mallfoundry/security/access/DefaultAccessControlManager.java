@@ -192,18 +192,21 @@ public class DefaultAccessControlManager implements AccessControlManager {
     public void grantAccessControl(AccessControl source) {
         var accessControl = this.getAccessControl(source.getResource());
         source.getEntries().forEach(entry -> accessControl.grant(entry.getPermissions(), entry.getPrincipal()));
-        this.updateAccessControl(accessControl);
+        this.saveAccessControl(accessControl);
     }
 
     @Transactional
     @Override
-    public void revokeAccessControl(AccessControl source) {
+    public void updateAccessControl(AccessControl source) {
         var accessControl = this.getAccessControl(source.getResource());
-        source.getEntries().forEach(entry -> accessControl.revoke(entry.getPermissions(), entry.getPrincipal()));
-        this.updateAccessControl(accessControl);
+        source.getEntries().forEach(entry -> {
+            accessControl.revokeAll(entry.getPrincipal());
+            accessControl.grant(entry.getPermissions(), entry.getPrincipal());
+        });
+        this.saveAccessControl(accessControl);
     }
 
-    private void updateAccessControl(AccessControl accessControl) {
+    private void saveAccessControl(AccessControl accessControl) {
         Assert.notNull(accessControl.getOwner(), "The owner must not be null");
         this.setIdentity(accessControl);
         this.accessControlRepository.save(accessControl);
