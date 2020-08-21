@@ -18,10 +18,16 @@
 
 package org.mallfoundry.store.security;
 
+import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.security.access.AllAuthorities;
+import org.mallfoundry.security.access.AuthorizeHolder;
 import org.mallfoundry.security.access.Resource;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.staff.Staff;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.Objects;
 
 /**
  * 店铺角色对象鉴权者。
@@ -29,6 +35,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * @author Zhi Tang
  */
 public class RoleAuthorizeProcessor implements RoleProcessor {
+
+    private final StoreService storeService;
+
+    public RoleAuthorizeProcessor(StoreService storeService) {
+        this.storeService = storeService;
+    }
 
     @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
             + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
@@ -52,7 +64,7 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
         return role;
     }
 
-    @PreAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
+    @PostAuthorize("hasAuthority('" + AllAuthorities.SUPER_ADMIN + "')"
             + " or hasAuthority('" + AllAuthorities.ADMIN + "') "
             + " or hasPermission(#role.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.STORE_ROLE_DELETE + ","
@@ -60,6 +72,16 @@ public class RoleAuthorizeProcessor implements RoleProcessor {
             + AllAuthorities.STORE_MANAGE + "')")
     @Override
     public Role preProcessBeforeDeleteRole(Role role) {
+        if (role.isPrimitive()) {
+            AuthorizeHolder.authorize("false");
+        } else if (role.isPredefined()) {
+            var store = this.storeService.getStore(
+                    this.storeService.createStoreId(role.getTenantId(), role.getStoreId()));
+            if (!Objects.equals(store.getOwnerId(), SubjectHolder.getSubject().getId())) {
+                AuthorizeHolder.authorize(
+                        "hasAuthority('" + AllAuthorities.SUPER_ADMIN + "') or hasAuthority('" + AllAuthorities.ADMIN + "')");
+            }
+        }
         return role;
     }
 

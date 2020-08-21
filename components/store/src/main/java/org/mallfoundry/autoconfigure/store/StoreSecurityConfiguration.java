@@ -68,7 +68,7 @@ public class StoreSecurityConfiguration {
     }
 
     @Bean
-    public RoleAuthorizeProcessor storeRoleAuthorizeProcessor() {
-        return new RoleAuthorizeProcessor();
+    public RoleAuthorizeProcessor storeRoleAuthorizeProcessor(StoreService storeService) {
+        return new RoleAuthorizeProcessor(storeService);
     }
 }
