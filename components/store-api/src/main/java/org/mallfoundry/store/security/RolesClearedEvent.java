@@ -18,5 +18,5 @@
 
 package org.mallfoundry.store.security;
 
-public interface RolesDeletedEvent extends RolesEvent {
+public interface RolesClearedEvent extends RolesEvent {
 }
