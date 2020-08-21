@@ -24,6 +24,7 @@ import org.mallfoundry.configuration.ConfigurationHolder;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.access.AllAuthorities;
+import org.mallfoundry.security.access.AuthoritiesOptimizeUtils;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.staff.Staff;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 public class DefaultRoleService implements RoleService, RoleProcessorInvoker, ApplicationEventPublisherAware {
 
@@ -98,37 +98,37 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
         if (Objects.isNull(role.getType())) {
             role.custom();
         }
+        role.setAuthorities(AuthoritiesOptimizeUtils.optimizeAuthorities(role.getAuthorities()));
         role = this.invokePreProcessAfterAddRole(role);
         role = this.roleRepository.save(role);
         this.eventPublisher.publishEvent(new ImmutableRoleAddedEvent(role));
         return role;
     }
 
-    private Role updateRole(Role source, Role target) {
+    private void updateRole(Role source, Role target) {
         Copies.notBlank(source::getName).trim(target::setName);
         Copies.notBlank(source::getDescription).trim(target::setDescription);
         if (CollectionUtils.isNotEmpty(source.getAuthorities())) {
-            target.setAuthorities(source.getAuthorities());
+            target.setAuthorities(AuthoritiesOptimizeUtils.optimizeAuthorities(source.getAuthorities()));
         }
-        return target;
     }
 
     @Transactional
     @Override
-    public Role updateRole(Role role) {
-        return Function.<Role>identity()
-                .compose(this.roleRepository::save)
-                .compose(this::invokePreProcessAfterUpdateRole)
-                .<Role>compose(target -> this.updateRole(role, target))
-                .compose(this::invokePreProcessBeforeUpdateRole)
-                .compose(this::getRole)
-                .apply(this.createRoleId(role.getId()));
+    public Role updateRole(Role source) {
+        var role = this.requiredRole(source.toId());
+        role = this.invokePreProcessBeforeUpdateRole(role);
+        this.updateRole(source, role);
+        role = this.invokePreProcessAfterUpdateRole(role);
+        role = this.roleRepository.save(role);
+        this.eventPublisher.publishEvent(new ImmutableRoleChangedEvent(role));
+        return role;
     }
 
     @Transactional
     @Override
     public void addRoleStaff(RoleId roleId, Staff staff) {
-        var role = this.getRole(roleId);
+        var role = this.requiredRole(roleId);
         role.addStaff(this.invokePreProcessBeforeAddRoleStaff(role, staff));
         this.roleRepository.save(role);
     }
@@ -141,18 +141,21 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
         this.roleRepository.save(role);
     }
 
+    public Role requiredRole(RoleId roleId) {
+        return this.roleRepository.findById(roleId).orElseThrow(RoleExceptions::notFound);
+    }
+
+
     @Override
     public Role getRole(RoleId roleId) {
-        return this.findRole(roleId).orElseThrow();
+        return this.findRole(roleId).orElseThrow(RoleExceptions::notFound);
     }
 
     @Transactional
     @Override
     public void deleteRole(RoleId roleId) {
-        var role = Function.<Role>identity()
-                .compose(this::invokePreProcessBeforeDeleteRole)
-                .compose(this::getRole)
-                .apply(roleId);
+        var role = this.requiredRole(roleId);
+        role = this.invokePreProcessBeforeDeleteRole(role);
         role = this.invokePreProcessAfterDeleteRole(role);
         this.roleRepository.delete(role);
         this.eventPublisher.publishEvent(new ImmutableRoleDeletedEvent(role));
@@ -165,14 +168,15 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
         // peek...
         roles = this.invokePreProcessAfterClearRoles(roles);
         this.roleRepository.deleteAll(roles);
-        this.eventPublisher.publishEvent(new ImmutableRolesDeletedEvent(roles));
+        this.eventPublisher.publishEvent(new ImmutableRolesClearedEvent(roles));
     }
 
     @Override
     public Role createSuperRole(StoreId storeId) {
         var roleId = this.createRoleId(storeId, null);
         return this.createRole(roleId)
-                .toBuilder().authorities(List.of(AllAuthorities.STORE_MANAGE))
+                .toBuilder().primitive()
+                .authorities(Set.of(AllAuthorities.STORE_MANAGE))
                 .name(RoleMessages.SuperRole.name()).description(RoleMessages.SuperRole.description())
                 .build();
     }
