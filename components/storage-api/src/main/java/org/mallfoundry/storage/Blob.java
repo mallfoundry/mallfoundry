@@ -64,7 +64,7 @@ public interface Blob extends Serializable, Closeable {
 
     void createFile();
 
-    void createDirectory();
+    void makeDirectory();
 
     void rename(String name);
 
@@ -78,8 +78,8 @@ public interface Blob extends Serializable, Closeable {
             this.blob = blob;
         }
 
-        public Builder directory() {
-            this.blob.createDirectory();
+        public Builder makeDirectory() {
+            this.blob.makeDirectory();
             return this;
         }
 

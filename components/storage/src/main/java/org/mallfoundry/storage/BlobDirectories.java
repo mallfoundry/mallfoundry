@@ -41,7 +41,7 @@ public abstract class BlobDirectories {
             return null;
         }
         var parent = new InternalBlob(new InternalBlobId(blob.getBucket(), parentPath));
-        parent.createDirectory();
+        parent.makeDirectory();
         return parent;
     }
 
