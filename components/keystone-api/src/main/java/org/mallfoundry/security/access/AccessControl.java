@@ -61,7 +61,7 @@ public interface AccessControl extends Serializable {
 
     void revoke(Set<String> permissions, Principal principal);
 
-    /*void revokeAll(Principal principal);*/
+    void revokeAll(Principal principal);
 
     boolean granted(String permission, Principal principal);
 
