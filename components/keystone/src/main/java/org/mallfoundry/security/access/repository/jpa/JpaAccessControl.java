@@ -39,6 +39,7 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -85,22 +86,19 @@ public class JpaAccessControl extends AccessControlSupport {
         return target;
     }
 
-    private AccessControlEntry getEntry(Principal principal) {
-        var entry = this.getEntryOrNull(principal);
-        if (Objects.isNull(entry)) {
-            entry = new JpaAccessControlEntry(principal);
-            this.entries.add(entry);
-        }
-        return entry;
+    private Optional<AccessControlEntry> findEntry(Principal principal) {
+        return entries.stream()
+                .filter(entry -> entry.getPrincipal().getType().equals(principal.getType())
+                        && entry.getPrincipal().getName().equals(principal.getName()))
+                .findFirst();
     }
 
-    private AccessControlEntry getEntryOrNull(Principal principal) {
-        for (var entry : entries) {
-            if (entry.getPrincipal().equals(principal)) {
-                return entry;
-            }
-        }
-        return null;
+    private AccessControlEntry getEntry(Principal principal) {
+        return this.findEntry(principal).orElseGet(() -> {
+            var entry = new JpaAccessControlEntry(principal);
+            this.entries.add(entry);
+            return entry;
+        });
     }
 
     @Override
@@ -133,15 +131,22 @@ public class JpaAccessControl extends AccessControlSupport {
     }
 
     @Override
+    public void revokeAll(Principal principal) {
+        this.getEntry(principal).clearPermissions();
+    }
+
+    @Override
     public boolean granted(String permission, Principal principal) {
-        var entry = this.getEntryOrNull(principal);
-        return !Objects.isNull(entry) && entry.checkPermission(permission);
+        return this.findEntry(principal)
+                .map(entry -> entry.checkPermission(permission))
+                .orElse(false);
     }
 
     @Override
     public boolean granted(Set<String> permissions, Principal principal) {
-        var entry = this.getEntryOrNull(principal);
-        return !Objects.isNull(entry) && entry.checkAnyPermission(permissions);
+        return this.findEntry(principal)
+                .map(entry -> entry.checkAnyPermission(permissions))
+                .orElse(false);
     }
 
     @Override
