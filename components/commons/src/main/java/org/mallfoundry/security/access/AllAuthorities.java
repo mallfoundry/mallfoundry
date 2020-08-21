@@ -64,6 +64,7 @@ public abstract class AllAuthorities extends StoreAuthorities {
     public static final String ORDER_REFUND_MANAGE = "order_refund_manage";
 
     public static final String ORDER_REVIEW_ADD = "order_review_add";
+    public static final String ORDER_REVIEW_MANAGE = "order_review_manage";
 
     // Customer Authorities
     public static final String CUSTOMER_MANAGE = "customer_manage";
