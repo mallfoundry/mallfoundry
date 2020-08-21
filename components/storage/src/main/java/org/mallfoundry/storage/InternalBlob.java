@@ -96,7 +96,7 @@ public class InternalBlob implements Blob {
     public InternalBlob(BlobId blobId) {
         this.setBucket(blobId.getBucket());
         this.setPath(blobId.getPath());
-        this.createDirectory();
+        this.makeDirectory();
     }
 
     public InternalBlob(BlobId blobId, File file) {
@@ -222,7 +222,7 @@ public class InternalBlob implements Blob {
     }
 
     @Override
-    public void createDirectory() {
+    public void makeDirectory() {
         this.setType(BlobType.DIRECTORY);
     }
 
