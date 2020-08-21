@@ -19,42 +19,17 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface StoreQuery extends Query {
+public interface StoreQuery extends Query, ObjectBuilder.ToBuilder<StoreQuery.Builder> {
 
     String getOwnerId();
 
     void setOwnerId(String ownerId);
 
-    default Builder toBuilder() {
-        return new Builder(this);
-    }
+    interface Builder extends QueryBuilder<StoreQuery, Builder> {
 
-    class Builder {
-
-        private final StoreQuery query;
-
-        public Builder(StoreQuery query) {
-            this.query = query;
-        }
-
-        public Builder page(Integer page) {
-            this.query.setPage(page);
-            return this;
-        }
-
-        public Builder limit(Integer limit) {
-            this.query.setLimit(limit);
-            return this;
-        }
-
-        public Builder ownerId(String ownerId) {
-            this.query.setOwnerId(ownerId);
-            return this;
-        }
-
-        public StoreQuery build() {
-            return this.query;
-        }
+        Builder ownerId(String ownerId);
     }
 }

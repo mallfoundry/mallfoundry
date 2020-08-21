@@ -20,10 +20,47 @@ package org.mallfoundry.store;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
 @Getter
 @Setter
 public class DefaultStoreQuery extends QuerySupport implements StoreQuery {
+
     private String ownerId;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<StoreQuery, Builder> implements Builder {
+
+        private final DefaultStoreQuery query;
+
+        public BuilderSupport(DefaultStoreQuery query) {
+            super(query);
+            this.query = query;
+        }
+
+        public Builder page(Integer page) {
+            this.query.setPage(page);
+            return this;
+        }
+
+        public Builder limit(Integer limit) {
+            this.query.setLimit(limit);
+            return this;
+        }
+
+        public Builder ownerId(String ownerId) {
+            this.query.setOwnerId(ownerId);
+            return this;
+        }
+
+        public StoreQuery build() {
+            return this.query;
+        }
+    }
 }
