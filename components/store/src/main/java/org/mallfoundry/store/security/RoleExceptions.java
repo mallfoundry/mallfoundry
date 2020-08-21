@@ -18,23 +18,13 @@
 
 package org.mallfoundry.store.security;
 
-import static org.mallfoundry.i18n.MessageHolder.message;
+public abstract class RoleExceptions {
 
-public abstract class RoleMessages {
-    private static final String STORE_SECURITY_SUPER_ROLE_NAME_MESSAGE_CODE_KEY = "store.security.SuperRole.name";
-    private static final String STORE_SECURITY_SUPER_ROLE_DESCRIPTION_MESSAGE_CODE_KEY = "store.security.SuperRole.description";
-
-    public static String notFound() {
-        return "";
+    public static RoleException notFound() {
+        return new RoleException(RoleMessages.notFound());
     }
 
-    public abstract static class SuperRole {
-        public static String name() {
-            return message(STORE_SECURITY_SUPER_ROLE_NAME_MESSAGE_CODE_KEY, "Super Admin");
-        }
-
-        public static String description() {
-            return message(STORE_SECURITY_SUPER_ROLE_DESCRIPTION_MESSAGE_CODE_KEY, "Have the right to manage the store");
-        }
+    public static RoleException cannotDelete() {
+        return new RoleException(RoleMessages.notFound());
     }
 }
