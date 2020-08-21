@@ -39,6 +39,8 @@ public interface AccessControlEntry extends Serializable {
 
     void removePermissions(Set<String> permissions);
 
+    void clearPermissions();
+
     boolean checkPermission(String permission);
 
     boolean checkAnyPermission(Set<String> permissions);
