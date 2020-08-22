@@ -20,6 +20,7 @@ package org.mallfoundry.store;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,77 +40,106 @@ public class DefaultStoreAddressService implements StoreAddressService, StoreAdd
     }
 
     @Override
-    public StoreAddressQuery createAddressQuery() {
+    public StoreAddressQuery createStoreAddressQuery() {
         return new DefaultStoreAddressQuery();
     }
 
     @Override
-    public StoreAddress createAddress(String addressId) {
+    public StoreAddressId createStoreAddressId(String tenantId, String storeId, String addressId) {
+        return new ImmutableStoreAddressId(tenantId, storeId, addressId);
+    }
+
+    @Override
+    public StoreAddressId createStoreAddressId(StoreId storeId, String addressId) {
+        return this.createStoreAddressId(storeId.getTenantId(), storeId.getId(), addressId);
+    }
+
+    @Override
+    public StoreAddressId createStoreAddressId(String addressId) {
+        return this.createStoreAddressId(null, null, addressId);
+    }
+
+    @Override
+    public StoreAddress createStoreAddress(String addressId) {
         return this.addressRepository.create(addressId);
     }
 
+    @Transactional
     @Override
-    public StoreAddress addAddress(StoreAddress address) {
+    public StoreAddress addStoreAddress(StoreAddress address) {
         return this.addressRepository.save(address);
     }
 
     @Override
-    public StoreAddress updateAddress(StoreAddress address) {
-        return this.addressRepository.save(address);
-    }
-
-    @Override
-    public void deleteAddress(String addressId) {
-        var address = this.requiredAddress(addressId);
-        this.addressRepository.delete(address);
-    }
-
-    private StoreAddress requiredAddress(String addressId) {
-        return this.getAddress(addressId).orElseThrow();
-    }
-
-    @Override
-    public Optional<StoreAddress> getAddress(String addressId) {
+    public Optional<StoreAddress> findStoreAddress(String addressId) {
         return this.addressRepository.findById(addressId);
     }
 
     @Override
-    public SliceList<StoreAddress> getAddresses(StoreAddressQuery query) {
+    public StoreAddress getStoreAddress(String addressId) {
+        return this.findStoreAddress(addressId).orElseThrow();
+    }
+
+    @Override
+    public SliceList<StoreAddress> getStoreAddresses(StoreAddressQuery query) {
         return this.addressRepository.findAll(query);
     }
 
+    @Transactional
     @Override
-    public StoreAddress invokePreProcessBeforeAddAddress(StoreAddress address) {
+    public StoreAddress updateStoreAddress(StoreAddress address) {
+        return this.addressRepository.save(address);
+    }
+
+    @Transactional
+    @Override
+    public void deleteStoreAddress(String addressId) {
+        var address = this.requiredStoreAddress(addressId);
+        this.addressRepository.delete(address);
+    }
+
+    @Transactional
+    @Override
+    public void clearStoreAddresses(StoreId storeId) {
+        this.addressRepository.deleteAllByStoreId(storeId);
+    }
+
+    private StoreAddress requiredStoreAddress(String addressId) {
+        return this.addressRepository.findById(addressId).orElseThrow();
+    }
+
+    @Override
+    public StoreAddress invokePreProcessBeforeAddStoreAddress(StoreAddress address) {
         return Processors.stream(this.processors)
-                .map(StoreAddressProcessor::preProcessBeforeAddAddress)
+                .map(StoreAddressProcessor::preProcessBeforeAddStoreAddress)
                 .apply(address);
     }
 
     @Override
-    public StoreAddress invokePreProcessBeforeUpdateAddress(StoreAddress address) {
+    public StoreAddress invokePostProcessAfterGetStoreAddress(StoreAddress address) {
         return Processors.stream(this.processors)
-                .map(StoreAddressProcessor::preProcessBeforeUpdateAddress)
+                .map(StoreAddressProcessor::postProcessAfterGetStoreAddress)
                 .apply(address);
     }
 
     @Override
-    public StoreAddress invokePreProcessBeforeDeleteAddress(StoreAddress address) {
+    public StoreAddressQuery invokePreProcessBeforeGetStoreAddresses(StoreAddressQuery query) {
         return Processors.stream(this.processors)
-                .map(StoreAddressProcessor::preProcessBeforeDeleteAddress)
-                .apply(address);
-    }
-
-    @Override
-    public StoreAddressQuery invokePreProcessBeforeGetAddresses(StoreAddressQuery query) {
-        return Processors.stream(this.processors)
-                .map(StoreAddressProcessor::preProcessBeforeGetAddresses)
+                .map(StoreAddressProcessor::preProcessBeforeGetStoreAddresses)
                 .apply(query);
     }
 
     @Override
-    public StoreAddress invokePostProcessAfterGetAddress(StoreAddress address) {
+    public StoreAddress invokePreProcessBeforeUpdateStoreAddress(StoreAddress address) {
         return Processors.stream(this.processors)
-                .map(StoreAddressProcessor::postProcessAfterGetAddress)
+                .map(StoreAddressProcessor::preProcessBeforeUpdateStoreAddress)
+                .apply(address);
+    }
+
+    @Override
+    public StoreAddress invokePreProcessBeforeDeleteStoreAddress(StoreAddress address) {
+        return Processors.stream(this.processors)
+                .map(StoreAddressProcessor::preProcessBeforeDeleteStoreAddress)
                 .apply(address);
     }
 }
