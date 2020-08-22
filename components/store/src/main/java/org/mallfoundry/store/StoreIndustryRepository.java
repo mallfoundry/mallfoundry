@@ -18,14 +18,19 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.identity.TenantOwnership;
-import org.mallfoundry.util.Position;
+import org.mallfoundry.data.SliceList;
 
-public interface StoreIndustry extends TenantOwnership, Position {
+import java.util.Optional;
 
-    StoreIndustryId toId();
+public interface StoreIndustryRepository {
 
-    String getId();
+    StoreIndustry create(StoreIndustryId industryId);
 
-    String getName();
+    Optional<StoreIndustry> findById(StoreIndustryId industryId);
+
+    SliceList<StoreIndustry> findAll(StoreIndustryQuery query);
+
+    StoreIndustry save(StoreIndustry industry);
+
+    void delete(StoreIndustry industry);
 }

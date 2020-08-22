@@ -18,14 +18,17 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.identity.TenantOwnership;
-import org.mallfoundry.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface StoreIndustry extends TenantOwnership, Position {
+@Getter
+@Setter
+public class ImmutableStoreIndustryId implements StoreIndustryId {
+    private String tenantId;
+    private String id;
 
-    StoreIndustryId toId();
-
-    String getId();
-
-    String getName();
+    public ImmutableStoreIndustryId(String tenantId, String id) {
+        this.tenantId = tenantId;
+        this.id = id;
+    }
 }

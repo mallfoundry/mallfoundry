@@ -18,14 +18,10 @@
 
 package org.mallfoundry.store;
 
-import org.mallfoundry.identity.TenantOwnership;
-import org.mallfoundry.util.Position;
+public abstract class StoreIndustrySupport implements StoreIndustry {
 
-public interface StoreIndustry extends TenantOwnership, Position {
-
-    StoreIndustryId toId();
-
-    String getId();
-
-    String getName();
+    @Override
+    public StoreIndustryId toId() {
+        return new ImmutableStoreIndustryId(this.getTenantId(), this.getId());
+    }
 }

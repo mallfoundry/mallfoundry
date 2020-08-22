@@ -16,16 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store;
+package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.identity.TenantOwnership;
-import org.mallfoundry.util.Position;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StoreIndustry extends TenantOwnership, Position {
+public interface JpaStoreIndustryRepository extends JpaRepository<JpaStoreIndustry, String> {
 
-    StoreIndustryId toId();
-
-    String getId();
-
-    String getName();
+    Page<JpaStoreIndustry> findAllByTenantId(String tenantId, Pageable pageable);
 }

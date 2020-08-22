@@ -18,9 +18,11 @@
 
 package org.mallfoundry.store;
 
-import java.util.List;
+import org.mallfoundry.data.SliceList;
 
 public interface StoreIndustryService {
+
+    StoreIndustryQuery createStoreIndustryQuery();
 
     StoreIndustryId createStoreIndustryId(String tenantId, String industryId);
 
@@ -28,7 +30,7 @@ public interface StoreIndustryService {
 
     StoreIndustry addStoreIndustry(StoreIndustry industry);
 
-    List<StoreIndustry> getStoreIndustries(StoreIndustry industry);
+    SliceList<StoreIndustry> getStoreIndustries(StoreIndustryQuery query);
 
     StoreIndustry updateStoreIndustry(StoreIndustry industry);
 

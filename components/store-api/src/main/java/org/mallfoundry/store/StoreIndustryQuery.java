@@ -19,7 +19,13 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface StoreIndustryQuery extends TenantOwnership, Query {
+public interface StoreIndustryQuery extends TenantOwnership, Query, ObjectBuilder.ToBuilder<StoreIndustryQuery.Builder> {
+
+    interface Builder extends QueryBuilder<StoreIndustryQuery, Builder> {
+        Builder tenantId(String tenantId);
+    }
 }
