@@ -20,6 +20,10 @@ package org.mallfoundry.store.staff.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
+import java.util.List;
+
 public interface JpaStaffStoreRepository extends JpaRepository<JpaStaffStore, String> {
 
+    List<JpaStaffStore> findAllByIdInOrderByCreatedTimeAsc(Collection<String> storeIds);
 }

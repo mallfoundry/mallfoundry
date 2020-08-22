@@ -48,7 +48,7 @@ public class DelegatingJpaStaffStoreRepository implements StaffStoreRepository {
             storeStaffs.put(staff.getStoreId(), staff);
             storeIds.add(staff.getStoreId());
         });
-        var stores = this.repository.findAllById(storeIds);
+        var stores = this.repository.findAllByIdInOrderByCreatedTimeAsc(storeIds);
         stores.forEach(store -> store.setStaff(storeStaffs.get(store.getId())));
         return PageList.of(stores)
                 .page(pageStaffs.getNumber()).limit(query.getLimit())
