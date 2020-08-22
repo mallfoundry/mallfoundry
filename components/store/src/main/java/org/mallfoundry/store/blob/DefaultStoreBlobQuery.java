@@ -34,7 +34,8 @@ public class DefaultStoreBlobQuery extends QuerySupport implements StoreBlobQuer
 
     @Override
     public Builder toBuilder() {
-        return null;
+        return new BuilderSupport(this) {
+        };
     }
 
     protected abstract static class BuilderSupport extends QueryBuilderSupport<StoreBlobQuery, Builder> implements Builder {
