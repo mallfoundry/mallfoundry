@@ -32,7 +32,9 @@ public interface StorageService {
 
     Bucket createBucket(String bucketName, Owner owner);
 
-    Optional<Bucket> getBucket(String bucketName);
+    Optional<Bucket> findBucket(String bucketName);
+
+    Bucket getBucket(String bucketName);
 
     boolean existsBucket(String bucketName);
 
@@ -48,7 +50,9 @@ public interface StorageService {
 
     BlobQuery createBlobQuery();
 
-    Optional<Blob> getBlob(String bucketName, String path);
+    Optional<Blob> findBlob(String bucketName, String path);
+
+    Blob getBlob(String bucketName, String path);
 
     SliceList<Blob> getBlobs(BlobQuery query);
 }

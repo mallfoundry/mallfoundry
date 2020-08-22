@@ -44,4 +44,9 @@ public interface JpaIndexBlobRepository
     @Query("delete from IndexBlob where id.bucket = ?1 and id.path in (?2)")
     @Override
     void deleteAllByBucketAndPaths(String bucket, List<String> paths);
+
+    @Modifying
+    @Query("delete from IndexBlob where id.bucket = ?1")
+    @Override
+    void deleteAllByBucket(String bucket);
 }

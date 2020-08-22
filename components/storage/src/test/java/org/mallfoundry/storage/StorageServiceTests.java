@@ -45,8 +45,7 @@ public class StorageServiceTests {
 
     @Test
     public void testGetBucket() {
-        this.storageService.getBucket("test")
-                .ifPresent(System.out::println);
+        this.storageService.findBucket("test").ifPresent(System.out::println);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class StorageServiceTests {
     @Test
     @Transactional
     public void testGetBlob() throws IOException {
-        this.storageService.getBlob("test", "/abc3/test2/c.txt")
+        this.storageService.findBlob("test", "/abc3/test2/c.txt")
                 .ifPresent(blob -> {
                     System.out.println(blob);
                     Blob parent = blob.getParent();
@@ -72,14 +71,14 @@ public class StorageServiceTests {
 
     @Test
     public void testStoreBlob() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test").orElseThrow();
+        Bucket bucket = this.storageService.getBucket("test");
         this.storageService.storeBlob(bucket.createBlob("/abc/test2.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
         this.storageService.storeBlob(bucket.createBlob("/abc/test3.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
     }
 
     @Test
     public void testStoreBlob2() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test").orElseThrow();
+        Bucket bucket = this.storageService.getBucket("test");
         Blob blob = bucket.createBlob("/abc2/test_dir3");
         Blob storeBlob = this.storageService.storeBlob(blob);
         System.out.println(storeBlob);
@@ -87,7 +86,7 @@ public class StorageServiceTests {
 
     @Test
     public void testStoreBlob3() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test").orElseThrow();
+        Bucket bucket = this.storageService.getBucket("test");
         this.storageService.storeBlob(bucket.createBlob("/abc2/test2/a.txt"));
         this.storageService.storeBlob(bucket.createBlob("/abc2/test2/b.txt"));
         this.storageService.storeBlob(bucket.createBlob("/abc2/test2/c.txt"));

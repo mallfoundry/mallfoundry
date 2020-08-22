@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class InternalStorageService implements StorageService {
+public class DefaultStorageService implements StorageService {
 
     private final StorageSystem storageSystem;
 
@@ -43,11 +43,11 @@ public class InternalStorageService implements StorageService {
 
     private final IndexBlobService indexBlobService;
 
-    public InternalStorageService(StorageSystem storageSystem,
-                                  InternalBucketRepository bucketRepository,
-                                  InternalBlobRepository blobRepository,
-                                  SharedBlobRepository sharedBlobRepository,
-                                  IndexBlobService indexBlobService) {
+    public DefaultStorageService(StorageSystem storageSystem,
+                                 InternalBucketRepository bucketRepository,
+                                 InternalBlobRepository blobRepository,
+                                 SharedBlobRepository sharedBlobRepository,
+                                 IndexBlobService indexBlobService) {
         this.storageSystem = storageSystem;
         this.bucketRepository = bucketRepository;
         this.blobRepository = blobRepository;
@@ -66,8 +66,13 @@ public class InternalStorageService implements StorageService {
     }
 
     @Override
-    public Optional<Bucket> getBucket(String bucketName) {
+    public Optional<Bucket> findBucket(String bucketName) {
         return this.bucketRepository.findById(bucketName).map(bucket -> bucket);
+    }
+
+    @Override
+    public Bucket getBucket(String bucketName) {
+        return this.findBucket(bucketName).orElseThrow();
     }
 
     @Override
@@ -81,16 +86,24 @@ public class InternalStorageService implements StorageService {
         return this.bucketRepository.save(InternalBucket.of(bucket));
     }
 
+    @Transactional
     @Override
     public void deleteBucket(String bucketName) {
+        this.indexBlobService.deleteIndexes(bucketName);
+        this.blobRepository.deleteAllByBucket(bucketName);
         this.bucketRepository.deleteById(bucketName);
     }
 
     @Override
-    public Optional<Blob> getBlob(String bucketName, String path) {
+    public Optional<Blob> findBlob(String bucketName, String path) {
         return this.blobRepository
                 .findById(new InternalBlobId(bucketName, path))
                 .map(blob -> blob);
+    }
+
+    @Override
+    public Blob getBlob(String bucketName, String path) {
+        return this.findBlob(bucketName, path).orElseThrow();
     }
 
     @Override
@@ -149,7 +162,7 @@ public class InternalStorageService implements StorageService {
     @Override
     public void deleteBlob(String bucketName, String path) {
         List<String> paths = this.indexBlobService.getIndexes(bucketName, path);
-        this.blobRepository.deleteByBucketAndPaths(bucketName, paths);
+        this.blobRepository.deleteAllByBucketAndPaths(bucketName, paths);
         this.indexBlobService.deleteIndexes(bucketName, path);
     }
 
@@ -157,7 +170,7 @@ public class InternalStorageService implements StorageService {
     @Override
     public void deleteBlobs(String bucketName, List<String> paths) {
         List<String> indexPaths = this.indexBlobService.getIndexes(bucketName, paths);
-        this.blobRepository.deleteByBucketAndPaths(bucketName, indexPaths);
+        this.blobRepository.deleteAllByBucketAndPaths(bucketName, indexPaths);
         this.indexBlobService.deleteIndexes(bucketName, paths);
     }
 

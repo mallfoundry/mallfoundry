@@ -48,7 +48,7 @@ public interface JpaInternalBlobRepository
     @Modifying
     @Query("delete from InternalBlob where bucket=?1 and path in (?2)")
     @Override
-    void deleteByBucketAndPaths(String bucket, List<String> paths);
+    void deleteAllByBucketAndPaths(String bucket, List<String> paths);
 
     @Override
     default SliceList<Blob> findAll(BlobQuery blobQuery) {

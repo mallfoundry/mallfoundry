@@ -56,11 +56,7 @@ public interface Blob extends Serializable, Closeable {
 
     File toFile() throws IOException;
 
-    InputStream openInputStream() throws StorageException, IOException;
-
-    /*Map<String, String> getMetadata();
-
-    void setMetadata(Map<String, String> metadata);*/
+    InputStream openInputStream() throws IOException;
 
     void createFile();
 

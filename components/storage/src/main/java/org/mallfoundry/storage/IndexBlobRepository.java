@@ -29,4 +29,6 @@ public interface IndexBlobRepository {
     <S extends IndexBlob> List<S> saveAll(Iterable<S> indexBlobs);
 
     void deleteAllByBucketAndPaths(String bucket, List<String> paths);
+
+    void deleteAllByBucket(String bucket);
 }

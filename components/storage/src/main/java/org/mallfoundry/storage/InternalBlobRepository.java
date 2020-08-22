@@ -25,14 +25,15 @@ import java.util.Optional;
 
 public interface InternalBlobRepository {
 
-    Optional<InternalBlob> findById(InternalBlobId blobId);
-
     boolean existsById(InternalBlobId blobId);
 
-    InternalBlob save(InternalBlob blob);
-
-    void deleteByBucketAndPaths(String bucket, List<String> paths);
+    Optional<InternalBlob> findById(InternalBlobId blobId);
 
     SliceList<Blob> findAll(BlobQuery blobQuery);
 
+    InternalBlob save(InternalBlob blob);
+
+    void deleteAllByBucketAndPaths(String bucket, List<String> paths);
+
+    void deleteAllByBucket(String bucket);
 }

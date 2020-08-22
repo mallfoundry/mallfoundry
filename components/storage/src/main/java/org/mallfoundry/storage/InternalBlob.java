@@ -165,19 +165,17 @@ public class InternalBlob implements Blob {
     }
 
     @Override
-    public InputStream openInputStream() throws StorageException, IOException {
+    public InputStream openInputStream() throws IOException {
         if (this.isDirectory()) {
-            throw new StorageException("The blob is a directory");
+            throw new IOException("The blob is a directory");
         }
-
         if (Objects.nonNull(this.file)) {
             return FileUtils.openInputStream(this.file);
         }
-
         if (Objects.nonNull(this.url)) {
             return new UrlResource(this.url).getInputStream();
         }
-        throw new StorageException("The blob has no stream. ");
+        throw new IOException("The blob has no stream");
     }
 
     public String getContentType() {

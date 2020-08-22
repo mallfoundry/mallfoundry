@@ -24,12 +24,8 @@ public enum BlobType {
     DIRECTORY, FILE;
 
     @JsonValue
-    private String lowercase() {
-        return this.name().toLowerCase();
-    }
-
     @Override
     public String toString() {
-        return this.lowercase();
+        return this.name().toLowerCase();
     }
 }

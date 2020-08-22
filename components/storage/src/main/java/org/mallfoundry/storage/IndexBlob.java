@@ -22,8 +22,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,38 +38,44 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_storage_index_blob")
+@IdClass(IndexBlobId.class)
 public class IndexBlob implements Serializable {
 
-    @EmbeddedId
-    private IndexBlobId id;
+    @Id
+    @Column(name = "bucket_")
+    private String bucket;
+
+    @Id
+    @Column(name = "path_")
+    private String path;
+
+    @Id
+    @Column(name = "value_")
+    private String value;
 
     public IndexBlob(String bucket, String path, String value) {
-        this.id = new IndexBlobId(bucket, path, value);
-    }
-
-    public String getValue() {
-        return this.id.getValue();
-    }
-
-    public String getPath() {
-        return this.id.getPath();
+        this.bucket = bucket;
+        this.path = path;
+        this.value = value;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(object instanceof IndexBlob)) {
             return false;
         }
-        IndexBlob that = (IndexBlob) o;
-        return Objects.equals(id, that.id);
+        IndexBlob indexBlob = (IndexBlob) object;
+        return Objects.equals(bucket, indexBlob.bucket)
+                && Objects.equals(path, indexBlob.path)
+                && Objects.equals(value, indexBlob.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(bucket, path, value);
     }
 
     public static List<IndexBlob> of(String bucket, String path) {

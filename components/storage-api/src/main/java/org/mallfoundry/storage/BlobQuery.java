@@ -19,8 +19,9 @@
 package org.mallfoundry.storage;
 
 import org.mallfoundry.data.Pageable;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface BlobQuery extends Pageable {
+public interface BlobQuery extends Pageable, ObjectBuilder.ToBuilder<BlobQuery.Builder> {
 
     BlobType getType();
 
@@ -33,8 +34,6 @@ public interface BlobQuery extends Pageable {
     String getPath();
 
     void setPath(String path);
-
-    Builder toBuilder();
 
     class Builder {
         private BlobQuery query;

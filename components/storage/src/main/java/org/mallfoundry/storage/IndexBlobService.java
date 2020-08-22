@@ -61,4 +61,8 @@ public class IndexBlobService {
     public void deleteIndexes(String bucket, List<String> paths) {
         this.indexBlobRepository.deleteAllByBucketAndPaths(bucket, this.getIndexes(bucket, paths));
     }
+
+    public void deleteIndexes(String bucket) {
+        this.indexBlobRepository.deleteAllByBucket(bucket);
+    }
 }
