@@ -35,7 +35,7 @@ public interface MemberService {
 
     Member joinMember(Member member);
 
-    Optional<Member> getMember(MemberId id);
+    Optional<Member> findMember(MemberId id);
 
     SliceList<Member> getMembers(MemberQuery query);
 
