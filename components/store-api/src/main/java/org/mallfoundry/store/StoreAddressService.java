@@ -24,17 +24,27 @@ import java.util.Optional;
 
 public interface StoreAddressService {
 
-    StoreAddressQuery createAddressQuery();
+    StoreAddressQuery createStoreAddressQuery();
 
-    StoreAddress createAddress(String addressId);
+    StoreAddressId createStoreAddressId(String tenantId, String storeId, String addressId);
 
-    StoreAddress addAddress(StoreAddress address);
+    StoreAddressId createStoreAddressId(StoreId storeId, String addressId);
 
-    StoreAddress updateAddress(StoreAddress address);
+    StoreAddressId createStoreAddressId(String addressId);
 
-    void deleteAddress(String addressId);
+    StoreAddress createStoreAddress(String addressId);
 
-    Optional<StoreAddress> getAddress(String addressId);
+    StoreAddress addStoreAddress(StoreAddress address);
 
-    SliceList<StoreAddress> getAddresses(StoreAddressQuery query);
+    Optional<StoreAddress> findStoreAddress(String addressId);
+
+    StoreAddress getStoreAddress(String addressId);
+
+    SliceList<StoreAddress> getStoreAddresses(StoreAddressQuery query);
+
+    StoreAddress updateStoreAddress(StoreAddress address);
+
+    void deleteStoreAddress(String addressId);
+
+    void clearStoreAddresses(StoreId storeId);
 }
