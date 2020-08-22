@@ -22,6 +22,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.StoreAddress;
 import org.mallfoundry.store.StoreAddressQuery;
 import org.mallfoundry.store.StoreAddressRepository;
+import org.mallfoundry.store.StoreId;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
@@ -57,5 +58,10 @@ public class DelegatingJpaStoreAddressRepository implements StoreAddressReposito
     @Override
     public void delete(StoreAddress address) {
         this.repository.delete(JpaStoreAddress.of(address));
+    }
+
+    @Override
+    public void deleteAllByStoreId(StoreId storeId) {
+        this.repository.deleteAllByTenantIdAndStoreId(storeId.getTenantId(), storeId.getId());
     }
 }
