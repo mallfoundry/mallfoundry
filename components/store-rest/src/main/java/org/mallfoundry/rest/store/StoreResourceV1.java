@@ -96,8 +96,8 @@ public class StoreResourceV1 {
     }
 
     @DeleteMapping("/stores/{store_id}")
-    public void cancelStore(@PathVariable("store_id") String id) {
-        this.storeService.cancelStore(this.createStoreId(id));
+    public void closeStore(@PathVariable("store_id") String id) {
+        this.storeService.closeStore(this.createStoreId(id));
     }
 
 }

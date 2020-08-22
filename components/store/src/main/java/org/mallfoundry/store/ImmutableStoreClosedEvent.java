@@ -18,9 +18,9 @@
 
 package org.mallfoundry.store;
 
-public class ImmutableStoreCancelledEvent extends StoreEventSupport implements StoreCancelledEvent {
+public class ImmutableStoreClosedEvent extends StoreEventSupport implements StoreClosedEvent {
 
-    public ImmutableStoreCancelledEvent(Store source) {
+    public ImmutableStoreClosedEvent(Store source) {
         super(source);
     }
 }

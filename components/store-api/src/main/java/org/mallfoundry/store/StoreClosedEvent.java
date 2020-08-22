@@ -18,5 +18,5 @@
 
 package org.mallfoundry.store;
 
-public interface StoreCancelledEvent extends StoreEvent {
+public interface StoreClosedEvent extends StoreEvent {
 }

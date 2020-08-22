@@ -42,7 +42,7 @@ public interface StoreService {
 
     Store updateStore(Store store);
 
-    void cancelStore(StoreId id);
+    void closeStore(StoreId id);
 
     boolean existsStore(StoreId id);
 

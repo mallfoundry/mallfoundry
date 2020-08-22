@@ -112,6 +112,11 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
                 .isPresent();
     }
 
+    private Store requiredStore(StoreId storeId) {
+        return this.storeRepository.findById(storeId)
+                .orElseThrow(() -> StoreExceptions.notFound(storeId));
+    }
+
     @Override
     public Store getStore(StoreId storeId) {
         return this.findStore(storeId)
@@ -140,35 +145,30 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         return this.storeRepository.findAllById(ids);
     }
 
-    private Store updateStore(final Store source, final Store dest) {
-        Copies.notBlank(source::getName).trim(dest::setName);
-        Copies.notBlank(source::getLogo).trim(dest::setLogo);
-        Copies.notBlank(source::getIndustry).trim(dest::setIndustry);
-        Copies.notBlank(source::getDescription).trim(dest::setDescription);
-        return dest;
+    private void updateStore(final Store source, final Store dest) {
+        Copies.notBlank(source::getName).trim(dest::setName)
+                .notBlank(source::getLogo).trim(dest::setLogo)
+                .notBlank(source::getIndustry).trim(dest::setIndustry)
+                .notBlank(source::getDescription).trim(dest::setDescription);
     }
 
     @Transactional
     @Override
     public Store updateStore(Store source) {
-        return Function.<Store>identity()
-                .compose(this.storeRepository::save)
-                .<Store>compose(aStore -> this.updateStore(source, aStore))
-                .compose(this::invokePreProcessBeforeUpdateStore)
-                .compose(this::getStore)
-                .compose(Store::toId)
-                .apply(source);
+
+        var store = this.requiredStore(source.toId());
+        store = this.invokePreProcessBeforeUpdateStore(store);
+        this.updateStore(source, store);
+        return this.storeRepository.save(store);
     }
 
     @Transactional
     @Override
-    public void cancelStore(StoreId storeId) {
-        var store = Function.<Store>identity()
-                .compose(this::invokePreProcessBeforeCancelStore)
-                .compose(this::getStore)
-                .apply(storeId);
+    public void closeStore(StoreId storeId) {
+        var store = this.requiredStore(storeId);
+        store = this.invokePreProcessBeforeCancelStore(store);
         this.storeRepository.delete(store);
-        this.eventPublisher.publishEvent(new ImmutableStoreCancelledEvent(store));
+        this.eventPublisher.publishEvent(new ImmutableStoreClosedEvent(store));
     }
 
     @Override
