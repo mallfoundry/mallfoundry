@@ -52,4 +52,6 @@ public interface JpaStoreAddressRepository
                 PageRequest.of(query.getPage() - 1, query.getLimit()));
         return PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
     }
+
+    void deleteAllByTenantIdAndStoreId(String tenantId, String storeId);
 }
