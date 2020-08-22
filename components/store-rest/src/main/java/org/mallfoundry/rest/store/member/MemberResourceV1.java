@@ -54,9 +54,9 @@ public class MemberResourceV1 {
     }
 
     @GetMapping("stores/{store_id}/members/{member_id}")
-    public Optional<Member> getMember(@PathVariable("store_id") String storeId,
+    public Optional<Member> findMember(@PathVariable("store_id") String storeId,
                                       @PathVariable("member_id") String memberId) {
-        return this.memberService.getMember(
+        return this.memberService.findMember(
                 this.memberService.createMemberId(storeId, memberId));
     }
 
