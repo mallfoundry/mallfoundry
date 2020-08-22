@@ -22,23 +22,23 @@ import org.mallfoundry.processor.Processor;
 
 public interface StoreAddressProcessor extends Processor {
 
-    default StoreAddress preProcessBeforeAddAddress(StoreAddress address) {
+    default StoreAddress preProcessBeforeAddStoreAddress(StoreAddress address) {
         return address;
     }
 
-    default StoreAddress preProcessBeforeUpdateAddress(StoreAddress address) {
+    default StoreAddress postProcessAfterGetStoreAddress(StoreAddress address) {
         return address;
     }
 
-    default StoreAddress preProcessBeforeDeleteAddress(StoreAddress address) {
-        return address;
-    }
-
-    default StoreAddressQuery preProcessBeforeGetAddresses(StoreAddressQuery query) {
+    default StoreAddressQuery preProcessBeforeGetStoreAddresses(StoreAddressQuery query) {
         return query;
     }
 
-    default StoreAddress postProcessAfterGetAddress(StoreAddress address) {
+    default StoreAddress preProcessBeforeUpdateStoreAddress(StoreAddress address) {
+        return address;
+    }
+
+    default StoreAddress preProcessBeforeDeleteStoreAddress(StoreAddress address) {
         return address;
     }
 }
