@@ -18,12 +18,13 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreAuthorizeProcessor;
+import org.mallfoundry.store.StoreClosedBasicCleanupEventListener;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
-import org.mallfoundry.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,8 @@ import java.util.List;
 @Import({StoreInitializingConfiguration.class,
         StoreAddressConfiguration.class,
         StoreSecurityConfiguration.class,
-        StoreStaffConfiguration.class})
+        StoreStaffConfiguration.class,
+        StoreClosedBasicCleanupEventListener.class})
 public class StoreAutoConfiguration {
 
     @Bean
