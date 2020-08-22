@@ -36,16 +36,6 @@ public interface StoreService {
 
     Store createStore(Store store);
 
-    StoreInitializing initializeStore(StoreId id);
-
-    Optional<StoreInitializing> getStoreInitializing(StoreId id);
-
-    Store updateStore(Store store);
-
-    void closeStore(StoreId id);
-
-    boolean existsStore(StoreId id);
-
     Store getStore(StoreId id);
 
     Optional<Store> findStore(StoreId id);
@@ -53,4 +43,13 @@ public interface StoreService {
     SliceList<Store> getStores(StoreQuery query);
 
     List<Store> getStores(Collection<StoreId> ids);
+
+    Store updateStore(Store store);
+
+    void closeStore(StoreId id);
+
+    StoreInitializing initializeStore(StoreId id);
+
+    Optional<StoreInitializing> getStoreInitializing(StoreId id);
+
 }

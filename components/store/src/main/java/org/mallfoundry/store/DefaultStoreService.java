@@ -89,29 +89,6 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         return store;
     }
 
-    @Transactional
-    @Override
-    public StoreInitializing initializeStore(StoreId id) {
-        var store = this.getStore(id);
-        store = this.invokePreProcessBeforeInitializeStore(store);
-        store.initialize();
-        store = this.storeRepository.save(store);
-        return this.storeInitializingManager.initializeStore(store);
-    }
-
-    @Override
-    public Optional<StoreInitializing> getStoreInitializing(StoreId id) {
-        return this.storeInitializingManager.getStoreInitializing(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean existsStore(StoreId id) {
-        return this.storeRepository.findById(id)
-                .map(this::invokePreProcessBeforeExistsStore)
-                .isPresent();
-    }
-
     private Store requiredStore(StoreId storeId) {
         return this.storeRepository.findById(storeId)
                 .orElseThrow(() -> StoreExceptions.notFound(storeId));
@@ -155,7 +132,6 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     @Transactional
     @Override
     public Store updateStore(Store source) {
-
         var store = this.requiredStore(source.toId());
         store = this.invokePreProcessBeforeUpdateStore(store);
         this.updateStore(source, store);
@@ -166,9 +142,24 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     @Override
     public void closeStore(StoreId storeId) {
         var store = this.requiredStore(storeId);
-        store = this.invokePreProcessBeforeCancelStore(store);
+        store = this.invokePreProcessBeforeCloseStore(store);
         this.storeRepository.delete(store);
         this.eventPublisher.publishEvent(new ImmutableStoreClosedEvent(store));
+    }
+
+    @Transactional
+    @Override
+    public StoreInitializing initializeStore(StoreId id) {
+        var store = this.getStore(id);
+        store = this.invokePreProcessBeforeInitializeStore(store);
+        store.initialize();
+        store = this.storeRepository.save(store);
+        return this.storeInitializingManager.initializeStore(store);
+    }
+
+    @Override
+    public Optional<StoreInitializing> getStoreInitializing(StoreId id) {
+        return this.storeInitializingManager.getStoreInitializing(id);
     }
 
     @Override
@@ -193,16 +184,9 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     }
 
     @Override
-    public Store invokePreProcessBeforeCancelStore(Store store) {
+    public Store invokePreProcessBeforeCloseStore(Store store) {
         return Processors.stream(processors)
-                .map(StoreProcessor::preProcessBeforeCancelStore)
-                .apply(store);
-    }
-
-    @Override
-    public Store invokePreProcessBeforeExistsStore(Store store) {
-        return Processors.stream(processors)
-                .map(StoreProcessor::preProcessBeforeExistsStore)
+                .map(StoreProcessor::preProcessBeforeCloseStore)
                 .apply(store);
     }
 

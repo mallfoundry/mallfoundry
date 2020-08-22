@@ -24,13 +24,11 @@ public interface StoreProcessorInvoker {
 
     Store invokePreProcessBeforeInitializeStore(Store store);
 
-    Store invokePreProcessBeforeUpdateStore(Store store);
-
-    Store invokePreProcessBeforeCancelStore(Store store);
-
-    Store invokePreProcessBeforeExistsStore(Store store);
-
     StoreQuery invokePreProcessBeforeGetStores(StoreQuery query);
 
     Store invokePostProcessAfterGetStore(Store store);
+
+    Store invokePreProcessBeforeUpdateStore(Store store);
+
+    Store invokePreProcessBeforeCloseStore(Store store);
 }

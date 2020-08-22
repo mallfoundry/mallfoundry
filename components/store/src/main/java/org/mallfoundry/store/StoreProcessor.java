@@ -30,23 +30,19 @@ public interface StoreProcessor extends Processor {
         return store;
     }
 
-    default Store preProcessBeforeUpdateStore(Store store) {
-        return store;
-    }
-
-    default Store preProcessBeforeCancelStore(Store store) {
-        return store;
-    }
-
-    default Store preProcessBeforeExistsStore(Store store) {
-        return store;
-    }
-
     default StoreQuery preProcessBeforeGetStores(StoreQuery query) {
         return query;
     }
 
     default Store postProcessAfterGetStore(Store store) {
+        return store;
+    }
+
+    default Store preProcessBeforeUpdateStore(Store store) {
+        return store;
+    }
+
+    default Store preProcessBeforeCloseStore(Store store) {
         return store;
     }
 }

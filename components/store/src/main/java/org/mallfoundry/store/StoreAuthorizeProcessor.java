@@ -32,10 +32,20 @@ public class StoreAuthorizeProcessor implements StoreProcessor {
 
     @Override
     public Store preProcessBeforeInitializeStore(Store store) {
+        this.authorizeStoreOwner(store);
+        return store;
+    }
+
+    @Override
+    public Store preProcessBeforeCloseStore(Store store) {
+        this.authorizeStoreOwner(store);
+        return store;
+    }
+
+    private void authorizeStoreOwner(Store store) {
         var ownerId = SubjectHolder.getSubject().getId();
         if (!Objects.equals(store.getOwnerId(), ownerId)) {
             AuthorizeHolder.authorize("false");
         }
-        return store;
     }
 }

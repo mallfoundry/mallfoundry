@@ -49,6 +49,16 @@ public class StoreResourceV1 {
         return this.storeService.createStoreId(id);
     }
 
+    @PostMapping("/stores/{id}/initialize")
+    public StoreInitializing initializeStore(@PathVariable("id") String id) {
+        return this.storeService.initializeStore(this.createStoreId(id));
+    }
+
+    @GetMapping("/stores/{id}/initializing")
+    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
+        return this.storeService.getStoreInitializing(this.createStoreId(id));
+    }
+
     @PostMapping("/stores")
     public Store createStore(@RequestBody StoreRequest request) {
         return this.storeService.createStore(
@@ -60,22 +70,6 @@ public class StoreResourceV1 {
     @GetMapping("/stores/{id}")
     public Optional<Store> getStore(@PathVariable("id") String id) {
         return this.storeService.findStore(this.createStoreId(id));
-    }
-
-
-    @PostMapping("/stores/{id}/initialize")
-    public StoreInitializing initializeStore(@PathVariable("id") String id) {
-        return this.storeService.initializeStore(this.createStoreId(id));
-    }
-
-    @GetMapping("/stores/{id}/initializing")
-    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
-        return this.storeService.getStoreInitializing(this.createStoreId(id));
-    }
-
-    @GetMapping("/stores/{id}/exists")
-    public boolean existsStore(@PathVariable("id") String id) {
-        return this.storeService.existsStore(this.createStoreId(id));
     }
 
     @GetMapping("/stores")
@@ -99,5 +93,4 @@ public class StoreResourceV1 {
     public void closeStore(@PathVariable("store_id") String id) {
         this.storeService.closeStore(this.createStoreId(id));
     }
-
 }
