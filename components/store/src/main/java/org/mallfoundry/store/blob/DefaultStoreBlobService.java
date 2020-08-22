@@ -22,7 +22,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
-import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.storage.acl.OwnerType;
@@ -33,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,30 +47,33 @@ public class DefaultStoreBlobService implements StoreBlobService {
     }
 
     @Override
-    public BlobQuery createBlobQuery() {
-        return this.storageService.createBlobQuery();
+    public StoreBlobQuery createStoreBlobQuery() {
+        return new DefaultStoreBlobQuery();
     }
 
-    @Override
-    public String getBucketName(String storeId) {
+    private String getStoreBucketName(StoreId storeId) {
+        return this.getStoreBucketName(storeId.getId());
+    }
+
+    private String getStoreBucketName(String storeId) {
         return STORE_BUCKET_PREFIX + storeId;
     }
 
     @Override
-    public Optional<Bucket> getBucket(String storeId) {
-        return this.storageService.getBucket(this.getBucketName(storeId));
+    public Bucket getStoreBucket(StoreId storeId) {
+        return this.storageService.getBucket(this.getStoreBucketName(storeId));
     }
 
     @Transactional
     @Override
-    public void initializeBucket(String storeId) {
-        var owner = this.storageService.createOwner(OwnerType.STORE, storeId);
-        var bucket = this.storageService.createBucket(this.getBucketName(storeId), owner);
+    public void initializeStoreBucket(StoreId storeId) {
+        var owner = this.storageService.createOwner(OwnerType.STORE, storeId.getId());
+        var bucket = this.storageService.createBucket(this.getStoreBucketName(storeId), owner);
         this.storageService.addBucket(bucket);
     }
 
     @Override
-    public Blob storeBlob(Blob blob) throws IOException, StoreBlobException {
+    public Blob storeStoreBlob(Blob blob) throws IOException, StoreBlobException {
         PathValidator.validate(blob.getPath());
         if (Extensions.isImageExtension(blob) || blob.isDirectory()) {
             try (blob) {
@@ -83,26 +84,31 @@ public class DefaultStoreBlobService implements StoreBlobService {
     }
 
     @Override
-    public void deleteBlob(String storeId, String path) {
-        this.storageService.deleteBlob(getBucketName(storeId), PathUtils.normalize(path));
+    public SliceList<Blob> getStoreBlobs(StoreBlobQuery query) {
+        PathValidator.validate(query.getPath());
+        var blobQuery = this.storageService.createBlobQuery().toBuilder()
+                .page(query.getPage()).limit(query.getLimit())
+                .bucket(this.getStoreBucketName(query.getStoreId()))
+                .type(query.getType())
+                .path(query.getPath())
+                .build();
+        return this.storageService.getBlobs(blobQuery);
     }
 
     @Override
-    public void deleteBlobs(String storeId, List<String> paths) {
-        this.storageService.deleteBlobs(getBucketName(storeId),
+    public void deleteStoreBlob(StoreId storeId, String path) {
+        this.storageService.deleteBlob(getStoreBucketName(storeId), PathUtils.normalize(path));
+    }
+
+    @Override
+    public void deleteStoreBlobs(StoreId storeId, List<String> paths) {
+        this.storageService.deleteBlobs(getStoreBucketName(storeId),
                 paths.stream().map(PathUtils::normalize).collect(Collectors.toList()));
     }
 
     @Override
-    public void clearBlobs(StoreId storeId) {
-
-
-    }
-
-    @Override
-    public SliceList<Blob> getBlobs(BlobQuery query) {
-        PathValidator.validate(query.getPath());
-        return this.storageService.getBlobs(query);
+    public void clearStoreBlobs(StoreId storeId) {
+        this.storageService.deleteBucket(this.getStoreBucketName(storeId));
     }
 
     abstract static class PathValidator {
