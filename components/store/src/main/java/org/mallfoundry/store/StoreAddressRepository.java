@@ -33,4 +33,6 @@ public interface StoreAddressRepository {
     SliceList<StoreAddress> findAll(StoreAddressQuery query);
 
     void delete(StoreAddress address);
+
+    void deleteAllByStoreId(StoreId storeId);
 }
