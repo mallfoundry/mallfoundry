@@ -18,6 +18,8 @@
 
 package org.mallfoundry.store;
 
+import org.mallfoundry.security.access.AccessControlManager;
+import org.mallfoundry.security.access.Resource;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.mallfoundry.store.member.MemberService;
 import org.mallfoundry.store.security.RoleService;
@@ -27,32 +29,41 @@ import org.springframework.context.event.EventListener;
 
 @Configuration
 public class StoreClosedBasicCleanupEventListener {
+    private final AccessControlManager accessControlManager;
     private final StoreAddressService storeAddressService;
     private final StaffService staffService;
     private final MemberService memberService;
     private final RoleService roleService;
-    private final StoreBlobService blobService;
+    private final StoreBlobService storeBlobService;
 
-    public StoreClosedBasicCleanupEventListener(StoreAddressService storeAddressService,
+    public StoreClosedBasicCleanupEventListener(AccessControlManager accessControlManager,
+                                                StoreAddressService storeAddressService,
                                                 StaffService staffService,
                                                 MemberService memberService,
                                                 RoleService roleService,
-                                                StoreBlobService blobService) {
+                                                StoreBlobService storeBlobService) {
+        this.accessControlManager = accessControlManager;
         this.storeAddressService = storeAddressService;
         this.staffService = staffService;
         this.memberService = memberService;
         this.roleService = roleService;
-        this.blobService = blobService;
+        this.storeBlobService = storeBlobService;
     }
 
     @EventListener
     public void onStoreClosed(StoreClosedEvent event) {
         var store = event.getStore();
         var storeId = store.toId();
+        this.deleteResource(storeId);
         this.storeAddressService.clearStoreAddresses(storeId);
         this.staffService.clearStaffs(storeId);
         this.roleService.clearRoles(storeId);
         this.memberService.clearMembers(storeId);
-        this.blobService.clearStoreBlobs(storeId);
+        this.storeBlobService.clearStoreBlobs(storeId);
+    }
+
+    private void deleteResource(StoreId storeId) {
+        var resource = this.accessControlManager.createResource(Resource.STORE_TYPE, storeId.getId());
+        this.accessControlManager.removeResource(resource);
     }
 }
