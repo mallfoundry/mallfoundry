@@ -22,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobType;
+import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.blob.StoreBlobService;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,67 +48,67 @@ public class StoreBlobResourceV1 {
 
     private final AntPathMatcher blobPathMatcher = new AntPathMatcher();
 
+    private final StoreService storeService;
+
     private final StoreBlobService storeBlobService;
 
-    public StoreBlobResourceV1(StoreBlobService storeBlobService) {
+    public StoreBlobResourceV1(StoreService storeService, StoreBlobService storeBlobService) {
+        this.storeService = storeService;
         this.storeBlobService = storeBlobService;
     }
 
-    @PostMapping("/{store_id}/blobs/**")
-    public Blob storeBlob(
-            @PathVariable("store_id") String storeId,
-            @RequestParam(required = false) String name,
-            @RequestParam(name = "file", required = false) MultipartFile file,
-            HttpServletRequest request) throws IOException {
-        var bucket = this.storeBlobService.getBucket(storeId).orElseThrow();
+    private StoreId createStoreId(String storeId) {
+        return this.storeService.createStoreId(storeId);
+    }
 
+    @PostMapping("/{store_id}/blobs/**")
+    public Blob storeStoreBlob(@PathVariable("store_id") String storeId,
+                          @RequestParam(required = false) String name,
+                          @RequestParam(name = "file", required = false) MultipartFile file,
+                          HttpServletRequest request) throws IOException {
+        var bucket = this.storeBlobService.getStoreBucket(this.createStoreId(storeId));
         Blob storeBlob;
         if (Objects.nonNull(file)) {
-            String blobPath = extractBlobPath(request, file.getOriginalFilename());
+            String blobPath = extractStoreBlobPath(request, file.getOriginalFilename());
             storeBlob = bucket.createBlob(blobPath, file.getInputStream());
-            storeBlob.rename(StringUtils.isEmpty(name)
-                    ? file.getOriginalFilename()
-                    : name);
+            storeBlob.rename(StringUtils.isEmpty(name) ? file.getOriginalFilename() : name);
         } else {
-            storeBlob = bucket.createBlob(extractBlobPath(request, name));
+            storeBlob = bucket.createBlob(extractStoreBlobPath(request, name));
             if (StringUtils.isNotBlank(name)) {
                 storeBlob.rename(name);
             }
         }
-        return this.storeBlobService.storeBlob(storeBlob);
+        return this.storeBlobService.storeStoreBlob(storeBlob);
     }
 
 
     @DeleteMapping("/{store_id}/blobs/**")
-    public void deleteBlob(@PathVariable("store_id") String storeId,
+    public void deleteStoreBlob(@PathVariable("store_id") String storeId,
                            HttpServletRequest request) {
-        this.storeBlobService.deleteBlob(storeId, extractBlobPath(request, null));
+        this.storeBlobService.deleteStoreBlob(this.createStoreId(storeId), extractStoreBlobPath(request, null));
     }
 
     @DeleteMapping("/{store_id}/blobs/batch")
-    public void deleteBlobs(@PathVariable("store_id") String storeId,
+    public void deleteStoreBlobs(@PathVariable("store_id") String storeId,
                             @RequestBody List<String> paths) {
-        this.storeBlobService.deleteBlobs(storeId, paths);
+        this.storeBlobService.deleteStoreBlobs(this.createStoreId(storeId), paths);
     }
 
     @GetMapping("/{store_id}/blobs")
-    public SliceList<Blob> getBlobs(
-            @PathVariable("store_id") String storeId,
-            @RequestParam(name = "page", defaultValue = "1") Integer page,
-            @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-            String type, String path) {
+    public SliceList<Blob> getStoreBlobs(@PathVariable("store_id") String storeId,
+                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                    String type, String path) {
         var typeUpper = StringUtils.upperCase(type);
-        var bucketName = this.storeBlobService.getBucketName(storeId);
-        return this.storeBlobService.getBlobs(this.storeBlobService.createBlobQuery().toBuilder()
-                .page(page).limit(limit)
-                .bucket(bucketName)
-                .type(StringUtils.isEmpty(typeUpper)
-                        ? null
-                        : BlobType.valueOf(typeUpper))
-                .path(path).build());
+        return this.storeBlobService.getStoreBlobs(
+                this.storeBlobService.createStoreBlobQuery().toBuilder()
+                        .page(page).limit(limit)
+                        .type(StringUtils.isEmpty(typeUpper) ? null : BlobType.valueOf(typeUpper))
+                        .storeId(storeId)
+                        .path(path).build());
     }
 
-    private String extractBlobPath(HttpServletRequest request, String defaultPath) {
+    private String extractStoreBlobPath(HttpServletRequest request, String defaultPath) {
         String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
         String blobPath = this.blobPathMatcher.extractPathWithinPattern(bestMatchingPattern, path);
