@@ -20,7 +20,7 @@ package org.mallfoundry.store.member;
 
 public interface MemberProcessorInvoker {
 
-    Member invokePreProcessBeforeAddMember(Member member);
+    Member invokePreProcessBeforeJoinMember(Member member);
 
     Member invokePostProcessAfterGetMember(Member member);
 

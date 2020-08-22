@@ -49,4 +49,6 @@ public interface JpaMemberRepository extends JpaRepository<JpaMember, JpaMemberI
     default long count(MemberQuery query) {
         return this.count(this.createSpecification(query));
     }
+
+    void deleteAllByTenantIdAndStoreId(String tenantId, String storeId);
 }

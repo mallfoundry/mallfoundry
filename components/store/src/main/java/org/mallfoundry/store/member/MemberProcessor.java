@@ -20,11 +20,11 @@ package org.mallfoundry.store.member;
 
 public interface MemberProcessor {
 
-    default Member preProcessBeforeAddMember(Member member) {
+    default Member preProcessBeforeJoinMember(Member member) {
         return member;
     }
 
-    default Member preProcessAfterAddMember(Member member) {
+    default Member preProcessAfterJoinMember(Member member) {
         return member;
     }
 

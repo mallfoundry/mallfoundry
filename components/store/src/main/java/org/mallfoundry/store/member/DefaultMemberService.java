@@ -26,6 +26,7 @@ import org.mallfoundry.identity.UserService;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.util.Copies;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,6 @@ import java.util.function.Function;
 public class DefaultMemberService implements MemberService, MemberProcessorInvoker {
 
     private List<MemberProcessor> processors = Collections.emptyList();
-
 
     private final UserService userService;
 
@@ -101,13 +101,18 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
                 .orElseGet(() -> Function.<Member>identity()
                         .compose(this.memberRepository::save)
                         .compose(this::joinMemberPeek)
-                        .compose(this::invokePreProcessBeforeAddMember)
+                        .compose(this::invokePreProcessBeforeJoinMember)
                         .apply(member));
 
     }
 
+    private Member requiredMember(MemberId id) {
+        return this.memberRepository.findById(id)
+                .orElseThrow();
+    }
+
     @Override
-    public Optional<Member> getMember(MemberId id) {
+    public Optional<Member> findMember(MemberId id) {
         return this.memberRepository.findById(id)
                 .map(this::invokePostProcessAfterGetMember);
     }
@@ -118,11 +123,6 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
                 .compose(this.memberRepository::findAll)
                 .compose(this::invokePreProcessBeforeGetMembers)
                 .apply(query);
-    }
-
-    private Member requiredMember(MemberId id) {
-        return this.memberRepository.findById(id)
-                .orElseThrow();
     }
 
     private Member updateMember(Member source, Member dest) {
@@ -143,24 +143,24 @@ public class DefaultMemberService implements MemberService, MemberProcessorInvok
                 .apply(this.createMemberId(source.getStoreId(), source.getId()));
     }
 
+    @Transactional
     @Override
     public void deleteMember(MemberId id) {
-        var member = Function.<Member>identity()
-                .compose(this::invokePreProcessBeforeDeleteMember)
-                .compose(this::requiredMember)
-                .apply(id);
+        var member = this.requiredMember(id);
+        member = this.invokePreProcessBeforeDeleteMember(member);
         this.memberRepository.delete(member);
     }
 
+    @Transactional
     @Override
-    public void clearMembers(StoreId id) {
-
+    public void clearMembers(StoreId storeId) {
+        this.memberRepository.deleteAllByStoreId(storeId);
     }
 
     @Override
-    public Member invokePreProcessBeforeAddMember(Member member) {
+    public Member invokePreProcessBeforeJoinMember(Member member) {
         return Processors.stream(this.processors)
-                .map(MemberProcessor::preProcessBeforeAddMember)
+                .map(MemberProcessor::preProcessBeforeJoinMember)
                 .apply(member);
     }
 

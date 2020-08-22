@@ -19,6 +19,7 @@
 package org.mallfoundry.store.member;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 
 import java.util.Optional;
 
@@ -33,4 +34,6 @@ public interface MemberRepository {
     Member save(Member member);
 
     void delete(Member member);
+
+    void deleteAllByStoreId(StoreId storeId);
 }

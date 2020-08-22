@@ -20,6 +20,7 @@ package org.mallfoundry.store.member.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.member.Member;
 import org.mallfoundry.store.member.MemberId;
 import org.mallfoundry.store.member.MemberQuery;
@@ -63,5 +64,10 @@ public class DelegatingJpaMemberRepository implements MemberRepository {
     @Override
     public void delete(Member member) {
         this.repository.delete(JpaMember.of(member));
+    }
+
+    @Override
+    public void deleteAllByStoreId(StoreId storeId) {
+        this.repository.deleteAllByTenantIdAndStoreId(storeId.getTenantId(), storeId.getId());
     }
 }
