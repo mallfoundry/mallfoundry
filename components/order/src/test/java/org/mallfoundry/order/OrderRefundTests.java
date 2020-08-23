@@ -35,30 +35,23 @@ public class OrderRefundTests {
     @Test
     public void testUnpaidThenApplyRefund() {
         var order = new JpaOrder();
-        var refund = order.createRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemReceive();
-//        item.setReason("Open");
-        refund.addItem(item);
+        var refund = order.createRefund("1").toBuilder()
+                .itemId("i1")
+                .amount(BigDecimal.valueOf(10))
+                .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
                 .withMessage(OrderExceptions.unpaid().getMessage());
-
     }
 
     @Test
     public void testPaidAndItemNotFoundThenApplyRefund() {
         var order = new JpaOrder();
         order.pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED));
-        var refund = order.createRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemReceive();
-//        item.setReason("Open");
-        refund.addItem(item);
+        var refund = order.createRefund("1").toBuilder()
+                .itemId("i1")
+                .amount(BigDecimal.valueOf(10))
+                .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
                 .withMessage(OrderExceptions.Item.notFound().getMessage());
@@ -68,15 +61,13 @@ public class OrderRefundTests {
     public void testPaidAndItemThenApplyRefundAmountGreaterThanItemTotalAmount() {
         var order = new JpaOrder()
                 .toBuilder()
-                .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
+                .item(item -> item.toBuilder().id("i1").price(BigDecimal.valueOf(1)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
-        var refund = order.createRefund("1");
-        var refundItem = refund.createItem("1");
-        refundItem.setAmount(BigDecimal.valueOf(10));
-        refundItem.setItemId("12");
-        refundItem.itemReceive();
-        refund.addItem(refundItem);
+        var refund = order.createRefund("1").toBuilder()
+                .itemId("i1")
+                .amount(BigDecimal.valueOf(10))
+                .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
                 .withMessage(OrderExceptions.Refund.overApply().getMessage());
@@ -86,13 +77,12 @@ public class OrderRefundTests {
     public void testPaidAndItemThenApplyRefundTwoAmountEqualsItemTotalAmount() {
         var order = new JpaOrder()
                 .toBuilder()
-                .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
+                .item(item -> item.toBuilder().id("i1").price(BigDecimal.valueOf(10)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
-        var refund = order.createRefund("1")
-                .toBuilder()
-                .item(self -> self.createItem("1").toBuilder().itemId("12").itemReceive().amount(BigDecimal.valueOf(1)).build())
-                .item(self -> self.createItem("2").toBuilder().itemId("12").itemReceive().amount(BigDecimal.valueOf(1)).build())
+        var refund = order.createRefund("1").toBuilder()
+                .itemId("i1")
+                .amount(BigDecimal.valueOf(10))
                 .build();
         order.applyRefund(refund);
     }
@@ -106,8 +96,6 @@ public class OrderRefundTests {
                 .build();
         var refund = order.createRefund("1")
                 .toBuilder()
-                .item(self -> self.createItem("1").toBuilder().itemId("12").itemReceive().amount(BigDecimal.valueOf(1)).build())
-                .item(self -> self.createItem("2").toBuilder().itemId("12").itemReceive().amount(BigDecimal.valueOf(2)).build())
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))

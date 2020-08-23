@@ -230,7 +230,7 @@ public class JpaOrder extends OrderSupport {
 
     @Override
     public OrderRefund createRefund(String refundId) {
-        return new JpaOrderRefund(refundId);
+        return new JpaOrderRefund(this.getId(), refundId);
     }
 
     @Override

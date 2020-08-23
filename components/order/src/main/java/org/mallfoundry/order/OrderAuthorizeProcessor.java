@@ -183,6 +183,16 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + AllAuthorities.ORDER_REFUND_APPLY + ","
+            + AllAuthorities.ORDER_REFUND_MANAGE + ","
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
+    @Override
+    public List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return refunds;
+    }
+
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
             + AllAuthorities.ORDER_REFUND_CANCEL + ","
             + AllAuthorities.ORDER_REFUND_MANAGE + ","
             + AllAuthorities.ORDER_MANAGE + ","

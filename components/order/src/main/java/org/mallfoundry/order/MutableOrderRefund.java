@@ -18,14 +18,15 @@
 
 package org.mallfoundry.order;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public interface MutableOrderRefund extends OrderRefund {
 
-    void setTotalAmount(BigDecimal totalAmount);
+    void setItemStatus(ItemStatus itemStatus);
 
-    void setStatus(OrderRefundStatus status);
+    void setStatus(RefundStatus status);
+
+    void setReason(String reason);
 
     void setDisapprovalReason(String disapprovalReason);
 

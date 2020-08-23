@@ -110,6 +110,8 @@ public interface OrderService {
 
     OrderRefund applyOrderRefund(String orderId, OrderRefund refund);
 
+    List<OrderRefund> applyOrderRefunds(String orderId, List<OrderRefund> refunds);
+
     void cancelOrderRefund(String orderId, String refundId);
 
     void approveOrderRefund(String orderId, String refundId);

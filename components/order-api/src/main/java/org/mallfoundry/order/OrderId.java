@@ -21,4 +21,5 @@ package org.mallfoundry.order;
 import org.mallfoundry.store.StoreOwnership;
 
 public interface OrderId extends StoreOwnership {
+    String getId();
 }

@@ -26,13 +26,25 @@ import org.mallfoundry.store.StoreIndustryId;
 import org.mallfoundry.store.StoreIndustrySupport;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "mf_store_industry")
 public class JpaStoreIndustry extends StoreIndustrySupport {
+    @Column(name = "tenant_id_")
     private String tenantId;
+    @Id
+    @Column(name = "id_")
     private String id;
+    @Column(name = "name_")
     private String name;
+    @Column(name = "position_")
     private int position;
 
     public JpaStoreIndustry(StoreIndustryId industryId) {

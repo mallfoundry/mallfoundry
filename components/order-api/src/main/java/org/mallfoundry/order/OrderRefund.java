@@ -18,13 +18,12 @@
 
 package org.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
@@ -34,40 +33,61 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
 
     String getOrderId();
 
-    OrderRefundKind getKind();
+    String getItemId();
 
-    void setKind(OrderRefundKind kind);
+    void setItemId(String itemId);
 
-    OrderRefundStatus getStatus();
+    String getProductId();
 
-    OrderRefundItem createItem(String id);
+    void setProductId(String productId);
 
-    void addItem(OrderRefundItem item);
+    String getVariantId();
 
-    void addItems(List<OrderRefundItem> items);
+    void setVariantId(String variantId);
 
-    List<OrderRefundItem> getItems();
+    String getName();
 
-    BigDecimal getTotalAmount();
+    void setName(String name);
 
-    String getDisapprovalReason();
+    String getImageUrl();
 
-    String getFailReason();
+    void setImageUrl(String imageUrl);
 
-    Date getAppliedTime();
+    RefundKind getKind();
 
-    Date getApprovedTime();
+    void setKind(RefundKind kind);
 
-    Date getDisapprovedTime();
+    BigDecimal getAmount();
 
-    Date getSucceededTime();
+    void setAmount(BigDecimal amount);
 
-    Date getFailedTime();
+    ItemStatus getItemStatus();
+
+    void itemNotReceive();
+
+    void itemReceive();
+
+    String getNotes();
+
+    void setNotes(String notes);
+
+    List<String> getAttachments();
+
+    void setAttachments(List<String> attachments);
+
+    RefundStatus getStatus();
+
+    String getReason();
+
+    void setReason(String reason);
 
     /**
      * 申请退款。
      */
     void apply() throws OrderRefundException;
+
+
+    Date getAppliedTime();
 
     /**
      * 取消退款申请。
@@ -79,31 +99,97 @@ public interface OrderRefund extends ObjectBuilder.ToBuilder<OrderRefund.Builder
      */
     void approve() throws OrderRefundException;
 
+    Date getApprovedTime();
+
     void disapprove(String disapprovalReason) throws OrderRefundException;
+
+    String getDisapprovalReason();
+
+    Date getDisapprovedTime();
 
     /**
      * 退款成功。
      */
     void succeed() throws OrderRefundException;
 
+    Date getSucceededTime();
+
     /**
      * 退款失败。
      */
     void fail(String failReason) throws OrderRefundException;
 
+    String getFailReason();
+
+    Date getFailedTime();
+
+    enum ItemStatus {
+        /**
+         * 未收货。
+         */
+        NOT_RECEIVED,
+        /**
+         * 已收货。
+         */
+        RECEIVED;
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
+    }
+
+    enum RefundKind {
+        ONLY_REFUND /* 仅退款 */,
+        RETURN_REFUND /* 退货退款 */;
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
+    }
+
+    enum RefundStatus {
+        INCOMPLETE /* 空状态 */,
+        APPLYING /* 买家申请退款 */,
+        CANCELLED, /* 取消申请退款 */
+        DISAPPROVED /* 退款未批准 */,
+        PENDING /* 退款中 */,
+        SUCCEEDED  /* 退款成功 */,
+        FAILED  /* 退款失败 */;
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
+    }
+
     interface Builder extends ObjectBuilder<OrderRefund> {
 
-        Builder kind(OrderRefundKind kind);
+        Builder itemStatus(ItemStatus status);
 
-        Builder item(OrderRefundItem item);
+        Builder itemId(String itemId);
 
-        Builder item(Function<OrderRefund, OrderRefundItem> function);
+        Builder productId(String productId);
 
-        Builder items(List<OrderRefundItem> items);
+        Builder variantId(String variantId);
 
-        Builder items(Function<OrderRefund, List<OrderRefundItem>> function);
+        Builder kind(RefundKind kind);
 
-        Builder items(Supplier<List<OrderRefundItem>> supplier);
+        Builder name(String name);
+
+        Builder imageUrl(String imageUrl);
+
+        Builder amount(BigDecimal amount);
+
+        Builder reason(String reason);
+
+        Builder notes(String notes);
+
+        Builder attachments(List<String> attachments);
 
         Builder disapprovalReason(String disapprovalReason);
 

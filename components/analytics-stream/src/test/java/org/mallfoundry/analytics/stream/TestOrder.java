@@ -176,6 +176,11 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public List<OrderRefund> applyRefunds(List<OrderRefund> refunds) throws OrderRefundException {
+        return null;
+    }
+
+    @Override
     public void approveRefund(OrderRefund refund) throws OrderRefundException {
 
     }

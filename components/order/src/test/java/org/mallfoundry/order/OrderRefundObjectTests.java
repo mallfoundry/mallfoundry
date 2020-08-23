@@ -18,67 +18,58 @@
 
 package org.mallfoundry.order;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.order.repository.jpa.JpaOrderRefund;
 import org.mallfoundry.test.StaticTest;
 
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 @StaticTest
 public class OrderRefundObjectTests {
 
     @Test
     public void testApplyRefund() {
-        var refund = new JpaOrderRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemNotReceive();
-        refund.addItem(item);
+        var refund = new JpaOrderRefund("0", "1");
+        refund.setAmount(BigDecimal.valueOf(10));
+        refund.itemNotReceive();
+        refund.setItemId("12");
         refund.apply();
     }
 
     @Test
     public void testNotApplyAndApproveRefund() {
-        var refund = new JpaOrderRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemReceive();
-        refund.addItem(item);
-        try {
-            refund.approve();
-        } catch (OrderException e) {
-            Assertions.assertEquals(e.getMessage(), OrderMessages.Refund.approvedOrDisapproved());
-        }
+        var refund = new JpaOrderRefund("0", "1");
+        refund.setAmount(BigDecimal.valueOf(10));
+        refund.itemNotReceive();
+        refund.setItemId("12");
+        assertThatExceptionOfType(OrderRefundException.class)
+                .isThrownBy(refund::approve)
+                .withMessage(OrderMessages.Refund.approvedOrDisapproved());
     }
 
     @Test
     public void testCancelRefund() {
-        var refund = new JpaOrderRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemReceive();
-        refund.addItem(item);
+        var refund = new JpaOrderRefund("0", "1");
+        refund.setAmount(BigDecimal.valueOf(10));
+        refund.itemNotReceive();
+        refund.setItemId("12");
         refund.cancel();
     }
 
     @Test
     public void testApproveAndCancelRefund() {
-        var refund = new JpaOrderRefund("1");
-        var item = refund.createItem("1");
-        item.setAmount(BigDecimal.valueOf(10));
-        item.setItemId("12");
-        item.itemReceive();
-        refund.addItem(item);
-        try {
-            refund.apply();
-            refund.approve();
-            refund.cancel();
-        } catch (OrderException e) {
-            Assertions.assertEquals(e.getMessage(), OrderMessages.Refund.notCancel());
-        }
+        var refund = new JpaOrderRefund("0", "1");
+        refund.setAmount(BigDecimal.valueOf(10));
+        refund.itemNotReceive();
+        refund.setItemId("12");
+        assertThatExceptionOfType(OrderRefundException.class)
+                .isThrownBy(() -> {
+                    refund.apply();
+                    refund.approve();
+                    refund.cancel();
+                })
+                .withMessage(OrderMessages.Refund.notCancel());
     }
 }

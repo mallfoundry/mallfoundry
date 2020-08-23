@@ -211,6 +211,16 @@ public class OrderResourceV1 {
         return this.orderService.applyOrderRefund(orderId, refund);
     }
 
+    @PostMapping("/orders/{order_id}/refunds/batch")
+    public List<OrderRefund> applyOrderRefunds(@PathVariable("order_id") String orderId,
+                                               @RequestBody List<OrderRefundRequest> requests) {
+        var order = orderService.createOrder(orderId);
+        var refunds = requests.stream()
+                .map(request -> request.assignTo(order.createRefund(null)))
+                .collect(Collectors.toUnmodifiableList());
+        return this.orderService.applyOrderRefunds(orderId, refunds);
+    }
+
     @DeleteMapping("/orders/{order_id}/refunds/{refund_id}/cancel")
     public void cancelOrderRefund(@PathVariable("order_id") String orderId,
                                   @PathVariable("refund_id") String refundId) {

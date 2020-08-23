@@ -21,11 +21,8 @@ package org.mallfoundry.order.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.order.OrderRefundItem;
-import org.mallfoundry.order.OrderRefundKind;
-import org.mallfoundry.order.OrderRefundStatus;
+import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderRefundSupport;
-import org.mallfoundry.order.repository.jpa.convert.OrderRefundItemListConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -53,20 +50,45 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "order_id_")
     private String orderId;
 
+    @Column(name = "item_id_")
+    private String itemId;
+
+    @Column(name = "product_id_")
+    private String productId;
+
+    @Column(name = "variant_id_")
+    private String variantId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_status_")
+    private ItemStatus itemStatus;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "reason_")
+    private String reason;
+
+    @Column(name = "image_url_")
+    private String imageUrl;
+
+    @Column(name = "notes_")
+    private String notes;
+
+    @Column(name = "attachments_")
+    @Convert(converter = StringListConverter.class)
+    private List<String> attachments = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
-    private OrderRefundKind kind;
+    private RefundKind kind;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
-    private OrderRefundStatus status;
+    private RefundStatus status = RefundStatus.INCOMPLETE;
 
-    @Column(name = "total_amount_")
-    private BigDecimal totalAmount;
-
-    @Convert(converter = OrderRefundItemListConverter.class)
-    @Column(name = "items_", length = 1024 * 4)
-    private List<OrderRefundItem> items = new ArrayList<>();
+    @Column(name = "amount_")
+    private BigDecimal amount;
 
     @Column(name = "disapproval_reason_")
     private String disapprovalReason;
@@ -89,7 +111,8 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "disapproved_time_")
     private Date disapprovedTime;
 
-    public JpaOrderRefund(String id) {
+    public JpaOrderRefund(String orderId, String id) {
+        this.orderId = orderId;
         this.id = id;
     }
 }

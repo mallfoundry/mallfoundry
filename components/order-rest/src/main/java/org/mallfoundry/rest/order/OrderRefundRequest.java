@@ -21,21 +21,29 @@ package org.mallfoundry.rest.order;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.order.OrderRefund;
-import org.mallfoundry.order.OrderRefundKind;
+import org.mallfoundry.order.OrderRefund.ItemStatus;
+import org.mallfoundry.order.OrderRefund.RefundKind;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class OrderRefundRequest {
-    private OrderRefundKind kind;
-    private List<OrderRefundItemRequest> items = new ArrayList<>();
+    private RefundKind kind;
+    private String itemId;
+    private ItemStatus itemStatus;
+    private BigDecimal amount;
+    private String reason;
+    private String notes;
+    private List<String> attachments;
 
     public OrderRefund assignTo(OrderRefund refund) {
-        return refund.toBuilder().kind(this.kind)
-                .items(() -> this.items.stream().map(item -> item.assignTo(refund.createItem(null))).collect(Collectors.toList()))
+        return refund.toBuilder()
+                .kind(this.kind)
+                .itemId(this.itemId).itemStatus(this.itemStatus)
+                .amount(this.amount).reason(this.reason)
+                .notes(this.notes).attachments(this.attachments)
                 .build();
     }
 

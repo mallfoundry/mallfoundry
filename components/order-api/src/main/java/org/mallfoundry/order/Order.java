@@ -155,6 +155,8 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
      */
     OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException;
 
+    List<OrderRefund> applyRefunds(List<OrderRefund> refunds) throws OrderRefundException;
+
     void approveRefund(OrderRefund refund) throws OrderRefundException;
 
     void disapproveRefund(OrderRefund refund) throws OrderRefundException;

@@ -222,28 +222,29 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
-    /**
-     * 申请商品订单项退款，设置退款订单项的商品和商品变体标识。
-     */
-    private void applyItemRefund(OrderRefundItem item) {
-        var oItem = this.requiredItem(item.getItemId());
-        item.setProductId(oItem.getProductId());
-        item.setVariantId(oItem.getVariantId());
-        oItem.applyRefund(item.getAmount());
-    }
 
     @Override
     public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
         if (this.unpaid()) {
             throw OrderExceptions.unpaid();
         }
-        refund.getItems().forEach(this::applyItemRefund);
+        var item = this.requiredItem(refund.getItemId());
+        item.applyRefund(refund.getAmount());
+        refund.setProductId(item.getProductId());
+        refund.setVariantId(item.getVariantId());
+        refund.setName(item.getName());
+        refund.setImageUrl(item.getImageUrl());
         refund.apply();
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。
         this.setRefundStatus(AWAITING_REFUND);
         this.setRefundedTime(new Date());
         return refund;
+    }
+
+    @Override
+    public List<OrderRefund> applyRefunds(List<OrderRefund> refunds) throws OrderRefundException {
+        return refunds.stream().map(this::applyRefund).collect(Collectors.toUnmodifiableList());
     }
 
     protected OrderRefund requiredRefund(String refundId) {
@@ -282,10 +283,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void cancelRefund(OrderRefund args) throws OrderRefundException {
-        var refund = this.requiredRefund(args.getId());
-        refund.cancel();
-        this.getRefunds().remove(refund);
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).cancelRefund(item.getAmount()));
+        this.requiredRefund(args.getId()).cancel();
         this.updateRefundStatus();
     }
 
@@ -297,7 +295,6 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void disapproveRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.requiredRefund(args.getId());
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).disapproveRefund(item.getAmount()));
         refund.disapprove(args.getDisapprovalReason());
         this.updateRefundStatus();
     }
@@ -313,7 +310,6 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void succeedRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.requiredRefund(args.getId());
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).succeedRefund(item.getAmount()));
         refund.succeed();
         this.updateRefundStatus();
     }
@@ -321,7 +317,6 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void failRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.requiredRefund(args.getId());
-        refund.getItems().forEach(item -> this.requiredItem(item.getItemId()).failRefund(item.getAmount()));
         refund.fail(args.getFailReason());
         this.updateRefundStatus();
     }
