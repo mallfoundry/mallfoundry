@@ -25,6 +25,7 @@ import org.mallfoundry.order.DefaultOrderService;
 import org.mallfoundry.order.OrderAuthorizeProcessor;
 import org.mallfoundry.order.OrderIdentityProcessor;
 import org.mallfoundry.order.OrderProcessor;
+import org.mallfoundry.order.OrderRefundRepository;
 import org.mallfoundry.order.OrderRepository;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
@@ -32,6 +33,8 @@ import org.mallfoundry.order.OrderValidateProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
+import org.mallfoundry.order.repository.jpa.DelegatingJpaOrderRefundRepository;
+import org.mallfoundry.order.repository.jpa.JpaOrderRefundRepository;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.product.OrderReviewedToProductReviewer;
 import org.mallfoundry.shipping.CarrierService;
@@ -61,8 +64,9 @@ public class OrderAutoConfiguration {
                                                    OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
-                                                   PaymentService paymentService) {
-        var service = new DefaultOrderService(orderRepository, orderSplitter, carrierService, paymentService);
+                                                   PaymentService paymentService,
+                                                   OrderRefundRepository orderRefundRepository) {
+        var service = new DefaultOrderService(orderRepository, orderSplitter, carrierService, paymentService, orderRefundRepository);
         service.setProcessors(processors);
         return service;
     }
@@ -104,5 +108,10 @@ public class OrderAutoConfiguration {
     @Bean
     public OrderValidateProcessor orderValidateProcessor() {
         return new OrderValidateProcessor();
+    }
+
+    @Bean
+    public DelegatingJpaOrderRefundRepository delegatingJpaOrderRefundRepository(JpaOrderRefundRepository repository) {
+        return new DelegatingJpaOrderRefundRepository(repository);
     }
 }
