@@ -75,25 +75,12 @@ public abstract class OrderSupport implements MutableOrder {
         this.getItems().add(item);
     }
 
-    protected OrderItem requiredItem(String itemId) {
-        return this.getItem(itemId).orElseThrow(OrderExceptions.Item::notFound);
-    }
-
-    protected OrderItem requiredItem(String productId, String variantId) {
-        return this.getItem(productId, variantId).orElseThrow(OrderExceptions.Item::notFound);
-    }
-
     @Override
-    public Optional<OrderItem> getItem(String itemId) {
+    public OrderItem getItem(String itemId) {
         return this.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
-                .findFirst();
-    }
-
-    public Optional<OrderItem> getItem(String productId, String variantId) {
-        return this.getItems().stream()
-                .filter(item -> item.getProductId().equals(productId) && item.getVariantId().equals(variantId))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(OrderExceptions.Item::notFound);
     }
 
     @Override
@@ -108,8 +95,13 @@ public abstract class OrderSupport implements MutableOrder {
         return CollectionUtils.size(this.getItems());
     }
 
-    protected OrderShipment requiredShipment(String shipmentId) {
-        return this.findShipment(shipmentId).orElseThrow(OrderExceptions.Shipment::notFound);
+    private void shipItem(OrderShipmentItem shipmentItem) {
+        var item = this.getItem(shipmentItem.getItemId());
+        item.ship();
+        shipmentItem.setName(item.getName());
+        shipmentItem.setImageUrl(item.getImageUrl());
+        shipmentItem.setProductId(item.getProductId());
+        shipmentItem.setVariantId(item.getVariantId());
     }
 
     @Override
@@ -117,41 +109,11 @@ public abstract class OrderSupport implements MutableOrder {
         if (Objects.isNull(shipment.getShippingAddress())) {
             shipment.setShippingAddress(this.getShippingAddress());
         }
-        shipment.getItems().forEach(item -> {
-            var oItem =
-                    Objects.isNull(item.getItemId())
-                            ? this.requiredItem(item.getProductId(), item.getVariantId())
-                            : this.requiredItem(item.getItemId());
-            if (Objects.isNull(item.getName())) {
-                item.setName(oItem.getName());
-            }
-            if (Objects.isNull(item.getImageUrl())) {
-                item.setImageUrl(oItem.getImageUrl());
-            }
-            if (Objects.isNull(item.getItemId())) {
-                item.setItemId(oItem.getId());
-            }
-            if (Objects.isNull(item.getProductId())) {
-                item.setProductId(oItem.getProductId());
-            }
-            if (Objects.isNull(item.getVariantId())) {
-                item.setVariantId(oItem.getVariantId());
-            }
-        });
-
+        shipment.getItems().forEach(this::shipItem);
         this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
-        if (this.getShippedItems() == this.getTotalItems()) {
-            this.setStatus(SHIPPED);
-        } else {
-            this.setStatus(PARTIALLY_SHIPPED);
-        }
+        this.setStatus(this.getShippedItems() == this.getTotalItems() ? SHIPPED : PARTIALLY_SHIPPED);
         this.setShippedTime(shipment.getShippedTime());
         this.getShipments().add(shipment);
-    }
-
-    @Override
-    public OrderShipment getShipment(String shipmentId) {
-        return this.requiredShipment(shipmentId);
     }
 
     @Override
@@ -160,6 +122,11 @@ public abstract class OrderSupport implements MutableOrder {
                 .stream()
                 .filter(shipment -> Objects.equals(shipment.getId(), shipmentId))
                 .findFirst();
+    }
+
+    @Override
+    public OrderShipment getShipment(String shipmentId) {
+        return this.findShipment(shipmentId).orElseThrow(OrderExceptions.Shipment::notFound);
     }
 
     @Override
@@ -173,7 +140,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void updateShipment(OrderShipment newShipment) {
-        var shipment = this.requiredShipment(newShipment.getId());
+        var shipment = this.getShipment(newShipment.getId());
         if (StringUtils.isNotBlank(newShipment.getShippingMethod())) {
             shipment.setShippingMethod(newShipment.getShippingMethod());
         }
@@ -207,10 +174,15 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public Optional<OrderRefund> getRefund(String refundId) {
+    public Optional<OrderRefund> findRefund(String refundId) {
         return this.getRefunds().stream()
                 .filter(refund -> Objects.equals(refund.getId(), refundId))
                 .findFirst();
+    }
+
+    @Override
+    public OrderRefund getRefund(String refundId) {
+        return this.findRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
     }
 
     /**
@@ -222,18 +194,27 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
+    private void applyItemRefund(OrderRefundItem refundItem) {
+        var item = this.getItem(refundItem.getItemId());
+        // Apply refund
+        item.applyRefund(refundItem.getAmount());
+        refundItem.setProductId(item.getProductId());
+        refundItem.setVariantId(item.getVariantId());
+        refundItem.setName(item.getName());
+        refundItem.setImageUrl(item.getImageUrl());
+        refundItem.setItemAmount(item.getTotalAmount());
+        refundItem.setItemShipped(item.isShipped());
+    }
 
     @Override
     public OrderRefund applyRefund(OrderRefund refund) throws OrderRefundException {
         if (this.unpaid()) {
             throw OrderExceptions.unpaid();
         }
-        var item = this.requiredItem(refund.getItemId());
-        item.applyRefund(refund.getAmount());
-        refund.setProductId(item.getProductId());
-        refund.setVariantId(item.getVariantId());
-        refund.setName(item.getName());
-        refund.setImageUrl(item.getImageUrl());
+        refund.setTenantId(this.getTenantId());
+        refund.setStoreId(this.getStoreId());
+        refund.setCustomerId(this.getCustomerId());
+        refund.getItems().forEach(this::applyItemRefund);
         refund.apply();
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。
@@ -245,10 +226,6 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public List<OrderRefund> applyRefunds(List<OrderRefund> refunds) throws OrderRefundException {
         return refunds.stream().map(this::applyRefund).collect(Collectors.toUnmodifiableList());
-    }
-
-    protected OrderRefund requiredRefund(String refundId) {
-        return this.getRefund(refundId).orElseThrow(OrderExceptions.Refund::notFound);
     }
 
     /**
@@ -283,18 +260,21 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void cancelRefund(OrderRefund args) throws OrderRefundException {
-        this.requiredRefund(args.getId()).cancel();
+        var refund = this.getRefund(args.getId());
+        refund.getItems().forEach(item -> this.getItem(item.getItemId()).cancelRefund(item.getAmount()));
+        refund.cancel();
         this.updateRefundStatus();
     }
 
     @Override
     public void approveRefund(OrderRefund args) {
-        this.requiredRefund(args.getId()).approve();
+        this.getRefund(args.getId()).approve();
     }
 
     @Override
     public void disapproveRefund(OrderRefund args) throws OrderRefundException {
-        var refund = this.requiredRefund(args.getId());
+        var refund = this.getRefund(args.getId());
+        refund.getItems().forEach(item -> this.getItem(item.getItemId()).disapproveRefund(item.getAmount()));
         refund.disapprove(args.getDisapprovalReason());
         this.updateRefundStatus();
     }
@@ -304,19 +284,21 @@ public abstract class OrderSupport implements MutableOrder {
         this.applyRefund(refund);
         this.approveRefund(refund);
         this.updateRefundStatus();
-        return this.requiredRefund(refund.getId());
+        return this.getRefund(refund.getId());
     }
 
     @Override
     public void succeedRefund(OrderRefund args) throws OrderRefundException {
-        var refund = this.requiredRefund(args.getId());
+        var refund = this.getRefund(args.getId());
+        refund.getItems().forEach(item -> this.getItem(item.getItemId()).succeedRefund(item.getAmount()));
         refund.succeed();
         this.updateRefundStatus();
     }
 
     @Override
     public void failRefund(OrderRefund args) throws OrderRefundException {
-        var refund = this.requiredRefund(args.getId());
+        var refund = this.getRefund(args.getId());
+        refund.getItems().forEach(item -> this.getItem(item.getItemId()).failRefund(item.getAmount()));
         refund.fail(args.getFailReason());
         this.updateRefundStatus();
     }
@@ -332,7 +314,7 @@ public abstract class OrderSupport implements MutableOrder {
             throw OrderExceptions.notReview();
 
         }
-        var item = this.requiredItem(review.getItemId());
+        var item = this.getItem(review.getItemId());
         if (item.isReviewed()) {
             throw OrderExceptions.Item.reviewed(review.getItemId());
         }
@@ -352,18 +334,21 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public Optional<OrderReview> getReview(String reviewId) {
-        return this.getReviews().stream().filter(review -> Objects.equals(review.getId(), reviewId)).findFirst();
+    public OrderReview getReview(String reviewId) {
+        return this.getReviews().stream()
+                .filter(review -> Objects.equals(review.getId(), reviewId))
+                .findFirst()
+                .orElseThrow();
     }
 
     @Override
     public void discounts(Map<String, BigDecimal> amounts) {
-        amounts.forEach((itemId, discountAmount) -> this.requiredItem(itemId).setDiscountAmount(discountAmount));
+        amounts.forEach((itemId, discountAmount) -> this.getItem(itemId).setDiscountAmount(discountAmount));
     }
 
     @Override
     public void discountShippingCosts(Map<String, BigDecimal> shippingCosts) {
-        shippingCosts.forEach((itemId, discountCost) -> this.requiredItem(itemId).setDiscountShippingCost(discountCost));
+        shippingCosts.forEach((itemId, discountCost) -> this.getItem(itemId).setDiscountShippingCost(discountCost));
     }
 
     @Override
