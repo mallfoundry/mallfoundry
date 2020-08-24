@@ -18,6 +18,7 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
@@ -38,7 +39,7 @@ import java.util.function.Function;
  *
  * @author Zhi Tang
  */
-public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Builder> {
+public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<Order.Builder> {
 
     OrderId toId();
 
@@ -55,10 +56,6 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     void setShippingAddress(Address shippingAddress);
 
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
-
     String getStoreName();
 
     void setStoreName(String storeName);
@@ -74,9 +71,9 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     void setStaffNotes(String staffNotes);
 
-    int getStaffStars();
+    Integer getStaffStars();
 
-    void setStaffStars(int staffStars);
+    void setStaffStars(Integer staffStars);
 
     String getSourceName();
 
@@ -90,7 +87,7 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     void addItem(OrderItem item);
 
-    Optional<OrderItem> getItem(String itemId);
+    OrderItem getItem(String itemId);
 
     List<OrderItem> getItems(List<String> itemIds);
 
@@ -106,9 +103,9 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
 
     List<OrderShipment> getShipments();
 
-    OrderShipment getShipment(String shipmentId);
-
     Optional<OrderShipment> findShipment(String shipmentId);
+
+    OrderShipment getShipment(String shipmentId);
 
     List<OrderShipment> getShipments(Set<String> shipmentIds);
 
@@ -139,13 +136,15 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
      */
     List<OrderRefund> getRefunds();
 
+    Optional<OrderRefund> findRefund(String refundId);
+
     /**
      * 根据订单退款对象标识获得订单退款对象。
      *
      * @param refundId 订单退款对象标识
      * @return 订单退款对象
      */
-    Optional<OrderRefund> getRefund(String refundId);
+    OrderRefund getRefund(String refundId);
 
     /**
      * 申请订单退款。
@@ -204,7 +203,7 @@ public interface Order extends StoreOwnership, ObjectBuilder.ToBuilder<Order.Bui
      */
     List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException;
 
-    Optional<OrderReview> getReview(String reviewId);
+    OrderReview getReview(String reviewId);
 
     List<OrderReview> getReviews();
 
