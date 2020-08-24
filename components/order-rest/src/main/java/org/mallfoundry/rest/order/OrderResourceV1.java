@@ -165,9 +165,9 @@ public class OrderResourceV1 {
     }
 
     @GetMapping("/orders/{order_id}/shipments/{shipment_id}")
-    public Optional<OrderShipment> getOrderShipment(@PathVariable("order_id") String orderId,
-                                                    @PathVariable("shipment_id") String shipmentId) {
-        return this.orderService.getOrderShipment(orderId, shipmentId);
+    public Optional<OrderShipment> findOrderShipment(@PathVariable("order_id") String orderId,
+                                                     @PathVariable("shipment_id") String shipmentId) {
+        return this.orderService.findOrderShipment(orderId, shipmentId);
     }
 
     @PatchMapping("/orders/{order_id}/shipments/{shipment_id}")
@@ -211,14 +211,34 @@ public class OrderResourceV1 {
         return this.orderService.applyOrderRefund(orderId, refund);
     }
 
-    @PostMapping("/orders/{order_id}/refunds/batch")
-    public List<OrderRefund> applyOrderRefunds(@PathVariable("order_id") String orderId,
-                                               @RequestBody List<OrderRefundRequest> requests) {
-        var order = orderService.createOrder(orderId);
-        var refunds = requests.stream()
-                .map(request -> request.assignTo(order.createRefund(null)))
-                .collect(Collectors.toUnmodifiableList());
-        return this.orderService.applyOrderRefunds(orderId, refunds);
+    @GetMapping("/orders/refunds")
+    public SliceList<OrderRefund> getOrderRefunds(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                  @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                                  @RequestParam(name = "customer_id", required = false) String customerId,
+                                                  @RequestParam(name = "store_id", required = false) String storeId,
+                                                  @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                                  @RequestParam(name = "sort", required = false) String sort) {
+        return this.orderService.getOrderRefunds(
+                this.orderService.createOrderRefundQuery().toBuilder()
+                        .page(page).limit(limit).sort(aSort -> aSort.from(sort))
+                        .customerId(customerId).storeId(storeId)
+                        .statuses(() ->
+                                CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                        .map(OrderRefund.RefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                        .build());
+    }
+
+    @GetMapping("/orders/refunds/count")
+    public long countOrderRefunds(@RequestParam(name = "customer_id", required = false) String customerId,
+                                  @RequestParam(name = "store_id", required = false) String storeId,
+                                  @RequestParam(name = "statuses", required = false) Set<String> statuses) {
+        return this.orderService.countOrderRefunds(
+                this.orderService.createOrderRefundQuery().toBuilder()
+                        .customerId(customerId).storeId(storeId)
+                        .statuses(() ->
+                                CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                        .map(OrderRefund.RefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                        .build());
     }
 
     @DeleteMapping("/orders/{order_id}/refunds/{refund_id}/cancel")
@@ -248,9 +268,9 @@ public class OrderResourceV1 {
     }
 
     @GetMapping("/orders/{order_id}/refunds/{refund_id}")
-    public Optional<OrderRefund> getOrderRefund(@PathVariable("order_id") String orderId,
-                                                @PathVariable("refund_id") String refundId) {
-        return this.orderService.getOrderRefund(orderId, refundId);
+    public Optional<OrderRefund> findOrderRefund(@PathVariable("order_id") String orderId,
+                                                 @PathVariable("refund_id") String refundId) {
+        return this.orderService.findOrderRefund(orderId, refundId);
     }
 
     @PostMapping("/orders/{order_id}/reviews")
