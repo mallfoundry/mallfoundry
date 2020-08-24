@@ -28,6 +28,10 @@ public abstract class DecimalUtils {
         return ComparableUtils.is(a).equalTo(b);
     }
 
+    public static boolean notEquals(BigDecimal a, BigDecimal b) {
+        return !equals(a, b);
+    }
+
     public static boolean lessThan(BigDecimal a, BigDecimal b) {
         return ComparableUtils.is(a).lessThan(b);
     }
