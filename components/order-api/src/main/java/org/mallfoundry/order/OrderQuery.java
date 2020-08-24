@@ -18,16 +18,18 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.store.StoreOwnership;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
 
 
-public interface OrderQuery extends Query {
+public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
     Set<String> getIds();
 
@@ -36,14 +38,6 @@ public interface OrderQuery extends Query {
     String getName();
 
     void setName(String name);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
 
     Set<OrderStatus> getStatuses();
 
