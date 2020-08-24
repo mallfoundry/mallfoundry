@@ -57,7 +57,7 @@ public class TestOrder implements Order {
     private String customerId;
     private String customerMessage;
     private String staffNotes;
-    private int staffStars;
+    private Integer staffStars;
     private Address shippingAddress;
     private List<OrderItem> items = new ArrayList<>();
     private List<OrderShipment> shipments = new ArrayList<>();
@@ -106,8 +106,8 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public Optional<OrderItem> getItem(String itemId) {
-        return Optional.empty();
+    public OrderItem getItem(String itemId) {
+        return null;
     }
 
     @Override
@@ -166,8 +166,13 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public Optional<OrderRefund> getRefund(String refundId) {
+    public Optional<OrderRefund> findRefund(String refundId) {
         return Optional.empty();
+    }
+
+    @Override
+    public OrderRefund getRefund(String refundId) {
+        return null;
     }
 
     @Override
@@ -237,8 +242,8 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public Optional<OrderReview> getReview(String reviewId) {
-        return Optional.empty();
+    public OrderReview getReview(String reviewId) {
+        return null;
     }
 
     @Override
