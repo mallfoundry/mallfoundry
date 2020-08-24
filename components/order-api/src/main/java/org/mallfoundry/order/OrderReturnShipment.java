@@ -18,7 +18,7 @@
 
 package org.mallfoundry.order;
 
-public interface OrderReturnShipment {
+public interface OrderReturnShipment extends OrderShipment {
 
     String getRefundId();
 
