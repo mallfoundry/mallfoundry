@@ -85,6 +85,10 @@ public abstract class OrderExceptions {
         public static OrderRefundException overApply() {
             return new OrderRefundException(OrderMessages.Refund.overApply());
         }
+
+        public static OrderRefundException applying() {
+            return new OrderRefundException(OrderMessages.Refund.overApply());
+        }
     }
 
     public abstract static class Review {
