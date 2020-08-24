@@ -57,7 +57,7 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     BigDecimal getTotalAmount();
 
-    RefundStatus getStatus();
+    OrderRefundStatus getStatus();
 
     Date getAppliedTime();
 
@@ -126,22 +126,6 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
     enum ItemStatus {
         NOT_RECEIVED /* 未收货 */,
         RECEIVED /* 已收货 */;
-
-        @JsonValue
-        @Override
-        public String toString() {
-            return this.name().toLowerCase();
-        }
-    }
-
-    enum RefundStatus {
-        INCOMPLETE /* 空状态 */,
-        APPLYING /* 买家申请退款 */,
-        CANCELLED, /* 取消申请退款 */
-        DISAPPROVED /* 退款未批准 */,
-        PENDING /* 退款中 */,
-        SUCCEEDED  /* 退款成功 */,
-        FAILED  /* 退款失败 */;
 
         @JsonValue
         @Override

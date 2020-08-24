@@ -32,7 +32,7 @@ public class DefaultOrderRefundQuery extends QuerySupport implements OrderRefund
     private String tenantId;
     private String storeId;
     private String customerId;
-    private Set<OrderRefund.RefundStatus> statuses;
+    private Set<OrderRefundStatus> statuses;
 
     @Override
     public Builder toBuilder() {
@@ -67,13 +67,13 @@ public class DefaultOrderRefundQuery extends QuerySupport implements OrderRefund
         }
 
         @Override
-        public Builder statuses(Supplier<Set<OrderRefund.RefundStatus>> supplier) {
+        public Builder statuses(Supplier<Set<OrderRefundStatus>> supplier) {
             this.query.setStatuses(supplier.get());
             return this;
         }
 
         @Override
-        public Builder statuses(Set<OrderRefund.RefundStatus> statuses) {
+        public Builder statuses(Set<OrderRefundStatus> statuses) {
             this.query.setStatuses(statuses);
             return this;
         }

@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.mallfoundry.order.OrderRefund.RefundStatus.APPLYING;
-import static org.mallfoundry.order.OrderRefund.RefundStatus.DISAPPROVED;
-import static org.mallfoundry.order.OrderRefund.RefundStatus.FAILED;
-import static org.mallfoundry.order.OrderRefund.RefundStatus.INCOMPLETE;
-import static org.mallfoundry.order.OrderRefund.RefundStatus.PENDING;
-import static org.mallfoundry.order.OrderRefund.RefundStatus.SUCCEEDED;
+import static org.mallfoundry.order.OrderRefundStatus.APPLYING;
+import static org.mallfoundry.order.OrderRefundStatus.DISAPPROVED;
+import static org.mallfoundry.order.OrderRefundStatus.FAILED;
+import static org.mallfoundry.order.OrderRefundStatus.INCOMPLETE;
+import static org.mallfoundry.order.OrderRefundStatus.PENDING;
+import static org.mallfoundry.order.OrderRefundStatus.SUCCEEDED;
 
 public abstract class OrderRefundSupport implements MutableOrderRefund {
 

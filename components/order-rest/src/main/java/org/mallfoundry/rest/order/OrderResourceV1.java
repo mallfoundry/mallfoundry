@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderRefund;
+import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderShipment;
@@ -224,7 +225,7 @@ public class OrderResourceV1 {
                         .customerId(customerId).storeId(storeId)
                         .statuses(() ->
                                 CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
-                                        .map(OrderRefund.RefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                                        .map(OrderRefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .build());
     }
 
@@ -237,7 +238,7 @@ public class OrderResourceV1 {
                         .customerId(customerId).storeId(storeId)
                         .statuses(() ->
                                 CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
-                                        .map(OrderRefund.RefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                                        .map(OrderRefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .build());
     }
 

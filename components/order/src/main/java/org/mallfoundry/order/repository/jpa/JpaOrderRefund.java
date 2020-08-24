@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderRefundItem;
+import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderRefundSupport;
 
 import javax.persistence.CascadeType;
@@ -80,7 +81,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
-    private RefundStatus status = RefundStatus.INCOMPLETE;
+    private OrderRefundStatus status = OrderRefundStatus.INCOMPLETE;
 
     @Column(name = "total_amount_")
     private BigDecimal totalAmount;
