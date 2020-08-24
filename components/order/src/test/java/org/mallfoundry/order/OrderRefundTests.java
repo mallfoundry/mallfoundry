@@ -36,8 +36,8 @@ public class OrderRefundTests {
     public void testUnpaidThenApplyRefund() {
         var order = new JpaOrder();
         var refund = order.createRefund("1").toBuilder()
-                .itemId("i1")
-                .amount(BigDecimal.valueOf(10))
+                .itemNotReceive()
+                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
@@ -49,8 +49,8 @@ public class OrderRefundTests {
         var order = new JpaOrder();
         order.pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED));
         var refund = order.createRefund("1").toBuilder()
-                .itemId("i1")
-                .amount(BigDecimal.valueOf(10))
+                .itemNotReceive()
+                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
@@ -65,8 +65,8 @@ public class OrderRefundTests {
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1").toBuilder()
-                .itemId("i1")
-                .amount(BigDecimal.valueOf(10))
+                .itemNotReceive()
+                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))
@@ -81,8 +81,8 @@ public class OrderRefundTests {
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1").toBuilder()
-                .itemId("i1")
-                .amount(BigDecimal.valueOf(10))
+                .itemNotReceive()
+                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
                 .build();
         order.applyRefund(refund);
     }
@@ -94,8 +94,9 @@ public class OrderRefundTests {
                 .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
                 .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
-        var refund = order.createRefund("1")
-                .toBuilder()
+        var refund = order.createRefund("1").toBuilder()
+                .itemNotReceive()
+                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
                 .build();
         assertThatExceptionOfType(OrderException.class)
                 .isThrownBy(() -> order.applyRefund(refund))

@@ -18,9 +18,13 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.util.Positions;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.mallfoundry.order.OrderRefund.RefundStatus.APPLYING;
 import static org.mallfoundry.order.OrderRefund.RefundStatus.DISAPPROVED;
@@ -44,6 +48,18 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
     }
 
     @Override
+    public void addItem(OrderRefundItem item) {
+        this.getItems().add(item);
+        Positions.sort(this.getItems());
+    }
+
+    @Override
+    public void addItems(List<OrderRefundItem> items) {
+        this.getItems().addAll(items);
+        Positions.sort(this.getItems());
+    }
+
+    @Override
     public void itemNotReceive() {
         this.setItemStatus(ItemStatus.NOT_RECEIVED);
     }
@@ -53,6 +69,13 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         this.setItemStatus(ItemStatus.RECEIVED);
     }
 
+    private void reduceSetTotalAmount() {
+        var totalAmount = this.getItems().stream()
+                .map(OrderRefundItem::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.setTotalAmount(totalAmount);
+    }
+
     @Override
     public void apply() throws OrderRefundException {
         if (this.nonIncomplete()) {
@@ -60,6 +83,7 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
         this.setStatus(APPLYING);
         this.setAppliedTime(new Date());
+        this.reduceSetTotalAmount();
     }
 
     @Override
@@ -122,54 +146,8 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
-        public Builder itemStatus(ItemStatus status) {
-            if (ItemStatus.NOT_RECEIVED.equals(status)) {
-                this.refund.itemNotReceive();
-            } else if (ItemStatus.RECEIVED.equals(status)) {
-                this.refund.itemReceive();
-            }
-            return this;
-        }
-
-        @Override
-        public Builder itemId(String itemId) {
-            this.refund.setItemId(itemId);
-            return this;
-        }
-
-        @Override
-        public Builder productId(String productId) {
-            this.refund.setProductId(productId);
-            return this;
-        }
-
-        @Override
-        public Builder variantId(String variantId) {
-            this.refund.setVariantId(variantId);
-            return this;
-        }
-
-        @Override
         public Builder kind(RefundKind kind) {
             this.refund.setKind(kind);
-            return this;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.refund.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder imageUrl(String imageUrl) {
-            this.refund.setImageUrl(imageUrl);
-            return this;
-        }
-
-        @Override
-        public Builder amount(BigDecimal amount) {
-            this.refund.setAmount(amount);
             return this;
         }
 
@@ -180,14 +158,54 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
-        public Builder notes(String notes) {
-            this.refund.setNotes(notes);
+        public Builder itemStatus(ItemStatus itemStatus) {
+            if (ItemStatus.RECEIVED.equals(itemStatus)) {
+                return this.itemReceive();
+            } else if (ItemStatus.NOT_RECEIVED.equals(itemStatus)) {
+                return this.itemNotReceive();
+            }
             return this;
         }
 
         @Override
-        public Builder attachments(List<String> attachments) {
-            this.refund.setAttachments(attachments);
+        public Builder itemNotReceive() {
+            this.refund.itemNotReceive();
+            return this;
+        }
+
+        @Override
+        public Builder itemReceive() {
+            this.refund.itemReceive();
+            return this;
+        }
+
+        @Override
+        public Builder item(OrderRefundItem item) {
+            this.refund.addItem(item);
+            return this;
+        }
+
+        @Override
+        public Builder item(Function<OrderRefund, OrderRefundItem> function) {
+            this.refund.addItem(function.apply(this.refund));
+            return this;
+        }
+
+        @Override
+        public Builder items(List<OrderRefundItem> items) {
+            this.refund.addItems(items);
+            return this;
+        }
+
+        @Override
+        public Builder items(Function<OrderRefund, List<OrderRefundItem>> function) {
+            this.refund.addItems(function.apply(this.refund));
+            return this;
+        }
+
+        @Override
+        public Builder items(Supplier<List<OrderRefundItem>> supplier) {
+            this.refund.addItems(supplier.get());
             return this;
         }
 
@@ -200,6 +218,18 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         @Override
         public Builder failReason(String failReason) {
             this.refund.setFailReason(failReason);
+            return this;
+        }
+
+        @Override
+        public Builder notes(String notes) {
+            this.refund.setNotes(notes);
+            return this;
+        }
+
+        @Override
+        public Builder attachments(List<String> attachments) {
+            this.refund.setAttachments(attachments);
             return this;
         }
 

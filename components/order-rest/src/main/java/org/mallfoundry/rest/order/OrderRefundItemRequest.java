@@ -16,30 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.rest.order;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.order.OrderRefundItem;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public interface MutableOrderRefund extends OrderRefund {
+@Getter
+@Setter
+public class OrderRefundItemRequest {
+    private String itemId;
+    private BigDecimal amount;
 
-    void setItemStatus(ItemStatus itemStatus);
-
-    void setStatus(RefundStatus status);
-
-    void setTotalAmount(BigDecimal totalAmount);
-
-    void setDisapprovalReason(String disapprovalReason);
-
-    void setFailReason(String failReason);
-
-    void setAppliedTime(Date appliedTime);
-
-    void setApprovedTime(Date approvedTime);
-
-    void setSucceededTime(Date succeededTime);
-
-    void setFailedTime(Date failedTime);
-
-    void setDisapprovedTime(Date disapprovedTime);
+    public OrderRefundItem assignTo(OrderRefundItem item) {
+        return item.toBuilder().itemId(this.itemId).amount(this.amount).build();
+    }
 }
