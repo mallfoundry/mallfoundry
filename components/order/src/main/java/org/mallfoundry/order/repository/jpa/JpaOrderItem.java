@@ -37,6 +37,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,6 +104,12 @@ public class JpaOrderItem extends OrderItemSupport {
 
     @Column(name = "reviewed_")
     private boolean reviewed;
+
+    @Column(name = "shipped_")
+    private boolean shipped;
+
+    @Column(name = "shipped_time_")
+    private Date shippedTime;
 
     public JpaOrderItem(String itemId) {
         this.id = itemId;
