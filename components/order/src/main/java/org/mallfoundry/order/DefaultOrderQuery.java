@@ -31,31 +31,19 @@ import java.util.function.Supplier;
 @Getter
 @Setter
 public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
-
     private Set<String> ids;
-
-    private String name;
-
-    private Set<OrderStatus> statuses;
-
-    private Set<OrderStatus> refundStatuses;
-
-    private Set<OrderType> types;
-
-    private Set<PaymentMethod> paymentMethods;
-
-    private Set<OrderSource> sources;
-
+    private String tenantId;
     private String storeId;
-
     private String customerId;
-
+    private String name;
+    private Set<OrderStatus> statuses;
+    private Set<OrderStatus> refundStatuses;
+    private Set<OrderType> types;
+    private Set<PaymentMethod> paymentMethods;
+    private Set<OrderSource> sources;
     private Date placedTimeMin;
-
     private Date placedTimeMax;
-
     private Date placingExpiredTimeMin;
-
     private Date placingExpiredTimeMax;
 
     @Override
