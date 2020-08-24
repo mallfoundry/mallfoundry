@@ -63,6 +63,9 @@ public abstract class OrderItemSupport implements MutableOrderItem {
         if (this.overApplyRefund(refundAmount)) {
             throw OrderExceptions.Refund.overApply();
         }
+        if (DecimalUtils.notEquals(BigDecimal.ZERO, this.getRefundingAmount())) {
+            throw OrderExceptions.Refund.applying();
+        }
         this.addRefundingAmount(refundAmount);
     }
 
