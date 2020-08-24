@@ -94,7 +94,7 @@ public interface OrderService {
 
     OrderShipment addOrderShipment(String orderId, OrderShipment shipment);
 
-    Optional<OrderShipment> getOrderShipment(String orderId, String shipmentId);
+    Optional<OrderShipment> findOrderShipment(String orderId, String shipmentId);
 
     List<OrderShipment> getOrderShipments(String orderId);
 
@@ -110,7 +110,13 @@ public interface OrderService {
 
     OrderRefund applyOrderRefund(String orderId, OrderRefund refund);
 
-    List<OrderRefund> applyOrderRefunds(String orderId, List<OrderRefund> refunds);
+    Optional<OrderRefund> findOrderRefund(String orderId, String refundId);
+
+    OrderRefundQuery createOrderRefundQuery();
+
+    SliceList<OrderRefund> getOrderRefunds(OrderRefundQuery query);
+
+    long countOrderRefunds(OrderRefundQuery query);
 
     void cancelOrderRefund(String orderId, String refundId);
 
@@ -119,8 +125,6 @@ public interface OrderService {
     void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason);
 
     void activeOrderRefund(String orderId, OrderRefund refund);
-
-    Optional<OrderRefund> getOrderRefund(String orderId, String refundId);
 
     OrderReview addOrderReview(String orderId, OrderReview review);
 
