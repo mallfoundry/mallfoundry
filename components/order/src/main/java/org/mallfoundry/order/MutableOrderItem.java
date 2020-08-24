@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface MutableOrderItem extends OrderItem {
 
@@ -27,4 +28,8 @@ public interface MutableOrderItem extends OrderItem {
     void setRefundingAmount(BigDecimal refundingAmount);
 
     void setReviewed(boolean reviewed);
+
+    void setShipped(boolean shipped);
+
+    void setShippedTime(Date shippedTime);
 }

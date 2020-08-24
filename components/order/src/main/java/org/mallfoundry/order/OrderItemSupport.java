@@ -22,6 +22,7 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.util.DecimalUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public abstract class OrderItemSupport implements MutableOrderItem {
@@ -89,6 +90,12 @@ public abstract class OrderItemSupport implements MutableOrderItem {
     @Override
     public void review() {
         this.setReviewed(true);
+    }
+
+    @Override
+    public void ship() {
+        this.setShipped(true);
+        this.setShippedTime(new Date());
     }
 
     @Override

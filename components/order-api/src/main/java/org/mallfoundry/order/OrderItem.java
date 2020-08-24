@@ -22,6 +22,7 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
@@ -95,6 +96,12 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
     boolean isReviewed();
 
     void review();
+
+    boolean isShipped();
+
+    Date getShippedTime();
+
+    void ship();
 
     BigDecimal getTotalAmount();
 
