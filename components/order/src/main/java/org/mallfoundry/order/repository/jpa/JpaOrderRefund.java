@@ -66,6 +66,12 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "order_id_")
     private String orderId;
 
+    @Column(name = "applicant_")
+    private String applicant;
+
+    @Column(name = "applicant_id_")
+    private String applicantId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
     private RefundKind kind;

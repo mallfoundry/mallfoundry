@@ -37,6 +37,14 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     String getOrderId();
 
+    String getApplicant();
+
+    void setApplicant(String applicant);
+
+    String getApplicantId();
+
+    void setApplicantId(String applicantId);
+
     RefundKind getKind();
 
     void setKind(RefundKind kind);

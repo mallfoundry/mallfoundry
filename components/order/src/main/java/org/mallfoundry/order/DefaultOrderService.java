@@ -365,6 +365,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
         refund = this.invokePreProcessBeforeApplyOrderRefund(order, refund);
+        // 设置申请人
+        refund.setApplicant(SubjectHolder.getSubject().getNickname());
+        refund.setApplicantId(SubjectHolder.getSubject().getId());
         refund = order.applyRefund(refund);
         this.orderRepository.save(order);
         return refund;
