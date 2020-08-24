@@ -24,6 +24,7 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.order.OrderItem;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,6 +46,9 @@ public class TestOrderItem implements OrderItem {
     private BigDecimal shippingCost;
     private BigDecimal discountShippingCost;
     private boolean reviewed;
+    private boolean shipped;
+    private Date shippedTime;
+
 
     public BigDecimal getDiscountAmount() {
         return Objects.isNull(this.discountAmount)
@@ -79,6 +83,11 @@ public class TestOrderItem implements OrderItem {
 
     @Override
     public void review() {
+
+    }
+
+    @Override
+    public void ship() {
 
     }
 
