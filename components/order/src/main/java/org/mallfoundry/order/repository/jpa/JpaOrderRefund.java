@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.OrderRefundItem;
+import org.mallfoundry.order.OrderRefundKind;
 import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderRefundSupport;
 
@@ -74,7 +75,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
-    private RefundKind kind;
+    private OrderRefundKind kind;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_status_")

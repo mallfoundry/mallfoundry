@@ -45,9 +45,9 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     void setApplicantId(String applicantId);
 
-    RefundKind getKind();
+    OrderRefundKind getKind();
 
-    void setKind(RefundKind kind);
+    void setKind(OrderRefundKind kind);
 
     ItemStatus getItemStatus();
 
@@ -120,17 +120,6 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     void setAttachments(List<String> attachments);
 
-    enum RefundKind {
-        ONLY_REFUND /* 仅退款 */,
-        RETURN_REFUND /* 退货退款 */;
-
-        @JsonValue
-        @Override
-        public String toString() {
-            return this.name().toLowerCase();
-        }
-    }
-
     enum ItemStatus {
         NOT_RECEIVED /* 未收货 */,
         RECEIVED /* 已收货 */;
@@ -144,7 +133,7 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     interface Builder extends ObjectBuilder<OrderRefund> {
 
-        Builder kind(RefundKind kind);
+        Builder kind(OrderRefundKind kind);
 
         Builder reason(String reason);
 
