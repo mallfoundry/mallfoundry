@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OrderRefundStatus {
     INCOMPLETE /* 空状态 */,
     APPLYING /* 买家申请退款 */,
@@ -31,4 +33,10 @@ public enum OrderRefundStatus {
     PENDING /* 退款中 */,
     SUCCEEDED  /* 退款成功 */,
     FAILED  /* 退款失败 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
