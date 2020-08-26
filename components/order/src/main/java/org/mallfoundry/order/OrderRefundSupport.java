@@ -146,7 +146,7 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
-        public Builder kind(OrderRefundKind kind) {
+        public Builder kind(RefundKind kind) {
             this.refund.setKind(kind);
             return this;
         }

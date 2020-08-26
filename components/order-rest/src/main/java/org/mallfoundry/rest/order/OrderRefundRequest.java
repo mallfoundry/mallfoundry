@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefund.ItemStatus;
-import org.mallfoundry.order.OrderRefundKind;
+import org.mallfoundry.order.OrderRefund.RefundKind;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class OrderRefundRequest {
-    private OrderRefundKind kind;
+    private RefundKind kind;
     private ItemStatus itemStatus;
     private String reason;
     private String notes;
