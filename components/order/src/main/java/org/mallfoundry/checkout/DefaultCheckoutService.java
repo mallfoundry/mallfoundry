@@ -20,6 +20,7 @@ package org.mallfoundry.checkout;
 
 import org.mallfoundry.cart.CartService;
 import org.mallfoundry.catalog.product.ProductService;
+import org.mallfoundry.checkout.repository.jpa.JpaCheckout;
 import org.mallfoundry.customer.CustomerService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.order.Order;
@@ -29,7 +30,6 @@ import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.DefaultAddress;
 import org.mallfoundry.store.StoreService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -39,7 +39,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 public class DefaultCheckoutService implements CheckoutService {
 
     static final String CHECKOUT_ID_VALUE_NAME = "checkout.id";
@@ -72,14 +71,14 @@ public class DefaultCheckoutService implements CheckoutService {
 
     @Override
     public Checkout createCheckout(String id) {
-        return new InternalCheckout(id);
+        return new JpaCheckout(id);
     }
 
     private Optional<Order> findOrderByStoreId(List<Order> orders, String storeId) {
         return orders.stream().filter(order -> Objects.equals(order.getStoreId(), storeId)).findFirst();
     }
 
-    private List<Order> createOrders(InternalCheckout checkout) {
+    private List<Order> createOrders(Checkout checkout) {
         var items = checkout.getItems();
         var orders = new ArrayList<Order>();
         for (var item : items) {
@@ -113,7 +112,7 @@ public class DefaultCheckoutService implements CheckoutService {
         return orders;
     }
 
-    private void setOrdersToCheckout(InternalCheckout checkout) {
+    private void setOrdersToCheckout(Checkout checkout) {
         checkout.setOrders(this.createOrders(checkout));
     }
 
@@ -124,7 +123,7 @@ public class DefaultCheckoutService implements CheckoutService {
         return address;
     }
 
-    private Checkout createCheckout(InternalCheckout checkout) {
+    private Checkout createCheckout(JpaCheckout checkout) {
         if (Objects.isNull(checkout.getId())) {
             checkout.setId(PrimaryKeyHolder.next(CHECKOUT_ID_VALUE_NAME));
         }
@@ -139,10 +138,10 @@ public class DefaultCheckoutService implements CheckoutService {
     @Transactional
     @Override
     public Checkout createCheckout(Checkout checkout) {
-        return createCheckout(InternalCheckout.of(checkout));
+        return createCheckout(JpaCheckout.of(checkout));
     }
 
-    private InternalCheckout requiredCheckout(String id) {
+    private Checkout requiredCheckout(String id) {
         return this.checkoutRepository.findById(id).orElseThrow(CheckoutExceptions::notFound);
     }
 
@@ -186,7 +185,7 @@ public class DefaultCheckoutService implements CheckoutService {
         this.cartService.adjustCart(checkout.getCartId(), adjustments);
     }
 
-    private void placeOrders(InternalCheckout checkout) {
+    private void placeOrders(Checkout checkout) {
         checkout.setOrders(this.orderService.placeOrders(checkout.getOrders()));
     }
 

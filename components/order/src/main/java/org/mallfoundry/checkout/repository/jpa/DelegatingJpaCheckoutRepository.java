@@ -18,7 +18,32 @@
 
 package org.mallfoundry.checkout.repository.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.mallfoundry.checkout.Checkout;
+import org.mallfoundry.checkout.CheckoutRepository;
+import org.springframework.data.util.CastUtils;
 
-public interface JpaCheckoutRepository extends JpaRepository<JpaCheckout, String> {
+import java.util.Optional;
+
+public class DelegatingJpaCheckoutRepository implements CheckoutRepository {
+
+    private final JpaCheckoutRepository repository;
+
+    public DelegatingJpaCheckoutRepository(JpaCheckoutRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Optional<Checkout> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public Checkout save(Checkout checkout) {
+        return this.repository.save(JpaCheckout.of(checkout));
+    }
+
+    @Override
+    public void delete(Checkout checkout) {
+        this.repository.delete(JpaCheckout.of(checkout));
+    }
 }

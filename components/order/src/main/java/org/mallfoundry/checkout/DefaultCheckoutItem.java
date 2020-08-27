@@ -27,11 +27,8 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @NoArgsConstructor
 public class DefaultCheckoutItem implements CheckoutItem {
-
     private String productId;
-
     private String variantId;
-
     private int quantity;
 
     public static DefaultCheckoutItem of(CheckoutItem item) {

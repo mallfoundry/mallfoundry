@@ -18,13 +18,32 @@
 
 package org.mallfoundry.checkout;
 
-import java.util.Optional;
+import org.mallfoundry.order.Order;
 
-public interface CheckoutRepository {
+import java.math.BigDecimal;
+import java.util.Date;
 
-    Optional<Checkout> findById(String id);
+public abstract class CheckoutSupport implements MutableCheckout {
 
-    Checkout save(Checkout checkout);
+    @Override
+    public CheckoutItem createItem() {
+        return new DefaultCheckoutItem();
+    }
 
-    void delete(Checkout checkout);
+    @Override
+    public void addItem(CheckoutItem item) {
+        this.getItems().add(item);
+    }
+
+    @Override
+    public BigDecimal getSubtotalAmount() {
+        return this.getOrders().stream()
+                .map(Order::getSubtotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public void create() {
+        this.setCreatedTime(new Date());
+    }
 }

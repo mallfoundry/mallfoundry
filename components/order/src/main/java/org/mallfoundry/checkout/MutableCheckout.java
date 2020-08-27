@@ -18,13 +18,8 @@
 
 package org.mallfoundry.checkout;
 
-import java.util.Optional;
+import java.util.Date;
 
-public interface CheckoutRepository {
-
-    Optional<Checkout> findById(String id);
-
-    Checkout save(Checkout checkout);
-
-    void delete(Checkout checkout);
+public interface MutableCheckout extends Checkout {
+    void setCreatedTime(Date createdTime);
 }

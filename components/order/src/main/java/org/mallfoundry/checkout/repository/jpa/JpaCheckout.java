@@ -16,11 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.checkout;
+package org.mallfoundry.checkout.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.checkout.Checkout;
+import org.mallfoundry.checkout.CheckoutItem;
+import org.mallfoundry.checkout.CheckoutSupport;
 import org.mallfoundry.checkout.repository.jpa.convert.CheckoutItemListConverter;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderSource;
@@ -34,7 +37,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +46,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_checkout")
-public class InternalCheckout implements Checkout {
+public class JpaCheckout extends CheckoutSupport {
 
     @Id
     @Column(name = "id_")
@@ -70,38 +72,16 @@ public class InternalCheckout implements Checkout {
     @Column(name = "created_time_")
     private Date createdTime;
 
-    public InternalCheckout(String id) {
+    public JpaCheckout(String id) {
         this.id = id;
     }
 
-    public static InternalCheckout of(Checkout checkout) {
-        if (checkout instanceof InternalCheckout) {
-            return (InternalCheckout) checkout;
+    public static JpaCheckout of(Checkout checkout) {
+        if (checkout instanceof JpaCheckout) {
+            return (JpaCheckout) checkout;
         }
-        var target = new InternalCheckout();
+        var target = new JpaCheckout();
         BeanUtils.copyProperties(checkout, target);
         return target;
-    }
-
-    @Override
-    public CheckoutItem createItem() {
-        return new DefaultCheckoutItem();
-    }
-
-    @Override
-    public void addItem(CheckoutItem item) {
-        this.items.add(item);
-    }
-
-    @Override
-    public BigDecimal getSubtotalAmount() {
-        return this.getOrders().stream()
-                .map(Order::getSubtotalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Override
-    public void create() {
-        this.createdTime = new Date();
     }
 }
