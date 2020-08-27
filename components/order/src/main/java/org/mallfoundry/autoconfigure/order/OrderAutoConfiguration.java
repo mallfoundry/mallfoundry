@@ -26,10 +26,13 @@ import org.mallfoundry.order.OrderAuthorizeProcessor;
 import org.mallfoundry.order.OrderIdentityProcessor;
 import org.mallfoundry.order.OrderProcessor;
 import org.mallfoundry.order.OrderRepository;
+import org.mallfoundry.order.OrderSaveDisputeProcessor;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSplitter;
 import org.mallfoundry.order.OrderValidateProcessor;
+import org.mallfoundry.order.aftersales.DefaultOrderDisputeService;
 import org.mallfoundry.order.aftersales.OrderDisputeRepository;
+import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.repository.jpa.DelegatingJpaOrderDisputeRepository;
 import org.mallfoundry.order.aftersales.repository.jpa.JpaOrderDisputeRepository;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
@@ -61,12 +64,11 @@ public class OrderAutoConfiguration {
     @ConditionalOnMissingBean(OrderService.class)
     public DefaultOrderService defaultOrderService(@Autowired(required = false)
                                                    @Lazy List<OrderProcessor> processors,
-                                                   OrderRepository orderRepository,
                                                    OrderSplitter orderSplitter,
                                                    CarrierService carrierService,
                                                    PaymentService paymentService,
-                                                   OrderDisputeRepository orderRefundRepository) {
-        var service = new DefaultOrderService(orderRepository, orderSplitter, carrierService, paymentService, orderRefundRepository);
+                                                   OrderRepository orderRepository) {
+        var service = new DefaultOrderService(orderSplitter, carrierService, paymentService, orderRepository);
         service.setProcessors(processors);
         return service;
     }
@@ -111,7 +113,17 @@ public class OrderAutoConfiguration {
     }
 
     @Bean
-    public DelegatingJpaOrderDisputeRepository delegatingJpaOrderRefundRepository(JpaOrderDisputeRepository repository) {
+    public OrderSaveDisputeProcessor orderSaveDisputeProcessor(OrderDisputeService orderDisputeService) {
+        return new OrderSaveDisputeProcessor(orderDisputeService);
+    }
+
+    @Bean
+    public DelegatingJpaOrderDisputeRepository delegatingJpaOrderDisputeRepository(JpaOrderDisputeRepository repository) {
         return new DelegatingJpaOrderDisputeRepository(repository);
+    }
+
+    @Bean
+    public DefaultOrderDisputeService orderDisputeService(OrderDisputeRepository orderDisputeRepository) {
+        return new DefaultOrderDisputeService(orderDisputeRepository);
     }
 }

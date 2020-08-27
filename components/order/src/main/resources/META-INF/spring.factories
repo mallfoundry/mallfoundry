@@ -1,5 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.mallfoundry.autoconfigure.checkout.CheckoutAutoConfiguration,\
   org.mallfoundry.autoconfigure.order.OrderAutoConfiguration,\
   org.mallfoundry.autoconfigure.order.OrderTaskAutoConfiguration
 
