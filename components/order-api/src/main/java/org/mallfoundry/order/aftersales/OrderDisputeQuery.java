@@ -18,5 +18,31 @@
 
 package org.mallfoundry.order.aftersales;
 
-public interface OrderDisputeQuery {
+import org.mallfoundry.customer.CustomerOwnership;
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.store.StoreOwnership;
+import org.mallfoundry.util.ObjectBuilder;
+
+import java.util.Set;
+import java.util.function.Supplier;
+
+public interface OrderDisputeQuery extends Query, StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderDisputeQuery.Builder> {
+
+    Set<OrderRefundStatus> getStatuses();
+
+    void setStatuses(Set<OrderRefundStatus> statuses);
+
+    interface Builder extends QueryBuilder<OrderDisputeQuery, Builder> {
+
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
+
+        Builder customerId(String customerId);
+
+        Builder statuses(Supplier<Set<OrderRefundStatus>> supplier);
+
+        Builder statuses(Set<OrderRefundStatus> statuses);
+    }
 }

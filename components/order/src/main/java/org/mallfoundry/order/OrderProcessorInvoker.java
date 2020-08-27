@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.order.aftersales.OrderRefund;
 
 import java.util.List;
 

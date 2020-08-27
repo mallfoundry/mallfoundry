@@ -16,24 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.aftersales.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.order.OrderRefund;
-import org.mallfoundry.order.OrderRefundQuery;
-import org.mallfoundry.order.OrderRefundRepository;
+import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderDisputeQuery;
+import org.mallfoundry.order.aftersales.OrderDisputeRepository;
 
-public class DelegatingJpaOrderRefundRepository implements OrderRefundRepository {
+public class DelegatingJpaOrderDisputeRepository implements OrderDisputeRepository {
 
-    private final JpaOrderRefundRepository repository;
+    private final JpaOrderDisputeRepository repository;
 
-    public DelegatingJpaOrderRefundRepository(JpaOrderRefundRepository repository) {
+    public DelegatingJpaOrderDisputeRepository(JpaOrderDisputeRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public SliceList<OrderRefund> findAll(OrderRefundQuery query) {
+    public SliceList<OrderDispute> findAll(OrderDisputeQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
                 .page(query.getPage()).limit(query.getLimit())
@@ -42,7 +42,7 @@ public class DelegatingJpaOrderRefundRepository implements OrderRefundRepository
     }
 
     @Override
-    public long count(OrderRefundQuery query) {
+    public long count(OrderDisputeQuery query) {
         return this.repository.count(query);
     }
 }

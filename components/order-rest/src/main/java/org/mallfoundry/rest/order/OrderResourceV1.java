@@ -22,14 +22,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
-import org.mallfoundry.order.OrderRefund;
-import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
+import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderRefundStatus;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -212,14 +213,14 @@ public class OrderResourceV1 {
         return this.orderService.applyOrderRefund(orderId, refund);
     }
 
-    @GetMapping("/orders/refunds")
-    public SliceList<OrderRefund> getOrderRefunds(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                  @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                                  @RequestParam(name = "customer_id", required = false) String customerId,
-                                                  @RequestParam(name = "store_id", required = false) String storeId,
-                                                  @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                                                  @RequestParam(name = "sort", required = false) String sort) {
-        return this.orderService.getOrderRefunds(
+    @GetMapping("/orders/disputes")
+    public SliceList<OrderDispute> getOrderDisputes(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                    @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                                    @RequestParam(name = "customer_id", required = false) String customerId,
+                                                    @RequestParam(name = "store_id", required = false) String storeId,
+                                                    @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                                    @RequestParam(name = "sort", required = false) String sort) {
+        return this.orderService.getOrderDisputes(
                 this.orderService.createOrderRefundQuery().toBuilder()
                         .page(page).limit(limit).sort(aSort -> aSort.from(sort))
                         .customerId(customerId).storeId(storeId)
@@ -229,11 +230,11 @@ public class OrderResourceV1 {
                         .build());
     }
 
-    @GetMapping("/orders/refunds/count")
-    public long countOrderRefunds(@RequestParam(name = "customer_id", required = false) String customerId,
-                                  @RequestParam(name = "store_id", required = false) String storeId,
-                                  @RequestParam(name = "statuses", required = false) Set<String> statuses) {
-        return this.orderService.countOrderRefunds(
+    @GetMapping("/orders/disputes/count")
+    public long countOrderDisputes(@RequestParam(name = "customer_id", required = false) String customerId,
+                                   @RequestParam(name = "store_id", required = false) String storeId,
+                                   @RequestParam(name = "statuses", required = false) Set<String> statuses) {
+        return this.orderService.countOrderDisputes(
                 this.orderService.createOrderRefundQuery().toBuilder()
                         .customerId(customerId).storeId(storeId)
                         .statuses(() ->

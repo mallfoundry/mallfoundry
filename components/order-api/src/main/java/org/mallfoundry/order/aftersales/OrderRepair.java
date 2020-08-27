@@ -16,10 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
 
-public class OrderRefundException extends OrderException {
-    public OrderRefundException(String message) {
-        super(message);
-    }
+public interface OrderRepair {
 }

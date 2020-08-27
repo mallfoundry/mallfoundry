@@ -27,6 +27,10 @@ import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;
 import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.inventory.InventoryDeduction;
+import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderDisputeQuery;
+import org.mallfoundry.order.aftersales.OrderDisputeRepository;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.processor.Processors;
@@ -61,18 +65,18 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     private final OrderRepository orderRepository;
 
-    private final OrderRefundRepository orderRefundRepository;
+    private final OrderDisputeRepository orderDisputeRepository;
 
     public DefaultOrderService(OrderRepository orderRepository,
                                OrderSplitter orderSplitter,
                                CarrierService carrierService,
                                PaymentService paymentService,
-                               OrderRefundRepository orderRefundRepository) {
+                               OrderDisputeRepository orderDisputeRepository) {
         this.orderRepository = orderRepository;
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
         this.paymentService = paymentService;
-        this.orderRefundRepository = orderRefundRepository;
+        this.orderDisputeRepository = orderDisputeRepository;
     }
 
     public void setProcessors(List<OrderProcessor> processors) {
@@ -428,18 +432,18 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
-    public OrderRefundQuery createOrderRefundQuery() {
+    public OrderDisputeQuery createOrderRefundQuery() {
         return new DefaultOrderRefundQuery();
     }
 
     @Override
-    public SliceList<OrderRefund> getOrderRefunds(OrderRefundQuery query) {
-        return this.orderRefundRepository.findAll(query);
+    public SliceList<OrderDispute> getOrderDisputes(OrderDisputeQuery query) {
+        return this.orderDisputeRepository.findAll(query);
     }
 
     @Override
-    public long countOrderRefunds(OrderRefundQuery query) {
-        return this.orderRefundRepository.count(query);
+    public long countOrderDisputes(OrderDisputeQuery query) {
+        return this.orderDisputeRepository.count(query);
     }
 
     @Override

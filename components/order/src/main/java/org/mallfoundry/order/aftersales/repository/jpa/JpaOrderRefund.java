@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.aftersales.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.order.OrderRefundStatus;
-import org.mallfoundry.order.OrderRefundSupport;
+import org.mallfoundry.order.aftersales.OrderRefundStatus;
+import org.mallfoundry.order.aftersales.OrderRefundSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -67,7 +67,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
-    private RefundKind kind;
+    private DisputeKind kind;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_status_")

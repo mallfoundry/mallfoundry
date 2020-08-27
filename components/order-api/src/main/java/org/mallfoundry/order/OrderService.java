@@ -19,6 +19,9 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderDisputeQuery;
 import org.mallfoundry.payment.Payment;
 
 import java.util.List;
@@ -112,11 +115,11 @@ public interface OrderService {
 
     Optional<OrderRefund> findOrderRefund(String orderId, String refundId);
 
-    OrderRefundQuery createOrderRefundQuery();
+    OrderDisputeQuery createOrderRefundQuery();
 
-    SliceList<OrderRefund> getOrderRefunds(OrderRefundQuery query);
+    SliceList<OrderDispute> getOrderDisputes(OrderDisputeQuery query);
 
-    long countOrderRefunds(OrderRefundQuery query);
+    long countOrderDisputes(OrderDisputeQuery query);
 
     void cancelOrderRefund(String orderId, String refundId);
 

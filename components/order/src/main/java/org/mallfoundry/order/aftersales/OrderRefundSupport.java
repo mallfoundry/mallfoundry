@@ -16,18 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
+
+import org.mallfoundry.order.OrderExceptions;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static org.mallfoundry.order.OrderRefundStatus.APPLYING;
-import static org.mallfoundry.order.OrderRefundStatus.DISAPPROVED;
-import static org.mallfoundry.order.OrderRefundStatus.FAILED;
-import static org.mallfoundry.order.OrderRefundStatus.INCOMPLETE;
-import static org.mallfoundry.order.OrderRefundStatus.PENDING;
-import static org.mallfoundry.order.OrderRefundStatus.SUCCEEDED;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.APPLYING;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.DISAPPROVED;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.FAILED;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.INCOMPLETE;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.PENDING;
+import static org.mallfoundry.order.aftersales.OrderRefundStatus.SUCCEEDED;
 
 public abstract class OrderRefundSupport implements MutableOrderRefund {
 
@@ -122,7 +124,7 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
-        public Builder kind(RefundKind kind) {
+        public Builder kind(DisputeKind kind) {
             this.refund.setKind(kind);
             return this;
         }

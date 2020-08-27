@@ -22,13 +22,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
+import org.mallfoundry.order.aftersales.OrderDisputeQuery;
+import org.mallfoundry.order.aftersales.OrderRefundStatus;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class DefaultOrderRefundQuery extends QuerySupport implements OrderRefundQuery {
+public class DefaultOrderRefundQuery extends QuerySupport implements OrderDisputeQuery {
     private String tenantId;
     private String storeId;
     private String customerId;
@@ -40,7 +42,7 @@ public class DefaultOrderRefundQuery extends QuerySupport implements OrderRefund
         };
     }
 
-    protected abstract static class BuilderSupport extends QueryBuilderSupport<OrderRefundQuery, Builder> implements Builder {
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<OrderDisputeQuery, Builder> implements Builder {
         private final DefaultOrderRefundQuery query;
 
         public BuilderSupport(DefaultOrderRefundQuery query) {

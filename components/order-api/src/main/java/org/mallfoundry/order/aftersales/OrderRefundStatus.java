@@ -16,12 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
 
-import org.mallfoundry.data.SliceList;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public interface OrderRefundRepository {
-    SliceList<OrderRefund> findAll(OrderRefundQuery query);
+public enum OrderRefundStatus {
+    INCOMPLETE /* 空状态 */,
+    APPLYING /* 买家申请退款 */,
+    CANCELLED, /* 取消申请退款 */
+    DISAPPROVED /* 退款未批准 */,
 
-    long count(OrderRefundQuery query);
+    AWAITING_RETURN_SHIPMENT /* 等待退货 */,
+    PARTIALLY_RETURN_SHIPPED /* 部分已退货 */,
+    RETURN_SHIPPED /* 已退货 */,
+
+    PENDING /* 退款中 */,
+    SUCCEEDED  /* 退款成功 */,
+    FAILED  /* 退款失败 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

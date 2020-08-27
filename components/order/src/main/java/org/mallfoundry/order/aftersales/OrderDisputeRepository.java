@@ -16,7 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
 
-public interface OrderExchange {
+import org.mallfoundry.data.SliceList;
+
+public interface OrderDisputeRepository {
+
+    SliceList<OrderDispute> findAll(OrderDisputeQuery query);
+
+    long count(OrderDisputeQuery query);
 }

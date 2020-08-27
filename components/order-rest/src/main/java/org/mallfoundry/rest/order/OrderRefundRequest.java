@@ -20,9 +20,9 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.order.OrderRefund;
-import org.mallfoundry.order.OrderRefund.ItemStatus;
-import org.mallfoundry.order.OrderRefund.RefundKind;
+import org.mallfoundry.order.aftersales.OrderDispute.DisputeKind;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderRefund.ItemStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderRefundRequest {
-    private RefundKind kind;
+    private DisputeKind kind;
     private ItemStatus itemStatus;
     private String itemId;
     private BigDecimal amount;

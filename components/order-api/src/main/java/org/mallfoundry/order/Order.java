@@ -20,6 +20,8 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.inventory.InventoryDeduction;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;

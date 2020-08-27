@@ -18,6 +18,8 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.order.aftersales.OrderRefundException;
+
 public abstract class OrderExceptions {
 
     public static OrderException notFound() {

@@ -18,5 +18,28 @@
 
 package org.mallfoundry.order.aftersales;
 
-public enum OrderDisputeKind {
+import java.math.BigDecimal;
+import java.util.Date;
+
+public interface MutableOrderRefund extends OrderRefund {
+
+    void setItemStatus(ItemStatus itemStatus);
+
+    void setStatus(OrderRefundStatus status);
+
+    void setTotalAmount(BigDecimal totalAmount);
+
+    void setDisapprovalReason(String disapprovalReason);
+
+    void setFailReason(String failReason);
+
+    void setAppliedTime(Date appliedTime);
+
+    void setApprovedTime(Date approvedTime);
+
+    void setSucceededTime(Date succeededTime);
+
+    void setFailedTime(Date failedTime);
+
+    void setDisapprovedTime(Date disapprovedTime);
 }

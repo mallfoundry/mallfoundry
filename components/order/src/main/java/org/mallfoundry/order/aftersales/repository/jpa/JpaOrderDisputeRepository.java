@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.aftersales.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.order.OrderRefundQuery;
+import org.mallfoundry.order.aftersales.OrderDisputeQuery;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,10 +33,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public interface JpaOrderRefundRepository extends JpaRepository<JpaOrderRefund, String>, JpaSpecificationExecutor<JpaOrderRefund> {
+public interface JpaOrderDisputeRepository extends JpaRepository<JpaOrderDispute, String>, JpaSpecificationExecutor<JpaOrderDispute> {
 
-    default Specification<JpaOrderRefund> createSpecification(OrderRefundQuery refundQuery) {
-        return (Specification<JpaOrderRefund>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaOrderDispute> createSpecification(OrderDisputeQuery refundQuery) {
+        return (Specification<JpaOrderDispute>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(refundQuery.getCustomerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), refundQuery.getCustomerId()));
@@ -51,7 +51,7 @@ public interface JpaOrderRefundRepository extends JpaRepository<JpaOrderRefund, 
         };
     }
 
-    private Sort createSort(OrderRefundQuery query) {
+    private Sort createSort(OrderDisputeQuery query) {
         return Optional.ofNullable(query.getSort())
                 .map(org.mallfoundry.data.Sort::getOrders)
                 .filter(CollectionUtils::isNotEmpty)
@@ -64,12 +64,12 @@ public interface JpaOrderRefundRepository extends JpaRepository<JpaOrderRefund, 
                 .orElseGet(() -> Sort.by("appliedTime").descending());
     }
 
-    default Page<JpaOrderRefund> findAll(OrderRefundQuery query) {
+    default Page<JpaOrderDispute> findAll(OrderDisputeQuery query) {
         var sort = this.createSort(query);
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
     }
 
-    default long count(OrderRefundQuery query) {
+    default long count(OrderDisputeQuery query) {
         return this.count(this.createSpecification(query));
     }
 }

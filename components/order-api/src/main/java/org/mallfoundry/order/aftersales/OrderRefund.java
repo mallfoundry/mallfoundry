@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.mallfoundry.customer.CustomerOwnership;
@@ -27,25 +27,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
-
-    String getId();
-
-    void setId(String id);
-
-    String getOrderId();
-
-    String getApplicant();
-
-    void setApplicant(String applicant);
-
-    String getApplicantId();
-
-    void setApplicantId(String applicantId);
-
-    RefundKind getKind();
-
-    void setKind(RefundKind kind);
+public interface OrderRefund extends OrderDispute, StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
     ItemStatus getItemStatus();
 
@@ -53,39 +35,9 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     void itemReceive();
 
-    String getItemId();
-
-    void setItemId(String itemId);
-
-    String getProductId();
-
-    void setProductId(String productId);
-
-    String getVariantId();
-
-    void setVariantId(String variantId);
-
-    String getName();
-
-    void setName(String name);
-
-    String getImageUrl();
-
-    void setImageUrl(String imageUrl);
-
-    // 订单项金额
-    BigDecimal getItemAmount();
-
-    void setItemAmount(BigDecimal itemAmount);
-
     boolean isItemShipped();
 
     void setItemShipped(boolean itemShipped);
-
-    // 订单退款项金额
-    BigDecimal getAmount();
-
-    void setAmount(BigDecimal refundAmount);
 
     OrderRefundStatus getStatus();
 
@@ -134,25 +86,6 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
      */
     void fail(String failReason) throws OrderRefundException;
 
-    String getNotes();
-
-    void setNotes(String notes);
-
-    List<String> getAttachments();
-
-    void setAttachments(List<String> attachments);
-
-    enum RefundKind {
-        ONLY_REFUND /* 仅退款 */,
-        RETURN_REFUND /* 退货退款 */;
-
-        @JsonValue
-        @Override
-        public String toString() {
-            return this.name().toLowerCase();
-        }
-    }
-
     enum ItemStatus {
         NOT_RECEIVED /* 未收货 */,
         RECEIVED /* 已收货 */;
@@ -166,7 +99,7 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     interface Builder extends ObjectBuilder<OrderRefund> {
 
-        Builder kind(RefundKind kind);
+        Builder kind(DisputeKind kind);
 
         Builder reason(String reason);
 

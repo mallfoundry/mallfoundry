@@ -19,7 +19,8 @@
 package org.mallfoundry.order;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.order.repository.jpa.JpaOrderRefund;
+import org.mallfoundry.order.aftersales.OrderRefundException;
+import org.mallfoundry.order.aftersales.repository.jpa.JpaOrderRefund;
 import org.mallfoundry.test.StaticTest;
 
 import java.math.BigDecimal;
