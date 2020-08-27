@@ -18,18 +18,32 @@
 
 package org.mallfoundry.order.repository.jpa;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.order.OrderReturnShipment;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "mf_order_shipment")
-public class JpaOrderShipment extends JpaOrderShipmentBase {
+@Getter
+@Setter
 
-    public JpaOrderShipment() {
+@Entity
+@Table(name = "mf_order_return_shipment")
+public class JpaOrderReturnShipment extends JpaOrderShipmentBase implements OrderReturnShipment {
+
+    @Column(name = "refund_id_")
+    private String refundId;
+
+    @Column(name = "exchange_id_")
+    private String exchangeId;
+
+    public JpaOrderReturnShipment() {
         super(null);
     }
 
-    public JpaOrderShipment(String id) {
+    public JpaOrderReturnShipment(String id) {
         super(id);
     }
 }
