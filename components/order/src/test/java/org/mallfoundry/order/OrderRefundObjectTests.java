@@ -33,7 +33,7 @@ public class OrderRefundObjectTests {
     public void testApplyRefund() {
         var refund = new JpaOrderRefund("0", "1").toBuilder()
                 .itemNotReceive()
-                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
+                .itemId("i1").amount(BigDecimal.valueOf(10))
                 .build();
         refund.apply();
     }
@@ -42,7 +42,7 @@ public class OrderRefundObjectTests {
     public void testNotApplyAndApproveRefund() {
         var refund = new JpaOrderRefund("0", "1").toBuilder()
                 .itemNotReceive()
-                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
+                .itemId("i1").amount(BigDecimal.valueOf(10))
                 .build();
         assertThatExceptionOfType(OrderRefundException.class)
                 .isThrownBy(refund::approve)
@@ -53,7 +53,7 @@ public class OrderRefundObjectTests {
     public void testCancelRefund() {
         var refund = new JpaOrderRefund("0", "1").toBuilder()
                 .itemNotReceive()
-                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
+                .itemId("i1").amount(BigDecimal.valueOf(10))
                 .build();
         refund.cancel();
     }
@@ -62,7 +62,7 @@ public class OrderRefundObjectTests {
     public void testApproveAndCancelRefund() {
         var refund = new JpaOrderRefund("0", "1").toBuilder()
                 .itemNotReceive()
-                .item(aRefund -> aRefund.createItem("1").toBuilder().itemId("i1").amount(BigDecimal.valueOf(10)).build())
+                .itemId("i1").amount(BigDecimal.valueOf(10))
                 .build();
         assertThatExceptionOfType(OrderRefundException.class)
                 .isThrownBy(() -> {

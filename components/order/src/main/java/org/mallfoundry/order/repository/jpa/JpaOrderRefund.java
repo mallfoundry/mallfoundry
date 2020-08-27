@@ -22,24 +22,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.order.OrderRefundItem;
 import org.mallfoundry.order.OrderRefundStatus;
 import org.mallfoundry.order.OrderRefundSupport;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -80,10 +73,29 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "item_status_")
     private ItemStatus itemStatus;
 
-    @OneToMany(targetEntity = JpaOrderRefundItem.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "refund_id_", referencedColumnName = "id_")
-    @OrderBy("position")
-    private List<OrderRefundItem> items = new ArrayList<>();
+    @Column(name = "item_id_")
+    private String itemId;
+
+    @Column(name = "product_id_")
+    private String productId;
+
+    @Column(name = "variant_id_")
+    private String variantId;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "image_url_")
+    private String imageUrl;
+
+    @Column(name = "item_amount_")
+    private BigDecimal itemAmount;
+
+    @Column(name = "item_shipped_")
+    private boolean itemShipped;
+
+    @Column(name = "amount_")
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
@@ -126,10 +138,5 @@ public class JpaOrderRefund extends OrderRefundSupport {
     public JpaOrderRefund(String orderId, String id) {
         this.orderId = orderId;
         this.id = id;
-    }
-
-    @Override
-    public OrderRefundItem createItem(String itemId) {
-        return new JpaOrderRefundItem(itemId);
     }
 }

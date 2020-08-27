@@ -24,26 +24,26 @@ import org.mallfoundry.order.OrderRefund;
 import org.mallfoundry.order.OrderRefund.ItemStatus;
 import org.mallfoundry.order.OrderRefund.RefundKind;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class OrderRefundRequest {
     private RefundKind kind;
     private ItemStatus itemStatus;
+    private String itemId;
+    private BigDecimal amount;
     private String reason;
     private String notes;
     private List<String> attachments;
-    private List<OrderRefundItemRequest> items = new ArrayList<>();
 
     public OrderRefund assignTo(OrderRefund refund) {
         return refund.toBuilder()
                 .kind(this.kind).itemStatus(this.itemStatus)
                 .reason(this.reason).notes(this.notes)
                 .attachments(this.attachments)
-                .items(() -> this.items.stream().map(item -> item.assignTo(refund.createItem(null))).collect(Collectors.toList()))
+                .itemId(this.itemId).amount(this.amount)
                 .build();
     }
 

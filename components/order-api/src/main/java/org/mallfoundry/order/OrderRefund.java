@@ -26,8 +26,6 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
@@ -55,15 +53,39 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
     void itemReceive();
 
-    OrderRefundItem createItem(String itemId);
+    String getItemId();
 
-    void addItem(OrderRefundItem item);
+    void setItemId(String itemId);
 
-    void addItems(List<OrderRefundItem> items);
+    String getProductId();
 
-    List<OrderRefundItem> getItems();
+    void setProductId(String productId);
 
-    BigDecimal getTotalAmount();
+    String getVariantId();
+
+    void setVariantId(String variantId);
+
+    String getName();
+
+    void setName(String name);
+
+    String getImageUrl();
+
+    void setImageUrl(String imageUrl);
+
+    // 订单项金额
+    BigDecimal getItemAmount();
+
+    void setItemAmount(BigDecimal itemAmount);
+
+    boolean isItemShipped();
+
+    void setItemShipped(boolean itemShipped);
+
+    // 订单退款项金额
+    BigDecimal getAmount();
+
+    void setAmount(BigDecimal refundAmount);
 
     OrderRefundStatus getStatus();
 
@@ -154,15 +176,13 @@ public interface OrderRefund extends StoreOwnership, CustomerOwnership, ObjectBu
 
         Builder itemReceive();
 
-        Builder item(OrderRefundItem item);
+        Builder itemId(String itemId);
 
-        Builder item(Function<OrderRefund, OrderRefundItem> function);
+        Builder name(String name);
 
-        Builder items(List<OrderRefundItem> items);
+        Builder imageUrl(String imageUrl);
 
-        Builder items(Function<OrderRefund, List<OrderRefundItem>> function);
-
-        Builder items(Supplier<List<OrderRefundItem>> supplier);
+        Builder amount(BigDecimal amount);
 
         Builder disapprovalReason(String disapprovalReason);
 
