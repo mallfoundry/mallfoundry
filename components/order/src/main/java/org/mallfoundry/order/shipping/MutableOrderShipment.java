@@ -16,20 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.shipping;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Date;
 
-@Entity
-@Table(name = "mf_order_shipment")
-public class JpaOrderShipment extends JpaOrderShipmentBase {
-
-    public JpaOrderShipment() {
-        super(null);
-    }
-
-    public JpaOrderShipment(String id) {
-        super(id);
-    }
+public interface MutableOrderShipment extends OrderShipment {
+    void setShippedTime(Date shippedTime);
 }

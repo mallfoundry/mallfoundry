@@ -24,7 +24,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
-import org.mallfoundry.order.OrderShipment;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;

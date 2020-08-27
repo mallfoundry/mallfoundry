@@ -18,8 +18,8 @@
 
 package org.mallfoundry.order.repository.jpa.convert;
 
-import org.mallfoundry.order.DefaultOrderShipmentItem;
-import org.mallfoundry.order.OrderShipmentItem;
+import org.mallfoundry.order.shipping.DefaultOrderShipmentItem;
+import org.mallfoundry.order.shipping.OrderShipmentItem;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;

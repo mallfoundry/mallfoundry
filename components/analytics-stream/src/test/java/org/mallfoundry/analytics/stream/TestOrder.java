@@ -30,7 +30,7 @@ import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderReviewException;
-import org.mallfoundry.order.OrderShipment;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.payment.PaymentMethod;

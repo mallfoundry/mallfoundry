@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.shipping.repository.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.order.OrderShipment;
-import org.mallfoundry.order.OrderShipmentItem;
-import org.mallfoundry.order.OrderShipmentSupport;
 import org.mallfoundry.order.repository.jpa.convert.OrderShipmentItemListConverter;
+import org.mallfoundry.order.shipping.OrderShipment;
+import org.mallfoundry.order.shipping.OrderShipmentItem;
+import org.mallfoundry.order.shipping.OrderShipmentSupport;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.CarrierCode;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;

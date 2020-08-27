@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.security.access.AllAuthorities;
 import org.mallfoundry.security.access.Resource;
 import org.springframework.core.Ordered;

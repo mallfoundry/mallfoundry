@@ -16,34 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.repository.jpa;
+package org.mallfoundry.order.shipping.repository.jpa;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.order.OrderReturnShipment;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Getter
-@Setter
-
 @Entity
-@Table(name = "mf_order_return_shipment")
-public class JpaOrderReturnShipment extends JpaOrderShipmentBase implements OrderReturnShipment {
+@Table(name = "mf_order_shipment")
+public class JpaOrderShipment extends JpaOrderShipmentBase {
 
-    @Column(name = "refund_id_")
-    private String refundId;
-
-    @Column(name = "exchange_id_")
-    private String exchangeId;
-
-    public JpaOrderReturnShipment() {
+    public JpaOrderShipment() {
         super(null);
     }
 
-    public JpaOrderReturnShipment(String id) {
+    public JpaOrderShipment(String id) {
         super(id);
     }
 }

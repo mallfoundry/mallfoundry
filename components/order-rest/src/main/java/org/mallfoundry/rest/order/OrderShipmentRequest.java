@@ -20,7 +20,7 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.order.OrderShipment;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.shipping.CarrierCode;
 
 import java.util.List;

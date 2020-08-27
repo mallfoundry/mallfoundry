@@ -16,10 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.shipping;
 
-import java.util.Date;
+import org.mallfoundry.order.OrderException;
 
-public interface MutableOrderShipment extends OrderShipment {
-    void setShippedTime(Date shippedTime);
+/**
+ * 订单物流信息异常对象。
+ *
+ * @author Zhi Tang
+ */
+public class OrderShipmentException extends OrderException {
+    public OrderShipmentException(String message) {
+        super(message);
+    }
 }

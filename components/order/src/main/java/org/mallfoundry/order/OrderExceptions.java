@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.order.aftersales.OrderRefundException;
+import org.mallfoundry.order.shipping.OrderShipmentException;
 
 public abstract class OrderExceptions {
 

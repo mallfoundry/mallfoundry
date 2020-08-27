@@ -21,6 +21,7 @@ package org.mallfoundry.order;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.springframework.core.Ordered;
 
 import java.util.List;
