@@ -400,7 +400,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var order = this.requiredOrder(orderId);
         var refund = this.invokePreProcessBeforeApproveOrderRefund(order, order.createRefund(refundId));
         order.approveRefund(refund);
-        this.refundOrderPayment(order, refund.getId(), refund.getTotalAmount());
+        this.refundOrderPayment(order, refund.getId(), refund.getAmount());
         this.orderRepository.save(order);
     }
 
@@ -423,7 +423,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var order = this.requiredOrder(orderId);
         refund = this.invokePreProcessBeforeActiveOrderRefund(order, refund);
         var fetchRefund = order.activeRefund(refund);
-        this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getTotalAmount());
+        this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getAmount());
         this.orderRepository.save(order);
     }
 
