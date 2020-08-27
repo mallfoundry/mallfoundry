@@ -20,19 +20,10 @@ package org.mallfoundry.order.aftersales;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum OrderRefundStatus {
-    INCOMPLETE /* 空状态 */,
-    APPLYING /* 买家申请退款 */,
-    CANCELLED, /* 取消申请退款 */
-    DISAPPROVED /* 退款未批准 */,
-
-    AWAITING_RETURN_SHIPMENT /* 等待退货 */,
-    PARTIALLY_RETURN_SHIPPED /* 部分已退货 */,
-    RETURN_SHIPPED /* 已退货 */,
-
-    PENDING /* 退款中 */,
-    SUCCEEDED  /* 退款成功 */,
-    FAILED  /* 退款失败 */;
+public enum OrderDisputeKind {
+    EXCHANGE /* 换货 */,
+    ONLY_REFUND /* 仅退款 */,
+    RETURN_REFUND /* 退货退款 */;
 
     @JsonValue
     @Override

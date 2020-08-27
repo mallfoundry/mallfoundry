@@ -23,6 +23,7 @@ import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.store.StoreOwnership;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface OrderDispute extends StoreOwnership, CustomerOwnership {
@@ -41,9 +42,15 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     void setApplicantId(String applicantId);
 
-    DisputeKind getKind();
+    OrderDisputeKind getKind();
 
-    void setKind(DisputeKind kind);
+    void setKind(OrderDisputeKind kind);
+
+    ItemStatus getItemStatus();
+
+    void itemNotReceive();
+
+    void itemReceive();
 
     String getItemId();
 
@@ -83,10 +90,60 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     void setAttachments(List<String> attachments);
 
-    enum DisputeKind {
-        EXCHANGE /* 换货 */,
-        ONLY_REFUND /* 仅退款 */,
-        RETURN_REFUND /* 退货退款 */;
+    OrderDisputeStatus getStatus();
+
+    boolean isItemShipped();
+
+    void setItemShipped(boolean itemShipped);
+
+    String getReason();
+
+    void setReason(String reason);
+
+    Date getAppliedTime();
+
+    /**
+     * 申请退款。
+     */
+    void apply() throws OrderRefundException;
+
+    /**
+     * 取消退款申请。
+     */
+    void cancel() throws OrderRefundException;
+
+    Date getApprovedTime();
+
+    /**
+     * 同意退款。
+     */
+    void approve() throws OrderRefundException;
+
+    String getDisapprovalReason();
+
+    Date getDisapprovedTime();
+
+    void disapprove(String disapprovalReason) throws OrderRefundException;
+
+    Date getSucceededTime();
+
+    /**
+     * 退款成功。
+     */
+    void succeed() throws OrderRefundException;
+
+    String getFailReason();
+
+    Date getFailedTime();
+
+    /**
+     * 退款失败。
+     */
+    void fail(String failReason) throws OrderRefundException;
+
+    enum ItemStatus {
+        NOT_RECEIVED /* 未收货 */,
+        RECEIVED /* 已收货 */;
 
         @JsonValue
         @Override

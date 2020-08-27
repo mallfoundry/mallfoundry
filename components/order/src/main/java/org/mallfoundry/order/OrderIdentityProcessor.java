@@ -71,6 +71,12 @@ public class OrderIdentityProcessor implements OrderProcessor {
     }
 
     @Override
+    public List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        refunds.forEach(refund -> refund.setId(PrimaryKeyHolder.next(ORDER_REFUND_ID_VALUE_NAME)));
+        return refunds;
+    }
+
+    @Override
     public OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
         review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME));
         return review;

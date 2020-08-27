@@ -112,6 +112,8 @@ public interface OrderService {
 
     OrderRefund applyOrderRefund(String orderId, OrderRefund refund);
 
+    List<OrderRefund> applyOrderRefunds(String orderId, List<OrderRefund> refunds);
+
     Optional<OrderRefund> findOrderRefund(String orderId, String refundId);
 
     void cancelOrderRefund(String orderId, String refundId);

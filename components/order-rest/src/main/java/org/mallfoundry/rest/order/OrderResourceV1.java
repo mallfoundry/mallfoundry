@@ -24,14 +24,11 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
-import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
-import org.mallfoundry.order.aftersales.OrderDispute;
-import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.OrderRefund;
-import org.mallfoundry.order.aftersales.OrderRefundStatus;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -52,18 +49,14 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/v1")
 public class OrderResourceV1 {
 
     private final OrderService orderService;
 
-    private final OrderDisputeService orderDisputeService;
-
-    public OrderResourceV1(OrderService orderService, OrderDisputeService orderDisputeService) {
+    public OrderResourceV1(OrderService orderService) {
         this.orderService = orderService;
-        this.orderDisputeService = orderDisputeService;
     }
 
     @PatchMapping("/orders/{order_id}")
@@ -217,34 +210,13 @@ public class OrderResourceV1 {
         return this.orderService.applyOrderRefund(orderId, refund);
     }
 
-    @GetMapping("/orders/disputes")
-    public SliceList<OrderDispute> getOrderDisputes(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                    @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                                    @RequestParam(name = "customer_id", required = false) String customerId,
-                                                    @RequestParam(name = "store_id", required = false) String storeId,
-                                                    @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                                                    @RequestParam(name = "sort", required = false) String sort) {
-        return this.orderDisputeService.getOrderDisputes(
-                this.orderDisputeService.createOrderDisputeQuery().toBuilder()
-                        .page(page).limit(limit).sort(aSort -> aSort.from(sort))
-                        .customerId(customerId).storeId(storeId)
-                        .statuses(() ->
-                                CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
-                                        .map(OrderRefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
-                        .build());
-    }
-
-    @GetMapping("/orders/disputes/count")
-    public long countOrderDisputes(@RequestParam(name = "customer_id", required = false) String customerId,
-                                   @RequestParam(name = "store_id", required = false) String storeId,
-                                   @RequestParam(name = "statuses", required = false) Set<String> statuses) {
-        return this.orderDisputeService.countOrderDisputes(
-                this.orderDisputeService.createOrderDisputeQuery().toBuilder()
-                        .customerId(customerId).storeId(storeId)
-                        .statuses(() ->
-                                CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
-                                        .map(OrderRefundStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
-                        .build());
+    @PostMapping("/orders/{order_id}/refunds/batch")
+    public List<OrderRefund> applyOrderRefunds(@PathVariable("order_id") String orderId,
+                                               @RequestBody List<OrderRefundRequest> requests) {
+        var order = this.orderService.createOrder(orderId);
+        var refunds = requests.stream().map(request -> request.assignTo(order.createRefund(null)))
+                .collect(Collectors.toUnmodifiableList());
+        return this.orderService.applyOrderRefunds(orderId, refunds);
     }
 
     @DeleteMapping("/orders/{order_id}/refunds/{refund_id}/cancel")

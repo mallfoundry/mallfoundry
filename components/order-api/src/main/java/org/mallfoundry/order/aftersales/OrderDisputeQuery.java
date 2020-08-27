@@ -29,9 +29,9 @@ import java.util.function.Supplier;
 
 public interface OrderDisputeQuery extends Query, StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderDisputeQuery.Builder> {
 
-    Set<OrderRefundStatus> getStatuses();
+    Set<OrderDisputeStatus> getStatuses();
 
-    void setStatuses(Set<OrderRefundStatus> statuses);
+    void setStatuses(Set<OrderDisputeStatus> statuses);
 
     interface Builder extends QueryBuilder<OrderDisputeQuery, Builder> {
 
@@ -41,8 +41,8 @@ public interface OrderDisputeQuery extends Query, StoreOwnership, CustomerOwners
 
         Builder customerId(String customerId);
 
-        Builder statuses(Supplier<Set<OrderRefundStatus>> supplier);
+        Builder statuses(Supplier<Set<OrderDisputeStatus>> supplier);
 
-        Builder statuses(Set<OrderRefundStatus> statuses);
+        Builder statuses(Set<OrderDisputeStatus> statuses);
     }
 }

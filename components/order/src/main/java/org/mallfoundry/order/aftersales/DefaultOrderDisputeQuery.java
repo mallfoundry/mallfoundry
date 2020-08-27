@@ -32,7 +32,7 @@ public class DefaultOrderDisputeQuery extends QuerySupport implements OrderDispu
     private String tenantId;
     private String storeId;
     private String customerId;
-    private Set<OrderRefundStatus> statuses;
+    private Set<OrderDisputeStatus> statuses;
 
     @Override
     public Builder toBuilder() {
@@ -67,13 +67,13 @@ public class DefaultOrderDisputeQuery extends QuerySupport implements OrderDispu
         }
 
         @Override
-        public Builder statuses(Supplier<Set<OrderRefundStatus>> supplier) {
+        public Builder statuses(Supplier<Set<OrderDisputeStatus>> supplier) {
             this.query.setStatuses(supplier.get());
             return this;
         }
 
         @Override
-        public Builder statuses(Set<OrderRefundStatus> statuses) {
+        public Builder statuses(Set<OrderDisputeStatus> statuses) {
             this.query.setStatuses(statuses);
             return this;
         }

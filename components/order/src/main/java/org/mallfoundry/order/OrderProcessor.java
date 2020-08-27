@@ -119,8 +119,16 @@ public interface OrderProcessor {
         return refund;
     }
 
+    default List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return refunds;
+    }
+
     default OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         return refund;
+    }
+
+    default List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return refunds;
     }
 
     default OrderRefund preProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {

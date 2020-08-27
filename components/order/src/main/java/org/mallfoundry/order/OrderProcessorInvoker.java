@@ -70,7 +70,11 @@ public interface OrderProcessorInvoker {
 
     OrderRefund invokePreProcessBeforeApplyOrderRefund(Order order, OrderRefund refund);
 
+    List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds);
+
     OrderRefund invokePreProcessAfterApplyOrderRefund(Order order, OrderRefund refund);
+
+    List<OrderRefund> invokePreProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds);
 
     OrderRefund invokePreProcessBeforeCancelOrderRefund(Order order, OrderRefund refund);
 

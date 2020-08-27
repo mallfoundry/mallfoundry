@@ -21,6 +21,8 @@ package org.mallfoundry.order;
 import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.OrderRefund;
 
+import java.util.List;
+
 public class OrderSaveDisputeProcessor implements OrderProcessor {
 
     private final OrderDisputeService orderDisputeService;
@@ -33,6 +35,12 @@ public class OrderSaveDisputeProcessor implements OrderProcessor {
     public OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
+    }
+
+    @Override
+    public List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        refunds.forEach(this.orderDisputeService::saveOrderDispute);
+        return refunds;
     }
 
     @Override

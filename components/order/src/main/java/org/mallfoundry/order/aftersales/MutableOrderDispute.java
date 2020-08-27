@@ -18,5 +18,25 @@
 
 package org.mallfoundry.order.aftersales;
 
-public interface MutableOrderRefund extends MutableOrderDispute, OrderRefund {
+import java.util.Date;
+
+public interface MutableOrderDispute extends OrderDispute {
+
+    void setItemStatus(ItemStatus itemStatus);
+
+    void setStatus(OrderDisputeStatus status);
+
+    void setDisapprovalReason(String disapprovalReason);
+
+    void setDisapprovedTime(Date disapprovedTime);
+
+    void setAppliedTime(Date appliedTime);
+
+    void setApprovedTime(Date approvedTime);
+
+    void setSucceededTime(Date succeededTime);
+
+    void setFailReason(String failReason);
+
+    void setFailedTime(Date failedTime);
 }

@@ -23,6 +23,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderDisputeKind;
+import org.mallfoundry.order.aftersales.OrderDisputeStatus;
+import org.mallfoundry.order.aftersales.OrderDisputeSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -33,6 +36,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +45,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_order_dispute")
-public class JpaOrderDispute implements OrderDispute {
+public class JpaOrderDispute extends OrderDisputeSupport {
 
     @Id
     @Column(name = "id_")
@@ -67,7 +71,11 @@ public class JpaOrderDispute implements OrderDispute {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
-    private DisputeKind kind;
+    private OrderDisputeKind kind;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_status_")
+    private ItemStatus itemStatus;
 
     @Column(name = "item_id_")
     private String itemId;
@@ -99,6 +107,34 @@ public class JpaOrderDispute implements OrderDispute {
     @Column(name = "attachments_")
     @Convert(converter = StringListConverter.class)
     private List<String> attachments;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_")
+    private OrderDisputeStatus status = OrderDisputeStatus.INCOMPLETE;
+
+    @Column(name = "reason_")
+    private String reason;
+
+    @Column(name = "applied_time_")
+    private Date appliedTime;
+
+    @Column(name = "disapproval_reason_")
+    private String disapprovalReason;
+
+    @Column(name = "disapproved_time_")
+    private Date disapprovedTime;
+
+    @Column(name = "approved_time_")
+    private Date approvedTime;
+
+    @Column(name = "succeeded_time_")
+    private Date succeededTime;
+
+    @Column(name = "fail_reason_")
+    private String failReason;
+
+    @Column(name = "failed_time_")
+    private Date failedTime;
 
     public JpaOrderDispute(String id) {
         this.id = id;

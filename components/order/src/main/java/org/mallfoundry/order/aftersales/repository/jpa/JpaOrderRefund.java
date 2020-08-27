@@ -22,7 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.order.aftersales.OrderRefundStatus;
+import org.mallfoundry.order.aftersales.OrderDisputeKind;
+import org.mallfoundry.order.aftersales.OrderDisputeStatus;
 import org.mallfoundry.order.aftersales.OrderRefundSupport;
 
 import javax.persistence.Column;
@@ -67,7 +68,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "kind_")
-    private DisputeKind kind;
+    private OrderDisputeKind kind;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_status_")
@@ -99,10 +100,7 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
-    private OrderRefundStatus status = OrderRefundStatus.INCOMPLETE;
-
-    @Column(name = "total_amount_")
-    private BigDecimal totalAmount;
+    private OrderDisputeStatus status = OrderDisputeStatus.INCOMPLETE;
 
     @Column(name = "reason_")
     private String reason;

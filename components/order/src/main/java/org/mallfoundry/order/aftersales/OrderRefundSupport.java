@@ -24,90 +24,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.APPLYING;
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.DISAPPROVED;
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.FAILED;
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.INCOMPLETE;
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.PENDING;
-import static org.mallfoundry.order.aftersales.OrderRefundStatus.SUCCEEDED;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.APPLYING;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.DISAPPROVED;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.FAILED;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.INCOMPLETE;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.PENDING;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.SUCCEEDED;
 
-public abstract class OrderRefundSupport implements MutableOrderRefund {
-
-    public boolean nonIncomplete() {
-        return !INCOMPLETE.equals(this.getStatus());
-    }
-
-    public boolean nonApplying() {
-        return !APPLYING.equals(this.getStatus());
-    }
-
-    public boolean nonPending() {
-        return !PENDING.equals(this.getStatus());
-    }
-
-    @Override
-    public void itemNotReceive() {
-        this.setItemStatus(ItemStatus.NOT_RECEIVED);
-    }
-
-    @Override
-    public void itemReceive() {
-        this.setItemStatus(ItemStatus.RECEIVED);
-    }
-
-    @Override
-    public void apply() throws OrderRefundException {
-        if (this.nonIncomplete()) {
-            throw OrderExceptions.Refund.applied();
-        }
-        this.setStatus(APPLYING);
-        this.setAppliedTime(new Date());
-    }
-
-    @Override
-    public void cancel() throws OrderRefundException {
-        if (this.nonApplying()) {
-            throw OrderExceptions.Refund.notCancel();
-        }
-    }
-
-    @Override
-    public void approve() throws OrderRefundException {
-        if (this.nonApplying()) {
-            throw OrderExceptions.Refund.approvedOrDisapproved();
-        }
-        this.setStatus(PENDING);
-        this.setApprovedTime(new Date());
-    }
-
-    @Override
-    public void disapprove(String disapprovalReason) throws OrderRefundException {
-        if (this.nonApplying()) {
-            throw OrderExceptions.Refund.approvedOrDisapproved();
-        }
-        this.setDisapprovalReason(disapprovalReason);
-        this.setStatus(DISAPPROVED);
-        this.setDisapprovedTime(new Date());
-    }
-
-    @Override
-    public void succeed() throws OrderRefundException {
-        if (this.nonPending()) {
-            throw OrderExceptions.Refund.completed();
-        }
-        this.setStatus(SUCCEEDED);
-        this.setSucceededTime(new Date());
-    }
-
-    @Override
-    public void fail(String failReason) throws OrderRefundException {
-        if (this.nonPending()) {
-            throw OrderExceptions.Refund.completed();
-        }
-        this.setFailReason(failReason);
-        this.setStatus(FAILED);
-        this.setFailedTime(new Date());
-    }
+public abstract class OrderRefundSupport extends OrderDisputeSupport implements MutableOrderRefund {
 
     @Override
     public Builder toBuilder() {
@@ -124,7 +48,7 @@ public abstract class OrderRefundSupport implements MutableOrderRefund {
         }
 
         @Override
-        public Builder kind(DisputeKind kind) {
+        public Builder kind(OrderDisputeKind kind) {
             this.refund.setKind(kind);
             return this;
         }

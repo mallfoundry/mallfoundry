@@ -18,86 +18,16 @@
 
 package org.mallfoundry.order.aftersales;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 public interface OrderRefund extends OrderDispute, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
-    ItemStatus getItemStatus();
-
-    void itemNotReceive();
-
-    void itemReceive();
-
-    boolean isItemShipped();
-
-    void setItemShipped(boolean itemShipped);
-
-    OrderRefundStatus getStatus();
-
-    Date getAppliedTime();
-
-    String getReason();
-
-    void setReason(String reason);
-
-    /**
-     * 申请退款。
-     */
-    void apply() throws OrderRefundException;
-
-    /**
-     * 取消退款申请。
-     */
-    void cancel() throws OrderRefundException;
-
-    Date getApprovedTime();
-
-    /**
-     * 同意退款。
-     */
-    void approve() throws OrderRefundException;
-
-    String getDisapprovalReason();
-
-    Date getDisapprovedTime();
-
-    void disapprove(String disapprovalReason) throws OrderRefundException;
-
-    Date getSucceededTime();
-
-    /**
-     * 退款成功。
-     */
-    void succeed() throws OrderRefundException;
-
-    String getFailReason();
-
-    Date getFailedTime();
-
-    /**
-     * 退款失败。
-     */
-    void fail(String failReason) throws OrderRefundException;
-
-    enum ItemStatus {
-        NOT_RECEIVED /* 未收货 */,
-        RECEIVED /* 已收货 */;
-
-        @JsonValue
-        @Override
-        public String toString() {
-            return this.name().toLowerCase();
-        }
-    }
-
     interface Builder extends ObjectBuilder<OrderRefund> {
 
-        Builder kind(DisputeKind kind);
+        Builder kind(OrderDisputeKind kind);
 
         Builder reason(String reason);
 

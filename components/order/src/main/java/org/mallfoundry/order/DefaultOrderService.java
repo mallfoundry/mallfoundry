@@ -356,18 +356,32 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         return this.paymentService.startPayment(payment);
     }
 
+    private void setRefundApplicant(OrderRefund refund) {
+        refund.setApplicant(SubjectHolder.getSubject().getNickname());
+        refund.setApplicantId(SubjectHolder.getSubject().getId());
+    }
+
     @Transactional
     @Override
     public OrderRefund applyOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
         refund = this.invokePreProcessBeforeApplyOrderRefund(order, refund);
-        // 设置申请人
-        refund.setApplicant(SubjectHolder.getSubject().getNickname());
-        refund.setApplicantId(SubjectHolder.getSubject().getId());
+        this.setRefundApplicant(refund);
         refund = order.applyRefund(refund);
         refund = this.invokePreProcessAfterApplyOrderRefund(order, refund);
         this.orderRepository.save(order);
         return refund;
+    }
+
+    @Override
+    public List<OrderRefund> applyOrderRefunds(String orderId, List<OrderRefund> refunds) {
+        var order = this.requiredOrder(orderId);
+        refunds = this.invokePreProcessBeforeApplyOrderRefunds(order, refunds);
+        refunds.forEach(this::setRefundApplicant);
+        refunds = order.applyRefunds(refunds);
+        refunds = this.invokePreProcessAfterApplyOrderRefunds(order, refunds);
+        this.orderRepository.save(order);
+        return refunds;
     }
 
     @Transactional
@@ -626,10 +640,24 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return Processors.stream(this.processors)
+                .<List<OrderRefund>>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefunds(order, identity))
+                .apply(refunds);
+    }
+
+    @Override
     public OrderRefund invokePreProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessAfterApplyOrderRefund(order, identity))
                 .apply(refund);
+    }
+
+    @Override
+    public List<OrderRefund> invokePreProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return Processors.stream(this.processors)
+                .<List<OrderRefund>>map((processor, identity) -> processor.preProcessAfterApplyOrderRefunds(order, identity))
+                .apply(refunds);
     }
 
     @Override
