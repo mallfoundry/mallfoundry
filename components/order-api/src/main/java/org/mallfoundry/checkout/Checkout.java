@@ -50,6 +50,8 @@ public interface Checkout {
 
     List<Order> getOrders();
 
+    void setOrders(List<Order> orders);
+
     BigDecimal getSubtotalAmount();
 
     Date getCreatedTime();
