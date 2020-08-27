@@ -21,7 +21,6 @@ package org.mallfoundry.shipping;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DefaultCarrierService implements CarrierService {
@@ -45,8 +44,7 @@ public class DefaultCarrierService implements CarrierService {
     }
 
     @Override
-    public Optional<Carrier> getCarrier(CarrierCode code) {
-        return this.getCarriers().stream().filter(carrier -> carrier.getCode().equals(code)).findFirst();
+    public Carrier getCarrier(CarrierCode code) {
+        return this.getCarriers().stream().filter(carrier -> carrier.getCode().equals(code)).findFirst().orElseThrow();
     }
-
 }
