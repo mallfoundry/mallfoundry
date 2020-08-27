@@ -118,7 +118,15 @@ public interface OrderProcessor {
         return refund;
     }
 
+    default OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
     default OrderRefund preProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund preProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -127,7 +135,15 @@ public interface OrderProcessor {
 
     }
 
+    default OrderRefund preProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
     default OrderRefund preProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund preProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 

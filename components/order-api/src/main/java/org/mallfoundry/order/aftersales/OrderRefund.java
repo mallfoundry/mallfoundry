@@ -19,15 +19,13 @@
 package org.mallfoundry.order.aftersales;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.mallfoundry.customer.CustomerOwnership;
-import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface OrderRefund extends OrderDispute, StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
+public interface OrderRefund extends OrderDispute, ObjectBuilder.ToBuilder<OrderRefund.Builder> {
 
     ItemStatus getItemStatus();
 

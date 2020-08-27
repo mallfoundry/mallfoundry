@@ -262,24 +262,28 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void cancelRefund(OrderRefund args) throws OrderRefundException {
+    public OrderRefund cancelRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
         this.getItem(refund.getItemId()).cancelRefund(refund.getAmount());
         refund.cancel();
         this.updateRefundStatus();
+        return refund;
     }
 
     @Override
-    public void approveRefund(OrderRefund args) {
-        this.getRefund(args.getId()).approve();
+    public OrderRefund approveRefund(OrderRefund args) {
+        var refund = this.getRefund(args.getId());
+        refund.approve();
+        return refund;
     }
 
     @Override
-    public void disapproveRefund(OrderRefund args) throws OrderRefundException {
+    public OrderRefund disapproveRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
         this.getItem(refund.getItemId()).disapproveRefund(refund.getAmount());
         refund.disapprove(args.getDisapprovalReason());
         this.updateRefundStatus();
+        return refund;
     }
 
     @Override

@@ -29,6 +29,7 @@ import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
 import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundStatus;
 import org.mallfoundry.payment.Payment;
@@ -58,8 +59,11 @@ public class OrderResourceV1 {
 
     private final OrderService orderService;
 
-    public OrderResourceV1(OrderService orderService) {
+    private final OrderDisputeService orderDisputeService;
+
+    public OrderResourceV1(OrderService orderService, OrderDisputeService orderDisputeService) {
         this.orderService = orderService;
+        this.orderDisputeService = orderDisputeService;
     }
 
     @PatchMapping("/orders/{order_id}")
@@ -220,8 +224,8 @@ public class OrderResourceV1 {
                                                     @RequestParam(name = "store_id", required = false) String storeId,
                                                     @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                                     @RequestParam(name = "sort", required = false) String sort) {
-        return this.orderService.getOrderDisputes(
-                this.orderService.createOrderRefundQuery().toBuilder()
+        return this.orderDisputeService.getOrderDisputes(
+                this.orderDisputeService.createOrderDisputeQuery().toBuilder()
                         .page(page).limit(limit).sort(aSort -> aSort.from(sort))
                         .customerId(customerId).storeId(storeId)
                         .statuses(() ->
@@ -234,8 +238,8 @@ public class OrderResourceV1 {
     public long countOrderDisputes(@RequestParam(name = "customer_id", required = false) String customerId,
                                    @RequestParam(name = "store_id", required = false) String storeId,
                                    @RequestParam(name = "statuses", required = false) Set<String> statuses) {
-        return this.orderService.countOrderDisputes(
-                this.orderService.createOrderRefundQuery().toBuilder()
+        return this.orderDisputeService.countOrderDisputes(
+                this.orderDisputeService.createOrderDisputeQuery().toBuilder()
                         .customerId(customerId).storeId(storeId)
                         .statuses(() ->
                                 CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)

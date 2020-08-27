@@ -46,17 +46,17 @@ public abstract class OrderMessages {
 
     private static final String ORDER_SHIPMENT_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderShipment.notFound";
 
-    private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderRefund.notFound";
+    private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.notFound";
 
-    private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.OrderRefund.applied";
+    private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.applied";
 
-    private static final String ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY = "order.OrderRefund.approvedOrDisapproved";
+    private static final String ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.approvedOrDisapproved";
 
-    private static final String ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY = "order.OrderRefund.notCancel";
+    private static final String ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.notCancel";
 
-    private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.OrderRefund.completed";
+    private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.completed";
 
-    private static final String ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY = "order.OrderRefund.overApply";
+    private static final String ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.overApply";
 
     public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");

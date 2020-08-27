@@ -16,21 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.order.aftersales;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
-import org.mallfoundry.order.aftersales.OrderDisputeQuery;
-import org.mallfoundry.order.aftersales.OrderRefundStatus;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class DefaultOrderRefundQuery extends QuerySupport implements OrderDisputeQuery {
+public class DefaultOrderDisputeQuery extends QuerySupport implements OrderDisputeQuery {
     private String tenantId;
     private String storeId;
     private String customerId;
@@ -43,9 +41,9 @@ public class DefaultOrderRefundQuery extends QuerySupport implements OrderDisput
     }
 
     protected abstract static class BuilderSupport extends QueryBuilderSupport<OrderDisputeQuery, Builder> implements Builder {
-        private final DefaultOrderRefundQuery query;
+        private final DefaultOrderDisputeQuery query;
 
-        public BuilderSupport(DefaultOrderRefundQuery query) {
+        public BuilderSupport(DefaultOrderDisputeQuery query) {
             super(query);
             this.query = query;
         }

@@ -19,9 +19,11 @@
 package org.mallfoundry.order.aftersales.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.aftersales.OrderDispute;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -36,6 +38,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "mf_order_dispute")
 public class JpaOrderDispute implements OrderDispute {
@@ -96,6 +99,19 @@ public class JpaOrderDispute implements OrderDispute {
     @Column(name = "attachments_")
     @Convert(converter = StringListConverter.class)
     private List<String> attachments;
+
+    public JpaOrderDispute(String id) {
+        this.id = id;
+    }
+
+    public static JpaOrderDispute of(OrderDispute dispute) {
+        if (dispute instanceof JpaOrderDispute) {
+            return (JpaOrderDispute) dispute;
+        }
+        var target = new JpaOrderDispute();
+        BeanUtils.copyProperties(dispute, target);
+        return target;
+    }
 
     @Override
     public boolean equals(Object object) {

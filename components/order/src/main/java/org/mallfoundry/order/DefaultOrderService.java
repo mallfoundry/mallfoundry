@@ -27,10 +27,7 @@ import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;
 import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.inventory.InventoryDeduction;
-import org.mallfoundry.order.aftersales.OrderDispute;
 import org.mallfoundry.order.aftersales.OrderRefund;
-import org.mallfoundry.order.aftersales.OrderDisputeQuery;
-import org.mallfoundry.order.aftersales.OrderDisputeRepository;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.processor.Processors;
@@ -46,7 +43,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -65,18 +61,14 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     private final OrderRepository orderRepository;
 
-    private final OrderDisputeRepository orderDisputeRepository;
-
-    public DefaultOrderService(OrderRepository orderRepository,
-                               OrderSplitter orderSplitter,
+    public DefaultOrderService(OrderSplitter orderSplitter,
                                CarrierService carrierService,
                                PaymentService paymentService,
-                               OrderDisputeRepository orderDisputeRepository) {
-        this.orderRepository = orderRepository;
+                               OrderRepository orderRepository) {
         this.orderSplitter = orderSplitter;
         this.carrierService = carrierService;
         this.paymentService = paymentService;
-        this.orderDisputeRepository = orderDisputeRepository;
+        this.orderRepository = orderRepository;
     }
 
     public void setProcessors(List<OrderProcessor> processors) {
@@ -274,9 +266,8 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
             shipment.setConsignor(SubjectHolder.getSubject().getNickname());
         }
         // Set the tracking carrier name.
-        if (isNotBlank(shipment.getTrackingNumber())
-                && StringUtils.isBlank(shipment.getTrackingCarrier())) {
-            var carrier = this.carrierService.getCarrier(shipment.getShippingProvider()).orElseThrow();
+        if (isNotBlank(shipment.getTrackingNumber()) && StringUtils.isBlank(shipment.getTrackingCarrier())) {
+            var carrier = this.carrierService.getCarrier(shipment.getShippingProvider());
             shipment.setTrackingCarrier(carrier.getName());
         }
         order.addShipment(shipment);
@@ -373,6 +364,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         refund.setApplicant(SubjectHolder.getSubject().getNickname());
         refund.setApplicantId(SubjectHolder.getSubject().getId());
         refund = order.applyRefund(refund);
+        refund = this.invokePreProcessAfterApplyOrderRefund(order, refund);
         this.orderRepository.save(order);
         return refund;
     }
@@ -382,7 +374,8 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public void cancelOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
         var refund = this.invokePreProcessBeforeCancelOrderRefund(order, order.createRefund(refundId));
-        order.cancelRefund(refund);
+        refund = order.cancelRefund(refund);
+        this.invokePreProcessAfterCancelOrderRefund(order, refund);
         this.orderRepository.save(order);
     }
 
@@ -403,8 +396,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public void approveOrderRefund(String orderId, String refundId) {
         var order = this.requiredOrder(orderId);
         var refund = this.invokePreProcessBeforeApproveOrderRefund(order, order.createRefund(refundId));
-        order.approveRefund(refund);
+        refund = order.approveRefund(refund);
         this.refundOrderPayment(order, refund.getId(), refund.getAmount());
+        this.invokePreProcessAfterApproveOrderRefund(order, refund);
         this.orderRepository.save(order);
     }
 
@@ -412,12 +406,11 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     @Override
     public void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason) {
         var order = this.requiredOrder(orderId);
-        var refund = Function.<OrderRefund>identity()
-                .<OrderRefund>compose(aRefund -> this.invokePreProcessBeforeDisapproveOrderRefund(order, aRefund))
-                .<OrderRefund>compose(aRefund -> aRefund.toBuilder().disapprovalReason(disapprovedReason).build())
-                .compose(order::createRefund)
-                .apply(refundId);
-        order.disapproveRefund(refund);
+        var refund = order.createRefund(refundId);
+        refund = refund.toBuilder().disapprovalReason(disapprovedReason).build();
+        refund = this.invokePreProcessBeforeDisapproveOrderRefund(order, refund);
+        refund = order.disapproveRefund(refund);
+        this.invokePreProcessAfterDisapproveOrderRefund(order, refund);
         this.orderRepository.save(order);
     }
 
@@ -426,24 +419,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public void activeOrderRefund(String orderId, OrderRefund refund) {
         var order = this.requiredOrder(orderId);
         refund = this.invokePreProcessBeforeActiveOrderRefund(order, refund);
-        var fetchRefund = order.activeRefund(refund);
-        this.refundOrderPayment(order, fetchRefund.getId(), fetchRefund.getAmount());
+        refund = order.activeRefund(refund);
+        this.refundOrderPayment(order, refund.getId(), refund.getAmount());
         this.orderRepository.save(order);
-    }
-
-    @Override
-    public OrderDisputeQuery createOrderRefundQuery() {
-        return new DefaultOrderRefundQuery();
-    }
-
-    @Override
-    public SliceList<OrderDispute> getOrderDisputes(OrderDisputeQuery query) {
-        return this.orderDisputeRepository.findAll(query);
-    }
-
-    @Override
-    public long countOrderDisputes(OrderDisputeQuery query) {
-        return this.orderDisputeRepository.count(query);
     }
 
     @Override
@@ -647,9 +625,23 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public OrderRefund invokePreProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessAfterApplyOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
     public OrderRefund invokePreProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeCancelOrderRefund(order, identity))
                 .apply(refund);
     }
 
@@ -661,9 +653,23 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public OrderRefund invokePreProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessAfterApproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
     public OrderRefund invokePreProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeDisapproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessAfterDisapproveOrderRefund(order, identity))
                 .apply(refund);
     }
 

@@ -186,13 +186,13 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void approveRefund(OrderRefund refund) throws OrderRefundException {
-
+    public OrderRefund approveRefund(OrderRefund refund) throws OrderRefundException {
+        return null;
     }
 
     @Override
-    public void disapproveRefund(OrderRefund refund) throws OrderRefundException {
-
+    public OrderRefund disapproveRefund(OrderRefund refund) throws OrderRefundException {
+        return null;
     }
 
     @Override
@@ -201,8 +201,8 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public void cancelRefund(OrderRefund refund) throws OrderRefundException {
-
+    public OrderRefund cancelRefund(OrderRefund refund) throws OrderRefundException {
+        return null;
     }
 
     @Override

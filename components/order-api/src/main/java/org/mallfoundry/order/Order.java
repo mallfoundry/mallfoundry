@@ -158,9 +158,9 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     List<OrderRefund> applyRefunds(List<OrderRefund> refunds) throws OrderRefundException;
 
-    void approveRefund(OrderRefund refund) throws OrderRefundException;
+    OrderRefund approveRefund(OrderRefund refund) throws OrderRefundException;
 
-    void disapproveRefund(OrderRefund refund) throws OrderRefundException;
+    OrderRefund disapproveRefund(OrderRefund refund) throws OrderRefundException;
 
     /**
      * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(OrderRefund)}
@@ -171,7 +171,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
      */
     OrderRefund activeRefund(OrderRefund refund) throws OrderRefundException;
 
-    void cancelRefund(OrderRefund refund) throws OrderRefundException;
+    OrderRefund cancelRefund(OrderRefund refund) throws OrderRefundException;
 
     void succeedRefund(OrderRefund refund) throws OrderRefundException;
 

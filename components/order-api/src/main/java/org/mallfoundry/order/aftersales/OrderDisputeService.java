@@ -20,13 +20,13 @@ package org.mallfoundry.order.aftersales;
 
 import org.mallfoundry.data.SliceList;
 
-public interface OrderDisputeRepository {
+public interface OrderDisputeService {
 
-    OrderDispute create(String id);
+    OrderDisputeQuery createOrderDisputeQuery();
 
-    OrderDispute save(OrderDispute dispute);
+    SliceList<OrderDispute> getOrderDisputes(OrderDisputeQuery query);
 
-    SliceList<OrderDispute> findAll(OrderDisputeQuery query);
+    long countOrderDisputes(OrderDisputeQuery query);
 
-    long count(OrderDisputeQuery query);
+    void saveOrderDispute(OrderRefund refund);
 }

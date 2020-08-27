@@ -33,6 +33,16 @@ public class DelegatingJpaOrderDisputeRepository implements OrderDisputeReposito
     }
 
     @Override
+    public OrderDispute create(String id) {
+        return new JpaOrderDispute(id);
+    }
+
+    @Override
+    public OrderDispute save(OrderDispute dispute) {
+        return this.repository.save(JpaOrderDispute.of(dispute));
+    }
+
+    @Override
     public SliceList<OrderDispute> findAll(OrderDisputeQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
