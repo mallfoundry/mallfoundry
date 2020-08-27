@@ -110,6 +110,7 @@ public abstract class OrderSupport implements MutableOrder {
             shipment.setShippingAddress(this.getShippingAddress());
         }
         shipment.getItems().forEach(this::shipItem);
+        shipment.ship(); // 发货
         this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
         this.setStatus(this.getShippedItems() == this.getTotalItems() ? SHIPPED : PARTIALLY_SHIPPED);
         this.setShippedTime(shipment.getShippedTime());
@@ -194,16 +195,16 @@ public abstract class OrderSupport implements MutableOrder {
         return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
     }
 
-    private void applyItemRefund(OrderRefundItem refundItem) {
-        var item = this.getItem(refundItem.getItemId());
+    private void applyItemRefund(OrderRefund refund) {
+        var item = this.getItem(refund.getItemId());
         // Apply refund
-        item.applyRefund(refundItem.getAmount());
-        refundItem.setProductId(item.getProductId());
-        refundItem.setVariantId(item.getVariantId());
-        refundItem.setName(item.getName());
-        refundItem.setImageUrl(item.getImageUrl());
-        refundItem.setItemAmount(item.getTotalAmount());
-        refundItem.setItemShipped(item.isShipped());
+        item.applyRefund(refund.getAmount());
+        refund.setProductId(item.getProductId());
+        refund.setVariantId(item.getVariantId());
+        refund.setName(item.getName());
+        refund.setImageUrl(item.getImageUrl());
+        refund.setItemAmount(item.getTotalAmount());
+        refund.setItemShipped(item.isShipped());
     }
 
     @Override
@@ -214,7 +215,7 @@ public abstract class OrderSupport implements MutableOrder {
         refund.setTenantId(this.getTenantId());
         refund.setStoreId(this.getStoreId());
         refund.setCustomerId(this.getCustomerId());
-        refund.getItems().forEach(this::applyItemRefund);
+        this.applyItemRefund(refund);
         refund.apply();
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。
@@ -261,7 +262,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void cancelRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
-        refund.getItems().forEach(item -> this.getItem(item.getItemId()).cancelRefund(item.getAmount()));
+        this.getItem(refund.getItemId()).cancelRefund(refund.getAmount());
         refund.cancel();
         this.updateRefundStatus();
     }
@@ -274,7 +275,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void disapproveRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
-        refund.getItems().forEach(item -> this.getItem(item.getItemId()).disapproveRefund(item.getAmount()));
+        this.getItem(refund.getItemId()).disapproveRefund(refund.getAmount());
         refund.disapprove(args.getDisapprovalReason());
         this.updateRefundStatus();
     }
@@ -290,7 +291,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void succeedRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
-        refund.getItems().forEach(item -> this.getItem(item.getItemId()).succeedRefund(item.getAmount()));
+        this.getItem(refund.getItemId()).succeedRefund(refund.getAmount());
         refund.succeed();
         this.updateRefundStatus();
     }
@@ -298,7 +299,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public void failRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
-        refund.getItems().forEach(item -> this.getItem(item.getItemId()).failRefund(item.getAmount()));
+        this.getItem(refund.getItemId()).failRefund(refund.getAmount());
         refund.fail(args.getFailReason());
         this.updateRefundStatus();
     }

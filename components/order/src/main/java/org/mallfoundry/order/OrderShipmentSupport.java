@@ -21,11 +21,12 @@ package org.mallfoundry.order;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.CarrierCode;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class OrderShipmentSupport implements OrderShipment {
+public abstract class OrderShipmentSupport implements MutableOrderShipment {
 
     @Override
     public OrderShipmentItem createItem(String id) {
@@ -50,6 +51,11 @@ public abstract class OrderShipmentSupport implements OrderShipment {
     @Override
     public List<String> getImageUrls() {
         return this.getItems().stream().map(OrderShipmentItem::getImageUrl).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public void ship() {
+        this.setShippedTime(new Date());
     }
 
     @Override

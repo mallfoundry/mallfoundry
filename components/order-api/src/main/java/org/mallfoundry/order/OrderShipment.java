@@ -143,6 +143,8 @@ public interface OrderShipment extends ObjectBuilder.ToBuilder<OrderShipment.Bui
      */
     Date getShippedTime();
 
+    void ship();
+
     interface Builder extends ObjectBuilder<OrderShipment> {
 
         Builder items(List<OrderShipmentItem> items);
