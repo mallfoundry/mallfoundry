@@ -207,8 +207,10 @@ public abstract class OrderSupport implements MutableOrder {
         refund.setVariantId(item.getVariantId());
         refund.setName(item.getName());
         refund.setImageUrl(item.getImageUrl());
-        refund.setItemAmount(item.getTotalAmount());
-        refund.setItemShipped(item.isShipped());
+        // 如果退款数量为 0，则全部退款。
+        if (refund.getQuantity() == 0) {
+            refund.setQuantity(item.getQuantity());
+        }
     }
 
     @Override
