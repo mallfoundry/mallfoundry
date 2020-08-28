@@ -25,6 +25,7 @@ import org.mallfoundry.order.shipping.OrderShipment;
 import org.springframework.core.Ordered;
 
 import java.util.List;
+import java.util.Objects;
 
 @org.springframework.core.annotation.Order(Ordered.HIGHEST_PRECEDENCE)
 public class OrderIdentityProcessor implements OrderProcessor {
@@ -37,9 +38,9 @@ public class OrderIdentityProcessor implements OrderProcessor {
 
     private static final String ORDER_SHIPMENT_ITEM_ID_VALUE_NAME = "order.shipment.item.id";
 
-    private static final String ORDER_REFUND_ID_VALUE_NAME = "order.refund.id";
+    private static final String ORDER_DISPUTE_ID_VALUE_NAME = "order.dispute.id";
 
-    private static final String ORDER_REFUND_ITEM_ID_VALUE_NAME = "order.refund.item.id";
+    private static final String ORDER_DISPUTE_TRANSACTION_ID_VALUE_NAME = "order.dispute.transaction.id";
 
     private static final String ORDER_REVIEW_ID_VALUE_NAME = "order.review.id";
 
@@ -59,21 +60,67 @@ public class OrderIdentityProcessor implements OrderProcessor {
         return shipment;
     }
 
+    private void setOrderRefund(OrderRefund refund) {
+        if (Objects.isNull(refund.getId())) {
+            refund.setId(PrimaryKeyHolder.next(ORDER_DISPUTE_ID_VALUE_NAME));
+        }
+        refund.getTransactions().stream()
+                .filter(transaction -> Objects.isNull(transaction.getId()))
+                .forEach(transaction -> transaction.setId(PrimaryKeyHolder.next(ORDER_DISPUTE_TRANSACTION_ID_VALUE_NAME)));
+    }
+
     @Override
     public OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
-        refund.setId(PrimaryKeyHolder.next(ORDER_REFUND_ID_VALUE_NAME));
+        this.setOrderRefund(refund);
+        return refund;
+    }
+
+    @Override
+    public OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+        setOrderRefund(refund);
+        return refund;
+    }
+
+    @Override
+    public List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        refunds.forEach(this::setOrderRefund);
+        return refunds;
+    }
+
+    @Override
+    public List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        refunds.forEach(this::setOrderRefund);
+        return refunds;
+    }
+
+    @Override
+    public OrderRefund preProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
+        this.setOrderRefund(refund);
+        return refund;
+    }
+
+    @Override
+    public OrderRefund preProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+        this.setOrderRefund(refund);
+        return refund;
+    }
+
+    @Override
+    public OrderRefund preProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
+        this.setOrderRefund(refund);
         return refund;
     }
 
     @Override
     public OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
-        return this.preProcessBeforeApplyOrderRefund(order, refund);
+        this.setOrderRefund(refund);
+        return refund;
     }
 
     @Override
-    public List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
-        refunds.forEach(refund -> refund.setId(PrimaryKeyHolder.next(ORDER_REFUND_ID_VALUE_NAME)));
-        return refunds;
+    public OrderRefund preProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
+        this.setOrderRefund(refund);
+        return refund;
     }
 
     @Override
