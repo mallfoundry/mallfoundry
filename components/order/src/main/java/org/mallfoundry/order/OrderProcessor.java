@@ -119,15 +119,23 @@ public interface OrderProcessor {
         return refund;
     }
 
-    default List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
-        return refunds;
-    }
-
     default OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
+    default OrderRefund postProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return refunds;
+    }
+
     default List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return refunds;
+    }
+
+    default List<OrderRefund> postProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
         return refunds;
     }
 
@@ -139,12 +147,19 @@ public interface OrderProcessor {
         return refund;
     }
 
+    default OrderRefund postProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
     default OrderRefund preProcessBeforeApproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
-
     }
 
     default OrderRefund preProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund postProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 
@@ -156,7 +171,19 @@ public interface OrderProcessor {
         return refund;
     }
 
+    default OrderRefund postProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
     default OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund preProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund postProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
 

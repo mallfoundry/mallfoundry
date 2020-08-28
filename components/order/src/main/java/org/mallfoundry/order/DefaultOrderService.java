@@ -370,6 +370,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         refund = order.applyRefund(refund);
         refund = this.invokePreProcessAfterApplyOrderRefund(order, refund);
         this.orderRepository.save(order);
+        this.invokePostProcessAfterApplyOrderRefund(order, refund);
         return refund;
     }
 
@@ -381,6 +382,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         refunds = order.applyRefunds(refunds);
         refunds = this.invokePreProcessAfterApplyOrderRefunds(order, refunds);
         this.orderRepository.save(order);
+        refunds = this.invokePostProcessAfterApplyOrderRefunds(order, refunds);
         return refunds;
     }
 
@@ -390,8 +392,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var order = this.requiredOrder(orderId);
         var refund = this.invokePreProcessBeforeCancelOrderRefund(order, order.createRefund(refundId));
         refund = order.cancelRefund(refund);
-        this.invokePreProcessAfterCancelOrderRefund(order, refund);
+        refund = this.invokePreProcessAfterCancelOrderRefund(order, refund);
         this.orderRepository.save(order);
+        this.invokePostProcessAfterCancelOrderRefund(order, refund);
     }
 
     private void refundOrderPayment(Order order, String refundId, BigDecimal refundAmount) {
@@ -413,8 +416,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var refund = this.invokePreProcessBeforeApproveOrderRefund(order, order.createRefund(refundId));
         refund = order.approveRefund(refund);
         this.refundOrderPayment(order, refund.getId(), refund.getAmount());
-        this.invokePreProcessAfterApproveOrderRefund(order, refund);
+        refund = this.invokePreProcessAfterApproveOrderRefund(order, refund);
         this.orderRepository.save(order);
+        this.invokePostProcessAfterApproveOrderRefund(order, refund);
     }
 
     @Transactional
@@ -425,8 +429,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         refund = refund.toBuilder().disapprovalReason(disapprovedReason).build();
         refund = this.invokePreProcessBeforeDisapproveOrderRefund(order, refund);
         refund = order.disapproveRefund(refund);
-        this.invokePreProcessAfterDisapproveOrderRefund(order, refund);
+        refund = this.invokePreProcessAfterDisapproveOrderRefund(order, refund);
         this.orderRepository.save(order);
+        this.invokePostProcessAfterDisapproveOrderRefund(order, refund);
     }
 
     @Transactional
@@ -436,7 +441,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         refund = this.invokePreProcessBeforeActiveOrderRefund(order, refund);
         refund = order.activeRefund(refund);
         this.refundOrderPayment(order, refund.getId(), refund.getAmount());
+        refund = this.invokePreProcessAfterActiveOrderRefund(order, refund);
         this.orderRepository.save(order);
+        this.invokePostProcessAfterActiveOrderRefund(order, refund);
     }
 
     @Override
@@ -640,17 +647,24 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
-    public List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
-        return Processors.stream(this.processors)
-                .<List<OrderRefund>>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefunds(order, identity))
-                .apply(refunds);
-    }
-
-    @Override
     public OrderRefund invokePreProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessAfterApplyOrderRefund(order, identity))
                 .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePostProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterApplyOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return Processors.stream(this.processors)
+                .<List<OrderRefund>>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefunds(order, identity))
+                .apply(refunds);
     }
 
     @Override
@@ -661,16 +675,30 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public List<OrderRefund> invokePostProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+        return Processors.stream(this.processors)
+                .<List<OrderRefund>>map((processor, identity) -> processor.postProcessAfterApplyOrderRefunds(order, identity))
+                .apply(refunds);
+    }
+
+    @Override
     public OrderRefund invokePreProcessBeforeCancelOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
-                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeApplyOrderRefund(order, identity))
+                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeCancelOrderRefund(order, identity))
                 .apply(refund);
     }
 
     @Override
     public OrderRefund invokePreProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
-                .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeCancelOrderRefund(order, identity))
+                .<OrderRefund>map((processor, identity) -> processor.preProcessAfterCancelOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePostProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterCancelOrderRefund(order, identity))
                 .apply(refund);
     }
 
@@ -689,6 +717,13 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public OrderRefund invokePostProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterApproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
     public OrderRefund invokePreProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeDisapproveOrderRefund(order, identity))
@@ -703,9 +738,30 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public OrderRefund invokePostProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterDisapproveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
     public OrderRefund invokePreProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
         return Processors.stream(this.processors)
                 .<OrderRefund>map((processor, identity) -> processor.preProcessBeforeActiveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePreProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.preProcessAfterActiveOrderRefund(order, identity))
+                .apply(refund);
+    }
+
+    @Override
+    public OrderRefund invokePostProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
+        return Processors.stream(this.processors)
+                .<OrderRefund>map((processor, identity) -> processor.postProcessAfterActiveOrderRefund(order, identity))
                 .apply(refund);
     }
 

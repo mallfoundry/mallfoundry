@@ -32,37 +32,37 @@ public class OrderSaveDisputeProcessor implements OrderProcessor {
     }
 
     @Override
-    public OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
     }
 
     @Override
-    public List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
+    public List<OrderRefund> postProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
         refunds.forEach(this.orderDisputeService::saveOrderDispute);
         return refunds;
     }
 
     @Override
-    public OrderRefund preProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
     }
 
     @Override
-    public OrderRefund preProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
     }
 
     @Override
-    public OrderRefund preProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
     }
 
     @Override
-    public OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
+    public OrderRefund postProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;
     }

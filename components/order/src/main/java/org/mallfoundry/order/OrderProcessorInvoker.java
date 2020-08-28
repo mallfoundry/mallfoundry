@@ -70,25 +70,39 @@ public interface OrderProcessorInvoker {
 
     OrderRefund invokePreProcessBeforeApplyOrderRefund(Order order, OrderRefund refund);
 
-    List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds);
-
     OrderRefund invokePreProcessAfterApplyOrderRefund(Order order, OrderRefund refund);
 
+    OrderRefund invokePostProcessAfterApplyOrderRefund(Order order, OrderRefund refund);
+
+    List<OrderRefund> invokePreProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds);
+
     List<OrderRefund> invokePreProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds);
+
+    List<OrderRefund> invokePostProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds);
 
     OrderRefund invokePreProcessBeforeCancelOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePreProcessAfterCancelOrderRefund(Order order, OrderRefund refund);
 
+    OrderRefund invokePostProcessAfterCancelOrderRefund(Order order, OrderRefund refund);
+
     OrderRefund invokePreProcessBeforeApproveOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePreProcessAfterApproveOrderRefund(Order order, OrderRefund refund);
+
+    OrderRefund invokePostProcessAfterApproveOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePreProcessBeforeDisapproveOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePreProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund);
 
+    OrderRefund invokePostProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund);
+
     OrderRefund invokePreProcessBeforeActiveOrderRefund(Order order, OrderRefund refund);
+
+    OrderRefund invokePreProcessAfterActiveOrderRefund(Order order, OrderRefund refund);
+
+    OrderRefund invokePostProcessAfterActiveOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePostProcessAfterGetOrderRefund(Order order, OrderRefund refund);
 
