@@ -26,6 +26,8 @@ public interface MutableOrderDispute extends OrderDispute {
 
     void setStatus(OrderDisputeStatus status);
 
+    void setCancelledTime(Date cancelledTime);
+
     void setDisapprovalReason(String disapprovalReason);
 
     void setDisapprovedTime(Date disapprovedTime);
