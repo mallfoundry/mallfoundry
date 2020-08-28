@@ -64,18 +64,17 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     void setVariantId(String variantId);
 
-    String getName();
-
-    void setName(String name);
-
     String getImageUrl();
 
     void setImageUrl(String imageUrl);
 
-    // 订单项金额
-    BigDecimal getItemAmount();
+    String getName();
 
-    void setItemAmount(BigDecimal itemAmount);
+    void setName(String name);
+
+    int getQuantity();
+
+    void setQuantity(int quantity);
 
     // 订单退款项金额
     BigDecimal getAmount();
@@ -92,20 +91,26 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     OrderDisputeStatus getStatus();
 
-    boolean isItemShipped();
-
-    void setItemShipped(boolean itemShipped);
-
     String getReason();
 
     void setReason(String reason);
 
+    OrderDisputeTransaction createTransaction(String id);
+
+    void addTransaction(OrderDisputeTransaction transaction);
+
+    List<OrderDisputeTransaction> getTransactions();
+
     Date getAppliedTime();
+
+    /*int getApplyExpires();*/
 
     /**
      * 申请退款。
      */
     void apply() throws OrderRefundException;
+
+    Date getCancelledTime();
 
     /**
      * 取消退款申请。
