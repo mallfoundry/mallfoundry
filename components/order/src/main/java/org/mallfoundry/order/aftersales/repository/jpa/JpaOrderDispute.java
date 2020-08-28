@@ -21,11 +21,13 @@ package org.mallfoundry.order.aftersales.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.aftersales.OrderDispute;
 import org.mallfoundry.order.aftersales.OrderDisputeKind;
 import org.mallfoundry.order.aftersales.OrderDisputeStatus;
 import org.mallfoundry.order.aftersales.OrderDisputeSupport;
+import org.mallfoundry.order.aftersales.OrderDisputeTransaction;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -34,8 +36,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -86,17 +92,14 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Column(name = "variant_id_")
     private String variantId;
 
-    @Column(name = "name_")
-    private String name;
-
     @Column(name = "image_url_")
     private String imageUrl;
 
-    @Column(name = "item_amount_")
-    private BigDecimal itemAmount;
+    @Column(name = "name_")
+    private String name;
 
-    @Column(name = "item_shipped_")
-    private boolean itemShipped;
+    @Column(name = "quantity_")
+    private int quantity;
 
     @Column(name = "amount_")
     private BigDecimal amount;
@@ -108,12 +111,20 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Convert(converter = StringListConverter.class)
     private List<String> attachments;
 
+    @OneToMany(targetEntity = JpaOrderDisputeTransaction.class)
+    @JoinColumn(name = "dispute_id_", referencedColumnName = "id_")
+    @OrderBy("createdTime")
+    private List<OrderDisputeTransaction> transactions = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private OrderDisputeStatus status = OrderDisputeStatus.INCOMPLETE;
 
     @Column(name = "reason_")
     private String reason;
+
+    @Column(name = "cancelled_time_")
+    private Date cancelledTime;
 
     @Column(name = "applied_time_")
     private Date appliedTime;
@@ -138,6 +149,43 @@ public class JpaOrderDispute extends OrderDisputeSupport {
 
     public JpaOrderDispute(String id) {
         this.id = id;
+    }
+
+    @Override
+    public OrderDisputeTransaction createTransaction(String id) {
+        var transaction = new JpaOrderDisputeTransaction();
+        /*transaction.setId(id);
+        transaction.setDisputeId(this.id);
+        transaction.setOrderId(this.orderId);
+        transaction.setStoreId(this.storeId);
+        transaction.setCustomerId(this.customerId);
+        transaction.setKind(this.kind);
+        transaction.setTenantId(this.tenantId);
+        transaction.setStatus(this.status);
+        transaction.setItemStatus(this.itemStatus);
+        transaction.setItemId(this.itemId);
+        transaction.setProductId(this.productId);
+        transaction.setVariantId(this.variantId);
+        transaction.setName(this.name);
+        transaction.setImageUrl(this.imageUrl);
+        transaction.setAmount(this.amount);
+        transaction.setQuantity(this.quantity);
+        transaction.setAttachments(this.attachments);
+        transaction.setNotes(this.notes);
+        transaction.setReason(this.reason);
+        transaction.setAppliedTime(this.appliedTime);
+        transaction.setCancelledTime(this.cancelledTime);
+        transaction.setDisapprovalReason(this.disapprovalReason);
+        transaction.setDisapprovedTime(this.disapprovedTime);
+        transaction.setApprovedTime(this.approvedTime);
+        transaction.setSucceededTime(this.succeededTime);
+        transaction.setFailReason(this.failReason);
+        transaction.setFailedTime(this.failedTime);*/
+        BeanUtils.copyProperties(this, transaction);
+        transaction.setId(id);
+        transaction.setDisputeId(this.id);
+        transaction.setCreatedTime(new Date());
+        return transaction;
     }
 
     public static JpaOrderDispute of(OrderDispute dispute) {

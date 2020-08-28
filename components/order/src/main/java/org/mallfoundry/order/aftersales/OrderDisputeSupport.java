@@ -23,6 +23,7 @@ import org.mallfoundry.order.OrderExceptions;
 import java.util.Date;
 
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.APPLYING;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.CANCELLED;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.DISAPPROVED;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.FAILED;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.INCOMPLETE;
@@ -40,6 +41,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
     public void itemReceive() {
         this.setItemStatus(ItemStatus.RECEIVED);
     }
+
     public boolean nonIncomplete() {
         return !INCOMPLETE.equals(this.getStatus());
     }
@@ -53,12 +55,36 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
     }
 
     @Override
+    public void addTransaction(OrderDisputeTransaction transaction) {
+        this.getTransactions().add(transaction);
+    }
+
+    private void addTransaction() {
+        var transaction = this.createTransaction(null);
+        if (APPLYING.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getAppliedTime());
+        } else if (CANCELLED.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getCancelledTime());
+        } else if (DISAPPROVED.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getDisapprovedTime());
+        } else if (PENDING.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getApprovedTime());
+        } else if (SUCCEEDED.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getSucceededTime());
+        } else if (FAILED.equals(this.getStatus())) {
+            transaction.setCreatedTime(this.getFailedTime());
+        }
+        this.addTransaction(transaction);
+    }
+
+    @Override
     public void apply() throws OrderRefundException {
         if (this.nonIncomplete()) {
             throw OrderExceptions.Refund.applied();
         }
         this.setStatus(APPLYING);
         this.setAppliedTime(new Date());
+        this.addTransaction();
     }
 
     @Override
@@ -66,6 +92,8 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         if (this.nonApplying()) {
             throw OrderExceptions.Refund.notCancel();
         }
+        this.setCancelledTime(new Date());
+        this.addTransaction();
     }
 
     @Override
@@ -75,6 +103,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         }
         this.setStatus(PENDING);
         this.setApprovedTime(new Date());
+        this.addTransaction();
     }
 
     @Override
@@ -85,6 +114,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         this.setDisapprovalReason(disapprovalReason);
         this.setStatus(DISAPPROVED);
         this.setDisapprovedTime(new Date());
+        this.addTransaction();
     }
 
     @Override
@@ -94,6 +124,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         }
         this.setStatus(SUCCEEDED);
         this.setSucceededTime(new Date());
+        this.addTransaction();
     }
 
     @Override
@@ -104,6 +135,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         this.setFailReason(failReason);
         this.setStatus(FAILED);
         this.setFailedTime(new Date());
+        this.addTransaction();
     }
 
 }

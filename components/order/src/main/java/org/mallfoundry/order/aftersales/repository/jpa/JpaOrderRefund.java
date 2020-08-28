@@ -24,16 +24,23 @@ import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.order.aftersales.OrderDisputeKind;
 import org.mallfoundry.order.aftersales.OrderDisputeStatus;
+import org.mallfoundry.order.aftersales.OrderDisputeTransaction;
 import org.mallfoundry.order.aftersales.OrderRefundSupport;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -83,20 +90,22 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "variant_id_")
     private String variantId;
 
-    @Column(name = "name_")
-    private String name;
-
     @Column(name = "image_url_")
     private String imageUrl;
 
-    @Column(name = "item_amount_")
-    private BigDecimal itemAmount;
+    @Column(name = "name_")
+    private String name;
 
-    @Column(name = "item_shipped_")
-    private boolean itemShipped;
+    @Column(name = "quantity_")
+    private int quantity;
 
     @Column(name = "amount_")
     private BigDecimal amount;
+
+    @OneToMany(targetEntity = JpaOrderDisputeTransaction.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dispute_id_", referencedColumnName = "id_")
+    @OrderBy("createdTime")
+    private List<OrderDisputeTransaction> transactions = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
@@ -104,6 +113,9 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Column(name = "reason_")
     private String reason;
+
+    @Column(name = "cancelled_time_")
+    private Date cancelledTime;
 
     @Column(name = "disapproval_reason_")
     private String disapprovalReason;
@@ -136,5 +148,14 @@ public class JpaOrderRefund extends OrderRefundSupport {
     public JpaOrderRefund(String orderId, String id) {
         this.orderId = orderId;
         this.id = id;
+    }
+
+    @Override
+    public OrderDisputeTransaction createTransaction(String id) {
+        var transaction = new JpaOrderDisputeTransaction();
+        BeanUtils.copyProperties(this, transaction);
+        transaction.setId(id);
+        transaction.setDisputeId(this.id);
+        return transaction;
     }
 }
