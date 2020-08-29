@@ -20,6 +20,7 @@ package org.mallfoundry.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -31,6 +32,10 @@ public abstract class Copies {
         return new CopyObject().notBlank(supplier);
     }
 
+    public static CopyObject notNull(Supplier<Object> supplier) {
+        return new CopyObject().notNull(supplier);
+    }
+
     public static class CopyObject {
         private Object value;
         private boolean match;
@@ -38,6 +43,13 @@ public abstract class Copies {
         public CopyObject notBlank(Supplier<String> supplier) {
             var value = supplier.get();
             this.match = StringUtils.isNotBlank(value);
+            this.value = value;
+            return this;
+        }
+
+        public CopyObject notNull(BigDecimalSupplier supplier) {
+            var value = supplier.get();
+            this.match = Objects.nonNull(value);
             this.value = value;
             return this;
         }
@@ -62,5 +74,22 @@ public abstract class Copies {
             }
             return this;
         }
+
+        public CopyObject set(BigDecimalConsumer consumer) {
+            if (this.match) {
+                consumer.accept((BigDecimal) this.value);
+            }
+            return this;
+        }
+    }
+
+    @FunctionalInterface
+    public interface BigDecimalSupplier extends Supplier<BigDecimal> {
+
+    }
+
+    @FunctionalInterface
+    public interface BigDecimalConsumer extends Consumer<BigDecimal> {
+
     }
 }
