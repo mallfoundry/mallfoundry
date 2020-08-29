@@ -98,6 +98,12 @@ public interface OrderProcessorInvoker {
 
     OrderRefund invokePostProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund);
 
+    OrderRefund invokePreProcessBeforeReapplyOrderRefund(Order order, OrderRefund refund);
+
+    OrderRefund invokePreProcessAfterReapplyOrderRefund(Order order, OrderRefund refund);
+
+    OrderRefund invokePostProcessAfterReapplyOrderRefund(Order order, OrderRefund refund);
+
     OrderRefund invokePreProcessBeforeActiveOrderRefund(Order order, OrderRefund refund);
 
     OrderRefund invokePreProcessAfterActiveOrderRefund(Order order, OrderRefund refund);

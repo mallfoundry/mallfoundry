@@ -32,6 +32,10 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     void setId(String id);
 
+    String getStoreName();
+
+    void setStoreName(String storeName);
+
     String getOrderId();
 
     String getApplicant();
@@ -55,6 +59,10 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
     String getItemId();
 
     void setItemId(String itemId);
+
+    BigDecimal getItemAmount();
+
+    void setItemAmount(BigDecimal itemAmount);
 
     String getProductId();
 
@@ -101,14 +109,21 @@ public interface OrderDispute extends StoreOwnership, CustomerOwnership {
 
     List<OrderDisputeTransaction> getTransactions();
 
-    Date getAppliedTime();
+    int getApplyingExpires();
 
-    /*int getApplyExpires();*/
+    void setApplyingExpires(int applyingExpires);
+
+    Date getApplyingExpiredTime();
+
+    Date getAppliedTime();
 
     /**
      * 申请退款。
      */
     void apply() throws OrderRefundException;
+
+
+    void reapply() throws OrderRefundException;
 
     Date getCancelledTime();
 

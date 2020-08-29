@@ -49,7 +49,7 @@ public interface OrderDisputeTransaction {
     // 订单退款项金额
     BigDecimal getAmount();
 
-    void setAmount(BigDecimal refundAmount);
+    void setAmount(BigDecimal amount);
 
     String getNotes();
 

@@ -28,6 +28,7 @@ import static org.mallfoundry.order.aftersales.OrderDisputeStatus.DISAPPROVED;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.FAILED;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.INCOMPLETE;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.PENDING;
+import static org.mallfoundry.order.aftersales.OrderDisputeStatus.REAPPLYING;
 import static org.mallfoundry.order.aftersales.OrderDisputeStatus.SUCCEEDED;
 
 public abstract class OrderDisputeSupport implements MutableOrderDispute {
@@ -47,7 +48,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
     }
 
     public boolean nonApplying() {
-        return !APPLYING.equals(this.getStatus());
+        return !(APPLYING.equals(this.getStatus()) || REAPPLYING.equals(this.getStatus()));
     }
 
     public boolean nonPending() {
@@ -67,14 +68,22 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
             transaction.setCreatedTime(this.getCancelledTime());
         } else if (DISAPPROVED.equals(this.getStatus())) {
             transaction.setCreatedTime(this.getDisapprovedTime());
+        } else if (REAPPLYING.equals(this.getStatus())) {
+            transaction.setCreatedTime(new Date());
         } else if (PENDING.equals(this.getStatus())) {
             transaction.setCreatedTime(this.getApprovedTime());
         } else if (SUCCEEDED.equals(this.getStatus())) {
             transaction.setCreatedTime(this.getSucceededTime());
         } else if (FAILED.equals(this.getStatus())) {
             transaction.setCreatedTime(this.getFailedTime());
+        } else {
+            throw new OrderRefundException("Unknown status");
         }
         this.addTransaction(transaction);
+    }
+
+    private void nowApplyingExpiredTime() {
+        this.setApplyingExpiredTime(new Date(System.currentTimeMillis() + this.getApplyingExpires()));
     }
 
     @Override
@@ -82,8 +91,19 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         if (this.nonIncomplete()) {
             throw OrderExceptions.Refund.applied();
         }
+        this.nowApplyingExpiredTime();
         this.setStatus(APPLYING);
         this.setAppliedTime(new Date());
+        this.addTransaction();
+    }
+
+    @Override
+    public void reapply() throws OrderRefundException {
+        if (!DISAPPROVED.equals(this.getStatus())) {
+            throw OrderExceptions.Refund.applied();
+        }
+        this.nowApplyingExpiredTime();
+        this.setStatus(REAPPLYING);
         this.addTransaction();
     }
 
@@ -111,6 +131,7 @@ public abstract class OrderDisputeSupport implements MutableOrderDispute {
         if (this.nonApplying()) {
             throw OrderExceptions.Refund.approvedOrDisapproved();
         }
+        this.nowApplyingExpiredTime();
         this.setDisapprovalReason(disapprovalReason);
         this.setStatus(DISAPPROVED);
         this.setDisapprovedTime(new Date());

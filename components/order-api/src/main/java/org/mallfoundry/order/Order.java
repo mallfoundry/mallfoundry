@@ -163,6 +163,8 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     OrderRefund disapproveRefund(OrderRefund refund) throws OrderRefundException;
 
+    OrderRefund reapplyRefund(OrderRefund refund) throws OrderRefundException;
+
     /**
      * 主动退款操作是 {@link #applyRefund(OrderRefund)} 和 {@link #approveRefund(OrderRefund)}
      * 两个方法的组合。

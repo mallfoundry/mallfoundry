@@ -20,9 +20,9 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.order.aftersales.OrderDispute.ItemStatus;
 import org.mallfoundry.order.aftersales.OrderDisputeKind;
 import org.mallfoundry.order.aftersales.OrderRefund;
-import org.mallfoundry.order.aftersales.OrderDispute.ItemStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -50,6 +50,21 @@ public class OrderRefundRequest {
     @Getter
     @Setter
     static class Disapprove {
-        private String disapprovedReason;
+        private String disapprovalReason;
+    }
+
+    @Getter
+    @Setter
+    static class Reapply {
+        private String reason;
+        private String notes;
+        private List<String> attachments;
+
+        public OrderRefund assignTo(OrderRefund refund) {
+            return refund.toBuilder()
+                    .reason(this.reason).notes(this.notes)
+                    .attachments(this.attachments)
+                    .build();
+        }
     }
 }

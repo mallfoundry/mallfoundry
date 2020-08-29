@@ -66,7 +66,7 @@ public interface JpaOrderDisputeRepository extends JpaRepository<JpaOrderDispute
 
     default Page<JpaOrderDispute> findAll(OrderDisputeQuery query) {
         var sort = this.createSort(query);
-        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()/*, sort*/));
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
     }
 
     default long count(OrderDisputeQuery query) {

@@ -61,6 +61,9 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "store_id_")
     private String storeId;
 
+    @Column(name = "store_name_")
+    private String storeName;
+
     @Column(name = "customer_id_")
     private String customerId;
 
@@ -83,6 +86,9 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Column(name = "item_id_")
     private String itemId;
+
+    @Column(name = "item_amount_")
+    private BigDecimal itemAmount;
 
     @Column(name = "product_id_")
     private String productId;
@@ -114,6 +120,15 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "reason_")
     private String reason;
 
+    @Column(name = "applied_expires_")
+    private int applyingExpires;
+
+    @Column(name = "applied_expired_time_")
+    private Date applyingExpiredTime;
+
+    @Column(name = "applied_time_")
+    private Date appliedTime;
+
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
 
@@ -122,9 +137,6 @@ public class JpaOrderRefund extends OrderRefundSupport {
 
     @Column(name = "fail_reason_")
     private String failReason;
-
-    @Column(name = "applied_time_")
-    private Date appliedTime;
 
     @Column(name = "approved_time_")
     private Date approvedTime;

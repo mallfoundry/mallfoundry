@@ -235,7 +235,15 @@ public class OrderResourceV1 {
     public void disapproveOrderRefund(@PathVariable("order_id") String orderId,
                                       @PathVariable("refund_id") String refundId,
                                       @RequestBody OrderRefundRequest.Disapprove request) {
-        this.orderService.disapproveOrderRefund(orderId, refundId, request.getDisapprovedReason());
+        this.orderService.disapproveOrderRefund(orderId, refundId, request.getDisapprovalReason());
+    }
+
+    @PatchMapping("/orders/{order_id}/refunds/{refund_id}/reapply")
+    public void reapplyOrderRefund(@PathVariable("order_id") String orderId,
+                                   @PathVariable("refund_id") String refundId,
+                                   @RequestBody OrderRefundRequest.Reapply request) {
+        var refund = request.assignTo(this.orderService.createOrder(orderId).createRefund(refundId));
+        this.orderService.reapplyOrderRefund(orderId, refund);
     }
 
     @PostMapping("/orders/{order_id}/refunds/active")

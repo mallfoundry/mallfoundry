@@ -62,6 +62,12 @@ public class OrderSaveDisputeProcessor implements OrderProcessor {
     }
 
     @Override
+    public OrderRefund postProcessAfterReapplyOrderRefund(Order order, OrderRefund refund) {
+        this.orderDisputeService.saveOrderDispute(refund);
+        return refund;
+    }
+
+    @Override
     public OrderRefund postProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
         this.orderDisputeService.saveOrderDispute(refund);
         return refund;

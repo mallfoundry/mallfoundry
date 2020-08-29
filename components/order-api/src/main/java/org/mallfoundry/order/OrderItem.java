@@ -89,8 +89,6 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
 
     void succeedRefund(BigDecimal succeedAmount);
 
-    void disapproveRefund(BigDecimal failAmount);
-
     void failRefund(BigDecimal failAmount);
 
     boolean isReviewed();

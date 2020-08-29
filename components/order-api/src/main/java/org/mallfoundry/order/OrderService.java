@@ -120,7 +120,9 @@ public interface OrderService {
 
     void approveOrderRefund(String orderId, String refundId);
 
-    void disapproveOrderRefund(String orderId, String refundId, String disapprovedReason);
+    void disapproveOrderRefund(String orderId, String refundId, String disapprovalReason);
+
+    OrderRefund reapplyOrderRefund(String orderId, OrderRefund refund);
 
     void activeOrderRefund(String orderId, OrderRefund refund);
 

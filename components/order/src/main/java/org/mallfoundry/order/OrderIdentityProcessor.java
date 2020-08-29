@@ -69,54 +69,90 @@ public class OrderIdentityProcessor implements OrderProcessor {
                 .forEach(transaction -> transaction.setId(PrimaryKeyHolder.next(ORDER_DISPUTE_TRANSACTION_ID_VALUE_NAME)));
     }
 
+    /**
+     * 设置 Refund 对象标识。
+     */
     @Override
     public OrderRefund preProcessBeforeApplyOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public OrderRefund preProcessAfterApplyOrderRefund(Order order, OrderRefund refund) {
         setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 Refund 对象标识。
+     */
     @Override
     public List<OrderRefund> preProcessBeforeApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
         refunds.forEach(this::setOrderRefund);
         return refunds;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public List<OrderRefund> preProcessAfterApplyOrderRefunds(Order order, List<OrderRefund> refunds) {
         refunds.forEach(this::setOrderRefund);
         return refunds;
     }
 
+    /**
+     * 设置 Refund 对象标识。
+     */
     @Override
     public OrderRefund preProcessAfterCancelOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public OrderRefund preProcessAfterApproveOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public OrderRefund preProcessAfterDisapproveOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
+    @Override
+    public OrderRefund preProcessAfterReapplyOrderRefund(Order order, OrderRefund refund) {
+        this.setOrderRefund(refund);
+        return refund;
+    }
+
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);
         return refund;
     }
 
+    /**
+     * 设置 DisputeTransaction 对象标识。
+     */
     @Override
     public OrderRefund preProcessAfterActiveOrderRefund(Order order, OrderRefund refund) {
         this.setOrderRefund(refund);

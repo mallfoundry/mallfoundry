@@ -72,11 +72,6 @@ public class TestOrderItem implements OrderItem {
     }
 
     @Override
-    public void disapproveRefund(BigDecimal failAmount) {
-
-    }
-
-    @Override
     public void failRefund(BigDecimal failAmount) {
 
     }

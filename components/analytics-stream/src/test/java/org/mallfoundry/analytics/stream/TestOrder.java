@@ -196,6 +196,11 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public OrderRefund reapplyRefund(OrderRefund refund) throws OrderRefundException {
+        return null;
+    }
+
+    @Override
     public OrderRefund activeRefund(OrderRefund refund) throws OrderRefundException {
         return null;
     }

@@ -207,6 +207,7 @@ public abstract class OrderSupport implements MutableOrder {
         refund.setVariantId(item.getVariantId());
         refund.setName(item.getName());
         refund.setImageUrl(item.getImageUrl());
+//        refund.setItemId();
         // 如果退款数量为 0，则全部退款。
         if (refund.getQuantity() == 0) {
             refund.setQuantity(item.getQuantity());
@@ -220,6 +221,7 @@ public abstract class OrderSupport implements MutableOrder {
         }
         refund.setTenantId(this.getTenantId());
         refund.setStoreId(this.getStoreId());
+        refund.setStoreName(this.getStoreName());
         refund.setCustomerId(this.getCustomerId());
         this.applyItemRefund(refund);
         refund.apply();
@@ -284,8 +286,18 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public OrderRefund disapproveRefund(OrderRefund args) throws OrderRefundException {
         var refund = this.getRefund(args.getId());
-        this.getItem(refund.getItemId()).disapproveRefund(refund.getAmount());
         refund.disapprove(args.getDisapprovalReason());
+        this.updateRefundStatus();
+        return refund;
+    }
+
+    @Override
+    public OrderRefund reapplyRefund(OrderRefund source) throws OrderRefundException {
+        var refund = this.getRefund(source.getId());
+        refund.setReason(source.getReason());
+        refund.setNotes(source.getNotes());
+        refund.setAttachments(source.getAttachments());
+        refund.reapply();
         this.updateRefundStatus();
         return refund;
     }

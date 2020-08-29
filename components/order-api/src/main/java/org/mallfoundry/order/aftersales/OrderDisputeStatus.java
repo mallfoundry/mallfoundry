@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum OrderDisputeStatus {
     INCOMPLETE /* 空状态 */,
     APPLYING /* 买家申请退款 */,
+    REAPPLYING /* 买家重新申请退款 */,
     CANCELLED, /* 取消申请退款 */
     DISAPPROVED /* 退款未批准 */,
 

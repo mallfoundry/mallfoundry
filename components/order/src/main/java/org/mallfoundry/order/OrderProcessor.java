@@ -175,6 +175,18 @@ public interface OrderProcessor {
         return refund;
     }
 
+    default OrderRefund preProcessBeforeReapplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund preProcessAfterReapplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
+    default OrderRefund postProcessAfterReapplyOrderRefund(Order order, OrderRefund refund) {
+        return refund;
+    }
+
     default OrderRefund preProcessBeforeActiveOrderRefund(Order order, OrderRefund refund) {
         return refund;
     }
