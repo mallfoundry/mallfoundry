@@ -31,6 +31,10 @@ public abstract class ConfigurationKeys {
     public static final String ORDER_AUTO_APPROVAL_REVIEW_KEY = ORDER_KEY_PREFIX + "auto-approval-review";
     public static final String ORDER_INVENTORY_DEDUCTION_KEY = ORDER_KEY_PREFIX + "inventory-deduction";
 
+    // Order dispute key prefix
+    private static final String ORDER_DISPUTE_KEY_PREFIX = ORDER_KEY_PREFIX + "dispute.";
+    public static final String ORDER_DISPUTE_APPLYING_EXPIRES_KEY = ORDER_DISPUTE_KEY_PREFIX + "applying-expires";
+
     // Store key prefix
     private static final String STORE_KEY_PREFIX = "store.";
 
