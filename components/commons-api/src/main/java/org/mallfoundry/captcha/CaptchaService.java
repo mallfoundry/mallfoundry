@@ -18,8 +18,6 @@
 
 package org.mallfoundry.captcha;
 
-import java.util.Optional;
-
 /**
  * @author Tang Zhi
  * @since 1.0
@@ -28,9 +26,12 @@ public interface CaptchaService {
 
     Captcha createCaptcha(CaptchaType type);
 
-    Optional<Captcha> getCaptcha(String token);
+    Captcha getCaptcha(String token);
 
     Captcha generateCaptcha(Captcha captcha) throws CaptchaException;
 
+    /**
+     * 在使用之前，请先获得 Captcha 对象进行比较请求参数。如：手机号、邮箱地址等。
+     */
     boolean checkCaptcha(String token, String code);
 }
