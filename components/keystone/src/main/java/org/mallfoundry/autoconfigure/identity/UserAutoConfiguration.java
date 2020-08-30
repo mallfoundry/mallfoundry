@@ -19,10 +19,9 @@
 package org.mallfoundry.autoconfigure.identity;
 
 
-import org.apache.catalina.startup.UserConfig;
-import org.mallfoundry.identity.DefaultUserConfiguration;
+import org.mallfoundry.captcha.CaptchaService;
+import org.mallfoundry.configuration.UserConfigurationIdRetrievalStrategy;
 import org.mallfoundry.identity.DefaultUserService;
-import org.mallfoundry.identity.UserConfiguration;
 import org.mallfoundry.identity.UserProcessor;
 import org.mallfoundry.identity.UserRepository;
 import org.mallfoundry.identity.UserValidator;
@@ -39,21 +38,17 @@ import java.util.List;
 public class UserAutoConfiguration {
 
     @Bean
-    public UserConfiguration userConfiguration(UserProperties properties) {
-        var config = new DefaultUserConfiguration();
-        config.setDefaultUsername(properties.getDefaultUsername());
-        config.setDefaultNickname(properties.getDefaultNickname());
-        config.setDefaultAvatar(properties.getDefaultAvatar());
-        return config;
+    public UserConfigurationIdRetrievalStrategy userConfigurationIdRetrievalStrategy() {
+        return new UserConfigurationIdRetrievalStrategy();
     }
 
     @Bean
-    public DefaultUserService defaultUserService(UserConfiguration configuration,
-                                                 @Autowired(required = false)
+    public DefaultUserService defaultUserService(@Autowired(required = false)
                                                  @Lazy List<UserProcessor> processors,
                                                  @Lazy List<UserValidator> userValidators,
+                                                 CaptchaService captchaService,
                                                  UserRepository userRepository) {
-        var service = new DefaultUserService(configuration, userValidators, userRepository);
+        var service = new DefaultUserService(userValidators, captchaService, userRepository);
         service.setProcessors(processors);
         return service;
     }

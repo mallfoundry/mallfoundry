@@ -16,19 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.identity;
+package org.mallfoundry.configuration;
 
-public interface UserConfiguration {
+import org.mallfoundry.identity.User;
+import org.mallfoundry.identity.UserId;
 
-    String getDefaultUsername();
+public class UserConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
 
-    void setDefaultUsername(String defaultUsername);
-
-    String getDefaultAvatar();
-
-    void setDefaultAvatar(String avatar);
-
-    String getDefaultNickname();
-
-    void setDefaultNickname(String defaultNickname);
+    @Override
+    public ConfigurationId getConfigurationId(Object entity) {
+        if (entity instanceof UserId) {
+            var userId = (UserId) entity;
+            return new ImmutableConfigurationId(ConfigurationScope.TENANT, userId.getTenantId());
+        } else if (entity instanceof User) {
+            var user = (User) entity;
+            return new ImmutableConfigurationId(ConfigurationScope.TENANT, user.getTenantId());
+        }
+        return null;
+    }
 }
