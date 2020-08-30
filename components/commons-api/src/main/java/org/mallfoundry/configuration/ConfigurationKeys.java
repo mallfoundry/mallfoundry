@@ -22,6 +22,14 @@ import java.util.Set;
 
 public abstract class ConfigurationKeys {
 
+    // User key prefix
+    private static final String IDENTITY_USER_KEY_PREFIX = "identity.user.";
+
+    // User Property Keys
+    public static final String IDENTITY_USER_DEFAULT_USERNAME = IDENTITY_USER_KEY_PREFIX + "default-username";
+    public static final String IDENTITY_USER_DEFAULT_AVATAR = IDENTITY_USER_KEY_PREFIX + "default-avatar";
+    public static final String IDENTITY_USER_DEFAULT_NICKNAME = IDENTITY_USER_KEY_PREFIX + "default-nickname";
+
     // Order key prefix
     private static final String ORDER_KEY_PREFIX = "order.";
 
