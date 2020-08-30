@@ -18,6 +18,7 @@
 
 package org.mallfoundry.identity.validation;
 
+import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaException;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.identity.UserRegistration;
@@ -39,6 +40,13 @@ public class SmsCaptchaUserValidator implements UserValidator {
         if (registration.getMode() == UserRegistration.Mode.PHONE) {
             var token = registration.getParameter("captcha_token");
             var code = registration.getParameter("captcha_code");
+
+            var captcha = captchaService.getCaptcha(token);
+            // 判断手机号码是否一致。
+            if (!(registration.getCountryCode().equals(captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME))
+                    && registration.getCountryCode().equals(captcha.getParameter(Captcha.PHONE_PARAMETER_NAME)))) {
+                throw CaptchaException.INVALID_CAPTCHA;
+            }
             var checked = this.captchaService.checkCaptcha(token, code);
             if (!checked) {
                 throw CaptchaException.INVALID_CAPTCHA;
