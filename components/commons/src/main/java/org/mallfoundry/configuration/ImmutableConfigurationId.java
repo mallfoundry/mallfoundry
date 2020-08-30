@@ -30,6 +30,11 @@ public class ImmutableConfigurationId implements ConfigurationId {
     private ConfigurationScope scope;
     private String id;
 
+    public ImmutableConfigurationId(ConfigurationScope scope, String id) {
+        this.scope = scope;
+        this.id = id;
+    }
+
     public ImmutableConfigurationId(String tenantId, ConfigurationScope scope, String id) {
         this.tenantId = tenantId;
         this.scope = scope;
