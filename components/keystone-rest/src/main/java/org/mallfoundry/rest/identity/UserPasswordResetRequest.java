@@ -16,15 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.identity;
+package org.mallfoundry.rest.identity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.identity.UserPasswordReset;
 
 @Getter
 @Setter
-public class DefaultUserConfiguration implements UserConfiguration {
-    private String defaultUsername;
-    private String defaultAvatar;
-    private String defaultNickname;
+public class UserPasswordResetRequest implements UserPasswordReset {
+    private String tenantId;
+    private String password;
+    private String originalPassword;
+    private String username;
+    private String countryCode;
+    private String phone;
+    private String email;
+    private String captchaToken;
+    private String captchaCode;
+    private Mode mode;
 }
