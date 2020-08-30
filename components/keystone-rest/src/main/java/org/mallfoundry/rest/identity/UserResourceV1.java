@@ -44,6 +44,11 @@ public class UserResourceV1 {
         return UserResponse.of(this.userService.createUser(request));
     }
 
+    @PatchMapping("/users/password")
+    public void resetUserPassword(@RequestBody UserPasswordResetRequest request) {
+        this.userService.resetUserPassword(request);
+    }
+
     @GetMapping("/users/{id}")
     public Optional<UserResponse> findUser(@PathVariable("id") String id) {
         return this.userService.findUser(this.userService.createUserId(id)).map(UserResponse::of);
@@ -51,8 +56,7 @@ public class UserResourceV1 {
 
     @GetMapping("/users/current")
     public UserResponse getCurrentUser() {
-        var user = this.userService.getCurrentUser();
-        return UserResponse.of(user);
+        return UserResponse.of(this.userService.getCurrentUser());
     }
 
     @PatchMapping("/users/{id}")

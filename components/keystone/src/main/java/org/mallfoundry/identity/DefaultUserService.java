@@ -20,6 +20,11 @@ package org.mallfoundry.identity;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.captcha.Captcha;
+import org.mallfoundry.captcha.CaptchaException;
+import org.mallfoundry.captcha.CaptchaService;
+import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.CryptoUtils;
@@ -38,21 +43,19 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
 
     private static final String USER_ID_VALUE_NAME = "identity.user.id";
 
-    private final UserConfiguration userConfiguration;
-
     private List<UserProcessor> processors;
 
     private final List<UserValidator> userValidators;
+
+    private final CaptchaService captchaService;
 
     private ApplicationEventPublisher eventPublisher;
 
     private final UserRepository userRepository;
 
-    public DefaultUserService(UserConfiguration userConfiguration,
-                              List<UserValidator> userValidators,
-                              UserRepository userRepository) {
-        this.userConfiguration = userConfiguration;
+    public DefaultUserService(List<UserValidator> userValidators, CaptchaService captchaService, UserRepository userRepository) {
         this.userValidators = ListUtils.emptyIfNull(userValidators);
+        this.captchaService = captchaService;
         this.userRepository = userRepository;
     }
 
@@ -80,16 +83,17 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
         return this.userRepository.create(id);
     }
 
-    public void setDefaultUsername(User user) {
-        var defaultUsername = this.userConfiguration.getDefaultUsername();
+    private void setDefaultUser(User user) {
+        // 使用 Configuration 设置默认值。
+        var config = ConfigurationHolder.getConfiguration(user);
+        var defaultUsername = config.getString(ConfigurationKeys.IDENTITY_USER_DEFAULT_USERNAME);
         user.setUsername(UserReplacer.replace(defaultUsername, user));
-    }
-
-    private void setDefaultNickname(User user) {
         if (StringUtils.isBlank(user.getNickname())) {
-            var defaultNickname = this.userConfiguration.getDefaultNickname();
+            var defaultNickname = config.getString(ConfigurationKeys.IDENTITY_USER_DEFAULT_NICKNAME);
             user.setNickname(UserReplacer.replace(defaultNickname, user));
         }
+        var defaultAvatar = config.getString(ConfigurationKeys.IDENTITY_USER_DEFAULT_AVATAR);
+        user.setAvatar(defaultAvatar);
     }
 
     @Transactional
@@ -98,8 +102,7 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
         this.userValidators.forEach(userValidator -> userValidator.validateCreateUser(registration));
         var newUserId = this.createUserId(User.DEFAULT_TENANT_ID, PrimaryKeyHolder.next(USER_ID_VALUE_NAME));
         var user = registration.assignToUser(this.userRepository.create(newUserId));
-        this.setDefaultUsername(user);
-        this.setDefaultNickname(user);
+        this.setDefaultUser(user);
         user.changePassword(this.encodePassword(registration.getPassword()));
         user.create();
         var savedUser = this.userRepository.save(user);
@@ -130,14 +133,14 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
     @Override
     public Optional<User> findUserByUsername(String username) {
         return this.userRepository.findByUsername(username)
-                .map(this::invokePostProcessAfterGetUserByUsername);
+                .map(this::invokePostProcessAfterGetUser);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<User> findUserByPhone(String countryCode, String phone) {
         return this.userRepository.findByCountryCodeAndPhone(countryCode, phone)
-                .map(this::invokePostProcessAfterGetUserByPhone);
+                .map(this::invokePostProcessAfterGetUser);
     }
 
     @Transactional
@@ -164,7 +167,7 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
         this.eventPublisher.publishEvent(new ImmutableUserCredentialsChangedEvent(savedUser));
     }
 
-    @Transactional
+    /*@Transactional
     @Override
     public void changePassword(UserId userId, String password, String originalPassword) throws UserException {
         var user = this.getUser(userId);
@@ -174,13 +177,47 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
                             "The original password is incorrect"));
         }
         this.setPassword(user, password);
+    }*/
+
+    private User getUser(UserPasswordReset reset) {
+        if (UserPasswordReset.Mode.USERNAME_PASSWORD.equals(reset.getMode())) {
+            return this.userRepository.findByUsername(reset.getUsername())
+                    .orElseThrow(() -> UserExceptions.notExists(reset.getUsername()));
+        } else if (UserPasswordReset.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
+            return this.userRepository.findByCountryCodeAndPhone(reset.getCountryCode(), reset.getPhone())
+                    .orElseThrow(() -> UserExceptions.notExists(reset.getPhone()));
+        }
+        throw UserExceptions.notExists("Not supported");
+    }
+
+    private User getUser(Captcha captcha) {
+        var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
+        var phone = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
+        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone)
+                .orElseThrow(() -> UserExceptions.notExists(phone));
     }
 
     @Transactional
     @Override
-    public void resetPassword(UserId userId, String password) throws UserException {
-        var user = this.getUser(userId);
-        this.setPassword(user, password);
+    public void resetUserPassword(UserPasswordReset reset) throws UserException {
+        if (UserPasswordReset.Mode.USERNAME_PASSWORD.equals(reset.getMode())
+                || UserPasswordReset.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
+            var user = this.getUser(reset);
+            if (!this.matchesPassword(reset.getOriginalPassword(), user.getPassword())) {
+                throw new UserException(
+                        message("identity.user.originalPasswordIncorrect",
+                                "The original password is incorrect"));
+            }
+            this.setPassword(user, reset.getPassword());
+        } else if (UserPasswordReset.Mode.CAPTCHA.equals(reset.getMode())) {
+            var captcha = this.captchaService.getCaptcha(reset.getCaptchaToken());
+            var checked = this.captchaService.checkCaptcha(reset.getCaptchaToken(), reset.getCaptchaCode());
+            if (!checked) {
+                throw CaptchaException.INVALID_CAPTCHA;
+            }
+            var user = this.getUser(captcha);
+            this.setPassword(user, reset.getPassword());
+        }
     }
 
     @Transactional
@@ -195,20 +232,6 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
     public User invokePostProcessAfterGetUser(User user) {
         return Processors.stream(processors)
                 .map(UserProcessor::postProcessAfterGetUser)
-                .apply(user);
-    }
-
-    @Override
-    public User invokePostProcessAfterGetUserByUsername(User user) {
-        return Processors.stream(processors)
-                .map(UserProcessor::postProcessAfterGetUserByUsername)
-                .apply(user);
-    }
-
-    @Override
-    public User invokePostProcessAfterGetUserByPhone(User user) {
-        return Processors.stream(processors)
-                .map(UserProcessor::postProcessAfterGetUserByPhone)
                 .apply(user);
     }
 }

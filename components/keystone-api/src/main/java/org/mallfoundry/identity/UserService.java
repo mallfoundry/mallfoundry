@@ -32,9 +32,7 @@ public interface UserService {
 
     void deleteUser(UserId userId);
 
-    void changePassword(UserId userId, String password, String originalPassword) throws UserException;
-
-    void resetPassword(UserId userId, String password) throws UserException;
+    void resetUserPassword(UserPasswordReset reset) throws UserException;
 
     User updateUser(User user);
 
