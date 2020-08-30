@@ -43,8 +43,8 @@ public class CaptchaResourceV1 {
         return new CaptchaResponse(this.captchaService.generateCaptcha(captcha));
     }
 
-    @PostMapping("/captchas/{token}/check")
+    /*@PostMapping("/captchas/{token}/check")
     public boolean checkCaptcha(@PathVariable("token") String token, @RequestBody String code) {
         return this.captchaService.checkCaptcha(token, code);
-    }
+    }*/
 }
