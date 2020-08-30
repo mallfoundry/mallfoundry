@@ -19,10 +19,5 @@
 package org.mallfoundry.identity;
 
 public interface UserProcessorInvoker {
-
     User invokePostProcessAfterGetUser(User user);
-
-    User invokePostProcessAfterGetUserByUsername(User user);
-
-    User invokePostProcessAfterGetUserByPhone(User user);
 }

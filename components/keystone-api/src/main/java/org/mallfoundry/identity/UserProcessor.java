@@ -19,16 +19,7 @@
 package org.mallfoundry.identity;
 
 public interface UserProcessor {
-
     default User postProcessAfterGetUser(User user) {
-        return user;
-    }
-
-    default User postProcessAfterGetUserByUsername(User user) {
-        return user;
-    }
-
-    default User postProcessAfterGetUserByPhone(User user) {
         return user;
     }
 }
