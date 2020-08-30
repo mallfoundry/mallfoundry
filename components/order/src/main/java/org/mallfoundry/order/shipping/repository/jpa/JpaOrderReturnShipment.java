@@ -33,11 +33,8 @@ import javax.persistence.Table;
 @Table(name = "mf_order_return_shipment")
 public class JpaOrderReturnShipment extends JpaOrderShipmentBase implements OrderReturnShipment {
 
-    @Column(name = "refund_id_")
-    private String refundId;
-
-    @Column(name = "exchange_id_")
-    private String exchangeId;
+    @Column(name = "dispute_id_")
+    private String disputeId;
 
     public JpaOrderReturnShipment() {
         super(null);

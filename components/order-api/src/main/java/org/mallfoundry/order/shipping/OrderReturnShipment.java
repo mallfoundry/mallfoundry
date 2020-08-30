@@ -20,13 +20,7 @@ package org.mallfoundry.order.shipping;
 
 public interface OrderReturnShipment extends OrderShipment {
 
-    String getRefundId();
+    String getDisputeId();
 
-    void setRefundId(String refundId);
-
-    // or
-
-    String getExchangeId();
-
-    void setExchangeId(String exchangeId);
+    void setDisputeId(String disputeId);
 }
