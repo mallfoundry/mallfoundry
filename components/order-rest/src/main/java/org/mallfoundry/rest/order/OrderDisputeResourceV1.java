@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.aftersales.OrderDispute;
+import org.mallfoundry.order.aftersales.OrderDisputeKind;
 import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.OrderDisputeStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,14 +46,21 @@ public class OrderDisputeResourceV1 {
     @GetMapping("/orders/disputes")
     public SliceList<OrderDispute> getOrderDisputes(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                     @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                                    @RequestParam(name = "customer_id", required = false) String customerId,
                                                     @RequestParam(name = "store_id", required = false) String storeId,
+                                                    @RequestParam(name = "customer_id", required = false) String customerId,
+                                                    @RequestParam(name = "order_id", required = false) String orderId,
+                                                    @RequestParam(name = "ids", required = false) Set<String> ids,
+                                                    @RequestParam(name = "kinds", required = false) Set<String> kinds,
                                                     @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                                     @RequestParam(name = "sort", required = false) String sort) {
         return this.orderDisputeService.getOrderDisputes(
                 this.orderDisputeService.createOrderDisputeQuery().toBuilder()
                         .page(page).limit(limit).sort(aSort -> aSort.from(sort))
-                        .customerId(customerId).storeId(storeId)
+                        .storeId(storeId).customerId(customerId).orderId(orderId)
+                        .ids(ids)
+                        .kinds(() ->
+                                CollectionUtils.emptyIfNull(kinds).stream().map(StringUtils::upperCase)
+                                        .map(OrderDisputeKind::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .statuses(() ->
                                 CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                         .map(OrderDisputeStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
@@ -62,10 +70,15 @@ public class OrderDisputeResourceV1 {
     @GetMapping("/orders/disputes/count")
     public long countOrderDisputes(@RequestParam(name = "customer_id", required = false) String customerId,
                                    @RequestParam(name = "store_id", required = false) String storeId,
+                                   @RequestParam(name = "order_id", required = false) String orderId,
+                                   @RequestParam(name = "kinds", required = false) Set<String> kinds,
                                    @RequestParam(name = "statuses", required = false) Set<String> statuses) {
         return this.orderDisputeService.countOrderDisputes(
                 this.orderDisputeService.createOrderDisputeQuery().toBuilder()
-                        .customerId(customerId).storeId(storeId)
+                        .storeId(storeId).customerId(customerId).orderId(orderId)
+                        .kinds(() ->
+                                CollectionUtils.emptyIfNull(kinds).stream().map(StringUtils::upperCase)
+                                        .map(OrderDisputeKind::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .statuses(() ->
                                 CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                         .map(OrderDisputeStatus::valueOf).collect(Collectors.toUnmodifiableSet()))

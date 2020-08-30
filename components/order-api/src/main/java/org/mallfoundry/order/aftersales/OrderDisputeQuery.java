@@ -24,10 +24,31 @@ import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
 
 public interface OrderDisputeQuery extends Query, StoreOwnership, CustomerOwnership, ObjectBuilder.ToBuilder<OrderDisputeQuery.Builder> {
+
+    String getOrderId();
+
+    void setOrderId(String orderId);
+
+    Set<String> getIds();
+
+    void setIds(Set<String> ids);
+
+    Date getAppliedTimeMin();
+
+    void setAppliedTimeMin(Date appliedTimeMin);
+
+    Date getAppliedTimeMax();
+
+    void setAppliedTimeMax(Date appliedTimeMax);
+
+    Set<OrderDisputeKind> getKinds();
+
+    void setKinds(Set<OrderDisputeKind> kinds);
 
     Set<OrderDisputeStatus> getStatuses();
 
@@ -40,6 +61,14 @@ public interface OrderDisputeQuery extends Query, StoreOwnership, CustomerOwners
         Builder storeId(String storeId);
 
         Builder customerId(String customerId);
+
+        Builder orderId(String orderId);
+
+        Builder ids(Set<String> ids);
+
+        Builder kinds(Supplier<Set<OrderDisputeKind>> supplier);
+
+        Builder kinds(Set<OrderDisputeKind> kinds);
 
         Builder statuses(Supplier<Set<OrderDisputeStatus>> supplier);
 

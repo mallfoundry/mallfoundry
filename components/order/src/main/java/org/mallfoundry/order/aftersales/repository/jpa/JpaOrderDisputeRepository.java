@@ -35,17 +35,26 @@ import java.util.stream.Collectors;
 
 public interface JpaOrderDisputeRepository extends JpaRepository<JpaOrderDispute, String>, JpaSpecificationExecutor<JpaOrderDispute> {
 
-    default Specification<JpaOrderDispute> createSpecification(OrderDisputeQuery refundQuery) {
+    default Specification<JpaOrderDispute> createSpecification(OrderDisputeQuery disputeQuery) {
         return (Specification<JpaOrderDispute>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
-            if (Objects.nonNull(refundQuery.getCustomerId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), refundQuery.getCustomerId()));
+            if (Objects.nonNull(disputeQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), disputeQuery.getStoreId()));
             }
-            if (Objects.nonNull(refundQuery.getStoreId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), refundQuery.getStoreId()));
+            if (Objects.nonNull(disputeQuery.getCustomerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), disputeQuery.getCustomerId()));
             }
-            if (CollectionUtils.isNotEmpty(refundQuery.getStatuses())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(refundQuery.getStatuses()));
+            if (Objects.nonNull(disputeQuery.getOrderId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("orderId"), disputeQuery.getOrderId()));
+            }
+            if (CollectionUtils.isNotEmpty(disputeQuery.getIds())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("id")).value(disputeQuery.getIds()));
+            }
+            if (CollectionUtils.isNotEmpty(disputeQuery.getKinds())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("kind")).value(disputeQuery.getKinds()));
+            }
+            if (CollectionUtils.isNotEmpty(disputeQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(disputeQuery.getStatuses()));
             }
             return predicate;
         };

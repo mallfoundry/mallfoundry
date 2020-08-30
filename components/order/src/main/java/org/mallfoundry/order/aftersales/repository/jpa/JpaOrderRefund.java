@@ -120,10 +120,10 @@ public class JpaOrderRefund extends OrderRefundSupport {
     @Column(name = "reason_")
     private String reason;
 
-    @Column(name = "applied_expires_")
+    @Column(name = "applying_expires_")
     private int applyingExpires;
 
-    @Column(name = "applied_expired_time_")
+    @Column(name = "applying_expired_time_")
     private Date applyingExpiredTime;
 
     @Column(name = "applied_time_")

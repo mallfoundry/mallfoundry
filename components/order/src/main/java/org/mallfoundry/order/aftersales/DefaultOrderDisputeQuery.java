@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -32,6 +33,12 @@ public class DefaultOrderDisputeQuery extends QuerySupport implements OrderDispu
     private String tenantId;
     private String storeId;
     private String customerId;
+    private String orderId;
+    //
+    private Set<String> ids;
+    private Date appliedTimeMin;
+    private Date appliedTimeMax;
+    private Set<OrderDisputeKind> kinds;
     private Set<OrderDisputeStatus> statuses;
 
     @Override
@@ -63,6 +70,30 @@ public class DefaultOrderDisputeQuery extends QuerySupport implements OrderDispu
         @Override
         public Builder customerId(String customerId) {
             this.query.setCustomerId(customerId);
+            return this;
+        }
+
+        @Override
+        public Builder orderId(String orderId) {
+            this.query.setOrderId(orderId);
+            return this;
+        }
+
+        @Override
+        public Builder ids(Set<String> ids) {
+            this.query.setIds(ids);
+            return this;
+        }
+
+        @Override
+        public Builder kinds(Supplier<Set<OrderDisputeKind>> supplier) {
+            this.query.setKinds(supplier.get());
+            return this;
+        }
+
+        @Override
+        public Builder kinds(Set<OrderDisputeKind> kinds) {
+            this.query.setKinds(kinds);
             return this;
         }
 

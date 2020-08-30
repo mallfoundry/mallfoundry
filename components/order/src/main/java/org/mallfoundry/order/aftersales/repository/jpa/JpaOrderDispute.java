@@ -35,12 +35,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -116,10 +114,8 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Convert(converter = StringListConverter.class)
     private List<String> attachments;
 
-    @OneToMany(targetEntity = JpaOrderDisputeTransaction.class)
-    @JoinColumn(name = "dispute_id_", referencedColumnName = "id_")
-    @OrderBy("createdTime")
-    private List<OrderDisputeTransaction> transactions = new ArrayList<>();
+    @Transient
+    private List<OrderDisputeTransaction> transactions = Collections.emptyList();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
@@ -127,10 +123,11 @@ public class JpaOrderDispute extends OrderDisputeSupport {
 
     @Column(name = "reason_")
     private String reason;
-    @Column(name = "applied_expires_")
+
+    @Column(name = "applying_expires_")
     private int applyingExpires;
 
-    @Column(name = "applied_expired_time_")
+    @Column(name = "applying_expired_time_")
     private Date applyingExpiredTime;
 
     @Column(name = "applied_time_")
