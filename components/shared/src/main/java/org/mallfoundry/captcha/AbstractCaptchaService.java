@@ -21,7 +21,6 @@ package org.mallfoundry.captcha;
 import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -49,8 +48,10 @@ public abstract class AbstractCaptchaService implements CaptchaService {
     }
 
     @Override
-    public Optional<Captcha> getCaptcha(String token) {
-        return this.captchaRepository.findByToken(token).map(this::resultCaptcha);
+    public Captcha getCaptcha(String token) {
+        return this.captchaRepository.findByToken(token)
+                .map(this::resultCaptcha)
+                .orElseThrow(() -> CaptchaException.INVALID_CAPTCHA);
     }
 
     private void spamCaptcha(Captcha captcha) throws CaptchaException {
@@ -99,6 +100,19 @@ public abstract class AbstractCaptchaService implements CaptchaService {
         }
         return false;
     }
+
+    /*@Override
+    public boolean checkCaptcha(Captcha source) {
+        var token = source.getToken();
+        var code = source.getCode();
+        var captcha = this.captchaRepository.findByToken(token)
+                .orElseThrow(() -> new CaptchaException("Invalid captcha"));
+        if (captcha.checkCode(code)) {
+            this.clearCheckedCaptcha(captcha);
+            return true;
+        }
+        return false;
+    }*/
 
     protected abstract void doClearCaptcha(Captcha captcha) throws CaptchaException;
 
