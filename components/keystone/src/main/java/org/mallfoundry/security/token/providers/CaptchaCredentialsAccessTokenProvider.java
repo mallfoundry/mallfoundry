@@ -19,7 +19,6 @@
 package org.mallfoundry.security.token.providers;
 
 import org.mallfoundry.captcha.Captcha;
-import org.mallfoundry.captcha.CaptchaException;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.captcha.CaptchaType;
 import org.mallfoundry.identity.UserService;
@@ -47,10 +46,9 @@ public class CaptchaCredentialsAccessTokenProvider implements AccessTokenProvide
     @Override
     public AccessTokenId authenticate(Credentials credentials) throws AuthenticationException {
         var cCredentials = (CaptchaCredentials) credentials;
-        String token = cCredentials.getToken();
-        String code = cCredentials.getCode();
-        var captcha = this.captchaService.getCaptcha(token)
-                .orElseThrow(() -> CaptchaException.INVALID_CAPTCHA);
+        String token = cCredentials.getCaptchaToken();
+        String code = cCredentials.getCaptchaCode();
+        var captcha = this.captchaService.getCaptcha(token);
         if (captcha.getType() != CaptchaType.SMS) {
             throw new BadCredentialsException("Only SMS authentication is supported");
         }

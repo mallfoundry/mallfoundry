@@ -30,7 +30,7 @@ public interface CaptchaCredentials extends Credentials {
         return CredentialsType.CAPTCHA;
     }
 
-    String getCode();
+    String getCaptchaCode();
 
-    String getToken();
+    String getCaptchaToken();
 }

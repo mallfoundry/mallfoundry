@@ -22,11 +22,11 @@ import lombok.Getter;
 
 @Getter
 public class DefaultCaptchaCredentials implements CaptchaCredentials {
-    private final String token;
-    private final String code;
+    private final String captchaToken;
+    private final String captchaCode;
 
-    public DefaultCaptchaCredentials(String token, String code) {
-        this.token = token;
-        this.code = code;
+    public DefaultCaptchaCredentials(String captchaToken, String captchaCode) {
+        this.captchaToken = captchaToken;
+        this.captchaCode = captchaCode;
     }
 }

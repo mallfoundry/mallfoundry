@@ -61,7 +61,7 @@ public class AccessTokenEndpointV1 {
                     request.getParameter("phone"),
                     request.getParameter("password"));
         } else if (type == CredentialsType.CAPTCHA) {
-            credentials = new DefaultCaptchaCredentials(request.getParameter("token"), request.getParameter("code"));
+            credentials = new DefaultCaptchaCredentials(request.getParameter("captcha_token"), request.getParameter("captcha_code"));
         }
         try {
             var token = this.accessTokenManager.createAccessToken(credentials);
