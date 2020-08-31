@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security.token.providers;
 
+import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.CryptoUtils;
 import org.mallfoundry.security.authentication.Credentials;
@@ -42,7 +43,13 @@ public class UsernamePasswordCredentialsAccessTokenProvider implements AccessTok
     public AccessTokenId authenticate(Credentials credentials) throws AuthenticationException {
         var upCredentials = (UsernamePasswordCredentials) credentials;
         String username = upCredentials.getUsername();
-        var user = this.userService.findUserByUsername(username)
+        var user = this.userService
+                .findUser(new UserSearch() {
+                    @Override
+                    public String getUsername() {
+                        return username;
+                    }
+                })
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The username %s not found", username)));
         this.authenticationChecks(upCredentials.getPassword(), user.getPassword());
         return new AccessTokenId(user.getUsername());

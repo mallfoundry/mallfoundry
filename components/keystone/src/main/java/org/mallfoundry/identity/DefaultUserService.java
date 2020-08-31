@@ -131,15 +131,8 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<User> findUserByUsername(String username) {
-        return this.userRepository.findByUsername(username)
-                .map(this::invokePostProcessAfterGetUser);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<User> findUserByPhone(String countryCode, String phone) {
-        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone)
+    public Optional<User> findUser(UserSearch search) {
+        return this.userRepository.findBySearch(search)
                 .map(this::invokePostProcessAfterGetUser);
     }
 
@@ -161,30 +154,36 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
         return CryptoUtils.matches(rawPassword, encodedPassword);
     }
 
-    private void setPassword(User user, String password) {
+    private User retakeUserPassword(User user, String password) {
         user.changePassword(this.encodePassword(password));
-        var savedUser = this.userRepository.save(user);
-        this.eventPublisher.publishEvent(new ImmutableUserCredentialsChangedEvent(savedUser));
+        user = this.userRepository.save(user);
+        this.eventPublisher.publishEvent(new ImmutableUserCredentialsChangedEvent(user));
+        return user;
     }
 
-    /*@Transactional
-    @Override
-    public void changePassword(UserId userId, String password, String originalPassword) throws UserException {
-        var user = this.getUser(userId);
-        if (!this.matchesPassword(originalPassword, user.getPassword())) {
-            throw new UserException(
-                    message("identity.user.originalPasswordIncorrect",
-                            "The original password is incorrect"));
-        }
-        this.setPassword(user, password);
-    }*/
-
-    private User getUser(UserPasswordReset reset) {
-        if (UserPasswordReset.Mode.USERNAME_PASSWORD.equals(reset.getMode())) {
-            return this.userRepository.findByUsername(reset.getUsername())
+    private User getUser(UserRetake reset) {
+        if (UserRetake.Mode.USERNAME_PASSWORD.equals(reset.getMode())) {
+            return this.userRepository
+                    .findBySearch(new UserSearch() {
+                        @Override
+                        public String getUsername() {
+                            return reset.getUsername();
+                        }
+                    })
                     .orElseThrow(() -> UserExceptions.notExists(reset.getUsername()));
-        } else if (UserPasswordReset.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
-            return this.userRepository.findByCountryCodeAndPhone(reset.getCountryCode(), reset.getPhone())
+        } else if (UserRetake.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
+            return this.userRepository
+                    .findBySearch(new UserSearch() {
+                        @Override
+                        public String getCountryCode() {
+                            return reset.getCountryCode();
+                        }
+
+                        @Override
+                        public String getPhone() {
+                            return reset.getPhone();
+                        }
+                    })
                     .orElseThrow(() -> UserExceptions.notExists(reset.getPhone()));
         }
         throw UserExceptions.notExists("Not supported");
@@ -193,31 +192,43 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
     private User getUser(Captcha captcha) {
         var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
         var phone = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
-        return this.userRepository.findByCountryCodeAndPhone(countryCode, phone)
+        return this.userRepository
+                .findBySearch(new UserSearch() {
+                    @Override
+                    public String getCountryCode() {
+                        return countryCode;
+                    }
+
+                    @Override
+                    public String getPhone() {
+                        return phone;
+                    }
+                })
                 .orElseThrow(() -> UserExceptions.notExists(phone));
     }
 
     @Transactional
     @Override
-    public void resetUserPassword(UserPasswordReset reset) throws UserException {
-        if (UserPasswordReset.Mode.USERNAME_PASSWORD.equals(reset.getMode())
-                || UserPasswordReset.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
+    public User retakeUser(UserRetake reset) throws UserException {
+        if (UserRetake.Mode.USERNAME_PASSWORD.equals(reset.getMode())
+                || UserRetake.Mode.PHONE_PASSWORD.equals(reset.getMode())) {
             var user = this.getUser(reset);
             if (!this.matchesPassword(reset.getOriginalPassword(), user.getPassword())) {
                 throw new UserException(
                         message("identity.user.originalPasswordIncorrect",
                                 "The original password is incorrect"));
             }
-            this.setPassword(user, reset.getPassword());
-        } else if (UserPasswordReset.Mode.CAPTCHA.equals(reset.getMode())) {
+            return this.retakeUserPassword(user, reset.getPassword());
+        } else if (UserRetake.Mode.CAPTCHA.equals(reset.getMode())) {
             var captcha = this.captchaService.getCaptcha(reset.getCaptchaToken());
             var checked = this.captchaService.checkCaptcha(reset.getCaptchaToken(), reset.getCaptchaCode());
             if (!checked) {
                 throw CaptchaException.INVALID_CAPTCHA;
             }
             var user = this.getUser(captcha);
-            this.setPassword(user, reset.getPassword());
+            return this.retakeUserPassword(user, reset.getPassword());
         }
+        return null;
     }
 
     @Transactional

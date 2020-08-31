@@ -21,9 +21,11 @@ package org.mallfoundry.identity.repository.jpa;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserId;
 import org.mallfoundry.identity.UserRepository;
+import org.mallfoundry.identity.UserSearch;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -56,12 +58,12 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByCountryCodeAndPhone(String countryCode, String phone) {
-        return CastUtils.cast(this.repository.findByCountryCodeAndPhone(countryCode, phone));
-    }
-
-    @Override
-    public Optional<User> findByUsername(String username) {
-        return CastUtils.cast(this.repository.findByUsername(username));
+    public Optional<User> findBySearch(UserSearch search) {
+        if (Objects.nonNull(search.getUsername())) {
+            return CastUtils.cast(this.repository.findByUsername(search.getUsername()));
+        } else if (Objects.nonNull(search.getCountryCode()) && Objects.nonNull(search.getPhone())) {
+            return CastUtils.cast(this.repository.findByCountryCodeAndPhone(search.getCountryCode(), search.getPhone()));
+        }
+        return Optional.empty();
     }
 }

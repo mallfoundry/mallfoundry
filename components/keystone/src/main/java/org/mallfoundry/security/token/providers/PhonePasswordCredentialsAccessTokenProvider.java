@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security.token.providers;
 
+import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.CryptoUtils;
 import org.mallfoundry.security.authentication.Credentials;
@@ -43,8 +44,19 @@ public class PhonePasswordCredentialsAccessTokenProvider implements AccessTokenP
         var ppCredentials = (PhonePasswordCredentials) credentials;
         String countryCode = ppCredentials.getCountryCode();
         String phone = ppCredentials.getPhone();
-        var user = this.userService.findUserByPhone(countryCode, phone)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone +%s-%s not found", countryCode, phone)));
+        var user = this.userService
+                .findUser(new UserSearch() {
+                    @Override
+                    public String getCountryCode() {
+                        return countryCode;
+                    }
+
+                    @Override
+                    public String getPhone() {
+                        return phone;
+                    }
+                })
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone %s not found", phone)));
         this.authenticationChecks(ppCredentials.getPassword(), user.getPassword());
         return new AccessTokenId(user.getUsername());
     }

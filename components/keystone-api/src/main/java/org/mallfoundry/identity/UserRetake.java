@@ -20,7 +20,7 @@ package org.mallfoundry.identity;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public interface UserPasswordReset extends TenantOwnership {
+public interface UserRetake extends TenantOwnership {
 
     String getUsername();
 

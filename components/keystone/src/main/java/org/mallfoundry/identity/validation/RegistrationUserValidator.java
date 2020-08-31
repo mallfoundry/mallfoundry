@@ -21,6 +21,7 @@ package org.mallfoundry.identity.validation;
 import lombok.Getter;
 import org.mallfoundry.identity.UserRegistration;
 import org.mallfoundry.identity.UserRepository;
+import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserValidator;
 import org.mallfoundry.identity.UserValidatorException;
 import org.mallfoundry.validation.ValidationHolder;
@@ -44,7 +45,18 @@ public class RegistrationUserValidator implements UserValidator {
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
         if (UserRegistration.Mode.PHONE.equals(registration.getMode())) {
             this.validatePhone(registration);
-            this.userRepository.findByCountryCodeAndPhone(registration.getCountryCode(), registration.getPhone())
+            this.userRepository
+                    .findBySearch(new UserSearch() {
+                        @Override
+                        public String getCountryCode() {
+                            return registration.getCountryCode();
+                        }
+
+                        @Override
+                        public String getPhone() {
+                            return registration.getPhone();
+                        }
+                    })
                     .ifPresent(user -> {
                         throw new UserValidatorException(
                                 message("identity.user.validation.phoneRegistered",

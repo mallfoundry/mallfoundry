@@ -18,17 +18,44 @@
 
 package org.mallfoundry.identity;
 
-import java.util.Optional;
+public interface UserSearch {
 
-public interface UserRepository {
+    default String getUsername() {
+        return null;
+    }
 
-    User create(UserId id);
+    default String getCountryCode() {
+        return null;
+    }
 
-    User save(User user);
+    default String getPhone() {
+        return null;
+    }
 
-    void delete(User user);
+    default String getEmail() {
+        return null;
+    }
 
-    Optional<User> findById(UserId id);
+    static UserSearch usernameOf(String username) {
+        return new UserSearch() {
+            @Override
+            public String getUsername() {
+                return username;
+            }
+        };
+    }
 
-    Optional<User> findBySearch(UserSearch search);
+    static UserSearch phoneOf(String countryCode, String phone) {
+        return new UserSearch() {
+            @Override
+            public String getCountryCode() {
+                return countryCode;
+            }
+
+            @Override
+            public String getPhone() {
+                return phone;
+            }
+        };
+    }
 }

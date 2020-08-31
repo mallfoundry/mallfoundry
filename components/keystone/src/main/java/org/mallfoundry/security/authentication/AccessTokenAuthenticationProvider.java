@@ -19,6 +19,7 @@
 package org.mallfoundry.security.authentication;
 
 import org.mallfoundry.identity.UserId;
+import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.UserAuthoritiesEnhancer;
 import org.mallfoundry.security.UserDetailsSubject;
@@ -63,7 +64,13 @@ public class AccessTokenAuthenticationProvider implements AuthenticationProvider
                         .readAccessToken(tokenAuthentication.getName())
                         .orElseThrow(() -> new BadCredentialsException("Bad credentials"))
                         .getUsername();
-        var user = this.userService.findUserByUsername(username)
+        var user = this.userService
+                .findUser(new UserSearch() {
+                    @Override
+                    public String getUsername() {
+                        return username;
+                    }
+                })
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
         var enhancedAuthorities = this.getEnhancedAuthorities(user.toId());
         var securityUser = new UserDetailsSubject(user, enhancedAuthorities);

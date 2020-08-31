@@ -32,7 +32,7 @@ public interface UserService {
 
     void deleteUser(UserId userId);
 
-    void resetUserPassword(UserPasswordReset reset) throws UserException;
+    User retakeUser(UserRetake retake) throws UserException;
 
     User updateUser(User user);
 
@@ -42,8 +42,5 @@ public interface UserService {
 
     Optional<User> findUser(UserId userId);
 
-    Optional<User> findUserByUsername(String username);
-
-    Optional<User> findUserByPhone(String countryCode, String phone);
-
+    Optional<User> findUser(UserSearch search);
 }

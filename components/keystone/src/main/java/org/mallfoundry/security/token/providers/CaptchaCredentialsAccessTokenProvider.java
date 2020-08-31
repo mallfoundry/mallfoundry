@@ -21,6 +21,7 @@ package org.mallfoundry.security.token.providers;
 import org.mallfoundry.captcha.Captcha;
 import org.mallfoundry.captcha.CaptchaService;
 import org.mallfoundry.captcha.CaptchaType;
+import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.authentication.CaptchaCredentials;
 import org.mallfoundry.security.authentication.Credentials;
@@ -57,7 +58,18 @@ public class CaptchaCredentialsAccessTokenProvider implements AccessTokenProvide
         }
         var countryCode = captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME);
         var phone = captcha.getParameter(Captcha.PHONE_PARAMETER_NAME);
-        var user = this.userService.findUserByPhone(countryCode, phone)
+        var user = this.userService
+                .findUser(new UserSearch() {
+                    @Override
+                    public String getCountryCode() {
+                        return countryCode;
+                    }
+
+                    @Override
+                    public String getPhone() {
+                        return phone;
+                    }
+                })
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("The phone +%s-%s not found", countryCode, phone)));
         return new AccessTokenId(user.getUsername());
     }

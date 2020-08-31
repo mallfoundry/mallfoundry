@@ -20,11 +20,11 @@ package org.mallfoundry.rest.identity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.identity.UserPasswordReset;
+import org.mallfoundry.identity.UserRetake;
 
 @Getter
 @Setter
-public class UserPasswordResetRequest implements UserPasswordReset {
+public class UserRetakeRequest implements UserRetake {
     private String tenantId;
     private String password;
     private String originalPassword;
