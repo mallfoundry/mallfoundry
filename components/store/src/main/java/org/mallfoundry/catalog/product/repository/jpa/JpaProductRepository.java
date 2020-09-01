@@ -87,4 +87,8 @@ public interface JpaProductRepository extends JpaRepository<JpaProduct, String>,
         return this.findAll(this.createSpecification(query),
                 PageRequest.of(query.getPage() - 1, query.getLimit(), this.createSort(query)));
     }
+
+    default long count(ProductQuery query) {
+        return this.count(this.createSpecification(query));
+    }
 }

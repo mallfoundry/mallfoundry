@@ -73,6 +73,11 @@ public class DelegatingProductRepository implements ProductRepository {
     }
 
     @Override
+    public long count(ProductQuery query) {
+        return this.searchRepository.count(query);
+    }
+
+    @Override
     public void delete(Product product) {
         this.primaryRepository.delete(product);
     }

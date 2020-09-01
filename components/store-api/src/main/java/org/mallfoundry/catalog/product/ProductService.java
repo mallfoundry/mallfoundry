@@ -64,6 +64,8 @@ public interface ProductService {
 
     SliceList<Product> getProducts(ProductQuery query);
 
+    long countProducts(ProductQuery query);
+
     /**
      * 更新商品对象。
      *

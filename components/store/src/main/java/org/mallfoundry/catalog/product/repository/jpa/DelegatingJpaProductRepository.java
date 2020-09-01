@@ -76,6 +76,11 @@ public class DelegatingJpaProductRepository implements JdbcProductRepository, Jp
     }
 
     @Override
+    public long count(ProductQuery query) {
+        return this.repository.count(query);
+    }
+
+    @Override
     public void delete(Product product) {
         this.repository.delete(JpaProduct.of(product));
     }

@@ -82,6 +82,26 @@ public class ProductResourceV1 {
                 .collections(collections).build());
     }
 
+    @GetMapping("/products/count")
+    public long countProducts(@RequestParam(name = "name", required = false) String name,
+                              @RequestParam(name = "store_id", required = false) String storeId,
+                              @RequestParam(name = "collections", required = false) Set<String> collections,
+                              @RequestParam(name = "types", required = false) Set<String> types,
+                              @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                              @RequestParam(name = "inventory_statuses", required = false) Set<String> inventoryStatuses,
+                              @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
+                              @RequestParam(name = "max_price", required = false) BigDecimal maxPrice) {
+        return this.productService.countProducts(this.productService.createProductQuery().toBuilder()
+                .name(name).storeId(storeId).priceMin(minPrice).priceMax(maxPrice)
+                .types(() -> Stream.ofNullable(types).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(ProductType::valueOf).collect(Collectors.toSet()))
+                .statuses(() -> Stream.ofNullable(statuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(ProductStatus::valueOf).collect(Collectors.toSet()))
+                .inventoryStatuses(() -> Stream.ofNullable(inventoryStatuses).flatMap(Set::stream).filter(StringUtils::isNotEmpty)
+                        .map(StringUtils::upperCase).map(InventoryStatus::valueOf).collect(Collectors.toSet()))
+                .collections(collections).build());
+    }
+
     @GetMapping("/products/{id}")
     public Optional<Product> findProduct(@PathVariable("id") String id) {
         return this.productService.findProduct(id);

@@ -39,5 +39,7 @@ public interface ProductRepository extends Repository {
 
     SliceList<Product> findAll(ProductQuery query);
 
+    long count(ProductQuery query);
+
     void delete(Product product);
 }

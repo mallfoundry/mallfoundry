@@ -20,6 +20,7 @@ package org.mallfoundry.catalog.product.repository.elasticsearch;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductQuery;
@@ -45,8 +46,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ElasticsearchProductRepository
-        implements ProductRepository, SearchProductRepository {
+public class ElasticsearchProductRepository implements ProductRepository, SearchProductRepository {
 
     private final ElasticsearchOperations elasticsearchOperations;
 
@@ -65,10 +65,7 @@ public class ElasticsearchProductRepository
                 .orElseGet(Sort::unsorted);
     }
 
-    @Override
-    public SliceList<Product> findAll(ProductQuery productQuery) {
-        var sort = this.createSort(productQuery);
-        var page = PageRequest.of(productQuery.getPage() - 1, productQuery.getLimit(), sort);
+    private BoolQueryBuilder createQueryBuilder(ProductQuery productQuery) {
         var queryBuilder = QueryBuilders.boolQuery();
 
         if (StringUtils.isNotEmpty(productQuery.getName())) {
@@ -98,12 +95,26 @@ public class ElasticsearchProductRepository
         if (CollectionUtils.isNotEmpty(productQuery.getCollections())) {
             queryBuilder.must(QueryBuilders.termsQuery("collections", productQuery.getCollections()));
         }
+        return queryBuilder;
+    }
 
+    @Override
+    public SliceList<Product> findAll(ProductQuery productQuery) {
+        var sort = this.createSort(productQuery);
+        var page = PageRequest.of(productQuery.getPage() - 1, productQuery.getLimit(), sort);
+        var queryBuilder = this.createQueryBuilder(productQuery);
         var query = new StringQuery(queryBuilder.toString(), page, sort);
         var hits = this.elasticsearchOperations.search(query, ElasticsearchProduct.class);
         var list = hits.map(SearchHit::getContent).toList();
 
         return CastUtils.cast(PageList.of(list).totalSize(hits.getTotalHits()).page(productQuery.getPage()).limit(productQuery.getLimit()));
+    }
+
+    @Override
+    public long count(ProductQuery productQuery) {
+        var queryBuilder = this.createQueryBuilder(productQuery);
+        var query = new StringQuery(queryBuilder.toString());
+        return this.elasticsearchOperations.count(query, ElasticsearchProduct.class);
     }
 
     @Override

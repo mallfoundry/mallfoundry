@@ -106,6 +106,11 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
                 this.invokePreProcessBeforeGetProducts(query));
     }
 
+    @Override
+    public long countProducts(ProductQuery query) {
+        return this.productRepository.count(query);
+    }
+
     private void updateProduct(Product source, Product dest) {
         Copies.notBlank(source::getName).trim(dest::setName)
                 .notBlank(source::getBrandId).trim(dest::setBrandId)
