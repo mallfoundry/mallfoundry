@@ -20,7 +20,6 @@ package org.mallfoundry.trade;
 
 import java.math.BigDecimal;
 
-public class Transaction {
-
-    private BigDecimal amount;
+public interface Transaction {
+    BigDecimal getAmount();
 }

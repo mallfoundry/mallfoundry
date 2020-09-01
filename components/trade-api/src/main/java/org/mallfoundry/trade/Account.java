@@ -18,5 +18,5 @@
 
 package org.mallfoundry.trade;
 
-public class Account {
+public interface Account {
 }
