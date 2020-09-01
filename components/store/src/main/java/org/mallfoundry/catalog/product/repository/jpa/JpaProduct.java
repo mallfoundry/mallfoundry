@@ -92,16 +92,17 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "description_")
     private String description;
 
-    //    @NotBlank
+    @ElementCollection
+    @CollectionTable(name = "mf_catalog_category_product", joinColumns = @JoinColumn(name = "product_id_"))
     @Column(name = "category_id_")
-    private String categoryId;
+    private List<String> categories = new ArrayList<>();
 
     //    @NotBlank
     @Column(name = "brand_id_")
     private String brandId;
 
     @ElementCollection
-    @CollectionTable(name = "mf_catalog_product_collection", joinColumns = @JoinColumn(name = "product_id_"))
+    @CollectionTable(name = "mf_catalog_collection_product", joinColumns = @JoinColumn(name = "product_id_"))
     @Column(name = "collection_id_")
     private Set<String> collections = new HashSet<>();
 

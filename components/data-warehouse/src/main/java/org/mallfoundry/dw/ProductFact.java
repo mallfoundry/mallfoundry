@@ -27,6 +27,6 @@ public class ProductFact {
     private String id;
     private String storeId;
     private String brandId;
-    private String categoryId;
+//    private String categoryId;
     private String statusId;
 }

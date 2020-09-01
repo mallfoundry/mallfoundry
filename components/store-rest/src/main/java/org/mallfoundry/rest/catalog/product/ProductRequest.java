@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class ProductRequest {
     private String name;
     private String description;
-    private String categoryId;
+    private List<String> categories;
     private String brandId;
     private Set<String> collections;
     private List<String> imageUrls;
@@ -91,7 +91,7 @@ public class ProductRequest {
 
     public Product assignTo(Product product) {
         return product.toBuilder().name(this.name).description(this.description)
-                .categoryId(this.categoryId).brandId(this.brandId)
+                .categories(this.categories).brandId(this.brandId)
                 .collections(this.collections)
                 .imageUrls(this.imageUrls).videoUrls(this.videoUrls)
                 .freeShipping(this.freeShipping)

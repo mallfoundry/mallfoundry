@@ -77,7 +77,7 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
-    public String getCategoryId() {
+    public List<String> getCategories() {
         return null;
     }
 

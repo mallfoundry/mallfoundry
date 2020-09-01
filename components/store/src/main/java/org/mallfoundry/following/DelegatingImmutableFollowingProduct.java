@@ -85,8 +85,8 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
-    public String getCategoryId() {
-        return this.product.getCategoryId();
+    public List<String> getCategories() {
+        return this.product.getCategories();
     }
 
     @Override

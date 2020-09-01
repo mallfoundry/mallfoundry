@@ -236,7 +236,7 @@ public interface ImmutableProductResponse extends Product {
     }
 
     @Override
-    default void setCategoryId(String categoryId) {
+    default void setCategories(List<String> categories) {
 
     }
 

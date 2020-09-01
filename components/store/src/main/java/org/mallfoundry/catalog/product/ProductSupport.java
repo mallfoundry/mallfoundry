@@ -339,8 +339,8 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
-        public Builder categoryId(String categoryId) {
-            this.product.setCategoryId(categoryId);
+        public Builder categories(List<String> categories) {
+            this.product.setCategories(categories);
             return this;
         }
 

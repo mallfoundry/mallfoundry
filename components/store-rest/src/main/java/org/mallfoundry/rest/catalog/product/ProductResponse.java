@@ -75,7 +75,7 @@ public class ProductResponse implements ImmutableProductResponse {
     }
 
     @Override
-    public String getCategoryId() {
+    public List<String> getCategories() {
         return null;
     }
 

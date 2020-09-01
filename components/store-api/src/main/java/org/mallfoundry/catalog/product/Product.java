@@ -60,9 +60,9 @@ public interface Product extends ProductBody, StoreOwnership {
 
     BigDecimal getPrice();
 
-    String getCategoryId();
+    List<String> getCategories();
 
-    void setCategoryId(String categoryId);
+    void setCategories(List<String> categories);
 
     String getBrandId();
 
@@ -232,7 +232,7 @@ public interface Product extends ProductBody, StoreOwnership {
 
         Builder status(ProductStatus status);
 
-        Builder categoryId(String categoryId);
+        Builder categories(List<String> categories);
 
         Builder brandId(String brandId);
 

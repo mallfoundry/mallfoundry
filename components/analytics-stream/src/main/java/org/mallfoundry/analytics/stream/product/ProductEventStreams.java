@@ -46,7 +46,7 @@ public class ProductEventStreams {
         var fact = new ProductFact();
         fact.setId(product.getId());
         fact.setBrandId(product.getBrandId());
-        fact.setCategoryId(product.getCategoryId());
+//        fact.setCategoryId(product.getCategoryId());
         fact.setStatusId(ProductStatusDimension.idOf(product.getStatus()));
         fact.setStoreId(product.getStoreId());
         return fact;

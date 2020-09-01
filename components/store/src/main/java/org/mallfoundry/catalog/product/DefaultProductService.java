@@ -115,7 +115,7 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
         Copies.notBlank(source::getName).trim(dest::setName)
                 .notBlank(source::getBrandId).trim(dest::setBrandId)
                 .notBlank(source::getDescription).trim(dest::setDescription)
-                .notBlank(source::getCategoryId).trim(dest::setCategoryId)
+//                .notBlank(source::get).trim(dest::setCategoryId)
                 .notBlank(source::getShippingRateId).trim(dest::setShippingRateId)
                 .notBlank(source::getBody).trim(dest::setBody);
         if (Objects.nonNull(source.getImageUrls())) {

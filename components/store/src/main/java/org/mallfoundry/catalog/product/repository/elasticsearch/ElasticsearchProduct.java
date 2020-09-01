@@ -75,8 +75,7 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private BigDecimal price;
 
-    @Field(type = FieldType.Keyword)
-    private String categoryId;
+    private List<String> categories = new ArrayList<>();
 
     @Field(type = FieldType.Keyword)
     private String brandId;

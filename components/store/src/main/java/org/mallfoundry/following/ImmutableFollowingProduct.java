@@ -235,7 +235,7 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default void setCategoryId(String categoryId) {
+    default void setCategories(List<String> categories) {
 
     }
 
