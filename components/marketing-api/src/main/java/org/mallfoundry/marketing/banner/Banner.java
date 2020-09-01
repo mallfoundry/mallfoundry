@@ -28,6 +28,14 @@ public interface Banner {
 
     void setName(String name);
 
+    String getImageUrl();
+
+    void setImageUrl(String imageUrl);
+
+    String getUrl();
+
+    void setUrl(String url);
+
     String getContent();
 
     void setContent(String content);

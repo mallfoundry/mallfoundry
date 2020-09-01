@@ -45,6 +45,12 @@ public class InternalBanner implements Banner {
     @Column(name = "name_")
     private String name;
 
+    @Column(name = "image_url_")
+    private String imageUrl;
+
+    @Column(name = "url_")
+    private String url;
+
     @Column(name = "content_")
     private String content;
 
