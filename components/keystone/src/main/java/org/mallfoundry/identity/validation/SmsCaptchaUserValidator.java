@@ -38,9 +38,9 @@ public class SmsCaptchaUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        if (registration.getMode() == UserRegistration.Mode.PHONE) {
-            var token = registration.getParameter("captcha_token");
-            var code = registration.getParameter("captcha_code");
+        if (registration.getMode() == UserRegistration.Mode.PHONE_CAPTCHA) {
+            var token = registration.getCaptchaToken();
+            var code = registration.getCaptchaCode();
             var captcha = captchaService.getCaptcha(token);
             // 判断手机号码是否一致。
             if (!(StringUtils.equals(registration.getCountryCode(), captcha.getParameter(Captcha.COUNTRY_CODE_PARAMETER_NAME))

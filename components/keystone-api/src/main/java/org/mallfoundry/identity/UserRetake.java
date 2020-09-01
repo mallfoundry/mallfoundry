@@ -70,7 +70,7 @@ public interface UserRetake extends TenantOwnership {
         USERNAME_PASSWORD,
         EMAIL_PASSWORD,
         PHONE_PASSWORD,
-        CAPTCHA;
+        PHONE_CAPTCHA;
 
         @JsonValue
         @Override

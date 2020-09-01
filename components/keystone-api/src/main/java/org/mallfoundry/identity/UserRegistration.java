@@ -20,8 +20,6 @@ package org.mallfoundry.identity;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Map;
-
 public interface UserRegistration {
 
     String getPassword();
@@ -40,18 +38,19 @@ public interface UserRegistration {
 
     Mode getMode();
 
-    Map<String, String> getParameters();
+    String getCaptchaToken();
 
-    void setParameters(Map<String, String> parameters);
+    void setCaptchaToken(String captchaToken);
 
-    void setParameter(String name, String value);
+    String getCaptchaCode();
 
-    String getParameter(String name);
+    void setCaptchaCode(String captchaCode);
 
     User assignToUser(User user);
 
     enum Mode {
-        EMAIL, PHONE;
+        EMAIL_CAPTCHA,
+        PHONE_CAPTCHA;
 
         @JsonValue
         @Override

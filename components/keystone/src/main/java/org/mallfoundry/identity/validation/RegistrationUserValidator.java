@@ -43,7 +43,7 @@ public class RegistrationUserValidator implements UserValidator {
 
     @Override
     public void validateCreateUser(UserRegistration registration) throws UserValidatorException {
-        if (UserRegistration.Mode.PHONE.equals(registration.getMode())) {
+        if (UserRegistration.Mode.PHONE_CAPTCHA.equals(registration.getMode())) {
             this.validatePhone(registration);
             this.userRepository
                     .findBySearch(new UserSearch() {

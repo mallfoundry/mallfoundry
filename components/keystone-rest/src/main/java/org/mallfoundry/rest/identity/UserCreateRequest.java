@@ -23,29 +23,17 @@ import lombok.Setter;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserRegistration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
 @Setter
 public class UserCreateRequest implements UserRegistration {
     private String nickname;
     private String password;
+    private Mode mode;
+    private String email;
     private String countryCode;
     private String phone;
-    private String email;
-    private Mode mode;
-    private Map<String, String> parameters = new HashMap<>();
-
-    @Override
-    public void setParameter(String name, String value) {
-        this.parameters.put(name, value);
-    }
-
-    @Override
-    public String getParameter(String name) {
-        return this.parameters.get(name);
-    }
+    private String captchaToken;
+    private String captchaCode;
 
     @Override
     public User assignToUser(User user) {

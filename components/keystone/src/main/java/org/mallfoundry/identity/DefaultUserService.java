@@ -219,7 +219,7 @@ public class DefaultUserService implements UserService, UserProcessorInvoker, Ap
                                 "The original password is incorrect"));
             }
             return this.retakeUserPassword(user, reset.getPassword());
-        } else if (UserRetake.Mode.CAPTCHA.equals(reset.getMode())) {
+        } else if (UserRetake.Mode.PHONE_CAPTCHA.equals(reset.getMode())) {
             var captcha = this.captchaService.getCaptcha(reset.getCaptchaToken());
             var checked = this.captchaService.checkCaptcha(reset.getCaptchaToken(), reset.getCaptchaCode());
             if (!checked) {
