@@ -66,6 +66,12 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
 
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "item_name_")
+    private String itemName;
+
     @Column(name = "rating_")
     private int rating;
 

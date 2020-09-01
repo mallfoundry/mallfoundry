@@ -24,6 +24,10 @@ public interface Topic {
 
     void setId(String id);
 
+    String getName();
+
+    void setName(String name);
+
     Author getAuthor();
 
     void setAuthor(Author author);

@@ -54,6 +54,10 @@ public interface OrderReview extends Topic, ObjectBuilder.ToBuilder<OrderReview.
 
     void setOptionSelections(List<OptionSelection> optionSelections);
 
+    String getItemName();
+
+    void setItemName(String itemName);
+
     int getRating();
 
     void rating(int rating);

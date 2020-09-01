@@ -49,6 +49,10 @@ public interface Review extends Topic, ObjectBuilder.ToBuilder<Review.Builder> {
 
     void setOptionSelections(List<OptionSelection> optionSelections);
 
+    String getItemName();
+
+    void setItemName(String itemName);
+
     List<String> getTags();
 
     void setTags(List<String> tags);
@@ -94,6 +98,10 @@ public interface Review extends Topic, ObjectBuilder.ToBuilder<Review.Builder> {
         Builder variantId(String variantId);
 
         Builder optionSelections(List<OptionSelection> optionSelections);
+
+        Builder name(String name);
+
+        Builder itemName(String itemName);
 
         Builder rating(int rating);
 

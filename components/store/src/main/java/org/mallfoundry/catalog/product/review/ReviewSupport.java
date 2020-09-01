@@ -108,6 +108,18 @@ public abstract class ReviewSupport implements MutableReview {
         }
 
         @Override
+        public Builder name(String name) {
+            this.review.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder itemName(String itemName) {
+            this.review.setItemName(itemName);
+            return null;
+        }
+
+        @Override
         public Builder rating(int rating) {
             this.review.rating(rating);
             return this;

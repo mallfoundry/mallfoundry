@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
-import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.Review;
+import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.ReviewStatus;
 import org.mallfoundry.catalog.product.review.ReviewSupport;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
@@ -69,6 +69,12 @@ public class JpaReview extends ReviewSupport {
     @Column(name = "option_selections_", length = 1024)
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "item_name_")
+    private String itemName;
 
     @Column(name = "rating_")
     private int rating;
