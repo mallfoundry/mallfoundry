@@ -51,9 +51,6 @@ public class InternalBanner implements Banner {
     @Column(name = "url_")
     private String url;
 
-    @Column(name = "content_")
-    private String content;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "page_")
     private BannerPage page;

@@ -46,12 +46,12 @@ public class BannerTests {
     @Rollback(false)
     public void testSaveBanners() {
 
-        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name1").content("111").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
-        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name2").content("222").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
-        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name3").content("333").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
+        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name1").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
+        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name2").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
+        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name3").dateType(BannerDateType.ALWAYS).show().location(BannerLocation.TOP).build());
 
-        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name4").content("444").dateType(BannerDateType.CUSTOM).show().location(BannerLocation.TOP).build());
-        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name5").content("555").dateType(BannerDateType.CUSTOM).show().location(BannerLocation.TOP).build());
+        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name4").dateType(BannerDateType.CUSTOM).show().location(BannerLocation.TOP).build());
+        this.bannerService.addBanner(this.bannerService.createBanner(null).toBuilder().name("name5").dateType(BannerDateType.CUSTOM).show().location(BannerLocation.TOP).build());
     }
 
     @Test

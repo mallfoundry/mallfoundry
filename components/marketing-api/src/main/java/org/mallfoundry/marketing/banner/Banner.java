@@ -36,10 +36,6 @@ public interface Banner {
 
     void setUrl(String url);
 
-    String getContent();
-
-    void setContent(String content);
-
     BannerPage getPage();
 
     void setPage(BannerPage page);
@@ -75,8 +71,6 @@ public interface Banner {
 
         Builder name(String name);
 
-        Builder content(String content);
-
         Builder page(BannerPage page);
 
         Builder dateType(BannerDateType dateType);
@@ -103,12 +97,6 @@ public interface Banner {
         @Override
         public Builder name(String name) {
             this.banner.setName(name);
-            return this;
-        }
-
-        @Override
-        public Builder content(String content) {
-            this.banner.setContent(content);
             return this;
         }
 
