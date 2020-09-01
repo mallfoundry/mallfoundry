@@ -21,6 +21,7 @@ package org.mallfoundry.customer;
 import org.mallfoundry.identity.TenantOwnership;
 
 public interface CustomerOwnership extends TenantOwnership {
+
     String getCustomerId();
 
     default void setCustomerId(String customerId) {
