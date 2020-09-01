@@ -43,9 +43,9 @@ public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
     void setStatuses(Set<OrderStatus> statuses);
 
-    Set<OrderStatus> getRefundStatuses();
+    Set<OrderStatus> getDisputeStatuses();
 
-    void setRefundStatuses(Set<OrderStatus> statuses);
+    void setDisputeStatuses(Set<OrderStatus> statuses);
 
     Set<OrderType> getTypes();
 
@@ -91,9 +91,9 @@ public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
         Builder statuses(Set<OrderStatus> statuses);
 
-        Builder refundStatuses(Supplier<Set<OrderStatus>> supplier);
+        Builder disputeStatuses(Supplier<Set<OrderStatus>> supplier);
 
-        Builder refundStatuses(Set<OrderStatus> statuses);
+        Builder disputeStatuses(Set<OrderStatus> statuses);
 
         Builder sources(Set<OrderSource> sources);
 

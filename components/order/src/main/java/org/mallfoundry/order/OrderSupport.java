@@ -228,7 +228,7 @@ public abstract class OrderSupport implements MutableOrder {
         refund.apply();
         this.getRefunds().add(refund);
         // 设置订单状态为等待退款。
-        this.setRefundStatus(AWAITING_REFUND);
+        this.setDisputeStatus(AWAITING_REFUND);
         this.setRefundedTime(new Date());
         return refund;
     }
@@ -256,14 +256,14 @@ public abstract class OrderSupport implements MutableOrder {
         }
         var totalRefundAmount = totalRefundingAmount.add(totalRefundedAmount);
         if (DecimalUtils.equals(zero, totalRefundAmount)) {
-            this.setRefundStatus(null);
+            this.setDisputeStatus(null);
         } else if (DecimalUtils.lessThan(zero, totalRefundingAmount)) {
-            this.setRefundStatus(AWAITING_REFUND);
+            this.setDisputeStatus(AWAITING_REFUND);
         } else if (DecimalUtils.equals(totalAmount, totalRefundAmount)) {
-            this.setRefundStatus(REFUNDED);
+            this.setDisputeStatus(REFUNDED);
             this.close(OrderMessages.fullRefundReason());
         } else if (DecimalUtils.equals(zero, totalRefundingAmount)) {
-            this.setRefundStatus(PARTIALLY_REFUNDED);
+            this.setDisputeStatus(PARTIALLY_REFUNDED);
         }
         this.setRefundedTime(DecimalUtils.equals(zero, totalRefundAmount) ? null : new Date());
     }

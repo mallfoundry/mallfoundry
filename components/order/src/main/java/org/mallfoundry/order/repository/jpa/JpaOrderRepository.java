@@ -53,8 +53,8 @@ public interface JpaOrderRepository extends JpaRepository<JpaOrder, String>, Jpa
             if (CollectionUtils.isNotEmpty(orderQuery.getStatuses())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(orderQuery.getStatuses()));
             }
-            if (CollectionUtils.isNotEmpty(orderQuery.getRefundStatuses())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("refundStatus")).value(orderQuery.getRefundStatuses()));
+            if (CollectionUtils.isNotEmpty(orderQuery.getDisputeStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("disputeStatus")).value(orderQuery.getDisputeStatuses()));
             }
             if (CollectionUtils.isNotEmpty(orderQuery.getTypes())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(orderQuery.getTypes()));

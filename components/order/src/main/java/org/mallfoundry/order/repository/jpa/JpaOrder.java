@@ -126,8 +126,8 @@ public class JpaOrder extends OrderSupport {
     private List<OrderShipment> shipments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "refund_status_")
-    private OrderStatus refundStatus;
+    @Column(name = "dispute_status_")
+    private OrderStatus disputeStatus = INCOMPLETE;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderRefund.class)
     @JoinColumn(name = "order_id_")
@@ -136,7 +136,7 @@ public class JpaOrder extends OrderSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "review_status_")
-    private OrderStatus reviewStatus;
+    private OrderStatus reviewStatus = INCOMPLETE;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaOrderReview.class)
     @JoinColumn(name = "order_id_")

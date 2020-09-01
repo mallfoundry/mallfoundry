@@ -63,7 +63,7 @@ public class TestOrder implements Order {
     private List<OrderShipment> shipments = new ArrayList<>();
     private List<OrderRefund> refunds = new ArrayList<>();
     private int shippedItems;
-    private OrderStatus refundStatus;
+    private OrderStatus disputeStatus;
     private String paymentId;
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;

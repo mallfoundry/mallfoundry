@@ -122,7 +122,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     int getShippedItems();
 
-    OrderStatus getRefundStatus();
+    OrderStatus getDisputeStatus();
 
     /**
      * 创建一个订单退款对象。

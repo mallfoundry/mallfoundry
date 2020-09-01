@@ -24,7 +24,7 @@ public interface MutableOrder extends Order {
 
     void setStatus(OrderStatus status);
 
-    void setRefundStatus(OrderStatus refundStatus);
+    void setDisputeStatus(OrderStatus disputeStatus);
 
     void setShippedItems(int items);
 
