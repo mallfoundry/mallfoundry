@@ -23,11 +23,8 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
-import org.mallfoundry.catalog.product.review.Review;
-import org.mallfoundry.catalog.product.review.ReviewService;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.inventory.InventoryStatus;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,11 +47,8 @@ public class ProductResourceV1 {
 
     private final ProductService productService;
 
-    private final ReviewService productReviewService;
-
-    public ProductResourceV1(ProductService productService, ReviewService productReviewService) {
+    public ProductResourceV1(ProductService productService) {
         this.productService = productService;
-        this.productReviewService = productReviewService;
     }
 
     @GetMapping("/products")
@@ -105,24 +99,6 @@ public class ProductResourceV1 {
     @GetMapping("/products/{id}")
     public Optional<Product> findProduct(@PathVariable("id") String id) {
         return this.productService.findProduct(id);
-    }
-
-    @GetMapping("/products/{product_id}/reviews/{review_id}")
-    public Optional<Review> getProductReview(@PathVariable("product_id") String productId, @PathVariable("review_id") String reviewId) {
-        Assert.notNull(productId, "Product id is not null");
-        return this.productReviewService.getReview(reviewId);
-    }
-
-    @GetMapping("/products/{id}/reviews")
-    public SliceList<Review> getProductReviews(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                               @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                               @PathVariable("id") String productId,
-                                               @RequestParam(name = "variant_id", required = false) String variantId,
-                                               @RequestParam(name = "sort", required = false) String sort) {
-        return this.productReviewService.getReviews(
-                this.productReviewService.createReviewQuery().toBuilder()
-                        .page(page).limit(limit).sort(aSort -> aSort.from(sort))
-                        .productId(productId).variantId(variantId).build());
     }
 
     @PostMapping("/products")
