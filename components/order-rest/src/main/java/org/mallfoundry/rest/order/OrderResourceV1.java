@@ -96,9 +96,10 @@ public class OrderResourceV1 {
     @GetMapping("/orders")
     public SliceList<Order> getOrders(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                      @RequestParam(name = "ids", required = false) Set<String> ids,
                                       @RequestParam(name = "customer_id", required = false) String customerId,
                                       @RequestParam(name = "store_id", required = false) String storeId,
+                                      @RequestParam(name = "ids", required = false) Set<String> ids,
+                                      @RequestParam(name = "name", required = false) String name,
                                       @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                       @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses,
                                       @RequestParam(name = "types", required = false) Set<String> types,
@@ -111,8 +112,8 @@ public class OrderResourceV1 {
                                       @RequestParam(name = "sort", required = false) String sort) {
         return this.orderService.getOrders(this.orderService.createOrderQuery().toBuilder()
                 .page(page).limit(limit).sort(aSort -> aSort.from(sort))
-                .ids(ids)
                 .customerId(customerId).storeId(storeId)
+                .ids(ids).name(name)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
@@ -133,12 +134,14 @@ public class OrderResourceV1 {
     }
 
     @GetMapping("/orders/count")
-    public long countOrders(@RequestParam(name = "customer_id", required = false) String customerId,
+    public long countOrders(@RequestParam(name = "store_id", required = false) String storeId,
+                            @RequestParam(name = "customer_id", required = false) String customerId,
+                            @RequestParam(name = "name", required = false) String name,
                             @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                            @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses,
-                            @RequestParam(name = "store_id", required = false) String storeId) {
+                            @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses) {
         return this.orderService.countOrders(this.orderService.createOrderQuery().toBuilder()
                 .customerId(customerId).storeId(storeId)
+                .name(name)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
