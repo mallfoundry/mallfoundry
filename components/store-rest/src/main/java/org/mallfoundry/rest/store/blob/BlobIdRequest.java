@@ -16,47 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.storage;
+package org.mallfoundry.rest.store.blob;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface Blob extends Serializable, Closeable {
-
-    BlobId toId();
-
-    String getBucket();
-
-    String getPath();
-
-    BlobType getType();
-
-    String getName();
-
-    String getUrl();
-
-    void setUrl(String url);
-
-    Blob getParent();
-
-    long getSize();
-
-    void setSize(long size);
-
-    String getContentType();
-
-    void setContentType(String contentType);
-
-    File toFile() throws IOException;
-
-    InputStream openInputStream() throws IOException;
-
-    void createFile();
-
-    void makeDirectory();
-
-    void rename(String name);
+@Getter
+@Setter
+public class BlobIdRequest {
+    private String id;
 }

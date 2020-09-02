@@ -26,6 +26,7 @@ import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.storage.repository.jpa.JpaBlobId;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.UrlResource;
@@ -53,7 +54,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_storage_blob")
-@IdClass(InternalBlobId.class)
+@IdClass(JpaBlobId.class)
 public class InternalBlob implements Blob {
 
     @Id
@@ -113,17 +114,21 @@ public class InternalBlob implements Blob {
         this.createFile();
     }
 
-    public static InternalBlob of(Blob blob) throws IOException {
+    public static InternalBlob of(Blob blob) {
         if (blob instanceof InternalBlob) {
             return (InternalBlob) blob;
         }
 
         var internalBlob = new InternalBlob();
-        if (blob.isDirectory()) {
+        if (BlobType.DIRECTORY.equals(blob.getType())) {
             BeanUtils.copyProperties(blob, internalBlob, "file");
         } else {
             BeanUtils.copyProperties(blob, internalBlob);
-            internalBlob.setFile(blob.toFile());
+            try {
+                internalBlob.setFile(blob.toFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return internalBlob;
     }
@@ -140,23 +145,7 @@ public class InternalBlob implements Blob {
 
     @Override
     public String getName() {
-        return StringUtils.isEmpty(this.name)
-                ? FilenameUtils.getName(this.getPath())
-                : this.name;
-    }
-
-    @JsonIgnore
-    @Transient
-    @Override
-    public boolean isDirectory() {
-        return BlobType.DIRECTORY == this.type;
-    }
-
-    @JsonIgnore
-    @Transient
-    @Override
-    public boolean isFile() {
-        return BlobType.FILE == this.type;
+        return StringUtils.isEmpty(this.name) ? FilenameUtils.getName(this.getPath()) : this.name;
     }
 
     @Override
@@ -166,7 +155,7 @@ public class InternalBlob implements Blob {
 
     @Override
     public InputStream openInputStream() throws IOException {
-        if (this.isDirectory()) {
+        if (BlobType.DIRECTORY.equals(this.getType())) {
             throw new IOException("The blob is a directory");
         }
         if (Objects.nonNull(this.file)) {
@@ -227,11 +216,6 @@ public class InternalBlob implements Blob {
     @Override
     public void rename(String name) {
         this.setName(name);
-    }
-
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
     }
 
     @Override

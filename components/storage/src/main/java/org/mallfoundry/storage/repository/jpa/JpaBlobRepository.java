@@ -24,7 +24,6 @@ import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.InternalBlob;
 import org.mallfoundry.storage.InternalBlobId;
-import org.mallfoundry.storage.InternalBlobRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -36,21 +35,18 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 
 @Repository
-public interface JpaInternalBlobRepository
-        extends InternalBlobRepository,
-        JpaRepository<InternalBlob, InternalBlobId>,
-        JpaSpecificationExecutor<InternalBlob> {
+public interface JpaBlobRepository extends JpaRepository<InternalBlob, JpaBlobId>, JpaSpecificationExecutor<InternalBlob> {
 
     @Modifying
     @Query("delete from InternalBlob where bucket=?1 and path in (?2)")
-    @Override
-    void deleteAllByBucketAndPaths(String bucket, List<String> paths);
+    void deleteAllByBucketAndPaths(String bucket, Collection<String> paths);
 
-    @Override
+    void deleteAllByBucket(String bucket);
+
     default SliceList<Blob> findAll(BlobQuery blobQuery) {
         Page<InternalBlob> page = this.findAll((Specification<InternalBlob>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();

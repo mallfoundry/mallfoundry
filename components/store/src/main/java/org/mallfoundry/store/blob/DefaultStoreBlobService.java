@@ -22,6 +22,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.storage.acl.OwnerType;
@@ -75,7 +76,7 @@ public class DefaultStoreBlobService implements StoreBlobService {
     @Override
     public Blob storeStoreBlob(Blob blob) throws IOException, StoreBlobException {
         PathValidator.validate(blob.getPath());
-        if (Extensions.isImageExtension(blob) || blob.isDirectory()) {
+        if (Extensions.isImageExtension(blob) || BlobType.DIRECTORY.equals(blob.getType())) {
             try (blob) {
                 return this.storageService.storeBlob(blob);
             }

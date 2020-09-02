@@ -18,45 +18,22 @@
 
 package org.mallfoundry.storage;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import org.mallfoundry.data.SliceList;
 
-public interface Blob extends Serializable, Closeable {
+import java.util.Collection;
+import java.util.Optional;
 
-    BlobId toId();
+public interface BlobRepository {
 
-    String getBucket();
+    boolean existsById(BlobId blobId);
 
-    String getPath();
+    Optional<Blob> findById(BlobId blobId);
 
-    BlobType getType();
+    SliceList<Blob> findAll(BlobQuery blobQuery);
 
-    String getName();
+    Blob save(Blob blob);
 
-    String getUrl();
+    void deleteAllByBucketAndPaths(String bucket, Collection<String> paths);
 
-    void setUrl(String url);
-
-    Blob getParent();
-
-    long getSize();
-
-    void setSize(long size);
-
-    String getContentType();
-
-    void setContentType(String contentType);
-
-    File toFile() throws IOException;
-
-    InputStream openInputStream() throws IOException;
-
-    void createFile();
-
-    void makeDirectory();
-
-    void rename(String name);
+    void deleteAllByBucket(String bucket);
 }

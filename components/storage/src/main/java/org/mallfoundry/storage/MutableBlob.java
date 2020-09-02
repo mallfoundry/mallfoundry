@@ -18,22 +18,13 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.data.SliceList;
+import java.io.File;
 
-import java.util.List;
-import java.util.Optional;
+public interface MutableBlob extends Blob {
 
-public interface InternalBlobRepository {
+    File getFile();
 
-    boolean existsById(InternalBlobId blobId);
+    void setType(BlobType type);
 
-    Optional<InternalBlob> findById(InternalBlobId blobId);
-
-    SliceList<Blob> findAll(BlobQuery blobQuery);
-
-    InternalBlob save(InternalBlob blob);
-
-    void deleteAllByBucketAndPaths(String bucket, List<String> paths);
-
-    void deleteAllByBucket(String bucket);
+    void setName(String name);
 }

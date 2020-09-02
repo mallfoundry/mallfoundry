@@ -37,7 +37,7 @@ public class DefaultStorageService implements StorageService {
 
     private final InternalBucketRepository bucketRepository;
 
-    private final InternalBlobRepository blobRepository;
+    private final BlobRepository blobRepository;
 
     private final SharedBlobRepository sharedBlobRepository;
 
@@ -45,7 +45,7 @@ public class DefaultStorageService implements StorageService {
 
     public DefaultStorageService(StorageSystem storageSystem,
                                  InternalBucketRepository bucketRepository,
-                                 InternalBlobRepository blobRepository,
+                                 BlobRepository blobRepository,
                                  SharedBlobRepository sharedBlobRepository,
                                  IndexBlobService indexBlobService) {
         this.storageSystem = storageSystem;
@@ -96,9 +96,7 @@ public class DefaultStorageService implements StorageService {
 
     @Override
     public Optional<Blob> findBlob(String bucketName, String path) {
-        return this.blobRepository
-                .findById(new InternalBlobId(bucketName, path))
-                .map(blob -> blob);
+        return this.blobRepository.findById(new InternalBlobId(bucketName, path));
     }
 
     @Override
@@ -141,7 +139,7 @@ public class DefaultStorageService implements StorageService {
     public Blob storeBlob(Blob blob) throws StorageException, IOException {
         try (InternalBlob internalBlob = InternalBlob.of(blob)) {
             makeDirectories(internalBlob);
-            if (internalBlob.isFile()) {
+            if (BlobType.FILE.equals(blob.getType())) {
                 var sharedBlob = SharedBlob.of(internalBlob);
                 if (this.existsSharedBlob(sharedBlob)) {
                     internalBlob.setUrl(sharedBlob.getUrl());

@@ -36,7 +36,7 @@ public class LocalStorageSystem implements StorageSystem {
 
     @Override
     public void storeBlob(Blob blob) throws IOException {
-        if (blob.isFile()) {
+        if (BlobType.FILE.equals(blob.getType())) {
             String path = PathUtils.concat(blob.getBucket(), blob.getPath());
             File storeFile = new File(PathUtils.concat(this.directory, path));
             FileUtils.touch(storeFile);

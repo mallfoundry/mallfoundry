@@ -23,6 +23,8 @@ import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
 import org.mallfoundry.storage.qiniu.QiniuStorageSystem;
+import org.mallfoundry.storage.repository.jpa.DelegatingJpaBlobRepository;
+import org.mallfoundry.storage.repository.jpa.JpaBlobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -39,6 +41,11 @@ import org.springframework.web.servlet.resource.EncodedResourceResolver;
 @Import(StorageFtpConfiguration.class)
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration implements WebMvcConfigurer {
+
+    @Bean
+    public DelegatingJpaBlobRepository delegatingJpaBlobRepository(JpaBlobRepository repository) {
+        return new DelegatingJpaBlobRepository(repository);
+    }
 
     @Bean
     public StoragePathReplacer storagePathReplacer(StorageProperties properties) {

@@ -23,6 +23,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import lombok.Setter;
 import org.mallfoundry.storage.AbstractStorageSystem;
 import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -57,7 +58,7 @@ public class AliyunStorageSystem extends AbstractStorageSystem implements Initia
 
     @Override
     public void storeBlobToPath(Blob blob, String pathname) throws IOException {
-        if (blob.isFile()) {
+        if (BlobType.FILE.equals(blob.getType())) {
             var file = blob.toFile();
             this.client.putObject(this.bucketName, PathUtils.removePrefixSeparator(pathname), file);
         }

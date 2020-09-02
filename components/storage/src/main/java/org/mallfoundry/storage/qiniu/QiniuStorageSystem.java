@@ -25,6 +25,7 @@ import com.qiniu.util.Auth;
 import lombok.Setter;
 import org.mallfoundry.storage.AbstractStorageSystem;
 import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.storage.StorageException;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -63,7 +64,7 @@ public class QiniuStorageSystem extends AbstractStorageSystem implements Initial
 
     @Override
     public void storeBlobToPath(Blob blob, String pathname) throws IOException {
-        if (blob.isFile()) {
+        if (BlobType.FILE.equals(blob.getType())) {
             var token = auth.uploadToken(this.bucket);
             var response = manager.put(blob.toFile(), PathUtils.removePrefixSeparator(pathname), token);
             if (response.isServerError()) {

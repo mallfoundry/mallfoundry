@@ -25,5 +25,4 @@ public interface BlobId extends Serializable {
     String getBucket();
 
     String getPath();
-
 }
