@@ -24,8 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderShipmentItemRequest {
-    private String productId;
-    private String variantId;
+    private String itemId;
     private int quantity;
     private String name;
     private String imageUrl;

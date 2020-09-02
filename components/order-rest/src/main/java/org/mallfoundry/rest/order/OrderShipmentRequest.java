@@ -50,8 +50,7 @@ public class OrderShipmentRequest {
             var items = this.items.stream()
                     .map(request ->
                             shipment.createItem(null).toBuilder()
-                                    .productId(request.getProductId())
-                                    .variantId(request.getVariantId())
+                                    .itemId(request.getItemId())
                                     .quantity(request.getQuantity())
                                     .name(request.getName())
                                     .imageUrl(request.getImageUrl()).build())
