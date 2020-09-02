@@ -25,7 +25,6 @@
         <id property="id" column="id_"/>
         <result property="storeId" column="store_id_"/>
         <result property="brandId" column="brand_id_"/>
-        <result property="categoryId" column="category_id_"/>
         <result property="statusId" column="status_id_"/>
     </resultMap>
 
@@ -33,20 +32,18 @@
         <id property="id" column="id_"/>
         <result property="storeId" column="store_id_"/>
         <result property="brandId" column="brand_id_"/>
-        <result property="categoryId" column="category_id_"/>
         <result property="statusId" column="status_id_"/>
         <result property="quantity" column="quantity_"/>
     </resultMap>
 
     <insert id="insert">
-        insert into mf_dw_product_fact(id_, store_id_, brand_id_, category_id_, status_id_)
-        values (#{product.id}, #{product.storeId}, #{product.brandId}, #{product.categoryId}, #{product.statusId})
+        insert into mf_dw_product_fact(id_, store_id_, brand_id_, status_id_)
+        values (#{product.id}, #{product.storeId}, #{product.brandId}, #{product.statusId})
     </insert>
 
     <update id="update">
         update mf_dw_product_fact
         set brand_id_ = #{product.brandId},
-        category_id_ = #{product.categoryId},
         status_id_= #{product.statusId}
         where id_ = #{product.id}
         and store_id_ = #{product.storeId}
