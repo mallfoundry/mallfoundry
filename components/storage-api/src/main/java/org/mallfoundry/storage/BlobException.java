@@ -18,15 +18,17 @@
 
 package org.mallfoundry.storage;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+public class BlobException extends StorageException {
 
-public enum BlobType {
-    FILE,
-    DIRECTORY;
+    public BlobException(String message) {
+        super(message);
+    }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
+    public BlobException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public BlobException(Throwable cause) {
+        super(cause);
     }
 }

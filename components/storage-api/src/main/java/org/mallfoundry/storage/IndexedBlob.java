@@ -18,17 +18,12 @@
 
 package org.mallfoundry.storage;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface IndexBlobRepository {
+public interface IndexedBlob extends Serializable {
 
-    List<IndexBlob> findAllByBucketAndPath(String bucket, String path);
+    List<String> getIndexes();
 
-    List<IndexBlob> findAllByBucketAndPaths(String bucket, List<String> path);
-
-    <S extends IndexBlob> List<S> saveAll(Iterable<S> indexBlobs);
-
-    void deleteAllByBucketAndPaths(String bucket, List<String> paths);
-
-    void deleteAllByBucket(String bucket);
+    void rebuildIndexes();
 }

@@ -18,15 +18,6 @@
 
 package org.mallfoundry.storage;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
-public enum BlobType {
-    FILE,
-    DIRECTORY;
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
+public interface BucketId {
+    String getId();
 }

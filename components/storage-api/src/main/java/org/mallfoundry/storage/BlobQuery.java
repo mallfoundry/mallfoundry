@@ -36,6 +36,7 @@ public interface BlobQuery extends Pageable, ObjectBuilder.ToBuilder<BlobQuery.B
     void setPath(String path);
 
     class Builder {
+
         private BlobQuery query;
 
         public Builder(BlobQuery query) {

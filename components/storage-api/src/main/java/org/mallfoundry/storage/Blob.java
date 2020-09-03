@@ -22,13 +22,18 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
-public interface Blob extends Serializable, Closeable {
+public interface Blob extends IndexedBlob, Closeable {
 
     BlobId toId();
 
-    String getBucket();
+    BlobPath toPath();
+
+    String getId();
+
+    void setId(String id);
+
+    String getBucketId();
 
     String getPath();
 
@@ -54,9 +59,15 @@ public interface Blob extends Serializable, Closeable {
 
     InputStream openInputStream() throws IOException;
 
-    void createFile();
+    void createNewFile();
 
     void makeDirectory();
 
     void rename(String name);
+
+    /*    Date getCreateTime();*/
+
+    void moveTo(Blob blob);
+
+    void create();
 }

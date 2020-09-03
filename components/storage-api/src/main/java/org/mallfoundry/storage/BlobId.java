@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 public interface BlobId extends Serializable {
 
-    String getBucket();
+    String getBucketId();
 
-    String getPath();
+    String getId();
 }

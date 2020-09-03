@@ -18,15 +18,9 @@
 
 package org.mallfoundry.storage;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+public interface BlobPath extends BlobId {
 
-public enum BlobType {
-    FILE,
-    DIRECTORY;
+    BlobId toId();
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
+    BlobPath getParent();
 }
