@@ -19,6 +19,7 @@
 package org.mallfoundry.storage.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
@@ -48,7 +49,7 @@ public interface JpaBlobRepository extends JpaRepository<JpaBlob, String>, JpaSp
             if (Objects.nonNull(blobQuery.getBucketId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("bucketId"), blobQuery.getBucketId()));
             }
-            if (PathUtils.isRootPath(blobQuery.getPath())) {
+            if (StringUtils.isBlank(blobQuery.getPath()) || PathUtils.isRootPath(blobQuery.getPath())) {
                 predicate.getExpressions().add(criteriaBuilder.isNull(root.get("parent")));
             } else {
                 var path = new ImmutableBlobPath(blobQuery.getBucketId(), blobQuery.getPath());
