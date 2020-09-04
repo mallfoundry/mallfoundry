@@ -24,6 +24,7 @@ import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
@@ -53,15 +54,8 @@ public class DefaultBlobQuery extends QuerySupport implements BlobQuery {
         }
 
         @Override
-        public Builder file() {
-            this.query.setTypes(Set.of(BlobType.FILE));
-            return this;
-        }
-
-        @Override
-        public Builder directory() {
-            this.query.setTypes(Set.of(BlobType.DIRECTORY));
-            return this;
+        public Builder types(Supplier<Set<BlobType>> supplier) {
+            return this.types(supplier.get());
         }
 
         @Override

@@ -23,6 +23,7 @@ import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 public interface BlobQuery extends Query, ObjectBuilder.ToBuilder<BlobQuery.Builder> {
 
@@ -42,9 +43,7 @@ public interface BlobQuery extends Query, ObjectBuilder.ToBuilder<BlobQuery.Buil
 
         Builder bucketId(String bucketId);
 
-        Builder file();
-
-        Builder directory();
+        Builder types(Supplier<Set<BlobType>> supplier);
 
         Builder types(Set<BlobType> types);
 
