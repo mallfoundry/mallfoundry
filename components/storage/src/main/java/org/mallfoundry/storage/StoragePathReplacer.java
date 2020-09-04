@@ -23,11 +23,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 public class StoragePathReplacer {
 
@@ -44,8 +42,8 @@ public class StoragePathReplacer {
         this.filename = filename;
     }
 
-    public String replace(File file) {
-        var replacements = this.createReplacements(file);
+    public String replace(Blob blob) {
+        var replacements = this.createReplacements(blob);
         var path = this.replace(replacements, FilenameUtils.normalize(this.path, true));
         var filename = this.replace(replacements, FilenameUtils.getName(this.filename));
         return FilenameUtils.separatorsToUnix(FilenameUtils.concat(path, filename));
@@ -59,17 +57,16 @@ public class StoragePathReplacer {
         return replacePath;
     }
 
-    private List<Replacement> createReplacements(File file) {
+    private List<Replacement> createReplacements(Blob blob) {
         var date = LocalDate.now();
-        String baseName = FilenameUtils.getBaseName(this.path);
-        String ext = FilenameUtils.getExtension(file.getName());
+        String filename = FilenameUtils.getBaseName(blob.getPath());
+        String extension = FilenameUtils.getExtension(blob.getPath());
         return List.of(
                 new Replacement("\\{yyyy\\}", YYYY_DATE_FORMATTER.format(date)),
                 new Replacement("\\{MM\\}", MM_DATE_FORMATTER.format(date)),
                 new Replacement("\\{dd\\}", DD_DATE_FORMATTER.format(date)),
-                new Replacement("\\{name\\}", baseName),
-                new Replacement("\\{ext\\}", ext),
-                new Replacement("\\{uuid\\}", UUID.randomUUID().toString().replaceAll("-", ""))
+                new Replacement("\\{name\\}", filename),
+                new Replacement("\\{extension\\}", extension)
         );
     }
 
