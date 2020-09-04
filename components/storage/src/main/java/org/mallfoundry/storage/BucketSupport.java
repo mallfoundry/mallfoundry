@@ -18,37 +18,36 @@
 
 package org.mallfoundry.storage;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.mallfoundry.storage.acl.Owner;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-@Getter
-@Setter
-@NoArgsConstructor
-public class IndexBlobId implements Serializable {
-    private String bucket;
-    private String path;
-    private String value;
+public abstract class BucketSupport implements Bucket {
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IndexBlobId that = (IndexBlobId) o;
-        return Objects.equals(bucket, that.bucket)
-                && Objects.equals(path, that.path)
-                && Objects.equals(value, that.value);
+    public Bucket.Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(bucket, path, value);
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final BucketSupport bucket;
+
+        public BuilderSupport(BucketSupport bucket) {
+            this.bucket = bucket;
+        }
+
+        public Bucket.Builder name(String name) {
+            this.bucket.setName(name);
+            return this;
+        }
+
+        public Bucket.Builder owner(Owner owner) {
+            this.bucket.setOwner(owner);
+            return this;
+        }
+
+        public Bucket build() {
+            return this.bucket;
+        }
     }
 }
