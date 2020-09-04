@@ -22,7 +22,6 @@ import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
-import org.mallfoundry.store.initializing.StoreInitializingManager;
 import org.mallfoundry.util.Copies;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -36,7 +35,7 @@ import java.util.function.Function;
 
 public class DefaultStoreService implements StoreService, StoreProcessorInvoker, ApplicationEventPublisherAware {
 
-    private final StoreInitializingManager storeInitializingManager;
+    private final StoreLifecycleManager storeLifecycleManager;
 
     private List<StoreProcessor> processors = Collections.emptyList();
 
@@ -44,8 +43,8 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     private ApplicationEventPublisher eventPublisher;
 
-    public DefaultStoreService(StoreInitializingManager storeInitializingManager, StoreRepository storeRepository) {
-        this.storeInitializingManager = storeInitializingManager;
+    public DefaultStoreService(StoreLifecycleManager storeLifecycleManager, StoreRepository storeRepository) {
+        this.storeLifecycleManager = storeLifecycleManager;
         this.storeRepository = storeRepository;
     }
 
@@ -140,26 +139,27 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional
     @Override
-    public void closeStore(StoreId storeId) {
+    public StoreProgress closeStore(StoreId storeId) {
         var store = this.requiredStore(storeId);
         store = this.invokePreProcessBeforeCloseStore(store);
-        this.storeRepository.delete(store);
-        this.eventPublisher.publishEvent(new ImmutableStoreClosedEvent(store));
+        return this.storeLifecycleManager.closeStore(store);
+//        this.storeRepository.delete(store);
+//        this.eventPublisher.publishEvent(new ImmutableStoreClosedEvent(store));
     }
 
     @Transactional
     @Override
-    public StoreInitializing initializeStore(StoreId id) {
+    public StoreProgress initializeStore(StoreId id) {
         var store = this.getStore(id);
         store = this.invokePreProcessBeforeInitializeStore(store);
         store.initialize();
         store = this.storeRepository.save(store);
-        return this.storeInitializingManager.initializeStore(store);
+        return this.storeLifecycleManager.initializeStore(store);
     }
 
     @Override
-    public Optional<StoreInitializing> getStoreInitializing(StoreId id) {
-        return this.storeInitializingManager.getStoreInitializing(id);
+    public Optional<StoreProgress> findStoreProgress(StoreId id) {
+        return this.storeLifecycleManager.findStoreProgress(id);
     }
 
     @Override
