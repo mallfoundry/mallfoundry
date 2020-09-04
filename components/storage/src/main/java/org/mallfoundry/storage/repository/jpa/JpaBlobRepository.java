@@ -18,55 +18,46 @@
 
 package org.mallfoundry.storage.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobQuery;
-import org.mallfoundry.storage.InternalBlob;
-import org.mallfoundry.storage.InternalBlobId;
+import org.mallfoundry.storage.ImmutableBlobPath;
+import org.mallfoundry.util.PathUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-@Repository
-public interface JpaBlobRepository extends JpaRepository<InternalBlob, JpaBlobId>, JpaSpecificationExecutor<InternalBlob> {
+public interface JpaBlobRepository extends JpaRepository<JpaBlob, String>, JpaSpecificationExecutor<JpaBlob> {
 
-    @Modifying
-    @Query("delete from InternalBlob where bucket=?1 and path in (?2)")
-    void deleteAllByBucketAndPaths(String bucket, Collection<String> paths);
+    void deleteAllByIdInOrIndexesIn(Collection<String> ids, Collection<String> indexes);
 
-    void deleteAllByBucket(String bucket);
+    void deleteAllByBucketId(String bucket);
 
     default SliceList<Blob> findAll(BlobQuery blobQuery) {
-        Page<InternalBlob> page = this.findAll((Specification<InternalBlob>) (root, query, criteriaBuilder) -> {
+        Page<JpaBlob> page = this.findAll((Specification<JpaBlob>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
-
-            if (Objects.nonNull(blobQuery.getBucket())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("bucket"), blobQuery.getBucket()));
+            if (Objects.nonNull(blobQuery.getBucketId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("bucketId"), blobQuery.getBucketId()));
             }
-
-            if (Objects.nonNull(blobQuery.getPath())) {
-                predicate.getExpressions()
-                        .add(criteriaBuilder.equal(root.get("parent"),
-                                new InternalBlob(new InternalBlobId(blobQuery.getBucket(), blobQuery.getPath()))));
-            } else {
+            if (PathUtils.isRootPath(blobQuery.getPath())) {
                 predicate.getExpressions().add(criteriaBuilder.isNull(root.get("parent")));
+            } else {
+                var path = new ImmutableBlobPath(blobQuery.getBucketId(), blobQuery.getPath());
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("parent"),
+                        new JpaBlob().toBuilder().id(path.toId().getId()).build()));
             }
-
-            if (Objects.nonNull(blobQuery.getType())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("type"), blobQuery.getType()));
+            if (CollectionUtils.isNotEmpty(blobQuery.getTypes())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(blobQuery.getTypes()));
             }
-
             return predicate;
         }, PageRequest.of(blobQuery.getPage() - 1, blobQuery.getLimit()));
 

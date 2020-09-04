@@ -21,13 +21,17 @@ package org.mallfoundry.storage.repository.jpa;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobId;
+import org.mallfoundry.storage.BlobPath;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.BlobRepository;
-import org.mallfoundry.storage.InternalBlob;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DelegatingJpaBlobRepository implements BlobRepository {
 
@@ -38,13 +42,25 @@ public class DelegatingJpaBlobRepository implements BlobRepository {
     }
 
     @Override
-    public boolean existsById(BlobId blobId) {
-        return this.repository.existsById(JpaBlobId.of(blobId));
+    public Blob create(BlobPath path) {
+        return new JpaBlob(path);
+    }
+
+    @Override
+    public Blob save(Blob blob) {
+        return this.repository.save(JpaBlob.of(blob));
     }
 
     @Override
     public Optional<Blob> findById(BlobId blobId) {
-        return CastUtils.cast(this.repository.findById(JpaBlobId.of(blobId)));
+        return CastUtils.cast(this.repository.findById(blobId.getId()));
+    }
+
+    @Override
+    public List<Blob> findAllById(Collection<BlobId> blobIds) {
+        return CastUtils.cast(
+                this.repository.findAllById(
+                        blobIds.stream().map(BlobId::getId).collect(Collectors.toUnmodifiableSet())));
     }
 
     @Override
@@ -53,17 +69,23 @@ public class DelegatingJpaBlobRepository implements BlobRepository {
     }
 
     @Override
-    public Blob save(Blob blob) {
-        return this.repository.save(InternalBlob.of(blob));
+    public void delete(Blob blob) {
+        this.repository.deleteAllByIdInOrIndexesIn(Set.of(blob.getId()), Set.of(blob.getPath()));
     }
 
     @Override
-    public void deleteAllByBucketAndPaths(String bucket, Collection<String> paths) {
-        this.repository.deleteAllByBucketAndPaths(bucket, paths);
+    public void deleteAll(List<Blob> blobs) {
+        var ids = new HashSet<String>();
+        var paths = new HashSet<String>();
+        for (var blob : blobs) {
+            ids.add(blob.getId());
+            paths.add(blob.getPath());
+        }
+        this.repository.deleteAllByIdInOrIndexesIn(ids, paths);
     }
 
     @Override
-    public void deleteAllByBucket(String bucket) {
-        this.repository.deleteAllByBucket(bucket);
+    public void deleteAllByBucketId(String bucket) {
+        this.repository.deleteAllByBucketId(bucket);
     }
 }

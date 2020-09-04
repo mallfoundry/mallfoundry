@@ -16,10 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.storage;
+package org.mallfoundry.storage.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.Bucket;
+import org.mallfoundry.storage.BucketId;
+import org.mallfoundry.storage.BucketSupport;
+import org.mallfoundry.storage.ImmutableBlobPath;
 import org.mallfoundry.storage.acl.InternalOwner;
 import org.mallfoundry.storage.acl.Owner;
 import org.springframework.beans.BeanUtils;
@@ -35,11 +41,15 @@ import java.io.InputStream;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "mf_storage_bucket")
-public class InternalBucket implements Bucket {
+public class JpaBucket extends BucketSupport {
 
     @Id
+    @Column(name = "id_")
+    private String id;
+
     @Column(name = "name_")
     private String name;
 
@@ -51,29 +61,28 @@ public class InternalBucket implements Bucket {
         this.owner = InternalOwner.of(owner);
     }
 
-    @Override
-    public Blob createBlob(String path, File file) {
-        return new InternalBlob(new InternalBlobId(this.getName(), path), file);
+    public JpaBucket(BucketId bucketId) {
+        this.setId(bucketId.getId());
     }
 
-    public static InternalBucket of(Bucket bucket) {
-        var target = new InternalBucket();
+    public static JpaBucket of(Bucket bucket) {
+        var target = new JpaBucket();
         BeanUtils.copyProperties(bucket, target);
         return target;
     }
 
     @Override
+    public Blob createBlob(String path, File file) {
+        return new JpaBlob(new ImmutableBlobPath(this.getId(), path), file);
+    }
+
+    @Override
     public Blob createBlob(String path, InputStream inputStream) throws IOException {
-        return new InternalBlob(new InternalBlobId(this.getName(), path), inputStream);
+        return new JpaBlob(new ImmutableBlobPath(this.getId(), path), inputStream);
     }
 
     @Override
     public Blob createBlob(String path) {
-        return new InternalBlob(new InternalBlobId(this.getName(), path));
+        return new JpaBlob(new ImmutableBlobPath(this.getId(), path));
     }
-
-    public static Builder builder() {
-        return new Builder(new InternalBucket());
-    }
-
 }

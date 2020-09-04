@@ -16,11 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.blob;
+package org.mallfoundry.storage.repository.jpa;
 
-public class StoreBlobException extends RuntimeException {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    public StoreBlobException(String message) {
-        super(message);
-    }
+public interface JpaBucketRepository extends JpaRepository<JpaBucket, String> {
 }
