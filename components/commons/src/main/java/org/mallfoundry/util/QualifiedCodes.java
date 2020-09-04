@@ -20,13 +20,13 @@ package org.mallfoundry.util;
 
 public abstract class QualifiedCodes {
 
-    public static final String UNKNOWN_TYPE_CODE = "00";
+    public static final String UNKNOWN_TYPE_CODE = "100";
 
-    public static final String TENANT_TYPE_CODE = "01";
+    public static final String TENANT_TYPE_CODE = "101";
 
-    public static final String USER_TYPE_CODE = "02";
+    public static final String USER_TYPE_CODE = "102";
 
-    public static final String CUSTOMER_TYPE_CODE = "03";
+    public static final String CUSTOMER_TYPE_CODE = "103";
 
-    public static final String STORE_TYPE_CODE = "04";
+    public static final String STORE_TYPE_CODE = "104";
 }
