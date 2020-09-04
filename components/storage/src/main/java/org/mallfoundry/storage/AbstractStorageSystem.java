@@ -21,6 +21,7 @@ package org.mallfoundry.storage;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.util.PathUtils;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -65,7 +66,7 @@ public abstract class AbstractStorageSystem implements StorageSystem {
 
     protected String getStorePath(Blob blob) throws IOException {
         return Objects.isNull(this.pathReplacer)
-                ? PathUtils.concat(blob.getBucket(), blob.getPath())
+                ? PathUtils.concat(blob.getBucketId(), blob.getPath())
                 : this.pathReplacer.replace(blob.toFile());
     }
 

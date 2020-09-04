@@ -19,6 +19,7 @@
 package org.mallfoundry.storage;
 
 import org.apache.commons.io.FileUtils;
+import org.mallfoundry.util.PathUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class LocalStorageSystem implements StorageSystem {
     @Override
     public void storeBlob(Blob blob) throws IOException {
         if (BlobType.FILE.equals(blob.getType())) {
-            String path = PathUtils.concat(blob.getBucket(), blob.getPath());
+            String path = PathUtils.concat(blob.getBucketId(), blob.getPath());
             File storeFile = new File(PathUtils.concat(this.directory, path));
             FileUtils.touch(storeFile);
             FileUtils.copyFile(blob.toFile(), storeFile);
