@@ -25,31 +25,11 @@ public abstract class ConfigurationHolder {
     @Setter
     private static ConfigurationManager configurationManager;
 
-    public static ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id) {
-        return configurationManager.createConfigurationId(tenantId, scope, id);
-    }
-
-    public static Configuration createConfiguration(Object entity) {
-        return configurationManager.createConfiguration(configurationManager.createConfigurationId(entity));
-    }
-
-    public static Configuration getTenantConfiguration(String tenantId) {
-        return configurationManager.getConfiguration(createConfigurationId(null, ConfigurationScope.TENANT, tenantId));
-    }
-
     public static Configuration getConfiguration(Object entity) {
         return configurationManager.getConfiguration(entity);
     }
 
     public static void saveConfiguration(Configuration configuration) {
         configurationManager.saveConfiguration(configuration);
-    }
-
-    public static void deleteConfiguration(Object entity) {
-        configurationManager.deleteConfiguration(entity);
-    }
-
-    public static void emptyConfiguration(Object entity) {
-        configurationManager.emptyConfiguration(entity);
     }
 }
