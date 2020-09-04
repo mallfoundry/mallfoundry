@@ -27,7 +27,6 @@ import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
 
-
 @Order(POSITION_STEP * 2)
 public class StoreAccessControlLifecycle implements StoreLifecycle {
 
@@ -52,10 +51,12 @@ public class StoreAccessControlLifecycle implements StoreLifecycle {
     public void doClose(Store store) {
         this.deleteResource(store.toId());
     }
+
     private void deleteResource(StoreId storeId) {
         var resource = this.manager.createResource(Resource.STORE_TYPE, storeId.getId());
         this.manager.removeResource(resource);
     }
+
     @Override
     public int getPosition() {
         return POSITION_STEP * 2;

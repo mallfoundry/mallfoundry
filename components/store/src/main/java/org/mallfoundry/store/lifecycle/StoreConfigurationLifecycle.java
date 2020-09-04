@@ -18,8 +18,6 @@
 
 package org.mallfoundry.store.lifecycle;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.mallfoundry.configuration.ConfigurationManager;
 import org.mallfoundry.configuration.ConfigurationScope;
 import org.mallfoundry.store.Store;
@@ -27,8 +25,6 @@ import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.lifecycle.StoreLifecycle.INITIAL_POSITION;
 
-@Getter
-@Setter
 @Order(INITIAL_POSITION)
 public class StoreConfigurationLifecycle implements StoreLifecycle {
 
