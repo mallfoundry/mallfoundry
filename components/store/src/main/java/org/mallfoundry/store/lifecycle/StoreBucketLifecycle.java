@@ -16,32 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
-import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.store.Store;
 
-import java.util.List;
+public class StoreBucketLifecycle implements StoreLifecycle {
 
-public class DelegatingStoreInitializer implements StoreInitializer {
+    private final StorageService storageService;
 
-    private final List<StoreInitializer> initializes;
-
-    public DelegatingStoreInitializer(List<StoreInitializer> initializes) {
-        this.initializes = ListUtils.emptyIfNull(initializes);
+    public StoreBucketLifecycle(StorageService storageService) {
+        this.storageService = storageService;
     }
 
     @Override
     public void doInitialize(Store store) {
-        for (var initializer : this.initializes) {
-            initializer.doInitialize(store);
-        }
+//this.storageService.createBucket()
     }
 
     @Override
-    public void doConfigure(Store store) {
-        for (var initializer : this.initializes) {
-            initializer.doConfigure(store);
-        }
+    public void doClose(Store store) {
+
+    }
+
+    @Override
+    public int getPosition() {
+        return 0;
     }
 }

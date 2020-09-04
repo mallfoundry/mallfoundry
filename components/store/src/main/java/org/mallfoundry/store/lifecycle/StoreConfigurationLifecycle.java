@@ -16,36 +16,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationKeys;
+import org.mallfoundry.configuration.ConfigurationManager;
+import org.mallfoundry.configuration.ConfigurationScope;
 import org.mallfoundry.store.Store;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.initializing.StoreInitializer.INITIAL_POSITION;
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.INITIAL_POSITION;
 
 @Getter
 @Setter
 @Order(INITIAL_POSITION)
-public class StoreConfigurationInitializer implements StoreInitializer {
+public class StoreConfigurationLifecycle implements StoreLifecycle {
+
+    private final ConfigurationManager configurationManager;
+
+    public StoreConfigurationLifecycle(ConfigurationManager configurationManager) {
+        this.configurationManager = configurationManager;
+    }
 
     @Override
     public void doInitialize(Store store) {
-        var stage = StoreInitializingResources.getStoreInitializing(store.toId()).addStage("商铺配置信息初始化");
+        var stage = StoreProgressResources.getStoreProgress(store.toId()).addStage("商铺配置信息初始化");
         try {
-            ConfigurationHolder.emptyConfiguration(store);
-            if (StringUtils.isBlank(store.getLogo())) {
+            var tenantConfigId = this.configurationManager.createConfigurationId(ConfigurationScope.TENANT, store.getTenantId());
+            var storeConfigId = this.configurationManager.createConfigurationId(store);
+            var storeConfig = this.configurationManager.createConfiguration(tenantConfigId).createConfiguration(storeConfigId);
+            this.configurationManager.saveConfiguration(storeConfig);
+            /*if (StringUtils.isBlank(store.getLogo())) {
                 var config = ConfigurationHolder.getConfiguration(store);
                 store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
-            }
+            }*/
             stage.success();
         } catch (RuntimeException e) {
             stage.failure();
             throw e;
         }
+    }
+
+    @Override
+    public void doClose(Store store) {
+        this.configurationManager.deleteConfiguration(store);
+    }
+
+    @Override
+    public int getPosition() {
+        return INITIAL_POSITION;
     }
 }

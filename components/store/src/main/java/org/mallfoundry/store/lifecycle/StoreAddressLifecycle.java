@@ -16,21 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreAddressService;
 
-public interface StoreInitializer {
+public class StoreAddressLifecycle implements StoreLifecycle {
 
-    int INITIAL_POSITION = 100;
+    private final StoreAddressService storeAddressService;
 
-    int POSITION_STEP = 100;
+    public StoreAddressLifecycle(StoreAddressService storeAddressService) {
+        this.storeAddressService = storeAddressService;
+    }
 
-    default void doInitialize(Store store) {
+    @Override
+    public void doInitialize(Store store) {
 
     }
 
-    default void doConfigure(Store store) {
+    @Override
+    public void doClose(Store store) {
+        this.storeAddressService.clearStoreAddresses(store.toId());
+    }
 
+    @Override
+    public int getPosition() {
+        return 0;
     }
 }

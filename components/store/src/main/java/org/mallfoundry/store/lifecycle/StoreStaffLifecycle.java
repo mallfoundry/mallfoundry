@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.Store;
@@ -26,10 +26,10 @@ import org.mallfoundry.store.staff.StaffService;
 import org.mallfoundry.store.staff.StaffType;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.initializing.StoreInitializer.POSITION_STEP;
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
 
 @Order(POSITION_STEP * 4)
-public class StoreStaffsInitializer implements StoreInitializer {
+public class StoreStaffLifecycle implements StoreLifecycle {
 
     private final StaffService staffService;
 
@@ -37,7 +37,7 @@ public class StoreStaffsInitializer implements StoreInitializer {
 
     private final UserService userService;
 
-    public StoreStaffsInitializer(StaffService staffService, RoleService roleService, UserService userService) {
+    public StoreStaffLifecycle(StaffService staffService, RoleService roleService, UserService userService) {
         this.staffService = staffService;
         this.roleService = roleService;
         this.userService = userService;
@@ -46,12 +46,12 @@ public class StoreStaffsInitializer implements StoreInitializer {
     @Override
     public void doInitialize(Store store) {
         var storeId = store.toId();
-        this.clearStaffs(storeId);
         this.addStaffs(storeId, store.getOwnerId());
     }
 
-    private void clearStaffs(StoreId storeId) {
-        this.staffService.clearStaffs(storeId);
+    @Override
+    public void doClose(Store store) {
+        this.staffService.clearStaffs(store.toId());
     }
 
     private void addStaffs(StoreId storeId, String ownerId) {
@@ -66,5 +66,10 @@ public class StoreStaffsInitializer implements StoreInitializer {
         // 添加超级管理员角色。
         staff.addRole(this.roleService.getSuperRole(storeId));
         this.staffService.addStaff(staff);
+    }
+
+    @Override
+    public int getPosition() {
+        return 0;
     }
 }

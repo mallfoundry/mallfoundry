@@ -16,21 +16,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.blob.StoreBlobService;
+import org.mallfoundry.store.member.MemberService;
+import org.springframework.core.annotation.Order;
 
-public class StoreBlobInitializer implements StoreInitializer {
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
 
-    private final StoreBlobService storeBlobService;
+@Order(POSITION_STEP * 3)
+public class StoreMemberLifecycle implements StoreLifecycle {
 
-    public StoreBlobInitializer(StoreBlobService storeBlobService) {
-        this.storeBlobService = storeBlobService;
+    private final MemberService memberService;
+
+    public StoreMemberLifecycle(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @Override
-    public void doInitialize(Store store) {
-        this.storeBlobService.initializeBuckets(store.toId());
+    public void doClose(Store store) {
+        this.memberService.clearMembers(store.toId());
+    }
+
+    @Override
+    public int getPosition() {
+        return POSITION_STEP * 3;
     }
 }

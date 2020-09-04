@@ -23,6 +23,10 @@ import org.mallfoundry.util.Position;
 
 public interface StoreLifecycle extends Position {
 
+    int INITIAL_POSITION = 100;
+
+    int POSITION_STEP = 100;
+
     default void doInitialize(Store store) {
 
     }

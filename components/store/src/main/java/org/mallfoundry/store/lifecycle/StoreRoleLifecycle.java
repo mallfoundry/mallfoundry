@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.security.RoleService;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.initializing.StoreInitializer.POSITION_STEP;
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
 
 /**
  * 商铺角色初始化。
@@ -31,24 +31,24 @@ import static org.mallfoundry.store.initializing.StoreInitializer.POSITION_STEP;
  * @author Zhi Tang
  */
 @Order(POSITION_STEP * 3)
-public class StoreRolesInitializer implements StoreInitializer {
+public class StoreRoleLifecycle implements StoreLifecycle {
 
     private final RoleService roleService;
 
-    public StoreRolesInitializer(RoleService roleService) {
+    public StoreRoleLifecycle(RoleService roleService) {
         this.roleService = roleService;
     }
 
     @Override
     public void doInitialize(Store store) {
         var storeId = store.toId();
-        this.clearRoles(storeId);
         this.addSuperRole(storeId);
         this.addGeneralRoles(storeId);
     }
 
-    private void clearRoles(StoreId storeId) {
-        this.roleService.clearRoles(storeId);
+    @Override
+    public void doClose(Store store) {
+        this.roleService.clearRoles(store.toId());
     }
 
     private void addSuperRole(StoreId storeId) {
@@ -59,5 +59,10 @@ public class StoreRolesInitializer implements StoreInitializer {
 
     private void addGeneralRoles(StoreId storeId) {
 
+    }
+
+    @Override
+    public int getPosition() {
+        return POSITION_STEP * 3;
     }
 }
