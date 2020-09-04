@@ -18,6 +18,14 @@
 
 package org.mallfoundry.storage.acl;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OwnerType {
-    STORE, CUSTOMER
+    STORE, CUSTOMER;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
