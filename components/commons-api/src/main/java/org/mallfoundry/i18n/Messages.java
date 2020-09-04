@@ -20,6 +20,9 @@ package org.mallfoundry.i18n;
 
 import org.mallfoundry.Version;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Simplify message code key that begins with the {@code org.mallfoundry} package name.
  *
@@ -27,7 +30,17 @@ import org.mallfoundry.Version;
  */
 public abstract class Messages {
 
-    private static final String BASE_PACKAGE = Version.class.getPackageName();
+    private static final Map<String, MessageKeys> KEYS_CACHE = new HashMap<>();
+
+    private static final MessageKeys BASE_PACKAGE_KEYS = getKeys(Version.class.getPackageName());
+
+    public static MessageKeys getKeys(Class<?> clazz) {
+        return getKeys(clazz.getName());
+    }
+
+    public static MessageKeys getKeys(String baseName) {
+        return KEYS_CACHE.computeIfAbsent(baseName, MessageKeys::new);
+    }
 
     /**
      * Get the message code key.
@@ -37,9 +50,7 @@ public abstract class Messages {
      * @throws IllegalArgumentException if null
      */
     public static String codeKey(String codeKey) throws IllegalArgumentException {
-        if (codeKey == null || codeKey.isBlank()) {
-            throw new IllegalArgumentException("Code must not be empty");
-        }
-        return String.format("%s.%s", BASE_PACKAGE, codeKey);
+        return BASE_PACKAGE_KEYS.codeKey(codeKey);
     }
+
 }

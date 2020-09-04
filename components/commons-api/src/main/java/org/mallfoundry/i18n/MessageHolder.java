@@ -18,14 +18,16 @@
 
 package org.mallfoundry.i18n;
 
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.Version;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.List;
 
-import static org.mallfoundry.i18n.Messages.codeKey;
-
 public abstract class MessageHolder {
+
+    private static final String BASE_PACKAGE = Version.class.getPackageName();
 
     private static MessageSourceAccessor messages;
 
@@ -35,6 +37,10 @@ public abstract class MessageHolder {
 
     public static String getLanguage() {
         return LocaleContextHolder.getLocale().getLanguage();
+    }
+
+    private static String codeKey(String code) {
+        return StringUtils.startsWith(code, BASE_PACKAGE) ? code : Messages.codeKey(code);
     }
 
     public static String message(String code) {
