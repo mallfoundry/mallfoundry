@@ -21,8 +21,8 @@ package org.mallfoundry.rest.store;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
-import org.mallfoundry.store.StoreInitializing;
 import org.mallfoundry.store.StoreService;
+import org.mallfoundry.store.StoreProgress;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,13 +50,13 @@ public class StoreResourceV1 {
     }
 
     @PostMapping("/stores/{id}/initialize")
-    public StoreInitializing initializeStore(@PathVariable("id") String id) {
+    public StoreProgress initializeStore(@PathVariable("id") String id) {
         return this.storeService.initializeStore(this.createStoreId(id));
     }
 
-    @GetMapping("/stores/{id}/initializing")
-    public Optional<StoreInitializing> getStoreInitializing(@PathVariable("id") String id) {
-        return this.storeService.getStoreInitializing(this.createStoreId(id));
+    @GetMapping("/stores/{id}/progress")
+    public Optional<StoreProgress> findStoreProgress(@PathVariable("id") String id) {
+        return this.storeService.findStoreProgress(this.createStoreId(id));
     }
 
     @PostMapping("/stores")
@@ -90,7 +90,7 @@ public class StoreResourceV1 {
     }
 
     @DeleteMapping("/stores/{store_id}")
-    public void closeStore(@PathVariable("store_id") String id) {
-        this.storeService.closeStore(this.createStoreId(id));
+    public StoreProgress closeStore(@PathVariable("store_id") String id) {
+        return this.storeService.closeStore(this.createStoreId(id));
     }
 }

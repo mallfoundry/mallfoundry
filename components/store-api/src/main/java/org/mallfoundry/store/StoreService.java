@@ -46,10 +46,10 @@ public interface StoreService {
 
     Store updateStore(Store store);
 
-    void closeStore(StoreId id);
+    StoreProgress closeStore(StoreId id);
 
-    StoreInitializing initializeStore(StoreId id);
+    StoreProgress initializeStore(StoreId id);
 
-    Optional<StoreInitializing> getStoreInitializing(StoreId id);
+    Optional<StoreProgress> findStoreProgress(StoreId id);
 
 }
