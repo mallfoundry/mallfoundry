@@ -74,7 +74,7 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     }
 
     @Override
-    public Bucket getBucket(BucketId bucketId) {
+    public Bucket getBucket(BucketId bucketId) throws BucketException {
         return this.bucketRepository.findById(bucketId).orElseThrow();
     }
 
@@ -87,7 +87,7 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
 
     @Transactional
     @Override
-    public void deleteBucket(BucketId bucketId) {
+    public void deleteBucket(BucketId bucketId) throws BucketException {
         var bucket = this.getBucket(bucketId);
         this.blobRepository.deleteAllByBucketId(bucket.getId());
         this.bucketRepository.delete(bucket);
