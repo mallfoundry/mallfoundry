@@ -75,7 +75,8 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
 
     @Override
     public Bucket getBucket(BucketId bucketId) throws BucketException {
-        return this.bucketRepository.findById(bucketId).orElseThrow();
+        return this.bucketRepository.findById(bucketId)
+                .orElseThrow(() -> new BucketException(StorageMessages.Bucket.notFound()));
     }
 
     @Transactional
