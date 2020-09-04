@@ -18,12 +18,15 @@
 
 package org.mallfoundry.storage;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
-public interface Blob extends IndexedBlob, Closeable {
+public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Blob.Builder> {
 
     BlobId toId();
 
@@ -65,9 +68,15 @@ public interface Blob extends IndexedBlob, Closeable {
 
     void rename(String name);
 
-    /*    Date getCreateTime();*/
-
     void moveTo(Blob blob);
 
+    Date getCreatedTime();
+
     void create();
+
+    interface Builder extends ObjectBuilder<Blob> {
+        Builder id(String id);
+
+        Builder path(String path);
+    }
 }
