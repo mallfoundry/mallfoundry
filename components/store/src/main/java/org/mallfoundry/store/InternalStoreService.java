@@ -16,7 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store;
 
-public interface StoreInitializingRepository {
+public class InternalStoreService {
+
+
 }
