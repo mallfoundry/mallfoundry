@@ -16,27 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.StoreId;
-import org.mallfoundry.store.StoreInitializing;
+import org.mallfoundry.store.StoreProgress;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class StoreInitializingResources {
+public abstract class StoreProgressResources {
 
-    private static final Map<String, StoreInitializing> INITIALIZING_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, StoreProgress> PROGRESS_MAP = new ConcurrentHashMap<>();
 
-    public static void addStoreInitializing(StoreId storeId, StoreInitializing initializing) {
-        INITIALIZING_MAP.put(storeId.getId(), initializing);
+    public static void addStoreProgress(StoreId storeId, StoreProgress initializing) {
+        PROGRESS_MAP.put(storeId.getId(), initializing);
     }
 
-    public static StoreInitializing getStoreInitializing(StoreId storeId) {
-        return INITIALIZING_MAP.get(storeId.getId());
+    public static StoreProgress getStoreProgress(StoreId storeId) {
+        return PROGRESS_MAP.get(storeId.getId());
     }
 
-    public static void removeStoreInitializing(StoreId storeId) {
-        INITIALIZING_MAP.remove(storeId.getId());
+    public static void removeStoreProgress(StoreId storeId) {
+        PROGRESS_MAP.remove(storeId.getId());
     }
+
 }
