@@ -68,4 +68,10 @@ public abstract class AllAuthorities extends StoreAuthorities {
 
     // Customer Authorities
     public static final String CUSTOMER_MANAGE = "customer_manage";
+
+    // Storage bucket Authorities
+    public static final String STORAGE_BUCKET_READ = "storage_bucket_read";
+    public static final String STORAGE_BUCKET_WRITE = "storage_bucket_write";
+    public static final String STORAGE_BUCKET_DELETE = "storage_bucket_delete";
+    public static final String STORAGE_BUCKET_MANAGE = "storage_bucket_manage";
 }
