@@ -18,17 +18,13 @@
 
 package org.mallfoundry.storage;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.util.PathUtils;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.MimeType;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,20 +41,6 @@ public abstract class BlobSupport implements MutableBlob {
     @Override
     public BlobPath toPath() {
         return new ImmutableBlobPath(this.getBucketId(), this.getPath());
-    }
-
-    @Override
-    public InputStream openInputStream() throws IOException {
-        if (BlobType.DIRECTORY.equals(this.getType())) {
-            throw new IOException("The blob is a directory");
-        }
-        if (Objects.nonNull(this.getFile())) {
-            return FileUtils.openInputStream(this.getFile());
-        }
-        if (Objects.nonNull(this.getUrl())) {
-            return new UrlResource(this.getUrl()).getInputStream();
-        }
-        throw new IOException("The blob has no stream");
     }
 
     @Override
