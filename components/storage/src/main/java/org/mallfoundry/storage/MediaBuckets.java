@@ -20,11 +20,11 @@ package org.mallfoundry.storage;
 
 public abstract class MediaBuckets {
 
-    public static final String UNKNOWN_MEDIA_TYPE_BUCKET = "00";
+    public static final String ALL_MEDIA_TYPE_BUCKET = "100";
 
-    public static final String IMAGE_MEDIA_TYPE_BUCKET = "01";
+    public static final String IMAGE_MEDIA_TYPE_BUCKET = "101";
 
-    public static final String VIDEO_MEDIA_TYPE_BUCKET = "02";
+    public static final String VIDEO_MEDIA_TYPE_BUCKET = "102";
 
-    public static final String VOICE_MEDIA_TYPE_BUCKET = "03";
+    public static final String VOICE_MEDIA_TYPE_BUCKET = "103";
 }
