@@ -18,68 +18,36 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.data.Pageable;
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
-public interface BlobQuery extends Pageable, ObjectBuilder.ToBuilder<BlobQuery.Builder> {
+import java.util.Set;
 
-    BlobType getType();
+public interface BlobQuery extends Query, ObjectBuilder.ToBuilder<BlobQuery.Builder> {
 
-    void setType(BlobType type);
+    String getBucketId();
 
-    String getBucket();
+    void setBucketId(String bucketId);
 
-    void setBucket(String bucket);
+    Set<BlobType> getTypes();
+
+    void setTypes(Set<BlobType> types);
 
     String getPath();
 
     void setPath(String path);
 
-    class Builder {
+    interface Builder extends QueryBuilder<BlobQuery, Builder> {
 
-        private BlobQuery query;
+        Builder bucketId(String bucketId);
 
-        public Builder(BlobQuery query) {
-            this.query = query;
-        }
+        Builder file();
 
-        public Builder page(int page) {
-            this.query.setPage(page);
-            return this;
-        }
+        Builder directory();
 
-        public Builder limit(int limit) {
-            this.query.setLimit(limit);
-            return this;
-        }
+        Builder types(Set<BlobType> types);
 
-        public Builder file() {
-            this.query.setType(BlobType.FILE);
-            return this;
-        }
-
-        public Builder directory() {
-            this.query.setType(BlobType.DIRECTORY);
-            return this;
-        }
-
-        public Builder type(BlobType type) {
-            this.query.setType(type);
-            return this;
-        }
-
-        public Builder bucket(String bucket) {
-            this.query.setBucket(bucket);
-            return this;
-        }
-
-        public Builder path(String path) {
-            this.query.setPath(path);
-            return this;
-        }
-
-        public BlobQuery build() {
-            return this.query;
-        }
+        Builder path(String path);
     }
 }
