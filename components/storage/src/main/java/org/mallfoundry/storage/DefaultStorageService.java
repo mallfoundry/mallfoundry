@@ -18,41 +18,40 @@
 
 package org.mallfoundry.storage;
 
+import lombok.Setter;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.storage.acl.InternalOwner;
 import org.mallfoundry.storage.acl.Owner;
 import org.mallfoundry.storage.acl.OwnerType;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 
-@Service
-public class DefaultStorageService implements StorageService {
+public class DefaultStorageService implements StorageService, StorageProcessorInvoker {
+
+    @Setter
+    private List<StorageProcessor> processors;
 
     private final StorageSystem storageSystem;
 
-    private final InternalBucketRepository bucketRepository;
+    private final BucketRepository bucketRepository;
 
     private final BlobRepository blobRepository;
 
     private final SharedBlobRepository sharedBlobRepository;
 
-    private final IndexBlobService indexBlobService;
-
     public DefaultStorageService(StorageSystem storageSystem,
-                                 InternalBucketRepository bucketRepository,
+                                 BucketRepository bucketRepository,
                                  BlobRepository blobRepository,
-                                 SharedBlobRepository sharedBlobRepository,
-                                 IndexBlobService indexBlobService) {
+                                 SharedBlobRepository sharedBlobRepository) {
         this.storageSystem = storageSystem;
         this.bucketRepository = bucketRepository;
         this.blobRepository = blobRepository;
         this.sharedBlobRepository = sharedBlobRepository;
-        this.indexBlobService = indexBlobService;
     }
 
     @Override
@@ -61,52 +60,47 @@ public class DefaultStorageService implements StorageService {
     }
 
     @Override
-    public Bucket createBucket(String bucketName, Owner owner) {
-        return InternalBucket.builder().name(bucketName).owner(owner).build();
+    public BucketId createBucketId(String id) {
+        return new ImmutableBucketId(id);
     }
 
     @Override
-    public Optional<Bucket> findBucket(String bucketName) {
-        return this.bucketRepository.findById(bucketName).map(bucket -> bucket);
+    public Bucket createBucket(BucketId bucketId) {
+        return this.bucketRepository.create(bucketId);
+    }
+
+    private Bucket requiredBucket(BucketId bucketId) {
+        return this.bucketRepository.findById(bucketId).orElseThrow();
     }
 
     @Override
-    public Bucket getBucket(String bucketName) {
-        return this.findBucket(bucketName).orElseThrow();
-    }
-
-    @Override
-    public boolean existsBucket(String bucketName) {
-        return this.bucketRepository.existsById(bucketName);
+    public Bucket getBucket(BucketId bucketId) {
+        return this.bucketRepository.findById(bucketId).orElseThrow();
     }
 
     @Transactional
     @Override
     public Bucket addBucket(Bucket bucket) throws StorageException {
-        return this.bucketRepository.save(InternalBucket.of(bucket));
+        bucket = this.invokePreProcessBeforeAddBucket(bucket);
+        return this.bucketRepository.save(bucket);
     }
 
     @Transactional
     @Override
-    public void deleteBucket(String bucketName) {
-        this.indexBlobService.deleteIndexes(bucketName);
-        this.blobRepository.deleteAllByBucket(bucketName);
-        this.bucketRepository.deleteById(bucketName);
+    public void deleteBucket(BucketId bucketId) {
+        var bucket = this.getBucket(bucketId);
+        this.blobRepository.deleteAllByBucketId(bucket.getId());
+        this.bucketRepository.delete(bucket);
     }
 
     @Override
-    public Optional<Blob> findBlob(String bucketName, String path) {
-        return this.blobRepository.findById(new InternalBlobId(bucketName, path));
-    }
-
-    @Override
-    public Blob getBlob(String bucketName, String path) {
-        return this.findBlob(bucketName, path).orElseThrow();
+    public BlobId createBlobId(String bucketId, String blobId) {
+        return new ImmutableBlobId(bucketId, blobId);
     }
 
     @Override
     public BlobQuery createBlobQuery() {
-        return new InternalBlobQuery();
+        return new DefaultBlobQuery();
     }
 
     @Override
@@ -114,17 +108,7 @@ public class DefaultStorageService implements StorageService {
         return this.blobRepository.findAll(query);
     }
 
-    private void makeDirectories(InternalBlob blob) throws IOException {
-        Blob parentBlob = BlobDirectories.getParent(blob);
-        if (Objects.nonNull(parentBlob)) {
-            if (!this.blobRepository.existsById(InternalBlobId.of(parentBlob.toId()))) {
-                storeBlob(parentBlob);
-            }
-            blob.setParent(InternalBlob.of(parentBlob));
-        }
-    }
-
-    private boolean existsSharedBlob(SharedBlob sharedBlob) {
+    private boolean fetchSharedBlob(SharedBlob sharedBlob) {
         var existsSharedBlob = this.sharedBlobRepository.findByBlob(sharedBlob);
         if (Objects.isNull(existsSharedBlob)) {
             return false;
@@ -134,42 +118,78 @@ public class DefaultStorageService implements StorageService {
         return true;
     }
 
-    @Transactional
-    @Override
-    public Blob storeBlob(Blob blob) throws StorageException, IOException {
-        try (InternalBlob internalBlob = InternalBlob.of(blob)) {
-            makeDirectories(internalBlob);
+    private Blob makeDirectories(BlobPath blobPath) {
+        var path = blobPath.getParent();
+        if (Objects.isNull(path)) {
+            return null;
+        }
+        var parent = this.blobRepository.findById(path.toId()).orElse(null);
+        if (Objects.isNull(parent)) {
+            var blob = this.blobRepository.create(path);
+            blob.makeDirectory();
+            return this.storeBlob(blob);
+        }
+        return parent;
+    }
+
+    private Blob tryStoreBlob(Blob blob) {
+        try (blob) {
+            blob.moveTo(this.makeDirectories(blob.toPath()));
+            blob.create();
             if (BlobType.FILE.equals(blob.getType())) {
-                var sharedBlob = SharedBlob.of(internalBlob);
-                if (this.existsSharedBlob(sharedBlob)) {
-                    internalBlob.setUrl(sharedBlob.getUrl());
-                    internalBlob.setSize(sharedBlob.getSize());
+                var sharedBlob = SharedBlob.of(blob);
+                if (this.fetchSharedBlob(sharedBlob)) {
+                    blob.setUrl(sharedBlob.getUrl());
+                    blob.setSize(sharedBlob.getSize());
                 } else {
-                    this.storageSystem.storeBlob(internalBlob);
-                    sharedBlob.setUrl(internalBlob.getUrl());
-                    sharedBlob.setPath(internalBlob.getPath());
+                    this.storageSystem.storeBlob(blob);
+                    sharedBlob.setUrl(blob.getUrl());
                     this.sharedBlobRepository.save(sharedBlob);
                 }
             }
-            this.indexBlobService.buildIndexes(blob.getBucket(), blob.getPath());
-            return this.blobRepository.save(internalBlob);
+            return this.blobRepository.save(blob);
+        } catch (IOException e) {
+            throw new BlobException(e);
         }
     }
 
     @Transactional
     @Override
-    public void deleteBlob(String bucketName, String path) {
-        List<String> paths = this.indexBlobService.getIndexes(bucketName, path);
-        this.blobRepository.deleteAllByBucketAndPaths(bucketName, paths);
-        this.indexBlobService.deleteIndexes(bucketName, path);
+    public Blob storeBlob(Blob blob) throws StorageException {
+        var bucket = this.requiredBucket(this.createBucketId(blob.getBucketId()));
+        blob = this.invokePreProcessBeforeStoreBlob(bucket, blob);
+        return this.tryStoreBlob(blob);
+    }
+
+    private Blob requiredBlob(BlobId blobId) {
+        return this.blobRepository.findById(blobId).orElseThrow();
     }
 
     @Transactional
     @Override
-    public void deleteBlobs(String bucketName, List<String> paths) {
-        List<String> indexPaths = this.indexBlobService.getIndexes(bucketName, paths);
-        this.blobRepository.deleteAllByBucketAndPaths(bucketName, indexPaths);
-        this.indexBlobService.deleteIndexes(bucketName, paths);
+    public void deleteBlob(BlobId blobId) {
+        var blob = this.requiredBlob(blobId);
+        this.blobRepository.delete(blob);
     }
 
+    @Transactional
+    @Override
+    public void deleteBlobs(Set<BlobId> blobIds) {
+        var blobs = this.blobRepository.findAllById(blobIds);
+        this.blobRepository.deleteAll(blobs);
+    }
+
+    @Override
+    public Bucket invokePreProcessBeforeAddBucket(Bucket bucket) {
+        return Processors.stream(this.processors)
+                .map(StorageProcessor::preProcessBeforeAddBucket)
+                .apply(bucket);
+    }
+
+    @Override
+    public Blob invokePreProcessBeforeStoreBlob(Bucket bucket, Blob blob) {
+        return Processors.stream(this.processors)
+                .<Blob>map((processor, identity) -> processor.preProcessBeforeStoreBlob(bucket, identity))
+                .apply(blob);
+    }
 }
