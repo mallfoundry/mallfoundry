@@ -23,11 +23,8 @@ import org.mallfoundry.storage.SharedBlobRepository;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface JpaSharedBlobRepository
-        extends SharedBlobRepository, JpaRepository<SharedBlob, String> {
+public interface JpaSharedBlobRepository extends SharedBlobRepository, JpaRepository<SharedBlob, String> {
 
     @Override
     default SharedBlob findByBlob(SharedBlob blob) {
