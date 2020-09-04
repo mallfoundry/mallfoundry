@@ -79,7 +79,7 @@ public class StorageProperties {
     @Setter
     static class Output {
         private String path = "/{yyyy}/{MM}/{dd}";
-        private String filename = "{uuid}.{ext}";
+        private String filename = "{name}.{extension}";
     }
 
     @Getter
