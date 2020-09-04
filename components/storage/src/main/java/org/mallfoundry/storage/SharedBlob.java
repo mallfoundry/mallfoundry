@@ -42,9 +42,6 @@ public class SharedBlob {
     @Column(name = "url_")
     private String url;
 
-    @Column(name = "path_")
-    private String path;
-
     @Column(name = "size_")
     private long size;
 
