@@ -18,13 +18,21 @@
 
 package org.mallfoundry.autoconfigure.storage;
 
+import org.mallfoundry.storage.BlobRepository;
+import org.mallfoundry.storage.BucketRepository;
+import org.mallfoundry.storage.DefaultStorageService;
 import org.mallfoundry.storage.LocalStorageSystem;
+import org.mallfoundry.storage.SharedBlobRepository;
+import org.mallfoundry.storage.StorageIdentityProcessor;
 import org.mallfoundry.storage.StoragePathReplacer;
+import org.mallfoundry.storage.StorageProcessor;
 import org.mallfoundry.storage.StorageSystem;
 import org.mallfoundry.storage.aliyun.AliyunStorageSystem;
 import org.mallfoundry.storage.qiniu.QiniuStorageSystem;
 import org.mallfoundry.storage.repository.jpa.DelegatingJpaBlobRepository;
+import org.mallfoundry.storage.repository.jpa.DelegatingJpaBucketRepository;
 import org.mallfoundry.storage.repository.jpa.JpaBlobRepository;
+import org.mallfoundry.storage.repository.jpa.JpaBucketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,9 +41,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.EncodedResourceResolver;
+
+import java.util.List;
 
 @Configuration
 @Import(StorageFtpConfiguration.class)
@@ -43,8 +54,29 @@ import org.springframework.web.servlet.resource.EncodedResourceResolver;
 public class StorageAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
+    public DelegatingJpaBucketRepository delegatingJpaBucketRepository(JpaBucketRepository repository) {
+        return new DelegatingJpaBucketRepository(repository);
+    }
+
+    @Bean
     public DelegatingJpaBlobRepository delegatingJpaBlobRepository(JpaBlobRepository repository) {
         return new DelegatingJpaBlobRepository(repository);
+    }
+
+    @Bean
+    public StorageIdentityProcessor storageIdentityProcessor() {
+        return new StorageIdentityProcessor();
+    }
+
+    @Bean
+    public DefaultStorageService defaultStorageService(@Lazy List<StorageProcessor> processors,
+                                                       StorageSystem storageSystem,
+                                                       BucketRepository bucketRepository,
+                                                       BlobRepository blobRepository,
+                                                       SharedBlobRepository sharedBlobRepository) {
+        var service = new DefaultStorageService(storageSystem, bucketRepository, blobRepository, sharedBlobRepository);
+        service.setProcessors(processors);
+        return service;
     }
 
     @Bean
