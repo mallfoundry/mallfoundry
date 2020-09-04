@@ -18,35 +18,17 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.storage.acl.Owner;
-import org.mallfoundry.storage.acl.OwnerType;
+public class BucketException extends StorageException {
 
-import java.util.Set;
+    public BucketException(String message) {
+        super(message);
+    }
 
-public interface StorageService {
+    public BucketException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    Owner createOwner(OwnerType type, String name);
-
-    BucketId createBucketId(String id);
-
-    Bucket createBucket(BucketId bucketId);
-
-    Bucket getBucket(BucketId bucketId) throws BucketException;
-
-    Bucket addBucket(Bucket bucket) throws BucketException;
-
-    void deleteBucket(BucketId bucketId) throws BucketException;
-
-    BlobId createBlobId(String bucketId, String blobId);
-
-    BlobQuery createBlobQuery();
-
-    Blob storeBlob(Blob blob) throws StorageException;
-
-    SliceList<Blob> getBlobs(BlobQuery query);
-
-    void deleteBlob(BlobId blobId);
-
-    void deleteBlobs(Set<BlobId> blobIds);
+    public BucketException(Throwable cause) {
+        super(cause);
+    }
 }
