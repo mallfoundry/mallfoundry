@@ -41,7 +41,7 @@ public class ProductIdentityProcessor implements ProductProcessor {
     /**
      * 商品变体对象标识值名称。
      */
-    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "store.product.variant.id";
+    private static final String PRODUCT_VARIANT_ID_VALUE_NAME = "catalog.product.variant.id";
 
     /**
      * 商品选项对象标识值名称。
