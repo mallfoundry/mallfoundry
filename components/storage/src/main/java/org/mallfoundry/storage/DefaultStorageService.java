@@ -70,12 +70,14 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     }
 
     private Bucket requiredBucket(BucketId bucketId) {
-        return this.bucketRepository.findById(bucketId).orElseThrow();
+        return this.bucketRepository.findById(bucketId)
+                .orElseThrow(() -> new BucketException(StorageMessages.Bucket.notFound()));
     }
 
     @Override
     public Bucket getBucket(BucketId bucketId) throws BucketException {
         return this.bucketRepository.findById(bucketId)
+                .map(this::invokePostProcessAfterGetBucket)
                 .orElseThrow(() -> new BucketException(StorageMessages.Bucket.notFound()));
     }
 
@@ -89,7 +91,7 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     @Transactional
     @Override
     public void deleteBucket(BucketId bucketId) throws BucketException {
-        var bucket = this.getBucket(bucketId);
+        var bucket = this.requiredBucket(bucketId);
         this.blobRepository.deleteAllByBucketId(bucket.getId());
         this.bucketRepository.delete(bucket);
     }
@@ -178,6 +180,13 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     public void deleteBlobs(Set<BlobId> blobIds) {
         var blobs = this.blobRepository.findAllById(blobIds);
         this.blobRepository.deleteAll(blobs);
+    }
+
+    @Override
+    public Bucket invokePostProcessAfterGetBucket(Bucket bucket) {
+        return Processors.stream(this.processors)
+                .map(StorageProcessor::postProcessAfterGetBucket)
+                .apply(bucket);
     }
 
     @Override
