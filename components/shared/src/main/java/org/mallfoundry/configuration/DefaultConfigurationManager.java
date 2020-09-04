@@ -20,8 +20,6 @@ package org.mallfoundry.configuration;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-
 public class DefaultConfigurationManager implements ConfigurationManager {
 
     private final ConfigurationIdRetrievalStrategy idRetrievalStrategy;
@@ -69,20 +67,6 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     @Override
     public void saveConfiguration(Configuration configuration) {
         this.repository.save(configuration);
-    }
-
-    @Transactional
-    @Override
-    public void emptyConfiguration(Object entity) {
-        var configId = this.createConfigurationId(entity);
-        this.repository.findById(configId).ifPresent(this.repository::delete);
-        var tenantId = configId.getTenantId();
-        Configuration config =
-                Objects.isNull(tenantId)
-                        ? this.createConfiguration(configId)
-                        : this.getConfiguration(this.createConfigurationId(ConfigurationScope.TENANT, tenantId))
-                                .createConfiguration(configId);
-        this.saveConfiguration(config);
     }
 
     @Transactional
