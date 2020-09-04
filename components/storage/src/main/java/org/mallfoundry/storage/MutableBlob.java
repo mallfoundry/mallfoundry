@@ -18,13 +18,12 @@
 
 package org.mallfoundry.storage;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
 public interface MutableBlob extends Blob {
 
-    File getFile();
+    void setBucketId(String bucketId);
 
     void setType(BlobType type);
 
