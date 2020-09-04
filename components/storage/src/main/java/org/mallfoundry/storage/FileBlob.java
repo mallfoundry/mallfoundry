@@ -16,7 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.util;
+package org.mallfoundry.storage;
 
-public interface Configuration {
+public abstract class FileBlob extends BlobSupport {
+
 }
