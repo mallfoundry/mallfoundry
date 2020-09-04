@@ -34,15 +34,15 @@
         <module>app-api</module>
         <module>analytics-api</module>
         <module>commons-api</module>
+        <module>keystone-api</module>
+        <module>storage-api</module>
         <module>catalog-api</module>
         <module>content-api</module>
         <module>customer-api</module>
-        <module>storage-api</module>
         <module>store-api</module>
         <module>order-api</module>
         <module>shipping-api</module>
         <module>payment-api</module>
-        <module>keystone-api</module>
         <module>district-api</module>
         <module>dom-api</module>
         <module>marketing-api</module>
@@ -70,12 +70,13 @@
 
         <!-- rest modules-->
         <module>commons-rest</module>
+        <module>keystone-rest</module>
+        <module>storage-rest</module>
         <module>catalog-rest</module>
         <module>store-rest</module>
         <module>payment-rest</module>
         <module>shipping-rest</module>
         <module>order-rest</module>
-        <module>keystone-rest</module>
         <module>customer-rest</module>
         <module>marketing-rest</module>
         <module>app-rest</module>
