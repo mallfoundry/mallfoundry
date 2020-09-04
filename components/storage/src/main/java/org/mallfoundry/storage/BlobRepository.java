@@ -21,19 +21,24 @@ package org.mallfoundry.storage;
 import org.mallfoundry.data.SliceList;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface BlobRepository {
 
-    boolean existsById(BlobId blobId);
-
-    Optional<Blob> findById(BlobId blobId);
-
-    SliceList<Blob> findAll(BlobQuery blobQuery);
+    Blob create(BlobPath path);
 
     Blob save(Blob blob);
 
-    void deleteAllByBucketAndPaths(String bucket, Collection<String> paths);
+    Optional<Blob> findById(BlobId blobId);
 
-    void deleteAllByBucket(String bucket);
+    List<Blob> findAllById(Collection<BlobId> blobIds);
+
+    SliceList<Blob> findAll(BlobQuery blobQuery);
+
+    void delete(Blob blob);
+
+    void deleteAll(List<Blob> blobs);
+
+    void deleteAllByBucketId(String bucket);
 }
