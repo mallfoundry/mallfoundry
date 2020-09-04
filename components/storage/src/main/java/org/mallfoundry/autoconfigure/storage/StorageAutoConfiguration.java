@@ -23,6 +23,7 @@ import org.mallfoundry.storage.BucketRepository;
 import org.mallfoundry.storage.DefaultStorageService;
 import org.mallfoundry.storage.LocalStorageSystem;
 import org.mallfoundry.storage.SharedBlobRepository;
+import org.mallfoundry.storage.StorageAuthorizeProcessor;
 import org.mallfoundry.storage.StorageIdentityProcessor;
 import org.mallfoundry.storage.StoragePathReplacer;
 import org.mallfoundry.storage.StorageProcessor;
@@ -66,6 +67,11 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     @Bean
     public StorageIdentityProcessor storageIdentityProcessor() {
         return new StorageIdentityProcessor();
+    }
+
+    @Bean
+    public StorageAuthorizeProcessor storageAuthorizeProcessor() {
+        return new StorageAuthorizeProcessor();
     }
 
     @Bean
