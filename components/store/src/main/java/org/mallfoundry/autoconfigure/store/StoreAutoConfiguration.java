@@ -21,11 +21,11 @@ package org.mallfoundry.autoconfigure.store;
 import org.mallfoundry.configuration.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreAuthorizeProcessor;
-import org.mallfoundry.store.StoreClosedBasicCleanupEventListener;
+import org.mallfoundry.store.lifecycle.StoreClosedBasicCleanupEventListener;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
-import org.mallfoundry.store.initializing.StoreInitializingManager;
+import org.mallfoundry.store.StoreLifecycleManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 @Configuration
-@Import({StoreInitializingConfiguration.class,
+@Import({StoreLifecycleConfiguration.class,
         StoreAddressConfiguration.class,
         StoreSecurityConfiguration.class,
         StoreStaffConfiguration.class,
@@ -50,9 +50,9 @@ public class StoreAutoConfiguration {
     @Bean
     public DefaultStoreService defaultStoreService(@Autowired(required = false)
                                                    @Lazy List<StoreProcessor> processors,
-                                                   StoreInitializingManager storeInitializingManager,
+                                                   @Lazy StoreLifecycleManager storeLifecycleManager,
                                                    StoreRepository storeRepository) {
-        var service = new DefaultStoreService(storeInitializingManager, storeRepository);
+        var service = new DefaultStoreService(storeLifecycleManager, storeRepository);
         service.setProcessors(processors);
         return service;
     }
