@@ -79,5 +79,7 @@ public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Bl
         Builder id(String id);
 
         Builder name(String name);
+
+        Builder contentType(String contentType);
     }
 }

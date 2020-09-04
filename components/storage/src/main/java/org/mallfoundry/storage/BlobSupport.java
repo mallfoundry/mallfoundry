@@ -89,7 +89,7 @@ public abstract class BlobSupport implements MutableBlob {
         this.setPath(PathUtils.concat(path, newFilename));
 
         if (StringUtils.isBlank(this.getContentType()) && BlobType.FILE.equals(this.getType())) {
-            Optional.ofNullable(this.getName())
+            Optional.ofNullable(this.getPath())
                     .flatMap(MediaTypeFactory::getMediaType)
                     .map(MimeType::toString)
                     .ifPresent(this::setContentType);
@@ -120,6 +120,12 @@ public abstract class BlobSupport implements MutableBlob {
         @Override
         public Builder name(String name) {
             this.blob.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder contentType(String contentType) {
+            this.blob.setContentType(contentType);
             return this;
         }
 
