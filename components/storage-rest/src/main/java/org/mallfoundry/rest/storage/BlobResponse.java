@@ -16,31 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.blob;
+package org.mallfoundry.rest.storage;
 
-import org.mallfoundry.data.Query;
-import org.mallfoundry.data.QueryBuilder;
+import lombok.Getter;
+import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobType;
-import org.mallfoundry.store.StoreOwnership;
-import org.mallfoundry.util.ObjectBuilder;
 
-public interface StoreBlobQuery extends Query, StoreOwnership, ObjectBuilder.ToBuilder<StoreBlobQuery.Builder> {
+@Getter
+public class BlobResponse {
+    private String id;
+    private String path;
+    private String name;
+    private BlobType type;
+    private String url;
+    private long size;
+    private String contentType;
 
-    BlobType getType();
-
-    void setType(BlobType type);
-
-    String getPath();
-
-    void setPath(String path);
-
-    interface Builder extends QueryBuilder<StoreBlobQuery, Builder> {
-        Builder type(BlobType type);
-
-        Builder tenantId(String tenantId);
-
-        Builder storeId(String storeId);
-
-        Builder path(String path);
+    public static BlobResponse of(Blob blob) {
+        var response = new BlobResponse();
+        response.id = blob.getId();
+        response.path = blob.getPath();
+        response.name = blob.getName();
+        response.type = blob.getType();
+        response.url = blob.getUrl();
+        response.size = blob.getSize();
+        response.contentType = blob.getContentType();
+        return response;
     }
 }
