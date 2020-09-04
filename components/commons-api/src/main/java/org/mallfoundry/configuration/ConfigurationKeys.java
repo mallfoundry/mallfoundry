@@ -48,6 +48,9 @@ public abstract class ConfigurationKeys {
 
     // Store Property Keys
     public static final String STORE_DEFAULT_LOGO = STORE_KEY_PREFIX + "default-logo";
+    // Store Super Role Id
+    public static final String STORE_SUPER_ROLE_ID = STORE_KEY_PREFIX + "super-role.id";
+    //
     public static final String STORE_MEMBER_AUTO_JOIN_CONDITIONAL_KEY = STORE_KEY_PREFIX + "member.auto-join-conditional";
     public static final String STORE_PRODUCTS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "products.max-size";
     public static final String STORE_PRODUCT_COLLECTIONS_MAX_SIZE_KEY = STORE_KEY_PREFIX + "product-collections.max-size";
