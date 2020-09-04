@@ -33,6 +33,8 @@ public interface Resource extends Serializable {
 
     String STORE_TYPE = "Store";
 
+    String STORAGE_BUCKET_TYPE = "StorageBucket";
+
     String STORE_STAFF_TYPE = "StoreStaff";
 
     String CUSTOMER_TYPE = "Customer";
