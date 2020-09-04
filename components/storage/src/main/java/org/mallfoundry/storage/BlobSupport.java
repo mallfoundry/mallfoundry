@@ -18,8 +18,35 @@
 
 package org.mallfoundry.storage;
 
-public abstract class BlobSupport/* implements MutableBlob*/ {
-/*
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.util.PathUtils;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaTypeFactory;
+import org.springframework.util.Assert;
+import org.springframework.util.MimeType;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public abstract class BlobSupport implements MutableBlob {
+
+    @Override
+    public BlobId toId() {
+        return new ImmutableBlobId(this.getBucketId(), this.getId());
+    }
+
+    @Override
+    public BlobPath toPath() {
+        return new ImmutableBlobPath(this.getBucketId(), this.getPath());
+    }
+
     @Override
     public InputStream openInputStream() throws IOException {
         if (BlobType.DIRECTORY.equals(this.getType())) {
@@ -35,7 +62,7 @@ public abstract class BlobSupport/* implements MutableBlob*/ {
     }
 
     @Override
-    public void createFile() {
+    public void createNewFile() {
         this.setType(BlobType.FILE);
     }
 
@@ -47,5 +74,76 @@ public abstract class BlobSupport/* implements MutableBlob*/ {
     @Override
     public void rename(String name) {
         this.setName(name);
-    }*/
+    }
+
+    @Override
+    public void moveTo(Blob blob) {
+        var name = FilenameUtils.getName(this.getPath());
+        this.setPath(Objects.isNull(blob) ? PathUtils.normalize(name) : PathUtils.concat(blob.getPath(), name));
+        this.setParent(blob);
+    }
+
+    @Override
+    public void rebuildIndexes() {
+        List<String> indexes = new ArrayList<>();
+        String parentPath = PathUtils.normalize(this.getPath());
+        while (!PathUtils.isRootPath(parentPath)) {
+            parentPath = FilenameUtils.getFullPathNoEndSeparator(parentPath);
+            indexes.add(parentPath);
+        }
+        this.setIndexes(indexes);
+    }
+
+    @Override
+    public void create() {
+        var id = this.getId();
+        Assert.notNull(id, "Blob id is required");
+        if (StringUtils.isBlank(this.getName())) {
+            this.setName(FilenameUtils.getName(this.getPath()));
+        }
+        var path = FilenameUtils.getPathNoEndSeparator(this.getPath());
+        var extension = FilenameUtils.getExtension(this.getPath());
+        var newFilename = StringUtils.isEmpty(extension) ? id : String.format("%s.%s", id, extension);
+        this.setPath(PathUtils.concat(path, newFilename));
+
+        if (StringUtils.isBlank(this.getContentType()) && BlobType.FILE.equals(this.getType())) {
+            Optional.ofNullable(this.getName())
+                    .flatMap(MediaTypeFactory::getMediaType)
+                    .map(MimeType::toString)
+                    .ifPresent(this::setContentType);
+        }
+        this.rebuildIndexes();
+        this.setCreatedTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+        private final BlobSupport blob;
+
+        protected BuilderSupport(BlobSupport blob) {
+            this.blob = blob;
+        }
+
+        @Override
+        public Builder id(String id) {
+            this.blob.setId(id);
+            return this;
+        }
+
+        @Override
+        public Builder path(String path) {
+            this.blob.setPath(path);
+            return this;
+        }
+
+        @Override
+        public Blob build() {
+            return this.blob;
+        }
+    }
 }
