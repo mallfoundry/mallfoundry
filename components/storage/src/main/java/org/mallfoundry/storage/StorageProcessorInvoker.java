@@ -20,6 +20,8 @@ package org.mallfoundry.storage;
 
 public interface StorageProcessorInvoker {
 
+    Bucket invokePostProcessAfterGetBucket(Bucket bucket);
+
     Bucket invokePreProcessBeforeAddBucket(Bucket bucket);
 
     Blob invokePreProcessBeforeStoreBlob(Bucket bucket, Blob blob);

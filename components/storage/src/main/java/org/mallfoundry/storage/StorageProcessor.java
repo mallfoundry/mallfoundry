@@ -20,6 +20,10 @@ package org.mallfoundry.storage;
 
 public interface StorageProcessor {
 
+    default Bucket postProcessAfterGetBucket(Bucket bucket) {
+        return bucket;
+    }
+
     default Bucket preProcessBeforeAddBucket(Bucket bucket) {
         return bucket;
     }
