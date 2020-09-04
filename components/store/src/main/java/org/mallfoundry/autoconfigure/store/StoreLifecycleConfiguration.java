@@ -18,11 +18,26 @@
 
 package org.mallfoundry.autoconfigure.store;
 
+import org.mallfoundry.configuration.ConfigurationManager;
+import org.mallfoundry.identity.UserService;
+import org.mallfoundry.security.access.AccessControlManager;
+import org.mallfoundry.storage.StorageService;
+import org.mallfoundry.store.StoreAddressService;
 import org.mallfoundry.store.StoreRepository;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleExecutor;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleManager;
+import org.mallfoundry.store.lifecycle.StoreAccessControlLifecycle;
+import org.mallfoundry.store.lifecycle.StoreAddressLifecycle;
+import org.mallfoundry.store.lifecycle.StoreBucketLifecycle;
+import org.mallfoundry.store.lifecycle.StoreConfigurationLifecycle;
 import org.mallfoundry.store.lifecycle.StoreLifecycle;
 import org.mallfoundry.store.lifecycle.StoreLifecycleChain;
+import org.mallfoundry.store.lifecycle.StoreMemberLifecycle;
+import org.mallfoundry.store.lifecycle.StoreRoleLifecycle;
+import org.mallfoundry.store.lifecycle.StoreStaffLifecycle;
+import org.mallfoundry.store.member.MemberService;
+import org.mallfoundry.store.security.RoleService;
+import org.mallfoundry.store.staff.StaffService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -31,6 +46,43 @@ import java.util.List;
 
 @Configuration
 public class StoreLifecycleConfiguration {
+
+    @Bean
+    public StoreAccessControlLifecycle storeAccessControlLifecycle(AccessControlManager manager) {
+        return new StoreAccessControlLifecycle(manager);
+    }
+
+    @Bean
+    public StoreAddressLifecycle storeAddressLifecycle(StoreAddressService storeAddressService) {
+        return new StoreAddressLifecycle(storeAddressService);
+    }
+
+    @Bean
+    public StoreBucketLifecycle storeBucketLifecycle(StorageService storageService) {
+        return new StoreBucketLifecycle(storageService);
+    }
+
+    @Bean
+    public StoreConfigurationLifecycle storeConfigurationLifecycle(ConfigurationManager configurationManager) {
+        return new StoreConfigurationLifecycle(configurationManager);
+    }
+
+    @Bean
+    public StoreMemberLifecycle storeMemberLifecycle(MemberService memberService) {
+        return new StoreMemberLifecycle(memberService);
+    }
+
+    @Bean
+    public StoreRoleLifecycle storeRoleLifecycle(RoleService roleService) {
+        return new StoreRoleLifecycle(roleService);
+    }
+
+    @Bean
+    public StoreStaffLifecycle storeStaffLifecycle(UserService userService,
+                                                   StaffService staffService,
+                                                   RoleService roleService) {
+        return new StoreStaffLifecycle(userService, staffService, roleService);
+    }
 
     @Bean
     public StoreLifecycleChain storeLifecycleChain(@Lazy List<StoreLifecycle> lifecycles) {
