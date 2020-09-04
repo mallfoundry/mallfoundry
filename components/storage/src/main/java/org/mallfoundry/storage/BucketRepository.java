@@ -20,13 +20,13 @@ package org.mallfoundry.storage;
 
 import java.util.Optional;
 
-public interface InternalBucketRepository {
+public interface BucketRepository {
 
-    Optional<InternalBucket> findById(String s);
+    Bucket create(BucketId bucketId);
 
-    boolean existsById(String name);
+    Optional<Bucket> findById(BucketId bucketId);
 
-    InternalBucket save(InternalBucket bucket);
+    Bucket save(Bucket bucket);
 
-    void deleteById(String name);
+    void delete(Bucket bucket);
 }
