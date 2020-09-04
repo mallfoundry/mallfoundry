@@ -22,6 +22,8 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.acl.Owner;
 import org.mallfoundry.storage.acl.OwnerType;
 
+import java.util.Set;
+
 public interface StorageService {
 
     Owner createOwner(OwnerType type, String name);
@@ -36,13 +38,15 @@ public interface StorageService {
 
     void deleteBucket(BucketId bucketId);
 
+    BlobId createBlobId(String bucketId, String blobId);
+
     BlobQuery createBlobQuery();
 
     Blob storeBlob(Blob blob) throws StorageException;
 
     SliceList<Blob> getBlobs(BlobQuery query);
 
-/*    void deleteBlob(String bucketName, String path);
+    void deleteBlob(BlobId blobId);
 
-    void deleteBlobs(String bucketName, List<String> paths);*/
+    void deleteBlobs(Set<BlobId> blobIds);
 }
