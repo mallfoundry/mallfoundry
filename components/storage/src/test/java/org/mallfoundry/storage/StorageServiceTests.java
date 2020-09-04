@@ -18,9 +18,8 @@
 
 package org.mallfoundry.storage;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.data.SliceList;
+import org.mallfoundry.storage.acl.InternalOwner;
 import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,93 +35,48 @@ public class StorageServiceTests {
     @Autowired
     private StorageService storageService;
 
-
     @Test
-    public void testIsDirectory() {
-        File file = new File("D:\\apps\\build");
-        System.out.println(file.getName());
-    }
-
-    @Test
-    public void testGetBucket() {
-        this.storageService.findBucket("test").ifPresent(System.out::println);
-    }
-
-    @Test
+    @Rollback(false)
     public void testAddBucket() {
-        var owner = this.storageService.createOwner(OwnerType.STORE, "mi");
-        var bucket = this.storageService.createBucket("test", owner);
-        if (!this.storageService.existsBucket("test")) {
-            Bucket newBucket = this.storageService.addBucket(bucket);
-            System.out.println(newBucket);
-        }
-    }
-
-    @Test
-    @Transactional
-    public void testGetBlob() throws IOException {
-        this.storageService.findBlob("test", "/abc3/test2/c.txt")
-                .ifPresent(blob -> {
-                    System.out.println(blob);
-                    Blob parent = blob.getParent();
-                    System.out.println(parent.toId());
-                });
-    }
-
-    @Test
-    public void testStoreBlob() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test");
-        this.storageService.storeBlob(bucket.createBlob("/abc/test2.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
-        this.storageService.storeBlob(bucket.createBlob("/abc/test3.txt", FileUtils.openInputStream(new File("D:\\adb.txt"))));
-    }
-
-    @Test
-    public void testStoreBlob2() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test");
-        Blob blob = bucket.createBlob("/abc2/test_dir3");
-        Blob storeBlob = this.storageService.storeBlob(blob);
-        System.out.println(storeBlob);
-    }
-
-    @Test
-    public void testStoreBlob3() throws IOException {
-        Bucket bucket = this.storageService.getBucket("test");
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test2/a.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test2/b.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test2/c.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test2/d.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test3/a.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test3/b.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test3/c.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc2/test3/d.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test2/a.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test2/b.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test2/c.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test2/d.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test3/a.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test3/b.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test3/c.txt"));
-        this.storageService.storeBlob(bucket.createBlob("/abc3/test3/d.txt"));
-    }
-
-    @Test
-    @Transactional
-    public void testStoreBlobs() throws IOException {
-        SliceList<Blob> pageBlobs = this.storageService
-                .getBlobs(this.storageService
-                        .createBlobQuery()
-                        .toBuilder()
-                        .bucket("test")
-                        .path("/abc3/test2")
-                        .page(1)
-                        .limit(10).build());
-        System.out.println(pageBlobs);
+        var bucketId = this.storageService.createBucketId(null);
+        var bucket = this.storageService.createBucket(bucketId);
+        bucket.setOwner(new InternalOwner(OwnerType.STORE, "1"));
+        bucket.setName("Test Bucket");
+        this.storageService.addBucket(bucket);
     }
 
     @Test
     @Rollback(false)
-    @Transactional
-    public void testDeleteBlob() {
-        this.storageService.deleteBlob("store-mi", "/images");
+    public void testStoreBlob() {
+        var bucketId = this.storageService.createBucketId("1f08eb45142b47e8964ad12625d8f73e");
+        var bucket = this.storageService.createBucket(bucketId);
+        var blob = bucket.createBlob("/abc/sdafjk");
+        blob.makeDirectory();
+        this.storageService.storeBlob(blob);
     }
+
+    private void storeBlob(String path) throws IOException {
+        var bucketId = this.storageService.createBucketId("1f08eb45142b47e8964ad12625d8f73e");
+        var bucket = this.storageService.createBucket(bucketId);
+        var blob = bucket.createBlob(path, new File(""));
+        this.storageService.storeBlob(blob);
+    }
+
+    @Test
+    @Rollback(false)
+    public void testStoreBlob2() throws IOException {
+        this.storeBlob("/990d5276367740c8b95128a6c80201f4/abc.jpg");
+        this.storeBlob("/990d5276367740c8b95128a6c80201f4/abc2.jpg");
+        this.storeBlob("/990d5276367740c8b95128a6c80201f4/abc3.jpg");
+        this.storeBlob("/990d5276367740c8b95128a6c80201f4/abc4.jpg");
+    }
+
+    @Transactional
+    @Test
+    public void testGetStoreBlobs() {
+        var query = this.storageService.createBlobQuery().toBuilder().bucketId("1f08eb45142b47e8964ad12625d8f73e").build();
+        var list = this.storageService.getBlobs(query);
+        System.out.println(list);
+    }
+
 }
