@@ -21,6 +21,7 @@ package org.mallfoundry.store.security;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.access.AllAuthorities;
@@ -185,14 +186,14 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
     @Override
     public void changeSuperRole(RoleId roleId) {
         var config = ConfigurationHolder.getConfiguration(roleId);
-        config.setProperty("store.roles.super_id", roleId.getId());
+        config.setProperty(ConfigurationKeys.STORE_SUPER_ROLE_ID, roleId.getId());
         ConfigurationHolder.saveConfiguration(config);
     }
 
     @Override
     public Role getSuperRole(StoreId storeId) {
         var config = ConfigurationHolder.getConfiguration(storeId);
-        var roleId = config.getString("store.roles.super_id");
+        var roleId = config.getString(ConfigurationKeys.STORE_SUPER_ROLE_ID);
         var superId = this.createRoleId(storeId, roleId);
         return this.getRole(superId);
     }
