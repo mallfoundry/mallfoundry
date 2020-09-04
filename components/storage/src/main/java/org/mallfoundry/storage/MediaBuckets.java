@@ -18,13 +18,13 @@
 
 package org.mallfoundry.storage;
 
+import java.util.Set;
+
 public abstract class MediaBuckets {
 
-    public static final String ALL_MEDIA_TYPE_BUCKET = "100";
+    private static final Set<Integer> MEDIA_CODES = Set.of(MediaBucket.ALL.code());
 
-    public static final String IMAGE_MEDIA_TYPE_BUCKET = "101";
+    /*public static boolean isSupports(Bucket bucket) {
 
-    public static final String VIDEO_MEDIA_TYPE_BUCKET = "102";
-
-    public static final String VOICE_MEDIA_TYPE_BUCKET = "103";
+    }*/
 }
