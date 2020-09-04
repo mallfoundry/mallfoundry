@@ -18,15 +18,15 @@
 
 package org.mallfoundry.util;
 
-import java.io.Serializable;
+public abstract class QualifiedCodes {
 
-/**
- * @author Tang Zhi
- * @since 1.0
- */
-public interface UniqueIdentifier<T extends Serializable> extends Serializable {
+    public static final String UNKNOWN_TYPE_CODE = "00";
 
-    T getIdentifier();
+    public static final String TENANT_TYPE_CODE = "01";
 
-    void setIdentifier(T identifier);
+    public static final String USER_TYPE_CODE = "02";
+
+    public static final String CUSTOMER_TYPE_CODE = "03";
+
+    public static final String STORE_TYPE_CODE = "04";
 }
