@@ -31,16 +31,18 @@ import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
 @Order(POSITION_STEP * 4)
 public class StoreStaffLifecycle implements StoreLifecycle {
 
+    private final UserService userService;
+
     private final StaffService staffService;
 
     private final RoleService roleService;
 
-    private final UserService userService;
-
-    public StoreStaffLifecycle(StaffService staffService, RoleService roleService, UserService userService) {
+    public StoreStaffLifecycle(UserService userService,
+                               StaffService staffService,
+                               RoleService roleService) {
+        this.userService = userService;
         this.staffService = staffService;
         this.roleService = roleService;
-        this.userService = userService;
     }
 
     @Override
