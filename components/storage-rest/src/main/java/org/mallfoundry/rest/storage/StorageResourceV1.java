@@ -60,7 +60,8 @@ public class StorageResourceV1 {
             return bucket.createBlob(path).toBuilder().name(filename).build();
         }
         var filename = Objects.isNull(name) ? file.getOriginalFilename() : name;
-        return bucket.createBlob(path, file.getInputStream()).toBuilder().name(filename).build();
+        return bucket.createBlob(path, file.getInputStream()).toBuilder()
+                .name(filename).contentType(file.getContentType()).build();
     }
 
     @PostMapping("/buckets/{bucket_id}/blobs")
