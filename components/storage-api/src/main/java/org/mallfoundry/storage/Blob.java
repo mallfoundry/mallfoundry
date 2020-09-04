@@ -75,8 +75,9 @@ public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Bl
     void create();
 
     interface Builder extends ObjectBuilder<Blob> {
+
         Builder id(String id);
 
-        Builder path(String path);
+        Builder name(String name);
     }
 }
