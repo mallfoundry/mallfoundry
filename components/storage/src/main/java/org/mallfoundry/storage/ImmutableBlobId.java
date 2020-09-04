@@ -18,22 +18,24 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.data.PageableSupport;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class InternalBlobQuery extends PageableSupport implements BlobQuery {
+public class ImmutableBlobId implements BlobId {
+    private String bucketId;
+    private String id;
 
-    private String bucket;
+    public ImmutableBlobId(String bucketId, String id) {
+        this.bucketId = bucketId;
+        this.id = id;
+    }
 
-    private String path;
-
-    private BlobType type;
-
-    @Override
-    public Builder toBuilder() {
-        return new Builder(this);
+    public static ImmutableBlobId of(BlobId blobId) {
+        if (blobId instanceof ImmutableBlobId) {
+            return (ImmutableBlobId) blobId;
+        }
+        return new ImmutableBlobId(blobId.getBucketId(), blobId.getId());
     }
 }
