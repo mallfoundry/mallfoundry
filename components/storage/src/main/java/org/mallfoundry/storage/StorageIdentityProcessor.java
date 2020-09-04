@@ -18,27 +18,13 @@
 
 package org.mallfoundry.storage;
 
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-
-import java.util.UUID;
-
 public class StorageIdentityProcessor implements StorageProcessor {
 
-    private static final String STORAGE_BUCKET_ID_VALUE_NAME = "storage.bucket.id";
-
-    private String createVirtualId() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
-
-    @Override
-    public Bucket preProcessBeforeAddBucket(Bucket bucket) {
-        bucket.setId(PrimaryKeyHolder.next(STORAGE_BUCKET_ID_VALUE_NAME));
-        return bucket;
-    }
+    private final BlobIdentifierGenerator idGenerator = new BlobIdentifierGenerator();
 
     @Override
     public Blob preProcessBeforeStoreBlob(Bucket bucket, Blob blob) {
-        blob.setId(this.createVirtualId());
+        blob.setId(this.idGenerator.generate());
         return blob;
     }
 }
