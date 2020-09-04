@@ -20,6 +20,7 @@ package org.mallfoundry.util;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -28,6 +29,10 @@ public abstract class PathUtils {
     public static final String PATH_SEPARATOR = "/";
 
     public static final String ROOT_PATH = PATH_SEPARATOR;
+
+    public static boolean isRootPath(String path) {
+        return ROOT_PATH.equals(path) || Objects.isNull(path);
+    }
 
     public static String normalize(String path) {
         return Optional.of(path)
