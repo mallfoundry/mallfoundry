@@ -16,29 +16,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.initializing;
+package org.mallfoundry.store.lifecycle;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.store.StoreInitializing;
+import org.mallfoundry.store.StoreProgress;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
-public class DefaultStoreInitializing implements StoreInitializing {
+public class DefaultStoreProgress implements StoreProgress {
 
-    private InitializingState state;
+    private ProgressState state;
 
-    private final List<InitializingStage> stages = new ArrayList<>();
+    private final List<ProgressStage> stages = new ArrayList<>();
 
-    public DefaultStoreInitializing() {
-        this.state = InitializingState.NEW;
+    public DefaultStoreProgress() {
+        this.state = ProgressState.NEW;
     }
 
     @Override
-    public InitializingStage addStage(String message) {
+    public ProgressStage addStage(String message) {
         var stage = new DefaultInitializingStage(message);
         this.stages.add(stage);
         stage.setPosition(this.stages.size());
@@ -47,27 +47,22 @@ public class DefaultStoreInitializing implements StoreInitializing {
 
     @Override
     public void initialize() {
-        this.state = InitializingState.INITIALIZING;
-    }
-
-    @Override
-    public void configure() {
-        this.state = InitializingState.CONFIGURING;
+        this.state = ProgressState.INITIALIZING;
     }
 
     @Override
     public void complete() {
-        this.state = InitializingState.INITIALIZED;
+        this.state = ProgressState.INITIALIZED;
     }
 
     @Override
     public void fail() {
-        this.state = InitializingState.FAILED;
+        this.state = ProgressState.FAILED;
     }
 
     @Getter
     @Setter
-    private static class DefaultInitializingStage implements InitializingStage {
+    private static class DefaultInitializingStage implements ProgressStage {
         private int position;
         private StageStatus status;
         private final String message;
