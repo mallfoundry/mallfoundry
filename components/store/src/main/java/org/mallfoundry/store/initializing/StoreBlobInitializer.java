@@ -31,6 +31,6 @@ public class StoreBlobInitializer implements StoreInitializer {
 
     @Override
     public void doInitialize(Store store) {
-        this.storeBlobService.initializeStoreBucket(store.toId());
+        this.storeBlobService.initializeBuckets(store.toId());
     }
 }
