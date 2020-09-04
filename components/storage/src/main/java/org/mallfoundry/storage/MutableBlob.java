@@ -19,6 +19,8 @@
 package org.mallfoundry.storage;
 
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 public interface MutableBlob extends Blob {
 
@@ -26,5 +28,13 @@ public interface MutableBlob extends Blob {
 
     void setType(BlobType type);
 
+    void setParent(Blob parent);
+
+    void setPath(String path);
+
     void setName(String name);
+
+    void setIndexes(List<String> indexes);
+
+    void setCreatedTime(Date createdTime);
 }
