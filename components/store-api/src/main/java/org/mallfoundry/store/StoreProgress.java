@@ -24,27 +24,26 @@ import org.mallfoundry.util.Position;
 import java.util.Date;
 import java.util.List;
 
-public interface StoreInitializing {
+public interface StoreProgress {
 
-    InitializingState getState();
+    ProgressState getState();
 
-    List<InitializingStage> getStages();
+    List<ProgressStage> getStages();
 
-    InitializingStage addStage(String message);
+    ProgressStage addStage(String message);
 
     void initialize();
-
-    void configure();
 
     void complete();
 
     void fail();
 
-    enum InitializingState {
+    enum ProgressState {
         NEW,
         INITIALIZING,
-        CONFIGURING,
         INITIALIZED,
+        CLOSING,
+        CLOSED,
         FAILED;
 
         @JsonValue
@@ -54,7 +53,7 @@ public interface StoreInitializing {
         }
     }
 
-    interface InitializingStage extends Position {
+    interface ProgressStage extends Position {
 
         StageStatus getStatus();
 
