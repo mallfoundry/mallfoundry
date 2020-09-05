@@ -52,6 +52,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         this.processors = ListUtils.emptyIfNull(processors);
     }
 
+
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
@@ -132,7 +133,9 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         var store = this.requiredStore(source.toId());
         store = this.invokePreProcessBeforeUpdateStore(store);
         this.updateStore(source, store);
-        return this.storeRepository.save(store);
+        store = this.storeRepository.save(store);
+        this.eventPublisher.publishEvent(new ImmutableStoreChangedEvent(store));
+        return store;
     }
 
     @Transactional
@@ -142,6 +145,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         store = this.invokePreProcessBeforeInitializeStore(store);
         store.initialize();
         store = this.storeRepository.save(store);
+        this.eventPublisher.publishEvent(new ImmutableStoreInitializingEvent(store));
         return this.storeLifecycleManager.initializeStore(store);
     }
 
@@ -152,6 +156,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         store = this.invokePreProcessBeforeCloseStore(store);
         store.close();
         store = this.storeRepository.save(store);
+        this.eventPublisher.publishEvent(new ImmutableStoreClosingEvent(store));
         return this.storeLifecycleManager.closeStore(store);
     }
 
@@ -162,42 +167,42 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Override
     public Store invokePreProcessBeforeCreateStore(Store store) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeCreateStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeInitializeStore(Store store) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeInitializeStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeUpdateStore(Store store) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeUpdateStore)
                 .apply(store);
     }
 
     @Override
     public Store invokePreProcessBeforeCloseStore(Store store) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeCloseStore)
                 .apply(store);
     }
 
     @Override
     public StoreQuery invokePreProcessBeforeGetStores(StoreQuery query) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeGetStores)
                 .apply(query);
     }
 
     @Override
     public Store invokePostProcessAfterGetStore(Store store) {
-        return Processors.stream(processors)
+        return Processors.stream(this.processors)
                 .map(StoreProcessor::postProcessAfterGetStore)
                 .apply(store);
     }
