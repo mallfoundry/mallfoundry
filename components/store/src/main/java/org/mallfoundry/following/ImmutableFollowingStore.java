@@ -203,6 +203,21 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
+    default void active() {
+
+    }
+
+    @Override
+    default void pause() {
+
+    }
+
+    @Override
+    default void close() {
+
+    }
+
+    @Override
     default void changeOwner(User ownerId) {
 
     }
