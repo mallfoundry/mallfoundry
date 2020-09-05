@@ -18,8 +18,11 @@
 
 package org.mallfoundry.store.lifecycle;
 
+import org.mallfoundry.storage.BucketId;
+import org.mallfoundry.storage.MediaBucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.util.QualifiedCodes;
 
 public class StoreBucketLifecycle implements StoreLifecycle {
 
@@ -31,16 +34,23 @@ public class StoreBucketLifecycle implements StoreLifecycle {
 
     @Override
     public void doInitialize(Store store) {
-//this.storageService.createBucket()
+        var imageBucketId = this.createImageBucketId(store.getId());
+        var imageBucket = this.storageService.createBucket(imageBucketId).toBuilder().name("Store Image").build();
+        this.storageService.addBucket(imageBucket);
     }
 
     @Override
     public void doClose(Store store) {
-
+        var imageBucketId = this.createImageBucketId(store.getId());
+        this.storageService.deleteBucket(imageBucketId);
     }
 
     @Override
     public int getPosition() {
         return 0;
+    }
+
+    private BucketId createImageBucketId(String storeId) {
+        return this.storageService.createBucketId(QualifiedCodes.STORE_TYPE_CODE + MediaBucket.IMAGE.code() + storeId);
     }
 }
