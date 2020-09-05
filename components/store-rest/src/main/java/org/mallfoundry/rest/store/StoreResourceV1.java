@@ -21,8 +21,8 @@ package org.mallfoundry.rest.store;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
-import org.mallfoundry.store.StoreService;
 import org.mallfoundry.store.StoreProgress;
+import org.mallfoundry.store.StoreService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -87,6 +87,16 @@ public class StoreResourceV1 {
         return this.storeService.updateStore(
                 request.assignToStore(
                         this.storeService.createStore(this.createStoreId(id))));
+    }
+
+    @PatchMapping("/stores/{store_id}/pause")
+    public void pauseStore(@PathVariable("store_id") String id) {
+        this.storeService.pauseStore(this.createStoreId(id));
+    }
+
+    @PatchMapping("/stores/{store_id}/resume")
+    public void resumeStore(@PathVariable("store_id") String id) {
+        this.storeService.resumeStore(this.createStoreId(id));
     }
 
     @DeleteMapping("/stores/{store_id}")
