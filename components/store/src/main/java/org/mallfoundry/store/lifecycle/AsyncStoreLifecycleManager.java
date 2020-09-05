@@ -34,7 +34,6 @@ public class AsyncStoreLifecycleManager implements StoreLifecycleManager {
         this.lifecycleExecutor = lifecycleExecutor;
     }
 
-
     @Override
     public StoreProgress initializeStore(Store store) {
         var storeId = store.toId();
