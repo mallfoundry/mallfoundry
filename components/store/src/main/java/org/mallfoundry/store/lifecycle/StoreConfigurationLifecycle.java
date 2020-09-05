@@ -42,10 +42,6 @@ public class StoreConfigurationLifecycle implements StoreLifecycle {
             var storeConfigId = this.configurationManager.createConfigurationId(store);
             var storeConfig = this.configurationManager.createConfiguration(tenantConfigId).createConfiguration(storeConfigId);
             this.configurationManager.saveConfiguration(storeConfig);
-            /*if (StringUtils.isBlank(store.getLogo())) {
-                var config = ConfigurationHolder.getConfiguration(store);
-                store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
-            }*/
             stage.success();
         } catch (RuntimeException e) {
             stage.failure();
