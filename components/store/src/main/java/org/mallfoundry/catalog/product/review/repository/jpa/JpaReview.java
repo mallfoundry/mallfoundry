@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
+import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.catalog.product.review.Review;
 import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.ReviewStatus;

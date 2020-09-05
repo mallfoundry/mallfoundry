@@ -25,7 +25,7 @@ import lombok.Setter;
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.ProductVariantSupport;
-import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
+import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.inventory.InventoryStatus;
 

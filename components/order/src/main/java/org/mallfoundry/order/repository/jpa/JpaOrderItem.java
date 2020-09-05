@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.catalog.product.repository.jpa.convert.OptionSelectionListConverter;
+import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderItemSupport;
 import org.springframework.beans.BeanUtils;

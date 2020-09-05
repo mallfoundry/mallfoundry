@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.repository.jpa.convert;
+package org.mallfoundry.catalog.repository.jpa.convert;
 
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.util.JsonUtils;
