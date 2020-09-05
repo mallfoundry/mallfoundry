@@ -18,7 +18,7 @@
 
 package org.mallfoundry.store;
 
-public class ImmutableStoreInitializingEvent extends StoreEventSupport implements StoreInitializedEvent {
+public class ImmutableStoreInitializingEvent extends StoreEventSupport implements StoreInitializingEvent {
     protected ImmutableStoreInitializingEvent(Store store) {
         super(store);
     }
