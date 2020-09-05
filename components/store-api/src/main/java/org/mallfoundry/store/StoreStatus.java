@@ -24,11 +24,8 @@ public enum StoreStatus {
     PENDING, // 创建中
     INITIALIZING, // 初始化中
     ACTIVE, // 正常使用
-    PAUSED; // 过期
-
-    public boolean isPending() {
-        return this == PENDING;
-    }
+    CLOSING, // 关店中
+    PAUSED; // 停止营业
 
     @JsonValue
     @Override
