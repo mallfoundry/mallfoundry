@@ -23,7 +23,7 @@ import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.access.AccessControlManager;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.store.StoreAddressService;
-import org.mallfoundry.store.StoreRepository;
+import org.mallfoundry.store.StorePostService;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleExecutor;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleManager;
 import org.mallfoundry.store.lifecycle.StoreAccessControlLifecycle;
@@ -91,8 +91,8 @@ public class StoreLifecycleConfiguration {
 
     @Bean
     public AsyncStoreLifecycleExecutor asyncStoreLifecycleExecutor(StoreLifecycleChain lifecycleChain,
-                                                                   StoreRepository storeRepository) {
-        return new AsyncStoreLifecycleExecutor(lifecycleChain, storeRepository);
+                                                                   StorePostService storePostService) {
+        return new AsyncStoreLifecycleExecutor(lifecycleChain, storePostService);
     }
 
     @Bean
