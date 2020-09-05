@@ -47,6 +47,21 @@ public abstract class StoreSupport implements MutableStore {
     }
 
     @Override
+    public void active() {
+        this.setStatus(StoreStatus.ACTIVE);
+    }
+
+    @Override
+    public void pause() {
+        this.setStatus(StoreStatus.PAUSED);
+    }
+
+    @Override
+    public void close() {
+        this.setStatus(StoreStatus.CLOSING);
+    }
+
+    @Override
     public Builder toBuilder() {
         return new BuilderSupport(this) {
         };
