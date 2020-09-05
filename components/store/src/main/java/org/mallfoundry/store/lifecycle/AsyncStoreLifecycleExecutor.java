@@ -20,7 +20,7 @@ package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.StoreRepository;
+import org.mallfoundry.store.StorePostService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +28,12 @@ public class AsyncStoreLifecycleExecutor {
 
     private final StoreLifecycle lifecycle;
 
-    private final StoreRepository storeRepository;
+    private final StorePostService storePostService;
 
-    public AsyncStoreLifecycleExecutor(StoreLifecycle lifecycle, StoreRepository storeRepository) {
+    public AsyncStoreLifecycleExecutor(StoreLifecycle lifecycle,
+                                       StorePostService storePostService) {
         this.lifecycle = lifecycle;
-        this.storeRepository = storeRepository;
+        this.storePostService = storePostService;
     }
 
     @Async
@@ -41,16 +42,17 @@ public class AsyncStoreLifecycleExecutor {
         SubjectHolder.switchTo().systemUser()
                 .doRun(() -> {
                     this.lifecycle.doInitialize(store);
-                    this.storeRepository.save(store);
+                    this.storePostService.initializeStore(store);
                 });
     }
 
+    @Async
     @Transactional
     public void doClose(Store store) {
         SubjectHolder.switchTo().systemUser()
                 .doRun(() -> {
                     this.lifecycle.doClose(store);
-                    this.storeRepository.delete(store);
+                    this.storePostService.closeStore(store);
                 });
     }
 }
