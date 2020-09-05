@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum StoreStatus {
     PENDING, // 创建中
     INITIALIZING, // 初始化中
-    ACTIVE, // 正常使用
+    OPENED, // 正常营业
     CLOSING, // 关店中
     PAUSED; // 停止营业
 
