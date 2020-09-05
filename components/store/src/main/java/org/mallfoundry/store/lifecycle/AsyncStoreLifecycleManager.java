@@ -51,6 +51,7 @@ public class AsyncStoreLifecycleManager implements StoreLifecycleManager {
     public StoreProgress closeStore(Store store) {
         var storeId = store.toId();
         StoreProgressResources.removeStoreProgress(storeId);
+        StoreProgressResources.addStoreProgress(storeId, new DefaultStoreProgress());
         this.lifecycleExecutor.doClose(store);
         StoreProgress nullableProgress = null;
         while (Objects.isNull(nullableProgress)) {
