@@ -41,8 +41,16 @@ public class AsyncStoreLifecycleExecutor {
     public void doInitialize(Store store) {
         SubjectHolder.switchTo().systemUser()
                 .doRun(() -> {
-                    this.lifecycle.doInitialize(store);
-                    this.storePostService.initializeStore(store);
+                    var progress = StoreProgressResources.getStoreProgress(store.toId());
+                    try {
+                        progress.initializing();
+                        this.lifecycle.doInitialize(store);
+                        this.storePostService.initializeStore(store);
+                        progress.initialized();
+                    } catch (Exception e) {
+                        progress.failed();
+                        throw e;
+                    }
                 });
     }
 
@@ -51,8 +59,16 @@ public class AsyncStoreLifecycleExecutor {
     public void doClose(Store store) {
         SubjectHolder.switchTo().systemUser()
                 .doRun(() -> {
-                    this.lifecycle.doClose(store);
-                    this.storePostService.closeStore(store);
+                    var progress = StoreProgressResources.getStoreProgress(store.toId());
+                    try {
+                        progress.closing();
+                        this.lifecycle.doClose(store);
+                        this.storePostService.closeStore(store);
+                        progress.closed();
+                    } catch (Exception e) {
+                        progress.failed();
+                        throw e;
+                    }
                 });
     }
 }
