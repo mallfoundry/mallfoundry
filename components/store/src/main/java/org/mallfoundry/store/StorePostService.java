@@ -34,8 +34,9 @@ public class StorePostService implements ApplicationEventPublisherAware {
 
     @Transactional
     public void initializeStore(Store store) {
+        store.open();
         store = this.storeRepository.save(store);
-        this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
+        this.eventPublisher.publishEvent(new ImmutableStoreOpenedEvent(store));
     }
 
     @Transactional
