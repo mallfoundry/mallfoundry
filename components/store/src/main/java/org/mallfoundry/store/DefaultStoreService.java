@@ -83,9 +83,7 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
         store = this.invokePreProcessBeforeCreateStore(store);
         store.changeOwner(SubjectHolder.getSubject().toUser());
         store.create();
-        store = this.storeRepository.save(store);
-        this.eventPublisher.publishEvent(new ImmutableStoreInitializedEvent(store));
-        return store;
+        return this.storeRepository.save(store);
     }
 
     private Store requiredStore(StoreId storeId) {
@@ -139,22 +137,22 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional
     @Override
-    public StoreProgress closeStore(StoreId storeId) {
-        var store = this.requiredStore(storeId);
-        store = this.invokePreProcessBeforeCloseStore(store);
-        return this.storeLifecycleManager.closeStore(store);
-//        this.storeRepository.delete(store);
-//        this.eventPublisher.publishEvent(new ImmutableStoreClosedEvent(store));
-    }
-
-    @Transactional
-    @Override
     public StoreProgress initializeStore(StoreId id) {
         var store = this.getStore(id);
         store = this.invokePreProcessBeforeInitializeStore(store);
         store.initialize();
         store = this.storeRepository.save(store);
         return this.storeLifecycleManager.initializeStore(store);
+    }
+
+    @Transactional
+    @Override
+    public StoreProgress closeStore(StoreId storeId) {
+        var store = this.requiredStore(storeId);
+        store = this.invokePreProcessBeforeCloseStore(store);
+        store.close();
+        store = this.storeRepository.save(store);
+        return this.storeLifecycleManager.closeStore(store);
     }
 
     @Override
