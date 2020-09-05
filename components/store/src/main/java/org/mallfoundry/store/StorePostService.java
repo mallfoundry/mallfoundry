@@ -18,6 +18,9 @@
 
 package org.mallfoundry.store;
 
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.configuration.ConfigurationHolder;
+import org.mallfoundry.configuration.ConfigurationKeys;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,10 @@ public class StorePostService implements ApplicationEventPublisherAware {
 
     @Transactional
     public void initializeStore(Store store) {
+        if (StringUtils.isBlank(store.getLogo())) {
+            var config = ConfigurationHolder.getConfiguration(store);
+            store.setLogo(config.getString(ConfigurationKeys.STORE_DEFAULT_LOGO));
+        }
         store.open();
         store = this.storeRepository.save(store);
         this.eventPublisher.publishEvent(new ImmutableStoreOpenedEvent(store));
