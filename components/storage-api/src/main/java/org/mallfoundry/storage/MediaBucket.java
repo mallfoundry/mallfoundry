@@ -21,8 +21,8 @@ package org.mallfoundry.storage;
 public enum MediaBucket {
     ALL(100),
     IMAGE(101),
-    VIDEO(103),
-    VOICE(102);
+    VIDEO(102),
+    VOICE(103);
 
     private final int code;
 
