@@ -21,9 +21,14 @@ package org.mallfoundry.store.lifecycle;
 import org.mallfoundry.storage.BucketId;
 import org.mallfoundry.storage.MediaBucket;
 import org.mallfoundry.storage.StorageService;
+import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.util.QualifiedCodes;
+import org.springframework.core.annotation.Order;
 
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
+
+@Order(POSITION_STEP * 6)
 public class StoreBucketLifecycle implements StoreLifecycle {
 
     private final StorageService storageService;
@@ -35,7 +40,9 @@ public class StoreBucketLifecycle implements StoreLifecycle {
     @Override
     public void doInitialize(Store store) {
         var imageBucketId = this.createImageBucketId(store.getId());
-        var imageBucket = this.storageService.createBucket(imageBucketId).toBuilder().name("Store Image").build();
+        var storeOwner = this.storageService.createOwner(OwnerType.STORE, store.getId());
+        var imageBucket = this.storageService.createBucket(imageBucketId).toBuilder()
+                .owner(storeOwner).name("Store Image").build();
         this.storageService.addBucket(imageBucket);
     }
 
@@ -45,12 +52,12 @@ public class StoreBucketLifecycle implements StoreLifecycle {
         this.storageService.deleteBucket(imageBucketId);
     }
 
-    @Override
-    public int getPosition() {
-        return 0;
-    }
-
     private BucketId createImageBucketId(String storeId) {
         return this.storageService.createBucketId(QualifiedCodes.STORE_TYPE_CODE + MediaBucket.IMAGE.code() + storeId);
+    }
+
+    @Override
+    public int getPosition() {
+        return POSITION_STEP * 6;
     }
 }

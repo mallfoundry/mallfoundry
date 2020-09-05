@@ -20,7 +20,11 @@ package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreAddressService;
+import org.springframework.core.annotation.Order;
 
+import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
+
+@Order(POSITION_STEP * 5)
 public class StoreAddressLifecycle implements StoreLifecycle {
 
     private final StoreAddressService storeAddressService;
@@ -41,6 +45,6 @@ public class StoreAddressLifecycle implements StoreLifecycle {
 
     @Override
     public int getPosition() {
-        return 0;
+        return POSITION_STEP * 5;
     }
 }

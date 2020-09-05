@@ -72,6 +72,6 @@ public class StoreStaffLifecycle implements StoreLifecycle {
 
     @Override
     public int getPosition() {
-        return 0;
+        return POSITION_STEP * 4;
     }
 }
