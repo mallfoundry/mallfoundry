@@ -93,13 +93,19 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
 
     void setAddress(String address);
 
+    void changeOwner(User user);
+
     Date getCreatedTime();
 
     void create();
 
     void initialize();
 
-    void changeOwner(User user);
+    void active();
+
+    void pause();
+
+    void close();
 
     interface Builder extends ObjectBuilder<Store> {
 
