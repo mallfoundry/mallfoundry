@@ -101,9 +101,11 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
 
     void initialize();
 
-    void active();
+    void open();
 
     void pause();
+
+    void resume();
 
     void close();
 

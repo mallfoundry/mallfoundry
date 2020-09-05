@@ -203,7 +203,12 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void active() {
+    default void open() {
+
+    }
+
+    @Override
+    default void resume() {
 
     }
 
