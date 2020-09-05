@@ -32,11 +32,15 @@ public interface StoreProgress {
 
     ProgressStage addStage(String message);
 
-    void initialize();
+    void initializing();
 
-    void complete();
+    void initialized();
 
-    void fail();
+    void closing();
+
+    void closed();
+
+    void failed();
 
     enum ProgressState {
         NEW,

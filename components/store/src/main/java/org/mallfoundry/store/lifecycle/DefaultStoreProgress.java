@@ -46,17 +46,27 @@ public class DefaultStoreProgress implements StoreProgress {
     }
 
     @Override
-    public void initialize() {
+    public void initializing() {
         this.state = ProgressState.INITIALIZING;
     }
 
     @Override
-    public void complete() {
+    public void initialized() {
         this.state = ProgressState.INITIALIZED;
     }
 
     @Override
-    public void fail() {
+    public void closing() {
+        this.state = ProgressState.CLOSING;
+    }
+
+    @Override
+    public void closed() {
+        this.state = ProgressState.CLOSED;
+    }
+
+    @Override
+    public void failed() {
         this.state = ProgressState.FAILED;
     }
 
