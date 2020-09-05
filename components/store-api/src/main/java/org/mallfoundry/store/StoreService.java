@@ -46,9 +46,9 @@ public interface StoreService {
 
     Store updateStore(Store store);
 
-    StoreProgress closeStore(StoreId id);
-
     StoreProgress initializeStore(StoreId id);
+
+    StoreProgress closeStore(StoreId id);
 
     Optional<StoreProgress> findStoreProgress(StoreId id);
 
