@@ -23,6 +23,7 @@ import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreAuthorizeProcessor;
 import org.mallfoundry.store.StoreIdentityProcessor;
 import org.mallfoundry.store.StoreLifecycleManager;
+import org.mallfoundry.store.StorePostService;
 import org.mallfoundry.store.StoreProcessor;
 import org.mallfoundry.store.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,11 @@ public class StoreAutoConfiguration {
         var service = new DefaultStoreService(storeLifecycleManager, storeRepository);
         service.setProcessors(processors);
         return service;
+    }
+
+    @Bean
+    public StorePostService storePostService(StoreRepository storeRepository) {
+        return new StorePostService(storeRepository);
     }
 
     @Bean
