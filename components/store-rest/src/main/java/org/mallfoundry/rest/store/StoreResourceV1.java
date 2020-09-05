@@ -49,16 +49,6 @@ public class StoreResourceV1 {
         return this.storeService.createStoreId(id);
     }
 
-    @PostMapping("/stores/{id}/initialize")
-    public StoreProgress initializeStore(@PathVariable("id") String id) {
-        return this.storeService.initializeStore(this.createStoreId(id));
-    }
-
-    @GetMapping("/stores/{id}/progress")
-    public Optional<StoreProgress> findStoreProgress(@PathVariable("id") String id) {
-        return this.storeService.findStoreProgress(this.createStoreId(id));
-    }
-
     @PostMapping("/stores")
     public Store createStore(@RequestBody StoreRequest request) {
         return this.storeService.createStore(
@@ -99,8 +89,18 @@ public class StoreResourceV1 {
         this.storeService.resumeStore(this.createStoreId(id));
     }
 
+    @PostMapping("/stores/{id}/initialize")
+    public StoreProgress initializeStore(@PathVariable("id") String id) {
+        return this.storeService.initializeStore(this.createStoreId(id));
+    }
+
     @DeleteMapping("/stores/{store_id}")
     public StoreProgress closeStore(@PathVariable("store_id") String id) {
         return this.storeService.closeStore(this.createStoreId(id));
+    }
+
+    @GetMapping("/stores/{id}/progress")
+    public Optional<StoreProgress> findStoreProgress(@PathVariable("id") String id) {
+        return this.storeService.findStoreProgress(this.createStoreId(id));
     }
 }
