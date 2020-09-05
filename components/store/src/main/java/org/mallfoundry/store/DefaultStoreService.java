@@ -140,6 +140,26 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
 
     @Transactional
     @Override
+    public void pauseStore(StoreId id) {
+        var store = this.requiredStore(id);
+        store = this.invokePreProcessBeforePauseStore(store);
+        store.pause();
+        store = this.storeRepository.save(store);
+        this.eventPublisher.publishEvent(new ImmutableStorePausedEvent(store));
+    }
+
+    @Transactional
+    @Override
+    public void resumeStore(StoreId id) {
+        var store = this.requiredStore(id);
+        store = this.invokePreProcessBeforeResumeStore(store);
+        store.resume();
+        store = this.storeRepository.save(store);
+        this.eventPublisher.publishEvent(new ImmutableStoreResumedEvent(store));
+    }
+
+    @Transactional
+    @Override
     public StoreProgress initializeStore(StoreId id) {
         var store = this.getStore(id);
         store = this.invokePreProcessBeforeInitializeStore(store);
@@ -183,6 +203,20 @@ public class DefaultStoreService implements StoreService, StoreProcessorInvoker,
     public Store invokePreProcessBeforeUpdateStore(Store store) {
         return Processors.stream(this.processors)
                 .map(StoreProcessor::preProcessBeforeUpdateStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforePauseStore(Store store) {
+        return Processors.stream(this.processors)
+                .map(StoreProcessor::preProcessBeforePauseStore)
+                .apply(store);
+    }
+
+    @Override
+    public Store invokePreProcessBeforeResumeStore(Store store) {
+        return Processors.stream(this.processors)
+                .map(StoreProcessor::preProcessBeforeResumeStore)
                 .apply(store);
     }
 

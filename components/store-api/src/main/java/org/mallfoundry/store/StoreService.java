@@ -46,6 +46,10 @@ public interface StoreService {
 
     Store updateStore(Store store);
 
+    void pauseStore(StoreId id);
+
+    void resumeStore(StoreId id);
+
     StoreProgress initializeStore(StoreId id);
 
     StoreProgress closeStore(StoreId id);
