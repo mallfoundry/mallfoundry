@@ -30,5 +30,9 @@ public interface StoreProcessorInvoker {
 
     Store invokePreProcessBeforeUpdateStore(Store store);
 
+    Store invokePreProcessBeforePauseStore(Store store);
+
+    Store invokePreProcessBeforeResumeStore(Store store);
+
     Store invokePreProcessBeforeCloseStore(Store store);
 }
