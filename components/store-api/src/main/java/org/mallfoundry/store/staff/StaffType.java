@@ -21,7 +21,18 @@ package org.mallfoundry.store.staff;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StaffType {
-    OWNER, STAFF;
+    OWNER(100),
+    STAFF(101);
+
+    private final int code;
+
+    StaffType(int code) {
+        this.code = code;
+    }
+
+    public int code() {
+        return this.code;
+    }
 
     @JsonValue
     @Override
