@@ -20,7 +20,7 @@ package org.mallfoundry.autoconfigure.identity;
 
 
 import org.mallfoundry.captcha.CaptchaService;
-import org.mallfoundry.config.UserConfigurationIdRetrievalStrategy;
+import org.mallfoundry.identity.config.UserConfigurationIdRetrievalStrategy;
 import org.mallfoundry.identity.DefaultUserService;
 import org.mallfoundry.identity.UserProcessor;
 import org.mallfoundry.identity.UserRepository;
