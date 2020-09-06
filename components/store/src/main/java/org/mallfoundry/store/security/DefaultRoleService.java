@@ -80,11 +80,6 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
     }
 
     @Override
-    public RoleId createRoleId(String roleId) {
-        return new ImmutableRoleId(null, null, roleId);
-    }
-
-    @Override
     public Role createRole(RoleId roleId) {
         return this.roleRepository.create(roleId);
     }
@@ -146,7 +141,6 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
         return this.roleRepository.findById(roleId).orElseThrow(RoleExceptions::notFound);
     }
 
-
     @Override
     public Role getRole(RoleId roleId) {
         return this.findRole(roleId).orElseThrow(RoleExceptions::notFound);
@@ -197,6 +191,7 @@ public class DefaultRoleService implements RoleService, RoleProcessorInvoker, Ap
         var superId = this.createRoleId(storeId, roleId);
         return this.getRole(superId);
     }
+
 
     @Override
     public Optional<Role> findRole(RoleId roleId) {
