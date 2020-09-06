@@ -23,7 +23,7 @@ import org.mallfoundry.storage.MediaBucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.util.QualifiedCodes;
+import org.mallfoundry.util.ObjectType;
 import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
@@ -53,7 +53,7 @@ public class StoreBucketLifecycle implements StoreLifecycle {
     }
 
     private BucketId createImageBucketId(String storeId) {
-        return this.storageService.createBucketId(QualifiedCodes.STORE_TYPE_CODE + MediaBucket.IMAGE.code() + storeId);
+        return this.storageService.createBucketId(String.valueOf(ObjectType.STORE.code()) + MediaBucket.IMAGE.code() + storeId);
     }
 
     @Override
