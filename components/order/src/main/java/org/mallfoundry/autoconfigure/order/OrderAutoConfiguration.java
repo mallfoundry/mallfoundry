@@ -18,7 +18,7 @@
 
 package org.mallfoundry.autoconfigure.order;
 
-import org.mallfoundry.config.OrderConfigurationIdRetrievalStrategy;
+import org.mallfoundry.order.config.OrderConfigurationIdRetrievalStrategy;
 import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.DeductingInventoryConnector;
 import org.mallfoundry.order.DefaultOrderService;
