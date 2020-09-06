@@ -18,15 +18,23 @@
 
 package org.mallfoundry.util;
 
-public abstract class QualifiedCodes {
+public enum ObjectType {
+    UNKNOWN(100),
+    TENANT(101),
+    USER(102),
+    CUSTOMER(103),
+    STORE(104),
+    STORE_ROLE(105),
+    STORE_STAFF(106),
+    STORE_MEMBER(107);
 
-    public static final String UNKNOWN_TYPE_CODE = "100";
+    private final int code;
 
-    public static final String TENANT_TYPE_CODE = "101";
+    ObjectType(int code) {
+        this.code = code;
+    }
 
-    public static final String USER_TYPE_CODE = "102";
-
-    public static final String CUSTOMER_TYPE_CODE = "103";
-
-    public static final String STORE_TYPE_CODE = "104";
+    public int code() {
+        return this.code;
+    }
 }
