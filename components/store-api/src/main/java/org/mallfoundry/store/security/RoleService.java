@@ -34,8 +34,6 @@ public interface RoleService {
 
     RoleId createRoleId(String storeId, String roleId);
 
-    RoleId createRoleId(String roleId);
-
     Role createRole(RoleId roleId);
 
     Role addRole(Role role);
