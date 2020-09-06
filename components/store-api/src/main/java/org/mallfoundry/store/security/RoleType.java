@@ -21,9 +21,18 @@ package org.mallfoundry.store.security;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoleType {
-    PRIMITIVE/* 初始角色 */,
-    PREDEFINED /* 预定义角色 */,
-    CUSTOM /* 自定义角色 */;
+    PRIMITIVE(100)/* 初始角色 */,
+    PREDEFINED(101) /* 预定义角色 */,
+    CUSTOM(102) /* 自定义角色 */;
+    private final int code;
+
+    RoleType(int code) {
+        this.code = code;
+    }
+
+    public int code() {
+        return this.code;
+    }
 
     @JsonValue
     @Override
