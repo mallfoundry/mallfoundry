@@ -18,11 +18,11 @@
 
 package org.mallfoundry.store.security;
 
+import org.mallfoundry.util.ObjectType;
+
 public abstract class Roles {
 
-    public static final String ROLE_AUTHORITY_PREFIX = "store_role_";
-
-    public static String getRoleAuthority(Role role) {
-        return ROLE_AUTHORITY_PREFIX + role.getId();
+    public static String createRoleAuthority(Role role) {
+        return ObjectType.STORE_ROLE.code() + role.getId();
     }
 }
