@@ -225,6 +225,10 @@ public class DefaultAccessControlManager implements AccessControlManager {
         if (Objects.isNull(owner.getId())) {
             owner.setId(PrimaryKeyHolder.next(PRINCIPAL_ID_VALUE_NAME));
         }
+        var parent = accessControl.getParent();
+        if (Objects.nonNull(parent) && Objects.nonNull(parent.getResource()) && Objects.isNull(parent.getId())) {
+            parent.setId(this.getAccessControl(parent.getResource()).getId());
+        }
         accessControl.getEntries().stream()
                 .map(AccessControlEntrySupport::of)
                 .peek(entry -> {
