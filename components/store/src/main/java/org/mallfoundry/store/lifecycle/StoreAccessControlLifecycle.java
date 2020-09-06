@@ -42,8 +42,7 @@ public class StoreAccessControlLifecycle implements StoreLifecycle {
         var resource = this.manager.createResource(Resource.STORE_TYPE, store.getId());
         var owner = this.manager.createPrincipal(Principal.USER_TYPE, store.getOwnerId());
         // Create AccessControl by parent access control object.
-        var accessControl = this.manager.getAccessControl(tenantResource).createAccessControl(owner, resource);
-        this.manager.deleteAccessControl(accessControl);
+        var accessControl = this.manager.createAccessControl(tenantResource).createAccessControl(owner, resource);
         this.manager.addAccessControl(accessControl);
     }
 
