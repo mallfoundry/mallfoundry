@@ -40,7 +40,7 @@ public class StaffRoleAuthoritiesEnhancer implements UserAuthoritiesEnhancer {
         var staffs = this.staffService.getActiveStaffs(userId);
         return staffs.stream().map(Staff::getRoles)
                 .flatMap(Collection::stream)
-                .map(Roles::getRoleAuthority)
+                .map(Roles::createRoleAuthority)
                 .collect(Collectors.toUnmodifiableSet());
     }
 }
