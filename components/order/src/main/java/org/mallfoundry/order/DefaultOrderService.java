@@ -20,8 +20,8 @@ package org.mallfoundry.order;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationKeys;
+import org.mallfoundry.config.ConfigurationHolder;
+import org.mallfoundry.config.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;

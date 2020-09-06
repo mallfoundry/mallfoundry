@@ -18,7 +18,7 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.configuration.ConfigurationManager;
+import org.mallfoundry.config.ConfigurationManager;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.access.AccessControlManager;
 import org.mallfoundry.storage.StorageService;

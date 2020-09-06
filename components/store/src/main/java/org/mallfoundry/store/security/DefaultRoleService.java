@@ -20,8 +20,8 @@ package org.mallfoundry.store.security;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationKeys;
+import org.mallfoundry.config.ConfigurationHolder;
+import org.mallfoundry.config.ConfigurationKeys;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.access.AllAuthorities;

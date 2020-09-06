@@ -18,7 +18,7 @@
 
 package org.mallfoundry.autoconfigure.store;
 
-import org.mallfoundry.configuration.StoreConfigurationIdRetrievalStrategy;
+import org.mallfoundry.config.StoreConfigurationIdRetrievalStrategy;
 import org.mallfoundry.store.DefaultStoreService;
 import org.mallfoundry.store.StoreAuthorizeProcessor;
 import org.mallfoundry.store.StoreIdentityProcessor;

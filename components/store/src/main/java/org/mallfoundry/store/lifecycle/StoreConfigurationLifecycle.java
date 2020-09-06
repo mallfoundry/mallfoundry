@@ -18,8 +18,8 @@
 
 package org.mallfoundry.store.lifecycle;
 
-import org.mallfoundry.configuration.ConfigurationManager;
-import org.mallfoundry.configuration.ConfigurationScope;
+import org.mallfoundry.config.ConfigurationManager;
+import org.mallfoundry.config.ConfigurationScope;
 import org.mallfoundry.store.Store;
 import org.springframework.core.annotation.Order;
 

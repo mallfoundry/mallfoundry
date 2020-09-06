@@ -19,8 +19,8 @@
 package org.mallfoundry.store;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationKeys;
+import org.mallfoundry.config.ConfigurationHolder;
+import org.mallfoundry.config.ConfigurationKeys;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;

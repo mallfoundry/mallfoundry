@@ -18,14 +18,14 @@
 
 package org.mallfoundry.autoconfigure.configuration;
 
-import org.mallfoundry.configuration.ConfigurationHolder;
-import org.mallfoundry.configuration.ConfigurationIdRetrievalStrategy;
-import org.mallfoundry.configuration.ConfigurationManager;
-import org.mallfoundry.configuration.ConfigurationRepository;
-import org.mallfoundry.configuration.DefaultConfigurationManager;
-import org.mallfoundry.configuration.DelegatingConfigurationIdRetrievalStrategy;
-import org.mallfoundry.configuration.repository.jpa.DelegatingJpaConfigurationRepository;
-import org.mallfoundry.configuration.repository.jpa.JpaConfigurationRepository;
+import org.mallfoundry.config.ConfigurationHolder;
+import org.mallfoundry.config.ConfigurationIdRetrievalStrategy;
+import org.mallfoundry.config.ConfigurationManager;
+import org.mallfoundry.config.ConfigurationRepository;
+import org.mallfoundry.config.DefaultConfigurationManager;
+import org.mallfoundry.config.DelegatingConfigurationIdRetrievalStrategy;
+import org.mallfoundry.config.repository.jpa.DelegatingJpaConfigurationRepository;
+import org.mallfoundry.config.repository.jpa.JpaConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
