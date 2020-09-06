@@ -45,7 +45,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onRoleAdded(RoleAddedEvent event) {
         var role = event.getRole();
-        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.createRoleAuthority(role));
         var resource = this.manager.createResource(Resource.STORE_TYPE, role.getStoreId());
         var accessControl = this.manager.createAccessControl(resource);
         accessControl.grant(this.createPermissions(role), rolePrincipal);
@@ -56,7 +56,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onRoleChanged(RoleChangedEvent event) {
         var role = event.getRole();
-        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.createRoleAuthority(role));
         var resource = this.manager.createResource(Resource.STORE_TYPE, role.getStoreId());
         var accessControl = this.manager.createAccessControl(resource);
         accessControl.grant(this.createPermissions(role), rolePrincipal);
@@ -68,7 +68,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onRoleDeleted(RoleDeletedEvent event) {
         var role = event.getRole();
-        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role));
+        var rolePrincipal = this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.createRoleAuthority(role));
         this.manager.removePrincipal(rolePrincipal);
     }
 
@@ -76,7 +76,7 @@ public class RoleAccessControlEventListener {
     @EventListener
     public void onRolesCleared(RolesClearedEvent event) {
         var rolePrincipals = event.getRoles().stream()
-                .map(role -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.getRoleAuthority(role)))
+                .map(role -> this.manager.createPrincipal(Principal.AUTHORITY_TYPE, Roles.createRoleAuthority(role)))
                 .collect(Collectors.toUnmodifiableList());
         this.manager.removePrincipals(rolePrincipals);
     }
