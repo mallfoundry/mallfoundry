@@ -26,9 +26,11 @@ import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,5 +92,19 @@ public class StorageResourceV1 {
                                         .map(BlobType::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .build())
                 .map(BlobResponse::of);
+    }
+
+    @DeleteMapping("/buckets/{bucket_id}/blobs/{blob_id}")
+    public void deleteBlob(@PathVariable(name = "bucket_id") String bucketId,
+                           @PathVariable(name = "blob_id") String blobId) {
+        this.storageService.deleteBlob(this.storageService.createBlobId(bucketId, blobId));
+    }
+
+    @DeleteMapping("/buckets/{bucket_id}/blobs/batch")
+    public void deleteBlobs(@PathVariable(name = "bucket_id") String bucketId,
+                            @RequestBody Set<BlobIdRequest> requests) {
+        var blobIds = requests.stream().map(r -> this.storageService.createBlobId(bucketId, r.getId()))
+                .collect(Collectors.toUnmodifiableSet());
+        this.storageService.deleteBlobs(blobIds);
     }
 }
