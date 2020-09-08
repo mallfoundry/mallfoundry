@@ -320,6 +320,8 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     void decline(String declineReason);
 
+    void rating(List<OrderRating> ratings);
+
     interface Builder extends ObjectBuilder<Order> {
 
         Builder customerId(String customerId);
