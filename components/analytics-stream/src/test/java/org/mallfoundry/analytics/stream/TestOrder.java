@@ -26,13 +26,14 @@ import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderId;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaymentResult;
-import org.mallfoundry.order.aftersales.OrderRefund;
-import org.mallfoundry.order.aftersales.OrderRefundException;
+import org.mallfoundry.order.OrderRating;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderReviewException;
-import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.aftersales.OrderRefundException;
+import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
@@ -237,12 +238,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public OrderReview addReview(OrderReview review) throws OrderReviewException {
-        return null;
-    }
-
-    @Override
-    public List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException {
+    public List<OrderReview> review(List<OrderReview> reviews) throws OrderReviewException {
         return null;
     }
 
@@ -343,6 +339,11 @@ public class TestOrder implements Order {
 
     @Override
     public void decline(String declineReason) {
+
+    }
+
+    @Override
+    public void rating(List<OrderRating> ratings) {
 
     }
 
