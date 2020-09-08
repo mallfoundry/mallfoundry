@@ -279,4 +279,14 @@ public class OrderResourceV1 {
                 .collect(Collectors.toUnmodifiableList());
         return this.orderService.reviewOrder(orderId, reviews);
     }
+
+    @PostMapping("/orders/{order_id}/ratings/batch")
+    public void ratingOrder(@PathVariable("order_id") String orderId,
+                            @RequestBody List<OrderRatingRequest> requests) {
+        var order = this.orderService.createOrder(orderId);
+        var ratings = requests.stream()
+                .map(r -> r.assignTo(order.createRating(r.getType())))
+                .collect(Collectors.toUnmodifiableList());
+        this.orderService.ratingOrder(orderId, ratings);
+    }
 }
