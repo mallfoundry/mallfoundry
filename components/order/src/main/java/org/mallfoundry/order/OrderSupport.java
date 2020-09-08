@@ -44,6 +44,7 @@ import static org.mallfoundry.order.OrderStatus.AWAITING_FULFILLMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PAYMENT;
 import static org.mallfoundry.order.OrderStatus.AWAITING_PICKUP;
 import static org.mallfoundry.order.OrderStatus.AWAITING_REFUND;
+import static org.mallfoundry.order.OrderStatus.AWAITING_REVIEW;
 import static org.mallfoundry.order.OrderStatus.AWAITING_SHIPMENT;
 import static org.mallfoundry.order.OrderStatus.CANCELLED;
 import static org.mallfoundry.order.OrderStatus.CLOSED;
@@ -51,6 +52,7 @@ import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.DECLINED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
+import static org.mallfoundry.order.OrderStatus.PARTIALLY_REVIEWED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
@@ -332,7 +334,24 @@ public abstract class OrderSupport implements MutableOrder {
         return isCompleted(this.getStatus());
     }
 
-    @Override
+    private void updateReviewStatus() {
+        var items = this.getItems();
+        var itemsCount = items.size();
+        var reviewedCount = 0;
+        for (var item : items) {
+            if (item.isReviewed()) {
+                reviewedCount++;
+            }
+        }
+        if (reviewedCount == 0) {
+            this.setReviewStatus(INCOMPLETE);
+        } else if (reviewedCount < itemsCount) {
+            this.setReviewStatus(PARTIALLY_REVIEWED);
+        } else {
+            this.setReviewStatus(OrderStatus.REVIEWED);
+        }
+    }
+
     public OrderReview addReview(OrderReview review) throws OrderReviewException {
         if (!this.canReview()) {
             throw OrderExceptions.notReview();
@@ -343,27 +362,25 @@ public abstract class OrderSupport implements MutableOrder {
             throw OrderExceptions.Item.reviewed(review.getItemId());
         }
         item.review();
+        review.setTenantId(this.getTenantId());
+        review.setStoreId(this.getStoreId());
+        review.setStoreName(this.getStoreName());
+        review.setCustomerId(this.getCustomerId());
         review.setOrderId(this.getId());
         review.setProductId(item.getProductId());
         review.setVariantId(item.getVariantId());
         review.setOptionSelections(item.getOptionSelections());
+        review.setImageUrl(item.getImageUrl());
         review.setItemName(item.getName());
         review.review();
         this.getReviews().add(review);
+        this.updateReviewStatus();
         return review;
     }
 
     @Override
-    public List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException {
+    public List<OrderReview> review(List<OrderReview> reviews) throws OrderReviewException {
         return reviews.stream().map(this::addReview).collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
-    public OrderReview getReview(String reviewId) {
-        return this.getReviews().stream()
-                .filter(review -> Objects.equals(review.getId(), reviewId))
-                .findFirst()
-                .orElseThrow();
     }
 
     @Override
@@ -452,6 +469,7 @@ public abstract class OrderSupport implements MutableOrder {
     public void receipt() throws OrderException {
         this.setReceivedTime(new Date());
         this.setStatus(COMPLETED);
+        this.setReviewStatus(AWAITING_REVIEW);
     }
 
     @Override
@@ -459,6 +477,11 @@ public abstract class OrderSupport implements MutableOrder {
         this.setDeclineReason(declineReason);
         this.setDeclinedTime(new Date());
         this.setStatus(DECLINED);
+    }
+
+    @Override
+    public void rating(List<OrderRating> ratings) {
+
     }
 
     @Override

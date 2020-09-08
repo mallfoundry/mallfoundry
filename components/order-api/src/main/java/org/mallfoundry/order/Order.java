@@ -193,22 +193,12 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
     OrderReview createReview(String reviewId);
 
     /**
-     * 添加商品订单评价，一个订单项对象只允许评论一次。
-     *
-     * @param review 订单评论对象
-     * @throws OrderReviewException 订单项重复评论
-     */
-    OrderReview addReview(OrderReview review) throws OrderReviewException;
-
-    /**
      * 批量添加商品订单评价。
      *
      * @param reviews 订单评论对象集合
      * @throws OrderReviewException 订单项重复评论
      */
-    List<OrderReview> addReviews(List<OrderReview> reviews) throws OrderReviewException;
-
-    OrderReview getReview(String reviewId);
+    List<OrderReview> review(List<OrderReview> reviews) throws OrderReviewException;
 
     List<OrderReview> getReviews();
 

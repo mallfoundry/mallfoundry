@@ -243,11 +243,6 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public OrderReview getReview(String reviewId) {
-        return null;
-    }
-
-    @Override
     public List<OrderReview> getReviews() {
         return null;
     }
