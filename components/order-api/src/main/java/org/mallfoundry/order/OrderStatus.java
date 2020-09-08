@@ -37,7 +37,6 @@ public enum OrderStatus {
     REFUNDED /* 已退款 */,
 
     AWAITING_REVIEW /* 等待评论 */,
-    PARTIALLY_REVIEWED /* 部分已评论 */,
     REVIEWED /* 已评论 */,
 
     /*MANUAL_VERIFICATION_REQUIRED *//* 人工已验证 *//*,*/
