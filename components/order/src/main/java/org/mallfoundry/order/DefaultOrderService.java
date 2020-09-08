@@ -489,8 +489,8 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var order = this.requiredOrder(orderId);
         newReviews.forEach(review -> review.toBuilder().author(this.createNewReviewer(review.getAuthor())).build());
         var reviews = order.review(this.invokePreProcessBeforeReviewOrder(order, newReviews));
-        var savedOrder = this.orderRepository.save(order);
-        this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));
+        order = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(order));
         return reviews;
     }
 
@@ -500,12 +500,14 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         return this.invokePostProcessAfterGetOrderRatings(order, order.getRatings());
     }
 
+    @Transactional
     @Override
     public void ratingOrder(String orderId, List<OrderRating> ratings) {
         var order = this.requiredOrder(orderId);
         ratings = this.invokePreProcessBeforeRatingOrder(order, ratings);
         order.rating(ratings);
-        this.orderRepository.save(order);
+        order = this.orderRepository.save(order);
+        this.eventPublisher.publishEvent(new ImmutableOrderRatedEvent(order));
     }
 
     @Override
