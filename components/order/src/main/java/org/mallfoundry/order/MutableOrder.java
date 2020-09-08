@@ -19,6 +19,7 @@
 package org.mallfoundry.order;
 
 import java.util.Date;
+import java.util.List;
 
 public interface MutableOrder extends Order {
 
@@ -61,4 +62,6 @@ public interface MutableOrder extends Order {
     void setDeclinedTime(Date declinedTime);
 
     void setRefundedTime(Date refundedTime);
+
+    void setRatings(List<OrderRating> ratings);
 }
