@@ -24,12 +24,14 @@ import lombok.Setter;
 import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
+import org.mallfoundry.order.OrderRating;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderSupport;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.repository.jpa.JpaOrderRefund;
+import org.mallfoundry.order.repository.jpa.convert.OrderRatingListConverter;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.shipping.repository.jpa.JpaOrderShipment;
 import org.mallfoundry.payment.PaymentMethod;
@@ -159,17 +161,9 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "inventory_deduction_")
     private InventoryDeduction inventoryDeduction;
 
-    @Column(name = "sign_message_")
-    private String signMessage;
-
-    @Column(name = "cancel_reason_")
-    private String cancelReason;
-
-    @Column(name = "close_reason_")
-    private String closeReason;
-
-    @Column(name = "decline_reason_")
-    private String declineReason;
+    @Convert(converter = OrderRatingListConverter.class)
+    @Column(name = "ratings_", length = 255 * 2)
+    private List<OrderRating> ratings = new ArrayList<>();
 
     @Column(name = "placed_time_")
     private Date placedTime;
@@ -189,17 +183,29 @@ public class JpaOrder extends OrderSupport {
     @Column(name = "shipped_time_")
     private Date shippedTime;
 
+    @Column(name = "sign_message_")
+    private String signMessage;
+
     @Column(name = "signed_time_")
     private Date signedTime;
 
     @Column(name = "received_time_")
     private Date receivedTime;
 
+    @Column(name = "cancel_reason_")
+    private String cancelReason;
+
     @Column(name = "cancelled_time_")
     private Date cancelledTime;
 
+    @Column(name = "close_reason_")
+    private String closeReason;
+
     @Column(name = "closed_time_")
     private Date closedTime;
+
+    @Column(name = "decline_reason_")
+    private String declineReason;
 
     @Column(name = "declined_time_")
     private Date declinedTime;
