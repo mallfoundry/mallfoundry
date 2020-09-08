@@ -127,4 +127,6 @@ public interface OrderService {
     void activeOrderRefund(String orderId, OrderRefund refund);
 
     List<OrderReview> reviewOrder(String orderId, List<OrderReview> reviews);
+
+    void ratingOrder(String orderId, List<OrderRating> ratings);
 }

@@ -495,6 +495,14 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public void ratingOrder(String orderId, List<OrderRating> ratings) {
+        var order = this.requiredOrder(orderId);
+        ratings = this.invokePreProcessBeforeRatingOrder(order, ratings);
+        order.rating(ratings);
+        this.orderRepository.save(order);
+    }
+
+    @Override
     public List<Order> invokePreProcessBeforePlaceOrders(List<Order> orders) {
         return Processors.stream(this.processors)
                 .map(OrderProcessor::preProcessBeforePlaceOrders)
@@ -800,6 +808,13 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         return Processors.stream(this.processors)
                 .<List<OrderReview>>map((processor, identity) -> processor.preProcessBeforeReviewOrder(order, identity))
                 .apply(reviews);
+    }
+
+    @Override
+    public List<OrderRating> invokePreProcessBeforeRatingOrder(Order order, List<OrderRating> ratings) {
+        return Processors.stream(this.processors)
+                .<List<OrderRating>>map((processor, identity) -> processor.preProcessBeforeRatingOrder(order, identity))
+                .apply(ratings);
     }
 
     @Override
