@@ -51,7 +51,8 @@ public class OrderReviewedToProductReviewer {
 
     @EventListener
     public void handleOrderReviewedEvent(OrderReviewedEvent event) {
-        var reviews = event.getOrderReviews()
+        var reviews = event.getOrder()
+                .getReviews()
                 .stream()
                 .map(this::assignReview)
                 .collect(Collectors.toUnmodifiableList());
