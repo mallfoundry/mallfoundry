@@ -344,10 +344,6 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     public OrderReview addReview(OrderReview review) throws OrderReviewException {
-        if (!this.canReview()) {
-            throw OrderExceptions.notReview();
-
-        }
         var item = this.getItem(review.getItemId());
         if (item.isReviewed()) {
             throw OrderExceptions.Item.reviewed(review.getItemId());
@@ -365,13 +361,17 @@ public abstract class OrderSupport implements MutableOrder {
         review.setItemName(item.getName());
         review.review();
         this.getReviews().add(review);
-        this.updateReviewStatus();
         return review;
     }
 
     @Override
     public List<OrderReview> review(List<OrderReview> reviews) throws OrderReviewException {
-        return reviews.stream().map(this::addReview).collect(Collectors.toUnmodifiableList());
+        if (!this.canReview()) {
+            throw OrderExceptions.notReview();
+        }
+        reviews = reviews.stream().map(this::addReview).collect(Collectors.toUnmodifiableList());
+        this.updateReviewStatus();
+        return reviews;
     }
 
     @Override
@@ -477,6 +477,9 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public void rating(List<OrderRating> ratings) {
+        if (CollectionUtils.isNotEmpty(this.getRatings())) {
+            throw new OrderRatingException(OrderMessages.rated());
+        }
         this.setRatings(ratings);
     }
 
