@@ -52,7 +52,6 @@ import static org.mallfoundry.order.OrderStatus.COMPLETED;
 import static org.mallfoundry.order.OrderStatus.DECLINED;
 import static org.mallfoundry.order.OrderStatus.INCOMPLETE;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
-import static org.mallfoundry.order.OrderStatus.PARTIALLY_REVIEWED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
@@ -337,19 +336,11 @@ public abstract class OrderSupport implements MutableOrder {
     private void updateReviewStatus() {
         var items = this.getItems();
         var itemsCount = items.size();
-        var reviewedCount = 0;
-        for (var item : items) {
-            if (item.isReviewed()) {
-                reviewedCount++;
-            }
+        var reviewedCount = items.stream().filter(OrderItem::isReviewed).count();
+        if (reviewedCount < itemsCount) {
+            throw new OrderReviewException("The quantities are inconsistent");
         }
-        if (reviewedCount == 0) {
-            this.setReviewStatus(INCOMPLETE);
-        } else if (reviewedCount < itemsCount) {
-            this.setReviewStatus(PARTIALLY_REVIEWED);
-        } else {
-            this.setReviewStatus(OrderStatus.REVIEWED);
-        }
+        this.setReviewStatus(OrderStatus.REVIEWED);
     }
 
     public OrderReview addReview(OrderReview review) throws OrderReviewException {
@@ -480,8 +471,13 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void rating(List<OrderRating> ratings) {
+    public OrderRating createRating(OrderRatingType ratingType) {
+        return new DefaultOrderRating(ratingType);
+    }
 
+    @Override
+    public void rating(List<OrderRating> ratings) {
+        this.setRatings(ratings);
     }
 
     @Override
