@@ -18,45 +18,51 @@
 
 package org.mallfoundry.order;
 
+import org.mallfoundry.i18n.Messages;
+import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.shipping.OrderShipment;
+
 import java.util.List;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class OrderMessages {
 
-    private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = "order.Order.notFound";
+    private static final String ORDER_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("notFound");
 
-    private static final String ORDER_UNPAID_MESSAGE_CODE_KEY = "order.Order.unpaid";
+    private static final String ORDER_UNPAID_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("unpaid");
 
-    private static final String ORDER_PLACING_EXPIRED_MESSAGE_CODE_KEY = "order.Order.placingExpired";
+    private static final String ORDER_PLACING_EXPIRED_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("placingExpired");
 
-    private static final String ORDER_NOT_PAY_MESSAGE_CODE_KEY = "order.Order.notPay";
+    private static final String ORDER_NOT_PAY_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("notPay");
 
-    private static final String ORDER_NOT_REVIEW_MESSAGE_CODE_KEY = "order.Order.notReview";
+    private static final String ORDER_RATED_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("rated");
 
-    private static final String ORDER_FULL_REFUND_REASON_MESSAGE_CODE_KEY = "order.Order.fullRefundReason";
+    private static final String ORDER_NOT_REVIEW_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("notReview");
 
-    private static final String ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY = "order.Order.notSameCustomer";
+    private static final String ORDER_FULL_REFUND_REASON_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("fullRefundReason");
 
-    private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderItem.notFound";
+    private static final String ORDER_NOT_SAME_CUSTOMER_MESSAGE_CODE_KEY = Messages.getKeys(Order.class).codeKey("notSameCustomer");
 
-    private static final String ORDER_ITEM_REVIEWED_MESSAGE_CODE_KEY = "order.OrderItem.reviewed";
+    private static final String ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(OrderItem.class).codeKey("notFound");
 
-    private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = "order.OrderSource.notNull";
+    private static final String ORDER_ITEM_REVIEWED_MESSAGE_CODE_KEY = Messages.getKeys(OrderItem.class).codeKey("reviewed");
 
-    private static final String ORDER_SHIPMENT_NOT_FOUND_MESSAGE_CODE_KEY = "order.OrderShipment.notFound";
+    private static final String ORDER_SOURCE_NOT_NULL_MESSAGE_CODE_KEY = Messages.getKeys(OrderSource.class).codeKey("notNull");
 
-    private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.notFound";
+    private static final String ORDER_SHIPMENT_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(OrderShipment.class).codeKey("notFound");
 
-    private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.applied";
+    private static final String ORDER_REFUND_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("notFound");
 
-    private static final String ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.approvedOrDisapproved";
+    private static final String ORDER_REFUND_APPLIED_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("applied");
 
-    private static final String ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.notCancel";
+    private static final String ORDER_REFUND_APPROVED_OR_DISAPPROVED_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("approvedOrDisapproved");
 
-    private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.completed";
+    private static final String ORDER_REFUND_NOT_CANCEL_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("notCancel");
 
-    private static final String ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY = "order.aftersales.OrderRefund.overApply";
+    private static final String ORDER_REFUND_COMPLETED_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("completed");
+
+    private static final String ORDER_REFUND_OVER_APPLY_MESSAGE_CODE_KEY = Messages.getKeys(OrderRefund.class).codeKey("overApply");
 
     public static String notFound() {
         return message(ORDER_NOT_FOUND_MESSAGE_CODE_KEY, "Order does not exist");
@@ -76,6 +82,10 @@ public abstract class OrderMessages {
 
     public static String fullRefundReason() {
         return message(ORDER_FULL_REFUND_REASON_MESSAGE_CODE_KEY, "A full refund on the order");
+    }
+
+    public static String rated() {
+        return message(ORDER_RATED_MESSAGE_CODE_KEY, "The order has been rated");
     }
 
     public static String placingExpired() {
