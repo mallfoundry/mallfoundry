@@ -26,6 +26,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @StandaloneTest
 public class OrderReviewServiceTests {
 
@@ -43,6 +45,6 @@ public class OrderReviewServiceTests {
                 .itemId("523")
                 .body("非常好").rawBody("真的非常好").bodyType(BodyType.TEXT)
                 .build();
-        this.orderService.addOrderReview(orderId, review);
+        this.orderService.reviewOrder(orderId, List.of(review));
     }
 }

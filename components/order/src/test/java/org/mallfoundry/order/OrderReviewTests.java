@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.mallfoundry.order.repository.jpa.JpaOrder;
 import org.mallfoundry.test.StaticTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @StaticTest
@@ -35,12 +37,12 @@ public class OrderReviewTests {
                 .item((OrderItem item) -> item.toBuilder().id("i2").productId("p2").variantId("v2").build())
                 .build();
         order.receipt();
-        order.addReview(order.createReview("1").toBuilder().itemId("i1").build());
+        order.review(List.of(order.createReview("1").toBuilder().itemId("i1").build()));
 
         // 重复评论
         var r2 = order.createReview("1").toBuilder().itemId("i1").build();
         assertThatExceptionOfType(OrderReviewException.class)
-                .isThrownBy(() -> order.addReview(r2))
+                .isThrownBy(() -> order.review(List.of(r2)))
                 .withMessage(OrderExceptions.Item.reviewed("i1").getMessage());
 
     }
