@@ -18,11 +18,8 @@
 
 package org.mallfoundry.order;
 
-public interface OrderRating {
-
-    OrderRatingType getType();
-
-    int getRating();
-
-    void rating(int rating);
+public enum OrderRatingType {
+    PRODUCT,
+    STORE,
+    SHIPPING
 }
