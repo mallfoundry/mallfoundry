@@ -50,6 +50,9 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
     @Column(name = "store_id_")
     private String storeId;
 
