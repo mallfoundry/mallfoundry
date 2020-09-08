@@ -304,13 +304,17 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
      */
     void receipt() throws OrderException;
 
+    OrderRating createRating(OrderRatingType ratingType);
+
+    List<OrderRating> getRatings();
+
+    void rating(List<OrderRating> ratings);
+
     void cancel(String cancelReason) throws OrderException;
 
     void close(String closeReason) throws OrderException;
 
     void decline(String declineReason);
-
-    void rating(List<OrderRating> ratings);
 
     interface Builder extends ObjectBuilder<Order> {
 
