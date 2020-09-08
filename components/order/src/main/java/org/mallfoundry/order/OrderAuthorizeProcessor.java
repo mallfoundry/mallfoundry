@@ -240,16 +240,10 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + AllAuthorities.ORDER_REVIEW_ADD + "')")
+            + AllAuthorities.ORDER_REVIEW + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
     @Override
-    public OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
-            + AllAuthorities.ORDER_REVIEW_ADD + "')")
-    @Override
-    public List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
+    public List<OrderReview> preProcessBeforeReviewOrder(Order order, List<OrderReview> reviews) {
         return reviews;
     }
 }

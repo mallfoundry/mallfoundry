@@ -160,13 +160,7 @@ public class OrderIdentityProcessor implements OrderProcessor {
     }
 
     @Override
-    public OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
-        review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME));
-        return review;
-    }
-
-    @Override
-    public List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
+    public List<OrderReview> preProcessBeforeReviewOrder(Order order, List<OrderReview> reviews) {
         reviews.forEach(review -> review.setId(PrimaryKeyHolder.next(ORDER_REVIEW_ID_VALUE_NAME)));
         return reviews;
     }
