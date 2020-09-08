@@ -18,7 +18,6 @@
 
 package org.mallfoundry.autoconfigure.order;
 
-import org.mallfoundry.order.config.OrderConfigurationIdRetrievalStrategy;
 import org.mallfoundry.inventory.InventoryService;
 import org.mallfoundry.order.DeductingInventoryConnector;
 import org.mallfoundry.order.DefaultOrderService;
@@ -35,9 +34,14 @@ import org.mallfoundry.order.aftersales.OrderDisputeRepository;
 import org.mallfoundry.order.aftersales.OrderDisputeService;
 import org.mallfoundry.order.aftersales.repository.jpa.DelegatingJpaOrderDisputeRepository;
 import org.mallfoundry.order.aftersales.repository.jpa.JpaOrderDisputeRepository;
+import org.mallfoundry.order.config.OrderConfigurationIdRetrievalStrategy;
 import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
+import org.mallfoundry.order.review.DefaultOrderReviewService;
+import org.mallfoundry.order.review.OrderReviewRepository;
+import org.mallfoundry.order.review.repository.jpa.DelegatingJpaOrderReviewRepository;
+import org.mallfoundry.order.review.repository.jpa.JpaOrderReviewRepository;
 import org.mallfoundry.payment.PaymentService;
 import org.mallfoundry.product.OrderReviewedToProductReviewer;
 import org.mallfoundry.shipping.CarrierService;
@@ -125,5 +129,15 @@ public class OrderAutoConfiguration {
     @Bean
     public DefaultOrderDisputeService orderDisputeService(OrderDisputeRepository orderDisputeRepository) {
         return new DefaultOrderDisputeService(orderDisputeRepository);
+    }
+
+    @Bean
+    public DelegatingJpaOrderReviewRepository delegatingJpaOrderReviewRepository(JpaOrderReviewRepository repository) {
+        return new DelegatingJpaOrderReviewRepository(repository);
+    }
+
+    @Bean
+    public DefaultOrderReviewService defaultOrderReviewService(OrderReviewRepository repository) {
+        return new DefaultOrderReviewService(repository);
     }
 }
