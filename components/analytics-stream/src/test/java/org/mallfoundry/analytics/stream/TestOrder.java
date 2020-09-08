@@ -27,6 +27,7 @@ import org.mallfoundry.order.OrderId;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrderPaymentResult;
 import org.mallfoundry.order.OrderRating;
+import org.mallfoundry.order.OrderRatingType;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderReviewException;
 import org.mallfoundry.order.OrderSource;
@@ -70,9 +71,7 @@ public class TestOrder implements Order {
     private PaymentMethod paymentMethod;
     private String signMessage;
     private InventoryDeduction inventoryDeduction;
-    private String cancelReason;
-    private String closeReason;
-    private String declineReason;
+    private List<OrderRating> ratings;
     private Date placedTime;
     private int placingExpires = 60 * 1000;
     private Date placingExpiredTime;
@@ -81,9 +80,12 @@ public class TestOrder implements Order {
     private Date fulfilledTime;
     private Date signedTime;
     private Date receivedTime;
+    private String cancelReason;
     private Date cancelledTime;
+    private String closeReason;
     private Date closedTime;
     private Date refundedTime;
+    private String declineReason;
     private Date declinedTime;
 
     @Override
@@ -350,6 +352,11 @@ public class TestOrder implements Order {
     @Override
     public void receipt() throws OrderException {
 
+    }
+
+    @Override
+    public OrderRating createRating(OrderRatingType ratingType) {
+        return null;
     }
 
     @Override
