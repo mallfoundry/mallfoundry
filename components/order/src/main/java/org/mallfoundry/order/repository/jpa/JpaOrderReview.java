@@ -50,6 +50,15 @@ public class JpaOrderReview extends OrderReviewSupport {
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "store_id_")
+    private String storeId;
+
+    @Column(name = "store_name_")
+    private String storeName;
+
+    @Column(name = "customer_id_")
+    private String customerId;
+
     @Column(name = "order_id_")
     private String orderId;
 
@@ -71,6 +80,9 @@ public class JpaOrderReview extends OrderReviewSupport {
 
     @Column(name = "item_name_")
     private String itemName;
+
+    @Column(name = "image_url_")
+    private String imageUrl;
 
     @Column(name = "rating_")
     private int rating;

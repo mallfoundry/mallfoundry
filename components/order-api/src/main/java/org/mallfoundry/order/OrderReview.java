@@ -34,6 +34,18 @@ import java.util.List;
  */
 public interface OrderReview extends Topic, ObjectBuilder.ToBuilder<OrderReview.Builder> {
 
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
+    String getStoreName();
+
+    void setStoreName(String storeName);
+
+    String getCustomerId();
+
+    void setCustomerId(String customerId);
+
     String getOrderId();
 
     void setOrderId(String orderId);
@@ -49,6 +61,10 @@ public interface OrderReview extends Topic, ObjectBuilder.ToBuilder<OrderReview.
     String getVariantId();
 
     void setVariantId(String variantId);
+
+    String getImageUrl();
+
+    void setImageUrl(String imageUrl);
 
     List<OptionSelection> getOptionSelections();
 
