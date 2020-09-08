@@ -203,11 +203,7 @@ public interface OrderProcessor {
         return refund;
     }
 
-    default OrderReview preProcessBeforeAddOrderReview(Order order, OrderReview review) {
-        return review;
-    }
-
-    default List<OrderReview> preProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
+    default List<OrderReview> preProcessBeforeReviewOrder(Order order, List<OrderReview> reviews) {
         return reviews;
     }
 

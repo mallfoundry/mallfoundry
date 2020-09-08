@@ -112,9 +112,7 @@ public interface OrderProcessorInvoker {
 
     OrderRefund invokePostProcessAfterGetOrderRefund(Order order, OrderRefund refund);
 
-    OrderReview invokePreProcessBeforeAddOrderReview(Order order, OrderReview review);
-
-    List<OrderReview> invokePreProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews);
+    List<OrderReview> invokePreProcessBeforeReviewOrder(Order order, List<OrderReview> reviews);
 
     void invokePostProcessAfterCompletion();
 }
