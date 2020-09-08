@@ -485,29 +485,14 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     @Transactional
     @Override
-    public OrderReview addOrderReview(String orderId, OrderReview newReview) {
-        var order = this.requiredOrder(orderId);
-        var review = order.addReview(
-                this.invokePreProcessBeforeAddOrderReview(order,
-                        newReview.toBuilder()
-                                .author(this.createNewReviewer(newReview.getAuthor()))
-                                .build()));
-        var savedOrder = this.orderRepository.save(order);
-        this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, List.of(review)));
-        return review;
-    }
-
-    @Transactional
-    @Override
-    public List<OrderReview> addOrderReviews(String orderId, List<OrderReview> newReviews) {
+    public List<OrderReview> reviewOrder(String orderId, List<OrderReview> newReviews) {
         var order = this.requiredOrder(orderId);
         newReviews.forEach(review -> review.toBuilder().author(this.createNewReviewer(review.getAuthor())).build());
-        var reviews = order.addReviews(this.invokePreProcessBeforeAddOrderReviews(order, newReviews));
+        var reviews = order.review(this.invokePreProcessBeforeReviewOrder(order, newReviews));
         var savedOrder = this.orderRepository.save(order);
         this.eventPublisher.publishEvent(new ImmutableOrderReviewedEvent(savedOrder, reviews));
         return reviews;
     }
-
 
     @Override
     public List<Order> invokePreProcessBeforePlaceOrders(List<Order> orders) {
@@ -811,16 +796,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
-    public OrderReview invokePreProcessBeforeAddOrderReview(Order order, OrderReview review) {
+    public List<OrderReview> invokePreProcessBeforeReviewOrder(Order order, List<OrderReview> reviews) {
         return Processors.stream(this.processors)
-                .<OrderReview>map((processor, identity) -> processor.preProcessBeforeAddOrderReview(order, identity))
-                .apply(review);
-    }
-
-    @Override
-    public List<OrderReview> invokePreProcessBeforeAddOrderReviews(Order order, List<OrderReview> reviews) {
-        return Processors.stream(this.processors)
-                .<List<OrderReview>>map((processor, identity) -> processor.preProcessBeforeAddOrderReviews(order, identity))
+                .<List<OrderReview>>map((processor, identity) -> processor.preProcessBeforeReviewOrder(order, identity))
                 .apply(reviews);
     }
 
