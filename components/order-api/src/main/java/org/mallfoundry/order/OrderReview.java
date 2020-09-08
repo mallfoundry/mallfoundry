@@ -19,9 +19,11 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.BodyType;
 import org.mallfoundry.discuss.Topic;
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
@@ -32,19 +34,11 @@ import java.util.List;
  *
  * @author Zhi Tang
  */
-public interface OrderReview extends Topic, ObjectBuilder.ToBuilder<OrderReview.Builder> {
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
+public interface OrderReview extends StoreOwnership, CustomerOwnership, Topic, ObjectBuilder.ToBuilder<OrderReview.Builder> {
 
     String getStoreName();
 
     void setStoreName(String storeName);
-
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
 
     String getOrderId();
 
