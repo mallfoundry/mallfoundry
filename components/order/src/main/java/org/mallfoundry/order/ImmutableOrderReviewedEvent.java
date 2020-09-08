@@ -18,22 +18,8 @@
 
 package org.mallfoundry.order;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-import java.util.List;
-
-public class ImmutableOrderReviewedEvent extends ApplicationEvent implements OrderReviewedEvent {
-
-    @Getter
-    private final Order order;
-
-    @Getter
-    private final List<OrderReview> orderReviews;
-
-    public ImmutableOrderReviewedEvent(Order order, List<OrderReview> orderReviews) {
-        super(orderReviews);
-        this.order = order;
-        this.orderReviews = orderReviews;
+public class ImmutableOrderReviewedEvent extends OrderEventSupport implements OrderReviewedEvent {
+    public ImmutableOrderReviewedEvent(Order order) {
+        super(order);
     }
 }
