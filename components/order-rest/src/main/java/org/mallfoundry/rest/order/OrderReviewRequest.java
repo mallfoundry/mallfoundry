@@ -26,13 +26,13 @@ import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.order.OrderReview;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
 public class OrderReviewRequest {
     private String itemId;
     private int rating;
-    private boolean anonymous;
     private List<String> tags;
     private String body;
     private String rawBody;
@@ -43,7 +43,7 @@ public class OrderReviewRequest {
         return review.toBuilder()
                 .itemId(this.itemId).rating(this.rating)
                 .tags(this.tags)
-                .author(this.author.assignTo(new DefaultAuthor()))
+                .author(Objects.requireNonNullElseGet(this.author, AuthorRequest::new).assignTo(new DefaultAuthor()))
                 .body(this.body).rawBody(this.rawBody).bodyType(this.bodyType)
                 .build();
     }

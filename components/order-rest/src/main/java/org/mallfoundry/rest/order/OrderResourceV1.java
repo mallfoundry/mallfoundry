@@ -102,6 +102,7 @@ public class OrderResourceV1 {
                                       @RequestParam(name = "name", required = false) String name,
                                       @RequestParam(name = "statuses", required = false) Set<String> statuses,
                                       @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses,
+                                      @RequestParam(name = "review_statuses", required = false) Set<String> reviewStatuses,
                                       @RequestParam(name = "types", required = false) Set<String> types,
                                       @RequestParam(name = "sources", required = false) Set<String> sources,
                                       @RequestParam(name = "payment_methods", required = false) Set<String> paymentMethods,
@@ -119,6 +120,9 @@ public class OrderResourceV1 {
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .disputeStatuses(() ->
                         CollectionUtils.emptyIfNull(disputeStatuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .reviewStatuses(() ->
+                        CollectionUtils.emptyIfNull(reviewStatuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .types(() ->
                         CollectionUtils.emptyIfNull(types).stream().map(StringUtils::upperCase)
@@ -138,7 +142,8 @@ public class OrderResourceV1 {
                             @RequestParam(name = "customer_id", required = false) String customerId,
                             @RequestParam(name = "name", required = false) String name,
                             @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                            @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses) {
+                            @RequestParam(name = "dispute_statuses", required = false) Set<String> disputeStatuses,
+                            @RequestParam(name = "review_statuses", required = false) Set<String> reviewStatuses) {
         return this.orderService.countOrders(this.orderService.createOrderQuery().toBuilder()
                 .customerId(customerId).storeId(storeId)
                 .name(name)
@@ -147,6 +152,9 @@ public class OrderResourceV1 {
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .disputeStatuses(() ->
                         CollectionUtils.emptyIfNull(disputeStatuses).stream().map(StringUtils::upperCase)
+                                .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .reviewStatuses(() ->
+                        CollectionUtils.emptyIfNull(reviewStatuses).stream().map(StringUtils::upperCase)
                                 .map(OrderStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .build());
     }
@@ -242,11 +250,11 @@ public class OrderResourceV1 {
     }
 
     @PatchMapping("/orders/{order_id}/refunds/{refund_id}/reapply")
-    public void reapplyOrderRefund(@PathVariable("order_id") String orderId,
-                                   @PathVariable("refund_id") String refundId,
-                                   @RequestBody OrderRefundRequest.Reapply request) {
+    public OrderRefund reapplyOrderRefund(@PathVariable("order_id") String orderId,
+                                          @PathVariable("refund_id") String refundId,
+                                          @RequestBody OrderRefundRequest.Reapply request) {
         var refund = request.assignTo(this.orderService.createOrder(orderId).createRefund(refundId));
-        this.orderService.reapplyOrderRefund(orderId, refund);
+        return this.orderService.reapplyOrderRefund(orderId, refund);
     }
 
     @PostMapping("/orders/{order_id}/refunds/active")
@@ -262,20 +270,13 @@ public class OrderResourceV1 {
         return this.orderService.findOrderRefund(orderId, refundId);
     }
 
-    @PostMapping("/orders/{order_id}/reviews")
-    public OrderReview addOrderReview(@PathVariable("order_id") String orderId,
-                                      @RequestBody OrderReviewRequest request) {
-        var review = request.assignTo(this.orderService.createOrder(orderId).createReview(null));
-        return this.orderService.addOrderReview(orderId, review);
-    }
-
     @PostMapping("/orders/{order_id}/reviews/batch")
-    public List<OrderReview> addOrderReviews(@PathVariable("order_id") String orderId,
-                                             @RequestBody List<OrderReviewRequest> requests) {
+    public List<OrderReview> reviewOrder(@PathVariable("order_id") String orderId,
+                                         @RequestBody List<OrderReviewRequest> requests) {
         var order = this.orderService.createOrder(orderId);
         var reviews = requests.stream()
                 .map(r -> r.assignTo(order.createReview(null)))
                 .collect(Collectors.toUnmodifiableList());
-        return this.orderService.addOrderReviews(orderId, reviews);
+        return this.orderService.reviewOrder(orderId, reviews);
     }
 }
