@@ -18,8 +18,16 @@
 
 package org.mallfoundry.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum OrderRatingType {
     PRODUCT,
     STORE,
-    SHIPPING
+    SHIPPING;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
