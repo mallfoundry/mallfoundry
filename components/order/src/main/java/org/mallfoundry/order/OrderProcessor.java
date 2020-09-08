@@ -207,6 +207,10 @@ public interface OrderProcessor {
         return reviews;
     }
 
+    default List<OrderRating> preProcessBeforeRatingOrder(Order order, List<OrderRating> ratings) {
+        return ratings;
+    }
+
     default void postProcessAfterCompletion() {
     }
 }
