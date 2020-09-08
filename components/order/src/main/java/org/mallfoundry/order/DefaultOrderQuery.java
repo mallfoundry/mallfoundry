@@ -38,6 +38,7 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
     private String name;
     private Set<OrderStatus> statuses;
     private Set<OrderStatus> disputeStatuses;
+    private Set<OrderStatus> reviewStatuses;
     private Set<OrderType> types;
     private Set<PaymentMethod> paymentMethods;
     private Set<OrderSource> sources;
@@ -92,13 +93,23 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
 
         @Override
         public Builder disputeStatuses(Supplier<Set<OrderStatus>> supplier) {
-            this.query.setDisputeStatuses(supplier.get());
-            return this;
+            return this.disputeStatuses(supplier.get());
         }
 
         @Override
         public Builder disputeStatuses(Set<OrderStatus> statuses) {
             this.query.setDisputeStatuses(statuses);
+            return this;
+        }
+
+        @Override
+        public Builder reviewStatuses(Supplier<Set<OrderStatus>> supplier) {
+            return this.reviewStatuses(supplier.get());
+        }
+
+        @Override
+        public Builder reviewStatuses(Set<OrderStatus> statuses) {
+            this.query.setReviewStatuses(statuses);
             return this;
         }
 
