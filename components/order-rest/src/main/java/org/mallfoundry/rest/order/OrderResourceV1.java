@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderRating;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSource;
@@ -278,6 +279,11 @@ public class OrderResourceV1 {
                 .map(r -> r.assignTo(order.createReview(null)))
                 .collect(Collectors.toUnmodifiableList());
         return this.orderService.reviewOrder(orderId, reviews);
+    }
+
+    @GetMapping("/orders/{order_id}/ratings")
+    public List<OrderRating> getOrderRatings(@PathVariable("order_id") String orderId) {
+        return this.orderService.getOrderRatings(orderId);
     }
 
     @PostMapping("/orders/{order_id}/ratings/batch")

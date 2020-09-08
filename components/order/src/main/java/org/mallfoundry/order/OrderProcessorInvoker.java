@@ -114,6 +114,8 @@ public interface OrderProcessorInvoker {
 
     List<OrderReview> invokePreProcessBeforeReviewOrder(Order order, List<OrderReview> reviews);
 
+    List<OrderRating> invokePostProcessAfterGetOrderRatings(Order order, List<OrderRating> ratings);
+
     List<OrderRating> invokePreProcessBeforeRatingOrder(Order order, List<OrderRating> ratings);
 
     void invokePostProcessAfterCompletion();

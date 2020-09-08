@@ -495,6 +495,12 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     }
 
     @Override
+    public List<OrderRating> getOrderRatings(String orderId) {
+        var order = this.requiredOrder(orderId);
+        return this.invokePostProcessAfterGetOrderRatings(order, order.getRatings());
+    }
+
+    @Override
     public void ratingOrder(String orderId, List<OrderRating> ratings) {
         var order = this.requiredOrder(orderId);
         ratings = this.invokePreProcessBeforeRatingOrder(order, ratings);
@@ -808,6 +814,13 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         return Processors.stream(this.processors)
                 .<List<OrderReview>>map((processor, identity) -> processor.preProcessBeforeReviewOrder(order, identity))
                 .apply(reviews);
+    }
+
+    @Override
+    public List<OrderRating> invokePostProcessAfterGetOrderRatings(Order order, List<OrderRating> ratings) {
+        return Processors.stream(this.processors)
+                .<List<OrderRating>>map((processor, identity) -> processor.postProcessAfterGetOrderRatings(order, identity))
+                .apply(ratings);
     }
 
     @Override

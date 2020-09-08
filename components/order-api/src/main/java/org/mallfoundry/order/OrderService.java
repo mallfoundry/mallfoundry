@@ -128,5 +128,7 @@ public interface OrderService {
 
     List<OrderReview> reviewOrder(String orderId, List<OrderReview> reviews);
 
+    List<OrderRating> getOrderRatings(String orderId);
+
     void ratingOrder(String orderId, List<OrderRating> ratings);
 }
