@@ -44,23 +44,7 @@ public enum OrderStatus {
     CANCELLED /* 已取消 */,
     COMPLETED /* 完成 */,
     DECLINED /* 已拒绝 */,
-    CLOSED /* 关闭的 */;
-
-    public static boolean isIncomplete(OrderStatus status) {
-        return INCOMPLETE == status;
-    }
-
-    public static boolean isPending(OrderStatus status) {
-        return PENDING == status;
-    }
-
-    public static boolean isAwaitingPayment(OrderStatus status) {
-        return AWAITING_PAYMENT == status;
-    }
-
-    public static boolean isCompleted(OrderStatus status) {
-        return COMPLETED == status;
-    }
+    CLOSED /* 已关闭 */;
 
     @JsonValue
     @Override

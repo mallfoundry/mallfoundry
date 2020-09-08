@@ -56,10 +56,6 @@ import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
-import static org.mallfoundry.order.OrderStatus.isAwaitingPayment;
-import static org.mallfoundry.order.OrderStatus.isCompleted;
-import static org.mallfoundry.order.OrderStatus.isIncomplete;
-import static org.mallfoundry.order.OrderStatus.isPending;
 import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 
 public abstract class OrderSupport implements MutableOrder {
@@ -197,7 +193,7 @@ public abstract class OrderSupport implements MutableOrder {
      * @return true 表示未付款，false 表示已付款。
      */
     private boolean unpaid() {
-        return isIncomplete(this.getStatus()) || isPending(this.getStatus()) || isAwaitingPayment(this.getStatus());
+        return INCOMPLETE.equals(this.getStatus()) || PENDING.equals(this.getStatus()) || AWAITING_PAYMENT.equals(this.getStatus());
     }
 
     private void applyItemRefund(OrderRefund refund) {
@@ -330,7 +326,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public boolean canReview() {
-        return isCompleted(this.getStatus());
+        return COMPLETED.equals(this.getStatus());
     }
 
     private void updateReviewStatus() {
@@ -392,7 +388,9 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public boolean canPay() {
         // 已下单、未支付、已下单状态、下单未过期
-        return this.isPlaced() && !this.isPaid() && (isPending(this.getStatus()) || isAwaitingPayment(this.getStatus())) && !this.isPlacingExpired();
+        return this.isPlaced() && !this.isPaid()
+                && (PENDING.equals(this.getStatus()) || AWAITING_PAYMENT.equals(this.getStatus()))
+                && !this.isPlacingExpired();
     }
 
     @Override
