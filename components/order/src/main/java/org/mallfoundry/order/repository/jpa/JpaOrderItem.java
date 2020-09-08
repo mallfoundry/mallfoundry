@@ -74,7 +74,7 @@ public class JpaOrderItem extends OrderItemSupport {
     private String name;
 
     @NotEmpty
-    @Column(name = "option_selections_", length = 1024)
+    @Column(name = "option_selections_", length = 255 * 4)
     @Convert(converter = OptionSelectionListConverter.class)
     private List<OptionSelection> optionSelections;
 
