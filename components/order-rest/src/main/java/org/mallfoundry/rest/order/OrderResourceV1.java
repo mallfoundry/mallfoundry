@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +65,12 @@ public class OrderResourceV1 {
     public Order updateOrder(@PathVariable("order_id") String orderId, @RequestBody OrderRequest request) {
         var order = this.orderService.createOrder(orderId);
         return this.orderService.updateOrder(request.assignTo(order));
+    }
+
+    @PatchMapping("/orders/{order_id}/discounts/batch")
+    public Order discountOrder(@PathVariable("order_id") String orderId,
+                               @RequestBody List<OrderDiscountRequest> requests) {
+        return this.orderService.discountOrder(orderId, Collections.unmodifiableList(requests));
     }
 
     @PostMapping("/orders/{order_id}/cancel")
