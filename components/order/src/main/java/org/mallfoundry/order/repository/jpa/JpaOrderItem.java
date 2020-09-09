@@ -87,8 +87,8 @@ public class JpaOrderItem extends OrderItemSupport {
     @Column(name = "price_")
     private BigDecimal price;
 
-    @Column(name = "discount_amount_")
-    private BigDecimal discountAmount;
+    @Column(name = "discount_total_price_")
+    private BigDecimal discountTotalPrice;
 
     @Column(name = "shipping_cost_")
     private BigDecimal shippingCost;
@@ -125,8 +125,8 @@ public class JpaOrderItem extends OrderItemSupport {
     }
 
     @Override
-    public BigDecimal getDiscountAmount() {
-        return Objects.requireNonNullElse(this.discountAmount, BigDecimal.ZERO);
+    public BigDecimal getDiscountTotalPrice() {
+        return Objects.requireNonNullElse(this.discountTotalPrice, BigDecimal.ZERO);
     }
 
     @Override
