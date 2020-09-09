@@ -18,17 +18,7 @@
 
 package org.mallfoundry.order;
 
-import java.math.BigDecimal;
-
-public interface OrderDiscount {
-
-    String getItemId();
-
-    OrderDiscountType getType();
-
-    void setType(OrderDiscountType type);
-
-    BigDecimal getAmountDelta();
-
-    void setAmountDelta(BigDecimal amountDelta);
+public enum OrderDiscountType {
+    TOTAL_PRICE,
+    SHIPPING_COST
 }
