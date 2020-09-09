@@ -42,18 +42,20 @@ public class TestOrderItem implements OrderItem {
     private BigDecimal refundedAmount;
     private BigDecimal refundingAmount;
     private BigDecimal price;
-    private BigDecimal discountAmount;
+    private BigDecimal discountTotalPrice;
     private BigDecimal shippingCost;
     private BigDecimal discountShippingCost;
     private boolean reviewed;
     private boolean shipped;
     private Date shippedTime;
 
+    public BigDecimal getDiscountTotalPrice() {
+        return Objects.requireNonNullElse(this.discountTotalPrice, BigDecimal.ZERO);
+    }
 
-    public BigDecimal getDiscountAmount() {
-        return Objects.isNull(this.discountAmount)
-                ? BigDecimal.ZERO
-                : this.discountAmount;
+    @Override
+    public void discountTotalPrice(BigDecimal discountTotalPrice) {
+
     }
 
     @Override
@@ -87,15 +89,16 @@ public class TestOrderItem implements OrderItem {
     }
 
     public BigDecimal getShippingCost() {
-        return Objects.isNull(this.shippingCost)
-                ? BigDecimal.ZERO
-                : this.shippingCost;
+        return Objects.requireNonNullElse(this.shippingCost, BigDecimal.ZERO);
     }
 
     public BigDecimal getDiscountShippingCost() {
-        return Objects.isNull(this.discountShippingCost)
-                ? BigDecimal.ZERO
-                : this.discountShippingCost;
+        return Objects.requireNonNullElse(this.discountShippingCost, BigDecimal.ZERO);
+    }
+
+    @Override
+    public void discountShippingCost(BigDecimal discountShippingCost) {
+
     }
 
     @Override
@@ -111,7 +114,7 @@ public class TestOrderItem implements OrderItem {
     @Override
     public BigDecimal getTotalAmount() {
         return this.getSubtotalAmount()
-                .add(this.getDiscountAmount())
+                .add(this.getDiscountTotalPrice())
                 .add(this.getDiscountShippingCost());
     }
 

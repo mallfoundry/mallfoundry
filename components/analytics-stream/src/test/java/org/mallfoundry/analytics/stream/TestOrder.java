@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.Order;
+import org.mallfoundry.order.OrderDiscount;
 import org.mallfoundry.order.OrderException;
 import org.mallfoundry.order.OrderId;
 import org.mallfoundry.order.OrderItem;
@@ -43,7 +44,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -91,6 +91,21 @@ public class TestOrder implements Order {
     @Override
     public boolean isPlacingExpired() {
         return false;
+    }
+
+    @Override
+    public OrderDiscount createDiscount(String itemId) {
+        return null;
+    }
+
+    @Override
+    public void discount(OrderDiscount discount) {
+
+    }
+
+    @Override
+    public void discount(List<OrderDiscount> discounts) {
+
     }
 
     @Override
@@ -297,16 +312,6 @@ public class TestOrder implements Order {
     @Override
     public boolean isPaid() {
         return false;
-    }
-
-    @Override
-    public void discounts(Map<String, BigDecimal> amounts) {
-
-    }
-
-    @Override
-    public void discountShippingCosts(Map<String, BigDecimal> shippingCosts) {
-
     }
 
     @Override
