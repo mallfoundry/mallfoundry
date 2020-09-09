@@ -22,11 +22,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
-import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.catalog.product.review.Review;
 import org.mallfoundry.catalog.product.review.ReviewReply;
 import org.mallfoundry.catalog.product.review.ReviewStatus;
 import org.mallfoundry.catalog.product.review.ReviewSupport;
+import org.mallfoundry.catalog.repository.jpa.convert.OptionSelectionListConverter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.BodyType;
@@ -53,6 +53,12 @@ public class JpaReview extends ReviewSupport {
     @Id
     @Column(name = "id_")
     private String id;
+
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @Column(name = "store_id_")
+    private String storeId;
 
     @Column(name = "order_id_")
     private String orderId;

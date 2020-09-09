@@ -22,12 +22,13 @@ import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.BodyType;
 import org.mallfoundry.discuss.Topic;
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 import java.util.List;
 
-public interface Review extends Topic, ObjectBuilder.ToBuilder<Review.Builder> {
+public interface Review extends StoreOwnership, Topic, ObjectBuilder.ToBuilder<Review.Builder> {
 
     String getOrderId();
 
@@ -88,6 +89,10 @@ public interface Review extends Topic, ObjectBuilder.ToBuilder<Review.Builder> {
     interface Builder extends ObjectBuilder<Review> {
 
         Builder id(String id);
+
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
 
         Builder orderId(String orderId);
 

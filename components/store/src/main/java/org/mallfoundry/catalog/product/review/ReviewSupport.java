@@ -78,6 +78,18 @@ public abstract class ReviewSupport implements MutableReview {
         }
 
         @Override
+        public Builder tenantId(String tenantId) {
+            this.review.setTenantId(tenantId);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.review.setStoreId(storeId);
+            return this;
+        }
+
+        @Override
         public Builder orderId(String orderId) {
             this.review.setOrderId(orderId);
             return this;
