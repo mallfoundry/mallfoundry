@@ -77,12 +77,6 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
 
     BigDecimal getTotalPrice();
 
-    BigDecimal getSubtotalAmount();
-
-    BigDecimal getRefundedAmount();
-
-    BigDecimal getRefundingAmount();
-
     void applyRefund(BigDecimal refundAmount);
 
     void cancelRefund(BigDecimal failAmount);
@@ -90,6 +84,10 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
     void succeedRefund(BigDecimal succeedAmount);
 
     void failRefund(BigDecimal failAmount);
+
+    BigDecimal getRefundedAmount();
+
+    BigDecimal getRefundingAmount();
 
     boolean isReviewed();
 
@@ -100,6 +98,8 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
     Date getShippedTime();
 
     void ship();
+
+    BigDecimal getSubtotalAmount();
 
     BigDecimal getTotalAmount();
 
