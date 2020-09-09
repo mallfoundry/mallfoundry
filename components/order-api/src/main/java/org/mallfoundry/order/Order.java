@@ -32,7 +32,6 @@ import org.mallfoundry.util.ObjectBuilder;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -273,9 +272,11 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     Date getRefundedTime();
 
-    void discounts(Map<String, BigDecimal> amounts);
+    OrderDiscount createDiscount(String itemId);
 
-    void discountShippingCosts(Map<String, BigDecimal> shippingCosts);
+    void discount(OrderDiscount discount);
+
+    void discount(List<OrderDiscount> discounts);
 
     void place(int placingExpires) throws OrderException;
 
