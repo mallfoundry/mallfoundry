@@ -481,7 +481,9 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     private Author createNewReviewer(Author author) {
         var newAuthor = new DefaultAuthor(SubjectHolder.getSubject().getId()).toBuilder()
-                .type(AuthorType.CUSTOMER).nickname(SubjectHolder.getSubject().getNickname())
+                .type(AuthorType.CUSTOMER)
+                .nickname(SubjectHolder.getSubject().getNickname())
+                .avatar(SubjectHolder.getSubject().getAvatar())
                 .build();
         if (Objects.nonNull(author) && StringUtils.isNotBlank(author.getAvatar())) {
             newAuthor.setAvatar(author.getAvatar());
