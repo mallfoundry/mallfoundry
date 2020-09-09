@@ -134,6 +134,11 @@ public class TestOrder implements Order {
     }
 
     @Override
+    public int getTotalQuantity() {
+        return 0;
+    }
+
+    @Override
     public OrderShipment createShipment(String shipmentId) {
         return null;
     }
@@ -265,7 +270,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public int getTotalItems() {
+    public int getItemsSize() {
         return 0;
     }
 

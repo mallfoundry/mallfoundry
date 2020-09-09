@@ -91,7 +91,12 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public int getTotalItems() {
+    public int getTotalQuantity() {
+        return this.getItems().stream().mapToInt(OrderItem::getQuantity).sum();
+    }
+
+    @Override
+    public int getItemsSize() {
         return CollectionUtils.size(this.getItems());
     }
 
@@ -112,7 +117,7 @@ public abstract class OrderSupport implements MutableOrder {
         shipment.getItems().forEach(this::shipItem);
         shipment.ship(); // 发货
         this.setShippedItems(this.getShippedItems() + shipment.getItems().size());
-        this.setStatus(this.getShippedItems() == this.getTotalItems() ? SHIPPED : PARTIALLY_SHIPPED);
+        this.setStatus(this.getShippedItems() == this.getItemsSize() ? SHIPPED : PARTIALLY_SHIPPED);
         this.setShippedTime(shipment.getShippedTime());
         this.getShipments().add(shipment);
     }

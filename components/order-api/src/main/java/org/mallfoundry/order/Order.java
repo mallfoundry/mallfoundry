@@ -62,6 +62,10 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     void setStoreName(String storeName);
 
+    String getCustomerMessage();
+
+    void setCustomerMessage(String customerMessage);
+
     OrderStatus getStatus();
 
     /**
@@ -97,7 +101,9 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     void setItems(List<OrderItem> items);
 
-    int getTotalItems();
+    int getTotalQuantity();
+
+    int getItemsSize();
 
     OrderShipment createShipment(String shipmentId);
 
