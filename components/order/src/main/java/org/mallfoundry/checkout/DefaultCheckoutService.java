@@ -95,15 +95,13 @@ public class DefaultCheckoutService implements CheckoutService {
             order.addItem(order.createItem(null)
                     .toBuilder()
                     .storeId(product.getStoreId())
-                    .productId(product.getId())
-                    .variantId(variant.getId())
+                    .productId(product.getId()).variantId(variant.getId())
                     .name(product.getName())
-                    .optionSelections(List.copyOf(variant.getOptionSelections()))
                     .imageUrl(CollectionUtils.firstElement(variant.getImageUrls()))
-                    .price(variant.getPrice())
-                    .quantity(item.getQuantity())
+                    .optionSelections(List.copyOf(variant.getOptionSelections()))
+                    .price(variant.getPrice()).quantity(item.getQuantity())
+                    .shippingCost(product.getFixedShippingCost()) // 使用固定运费。
                     .build());
-
             // Add to orders.
             if (!orders.contains(order)) {
                 orders.add(order);
