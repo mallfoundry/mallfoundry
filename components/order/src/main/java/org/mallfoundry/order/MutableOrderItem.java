@@ -23,6 +23,10 @@ import java.util.Date;
 
 public interface MutableOrderItem extends OrderItem {
 
+    void setDiscountTotalPrice(BigDecimal discountTotalPrice);
+
+    void setDiscountShippingCost(BigDecimal discountShippingCost);
+
     void setRefundedAmount(BigDecimal refundedAmount);
 
     void setRefundingAmount(BigDecimal refundingAmount);
