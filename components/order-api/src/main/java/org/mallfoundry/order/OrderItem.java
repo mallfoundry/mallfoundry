@@ -69,15 +69,15 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
 
     BigDecimal getDiscountShippingCost();
 
-    void setDiscountShippingCost(BigDecimal discountShippingCost);
+    void discountShippingCost(BigDecimal discountShippingCost);
+
+    BigDecimal getDiscountTotalPrice();
+
+    void discountTotalPrice(BigDecimal discountTotalPrice);
 
     BigDecimal getTotalPrice();
 
     BigDecimal getSubtotalAmount();
-
-    BigDecimal getDiscountAmount();
-
-    void setDiscountAmount(BigDecimal discountAmount);
 
     BigDecimal getRefundedAmount();
 
@@ -122,5 +122,7 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
         Builder quantity(int quantity);
 
         Builder price(BigDecimal price);
+
+        Builder shippingCost(BigDecimal shippingCost);
     }
 }
