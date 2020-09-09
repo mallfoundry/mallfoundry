@@ -39,6 +39,7 @@ public class OrderReviewedToProductReviewer {
     private Review assignReview(OrderReview review) {
         return this.productReviewService.createReview(review.getId())
                 .toBuilder()
+                .tenantId(review.getTenantId()).storeId(review.getStoreId())
                 .orderId(review.getOrderId()).itemId(review.getItemId())
                 .productId(review.getProductId()).variantId(review.getVariantId())
                 .optionSelections(review.getOptionSelections())
