@@ -169,6 +169,15 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     @Transactional
     @Override
+    public Order discountOrder(String orderId, List<OrderDiscount> discounts) {
+        var order = this.requiredOrder(orderId);
+        order.discount(discounts);
+        order = this.orderRepository.save(order);
+        return order;
+    }
+
+    @Transactional
+    @Override
     public Order updateOrder(final Order source) {
         var order = this.requiredOrder(source.getId());
         order = this.invokePreProcessBeforeUpdateOrder(order);
