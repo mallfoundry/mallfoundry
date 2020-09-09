@@ -24,8 +24,27 @@ import org.mallfoundry.util.DecimalUtils;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class OrderItemSupport implements MutableOrderItem {
+
+    @Override
+    public void discountTotalPrice(BigDecimal discountTotalPrice) {
+        // discount total price < 0
+        if (DecimalUtils.lessThan(this.getTotalPrice().add(discountTotalPrice), BigDecimal.ZERO)) {
+            throw new OrderDiscountException(OrderMessages.Item.discountTotalPriceCannotLessThanZero());
+        }
+        this.setDiscountTotalPrice(discountTotalPrice);
+    }
+
+    @Override
+    public void discountShippingCost(BigDecimal discountShippingCost) {
+        // discounted shipping cost < 0
+        if (DecimalUtils.lessThan(this.getShippingCost().add(discountShippingCost), BigDecimal.ZERO)) {
+            throw new OrderDiscountException(OrderMessages.Item.discountShippingCostCannotLessThanZero());
+        }
+        this.setDiscountShippingCost(discountShippingCost);
+    }
 
     @Override
     public BigDecimal getTotalPrice() {
@@ -39,7 +58,7 @@ public abstract class OrderItemSupport implements MutableOrderItem {
 
     @Override
     public BigDecimal getTotalAmount() {
-        return this.getSubtotalAmount().add(this.getDiscountAmount()).add(this.getDiscountShippingCost());
+        return this.getSubtotalAmount().add(this.getDiscountTotalPrice()).add(this.getDiscountShippingCost());
     }
 
     private void addRefundingAmount(BigDecimal deltaAmount) {
@@ -161,6 +180,12 @@ public abstract class OrderItemSupport implements MutableOrderItem {
         @Override
         public Builder price(BigDecimal price) {
             this.item.setPrice(price);
+            return this;
+        }
+
+        @Override
+        public Builder shippingCost(BigDecimal shippingCost) {
+            this.item.setShippingCost(Objects.requireNonNullElse(shippingCost, BigDecimal.ZERO));
             return this;
         }
 
