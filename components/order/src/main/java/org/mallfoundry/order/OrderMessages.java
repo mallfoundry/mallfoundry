@@ -103,6 +103,7 @@ public abstract class OrderMessages {
     }
 
     public abstract static class Item {
+
         public static String notFound() {
             return message(ORDER_ITEM_NOT_FOUND_MESSAGE_CODE_KEY, "Order item does not exist");
         }
@@ -110,6 +111,14 @@ public abstract class OrderMessages {
         public static String reviewed(String itemId) {
             return message(ORDER_ITEM_REVIEWED_MESSAGE_CODE_KEY, List.of(itemId),
                     String.format("Order item(%s) has been reviewed", itemId));
+        }
+
+        public static String discountTotalPriceCannotLessThanZero() {
+            return "The shipping cost after the discount cannot be less than 0";
+        }
+
+        public static String discountShippingCostCannotLessThanZero() {
+            return "The shipping cost after the discount cannot be less than 0";
         }
     }
 
