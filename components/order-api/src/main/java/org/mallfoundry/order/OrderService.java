@@ -71,6 +71,8 @@ public interface OrderService {
 
     long countOrders(OrderQuery query);
 
+    Order discountOrder(String orderId, List<OrderDiscount> discounts);
+
     Order updateOrder(Order order);
 
     void payOrder(String orderId, OrderPaymentResult payment);
