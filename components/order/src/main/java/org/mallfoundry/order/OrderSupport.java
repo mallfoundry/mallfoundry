@@ -33,7 +33,6 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -371,13 +370,23 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public void discounts(Map<String, BigDecimal> amounts) {
-        amounts.forEach((itemId, discountAmount) -> this.getItem(itemId).setDiscountAmount(discountAmount));
+    public OrderDiscount createDiscount(String itemId) {
+        return new DefaultOrderDiscount(itemId);
     }
 
     @Override
-    public void discountShippingCosts(Map<String, BigDecimal> shippingCosts) {
-        shippingCosts.forEach((itemId, discountCost) -> this.getItem(itemId).setDiscountShippingCost(discountCost));
+    public void discount(OrderDiscount discount) {
+        if (OrderDiscountType.TOTAL_PRICE.equals(discount.getType())) {
+            this.getItem(discount.getItemId()).discountTotalPrice(discount.getAmountDelta());
+
+        } else if (OrderDiscountType.SHIPPING_COST.equals(discount.getType())) {
+            this.getItem(discount.getItemId()).discountShippingCost(discount.getAmountDelta());
+        }
+    }
+
+    @Override
+    public void discount(List<OrderDiscount> discounts) {
+        discounts.forEach(this::discount);
     }
 
     @Override
@@ -484,7 +493,7 @@ public abstract class OrderSupport implements MutableOrder {
     @Override
     public BigDecimal getTotalDiscountAmount() {
         return this.getItems().stream()
-                .map(OrderItem::getDiscountAmount)
+                .map(OrderItem::getDiscountTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
