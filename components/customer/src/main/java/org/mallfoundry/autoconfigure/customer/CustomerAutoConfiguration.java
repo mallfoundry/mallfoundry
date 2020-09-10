@@ -18,6 +18,7 @@
 
 package org.mallfoundry.autoconfigure.customer;
 
+import org.mallfoundry.customer.CustomerBucketConfiguration;
 import org.mallfoundry.customer.CustomerRepository;
 import org.mallfoundry.customer.DefaultCustomerService;
 import org.mallfoundry.customer.repository.jpa.DelegatingJpaCustomerRepository;
@@ -27,7 +28,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-@Import(SearchTermConfiguration.class)
+@Import({
+        SearchTermConfiguration.class,
+        CustomerBucketConfiguration.class,
+})
 @EnableConfigurationProperties(CustomerProperties.class)
 @Configuration
 public class CustomerAutoConfiguration {
