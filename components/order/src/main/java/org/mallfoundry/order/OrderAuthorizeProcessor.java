@@ -246,4 +246,12 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     public List<OrderReview> preProcessBeforeReviewOrder(Order order, List<OrderReview> reviews) {
         return reviews;
     }
+
+    @PreAuthorize("hasPermission(#order.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+            + AllAuthorities.ORDER_RATING + ","
+            + AllAuthorities.CUSTOMER_MANAGE + "')")
+    @Override
+    public List<OrderRating> preProcessBeforeRatingOrder(Order order, List<OrderRating> ratings) {
+        return ratings;
+    }
 }
