@@ -21,9 +21,10 @@ package org.mallfoundry.order;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OrderRatingType {
-    PRODUCT,
-    STORE,
-    SHIPPING;
+    PRODUCT_PRICING /* 商品符合度 */,
+    COURIER_SERVICE,
+    CUSTOMER_SERVICE /* 商家服务态度 */,
+    PRODUCT_SHIPPING /* 快递配送速度 */;
 
     @JsonValue
     @Override
