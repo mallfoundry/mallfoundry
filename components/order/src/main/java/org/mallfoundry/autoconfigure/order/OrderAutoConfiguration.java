@@ -39,6 +39,8 @@ import org.mallfoundry.order.expires.OrderExpiredCancellationProcessor;
 import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.mallfoundry.order.expires.OrderExpiredCanceller;
 import org.mallfoundry.order.review.DefaultOrderReviewService;
+import org.mallfoundry.order.review.OrderReviewAuthorizeProcessor;
+import org.mallfoundry.order.review.OrderReviewProcessor;
 import org.mallfoundry.order.review.OrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.DelegatingJpaOrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.JpaOrderReviewRepository;
@@ -137,7 +139,16 @@ public class OrderAutoConfiguration {
     }
 
     @Bean
-    public DefaultOrderReviewService defaultOrderReviewService(OrderReviewRepository repository) {
-        return new DefaultOrderReviewService(repository);
+    public DefaultOrderReviewService defaultOrderReviewService(OrderReviewRepository repository,
+                                                               @Lazy List<OrderReviewProcessor> processors) {
+
+        var service = new DefaultOrderReviewService(repository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public OrderReviewAuthorizeProcessor orderReviewAuthorizeProcessor() {
+        return new OrderReviewAuthorizeProcessor();
     }
 }
