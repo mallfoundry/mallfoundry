@@ -18,9 +18,19 @@
 
 package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.mallfoundry.catalog.product.review.ReviewReply;
+import org.mallfoundry.catalog.product.review.ReviewReplyRepository;
 
-@Repository
-public interface JpaReviewReplyRepositoryDelegate extends JpaRepository<JpaReviewReply, String> {
+public class DelegatingJpaReviewReplyRepository implements ReviewReplyRepository {
+
+    private final JpaReviewReplyRepository repository;
+
+    public DelegatingJpaReviewReplyRepository(JpaReviewReplyRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public ReviewReply save(ReviewReply reply) {
+        return this.repository.save(JpaReviewReply.of(reply));
+    }
 }

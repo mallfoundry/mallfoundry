@@ -78,6 +78,11 @@ public class DefaultReviewService implements ReviewService {
         return this.reviewRepository.findAll(query);
     }
 
+    @Override
+    public long countReviews(ReviewQuery query) {
+        return this.reviewRepository.count(query);
+    }
+
     private Review requiredReview(String reviewId) {
         return this.getReview(reviewId).orElseThrow();
     }

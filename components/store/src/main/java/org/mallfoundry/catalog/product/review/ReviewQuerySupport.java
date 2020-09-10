@@ -21,6 +21,8 @@ package org.mallfoundry.catalog.product.review;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
+import java.util.Set;
+
 public abstract class ReviewQuerySupport extends QuerySupport implements ReviewQuery {
 
     @Override
@@ -48,6 +50,12 @@ public abstract class ReviewQuerySupport extends QuerySupport implements ReviewQ
         @Override
         public Builder variantId(String variantId) {
             this.query.setVariantId(variantId);
+            return this;
+        }
+
+        @Override
+        public Builder ratings(Set<Integer> ratings) {
+            this.query.setRatings(ratings);
             return this;
         }
     }

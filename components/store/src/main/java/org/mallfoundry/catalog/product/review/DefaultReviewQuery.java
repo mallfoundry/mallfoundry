@@ -21,9 +21,12 @@ package org.mallfoundry.catalog.product.review;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class DefaultReviewQuery extends ReviewQuerySupport {
     private String productId;
     private String variantId;
+    private Set<Integer> ratings;
 }

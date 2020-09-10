@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/v1")
 public class ProductReviewResourceV1 {
@@ -39,10 +41,19 @@ public class ProductReviewResourceV1 {
     @GetMapping("/products/reviews")
     public SliceList<Review> getReviews(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                         @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                        @RequestParam(name = "product_id", required = false) String productId) {
+                                        @RequestParam(name = "product_id", required = false) String productId,
+                                        @RequestParam(required = false) Set<Integer> ratings) {
         return this.reviewService.getReviews(
                 this.reviewService.createReviewQuery().toBuilder()
                         .page(page).limit(limit)
-                        .productId(productId).build());
+                        .productId(productId).ratings(ratings).build());
+    }
+
+    @GetMapping("/products/reviews/count")
+    public long countReviews(@RequestParam(name = "product_id", required = false) String productId,
+                             @RequestParam(required = false) Set<Integer> ratings) {
+        return this.reviewService.countReviews(
+                this.reviewService.createReviewQuery().toBuilder()
+                        .productId(productId).ratings(ratings).build());
     }
 }

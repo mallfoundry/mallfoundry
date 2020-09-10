@@ -34,4 +34,6 @@ public interface ReviewRepository {
     Optional<Review> findById(String reviewId);
 
     SliceList<Review> findAll(ReviewQuery query);
+
+    long count(ReviewQuery query);
 }

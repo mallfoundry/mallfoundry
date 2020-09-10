@@ -25,10 +25,10 @@ import org.mallfoundry.catalog.product.review.ReviewIdentifier;
 import org.mallfoundry.catalog.product.review.ReviewProcessor;
 import org.mallfoundry.catalog.product.review.ReviewProcessorsInvoker;
 import org.mallfoundry.catalog.product.review.ReviewRepository;
+import org.mallfoundry.catalog.product.review.repository.jpa.DelegatingJpaReviewReplyRepository;
 import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewReplyRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewReplyRepositoryDelegate;
+import org.mallfoundry.catalog.product.review.repository.jpa.DelegatingJpaReviewRepository;
 import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepository;
-import org.mallfoundry.catalog.product.review.repository.jpa.JpaReviewRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,13 +40,13 @@ import java.util.List;
 public class ProductReviewConfiguration {
 
     @Bean
-    public JpaReviewRepository jpaProductReviewRepository(JpaReviewRepositoryDelegate repositoryDelegate) {
-        return new JpaReviewRepository(repositoryDelegate);
+    public DelegatingJpaReviewRepository delegatingJpaReviewRepository(JpaReviewRepository repositoryDelegate) {
+        return new DelegatingJpaReviewRepository(repositoryDelegate);
     }
 
     @Bean
-    public JpaReviewReplyRepository jpaProductReviewCommentRepository(JpaReviewReplyRepositoryDelegate repositoryDelegate) {
-        return new JpaReviewReplyRepository(repositoryDelegate);
+    public DelegatingJpaReviewReplyRepository delegatingJpaReviewReplyRepository(JpaReviewReplyRepository repositoryDelegate) {
+        return new DelegatingJpaReviewReplyRepository(repositoryDelegate);
     }
 
     @Bean

@@ -37,5 +37,7 @@ public interface ReviewService {
 
     SliceList<Review> getReviews(ReviewQuery query);
 
+    long countReviews(ReviewQuery query);
+
     ReviewReply replyReview(String reviewId, ReviewReply reply) throws ReviewException;
 }

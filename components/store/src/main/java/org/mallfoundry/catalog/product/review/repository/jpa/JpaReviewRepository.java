@@ -18,53 +18,61 @@
 
 package org.mallfoundry.catalog.product.review.repository.jpa;
 
-import org.mallfoundry.catalog.product.review.Review;
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.catalog.product.review.ReviewQuery;
-import org.mallfoundry.catalog.product.review.ReviewRepository;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.springframework.data.util.CastUtils;
+import org.mallfoundry.util.CaseUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class JpaReviewRepository implements ReviewRepository {
+@Repository
+public interface JpaReviewRepository
+        extends JpaRepository<JpaReview, String>, JpaSpecificationExecutor<JpaReview> {
 
-    private final JpaReviewRepositoryDelegate repository;
-
-    public JpaReviewRepository(JpaReviewRepositoryDelegate repository) {
-        this.repository = repository;
+    default Specification<JpaReview> createSpecification(ReviewQuery reviewQuery) {
+        return (Specification<JpaReview>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(reviewQuery.getProductId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("productId"), reviewQuery.getProductId()));
+            }
+            if (Objects.nonNull(reviewQuery.getVariantId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("variantId"), reviewQuery.getVariantId()));
+            }
+            if (CollectionUtils.isNotEmpty(reviewQuery.getRatings())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("rating")).value(reviewQuery.getRatings()));
+            }
+            return predicate;
+        };
     }
 
-    @Override
-    public Review create(String reviewId) {
-        return new JpaReview(reviewId);
+    private Sort createSort(ReviewQuery query) {
+        return Optional.ofNullable(query.getSort())
+                .map(org.mallfoundry.data.Sort::getOrders)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(orders -> Sort.by(orders.stream()
+                        .peek(sortOrder -> sortOrder.setProperty(CaseUtils.camelCase(sortOrder.getProperty())))
+                        .map(sortOrder -> sortOrder.getDirection().isDescending()
+                                ? Sort.Order.desc(sortOrder.getProperty())
+                                : Sort.Order.asc(sortOrder.getProperty()))
+                        .collect(Collectors.toUnmodifiableList())))
+                .orElseGet(Sort::unsorted);
     }
 
-    @Override
-    public Review save(Review review) {
-        return Function.<Review>identity()
-                .<JpaReview>compose(this.repository::save)
-                .compose(JpaReview::of)
-                .apply(review);
+    default Page<JpaReview> findAll(ReviewQuery reviewQuery) {
+        return this.findAll(this.createSpecification(reviewQuery),
+                PageRequest.of(reviewQuery.getPage() - 1, reviewQuery.getLimit(), this.createSort(reviewQuery)));
     }
 
-    @Override
-    public List<Review> saveAll(List<Review> reviews) {
-        var jpaReviews = reviews.stream().map(JpaReview::of).collect(Collectors.toList());
-        return CastUtils.cast(this.repository.saveAll(jpaReviews));
-    }
-
-    @Override
-    public Optional<Review> findById(String reviewId) {
-        return CastUtils.cast(this.repository.findById(reviewId));
-    }
-
-    @Override
-    public SliceList<Review> findAll(ReviewQuery query) {
-        var page = this.repository.findAll(query);
-        return CastUtils.cast(PageList.of(page.getContent()).page(query.getPage()).limit(query.getLimit()).totalSize(page.getTotalElements()));
+    default long count(ReviewQuery reviewQuery) {
+        return this.count(this.createSpecification(reviewQuery));
     }
 }

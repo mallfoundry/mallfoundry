@@ -22,6 +22,8 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Set;
+
 public interface ReviewQuery extends Query, ObjectBuilder.ToBuilder<ReviewQuery.Builder> {
 
     String getProductId();
@@ -32,10 +34,16 @@ public interface ReviewQuery extends Query, ObjectBuilder.ToBuilder<ReviewQuery.
 
     void setVariantId(String variantId);
 
+    Set<Integer> getRatings();
+
+    void setRatings(Set<Integer> ratings);
+
     interface Builder extends QueryBuilder<ReviewQuery, Builder> {
 
         Builder productId(String productId);
 
         Builder variantId(String variantId);
+
+        Builder ratings(Set<Integer> ratings);
     }
 }
