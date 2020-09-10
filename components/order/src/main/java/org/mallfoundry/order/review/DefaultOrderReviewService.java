@@ -20,13 +20,22 @@ package org.mallfoundry.order.review;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.OrderReview;
+import org.mallfoundry.processor.Processors;
 
-public class DefaultOrderReviewService implements OrderReviewService {
+import java.util.List;
+
+public class DefaultOrderReviewService implements OrderReviewService, OrderReviewProcessorInvoker {
 
     private final OrderReviewRepository orderReviewRepository;
 
+    private List<OrderReviewProcessor> processors;
+
     public DefaultOrderReviewService(OrderReviewRepository orderReviewRepository) {
         this.orderReviewRepository = orderReviewRepository;
+    }
+
+    public void setProcessors(List<OrderReviewProcessor> processors) {
+        this.processors = processors;
     }
 
     @Override
@@ -36,6 +45,14 @@ public class DefaultOrderReviewService implements OrderReviewService {
 
     @Override
     public SliceList<OrderReview> getOrderReviews(OrderReviewQuery query) {
-        return this.orderReviewRepository.findAll(query);
+        return this.orderReviewRepository.findAll(
+                this.invokePreProcessBeforeGetOrderReviews(query));
+    }
+
+    @Override
+    public OrderReviewQuery invokePreProcessBeforeGetOrderReviews(OrderReviewQuery query) {
+        return Processors.stream(this.processors)
+                .map(OrderReviewProcessor::preProcessBeforeGetOrderReviews)
+                .apply(query);
     }
 }
