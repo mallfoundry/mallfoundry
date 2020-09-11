@@ -16,24 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-import org.mallfoundry.data.Query;
 import org.mallfoundry.identity.TenantOwnership;
 
-import java.util.Set;
-
-public interface CouponQuery extends TenantOwnership, Query {
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    String getName();
-
-    void setName(String name);
-
-    Set<CouponType> getTypes();
-
-    void setTypes(Set<CouponType> types);
+public interface CouponId extends TenantOwnership {
+    String getId();
 }

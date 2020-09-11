@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
 import org.mallfoundry.data.SliceList;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +66,20 @@ public class DefaultCouponService implements CouponService {
     public void deleteCoupon(CouponId couponId) {
         var coupon = this.requiredCoupon(couponId);
         this.couponRepository.delete(coupon);
+    }
+
+    @Override
+    public ReceiveCoupon createReceiveCoupon() {
+        return null;
+    }
+
+    @Override
+    public ReceiveCoupon receiveCoupon(ReceiveCoupon receiveCoupon) {
+        return null;
+    }
+
+    @Override
+    public SliceList<ReceiveCoupon> getReceiveCoupons(CouponQuery query) {
+        return null;
     }
 }

@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.mallfoundry.autoconfigure.coupon.CouponAutoConfiguration
+  org.mallfoundry.autoconfigure.marketing.coupon.CouponAutoConfiguration
 

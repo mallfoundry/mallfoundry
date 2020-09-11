@@ -16,21 +16,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-import org.mallfoundry.data.SliceList;
+import java.util.Date;
 
-public interface CouponService {
+public interface ReceiveCoupon {
 
-    CouponId createCouponId(String couponId);
+    String getId();
 
-    Coupon createCoupon(CouponId couponId);
+    String getReceiverId();
 
-    Coupon addCoupon(Coupon coupon);
+    String getCouponId();
 
-    SliceList<Coupon> getCoupons(CouponQuery query);
+    Date getReceivedTime();
 
-    void updateCoupon(Coupon coupon);
+    String getCode();
 
-    void deleteCoupon(CouponId couponId);
+    void setCode(String code);
+
+    String getName();
+
+    void setName(String name);
+
+    String getDescription();
+
+    void setDescription(String description);
+
+    CouponType getType();
+
+    void setType(CouponType type);
+
+    void receive();
 }

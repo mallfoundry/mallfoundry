@@ -16,21 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-import org.mallfoundry.data.SliceList;
-
-import java.util.Optional;
-
-public interface CouponRepository {
-
-    Coupon create(CouponId couponId);
-
-    Coupon save(Coupon coupon);
-
-    Optional<Coupon> findById(CouponId couponId);
-
-    SliceList<Coupon> findAll(CouponQuery query);
-
-    void delete(Coupon coupon);
+public interface MutableCoupon extends Coupon {
 }

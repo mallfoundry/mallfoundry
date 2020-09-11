@@ -16,19 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface ReceiveCoupon {
+@Getter
+@Setter
+public class ImmutableCouponId implements CouponId {
 
-    String getId();
+    private final String tenantId;
 
-    String getReceiverId();
+    private final String id;
 
-    String getCouponId();
+    public ImmutableCouponId(String tenantId, String id) {
+        this.tenantId = tenantId;
+        this.id = id;
+    }
 
-    Date getReceivedTime();
-
-    void receive();
+    public ImmutableCouponId(String id) {
+        this.tenantId = null;
+        this.id = id;
+    }
 }

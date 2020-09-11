@@ -16,17 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon.repository.jpa;
+package org.mallfoundry.marketing.coupon.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.coupon.ApplyLimit;
-import org.mallfoundry.coupon.Coupon;
-import org.mallfoundry.coupon.CouponId;
-import org.mallfoundry.coupon.CouponStatus;
-import org.mallfoundry.coupon.CouponSupport;
-import org.mallfoundry.coupon.CouponType;
+import org.mallfoundry.marketing.coupon.ApplyLimit;
+import org.mallfoundry.marketing.coupon.Coupon;
+import org.mallfoundry.marketing.coupon.CouponId;
+import org.mallfoundry.marketing.coupon.CouponStatus;
+import org.mallfoundry.marketing.coupon.CouponSupport;
+import org.mallfoundry.marketing.coupon.CouponType;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
 import org.springframework.beans.BeanUtils;
 
@@ -43,7 +43,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_coupon")
+@Table(name = "mf_marketing_coupon")
 public class JpaCoupon extends CouponSupport {
 
     @Id

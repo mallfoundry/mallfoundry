@@ -16,11 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-public enum ApplyLimit {
-    UNLIMITED, /* 无限制 */
-    NEW_CUSTOMER_ONLY, /* 仅新客户 */
-    ONCE_PER_CUSTOMER, /* 每个只能领取一次 */
-    REPEAT_PER_CUSTOMER; /* 可以重复领取 */
+import org.mallfoundry.data.SliceList;
+
+public interface CouponService {
+
+    CouponId createCouponId(String couponId);
+
+    Coupon createCoupon(CouponId couponId);
+
+    Coupon addCoupon(Coupon coupon);
+
+    SliceList<Coupon> getCoupons(CouponQuery query);
+
+    void updateCoupon(Coupon coupon);
+
+    void deleteCoupon(CouponId couponId);
+
+    ReceiveCoupon createReceiveCoupon();
+
+    ReceiveCoupon receiveCoupon(ReceiveCoupon receiveCoupon);
+
+    SliceList<ReceiveCoupon> getReceiveCoupons(CouponQuery query);
 }

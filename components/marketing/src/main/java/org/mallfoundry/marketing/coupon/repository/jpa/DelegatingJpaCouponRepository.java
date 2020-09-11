@@ -16,12 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon.repository.jpa;
+package org.mallfoundry.marketing.coupon.repository.jpa;
 
-import org.mallfoundry.coupon.Coupon;
-import org.mallfoundry.coupon.CouponId;
-import org.mallfoundry.coupon.CouponQuery;
-import org.mallfoundry.coupon.CouponRepository;
+import org.mallfoundry.marketing.coupon.Coupon;
+import org.mallfoundry.marketing.coupon.CouponId;
+import org.mallfoundry.marketing.coupon.CouponQuery;
+import org.mallfoundry.marketing.coupon.CouponRepository;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 

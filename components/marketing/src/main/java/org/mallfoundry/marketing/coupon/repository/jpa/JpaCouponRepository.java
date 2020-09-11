@@ -16,22 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon.repository.jpa;
 
-public abstract class CouponSupport implements MutableCoupon {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    @Override
-    public CouponId toId() {
-        return new ImmutableCouponId(this.getTenantId(), this.getId());
-    }
-
-    @Override
-    public void create() {
-
-    }
-
-    @Override
-    public void apply() {
-
-    }
+public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String> {
 }

@@ -16,7 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-public interface MutableCoupon extends Coupon {
+public abstract class CouponSupport implements MutableCoupon {
+
+    @Override
+    public CouponId toId() {
+        return new ImmutableCouponId(this.getTenantId(), this.getId());
+    }
+
+    @Override
+    public void create() {
+
+    }
+
+    @Override
+    public void apply() {
+
+    }
 }

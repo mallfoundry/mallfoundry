@@ -16,9 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon.repository.jpa;
+package org.mallfoundry.marketing.coupon;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String> {
+public enum CouponType {
+    PERCENTAGE /* 折扣券 */,
+    FIXED /* 满减券 */,
+    RANDOM /* 随机金额券 */,
+    SHIPPING /* 运费折扣券 */,
+    FREE_SHIPPING /* 免运费 */,
 }

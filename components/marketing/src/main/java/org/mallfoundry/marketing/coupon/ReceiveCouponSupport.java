@@ -16,8 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-public enum CouponStatus {
-    ACTIVE, PAUSED, EXPIRED, USED_UP
+public abstract class ReceiveCouponSupport implements MutableReceiveCoupon {
+
+
+    @Override
+    public void receive() {
+
+    }
 }

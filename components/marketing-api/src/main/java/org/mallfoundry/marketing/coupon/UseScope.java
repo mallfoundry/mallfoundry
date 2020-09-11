@@ -16,26 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.coupon;
+package org.mallfoundry.marketing.coupon;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class ImmutableCouponId implements CouponId {
-
-    private final String tenantId;
-
-    private final String id;
-
-    public ImmutableCouponId(String tenantId, String id) {
-        this.tenantId = tenantId;
-        this.id = id;
-    }
-
-    public ImmutableCouponId(String id) {
-        this.tenantId = null;
-        this.id = id;
-    }
+public enum UseScope {
+    TENANT,
+    STORE
 }
