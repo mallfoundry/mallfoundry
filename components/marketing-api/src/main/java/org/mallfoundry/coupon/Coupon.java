@@ -16,13 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.discount;
+package org.mallfoundry.coupon;
+
+import org.mallfoundry.identity.TenantOwnership;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface Coupon {
+public interface Coupon extends TenantOwnership {
 
     String getId();
 
@@ -30,15 +32,27 @@ public interface Coupon {
 
     void setStoreId(String storeId);
 
-    String getName();
-
-    void setName(String name);
-
     String getCode();
 
     void setCode(String code);
 
+    String getName();
+
+    void setName(String name);
+
+    String getDescription();
+
+    void setDescription(String description);
+
+    CouponType getType();
+
+    void setType(CouponType type);
+
     CouponStatus getStatus();
+
+    ApplyLimit getApplyLimit();
+
+    void setApplyLimit(ApplyLimit applyLimit);
 
     int getUses();
 
@@ -49,10 +63,6 @@ public interface Coupon {
     int getMaxUsesPerCustomer();
 
     void setMaxUsesPerCustomer(int maxUsesPerCustomer);
-
-    UsesLimit getUsesLimit();
-
-    void setUsesLimit(UsesLimit limit);
 
     int getExpires();
 

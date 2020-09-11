@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.discount;
+package org.mallfoundry.coupon;
 
-public enum UsesLimit {
-    UNLIMITED, ONCE_PER_CUSTOMER, SINGLE
+public enum CouponScope {
+    TENANT,
+    STORE
 }
