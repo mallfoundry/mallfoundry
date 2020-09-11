@@ -54,6 +54,7 @@ import static org.mallfoundry.order.OrderStatus.PARTIALLY_REFUNDED;
 import static org.mallfoundry.order.OrderStatus.PARTIALLY_SHIPPED;
 import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
+import static org.mallfoundry.order.OrderStatus.REVIEWED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
 import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 
@@ -340,7 +341,7 @@ public abstract class OrderSupport implements MutableOrder {
         if (reviewedCount < itemsCount) {
             throw new OrderReviewException("The quantities are inconsistent");
         }
-        this.setReviewStatus(OrderStatus.REVIEWED);
+        this.setReviewStatus(REVIEWED);
     }
 
     public OrderReview addReview(OrderReview review) throws OrderReviewException {
