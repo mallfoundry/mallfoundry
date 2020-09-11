@@ -18,7 +18,7 @@
 
 package org.mallfoundry.marketing.coupon;
 
-public enum ApplyLimit {
+public enum ReceiveLimit {
     UNLIMITED, /* 无限制 */
     NEW_CUSTOMER_ONLY, /* 仅新客户 */
     ONCE_PER_CUSTOMER, /* 每个只能领取一次 */
