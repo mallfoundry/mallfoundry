@@ -287,7 +287,7 @@ public interface CheckoutOrder extends Order {
     }
 
     @Override
-    default boolean canReview() {
+    default boolean isReviewable() {
         return false;
     }
 
@@ -387,7 +387,7 @@ public interface CheckoutOrder extends Order {
     }
 
     @Override
-    default boolean canPay() {
+    default boolean isPayable() {
         return false;
     }
 

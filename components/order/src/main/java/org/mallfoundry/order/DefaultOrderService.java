@@ -342,7 +342,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         var orders = this.orderRepository.findAllById(orderPayment.getOrderIds());
         String firstCustomerId = null;
         for (var order : orders) {
-            if (!order.canPay()) {
+            if (!order.isPayable()) {
                 // 订单下单时间过期
                 if (order.isPlacingExpired()) {
                     throw OrderExceptions.placingExpired();

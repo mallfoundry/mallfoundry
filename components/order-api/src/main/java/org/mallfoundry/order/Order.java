@@ -190,7 +190,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
     /**
      * 获得订单是否还可以评论。
      */
-    boolean canReview();
+    boolean isReviewable();
 
     /**
      * 创建一个新的订单评论对象。
@@ -244,7 +244,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     boolean isPlaced();
 
-    boolean canPay();
+    boolean isPayable();
 
     boolean isPaid();
 

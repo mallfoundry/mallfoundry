@@ -329,7 +329,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public boolean canReview() {
+    public boolean isReviewable() {
         return COMPLETED.equals(this.getStatus());
     }
 
@@ -366,7 +366,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public List<OrderReview> review(List<OrderReview> reviews) throws OrderReviewException {
-        if (!this.canReview()) {
+        if (!this.isReviewable()) {
             throw OrderExceptions.notReview();
         }
         reviews = reviews.stream().map(this::addReview).collect(Collectors.toUnmodifiableList());
@@ -400,7 +400,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public boolean canPay() {
+    public boolean isPayable() {
         // 已下单、未支付、已下单状态、下单未过期
         return this.isPlaced() && !this.isPaid()
                 && (PENDING.equals(this.getStatus()) || AWAITING_PAYMENT.equals(this.getStatus()))

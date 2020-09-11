@@ -250,7 +250,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public boolean canReview() {
+    public boolean isReviewable() {
         return false;
     }
 
@@ -310,7 +310,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public boolean canPay() {
+    public boolean isPayable() {
         return false;
     }
 
