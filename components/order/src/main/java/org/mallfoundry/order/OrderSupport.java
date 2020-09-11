@@ -497,7 +497,7 @@ public abstract class OrderSupport implements MutableOrder {
     }
 
     @Override
-    public BigDecimal getTotalDiscountAmount() {
+    public BigDecimal getTotalDiscountTotalPrice() {
         return this.getItems().stream()
                 .map(OrderItem::getDiscountTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

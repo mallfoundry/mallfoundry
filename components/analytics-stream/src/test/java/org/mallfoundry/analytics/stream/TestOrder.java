@@ -275,7 +275,7 @@ public class TestOrder implements Order {
     }
 
     @Override
-    public BigDecimal getTotalDiscountAmount() {
+    public BigDecimal getTotalDiscountTotalPrice() {
         return null;
     }
 

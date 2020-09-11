@@ -307,7 +307,7 @@ public interface CheckoutOrder extends Order {
     }
 
     @Override
-    default BigDecimal getTotalDiscountAmount() {
+    default BigDecimal getTotalDiscountTotalPrice() {
         return null;
     }
 

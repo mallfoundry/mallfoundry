@@ -207,7 +207,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     List<OrderReview> getReviews();
 
-    BigDecimal getTotalDiscountAmount();
+    BigDecimal getTotalDiscountTotalPrice();
 
     BigDecimal getTotalShippingCost();
 
