@@ -18,7 +18,19 @@
 
 package org.mallfoundry.coupon;
 
+import org.mallfoundry.data.SliceList;
+
 public interface CouponService {
 
+    CouponId createCouponId(String couponId);
 
+    Coupon createCoupon(CouponId couponId);
+
+    Coupon addCoupon(Coupon coupon);
+
+    SliceList<Coupon> getCoupons(CouponQuery query);
+
+    void updateCoupon(Coupon coupon);
+
+    void deleteCoupon(CouponId couponId);
 }
