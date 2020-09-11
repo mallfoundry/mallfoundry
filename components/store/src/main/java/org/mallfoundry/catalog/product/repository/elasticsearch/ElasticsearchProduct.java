@@ -86,6 +86,10 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private long monthlySales;
 
+    private long viewsCount;
+
+    private long reviewsCount;
+
     private int inventoryQuantity;
 
     @Field(type = FieldType.Keyword)

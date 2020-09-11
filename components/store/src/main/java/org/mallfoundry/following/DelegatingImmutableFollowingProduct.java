@@ -110,6 +110,16 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
+    public long getViewsCount() {
+        return this.product.getViewsCount();
+    }
+
+    @Override
+    public long getReviewsCount() {
+        return this.product.getReviewsCount();
+    }
+
+    @Override
     public List<String> getImageUrls() {
         return this.product.getImageUrls();
     }

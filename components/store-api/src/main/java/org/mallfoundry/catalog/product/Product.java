@@ -94,6 +94,10 @@ public interface Product extends ProductBody, StoreOwnership {
      */
     void adjustMonthlySales(long sales) throws ProductException;
 
+    long getViewsCount();
+
+    long getReviewsCount();
+
     void addImageUrl(String imageUrl);
 
     List<String> getImageUrls();

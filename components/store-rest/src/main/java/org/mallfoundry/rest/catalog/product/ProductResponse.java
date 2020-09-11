@@ -100,6 +100,16 @@ public class ProductResponse implements ImmutableProductResponse {
     }
 
     @Override
+    public long getViewsCount() {
+        return 0;
+    }
+
+    @Override
+    public long getReviewsCount() {
+        return 0;
+    }
+
+    @Override
     public List<String> getImageUrls() {
         return null;
     }

@@ -106,11 +106,17 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "collection_id_")
     private Set<String> collections = new HashSet<>();
 
+    @Column(name = "monthly_sales_")
+    private long monthlySales;
+
     @Column(name = "total_sales_")
     private long totalSales;
 
-    @Column(name = "monthly_sales_")
-    private long monthlySales;
+    @Column(name = "views_count_")
+    private long viewsCount;
+
+    @Column(name = "reviews_count_")
+    private long reviewsCount;
 
     @Column(name = "price_")
     private BigDecimal price;
