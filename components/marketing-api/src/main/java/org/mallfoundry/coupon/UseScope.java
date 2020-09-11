@@ -18,7 +18,7 @@
 
 package org.mallfoundry.coupon;
 
-public enum CouponScope {
+public enum UseScope {
     TENANT,
     STORE
 }
