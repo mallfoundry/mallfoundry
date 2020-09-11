@@ -26,6 +26,8 @@ import java.util.List;
 
 public interface Coupon extends TenantOwnership {
 
+    CouponId toId();
+
     String getId();
 
     String getStoreId();
@@ -86,7 +88,7 @@ public interface Coupon extends TenantOwnership {
 
     List<String> getExcludedProducts();
 
-    void setExcludedProducts(List<String> products);
+    void setExcludedProducts(List<String> excludedProducts);
 
     List<String> getCollections();
 
@@ -94,9 +96,13 @@ public interface Coupon extends TenantOwnership {
 
     List<String> getExcludedCollections();
 
-    void setExcludedCollections(List<String> collections);
+    void setExcludedCollections(List<String> excludedCollections);
 
     Date getCreatedTime();
+
+    void create();
+
+    void apply();
 
 //    BigDecimal calculateDiscountAmount();
 }
