@@ -18,21 +18,19 @@
 
 package org.mallfoundry.marketing.coupon;
 
-import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.store.StoreOwnership;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface Coupon extends TenantOwnership {
+public interface Coupon extends StoreOwnership {
 
     CouponId toId();
 
     String getId();
 
-    String getStoreId();
-
-    void setStoreId(String storeId);
+    void setId(String id);
 
     String getCode();
 
@@ -52,9 +50,9 @@ public interface Coupon extends TenantOwnership {
 
     CouponStatus getStatus();
 
-    ApplyLimit getApplyLimit();
+    ReceiveLimit getReceiveLimit();
 
-    void setApplyLimit(ApplyLimit applyLimit);
+    void setReceiveLimit(ReceiveLimit receiveLimit);
 
     int getUses();
 
@@ -102,7 +100,5 @@ public interface Coupon extends TenantOwnership {
 
     void create();
 
-    void apply();
-
-//    BigDecimal calculateDiscountAmount();
+    ReceiveCoupon receive(ReceiveCoupon receiveCoupon);
 }
