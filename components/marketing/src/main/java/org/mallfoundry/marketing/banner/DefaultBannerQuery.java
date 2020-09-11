@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class InternalBannerQuery extends PageableSupport implements BannerQuery {
+public class DefaultBannerQuery extends PageableSupport implements BannerQuery {
 
     private Set<BannerPage> pages;
 

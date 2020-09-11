@@ -44,7 +44,7 @@ public class DefaultBannerService implements BannerService {
 
     @Override
     public BannerQuery createBannerQuery() {
-        return new InternalBannerQuery();
+        return new DefaultBannerQuery();
     }
 
     @Override
