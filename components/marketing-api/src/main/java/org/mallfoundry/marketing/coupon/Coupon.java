@@ -26,8 +26,6 @@ import java.util.List;
 
 public interface Coupon extends StoreOwnership {
 
-    CouponId toId();
-
     String getId();
 
     void setId(String id);
@@ -64,10 +62,6 @@ public interface Coupon extends StoreOwnership {
 
     void setMaxUsesPerCustomer(int maxUsesPerCustomer);
 
-    int getExpires();
-
-    void setExpires(int expires);
-
     BigDecimal getAmount();
 
     void setAmount(BigDecimal amount);
@@ -95,6 +89,14 @@ public interface Coupon extends StoreOwnership {
     List<String> getExcludedCollections();
 
     void setExcludedCollections(List<String> excludedCollections);
+
+    Date getStartTime();
+
+    void setStartTime(Date startTime);
+
+    Date getEndTime();
+
+    void setEndTime(Date endTime);
 
     Date getCreatedTime();
 
