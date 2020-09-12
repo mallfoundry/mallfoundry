@@ -42,6 +42,8 @@ public interface OrderProcessorInvoker {
 
     Order invokePreProcessAfterUpdateOrder(Order order);
 
+    List<OrderDiscount> invokePreProcessBeforeDiscountOrder(Order order, List<OrderDiscount> discounts);
+
     Order invokePreProcessBeforeFulfilOrder(Order order);
 
     String invokePreProcessBeforeSignOrder(Order order, String message);

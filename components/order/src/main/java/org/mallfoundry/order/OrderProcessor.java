@@ -63,6 +63,10 @@ public interface OrderProcessor {
         return order;
     }
 
+    default List<OrderDiscount> preProcessBeforeDiscountOrder(Order order, List<OrderDiscount> discounts) {
+        return discounts;
+    }
+
     default Order preProcessBeforeFulfilOrder(Order order) {
         return order;
     }

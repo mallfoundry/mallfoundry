@@ -171,6 +171,7 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     @Override
     public Order discountOrder(String orderId, List<OrderDiscount> discounts) {
         var order = this.requiredOrder(orderId);
+        discounts = this.invokePreProcessBeforeDiscountOrder(order, discounts);
         order.discount(discounts);
         order = this.orderRepository.save(order);
         return order;
@@ -568,6 +569,13 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
         return Processors.stream(this.processors)
                 .map(OrderProcessor::preProcessBeforeUpdateOrder)
                 .apply(order);
+    }
+
+    @Override
+    public List<OrderDiscount> invokePreProcessBeforeDiscountOrder(Order order, List<OrderDiscount> discounts) {
+        return Processors.stream(this.processors)
+                .<List<OrderDiscount>>map((processor, identity) -> processor.preProcessBeforeDiscountOrder(order, identity))
+                .apply(discounts);
     }
 
     @Override

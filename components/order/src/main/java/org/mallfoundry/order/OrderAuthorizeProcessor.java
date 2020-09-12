@@ -66,6 +66,15 @@ public class OrderAuthorizeProcessor implements OrderProcessor {
     }
 
     @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
+            + AllAuthorities.ORDER_DISCOUNT + ","
+            + AllAuthorities.ORDER_MANAGE + ","
+            + AllAuthorities.STORE_MANAGE + "')")
+    @Override
+    public List<OrderDiscount> preProcessBeforeDiscountOrder(Order order, List<OrderDiscount> discounts) {
+        return discounts;
+    }
+
+    @PreAuthorize("hasPermission(#order.storeId, '" + Resource.STORE_TYPE + "', '"
             + AllAuthorities.ORDER_FULFIL + ","
             + AllAuthorities.ORDER_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
