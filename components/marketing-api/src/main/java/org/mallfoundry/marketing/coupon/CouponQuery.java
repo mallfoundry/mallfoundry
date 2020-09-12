@@ -19,15 +19,22 @@
 package org.mallfoundry.marketing.coupon;
 
 import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.identity.TenantOwnership;
+import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
-public interface CouponQuery extends TenantOwnership, Query {
+public interface CouponQuery extends TenantOwnership, Query, ObjectBuilder.ToBuilder<CouponQuery.Builder> {
 
     String getStoreId();
 
     void setStoreId(String storeId);
+
+    String getCustomerId();
+
+    void setCustomerId(String customerId);
 
     String getName();
 
@@ -37,7 +44,16 @@ public interface CouponQuery extends TenantOwnership, Query {
 
     void setTypes(Set<CouponType> types);
 
-    String getReceiverId();
+    interface Builder extends QueryBuilder<CouponQuery, Builder> {
 
-    void setReceiverId(String receiverId);
+        Builder storeId(String storeId);
+
+        Builder customerId(String customerId);
+
+        Builder name(String name);
+
+        Builder types(Set<CouponType> types);
+
+        Builder types(Supplier<Set<CouponType>> supplier);
+    }
 }
