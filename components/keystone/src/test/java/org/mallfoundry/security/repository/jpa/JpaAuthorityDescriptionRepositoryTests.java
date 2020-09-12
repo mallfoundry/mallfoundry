@@ -53,7 +53,6 @@ public class JpaAuthorityDescriptionRepositoryTests {
                         .name("订单").authority(AllAuthorities.ORDER_MANAGE).position(2)
                         .addAuthority(new JpaAuthorityDescription().toBuilder().name("查看").authority(AllAuthorities.ORDER_READ).build())
                         .addAuthority(new JpaAuthorityDescription().toBuilder().name("编辑").authority(AllAuthorities.ORDER_WRITE).build())
-                        .addAuthority(new JpaAuthorityDescription().toBuilder().name("删除").authority(AllAuthorities.ORDER_DELETE).build())
                         .build())
                 .addAuthority(new JpaAuthorityDescription().toBuilder()
                         .name("地址").authority(AllAuthorities.STORE_ADDRESS_MANAGE).position(3)
