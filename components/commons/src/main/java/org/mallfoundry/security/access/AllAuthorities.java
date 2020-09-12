@@ -42,11 +42,13 @@ public abstract class AllAuthorities extends StoreAuthorities {
     // Order Authorities
     public static final String ORDER_READ = "order_read";
     public static final String ORDER_WRITE = "order_write";
-    public static final String ORDER_DELETE = "order_delete";
+    public static final String ORDER_DISCOUNT = "order_discount";
     public static final String ORDER_FULFIL = "order_fulfil";
     public static final String ORDER_SIGN = "order_sign";
     public static final String ORDER_RECEIPT = "order_receipt";
     public static final String ORDER_CANCEL = "order_cancel";
+    public static final String ORDER_REVIEW = "order_review";
+    public static final String ORDER_RATING = "order_rating";
     public static final String ORDER_MANAGE = "order_manage";
 
     public static final String ORDER_SHIPMENT_ADD = "order_shipment_add";
@@ -63,9 +65,6 @@ public abstract class AllAuthorities extends StoreAuthorities {
     public static final String ORDER_REFUND_ACTIVE = "order_refund_active";
     public static final String ORDER_REFUND_MANAGE = "order_refund_manage";
 
-    public static final String ORDER_REVIEW = "order_review";
-
-    public static final String ORDER_RATING = "order_rating";
 
     // Customer Authorities
     public static final String CUSTOMER_MANAGE = "customer_manage";
