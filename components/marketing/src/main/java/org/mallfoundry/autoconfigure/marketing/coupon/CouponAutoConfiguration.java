@@ -18,12 +18,19 @@
 
 package org.mallfoundry.autoconfigure.marketing.coupon;
 
+import org.mallfoundry.marketing.coupon.CouponAuthorizeProcessor;
+import org.mallfoundry.marketing.coupon.CouponIdentityProcessor;
+import org.mallfoundry.marketing.coupon.CouponProcessor;
 import org.mallfoundry.marketing.coupon.CouponRepository;
+import org.mallfoundry.marketing.coupon.CouponValidateProcessor;
 import org.mallfoundry.marketing.coupon.DefaultCouponService;
 import org.mallfoundry.marketing.coupon.repository.jpa.DelegatingJpaCouponRepository;
 import org.mallfoundry.marketing.coupon.repository.jpa.JpaCouponRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class CouponAutoConfiguration {
@@ -34,7 +41,25 @@ public class CouponAutoConfiguration {
     }
 
     @Bean
-    public DefaultCouponService defaultCouponService(CouponRepository couponRepository) {
-        return new DefaultCouponService(couponRepository);
+    public DefaultCouponService defaultCouponService(@Lazy List<CouponProcessor> processors,
+                                                     CouponRepository couponRepository) {
+        var service = new DefaultCouponService(couponRepository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public CouponIdentityProcessor couponIdentityProcessor() {
+        return new CouponIdentityProcessor();
+    }
+
+    @Bean
+    public CouponAuthorizeProcessor couponAuthorizeProcessor() {
+        return new CouponAuthorizeProcessor();
+    }
+
+    @Bean
+    public CouponValidateProcessor couponValidateProcessor() {
+        return new CouponValidateProcessor();
     }
 }
