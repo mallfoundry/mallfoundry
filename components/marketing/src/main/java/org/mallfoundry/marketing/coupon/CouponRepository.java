@@ -24,11 +24,11 @@ import java.util.Optional;
 
 public interface CouponRepository {
 
-    Coupon create(CouponId couponId);
+    Coupon create(String couponId);
 
     Coupon save(Coupon coupon);
 
-    Optional<Coupon> findById(CouponId couponId);
+    Optional<Coupon> findById(String couponId);
 
     SliceList<Coupon> findAll(CouponQuery query);
 
