@@ -16,13 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.marketing.coupon;
+package org.mallfoundry.marketing.coupon.repository.jpa;
 
-public abstract class ReceiveCouponSupport implements MutableReceiveCoupon {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-
-    @Override
-    public void receive() {
-
-    }
+public interface JpaTakeCouponRepository extends JpaRepository<JpaTakeCoupon, String> {
 }

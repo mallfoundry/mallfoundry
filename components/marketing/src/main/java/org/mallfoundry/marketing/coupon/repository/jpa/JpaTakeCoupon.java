@@ -19,10 +19,12 @@
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.marketing.coupon.CouponStatus;
 import org.mallfoundry.marketing.coupon.CouponType;
-import org.mallfoundry.marketing.coupon.ReceiveCouponSupport;
+import org.mallfoundry.marketing.coupon.TakeCoupon;
+import org.mallfoundry.marketing.coupon.TakeCouponSupport;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +34,10 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "mf_marketing_receive_coupon")
-public class JpaReceiveCoupon extends ReceiveCouponSupport {
+@Table(name = "mf_marketing_coupon_take")
+public class JpaTakeCoupon extends TakeCouponSupport {
 
     @Id
     @Column(name = "id_")
@@ -49,8 +52,8 @@ public class JpaReceiveCoupon extends ReceiveCouponSupport {
     @Column(name = "coupon_id_")
     private String couponId;
 
-    @Column(name = "receiver_id_")
-    private String receiverId;
+    @Column(name = "customer_id_")
+    private String customerId;
 
     @Column(name = "code_")
     private String code;
@@ -64,9 +67,25 @@ public class JpaReceiveCoupon extends ReceiveCouponSupport {
     @Column(name = "type_")
     private CouponType type;
 
-    @Column(name = "status_")
-    private CouponStatus status;
+    @Column(name = "start_time_")
+    private Date startTime;
 
-    @Column(name = "received_time_")
-    private Date receivedTime;
+    @Column(name = "end_time_")
+    private Date endTime;
+
+    @Column(name = "taken_time_")
+    private Date takenTime;
+
+    public JpaTakeCoupon(String id) {
+        this.id = id;
+    }
+
+    public static JpaTakeCoupon of(TakeCoupon coupon) {
+        if (coupon instanceof JpaTakeCoupon) {
+            return (JpaTakeCoupon) coupon;
+        }
+        var target = new JpaTakeCoupon();
+        BeanUtils.copyProperties(coupon, target);
+        return target;
+    }
 }

@@ -18,11 +18,11 @@
 
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.marketing.coupon.Coupon;
-import org.mallfoundry.marketing.coupon.CouponId;
 import org.mallfoundry.marketing.coupon.CouponQuery;
 import org.mallfoundry.marketing.coupon.CouponRepository;
-import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class DelegatingJpaCouponRepository implements CouponRepository {
     }
 
     @Override
-    public Coupon create(CouponId couponId) {
+    public Coupon create(String couponId) {
         return new JpaCoupon(couponId);
     }
 
@@ -46,13 +46,17 @@ public class DelegatingJpaCouponRepository implements CouponRepository {
     }
 
     @Override
-    public Optional<Coupon> findById(CouponId couponId) {
-        return CastUtils.cast(this.repository.findById(couponId.getId()));
+    public Optional<Coupon> findById(String couponId) {
+        return CastUtils.cast(this.repository.findById(couponId));
     }
 
     @Override
     public SliceList<Coupon> findAll(CouponQuery query) {
-        return null;
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(page.getNumber()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override

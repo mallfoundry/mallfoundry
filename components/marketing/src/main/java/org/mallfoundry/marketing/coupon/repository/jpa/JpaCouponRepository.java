@@ -18,7 +18,32 @@
 
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
+import org.mallfoundry.marketing.coupon.CouponQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+
+public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String>, JpaSpecificationExecutor<JpaCoupon> {
+
+
+    default Specification<JpaCoupon> createSpecification(CouponQuery addressQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+
+            if (Objects.nonNull(addressQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), addressQuery.getStoreId()));
+            }
+
+            return predicate;
+        };
+    }
+
+    default Page<JpaCoupon> findAll(CouponQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
+    }
 }
