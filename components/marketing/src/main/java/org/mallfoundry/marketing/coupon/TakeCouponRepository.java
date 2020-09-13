@@ -18,9 +18,15 @@
 
 package org.mallfoundry.marketing.coupon;
 
-public enum ReceiveLimit {
-    UNLIMITED, /* 无限制 */
-    NEW_CUSTOMER_ONLY, /* 仅新客户 */
-    ONCE_PER_CUSTOMER, /* 每个只能领取一次 */
-    REPEAT_PER_CUSTOMER; /* 可以重复领取 */
+import org.mallfoundry.data.SliceList;
+
+public interface TakeCouponRepository {
+
+    TakeCoupon create(String id);
+
+    TakeCoupon save(TakeCoupon coupon);
+
+    SliceList<TakeCoupon> findAll(CouponQuery query);
+
+    long count(CouponQuery query);
 }
