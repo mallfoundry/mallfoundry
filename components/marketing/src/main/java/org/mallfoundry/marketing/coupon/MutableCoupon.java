@@ -18,5 +18,11 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import java.util.Date;
+
 public interface MutableCoupon extends Coupon {
+
+    void setStatus(CouponStatus status);
+
+    void setCreatedTime(Date createdTime);
 }

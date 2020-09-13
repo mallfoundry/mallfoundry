@@ -18,5 +18,17 @@
 
 package org.mallfoundry.marketing.coupon;
 
-public interface MutableReceiveCoupon extends ReceiveCoupon {
+import java.util.Date;
+
+public interface MutableTakeCoupon extends TakeCoupon {
+
+    void setCode(String code);
+
+    void setName(String name);
+
+    void setDescription(String description);
+
+    void setType(CouponType type);
+
+    void setTakenTime(Date takenTime);
 }
