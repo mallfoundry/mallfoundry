@@ -24,8 +24,11 @@ import org.mallfoundry.marketing.coupon.CouponProcessor;
 import org.mallfoundry.marketing.coupon.CouponRepository;
 import org.mallfoundry.marketing.coupon.CouponValidateProcessor;
 import org.mallfoundry.marketing.coupon.DefaultCouponService;
+import org.mallfoundry.marketing.coupon.TakeCouponRepository;
 import org.mallfoundry.marketing.coupon.repository.jpa.DelegatingJpaCouponRepository;
+import org.mallfoundry.marketing.coupon.repository.jpa.DelegatingJpaTakeCouponRepository;
 import org.mallfoundry.marketing.coupon.repository.jpa.JpaCouponRepository;
+import org.mallfoundry.marketing.coupon.repository.jpa.JpaTakeCouponRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -41,9 +44,15 @@ public class CouponAutoConfiguration {
     }
 
     @Bean
+    public DelegatingJpaTakeCouponRepository delegatingJpaTakeCouponRepository(JpaTakeCouponRepository repository) {
+        return new DelegatingJpaTakeCouponRepository(repository);
+    }
+
+    @Bean
     public DefaultCouponService defaultCouponService(@Lazy List<CouponProcessor> processors,
-                                                     CouponRepository couponRepository) {
-        var service = new DefaultCouponService(couponRepository);
+                                                     CouponRepository couponRepository,
+                                                     TakeCouponRepository takeCouponRepository) {
+        var service = new DefaultCouponService(couponRepository, takeCouponRepository);
         service.setProcessors(processors);
         return service;
     }
