@@ -54,7 +54,7 @@ public abstract class AuthoritiesOptimizeUtils {
             ),
             new MergeOptimize(
                     Set.of(
-                            AllAuthorities.PRODUCT_COLLECTION_ADD,
+                            AllAuthorities.PRODUCT_COLLECTION_CREATE,
                             AllAuthorities.PRODUCT_COLLECTION_READ,
                             AllAuthorities.PRODUCT_COLLECTION_WRITE,
                             AllAuthorities.PRODUCT_COLLECTION_DELETE
@@ -63,7 +63,7 @@ public abstract class AuthoritiesOptimizeUtils {
             ),
             new MergeOptimize(
                     Set.of(
-                            AllAuthorities.PRODUCT_ADD,
+                            AllAuthorities.PRODUCT_CREATE,
                             AllAuthorities.PRODUCT_READ,
                             AllAuthorities.PRODUCT_WRITE,
                             AllAuthorities.PRODUCT_PUBLISH,
