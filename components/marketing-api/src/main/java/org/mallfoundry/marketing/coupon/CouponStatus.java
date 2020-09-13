@@ -19,5 +19,12 @@
 package org.mallfoundry.marketing.coupon;
 
 public enum CouponStatus {
-    ACTIVE, PAUSED, EXPIRED, USED_UP
+    ISSUING /* 发放中 */,
+    PAUSED /* 已暂停 */,
+    USED_UP, /* 全部已领取 */
+    //
+    UNUSED /* 未使用 */,
+    USED /* 已使用 */,
+    CANCELLED /* 已作废 */,
+    EXPIRED, /* 已过期 */;
 }
