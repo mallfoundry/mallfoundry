@@ -23,4 +23,8 @@ public interface CouponProcessor {
     default Coupon preProcessBeforeAddCoupon(Coupon coupon) {
         return coupon;
     }
+
+    default TakeCoupon preProcessBeforeTakeCoupon(Coupon coupon, TakeCoupon takeCoupon) {
+        return takeCoupon;
+    }
 }

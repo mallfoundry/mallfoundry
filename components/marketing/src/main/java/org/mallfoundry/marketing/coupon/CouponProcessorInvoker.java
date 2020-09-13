@@ -21,4 +21,6 @@ package org.mallfoundry.marketing.coupon;
 public interface CouponProcessorInvoker {
 
     Coupon invokePreProcessBeforeAddCoupon(Coupon coupon);
+
+    TakeCoupon invokePreProcessBeforeReceiveCoupon(Coupon coupon, TakeCoupon receiveCoupon);
 }
