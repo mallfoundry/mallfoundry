@@ -74,6 +74,10 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
     BigDecimal getDiscountTotalPrice();
 
     void discountTotalPrice(BigDecimal discountTotalPrice);
+/*
+    BigDecimal getCouponDiscountAmount();
+
+    void couponDiscountAmount(BigDecimal couponAmount);*/
 
     BigDecimal getTotalPrice();
 
