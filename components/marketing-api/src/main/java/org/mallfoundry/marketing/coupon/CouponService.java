@@ -22,9 +22,9 @@ import org.mallfoundry.data.SliceList;
 
 public interface CouponService {
 
-    CouponId createCouponId(String couponId);
+    CouponQuery createCouponQuery();
 
-    Coupon createCoupon(CouponId couponId);
+    Coupon createCoupon(String couponId);
 
     Coupon addCoupon(Coupon coupon);
 
@@ -32,11 +32,17 @@ public interface CouponService {
 
     void updateCoupon(Coupon coupon);
 
-    void deleteCoupon(CouponId couponId);
+    void deleteCoupon(String couponId);
 
-    ReceiveCoupon createReceiveCoupon();
+    TakeCoupon createTakeCoupon(String takeId);
 
-    ReceiveCoupon receiveCoupon(ReceiveCoupon receiveCoupon);
+    TakeCoupon takeCoupon(TakeCoupon takeCoupon) throws TakeCouponException;
 
-    SliceList<ReceiveCoupon> getReceiveCoupons(CouponQuery query);
+/*    void useCoupon(String takenId);
+
+    void returnCoupon(String takenId);*/
+
+    SliceList<TakeCoupon> getTakeCoupons(CouponQuery query);
+
+    long countTakeCoupons(CouponQuery query);
 }
