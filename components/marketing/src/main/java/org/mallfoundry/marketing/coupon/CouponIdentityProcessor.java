@@ -27,9 +27,17 @@ public class CouponIdentityProcessor implements CouponProcessor {
 
     private static final String MARKETING_COUPON_ID_VALUE_NAME = "marketing.coupon.id";
 
+    private static final String MARKETING_RECEIVE_COUPON_ID_VALUE_NAME = "marketing.receive.coupon.id";
+
     @Override
     public Coupon preProcessBeforeAddCoupon(Coupon coupon) {
         coupon.setId(PrimaryKeyHolder.next(MARKETING_COUPON_ID_VALUE_NAME));
         return coupon;
+    }
+
+    @Override
+    public TakeCoupon preProcessBeforeTakeCoupon(Coupon coupon, TakeCoupon takeCoupon) {
+        takeCoupon.setId(PrimaryKeyHolder.next(MARKETING_RECEIVE_COUPON_ID_VALUE_NAME));
+        return takeCoupon;
     }
 }
