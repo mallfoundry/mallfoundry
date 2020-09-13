@@ -18,8 +18,13 @@
 
 package org.mallfoundry.marketing.coupon;
 
-import org.mallfoundry.identity.TenantOwnership;
-
-public interface CouponId extends TenantOwnership {
-    String getId();
+/**
+ * 优惠券申请限制。
+ *
+ * @author Zhi Tang
+ */
+public enum ApplyLimit {
+    UNLIMITED, // 无限制
+    NEW_CUSTOMER_ONLY, // 仅限新客户
+    REPEAT_CUSTOMER_ONLY, // 仅限回头客
 }
