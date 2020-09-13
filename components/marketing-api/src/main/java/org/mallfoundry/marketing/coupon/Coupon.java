@@ -48,19 +48,17 @@ public interface Coupon extends StoreOwnership {
 
     CouponStatus getStatus();
 
-    ReceiveLimit getReceiveLimit();
+    int getTakeCount();
 
-    void setReceiveLimit(ReceiveLimit receiveLimit);
+    int getUsageCount();
 
-    int getUses();
+    int getUsageLimit();
 
-    int getMaxUses();
+    void setUsageLimit(int usageLimit);
 
-    void setMaxUses(int maxUses);
+    int getTakeLimitPerCustomer();
 
-    int getMaxUsesPerCustomer();
-
-    void setMaxUsesPerCustomer(int maxUsesPerCustomer);
+    void setTakeLimitPerCustomer(int takeLimitPerCustomer);
 
     BigDecimal getAmount();
 
@@ -102,5 +100,7 @@ public interface Coupon extends StoreOwnership {
 
     void create();
 
-    ReceiveCoupon receive(ReceiveCoupon receiveCoupon);
+    TakeCoupon take(TakeCoupon takeCoupon);
+
+    void use(TakeCoupon takeCoupon);
 }
