@@ -18,33 +18,41 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import org.mallfoundry.store.StoreOwnership;
+
 import java.util.Date;
 
-public interface ReceiveCoupon {
+public interface TakeCoupon extends StoreOwnership {
 
     String getId();
 
-    String getReceiverId();
+    void setId(String id);
+
+    String getCustomerId();
+
+    void setCustomerId(String customerId);
 
     String getCouponId();
 
-    Date getReceivedTime();
+    void setCouponId(String couponId);
 
     String getCode();
 
-    void setCode(String code);
-
     String getName();
-
-    void setName(String name);
 
     String getDescription();
 
-    void setDescription(String description);
-
     CouponType getType();
 
-    void setType(CouponType type);
+    Date getStartTime();
 
-    void receive();
+    void setStartTime(Date startTime);
+
+    Date getEndTime();
+
+    void setEndTime(Date endTime);
+
+    void take(Coupon coupon);
+
+    Date getTakenTime();
 }
