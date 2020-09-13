@@ -18,5 +18,22 @@
 
 package org.mallfoundry.marketing.coupon;
 
-public class CouponAuthorizeProcessor {
+public class CouponAuthorizeProcessor implements CouponProcessor {
+
+    //    @PreAuthorize("hasPermission(#coupon.storeId, '" + Resource.STORE_TYPE + "', '"
+//            + AllAuthorities.COUPON_CREATE + ","
+//            + AllAuthorities.COUPON_MANAGE + ","
+//            + AllAuthorities.STORE_MANAGE + "')")
+    @Override
+    public Coupon preProcessBeforeAddCoupon(Coupon coupon) {
+        return coupon;
+    }
+
+    //    @PreAuthorize("hasPermission(#receiveCoupon.customerId, '" + Resource.CUSTOMER_TYPE + "', '"
+//            + AllAuthorities.COUPON_RECEIVE + ","
+//            + AllAuthorities.CUSTOMER_MANAGE + "')")
+    @Override
+    public TakeCoupon preProcessBeforeTakeCoupon(Coupon coupon, TakeCoupon takeCoupon) {
+        return takeCoupon;
+    }
 }
