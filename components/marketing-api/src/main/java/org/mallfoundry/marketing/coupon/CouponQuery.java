@@ -46,6 +46,8 @@ public interface CouponQuery extends TenantOwnership, Query, ObjectBuilder.ToBui
 
     interface Builder extends QueryBuilder<CouponQuery, Builder> {
 
+        Builder tenantId(String tenantId);
+
         Builder storeId(String storeId);
 
         Builder customerId(String customerId);
