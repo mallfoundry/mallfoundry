@@ -30,7 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class ProductAuthorizeProcessor implements ProductProcessor {
 
     @PreAuthorize("hasPermission(#product.storeId, '" + Resource.STORE_TYPE + "', '"
-            + AllAuthorities.PRODUCT_ADD + ","
+            + AllAuthorities.PRODUCT_CREATE + ","
             + AllAuthorities.PRODUCT_MANAGE + ","
             + AllAuthorities.STORE_MANAGE + "')")
     @Override
