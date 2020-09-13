@@ -24,14 +24,14 @@ public abstract class AllAuthorities extends StoreAuthorities {
     public static final String ADMIN = "admin";
 
     // Product collection Authorities
-    public static final String PRODUCT_COLLECTION_ADD = "product_collection_add";
+    public static final String PRODUCT_COLLECTION_CREATE = "product_collection_create";
     public static final String PRODUCT_COLLECTION_READ = "product_collection_read";
     public static final String PRODUCT_COLLECTION_WRITE = "product_collection_write";
     public static final String PRODUCT_COLLECTION_DELETE = "product_collection_delete";
     public static final String PRODUCT_COLLECTION_MANAGE = "product_collection_manage";
 
     // Product Authorities
-    public static final String PRODUCT_ADD = "product_add";
+    public static final String PRODUCT_CREATE = "product_create";
     public static final String PRODUCT_READ = "product_read";
     public static final String PRODUCT_WRITE = "product_write";
     public static final String PRODUCT_PUBLISH = "product_publish";
@@ -74,4 +74,12 @@ public abstract class AllAuthorities extends StoreAuthorities {
     public static final String STORAGE_BUCKET_WRITE = "storage_bucket_write";
     public static final String STORAGE_BUCKET_DELETE = "storage_bucket_delete";
     public static final String STORAGE_BUCKET_MANAGE = "storage_bucket_manage";
+
+    public static final String COUPON_CREATE = "coupon_create";
+    public static final String COUPON_READ = "coupon_read";
+    public static final String COUPON_WRITE = "coupon_write";
+    public static final String COUPON_DELETE = "coupon_delete";
+    public static final String COUPON_MANAGE = "coupon_manage";
+
+    public static final String COUPON_RECEIVE = "coupon_receive";
 }
