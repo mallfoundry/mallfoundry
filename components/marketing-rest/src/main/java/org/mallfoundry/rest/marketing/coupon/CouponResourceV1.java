@@ -70,12 +70,12 @@ public class CouponResourceV1 {
         this.couponService.deleteCoupon(couponId);
     }
 
-    @GetMapping("/customers/{customer_id}/coupons")
+    @GetMapping("/customers/coupons")
     public SliceList<TakeCoupon> getTakeCoupons(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                                 @RequestParam(name = "tenant_id", required = false) String tenantId,
                                                 @RequestParam(name = "store_id", required = false) String storeId,
-                                                @PathVariable("customer_id") String customerId) {
+                                                @RequestParam(name = "customer_id", required = false) String customerId) {
         return this.couponService.getTakeCoupons(
                 this.couponService.createCouponQuery().toBuilder()
                         .page(page).limit(limit)

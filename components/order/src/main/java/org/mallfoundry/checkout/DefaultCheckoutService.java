@@ -143,12 +143,11 @@ public class DefaultCheckoutService implements CheckoutService {
         return this.checkoutRepository.findById(id).orElseThrow(CheckoutExceptions::notFound);
     }
 
-
     @Override
-    public Optional<Checkout> getCheckout(String id) {
+    public Checkout getCheckout(String id) {
         var checkout = this.requiredCheckout(id);
         this.setOrdersToCheckout(checkout);
-        return Optional.of(checkout);
+        return checkout;
     }
 
     @Transactional
