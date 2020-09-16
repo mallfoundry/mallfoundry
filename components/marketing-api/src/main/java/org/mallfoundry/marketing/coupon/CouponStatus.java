@@ -18,13 +18,18 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum CouponStatus {
+    PENDING /* 处理中 */,
     ISSUING /* 发放中 */,
     PAUSED /* 已暂停 */,
     USED_UP, /* 全部已领取 */
-    //
-    UNUSED /* 未使用 */,
-    USED /* 已使用 */,
-    CANCELLED /* 已作废 */,
     EXPIRED, /* 已过期 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
