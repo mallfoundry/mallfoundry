@@ -18,10 +18,18 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum CouponType {
-    PERCENTAGE /* 折扣券 */,
-    FIXED /* 满减券 */,
-    RANDOM /* 随机金额券 */,
-    SHIPPING /* 运费折扣券 */,
-    FREE_SHIPPING /* 免运费 */,
+    FIXED_DISCOUNT /* 满减券 */,
+    PERCENTAGE_DISCOUNT /* 折扣券 */,
+    RANDOM_DISCOUNT /* 随机金额券 */,
+    SHIPPING_DISCOUNT /* 运费折扣券 */,
+    FREE_SHIPPING /* 免运费 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
