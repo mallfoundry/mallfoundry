@@ -42,27 +42,45 @@ public interface Coupon extends StoreOwnership {
 
     void setDescription(String description);
 
-    CouponType getType();
-
-    void setType(CouponType type);
-
     CouponStatus getStatus();
 
-    int getTakeCount();
+    /**
+     * 客户已收到的优惠券数量。
+     */
+    int getReceivedCount();
 
-    int getUsageCount();
+    int getUsedCount();
 
-    int getUsageLimit();
+    int getIssuingCount();
 
-    void setUsageLimit(int usageLimit);
+    void setIssuingCount(int issuingCount);
 
+    /**
+     * 每个客户可以获得优惠券的数量。
+     */
     int getTakeLimitPerCustomer();
 
     void setTakeLimitPerCustomer(int takeLimitPerCustomer);
 
-    BigDecimal getAmount();
+    CouponType getType();
 
-    void setAmount(BigDecimal amount);
+    void setType(CouponType type);
+
+    BigDecimal getDiscountAmount();
+
+    void setDiscountAmount(BigDecimal discountAmount);
+
+    BigDecimal getDiscountPercent();
+
+    void setDiscountPercent(BigDecimal discountPercent);
+
+    BigDecimal getDiscountMinAmount();
+
+    void setDiscountMinAmount(BigDecimal discountMinAmount);
+
+    BigDecimal getDiscountMaxAmount();
+
+    void setDiscountMaxAmount(BigDecimal discountMaxAmount);
 
     BigDecimal getMinAmount();
 
@@ -71,6 +89,8 @@ public interface Coupon extends StoreOwnership {
     BigDecimal getMaxAmount();
 
     void setMaxAmount(BigDecimal maxAmount);
+
+    /*void getPaidAmount();*/
 
     List<String> getProducts();
 
