@@ -28,8 +28,12 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -64,8 +68,22 @@ public class JpaTakeCoupon extends TakeCouponSupport {
     @Column(name = "description_")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(name = "type_")
     private CouponType type;
+
+    @Column(name = "discount_amount_")
+    private BigDecimal discountAmount;
+
+    @Column(name = "discount_percent_")
+    private BigDecimal discountPercent;
+
+    @Column(name = "min_amount_")
+    private BigDecimal minAmount;
+
+    @Column(name = "max_amount_")
+    private BigDecimal maxAmount;
 
     @Column(name = "start_time_")
     private Date startTime;
