@@ -19,6 +19,7 @@
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.marketing.coupon.CouponQuery;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,15 @@ public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String>, J
             }
             if (Objects.nonNull(couponQuery.getStoreId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), couponQuery.getStoreId()));
+            }
+            if (StringUtils.isNotEmpty(couponQuery.getName())) {
+                predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + couponQuery.getName() + "%"));
+            }
+            if (Objects.nonNull(couponQuery.getTypes())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(couponQuery.getTypes()));
+            }
+            if (Objects.nonNull(couponQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(couponQuery.getStatuses()));
             }
             return predicate;
         };

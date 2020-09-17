@@ -44,6 +44,10 @@ public interface CouponQuery extends TenantOwnership, Query, ObjectBuilder.ToBui
 
     void setTypes(Set<CouponType> types);
 
+    Set<CouponStatus> getStatuses();
+
+    void setStatuses(Set<CouponStatus> statuses);
+
     interface Builder extends QueryBuilder<CouponQuery, Builder> {
 
         Builder tenantId(String tenantId);
@@ -57,5 +61,9 @@ public interface CouponQuery extends TenantOwnership, Query, ObjectBuilder.ToBui
         Builder types(Set<CouponType> types);
 
         Builder types(Supplier<Set<CouponType>> supplier);
+
+        Builder statuses(Set<CouponStatus> statuses);
+
+        Builder statuses(Supplier<Set<CouponStatus>> supplier);
     }
 }

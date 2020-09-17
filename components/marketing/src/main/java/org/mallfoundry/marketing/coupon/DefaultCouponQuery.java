@@ -34,6 +34,7 @@ public class DefaultCouponQuery extends QuerySupport implements CouponQuery {
     private String customerId;
     private String name;
     private Set<CouponType> types;
+    private Set<CouponStatus> statuses;
 
     @Override
     public Builder toBuilder() {
@@ -84,6 +85,17 @@ public class DefaultCouponQuery extends QuerySupport implements CouponQuery {
         @Override
         public Builder types(Supplier<Set<CouponType>> supplier) {
             return this.types(supplier.get());
+        }
+
+        @Override
+        public Builder statuses(Set<CouponStatus> statuses) {
+            this.query.setStatuses(statuses);
+            return this;
+        }
+
+        @Override
+        public Builder statuses(Supplier<Set<CouponStatus>> supplier) {
+            return this.statuses(supplier.get());
         }
     }
 }

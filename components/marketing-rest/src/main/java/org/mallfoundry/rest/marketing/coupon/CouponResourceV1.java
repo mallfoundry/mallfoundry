@@ -18,9 +18,13 @@
 
 package org.mallfoundry.rest.marketing.coupon;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.marketing.coupon.Coupon;
 import org.mallfoundry.marketing.coupon.CouponService;
+import org.mallfoundry.marketing.coupon.CouponStatus;
+import org.mallfoundry.marketing.coupon.CouponType;
 import org.mallfoundry.marketing.coupon.TakeCoupon;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1")
@@ -57,11 +64,22 @@ public class CouponResourceV1 {
     public SliceList<Coupon> getCoupons(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                         @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                         @RequestParam(name = "tenant_id", required = false) String tenantId,
-                                        @RequestParam(name = "store_id", required = false) String storeId) {
+                                        @RequestParam(name = "store_id", required = false) String storeId,
+                                        @RequestParam(name = "name", required = false) String name,
+                                        @RequestParam(name = "types", required = false) Set<String> types,
+                                        @RequestParam(name = "statuses", required = false) Set<String> statuses) {
         return this.couponService.getCoupons(
                 this.couponService.createCouponQuery().toBuilder()
                         .page(page).limit(limit)
-                        .tenantId(tenantId).storeId(storeId).build());
+                        .tenantId(tenantId).storeId(storeId)
+                        .name(name)
+                        .types(() ->
+                                CollectionUtils.emptyIfNull(types).stream().map(StringUtils::upperCase)
+                                        .map(CouponType::valueOf).collect(Collectors.toUnmodifiableSet()))
+                        .statuses(() ->
+                                CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
+                                        .map(CouponStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
+                        .build());
     }
 
     @PatchMapping("/coupons/{coupon_id}")
