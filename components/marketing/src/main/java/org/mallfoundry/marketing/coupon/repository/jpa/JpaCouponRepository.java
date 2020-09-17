@@ -48,10 +48,10 @@ public interface JpaCouponRepository extends JpaRepository<JpaCoupon, String>, J
             if (StringUtils.isNotEmpty(couponQuery.getName())) {
                 predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + couponQuery.getName() + "%"));
             }
-            if (Objects.nonNull(couponQuery.getTypes())) {
+            if (CollectionUtils.isNotEmpty(couponQuery.getTypes())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(couponQuery.getTypes()));
             }
-            if (Objects.nonNull(couponQuery.getStatuses())) {
+            if (CollectionUtils.isNotEmpty(couponQuery.getStatuses())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(couponQuery.getStatuses()));
             }
             return predicate;
