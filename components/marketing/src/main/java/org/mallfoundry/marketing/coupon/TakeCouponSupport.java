@@ -31,6 +31,10 @@ public abstract class TakeCouponSupport implements MutableTakeCoupon {
         this.setName(coupon.getName());
         this.setDescription(coupon.getDescription());
         this.setType(coupon.getType());
+        this.setDiscountAmount(coupon.getDiscountAmount());
+        this.setDiscountPercent(coupon.getDiscountPercent());
+        this.setMinAmount(coupon.getMinAmount());
+        this.setMaxAmount(coupon.getMaxAmount());
         this.setStartTime(coupon.getStartTime());
         this.setEndTime(coupon.getEndTime());
         this.setTakenTime(new Date());
