@@ -18,5 +18,27 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import org.mallfoundry.store.StoreService;
+import org.mallfoundry.validation.ValidationHolder;
+
 public class CouponValidateProcessor implements CouponProcessor {
+
+    private final StoreService storeService;
+
+    public CouponValidateProcessor(StoreService storeService) {
+        this.storeService = storeService;
+    }
+
+    @Override
+    public Coupon preProcessBeforeAddCoupon(Coupon coupon) {
+        var store = this.storeService.getStore(this.storeService.createStoreId(coupon.getStoreId()));
+        coupon.setTenantId(store.getTenantId());
+        return coupon;
+    }
+
+    @Override
+    public Coupon preProcessAfterAddCoupon(Coupon coupon) {
+        ValidationHolder.validate(coupon, "coupon");
+        return coupon;
+    }
 }
