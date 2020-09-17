@@ -29,7 +29,6 @@
 
     <artifactId>mall-marketing</artifactId>
 
-
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
@@ -39,6 +38,11 @@
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-marketing-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-store-api</artifactId>
         </dependency>
 
         <dependency>
