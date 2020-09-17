@@ -47,13 +47,6 @@ public abstract class Copies {
             return this;
         }
 
-        public CopyObject notNull(BigDecimalSupplier supplier) {
-            var value = supplier.get();
-            this.match = Objects.nonNull(value);
-            this.value = value;
-            return this;
-        }
-
         public CopyObject notNull(Supplier<Object> supplier) {
             var value = supplier.get();
             this.match = Objects.nonNull(value);
@@ -81,11 +74,6 @@ public abstract class Copies {
             }
             return this;
         }
-    }
-
-    @FunctionalInterface
-    public interface BigDecimalSupplier extends Supplier<BigDecimal> {
-
     }
 
     @FunctionalInterface
