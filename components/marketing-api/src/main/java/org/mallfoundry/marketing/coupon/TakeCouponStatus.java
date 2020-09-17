@@ -18,13 +18,17 @@
 
 package org.mallfoundry.marketing.coupon;
 
-/**
- * 优惠券申请限制。
- *
- * @author Zhi Tang
- */
-public enum ApplyLimit {
-    UNLIMITED, // 无限制
-    NEW_CUSTOMER_ONLY, // 仅限新客户
-    REPEAT_CUSTOMER_ONLY, // 仅限回头客
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum TakeCouponStatus {
+    UNUSED /* 未使用 */,
+    USED /* 已使用 */,
+    CANCELLED /* 已作废 */,
+    EXPIRED, /* 已过期 */;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
