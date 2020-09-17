@@ -68,8 +68,8 @@ public class JpaTakeCoupon extends TakeCouponSupport {
     @Column(name = "description_")
     private String description;
 
-    @Enumerated(EnumType.STRING)
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_")
     private CouponType type;
 
