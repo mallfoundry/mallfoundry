@@ -38,20 +38,43 @@ public class CouponServiceTests {
         coupon.setStoreId("mi");
         coupon.setName("满减优惠券");
         coupon.setDescription("描述");
-        coupon.setType(CouponType.FIXED);
+        coupon.setType(CouponType.FIXED_DISCOUNT);
 //        coupon.setTakeLimit(TakeLimit.ONCE_PER_CUSTOMER);
-        coupon.setAmount(BigDecimal.valueOf(102));
-        coupon.setUsageLimit(1100);
+        coupon.setDiscountAmount(BigDecimal.valueOf(102));
+        coupon.setIssuingCount(1100);
         this.couponService.addCoupon(coupon);
     }
 
     @Test
-    public void testReceiveCoupon() {
+    public void testAddPercentageCoupon() {
+        var coupon = this.couponService.createCoupon(null);
+        coupon.setCode("XXXX0000");
+        coupon.setTenantId("0");
+        coupon.setStoreId("mi");
+        coupon.setName("9.8折");
+        coupon.setDescription("描述");
+        coupon.setType(CouponType.PERCENTAGE_DISCOUNT);
+        coupon.setDiscountPercent(BigDecimal.valueOf(9.8));
+        coupon.setIssuingCount(1100);
+        this.couponService.addCoupon(coupon);
+    }
+
+    @Test
+    public void testTakeCoupon() {
         var coupon = this.couponService.createTakeCoupon(null);
-        coupon.setCustomerId("111");
+        coupon.setCustomerId("1");
         coupon.setCouponId("6");
         this.couponService.takeCoupon(coupon);
     }
+
+    @Test
+    public void testTakeCoupon2() {
+        var coupon = this.couponService.createTakeCoupon(null);
+        coupon.setCustomerId("1");
+        coupon.setCouponId("7");
+        this.couponService.takeCoupon(coupon);
+    }
+
 
     @Test
     public void testDeleteCoupon() {
