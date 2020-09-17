@@ -29,6 +29,7 @@ import org.mallfoundry.marketing.coupon.repository.jpa.DelegatingJpaCouponReposi
 import org.mallfoundry.marketing.coupon.repository.jpa.DelegatingJpaTakeCouponRepository;
 import org.mallfoundry.marketing.coupon.repository.jpa.JpaCouponRepository;
 import org.mallfoundry.marketing.coupon.repository.jpa.JpaTakeCouponRepository;
+import org.mallfoundry.store.StoreService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -68,7 +69,7 @@ public class CouponAutoConfiguration {
     }
 
     @Bean
-    public CouponValidateProcessor couponValidateProcessor() {
-        return new CouponValidateProcessor();
+    public CouponValidateProcessor couponValidateProcessor(StoreService storeService) {
+        return new CouponValidateProcessor(storeService);
     }
 }
