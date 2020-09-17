@@ -24,7 +24,7 @@ public enum CouponStatus {
     PENDING /* 处理中 */,
     ISSUING /* 发放中 */,
     PAUSED /* 已暂停 */,
-    USED_UP, /* 全部已领取 */
+    FINISHED, /* 已领完 */
     EXPIRED, /* 已过期 */;
 
     @JsonValue
