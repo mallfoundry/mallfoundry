@@ -31,6 +31,8 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -61,7 +63,7 @@ public class JpaCoupon extends CouponSupport {
     @Column(name = "store_id_")
     private String storeId;
 
-    @NotBlank
+    //    @NotBlank
     @Column(name = "code_")
     private String code;
 
@@ -74,36 +76,41 @@ public class JpaCoupon extends CouponSupport {
     private String description;
 
     @NotNull
-    @Column(name = "type_")
-    private CouponType type;
-
-    @NotNull
     @Column(name = "status_")
     private CouponStatus status;
 
-/*    @NotNull
-    @Column(name = "take_limit_")
-    private TakeLimit takeLimit;*/
+    @Min(0)
+    @Column(name = "used_count_")
+    private int usedCount;
 
     @Min(0)
-    @Column(name = "usage_count_")
-    private int usageCount;
+    @Column(name = "received_count_")
+    private int receivedCount;
 
-    @Min(0)
-    @Column(name = "take_count_")
-    private int takeCount;
-
-    @Min(0)
-    @Column(name = "usage_limit_")
-    private int usageLimit;
+    @Min(1)
+    @Column(name = "issuing_count_")
+    private int issuingCount;
 
     @Min(0)
     @Column(name = "take_limit_per_customer_")
     private int takeLimitPerCustomer;
 
     @NotNull
-    @Column(name = "amount_")
-    private BigDecimal amount;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_")
+    private CouponType type;
+
+    @Column(name = "discount_amount_")
+    private BigDecimal discountAmount;
+
+    @Column(name = "discount_percent_")
+    private BigDecimal discountPercent;
+
+    @Column(name = "discount_min_amount_")
+    private BigDecimal discountMinAmount;
+
+    @Column(name = "discount_max_amount_")
+    private BigDecimal discountMaxAmount;
 
     @Column(name = "min_amount_")
     private BigDecimal minAmount;
@@ -127,12 +134,6 @@ public class JpaCoupon extends CouponSupport {
     @Column(name = "excluded_collections_")
     private List<String> excludedCollections = new ArrayList<>();
 
-/*    @Column(name = "expires_")
-    private int expires;
-
-    @Column(name = "expired_time_")
-    private Date expiredTime;*/
-
     @Column(name = "start_time_")
     private Date startTime;
 
@@ -147,6 +148,7 @@ public class JpaCoupon extends CouponSupport {
         this.id = couponId;
     }
 
+    // takings
     public static JpaCoupon of(Coupon coupon) {
         if (coupon instanceof JpaCoupon) {
             return (JpaCoupon) coupon;
