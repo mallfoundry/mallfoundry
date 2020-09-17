@@ -70,7 +70,7 @@ public class DelegatingJpaProductRepository implements JdbcProductRepository, Jp
     public SliceList<Product> findAll(ProductQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
-                .page(page.getNumber()).limit(query.getLimit())
+                .page(query.getPage()).limit(query.getLimit())
                 .totalSize(page.getTotalElements())
                 .cast();
     }

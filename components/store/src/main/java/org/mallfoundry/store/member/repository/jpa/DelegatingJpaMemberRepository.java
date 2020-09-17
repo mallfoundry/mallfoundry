@@ -51,7 +51,7 @@ public class DelegatingJpaMemberRepository implements MemberRepository {
     public SliceList<Member> findAll(MemberQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
-                .page(page.getNumber()).limit(query.getLimit())
+                .page(query.getPage()).limit(query.getLimit())
                 .totalSize(page.getTotalElements())
                 .cast();
     }

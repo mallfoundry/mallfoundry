@@ -79,8 +79,10 @@ public class DelegatingJpaRoleRepository implements RoleRepository {
     @Override
     public SliceList<Role> findAll(RoleQuery query) {
         var page = this.repository.findAll(query);
-        var list = PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
-        return CastUtils.cast(list);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override

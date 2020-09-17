@@ -51,7 +51,7 @@ public class DelegatingJpaStaffStoreRepository implements StaffStoreRepository {
         var stores = this.repository.findAllByIdInOrderByCreatedTimeAsc(storeIds);
         stores.forEach(store -> store.setStaff(storeStaffs.get(store.getId())));
         return PageList.of(stores)
-                .page(pageStaffs.getNumber()).limit(query.getLimit())
+                .page(query.getPage()).limit(query.getLimit())
                 .totalSize(pageStaffs.getTotalElements())
                 .cast();
     }
