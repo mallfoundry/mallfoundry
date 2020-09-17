@@ -21,6 +21,10 @@ package org.mallfoundry.rest.marketing.coupon;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.marketing.coupon.Coupon;
+import org.mallfoundry.marketing.coupon.CouponType;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,8 +33,27 @@ public class CouponRequest {
     private String code;
     private String name;
     private String description;
+    private int issuingCount;
+    public CouponType type;
+    public BigDecimal discountAmount;
+    public BigDecimal discountPercent;
+    public BigDecimal discountMinAmount;
+    public BigDecimal discountMaxAmount;
+    public BigDecimal minAmount;
+    public BigDecimal maxAmount;
+    public Date startTime;
+    public Date endTime;
 
     public Coupon assignTo(Coupon coupon) {
-        return coupon;
+        return coupon.toBuilder()
+                .storeId(this.storeId)
+                .code(this.code).name(this.name).description(this.description)
+                .issuingCount(this.issuingCount)
+                .type(this.type)
+                .discountAmount(this.discountAmount).discountPercent(this.discountPercent)
+                .discountMinAmount(this.discountMinAmount).discountMaxAmount(this.discountMaxAmount)
+                .minAmount(this.minAmount).maxAmount(this.maxAmount)
+                .startTime(this.startTime).endTime(this.endTime)
+                .build();
     }
 }

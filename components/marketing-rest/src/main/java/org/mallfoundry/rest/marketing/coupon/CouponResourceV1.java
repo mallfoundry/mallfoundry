@@ -24,6 +24,7 @@ import org.mallfoundry.marketing.coupon.CouponService;
 import org.mallfoundry.marketing.coupon.TakeCoupon;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,11 @@ public class CouponResourceV1 {
         return this.couponService.addCoupon(coupon);
     }
 
+    @GetMapping("/coupons/{coupon_id}")
+    public Coupon getCoupon(@PathVariable(name = "coupon_id") String couponId) {
+        return this.couponService.getCoupon(couponId);
+    }
+
     @GetMapping("/coupons")
     public SliceList<Coupon> getCoupons(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                         @RequestParam(name = "limit", defaultValue = "20") Integer limit,
@@ -55,19 +61,30 @@ public class CouponResourceV1 {
         return this.couponService.getCoupons(
                 this.couponService.createCouponQuery().toBuilder()
                         .page(page).limit(limit)
-                        .tenantId(tenantId).storeId(storeId)
-                        .build());
+                        .tenantId(tenantId).storeId(storeId).build());
+    }
+
+    @PatchMapping("/coupons/{coupon_id}")
+    public Coupon updateCoupon(@PathVariable(name = "coupon_id") String couponId,
+                               @RequestBody CouponRequest request) {
+        var coupon = request.assignTo(this.couponService.createCoupon(couponId));
+        return this.couponService.updateCoupon(coupon);
+    }
+
+    @PatchMapping("/coupons/{coupon_id}/pause")
+    public void pauseCoupon(@PathVariable(name = "coupon_id") String couponId) {
+        this.couponService.pauseCoupon(couponId);
+    }
+
+    @DeleteMapping("/coupons/{coupon_id}")
+    public void deleteCoupon(@PathVariable("coupon_id") String couponId) {
+        this.couponService.deleteCoupon(couponId);
     }
 
     @PostMapping("/coupons/{coupon_id}/take")
     public TakeCoupon takeCoupon(@RequestBody CouponRequest request) {
         var coupon = request.assignTo(this.couponService.createCoupon(null));
         return this.couponService.takeCoupon(null);
-    }
-
-    @DeleteMapping("/coupons/{coupon_id}")
-    public void deleteCoupon(@PathVariable("coupon_id") String couponId) {
-        this.couponService.deleteCoupon(couponId);
     }
 
     @GetMapping("/customers/coupons")
