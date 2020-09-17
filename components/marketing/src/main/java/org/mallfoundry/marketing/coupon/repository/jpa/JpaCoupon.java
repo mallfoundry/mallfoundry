@@ -76,6 +76,7 @@ public class JpaCoupon extends CouponSupport {
     private String description;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private CouponStatus status;
 
