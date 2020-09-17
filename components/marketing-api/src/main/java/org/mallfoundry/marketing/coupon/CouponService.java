@@ -28,9 +28,13 @@ public interface CouponService {
 
     Coupon addCoupon(Coupon coupon);
 
+    Coupon getCoupon(String couponId);
+
     SliceList<Coupon> getCoupons(CouponQuery query);
 
-    void updateCoupon(Coupon coupon);
+    Coupon updateCoupon(Coupon coupon);
+
+    void pauseCoupon(String couponId);
 
     void deleteCoupon(String couponId);
 
@@ -38,7 +42,7 @@ public interface CouponService {
 
     TakeCoupon takeCoupon(TakeCoupon takeCoupon) throws TakeCouponException;
 
-/*    void useCoupon(String takenId);
+/*    void applyCoupon(String takenId);
 
     void returnCoupon(String takenId);*/
 
