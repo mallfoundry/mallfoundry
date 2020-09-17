@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface MutableCoupon extends Coupon {
 
+    void setReceivedCount(int receivedCount);
+
     void setStatus(CouponStatus status);
 
     void setCreatedTime(Date createdTime);

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.marketing.coupon;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public interface MutableTakeCoupon extends TakeCoupon {
@@ -29,6 +30,14 @@ public interface MutableTakeCoupon extends TakeCoupon {
     void setDescription(String description);
 
     void setType(CouponType type);
+
+    void setDiscountAmount(BigDecimal discountAmount);
+
+    void setDiscountPercent(BigDecimal discountPercent);
+
+    void setMinAmount(BigDecimal minAmount);
+
+    void setMaxAmount(BigDecimal maxAmount);
 
     void setTakenTime(Date takenTime);
 }
