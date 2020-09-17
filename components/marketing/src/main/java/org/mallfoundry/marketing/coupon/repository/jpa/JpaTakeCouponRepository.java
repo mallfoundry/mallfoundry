@@ -18,7 +18,39 @@
 
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
+import org.mallfoundry.marketing.coupon.CouponQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaTakeCouponRepository extends JpaRepository<JpaTakeCoupon, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+
+public interface JpaTakeCouponRepository extends JpaRepository<JpaTakeCoupon, String>, JpaSpecificationExecutor<JpaTakeCoupon> {
+
+    default Specification<JpaTakeCoupon> createSpecification(CouponQuery couponQuery) {
+        return (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(couponQuery.getTenantId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("tenantId"), couponQuery.getTenantId()));
+            }
+            if (Objects.nonNull(couponQuery.getStoreId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("storeId"), couponQuery.getStoreId()));
+            }
+            if (Objects.nonNull(couponQuery.getCustomerId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("customerId"), couponQuery.getCustomerId()));
+            }
+            return predicate;
+        };
+    }
+
+    default Page<JpaTakeCoupon> findAll(CouponQuery query) {
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit()));
+    }
+
+    default long count(CouponQuery query) {
+        return this.count(this.createSpecification(query));
+    }
 }

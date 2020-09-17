@@ -18,6 +18,7 @@
 
 package org.mallfoundry.marketing.coupon.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.marketing.coupon.CouponQuery;
 import org.mallfoundry.marketing.coupon.TakeCoupon;
@@ -43,7 +44,11 @@ public class DelegatingJpaTakeCouponRepository implements TakeCouponRepository {
 
     @Override
     public SliceList<TakeCoupon> findAll(CouponQuery query) {
-        return null;
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override
