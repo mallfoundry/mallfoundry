@@ -83,6 +83,8 @@ public interface JpaBannerRepository
             return predicate;
         }, PageRequest.of(bannerQuery.getPage() - 1, bannerQuery.getLimit()));
 
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(bannerQuery.getLimit()).totalSize(page.getTotalElements());
+        return PageList.of(page.getContent())
+                .page(bannerQuery.getPage()).limit(bannerQuery.getLimit())
+                .totalSize(page.getTotalElements());
     }
 }
