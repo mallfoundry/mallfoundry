@@ -22,17 +22,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
+import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public class DefaultCouponService implements CouponService, CouponProcessorInvoker {
 
+    private List<CouponProcessor> processors;
+
     private final CouponRepository couponRepository;
 
     private final TakeCouponRepository takeCouponRepository;
-
-    private List<CouponProcessor> processors;
 
     public DefaultCouponService(CouponRepository couponRepository,
                                 TakeCouponRepository takeCouponRepository) {
@@ -59,7 +60,13 @@ public class DefaultCouponService implements CouponService, CouponProcessorInvok
     public Coupon addCoupon(Coupon coupon) {
         coupon = this.invokePreProcessBeforeAddCoupon(coupon);
         coupon.create();
+        coupon = this.invokePreProcessAfterAddCoupon(coupon);
         return this.couponRepository.save(coupon);
+    }
+
+    @Override
+    public Coupon getCoupon(String couponId) {
+        return this.requiredCoupon(couponId);
     }
 
     @Override
@@ -74,8 +81,29 @@ public class DefaultCouponService implements CouponService, CouponProcessorInvok
 
     @Transactional
     @Override
-    public void updateCoupon(Coupon source) {
+    public Coupon updateCoupon(Coupon source) {
         var coupon = this.requiredCoupon(source.getId());
+        Copies.notBlank(source::getName).trim(coupon::setName)
+                .notBlank(source::getDescription).trim(coupon::setDescription)
+                .notNull(source::getDiscountAmount).set(coupon::setDiscountAmount)
+                .notNull(source::getDiscountPercent).set(coupon::setDiscountPercent)
+                .notNull(source::getDiscountMinAmount).set(coupon::setDiscountMinAmount)
+                .notNull(source::getDiscountMaxAmount).set(coupon::setDiscountMaxAmount)
+                .notNull(source::getMinAmount).set(coupon::setMinAmount)
+                .notNull(source::getMaxAmount).set(coupon::setMaxAmount)
+                .notNull(source::getStartTime).set(coupon::setStartTime)
+                .notNull(source::getEndTime).set(coupon::setEndTime);
+        if (source.getIssuingCount() > 0) {
+            coupon.setIssuingCount(source.getIssuingCount());
+        }
+        return this.couponRepository.save(coupon);
+    }
+
+    @Transactional
+    @Override
+    public void pauseCoupon(String couponId) {
+        var coupon = this.requiredCoupon(couponId);
+        coupon.pause();
         this.couponRepository.save(coupon);
     }
 
@@ -134,6 +162,13 @@ public class DefaultCouponService implements CouponService, CouponProcessorInvok
     public Coupon invokePreProcessBeforeAddCoupon(Coupon coupon) {
         return Processors.stream(this.processors)
                 .map(CouponProcessor::preProcessBeforeAddCoupon)
+                .apply(coupon);
+    }
+
+    @Override
+    public Coupon invokePreProcessAfterAddCoupon(Coupon coupon) {
+        return Processors.stream(this.processors)
+                .map(CouponProcessor::preProcessAfterAddCoupon)
                 .apply(coupon);
     }
 
