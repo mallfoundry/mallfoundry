@@ -19,12 +19,13 @@
 package org.mallfoundry.marketing.coupon;
 
 import org.mallfoundry.store.StoreOwnership;
+import org.mallfoundry.util.ObjectBuilder;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface Coupon extends StoreOwnership {
+public interface Coupon extends StoreOwnership, ObjectBuilder.ToBuilder<Coupon.Builder> {
 
     String getId();
 
@@ -120,7 +121,42 @@ public interface Coupon extends StoreOwnership {
 
     void create();
 
+    void pause();
+
     TakeCoupon take(TakeCoupon takeCoupon);
 
     void use(TakeCoupon takeCoupon);
+
+    interface Builder extends ObjectBuilder<Coupon> {
+
+        Builder id(String id);
+
+        Builder storeId(String storeId);
+
+        Builder code(String code);
+
+        Builder name(String name);
+
+        Builder description(String description);
+
+        Builder issuingCount(int issuingCount);
+
+        Builder type(CouponType type);
+
+        Builder discountAmount(BigDecimal discountAmount);
+
+        Builder discountPercent(BigDecimal discountPercent);
+
+        Builder discountMinAmount(BigDecimal discountMinAmount);
+
+        Builder discountMaxAmount(BigDecimal discountMaxAmount);
+
+        Builder minAmount(BigDecimal minAmount);
+
+        Builder maxAmount(BigDecimal maxAmount);
+
+        Builder startTime(Date startTime);
+
+        Builder endTime(Date endTime);
+    }
 }
