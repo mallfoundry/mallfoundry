@@ -55,7 +55,7 @@ public class CheckoutResourceV1 {
     }
 
     @GetMapping("/checkouts/{id}")
-    public Optional<Checkout> getCheckout(@PathVariable("id") String checkoutId) {
+    public Checkout getCheckout(@PathVariable("id") String checkoutId) {
         return checkoutService.getCheckout(checkoutId);
     }
 
