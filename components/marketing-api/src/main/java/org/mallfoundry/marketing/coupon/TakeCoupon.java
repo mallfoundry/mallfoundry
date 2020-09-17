@@ -20,6 +20,7 @@ package org.mallfoundry.marketing.coupon;
 
 import org.mallfoundry.store.StoreOwnership;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public interface TakeCoupon extends StoreOwnership {
@@ -43,6 +44,14 @@ public interface TakeCoupon extends StoreOwnership {
     String getDescription();
 
     CouponType getType();
+
+    BigDecimal getDiscountAmount();
+
+    BigDecimal getDiscountPercent();
+
+    BigDecimal getMinAmount();
+
+    BigDecimal getMaxAmount();
 
     Date getStartTime();
 
