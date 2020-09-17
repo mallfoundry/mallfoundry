@@ -22,5 +22,7 @@ public interface CouponProcessorInvoker {
 
     Coupon invokePreProcessBeforeAddCoupon(Coupon coupon);
 
+    Coupon invokePreProcessAfterAddCoupon(Coupon coupon);
+
     TakeCoupon invokePreProcessBeforeTakeCoupon(Coupon coupon, TakeCoupon takeCoupon);
 }
