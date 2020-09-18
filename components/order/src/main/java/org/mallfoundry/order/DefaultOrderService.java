@@ -191,15 +191,6 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
 
     @Transactional
     @Override
-    public void payOrder(String orderId, OrderPaymentResult payment) {
-        var order = this.requiredOrder(orderId);
-        order.pay(payment);
-        var savedOrder = this.orderRepository.save(order);
-        this.eventPublisher.publishEvent(new ImmutableOrderPaidEvent(savedOrder));
-    }
-
-    @Transactional
-    @Override
     public void payOrders(Set<String> orderIds, OrderPaymentResult payment) {
         var orders = this.orderRepository.findAllById(orderIds);
         orders.forEach(order -> order.pay(payment));

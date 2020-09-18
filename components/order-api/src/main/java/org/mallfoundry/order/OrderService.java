@@ -75,8 +75,6 @@ public interface OrderService {
 
     Order updateOrder(Order order);
 
-    void payOrder(String orderId, OrderPaymentResult payment);
-
     void payOrders(Set<String> orderIds, OrderPaymentResult payment);
 
     /**

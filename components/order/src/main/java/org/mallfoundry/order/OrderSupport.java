@@ -25,6 +25,7 @@ import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.shipping.OrderShipmentItem;
+import org.mallfoundry.payment.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.DecimalUtils;
 import org.springframework.util.Assert;
@@ -56,7 +57,6 @@ import static org.mallfoundry.order.OrderStatus.PENDING;
 import static org.mallfoundry.order.OrderStatus.REFUNDED;
 import static org.mallfoundry.order.OrderStatus.REVIEWED;
 import static org.mallfoundry.order.OrderStatus.SHIPPED;
-import static org.mallfoundry.payment.PaymentStatus.isCaptured;
 
 public abstract class OrderSupport implements MutableOrder {
 
@@ -410,7 +410,7 @@ public abstract class OrderSupport implements MutableOrder {
 
     @Override
     public boolean isPaid() {
-        return Objects.nonNull(this.getPaidTime()) && isCaptured(this.getPaymentStatus());
+        return Objects.nonNull(this.getPaidTime()) && PaymentStatus.CAPTURED.equals(this.getPaymentStatus());
     }
 
     @Override

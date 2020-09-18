@@ -71,15 +71,16 @@ public interface OrderItem extends ObjectBuilder.ToBuilder<OrderItem.Builder> {
 
     void discountShippingCost(BigDecimal discountShippingCost);
 
-    BigDecimal getDiscountTotalPrice();
-
-    void discountTotalPrice(BigDecimal discountTotalPrice);
 /*
     BigDecimal getCouponDiscountAmount();
 
     void couponDiscountAmount(BigDecimal couponAmount);*/
 
     BigDecimal getTotalPrice();
+
+    BigDecimal getDiscountTotalPrice();
+
+    void discountTotalPrice(BigDecimal discountTotalPrice);
 
     void applyRefund(BigDecimal refundAmount);
 

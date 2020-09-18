@@ -101,8 +101,6 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     void setItems(List<OrderItem> items);
 
-    int getTotalQuantity();
-
     int getItemsSize();
 
     OrderShipment createShipment(String shipmentId);
@@ -207,7 +205,7 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     List<OrderReview> getReviews();
 
-    BigDecimal getTotalDiscountTotalPrice();
+    int getTotalQuantity();
 
     BigDecimal getTotalShippingCost();
 
@@ -215,9 +213,11 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     BigDecimal getTotalPrice();
 
-    BigDecimal getTotalAmount();
+    BigDecimal getTotalDiscountTotalPrice();
 
     BigDecimal getSubtotalAmount();
+
+    BigDecimal getTotalAmount();
 
     String getPaymentId();
 
