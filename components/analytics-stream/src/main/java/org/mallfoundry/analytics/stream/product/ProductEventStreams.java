@@ -18,17 +18,16 @@
 
 package org.mallfoundry.analytics.stream.product;
 
-import org.mallfoundry.dw.ProductFact;
-import org.mallfoundry.dw.ProductStatusDimension;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAddedEvent;
+import org.mallfoundry.dw.ProductFact;
+import org.mallfoundry.dw.ProductStatusDimension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
+//@Configuration
 public class ProductEventStreams {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductEventStreams.class);

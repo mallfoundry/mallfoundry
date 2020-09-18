@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Configuration
+//@Configuration
 public class OrderEventStreams {
 
     private final OrderItemFactRepository orderItemFactRepository;
