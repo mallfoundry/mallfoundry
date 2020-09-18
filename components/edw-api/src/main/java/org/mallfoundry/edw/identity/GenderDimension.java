@@ -16,11 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.product;
+package org.mallfoundry.edw.identity;
 
-public interface ProductVariantDimension {
-
-    String getId();
-
-    String getProductId();
+public interface GenderDimension {
 }

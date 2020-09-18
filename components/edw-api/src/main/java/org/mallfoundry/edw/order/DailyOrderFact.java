@@ -20,7 +20,7 @@ package org.mallfoundry.edw.order;
 
 import java.math.BigDecimal;
 
-public interface OrderLineFact {
+public interface DailyOrderFact {
 
     String getTenantId();
 
@@ -34,27 +34,59 @@ public interface OrderLineFact {
 
     void setCustomerId(String customerId);
 
-    String getVariantId();
+    Integer getPlacedDateId();
 
-    String getProductId();
+    void setPlacedDateId(Integer placedDateId);
 
-    String getOrderId();
+    Integer getPaidDateId();
+
+    void setPaidDateId(Integer paidDateId);
+
+    Integer getFulfilledDateId();
+
+    void setFulfilledDateId(Integer fulfilledDateId);
+
+    Integer getShippedDateId();
+
+    void setShippedDateId(Integer shippedDateId);
+
+    Integer getSignedDateId();
+
+    void setSignedDateId(Integer signedDateId);
+
+    Integer getReceivedDateId();
+
+    void setReceivedDateId(Integer receivedDateId);
 
     String getId();
 
-    int getQuantity();
+    void setId(String id);
 
-    BigDecimal getPrice();
+    int getTotalQuantity();
 
-    BigDecimal getShippingCost();
+    void setTotalQuantity(int totalQuantity);
 
-    BigDecimal getDiscountShippingCost();
+    BigDecimal getTotalShippingCost();
+
+    void setTotalShippingCost(BigDecimal totalShippingCost);
+
+    BigDecimal getTotalDiscountShippingCost();
+
+    void setTotalDiscountShippingCost(BigDecimal totalDiscountShippingCost);
 
     BigDecimal getTotalPrice();
 
-    BigDecimal getDiscountTotalPrice();
+    void setTotalPrice(BigDecimal totalPrice);
+
+    BigDecimal getTotalDiscountTotalPrice();
+
+    void setTotalDiscountTotalPrice(BigDecimal totalDiscountTotalPrice);
 
     BigDecimal getSubtotalAmount();
 
+    void setSubtotalAmount(BigDecimal subtotalAmount);
+
     BigDecimal getTotalAmount();
+
+    void setTotalAmount(BigDecimal totalAmount);
 }

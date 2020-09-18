@@ -18,43 +18,15 @@
 
 package org.mallfoundry.edw.order;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-public interface OrderLineFact {
+public interface OrderFactRepository {
 
-    String getTenantId();
+    OrderFact create();
 
-    void setTenantId(String tenantId);
+    OrderFact save(OrderFact fact);
 
-    String getStoreId();
+    List<OrderFact> saveAll(List<OrderFact> facts);
 
-    void setStoreId(String storeId);
-
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
-
-    String getVariantId();
-
-    String getProductId();
-
-    String getOrderId();
-
-    String getId();
-
-    int getQuantity();
-
-    BigDecimal getPrice();
-
-    BigDecimal getShippingCost();
-
-    BigDecimal getDiscountShippingCost();
-
-    BigDecimal getTotalPrice();
-
-    BigDecimal getDiscountTotalPrice();
-
-    BigDecimal getSubtotalAmount();
-
-    BigDecimal getTotalAmount();
+    void delete(OrderFact fact);
 }

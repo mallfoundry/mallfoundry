@@ -18,5 +18,69 @@
 
 package org.mallfoundry.edw.order;
 
+import java.math.BigDecimal;
+
 public interface OrderFact {
+
+    String getTenantId();
+
+    void setTenantId(String tenantId);
+
+    String getStoreId();
+
+    void setStoreId(String storeId);
+
+    String getCustomerId();
+
+    void setCustomerId(String customerId);
+
+    Long getPlacedTimeId();
+
+    void setPlacedTimeId(Long placedTimeId);
+
+    Long getPaidTimeId();
+
+    void setPaidTimeId(Long paidTimeId);
+
+    Long getFulfilledTimeId();
+
+    void setFulfilledTimeId(Long fulfilledTimeId);
+
+    Long getShippedTimeId();
+
+    Long getSignedTimeId();
+
+    Long getReceivedTimeId();
+
+    String getId();
+
+    void setId(String id);
+
+    int getTotalQuantity();
+
+    void setTotalQuantity(int totalQuantity);
+
+    BigDecimal getTotalShippingCost();
+
+    void setTotalShippingCost(BigDecimal totalShippingCost);
+
+    BigDecimal getTotalDiscountShippingCost();
+
+    void setTotalDiscountShippingCost(BigDecimal totalDiscountShippingCost);
+
+    BigDecimal getTotalPrice();
+
+    void setTotalPrice(BigDecimal totalPrice);
+
+    BigDecimal getTotalDiscountTotalPrice();
+
+    void setTotalDiscountTotalPrice(BigDecimal totalDiscountTotalPrice);
+
+    BigDecimal getSubtotalAmount();
+
+    void setSubtotalAmount(BigDecimal subtotalAmount);
+
+    BigDecimal getTotalAmount();
+
+    void setTotalAmount(BigDecimal totalAmount);
 }

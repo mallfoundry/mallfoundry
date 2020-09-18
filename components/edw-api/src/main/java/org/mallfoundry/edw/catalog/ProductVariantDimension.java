@@ -16,45 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.order;
+package org.mallfoundry.edw.catalog;
 
-import java.math.BigDecimal;
-
-public interface OrderLineFact {
-
-    String getTenantId();
-
-    void setTenantId(String tenantId);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
-
-    String getVariantId();
-
-    String getProductId();
-
-    String getOrderId();
+public interface ProductVariantDimension {
 
     String getId();
 
-    int getQuantity();
-
-    BigDecimal getPrice();
-
-    BigDecimal getShippingCost();
-
-    BigDecimal getDiscountShippingCost();
-
-    BigDecimal getTotalPrice();
-
-    BigDecimal getDiscountTotalPrice();
-
-    BigDecimal getSubtotalAmount();
-
-    BigDecimal getTotalAmount();
+    String getProductId();
 }

@@ -16,17 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw;
+package org.mallfoundry.edw.time;
 
+// 2020-09-18
 public interface DateDimension {
 
-    String getId();
+    int getId();
 
     int getYear();
+
+    int getQuarter();
 
     int getMonth();
 
     int getDayOfMonth();
-
-    int getQuarter();
 }

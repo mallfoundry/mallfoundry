@@ -19,4 +19,7 @@
 package org.mallfoundry.edw.customer;
 
 public interface CustomerDimension {
+
+    String getId();
+
 }

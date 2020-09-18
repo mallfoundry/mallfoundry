@@ -16,45 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.order;
+package org.mallfoundry.edw.time;
 
-import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
 
-public interface OrderLineFact {
+public abstract class TimeDimensions {
 
-    String getTenantId();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-    void setTenantId(String tenantId);
-
-    String getStoreId();
-
-    void setStoreId(String storeId);
-
-    String getCustomerId();
-
-    void setCustomerId(String customerId);
-
-    String getVariantId();
-
-    String getProductId();
-
-    String getOrderId();
-
-    String getId();
-
-    int getQuantity();
-
-    BigDecimal getPrice();
-
-    BigDecimal getShippingCost();
-
-    BigDecimal getDiscountShippingCost();
-
-    BigDecimal getTotalPrice();
-
-    BigDecimal getDiscountTotalPrice();
-
-    BigDecimal getSubtotalAmount();
-
-    BigDecimal getTotalAmount();
+    public static Long idOf(Date date) {
+        return Optional.ofNullable(date)
+                .map(Date::toInstant)
+                .map(instant -> instant.atZone(ZoneId.systemDefault()))
+                .map(ZonedDateTime::toLocalDateTime)
+                .map(time -> time.format(DATE_TIME_FORMATTER))
+                .map(Long::parseLong)
+                .orElse(null);
+    }
 }

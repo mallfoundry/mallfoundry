@@ -16,7 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order;
+package org.mallfoundry.edw.time;
 
-public interface OrderPaidEvent extends OrderEvent {
+// 2020-09-18 09:32:01
+public interface TimeDimension {
+
+    long getId();
+
+    int getYear();
+
+    int getQuarter();
+
+    int getMonth();
+
+    int getDayOfMonth();
+
+    int getHourOfDay();
+
+    int getMinuteOfHour();
+
+    int getSecondOfMinute();
 }

@@ -16,7 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.product;
+package org.mallfoundry.edw.time;
 
-public interface ProductFact {
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
+
+// 2020-09-18
+public abstract class DateDimensions {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+    public static Integer idOf(Date date) {
+        return Optional.ofNullable(date)
+                .map(Date::toInstant)
+                .map(instant -> instant.atZone(ZoneId.systemDefault()))
+                .map(ZonedDateTime::toLocalDate)
+                .map(time -> time.format(DATE_FORMATTER))
+                .map(Integer::parseInt)
+                .orElse(null);
+    }
 }
