@@ -30,24 +30,22 @@ import java.util.function.Function;
 
 import static org.mallfoundry.payment.PaymentStatus.CAPTURED;
 import static org.mallfoundry.payment.PaymentStatus.PENDING;
-import static org.mallfoundry.payment.PaymentStatus.isNew;
-import static org.mallfoundry.payment.PaymentStatus.isPending;
 
 public abstract class PaymentSupport implements MutablePayment {
 
     @Override
     public boolean isStarted() {
-        return Objects.nonNull(this.getStatus()) && this.getStatus().isPending();
+        return PENDING.equals(this.getStatus());
     }
 
     @Override
     public boolean isCaptured() {
-        return Objects.nonNull(this.getStatus()) && this.getStatus().isCaptured();
+        return CAPTURED.equals(this.getStatus());
     }
 
     @Override
     public void start() {
-        if (!isNew(this.getStatus())) {
+        if (Objects.nonNull(this.getStatus())) {
             throw PaymentExceptions.started();
         }
         this.setStatus(PENDING);
@@ -56,7 +54,7 @@ public abstract class PaymentSupport implements MutablePayment {
 
     @Override
     public void capture() {
-        if (!isPending(this.getStatus())) {
+        if (!PENDING.equals(this.getStatus())) {
             throw PaymentExceptions.cannotCaptured();
         }
         this.setStatus(CAPTURED);
@@ -69,7 +67,7 @@ public abstract class PaymentSupport implements MutablePayment {
 
     @Override
     public void addOrder(PaymentOrder order) {
-        if (!isNew(this.getStatus())) {
+        if (Objects.nonNull(this.getStatus())) {
             throw PaymentExceptions.cannotAddOrder();
         }
         this.getOrders().add(order);

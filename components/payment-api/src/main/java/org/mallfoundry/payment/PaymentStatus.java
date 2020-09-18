@@ -20,8 +20,6 @@ package org.mallfoundry.payment;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Objects;
-
 public enum PaymentStatus {
 
     PENDING, CAPTURED;
@@ -39,29 +37,9 @@ public enum PaymentStatus {
 //    public static final String CARD_VERIFIED = "Card Verified";
 //    public static final String CHARGEBACK = "Chargeback";
 
-    public boolean isPending() {
-        return this == PENDING;
-    }
-
-    public boolean isCaptured() {
-        return this == CAPTURED;
-    }
-
     @Override
     @JsonValue
     public String toString() {
         return this.name().toLowerCase();
-    }
-
-    public static boolean isNew(PaymentStatus status) {
-        return Objects.isNull(status);
-    }
-
-    public static boolean isPending(PaymentStatus status) {
-        return Objects.nonNull(status) && status.isPending();
-    }
-
-    public static boolean isCaptured(PaymentStatus status) {
-        return Objects.nonNull(status) && status.isCaptured();
     }
 }
