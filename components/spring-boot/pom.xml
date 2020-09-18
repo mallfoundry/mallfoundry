@@ -41,11 +41,6 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-analytics-stream</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-keystone</artifactId>
         </dependency>
 
@@ -92,6 +87,16 @@
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-shipping</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-edw</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-edw-stream</artifactId>
         </dependency>
 
         <dependency>

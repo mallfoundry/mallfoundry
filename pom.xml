@@ -143,6 +143,12 @@
                 <version>${mall.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-edw-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <!-- mall libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
@@ -153,18 +159,6 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-analytics</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-analytics-stream</artifactId>
-                <version>${mall.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-data-warehouse</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -237,6 +231,18 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-shipping</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-edw</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-edw-stream</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

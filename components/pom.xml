@@ -47,10 +47,12 @@
         <module>dom-api</module>
         <module>marketing-api</module>
         <module>trade-api</module>
+        <module>edw-api</module>
 
+        <module>edw</module>
         <module>analytics</module>
-        <module>analytics-stream</module>
-        <module>data-warehouse</module>
+        <!--<module>analytics-stream</module>-->
+        <!--<module>data-warehouse</module>-->
         <module>app</module>
         <module>commons</module>
         <module>shared</module>
@@ -85,7 +87,7 @@
 
         <!-- BOOT modules -->
         <module>spring-boot</module>
-        <module>edw-api</module>
+        <module>edw-stream</module>
     </modules>
 
 </project>
