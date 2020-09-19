@@ -107,10 +107,10 @@ public class JpaProduct extends ProductSupport {
     private Set<String> collections = new HashSet<>();
 
     @Column(name = "monthly_sales_")
-    private long monthlySales;
+    private Long monthlySales;
 
     @Column(name = "total_sales_")
-    private long totalSales;
+    private Long totalSales;
 
     @Column(name = "views_count_")
     private long viewsCount;

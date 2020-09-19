@@ -100,12 +100,12 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
-    public long getTotalSales() {
+    public Long getTotalSales() {
         return this.product.getTotalSales();
     }
 
     @Override
-    public long getMonthlySales() {
+    public Long getMonthlySales() {
         return this.product.getMonthlySales();
     }
 

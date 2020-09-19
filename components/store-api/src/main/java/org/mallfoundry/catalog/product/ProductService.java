@@ -74,6 +74,8 @@ public interface ProductService {
      */
     Product updateProduct(Product product);
 
+    Product updateProductSales(Product product);
+
     /**
      * 发布商品对象。
      *

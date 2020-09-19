@@ -92,13 +92,13 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
-    public long getTotalSales() {
-        return 0;
+    public Long getTotalSales() {
+        return (long) 0;
     }
 
     @Override
-    public long getMonthlySales() {
-        return 0;
+    public Long getMonthlySales() {
+        return (long) 0;
     }
 
     @Override

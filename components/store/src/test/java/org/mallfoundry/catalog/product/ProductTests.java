@@ -106,8 +106,8 @@ public class ProductTests {
                         .countyId("11191").county("槐荫区")
                         .build())
                 //
-                .adjustMonthlySales(10)
-                .adjustTotalSales(10)
+                .monthlySales(10)
+                .totalSales(10)
                 //
                 .option(product1 -> product1.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
                         .name("颜色")
@@ -177,8 +177,8 @@ public class ProductTests {
                         .countyId("10451").county("罗湖区")
                         .build())
                 //
-                .adjustMonthlySales(20)
-                .adjustTotalSales(20)
+                .monthlySales(20)
+                .totalSales(20)
                 //
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
                         .name("颜色")
@@ -255,8 +255,8 @@ public class ProductTests {
                         .countyId("10462").county("金湾区")
                         .build())
                 //
-                .adjustMonthlySales(30)
-                .adjustTotalSales(30)
+                .monthlySales(30)
+                .totalSales(30)
                 //
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
@@ -384,8 +384,8 @@ public class ProductTests {
                         .countyId("10462").county("金湾区")
                         .build())
                 //
-                .adjustMonthlySales(30)
-                .adjustTotalSales(30)
+                .monthlySales(30)
+                .totalSales(30)
                 //
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
@@ -512,8 +512,8 @@ public class ProductTests {
                         .countyId("10462").county("金湾区")
                         .build())
                 //
-                .adjustMonthlySales(30)
-                .adjustTotalSales(30)
+                .monthlySales(30)
+                .totalSales(30)
                 //
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
@@ -629,8 +629,8 @@ public class ProductTests {
                         .countyId("10241").county("雨湖区")
                         .build())
                 //
-                .adjustMonthlySales(40)
-                .adjustTotalSales(40)
+                .monthlySales(40)
+                .totalSales(40)
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
                         .name("颜色")
@@ -723,8 +723,8 @@ public class ProductTests {
                         .countyId("11202").county("市南区")
                         .build())
                 //
-                .adjustMonthlySales(50)
-                .adjustTotalSales(50)
+                .monthlySales(50)
+                .totalSales(50)
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
                         .name("颜色")
@@ -802,8 +802,8 @@ public class ProductTests {
                         .countyId("10119").county("江岸区")
                         .build())
                 //
-                .adjustMonthlySales(60)
-                .adjustTotalSales(60)
+                .monthlySales(60)
+                .totalSales(60)
                 // options
                 .option(product -> product.createOption(PrimaryKeyHolder.next(PRODUCT_OPTION_ID_VALUE_NAME)).toBuilder()
                         .name("颜色")

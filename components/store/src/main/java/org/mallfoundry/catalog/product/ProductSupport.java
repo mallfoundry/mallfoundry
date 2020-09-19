@@ -94,16 +94,6 @@ public abstract class ProductSupport implements MutableProduct {
         return new DefaultProductOrigin();
     }
 
-    @Override
-    public void adjustTotalSales(long sales) {
-        this.setTotalSales(this.getTotalSales() + sales);
-    }
-
-    @Override
-    public void adjustMonthlySales(long sales) {
-        this.setMonthlySales(this.getMonthlySales() + sales);
-    }
-
     private void effectVariants() {
         Positions.sort(this.getVariants());
         this.checkInventory();
@@ -398,14 +388,14 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
-        public Builder adjustTotalSales(long sales) {
-            this.product.adjustTotalSales(sales);
+        public Builder totalSales(long sales) {
+            this.product.setTotalSales(sales);
             return this;
         }
 
         @Override
-        public Builder adjustMonthlySales(long sales) {
-            this.product.adjustMonthlySales(sales);
+        public Builder monthlySales(long sales) {
+            this.product.setMonthlySales(sales);
             return this;
         }
 

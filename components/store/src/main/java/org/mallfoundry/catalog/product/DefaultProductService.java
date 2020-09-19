@@ -161,6 +161,15 @@ public class DefaultProductService implements ProductService, ProductProcessorIn
 
     @Transactional
     @Override
+    public Product updateProductSales(Product source) {
+        var product = this.requiredProduct(source.getId());
+        Copies.notNull(source::getTotalSales).set(product::setTotalSales)
+                .notNull(source::getMonthlySales).set(product::setMonthlySales);
+        return this.productRepository.save(product);
+    }
+
+    @Transactional
+    @Override
     public void publishProduct(String id) {
         var product = this.invokePreProcessBeforePublishProduct(this.requiredProduct(id));
         product.publish();

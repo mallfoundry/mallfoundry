@@ -36,12 +36,12 @@ import java.util.Set;
 public interface ImmutableProductResponse extends Product {
 
     @Override
-    default void adjustTotalSales(long sales) throws ProductException {
+    default void setTotalSales(Long totalSales) throws ProductException {
 
     }
 
     @Override
-    default void adjustMonthlySales(long sales) throws ProductException {
+    default void setMonthlySales(Long monthlySales) throws ProductException {
 
     }
 

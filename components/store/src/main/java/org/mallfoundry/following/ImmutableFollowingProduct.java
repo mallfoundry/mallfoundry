@@ -55,6 +55,16 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
+    default void setTotalSales(Long totalSales) throws ProductException {
+
+    }
+
+    @Override
+    default void setMonthlySales(Long monthlySales) throws ProductException {
+
+    }
+
+    @Override
     default void removeImageUrl(String imageUrl) {
 
     }
@@ -102,16 +112,6 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     @Override
     default Builder toBuilder() {
         return null;
-    }
-
-    @Override
-    default void adjustTotalSales(long sales) throws ProductException {
-
-    }
-
-    @Override
-    default void adjustMonthlySales(long sales) throws ProductException {
-
     }
 
     @Override

@@ -72,27 +72,13 @@ public interface Product extends ProductBody, StoreOwnership {
 
     void setCollections(Set<String> collections);
 
-    long getTotalSales();
+    Long getMonthlySales();
 
-    /**
-     * 调整商品的总销售量，参数可是是正数也可以是负数。
-     * 正数表示在此商品总销量的基础上增加给定参数的销量，负数则是在此商品总销量的基础上减少给定参数的销量。
-     *
-     * @param sales 需要调整的数量
-     * @throws ProductException 如果调整后的数量小于零
-     */
-    void adjustTotalSales(long sales) throws ProductException;
+    void setMonthlySales(Long monthlySales);
 
-    long getMonthlySales();
+    Long getTotalSales();
 
-    /**
-     * 调整商品的月售量，参数可是是正数也可以是负数。
-     * 正数表示在此商品月销量的基础上增加给定参数的销量，负数则是在此商品月销量的基础上减少给定参数的销量。
-     *
-     * @param sales 需要调整的数量
-     * @throws ProductException 如果调整后的数量小于零
-     */
-    void adjustMonthlySales(long sales) throws ProductException;
+    void setTotalSales(Long totalSales);
 
     long getViewsCount();
 
@@ -256,9 +242,9 @@ public interface Product extends ProductBody, StoreOwnership {
 
         Builder origin(Supplier<ProductOrigin> supplier);
 
-        Builder adjustTotalSales(long sales);
+        Builder totalSales(long totalSales);
 
-        Builder adjustMonthlySales(long sales);
+        Builder monthlySales(long monthlySales);
 
         Builder collections(Set<String> collections);
 

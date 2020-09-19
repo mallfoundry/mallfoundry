@@ -82,9 +82,9 @@ public class ElasticsearchProduct extends ProductSupport {
 
     private Set<String> collections = new HashSet<>();
 
-    private long totalSales;
+    private Long totalSales;
 
-    private long monthlySales;
+    private Long monthlySales;
 
     private long viewsCount;
 

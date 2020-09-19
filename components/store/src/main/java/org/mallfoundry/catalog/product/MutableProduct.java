@@ -40,10 +40,6 @@ public interface MutableProduct extends Product {
 
     void setAttributes(List<ProductAttribute> attributes);
 
-    void setTotalSales(long sales);
-
-    void setMonthlySales(long sales);
-
     void setImageUrls(List<String> imageUrls);
 
     void setVideoUrls(List<String> videoUrls);
