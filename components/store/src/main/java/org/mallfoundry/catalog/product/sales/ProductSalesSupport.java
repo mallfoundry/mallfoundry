@@ -28,7 +28,7 @@ public abstract class ProductSalesSupport implements ProductSales {
     }
 
     @Override
-    public void adjustQuantities(int quantities) {
+    public void adjustQuantities(long quantities) {
         this.setQuantities(this.getQuantities() + quantities);
     }
 }

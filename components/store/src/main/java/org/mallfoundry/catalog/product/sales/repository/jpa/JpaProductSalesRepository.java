@@ -20,6 +20,6 @@ package org.mallfoundry.catalog.product.sales.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaProductSalesRepository
-        extends JpaRepository<JpaProductSales, JpaProductSalesId> {
+public interface JpaProductSalesRepository extends JpaRepository<JpaProductSales, JpaProductSalesId> {
+
 }

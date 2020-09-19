@@ -32,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -51,21 +52,25 @@ public class JpaProductSales extends ProductSalesSupport {
 
     @Id
     @Column(name = "year_")
-    private int year;
+    private short year;
 
     @Id
     @Column(name = "month_")
-    private int month;
+    private byte month;
 
     @Id
     @Column(name = "day_of_month_")
-    private int dayOfMonth;
+    private byte dayOfMonth;
 
     @Column(name = "amounts_")
     private BigDecimal amounts = BigDecimal.ZERO;
 
     @Column(name = "quantities_")
-    private int quantities;
+    private long quantities;
+
+    public JpaProductSales(Long quantities) {
+        this.quantities = Objects.requireNonNullElse(quantities, (long) 0);
+    }
 
     @Override
     public ProductSalesId toId() {

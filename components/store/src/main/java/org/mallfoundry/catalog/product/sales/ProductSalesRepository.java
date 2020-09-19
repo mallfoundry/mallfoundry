@@ -27,4 +27,6 @@ public interface ProductSalesRepository {
     ProductSales save(ProductSales sales);
 
     Optional<ProductSales> findById(ProductSalesId salesId);
+
+    long sumQuantities(ProductSalesQuery query);
 }

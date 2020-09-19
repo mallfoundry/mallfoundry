@@ -18,8 +18,11 @@
 
 package org.mallfoundry.catalog.product.sales;
 
+import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 public class DefaultProductSalesService implements ProductSalesService {
 
@@ -31,6 +34,10 @@ public class DefaultProductSalesService implements ProductSalesService {
                                       ProductSalesRepository productSalesRepository) {
         this.productService = productService;
         this.productSalesRepository = productSalesRepository;
+    }
+
+    public ProductSalesQuery createProductSalesQuery() {
+        return new DefaultProductSalesQuery();
     }
 
     @Override
@@ -49,6 +56,42 @@ public class DefaultProductSalesService implements ProductSalesService {
         var sales = getProductSales(source);
         sales.adjustAmounts(source.getAmounts());
         sales.adjustQuantities(source.getQuantities());
-        return this.productSalesRepository.save(sales);
+        sales = this.productSalesRepository.save(sales);
+        this.updateProductSales(sales);
+        return sales;
+    }
+
+    private void updateProductSales(ProductSales sales) {
+        var product = this.productService.createProduct(sales.getProductId());
+        this.updateProductMonthlySales(product);
+        this.updateProductTotalSales(product);
+        this.productService.updateProductSales(product);
+    }
+
+    private void updateProductMonthlySales(Product product) {
+        var endDate = LocalDate.now();
+        var startDate = endDate.minusDays(30);
+        // start date
+        var yearStart = (short) startDate.getYear();
+        var monthStart = (byte) startDate.getMonthValue();
+        var dayOfMonthStart = (byte) startDate.getDayOfMonth();
+        // end date
+        var yearEnd = (short) endDate.getYear();
+        var monthEnd = (byte) endDate.getMonthValue();
+        var dayOfMonthEnd = (byte) endDate.getDayOfMonth();
+        // start -- end
+        var query = this.createProductSalesQuery().toBuilder()
+                .productId(product.getId())
+                .yearStart(yearStart).monthStart(monthStart).dayOfMonthStart(dayOfMonthStart)
+                .yearEnd(yearEnd).monthEnd(monthEnd).dayOfMonthEnd(dayOfMonthEnd)
+                .build();
+        var quantities = this.productSalesRepository.sumQuantities(query);
+        product.setMonthlySales(quantities);
+    }
+
+    private void updateProductTotalSales(Product product) {
+        var query = this.createProductSalesQuery().toBuilder().productId(product.getId()).build();
+        var quantities = this.productSalesRepository.sumQuantities(query);
+        product.setTotalSales(quantities);
     }
 }
