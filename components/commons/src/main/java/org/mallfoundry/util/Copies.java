@@ -19,9 +19,9 @@
 package org.mallfoundry.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.util.CastUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -61,9 +61,9 @@ public abstract class Copies {
             return this;
         }
 
-        public CopyObject set(Consumer<Date> consumer) {
+        public <T> CopyObject set(Consumer<T> consumer) {
             if (this.match) {
-                consumer.accept((Date) this.value);
+                consumer.accept(CastUtils.cast(this.value));
             }
             return this;
         }
