@@ -18,8 +18,6 @@
 
 package org.mallfoundry.analytics.flow;
 
-import java.util.Date;
-
 public interface ProductView {
 
     String getId();
@@ -28,13 +26,12 @@ public interface ProductView {
 
     String getVariantId();
 
-    String getName();
-
     String getVisitorId();
 
     String getVisitor();
 
     String getVisitorIp();
 
-    Date getVisitedTime();
+    // 2020-01-01 12:02:21
+    long getVisitedTime();
 }
