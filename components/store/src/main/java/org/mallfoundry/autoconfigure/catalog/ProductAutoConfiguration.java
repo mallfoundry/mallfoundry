@@ -47,8 +47,11 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import java.util.List;
 
 @Configuration
-@Import({ProductCollectionConfiguration.class,
-        ProductReviewConfiguration.class})
+@Import({
+        ProductCollectionConfiguration.class,
+        ProductReviewConfiguration.class,
+        ProductSalesConfiguration.class
+})
 public class ProductAutoConfiguration {
 
     @Bean
