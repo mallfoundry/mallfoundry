@@ -26,12 +26,14 @@ import org.mallfoundry.catalog.product.sales.repository.jpa.JpaProductSalesRepos
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
+
 @Configuration
 public class ProductSalesConfiguration {
 
     @Bean
-    public DelegatingJpaProductSalesRepository delegatingJpaProductSalesRepository(JpaProductSalesRepository repository) {
-        return new DelegatingJpaProductSalesRepository(repository);
+    public DelegatingJpaProductSalesRepository delegatingJpaProductSalesRepository(EntityManager entityManager, JpaProductSalesRepository repository) {
+        return new DelegatingJpaProductSalesRepository(entityManager, repository);
     }
 
     @Bean
