@@ -20,7 +20,7 @@ package org.mallfoundry.catalog.product.sales;
 
 public interface ProductSalesService {
 
-    ProductDailySales createProductDailySales();
+    ProductSales createProductSales();
 
-    ProductDailySales adjustProductDailySales(ProductDailySales productDailySales);
+    ProductSales adjustProductSales(ProductSales sales);
 }

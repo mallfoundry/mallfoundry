@@ -18,15 +18,13 @@
 
 package org.mallfoundry.catalog.product.sales;
 
-public interface ProductDailySalesId {
+import java.util.Optional;
 
-    String getProductId();
+public interface ProductSalesRepository {
 
-    String getVariantId();
+    ProductSales create();
 
-    int getYear();
+    ProductSales save(ProductSales sales);
 
-    int getMonth();
-
-    int getDayOfMonth();
+    Optional<ProductSales> findById(ProductSalesId salesId);
 }

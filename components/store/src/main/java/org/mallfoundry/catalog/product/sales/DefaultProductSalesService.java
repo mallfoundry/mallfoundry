@@ -25,30 +25,30 @@ public class DefaultProductSalesService implements ProductSalesService {
 
     private final ProductService productService;
 
-    private final ProductDailySalesRepository productDailySalesRepository;
+    private final ProductSalesRepository productSalesRepository;
 
     public DefaultProductSalesService(ProductService productService,
-                                      ProductDailySalesRepository productDailySalesRepository) {
+                                      ProductSalesRepository productSalesRepository) {
         this.productService = productService;
-        this.productDailySalesRepository = productDailySalesRepository;
+        this.productSalesRepository = productSalesRepository;
     }
 
     @Override
-    public ProductDailySales createProductDailySales() {
-        return this.productDailySalesRepository.create();
+    public ProductSales createProductSales() {
+        return this.productSalesRepository.create();
     }
 
-    private ProductDailySales getProductDailySales(ProductDailySales sales) {
-        return this.productDailySalesRepository.findById(sales.toId())
-                .orElseGet(this::createProductDailySales);
+    private ProductSales getProductSales(ProductSales sales) {
+        return this.productSalesRepository.findById(sales.toId())
+                .orElseGet(this::createProductSales);
     }
 
     @Transactional
     @Override
-    public ProductDailySales adjustProductDailySales(ProductDailySales source) {
-        var sales = getProductDailySales(source);
+    public ProductSales adjustProductSales(ProductSales source) {
+        var sales = getProductSales(source);
         sales.adjustAmounts(source.getAmounts());
         sales.adjustQuantities(source.getQuantities());
-        return this.productDailySalesRepository.save(sales);
+        return this.productSalesRepository.save(sales);
     }
 }

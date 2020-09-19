@@ -18,33 +18,33 @@
 
 package org.mallfoundry.catalog.product.sales.repository.jpa;
 
-import org.mallfoundry.catalog.product.sales.ProductDailySales;
-import org.mallfoundry.catalog.product.sales.ProductDailySalesId;
-import org.mallfoundry.catalog.product.sales.ProductDailySalesRepository;
+import org.mallfoundry.catalog.product.sales.ProductSales;
+import org.mallfoundry.catalog.product.sales.ProductSalesId;
+import org.mallfoundry.catalog.product.sales.ProductSalesRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
 
-public class DelegatingJpaProductDailySalesRepository implements ProductDailySalesRepository {
+public class DelegatingJpaProductSalesRepository implements ProductSalesRepository {
 
-    private final JpaProductDailySalesRepository repository;
+    private final JpaProductSalesRepository repository;
 
-    public DelegatingJpaProductDailySalesRepository(JpaProductDailySalesRepository repository) {
+    public DelegatingJpaProductSalesRepository(JpaProductSalesRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public ProductDailySales create() {
-        return new JpaProductDailySales();
+    public ProductSales create() {
+        return new JpaProductSales();
     }
 
     @Override
-    public ProductDailySales save(ProductDailySales sales) {
-        return this.repository.save(JpaProductDailySales.of(sales));
+    public ProductSales save(ProductSales sales) {
+        return this.repository.save(JpaProductSales.of(sales));
     }
 
     @Override
-    public Optional<ProductDailySales> findById(ProductDailySalesId salesId) {
-        return CastUtils.cast(this.repository.findById(JpaProductDailySalesId.of(salesId)));
+    public Optional<ProductSales> findById(ProductSalesId salesId) {
+        return CastUtils.cast(this.repository.findById(JpaProductSalesId.of(salesId)));
     }
 }

@@ -20,7 +20,7 @@ package org.mallfoundry.catalog.product.sales;
 
 import java.math.BigDecimal;
 
-public abstract class ProductDailySalesSupport implements ProductDailySales {
+public abstract class ProductSalesSupport implements ProductSales {
 
     @Override
     public void adjustAmounts(BigDecimal amounts) {

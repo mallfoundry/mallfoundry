@@ -21,14 +21,15 @@ package org.mallfoundry.catalog.product.sales.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.sales.ProductDailySales;
-import org.mallfoundry.catalog.product.sales.ProductDailySalesId;
-import org.mallfoundry.catalog.product.sales.ProductDailySalesSupport;
+import org.mallfoundry.catalog.product.sales.ProductSales;
+import org.mallfoundry.catalog.product.sales.ProductSalesId;
+import org.mallfoundry.catalog.product.sales.ProductSalesSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -36,8 +37,9 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_catalog_product_daily_sales")
-public class JpaProductDailySales extends ProductDailySalesSupport {
+@Table(name = "mf_catalog_product_sales")
+@IdClass(JpaProductSalesId.class)
+public class JpaProductSales extends ProductSalesSupport {
 
     @Id
     @Column(name = "product_id_")
@@ -66,15 +68,15 @@ public class JpaProductDailySales extends ProductDailySalesSupport {
     private int quantities;
 
     @Override
-    public ProductDailySalesId toId() {
-        return new JpaProductDailySalesId(this.productId, this.variantId, this.year, this.month, this.dayOfMonth);
+    public ProductSalesId toId() {
+        return new JpaProductSalesId(this.productId, this.variantId, this.year, this.month, this.dayOfMonth);
     }
 
-    public static JpaProductDailySales of(ProductDailySales dailySales) {
-        if (dailySales instanceof JpaProductDailySales) {
-            return (JpaProductDailySales) dailySales;
+    public static JpaProductSales of(ProductSales dailySales) {
+        if (dailySales instanceof JpaProductSales) {
+            return (JpaProductSales) dailySales;
         }
-        var target = new JpaProductDailySales();
+        var target = new JpaProductSales();
         BeanUtils.copyProperties(dailySales, target);
         return target;
     }

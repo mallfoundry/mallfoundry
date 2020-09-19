@@ -20,9 +20,9 @@ package org.mallfoundry.autoconfigure.catalog;
 
 import org.mallfoundry.catalog.product.ProductService;
 import org.mallfoundry.catalog.product.sales.DefaultProductSalesService;
-import org.mallfoundry.catalog.product.sales.ProductDailySalesRepository;
-import org.mallfoundry.catalog.product.sales.repository.jpa.DelegatingJpaProductDailySalesRepository;
-import org.mallfoundry.catalog.product.sales.repository.jpa.JpaProductDailySalesRepository;
+import org.mallfoundry.catalog.product.sales.ProductSalesRepository;
+import org.mallfoundry.catalog.product.sales.repository.jpa.DelegatingJpaProductSalesRepository;
+import org.mallfoundry.catalog.product.sales.repository.jpa.JpaProductSalesRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,13 +30,13 @@ import org.springframework.context.annotation.Configuration;
 public class ProductSalesConfiguration {
 
     @Bean
-    public DelegatingJpaProductDailySalesRepository delegatingJpaProductDailySalesRepository(JpaProductDailySalesRepository repository) {
-        return new DelegatingJpaProductDailySalesRepository(repository);
+    public DelegatingJpaProductSalesRepository delegatingJpaProductSalesRepository(JpaProductSalesRepository repository) {
+        return new DelegatingJpaProductSalesRepository(repository);
     }
 
     @Bean
     public DefaultProductSalesService defaultProductSalesService(ProductService productService,
-                                                                 ProductDailySalesRepository productDailySalesRepository) {
+                                                                 ProductSalesRepository productDailySalesRepository) {
         return new DefaultProductSalesService(productService, productDailySalesRepository);
     }
 }

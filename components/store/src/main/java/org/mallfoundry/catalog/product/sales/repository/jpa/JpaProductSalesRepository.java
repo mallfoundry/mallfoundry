@@ -16,43 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.sales;
+package org.mallfoundry.catalog.product.sales.repository.jpa;
 
-import java.math.BigDecimal;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductDailySales {
-
-    ProductDailySalesId toId();
-
-    String getProductId();
-
-    void setProductId(String productId);
-
-    String getVariantId();
-
-    void setVariantId(String variantId);
-
-    int getYear();
-
-    void setYear(int year);
-
-    int getMonth();
-
-    void setMonth(int month);
-
-    int getDayOfMonth();
-
-    void setDayOfMonth(int dayOfMonth);
-
-    BigDecimal getAmounts();
-
-    void setAmounts(BigDecimal amounts);
-
-    void adjustAmounts(BigDecimal amounts);
-
-    int getQuantities();
-
-    void setQuantities(int quantities);
-
-    void adjustQuantities(int quantities);
+public interface JpaProductSalesRepository
+        extends JpaRepository<JpaProductSales, JpaProductSalesId> {
 }
