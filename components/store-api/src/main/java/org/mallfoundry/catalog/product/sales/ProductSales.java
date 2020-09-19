@@ -33,17 +33,17 @@ public interface ProductSales extends Serializable {
 
     void setVariantId(String variantId);
 
-    int getYear();
+    short getYear();
 
-    void setYear(int year);
+    void setYear(short year);
 
-    int getMonth();
+    byte getMonth();
 
-    void setMonth(int month);
+    void setMonth(byte month);
 
-    int getDayOfMonth();
+    byte getDayOfMonth();
 
-    void setDayOfMonth(int dayOfMonth);
+    void setDayOfMonth(byte dayOfMonth);
 
     BigDecimal getAmounts();
 
@@ -51,9 +51,9 @@ public interface ProductSales extends Serializable {
 
     void adjustAmounts(BigDecimal amounts);
 
-    int getQuantities();
+    long getQuantities();
 
-    void setQuantities(int quantities);
+    void setQuantities(long quantities);
 
-    void adjustQuantities(int quantities);
+    void adjustQuantities(long quantities);
 }
