@@ -19,4 +19,18 @@
 package org.mallfoundry.edw.catalog;
 
 public interface ProductFact {
+
+    String getTenantId();
+
+    String getStoreId();
+
+    String getCustomerId();
+
+    String getProductId();
+
+    String getVariantId();
+
+    int getRatedDateId();
+
+    int getRating();
 }
