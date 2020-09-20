@@ -34,7 +34,7 @@ public class JpaProductSalesRepositoryTests {
 
     @Transactional
     @Test
-    public void testSumQuantities() {
+    public void testSumQuantitiesPrintSQL() {
         var endDate = LocalDate.now();
         var startDate = endDate.minusDays(30);
         // start date
@@ -50,8 +50,7 @@ public class JpaProductSalesRepositoryTests {
                 .yearStart(yearStart).monthStart(monthStart).dayOfMonthStart(dayOfMonthStart)
                 .yearEnd(yearEnd).monthEnd(monthEnd).dayOfMonthEnd(dayOfMonthEnd)
                 .build();
-        query.setProductId("0");
-        var quantities = this.repository.sumQuantities(query);
-        System.out.println(quantities);
+        query.setProductId("10");
+        this.repository.sumQuantities(query);
     }
 }
