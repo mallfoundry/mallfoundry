@@ -16,19 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.sales;
+package org.mallfoundry.catalog.product.sales.repository.jpa;
 
-import java.io.Serializable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductSalesId extends Serializable {
+public interface JpaProductSaleRepository extends JpaRepository<JpaProductSale, JpaProductSaleId> {
 
-    String getProductId();
-
-    String getVariantId();
-
-    int getYear();
-
-    int getMonth();
-
-    int getDayOfMonth();
 }

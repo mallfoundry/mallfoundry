@@ -23,45 +23,54 @@ import org.mallfoundry.catalog.product.ProductService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class DefaultProductSalesService implements ProductSalesService {
+public class DefaultProductSaleService implements ProductSaleService {
 
     private final ProductService productService;
 
-    private final ProductSalesRepository productSalesRepository;
+    private final ProductSaleRepository productSalesRepository;
 
-    public DefaultProductSalesService(ProductService productService,
-                                      ProductSalesRepository productSalesRepository) {
+    public DefaultProductSaleService(ProductService productService,
+                                     ProductSaleRepository productSalesRepository) {
         this.productService = productService;
         this.productSalesRepository = productSalesRepository;
     }
 
-    public ProductSalesQuery createProductSalesQuery() {
-        return new DefaultProductSalesQuery();
+    public ProductSaleQuery createProductSalesQuery() {
+        return new DefaultProductSaleQuery();
     }
 
     @Override
-    public ProductSales createProductSales() {
+    public ProductSale createProductSale() {
         return this.productSalesRepository.create();
     }
 
-    private ProductSales getProductSales(ProductSales sales) {
+    private ProductSale getProductSale(ProductSale sales) {
         return this.productSalesRepository.findById(sales.toId())
-                .orElseGet(this::createProductSales);
+                .orElseGet(this::createProductSale);
     }
 
     @Transactional
     @Override
-    public ProductSales adjustProductSales(ProductSales source) {
-        var sales = getProductSales(source);
-        sales.adjustAmounts(source.getAmounts());
-        sales.adjustQuantities(source.getQuantities());
+    public ProductSale adjustProductSale(ProductSale source) {
+        var sales = getProductSale(source);
+        sales.adjustTotalAmounts(source.getTotalAmounts());
+        sales.adjustTotalQuantities(source.getTotalQuantities());
         sales = this.productSalesRepository.save(sales);
         this.updateProductSales(sales);
         return sales;
     }
 
-    private void updateProductSales(ProductSales sales) {
+    @Transactional
+    @Override
+    public List<ProductSale> adjustProductSales(Collection<ProductSale> sales) {
+        return sales.stream().map(this::adjustProductSale).collect(Collectors.toUnmodifiableList());
+    }
+
+    private void updateProductSales(ProductSale sales) {
         var product = this.productService.createProduct(sales.getProductId());
         this.updateProductMonthlySales(product);
         this.updateProductTotalSales(product);

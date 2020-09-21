@@ -50,7 +50,7 @@ import java.util.List;
 @Import({
         ProductCollectionConfiguration.class,
         ProductReviewConfiguration.class,
-        ProductSalesConfiguration.class
+        ProductSaleConfiguration.class
 })
 public class ProductAutoConfiguration {
 

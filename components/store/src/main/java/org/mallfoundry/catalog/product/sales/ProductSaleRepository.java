@@ -18,17 +18,15 @@
 
 package org.mallfoundry.catalog.product.sales;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 
-public abstract class ProductSalesSupport implements ProductSales {
+public interface ProductSaleRepository {
 
-    @Override
-    public void adjustAmounts(BigDecimal amounts) {
-        this.setAmounts(this.getAmounts().add(amounts));
-    }
+    ProductSale create();
 
-    @Override
-    public void adjustQuantities(long quantities) {
-        this.setQuantities(this.getQuantities() + quantities);
-    }
+    ProductSale save(ProductSale sales);
+
+    Optional<ProductSale> findById(ProductSaleId salesId);
+
+    long sumQuantities(ProductSaleQuery query);
 }

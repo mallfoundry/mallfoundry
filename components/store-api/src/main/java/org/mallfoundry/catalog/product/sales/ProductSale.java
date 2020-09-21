@@ -18,12 +18,14 @@
 
 package org.mallfoundry.catalog.product.sales;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public interface ProductSales extends Serializable {
+public interface ProductSale extends Serializable, ObjectBuilder.ToBuilder<ProductSale.Builder> {
 
-    ProductSalesId toId();
+    ProductSaleId toId();
 
     String getProductId();
 
@@ -45,15 +47,32 @@ public interface ProductSales extends Serializable {
 
     void setDayOfMonth(byte dayOfMonth);
 
-    BigDecimal getAmounts();
+    BigDecimal getTotalAmounts();
 
-    void setAmounts(BigDecimal amounts);
+    void setTotalAmounts(BigDecimal totalAmounts);
 
-    void adjustAmounts(BigDecimal amounts);
+    void adjustTotalAmounts(BigDecimal deltaAmounts);
 
-    long getQuantities();
+    long getTotalQuantities();
 
-    void setQuantities(long quantities);
+    void setTotalQuantities(long totalQuantities);
 
-    void adjustQuantities(long quantities);
+    void adjustTotalQuantities(long deltaQuantities);
+
+    interface Builder extends ObjectBuilder<ProductSale> {
+
+        Builder productId(String productId);
+
+        Builder variantId(String variantId);
+
+        Builder year(short year);
+
+        Builder month(byte month);
+
+        Builder dayOfMonth(byte dayOfMonth);
+
+        Builder totalAmounts(BigDecimal totalAmounts);
+
+        Builder totalQuantities(long totalQuantities);
+    }
 }

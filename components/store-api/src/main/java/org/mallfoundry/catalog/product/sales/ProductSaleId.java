@@ -18,15 +18,17 @@
 
 package org.mallfoundry.catalog.product.sales;
 
-import java.util.Optional;
+import java.io.Serializable;
 
-public interface ProductSalesRepository {
+public interface ProductSaleId extends Serializable {
 
-    ProductSales create();
+    String getProductId();
 
-    ProductSales save(ProductSales sales);
+    String getVariantId();
 
-    Optional<ProductSales> findById(ProductSalesId salesId);
+    int getYear();
 
-    long sumQuantities(ProductSalesQuery query);
+    int getMonth();
+
+    int getDayOfMonth();
 }

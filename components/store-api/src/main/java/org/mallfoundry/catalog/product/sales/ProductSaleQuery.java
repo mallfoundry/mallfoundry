@@ -22,7 +22,7 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
-public interface ProductSalesQuery extends Query, ObjectBuilder.ToBuilder<ProductSalesQuery.Builder> {
+public interface ProductSaleQuery extends Query, ObjectBuilder.ToBuilder<ProductSaleQuery.Builder> {
 
     String getProductId();
 
@@ -56,7 +56,7 @@ public interface ProductSalesQuery extends Query, ObjectBuilder.ToBuilder<Produc
 
     void setDayOfMonthEnd(Byte dayOfMonthEnd);
 
-    interface Builder extends QueryBuilder<ProductSalesQuery, Builder> {
+    interface Builder extends QueryBuilder<ProductSaleQuery, Builder> {
 
         Builder productId(String productId);
 

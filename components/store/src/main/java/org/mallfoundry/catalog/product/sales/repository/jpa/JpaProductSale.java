@@ -21,9 +21,9 @@ package org.mallfoundry.catalog.product.sales.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.sales.ProductSales;
-import org.mallfoundry.catalog.product.sales.ProductSalesId;
-import org.mallfoundry.catalog.product.sales.ProductSalesSupport;
+import org.mallfoundry.catalog.product.sales.ProductSale;
+import org.mallfoundry.catalog.product.sales.ProductSaleId;
+import org.mallfoundry.catalog.product.sales.ProductSaleSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -38,9 +38,9 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_catalog_product_sales")
-@IdClass(JpaProductSalesId.class)
-public class JpaProductSales extends ProductSalesSupport {
+@Table(name = "mf_catalog_product_sale")
+@IdClass(JpaProductSaleId.class)
+public class JpaProductSale extends ProductSaleSupport {
 
     @Id
     @Column(name = "product_id_")
@@ -62,26 +62,26 @@ public class JpaProductSales extends ProductSalesSupport {
     @Column(name = "day_of_month_")
     private byte dayOfMonth;
 
-    @Column(name = "amounts_")
-    private BigDecimal amounts = BigDecimal.ZERO;
+    @Column(name = "total_amounts_")
+    private BigDecimal totalAmounts = BigDecimal.ZERO;
 
-    @Column(name = "quantities_")
-    private long quantities;
+    @Column(name = "total_quantities_")
+    private long totalQuantities;
 
-    public JpaProductSales(Long quantities) {
-        this.quantities = Objects.requireNonNullElse(quantities, (long) 0);
+    public JpaProductSale(Long quantities) {
+        this.totalQuantities = Objects.requireNonNullElse(quantities, (long) 0);
     }
 
     @Override
-    public ProductSalesId toId() {
-        return new JpaProductSalesId(this.productId, this.variantId, this.year, this.month, this.dayOfMonth);
+    public ProductSaleId toId() {
+        return new JpaProductSaleId(this.productId, this.variantId, this.year, this.month, this.dayOfMonth);
     }
 
-    public static JpaProductSales of(ProductSales dailySales) {
-        if (dailySales instanceof JpaProductSales) {
-            return (JpaProductSales) dailySales;
+    public static JpaProductSale of(ProductSale dailySales) {
+        if (dailySales instanceof JpaProductSale) {
+            return (JpaProductSale) dailySales;
         }
-        var target = new JpaProductSales();
+        var target = new JpaProductSale();
         BeanUtils.copyProperties(dailySales, target);
         return target;
     }

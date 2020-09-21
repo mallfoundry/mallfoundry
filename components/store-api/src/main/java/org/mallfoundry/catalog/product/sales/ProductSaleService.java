@@ -16,10 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.sales.repository.jpa;
+package org.mallfoundry.catalog.product.sales;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Collection;
+import java.util.List;
 
-public interface JpaProductSalesRepository extends JpaRepository<JpaProductSales, JpaProductSalesId> {
+public interface ProductSaleService {
 
+    ProductSale createProductSale();
+
+    ProductSale adjustProductSale(ProductSale sale);
+
+    List<ProductSale> adjustProductSales(Collection<ProductSale> sales);
 }

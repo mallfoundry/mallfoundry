@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.sales.ProductSalesId;
+import org.mallfoundry.catalog.product.sales.ProductSaleId;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
@@ -31,7 +31,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JpaProductSalesId implements ProductSalesId {
+public class JpaProductSaleId implements ProductSaleId {
 
     private String productId;
 
@@ -43,11 +43,11 @@ public class JpaProductSalesId implements ProductSalesId {
 
     private int dayOfMonth;
 
-    public static JpaProductSalesId of(ProductSalesId salesId) {
-        if (salesId instanceof JpaProductSalesId) {
-            return (JpaProductSalesId) salesId;
+    public static JpaProductSaleId of(ProductSaleId salesId) {
+        if (salesId instanceof JpaProductSaleId) {
+            return (JpaProductSaleId) salesId;
         }
-        var target = new JpaProductSalesId();
+        var target = new JpaProductSaleId();
         BeanUtils.copyProperties(salesId, target);
         return target;
     }
@@ -57,10 +57,10 @@ public class JpaProductSalesId implements ProductSalesId {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaProductSalesId)) {
+        if (!(object instanceof JpaProductSaleId)) {
             return false;
         }
-        JpaProductSalesId that = (JpaProductSalesId) object;
+        JpaProductSaleId that = (JpaProductSaleId) object;
         return year == that.year
                 && month == that.month
                 && dayOfMonth == that.dayOfMonth

@@ -19,26 +19,26 @@
 package org.mallfoundry.autoconfigure.catalog;
 
 import org.mallfoundry.catalog.product.ProductService;
-import org.mallfoundry.catalog.product.sales.DefaultProductSalesService;
-import org.mallfoundry.catalog.product.sales.ProductSalesRepository;
-import org.mallfoundry.catalog.product.sales.repository.jpa.DelegatingJpaProductSalesRepository;
-import org.mallfoundry.catalog.product.sales.repository.jpa.JpaProductSalesRepository;
+import org.mallfoundry.catalog.product.sales.DefaultProductSaleService;
+import org.mallfoundry.catalog.product.sales.ProductSaleRepository;
+import org.mallfoundry.catalog.product.sales.repository.jpa.DelegatingJpaProductSaleRepository;
+import org.mallfoundry.catalog.product.sales.repository.jpa.JpaProductSaleRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
 
 @Configuration
-public class ProductSalesConfiguration {
+public class ProductSaleConfiguration {
 
     @Bean
-    public DelegatingJpaProductSalesRepository delegatingJpaProductSalesRepository(EntityManager entityManager, JpaProductSalesRepository repository) {
-        return new DelegatingJpaProductSalesRepository(entityManager, repository);
+    public DelegatingJpaProductSaleRepository delegatingJpaProductSaleRepository(EntityManager entityManager, JpaProductSaleRepository repository) {
+        return new DelegatingJpaProductSaleRepository(entityManager, repository);
     }
 
     @Bean
-    public DefaultProductSalesService defaultProductSalesService(ProductService productService,
-                                                                 ProductSalesRepository productDailySalesRepository) {
-        return new DefaultProductSalesService(productService, productDailySalesRepository);
+    public DefaultProductSaleService defaultProductSaleService(ProductService productService,
+                                                               ProductSaleRepository productSaleRepository) {
+        return new DefaultProductSaleService(productService, productSaleRepository);
     }
 }

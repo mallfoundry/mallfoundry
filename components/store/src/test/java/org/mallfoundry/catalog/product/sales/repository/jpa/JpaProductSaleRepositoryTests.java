@@ -19,7 +19,7 @@
 package org.mallfoundry.catalog.product.sales.repository.jpa;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.catalog.product.sales.DefaultProductSalesQuery;
+import org.mallfoundry.catalog.product.sales.DefaultProductSaleQuery;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 @StandaloneTest
-public class JpaProductSalesRepositoryTests {
+public class JpaProductSaleRepositoryTests {
 
     @Autowired
-    private DelegatingJpaProductSalesRepository repository;
+    private DelegatingJpaProductSaleRepository repository;
 
     @Transactional
     @Test
-    public void testSumQuantitiesPrintSQL() {
+    public void testSumQuantitiesPrintSql() {
         var endDate = LocalDate.now();
         var startDate = endDate.minusDays(30);
         // start date
@@ -45,7 +45,7 @@ public class JpaProductSalesRepositoryTests {
         var yearEnd = (short) endDate.getYear();
         var monthEnd = (byte) endDate.getMonthValue();
         var dayOfMonthEnd = (byte) endDate.getDayOfMonth();
-        var query = new DefaultProductSalesQuery()
+        var query = new DefaultProductSaleQuery()
                 .toBuilder()
                 .yearStart(yearStart).monthStart(monthStart).dayOfMonthStart(dayOfMonthStart)
                 .yearEnd(yearEnd).monthEnd(monthEnd).dayOfMonthEnd(dayOfMonthEnd)

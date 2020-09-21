@@ -25,7 +25,7 @@ import org.mallfoundry.data.QuerySupport;
 
 @Getter
 @Setter
-public class DefaultProductSalesQuery extends QuerySupport implements ProductSalesQuery {
+public class DefaultProductSaleQuery extends QuerySupport implements ProductSaleQuery {
 
     private String productId;
 
@@ -49,11 +49,11 @@ public class DefaultProductSalesQuery extends QuerySupport implements ProductSal
         };
     }
 
-    protected abstract static class BuilderSupport extends QueryBuilderSupport<ProductSalesQuery, Builder> implements Builder {
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<ProductSaleQuery, Builder> implements Builder {
 
-        private final DefaultProductSalesQuery query;
+        private final DefaultProductSaleQuery query;
 
-        public BuilderSupport(DefaultProductSalesQuery query) {
+        public BuilderSupport(DefaultProductSaleQuery query) {
             super(query);
             this.query = query;
         }
