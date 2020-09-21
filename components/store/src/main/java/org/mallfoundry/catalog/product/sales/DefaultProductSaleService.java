@@ -91,11 +91,11 @@ public class DefaultProductSaleService implements ProductSaleService {
 
     private void updateProductMonthlySales(Product product) {
         var endLocalDate = LocalDate.now();
-        ZoneId zone = ZoneId.systemDefault();
-        var endDate = Date.from(endLocalDate.atStartOfDay().atZone(zone).toInstant());
         var startLocalDate = endLocalDate.minusDays(30);
+        // Local Date 转 Date
+        ZoneId zone = ZoneId.systemDefault();
         var startDate = Date.from(startLocalDate.atStartOfDay().atZone(zone).toInstant());
-        // start -- end
+        var endDate = Date.from(endLocalDate.atStartOfDay().atZone(zone).toInstant());
         var query = this.createProductSalesQuery().toBuilder()
                 .productId(product.getId())
                 .soldDateStart(startDate).soldDateEnd(endDate)
