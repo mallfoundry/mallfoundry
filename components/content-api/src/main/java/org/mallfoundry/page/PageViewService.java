@@ -16,12 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.flow;
+package org.mallfoundry.page;
 
-public interface PageView {
-
-    String getId();
-
-    String getPageId();
-
+public interface PageViewService {
+    PageView viewPage(PageView pageView);
 }

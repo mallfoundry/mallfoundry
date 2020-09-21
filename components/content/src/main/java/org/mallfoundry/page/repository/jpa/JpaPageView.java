@@ -16,19 +16,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.flow;
+package org.mallfoundry.page.repository.jpa;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.page.PageView;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
-public interface UniqueVisitor {
+@Getter
+@Setter
+@Entity
+@Table(name = "mf_page_view")
+public class JpaPageView implements PageView {
 
-    String getId();
+    @Id
+    @Column(name = "id_")
+    private String id;
 
-    String getVisitorId();
+    @Column(name = "page_id_")
+    private String pageId;
 
-    String getVisitor();
+    @Column(name = "customer_id_")
+    private String customerId;
 
-    String getVisitorIp();
+    @Column(name = "customer_ip_")
+    private String customerIp;
 
-    Date getVisitedTime();
+    @Column(name = "browsing_time_")
+    private Date browsingTime;
 }

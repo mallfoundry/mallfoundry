@@ -16,9 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.flow;
+package org.mallfoundry.page;
 
-public enum PageType {
-    CUSTOM,
-    PRODUCT
+public class DefaultPageViewService {
 }

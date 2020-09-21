@@ -149,6 +149,12 @@
                 <version>${mall.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-content-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
             <!-- mall libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
@@ -231,6 +237,12 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-shipping</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-content</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

@@ -49,10 +49,7 @@
         <module>trade-api</module>
         <module>edw-api</module>
 
-        <module>edw</module>
         <module>analytics</module>
-        <!--<module>analytics-stream</module>-->
-        <!--<module>data-warehouse</module>-->
         <module>app</module>
         <module>commons</module>
         <module>shared</module>
@@ -60,12 +57,15 @@
         <module>storage</module>
         <module>store</module>
         <module>catalog</module>
+        <module>content</module>
         <module>customer</module>
         <module>order</module>
         <module>trade</module>
         <module>shipping</module>
         <module>payment</module>
         <module>marketing</module>
+        <module>edw</module>
+        <module>edw-stream</module>
 
         <!-- test modules -->
         <module>test</module>
@@ -87,7 +87,6 @@
 
         <!-- BOOT modules -->
         <module>spring-boot</module>
-        <module>edw-stream</module>
     </modules>
 
 </project>

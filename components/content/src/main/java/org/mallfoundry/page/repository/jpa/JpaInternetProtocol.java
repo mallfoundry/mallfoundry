@@ -16,9 +16,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.flow;
+package org.mallfoundry.page.repository.jpa;
 
-public interface FlowService {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.page.InternetProtocol;
 
-    void viewProduct(ProductView view);
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "mf_page_view_ip")
+public class JpaInternetProtocol implements InternetProtocol {
+
+    @Id
+    @Column(name = "id_")
+    private String id;
+
+    @Column(name = "page_id_")
+    private String pageId;
+
+    @Column(name = "customer_ip_")
+    private String customerIp;
+
+    @Column(name = "browsing_time_")
+    private Date browsingTime;
 }

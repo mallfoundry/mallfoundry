@@ -16,22 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.flow;
+package org.mallfoundry.page;
 
-public interface ProductView {
+import java.util.Date;
+
+public interface UniqueVisitor {
 
     String getId();
 
-    String getProductId();
+    String getPageId();
 
-    String getVariantId();
+    String getCustomerId();
 
-    String getVisitorId();
+    String getCustomerIp();
 
-    String getVisitor();
-
-    String getVisitorIp();
-
-    // 2020-01-01 12:02:21
-    long getVisitedTime();
+    Date getBrowsingTime();
 }
