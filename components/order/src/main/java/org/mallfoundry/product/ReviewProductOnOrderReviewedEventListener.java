@@ -28,11 +28,11 @@ import org.springframework.context.event.EventListener;
 import java.util.stream.Collectors;
 
 @Configuration
-public class OrderReviewedToProductReviewer {
+public class ReviewProductOnOrderReviewedEventListener {
 
     private final ReviewService productReviewService;
 
-    public OrderReviewedToProductReviewer(ReviewService productReviewService) {
+    public ReviewProductOnOrderReviewedEventListener(ReviewService productReviewService) {
         this.productReviewService = productReviewService;
     }
 
