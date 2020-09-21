@@ -18,11 +18,10 @@
 
 package org.mallfoundry.browsing;
 
-import org.hibernate.exception.DataException;
-
 import java.util.Date;
 
 public interface MutableBrowsingProduct extends BrowsingProduct {
+
     void setHits(int hits);
 
     void setBrowsingTime(Date browsingTime);

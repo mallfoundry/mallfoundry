@@ -18,6 +18,7 @@
 
 package org.mallfoundry.browsing;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public abstract class BrowsingProductSupport implements MutableBrowsingProduct {
@@ -27,4 +28,55 @@ public abstract class BrowsingProductSupport implements MutableBrowsingProduct {
         this.setBrowsingTime(new Date());
         this.setHits(this.getHits() + 1);
     }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        protected final BrowsingProduct browsingProduct;
+
+        public BuilderSupport(BrowsingProduct browsingProduct) {
+            this.browsingProduct = browsingProduct;
+        }
+
+        @Override
+        public Builder browserId(String browserId) {
+            this.browsingProduct.setBrowserId(browserId);
+            return this;
+        }
+
+        @Override
+        public Builder name(String name) {
+            this.browsingProduct.setName(name);
+            return this;
+        }
+
+        @Override
+        public Builder imageUrl(String imageUrl) {
+            this.browsingProduct.setImageUrl(imageUrl);
+            return this;
+        }
+
+        @Override
+        public Builder price(BigDecimal price) {
+            this.browsingProduct.setPrice(price);
+            return this;
+        }
+
+        @Override
+        public Builder hit() {
+            this.browsingProduct.hit();
+            return this;
+        }
+
+        @Override
+        public BrowsingProduct build() {
+            return this.browsingProduct;
+        }
+    }
+
 }
