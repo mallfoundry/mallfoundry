@@ -70,23 +70,11 @@ public class DelegatingJpaProductSaleRepository implements ProductSaleRepository
         if (Objects.nonNull(saleQuery.getVariantId())) {
             predicate.getExpressions().add(criteriaBuilder.equal(root.get("variantId"), saleQuery.getVariantId()));
         }
-        if (Objects.nonNull(saleQuery.getYearStart())) {
-            predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("year"), saleQuery.getYearStart()));
+        if (Objects.nonNull(saleQuery.getSoldDateStart())) {
+            predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("soldDate"), saleQuery.getSoldDateStart()));
         }
-        if (Objects.nonNull(saleQuery.getYearEnd())) {
-            predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("year"), saleQuery.getYearEnd()));
-        }
-        if (Objects.nonNull(saleQuery.getMonthStart())) {
-            predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("month"), saleQuery.getMonthStart()));
-        }
-        if (Objects.nonNull(saleQuery.getMonthEnd())) {
-            predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("month"), saleQuery.getMonthEnd()));
-        }
-        if (Objects.nonNull(saleQuery.getDayOfMonthStart())) {
-            predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("dayOfMonth"), saleQuery.getDayOfMonthStart()));
-        }
-        if (Objects.nonNull(saleQuery.getDayOfMonthEnd())) {
-            predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("dayOfMonth"), saleQuery.getDayOfMonthEnd()));
+        if (Objects.nonNull(saleQuery.getSoldDateEnd())) {
+            predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("soldDate"), saleQuery.getSoldDateEnd()));
         }
         return this.entityManager
                 .createQuery(query.where(predicate))

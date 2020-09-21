@@ -19,6 +19,7 @@
 package org.mallfoundry.catalog.product.sales;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public abstract class ProductSaleSupport implements ProductSale {
 
@@ -59,20 +60,8 @@ public abstract class ProductSaleSupport implements ProductSale {
         }
 
         @Override
-        public Builder year(short year) {
-            this.productSale.setYear(year);
-            return this;
-        }
-
-        @Override
-        public Builder month(byte month) {
-            this.productSale.setMonth(month);
-            return this;
-        }
-
-        @Override
-        public Builder dayOfMonth(byte dayOfMonth) {
-            this.productSale.setDayOfMonth(dayOfMonth);
+        public Builder soldDate(Date soldDate) {
+            this.productSale.setSoldDate(soldDate);
             return this;
         }
 

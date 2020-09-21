@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @StandaloneTest
 public class JpaProductSaleRepositoryTests {
@@ -35,20 +37,14 @@ public class JpaProductSaleRepositoryTests {
     @Transactional
     @Test
     public void testSumQuantitiesPrintSql() {
-        var endDate = LocalDate.now();
-        var startDate = endDate.minusDays(30);
-        // start date
-        var yearStart = (short) startDate.getYear();
-        var monthStart = (byte) startDate.getMonthValue();
-        var dayOfMonthStart = (byte) startDate.getDayOfMonth();
-        // end date
-        var yearEnd = (short) endDate.getYear();
-        var monthEnd = (byte) endDate.getMonthValue();
-        var dayOfMonthEnd = (byte) endDate.getDayOfMonth();
+        var endLocalDate = LocalDate.now();
+        ZoneId zone = ZoneId.systemDefault();
+        var endDate = Date.from(endLocalDate.atStartOfDay().atZone(zone).toInstant());
+        var startLocalDate = endLocalDate.minusDays(30);
+        var startDate = Date.from(startLocalDate.atStartOfDay().atZone(zone).toInstant());
         var query = new DefaultProductSaleQuery()
                 .toBuilder()
-                .yearStart(yearStart).monthStart(monthStart).dayOfMonthStart(dayOfMonthStart)
-                .yearEnd(yearEnd).monthEnd(monthEnd).dayOfMonthEnd(dayOfMonthEnd)
+                .soldDateStart(startDate).soldDateEnd(endDate)
                 .build();
         query.setProductId("10");
         this.repository.sumQuantities(query);

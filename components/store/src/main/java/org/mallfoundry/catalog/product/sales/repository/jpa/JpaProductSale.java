@@ -31,7 +31,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -51,16 +54,9 @@ public class JpaProductSale extends ProductSaleSupport {
     private String variantId;
 
     @Id
-    @Column(name = "year_")
-    private short year;
-
-    @Id
-    @Column(name = "month_")
-    private byte month;
-
-    @Id
-    @Column(name = "day_of_month_")
-    private byte dayOfMonth;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "sold_date_")
+    private Date soldDate;
 
     @Column(name = "total_amounts_")
     private BigDecimal totalAmounts = BigDecimal.ZERO;
@@ -74,7 +70,7 @@ public class JpaProductSale extends ProductSaleSupport {
 
     @Override
     public ProductSaleId toId() {
-        return new JpaProductSaleId(this.productId, this.variantId, this.year, this.month, this.dayOfMonth);
+        return new JpaProductSaleId(this.productId, this.variantId, this.soldDate);
     }
 
     public static JpaProductSale of(ProductSale dailySales) {

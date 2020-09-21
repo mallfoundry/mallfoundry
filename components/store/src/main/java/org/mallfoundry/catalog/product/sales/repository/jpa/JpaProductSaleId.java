@@ -25,6 +25,7 @@ import lombok.Setter;
 import org.mallfoundry.catalog.product.sales.ProductSaleId;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -37,11 +38,7 @@ public class JpaProductSaleId implements ProductSaleId {
 
     private String variantId;
 
-    private int year;
-
-    private int month;
-
-    private int dayOfMonth;
+    private Date soldDate;
 
     public static JpaProductSaleId of(ProductSaleId salesId) {
         if (salesId instanceof JpaProductSaleId) {
@@ -61,15 +58,13 @@ public class JpaProductSaleId implements ProductSaleId {
             return false;
         }
         JpaProductSaleId that = (JpaProductSaleId) object;
-        return year == that.year
-                && month == that.month
-                && dayOfMonth == that.dayOfMonth
-                && Objects.equals(productId, that.productId)
-                && Objects.equals(variantId, that.variantId);
+        return Objects.equals(productId, that.productId)
+                && Objects.equals(variantId, that.variantId)
+                && Objects.equals(soldDate, that.soldDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, variantId, year, month, dayOfMonth);
+        return Objects.hash(productId, variantId, soldDate);
     }
 }

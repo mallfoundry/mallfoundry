@@ -22,8 +22,11 @@ import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,20 +51,29 @@ public class DefaultProductSaleService implements ProductSaleService {
         return this.productSalesRepository.create();
     }
 
-    private ProductSale getProductSale(ProductSale sales) {
-        return this.productSalesRepository.findById(sales.toId())
-                .orElseGet(this::createProductSale);
+
+    public ProductSale createNewProductSale(ProductSale sale) {
+        return this.productSalesRepository.create().toBuilder()
+                .productId(sale.getProductId()).variantId(sale.getVariantId())
+                .soldDate(sale.getSoldDate())
+                .totalQuantities(0).totalAmounts(BigDecimal.ZERO)
+                .build();
+    }
+
+    private ProductSale getProductSale(ProductSale sale) {
+        return this.productSalesRepository.findById(sale.toId())
+                .orElseGet(() -> this.createNewProductSale(sale));
     }
 
     @Transactional
     @Override
     public ProductSale adjustProductSale(ProductSale source) {
-        var sales = getProductSale(source);
-        sales.adjustTotalAmounts(source.getTotalAmounts());
-        sales.adjustTotalQuantities(source.getTotalQuantities());
-        sales = this.productSalesRepository.save(sales);
-        this.updateProductSales(sales);
-        return sales;
+        var sale = getProductSale(source);
+        sale.adjustTotalAmounts(source.getTotalAmounts());
+        sale.adjustTotalQuantities(source.getTotalQuantities());
+        sale = this.productSalesRepository.save(sale);
+        this.updateProductSales(sale);
+        return sale;
     }
 
     @Transactional
@@ -70,29 +82,23 @@ public class DefaultProductSaleService implements ProductSaleService {
         return sales.stream().map(this::adjustProductSale).collect(Collectors.toUnmodifiableList());
     }
 
-    private void updateProductSales(ProductSale sales) {
-        var product = this.productService.createProduct(sales.getProductId());
+    private void updateProductSales(ProductSale sale) {
+        var product = this.productService.createProduct(sale.getProductId());
         this.updateProductMonthlySales(product);
         this.updateProductTotalSales(product);
         this.productService.updateProductSales(product);
     }
 
     private void updateProductMonthlySales(Product product) {
-        var endDate = LocalDate.now();
-        var startDate = endDate.minusDays(30);
-        // start date
-        var yearStart = (short) startDate.getYear();
-        var monthStart = (byte) startDate.getMonthValue();
-        var dayOfMonthStart = (byte) startDate.getDayOfMonth();
-        // end date
-        var yearEnd = (short) endDate.getYear();
-        var monthEnd = (byte) endDate.getMonthValue();
-        var dayOfMonthEnd = (byte) endDate.getDayOfMonth();
+        var endLocalDate = LocalDate.now();
+        ZoneId zone = ZoneId.systemDefault();
+        var endDate = Date.from(endLocalDate.atStartOfDay().atZone(zone).toInstant());
+        var startLocalDate = endLocalDate.minusDays(30);
+        var startDate = Date.from(startLocalDate.atStartOfDay().atZone(zone).toInstant());
         // start -- end
         var query = this.createProductSalesQuery().toBuilder()
                 .productId(product.getId())
-                .yearStart(yearStart).monthStart(monthStart).dayOfMonthStart(dayOfMonthStart)
-                .yearEnd(yearEnd).monthEnd(monthEnd).dayOfMonthEnd(dayOfMonthEnd)
+                .soldDateStart(startDate).soldDateEnd(endDate)
                 .build();
         var quantities = this.productSalesRepository.sumQuantities(query);
         product.setMonthlySales(quantities);

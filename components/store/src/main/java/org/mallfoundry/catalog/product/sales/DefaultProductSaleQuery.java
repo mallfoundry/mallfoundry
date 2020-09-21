@@ -23,6 +23,8 @@ import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class DefaultProductSaleQuery extends QuerySupport implements ProductSaleQuery {
@@ -31,17 +33,9 @@ public class DefaultProductSaleQuery extends QuerySupport implements ProductSale
 
     private String variantId;
 
-    private Short yearStart;
+    private Date soldDateStart;
 
-    private Byte monthStart;
-
-    private Byte dayOfMonthStart;
-
-    private Short yearEnd;
-
-    private Byte monthEnd;
-
-    private Byte dayOfMonthEnd;
+    private Date soldDateEnd;
 
     @Override
     public Builder toBuilder() {
@@ -71,38 +65,14 @@ public class DefaultProductSaleQuery extends QuerySupport implements ProductSale
         }
 
         @Override
-        public Builder yearStart(Short yearStart) {
-            this.query.setYearStart(yearStart);
+        public Builder soldDateStart(Date soldDateStart) {
+            this.query.setSoldDateStart(soldDateStart);
             return this;
         }
 
         @Override
-        public Builder monthStart(Byte monthStart) {
-            this.query.setMonthStart(monthStart);
-            return this;
-        }
-
-        @Override
-        public Builder dayOfMonthStart(Byte dayOfMonthStart) {
-            this.query.setDayOfMonthStart(dayOfMonthStart);
-            return this;
-        }
-
-        @Override
-        public Builder yearEnd(Short yearEnd) {
-            this.query.setYearEnd(yearEnd);
-            return this;
-        }
-
-        @Override
-        public Builder monthEnd(Byte monthEnd) {
-            this.query.setMonthEnd(monthEnd);
-            return this;
-        }
-
-        @Override
-        public Builder dayOfMonthEnd(Byte dayOfMonthEnd) {
-            this.query.setDayOfMonthEnd(dayOfMonthEnd);
+        public Builder soldDateEnd(Date soldDateEnd) {
+            this.query.setSoldDateEnd(soldDateEnd);
             return this;
         }
     }

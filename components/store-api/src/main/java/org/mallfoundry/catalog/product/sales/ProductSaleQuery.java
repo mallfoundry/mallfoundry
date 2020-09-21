@@ -22,6 +22,8 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
+
 public interface ProductSaleQuery extends Query, ObjectBuilder.ToBuilder<ProductSaleQuery.Builder> {
 
     String getProductId();
@@ -32,29 +34,13 @@ public interface ProductSaleQuery extends Query, ObjectBuilder.ToBuilder<Product
 
     void setVariantId(String variantId);
 
-    Short getYearStart();
+    Date getSoldDateStart();
 
-    void setYearStart(Short yearStart);
+    void setSoldDateStart(Date soldDateStart);
 
-    Byte getMonthStart();
+    Date getSoldDateEnd();
 
-    void setMonthStart(Byte monthStart);
-
-    Byte getDayOfMonthStart();
-
-    void setDayOfMonthStart(Byte dayOfMonthStart);
-
-    Short getYearEnd();
-
-    void setYearEnd(Short yearEnd);
-
-    Byte getMonthEnd();
-
-    void setMonthEnd(Byte monthEnd);
-
-    Byte getDayOfMonthEnd();
-
-    void setDayOfMonthEnd(Byte dayOfMonthEnd);
+    void setSoldDateEnd(Date soldDateEnd);
 
     interface Builder extends QueryBuilder<ProductSaleQuery, Builder> {
 
@@ -62,16 +48,8 @@ public interface ProductSaleQuery extends Query, ObjectBuilder.ToBuilder<Product
 
         Builder variantId(String variantId);
 
-        Builder yearStart(Short yearStart);
+        Builder soldDateStart(Date soldDateStart);
 
-        Builder monthStart(Byte monthStart);
-
-        Builder dayOfMonthStart(Byte dayOfMonthStart);
-
-        Builder yearEnd(Short yearEnd);
-
-        Builder monthEnd(Byte monthEnd);
-
-        Builder dayOfMonthEnd(Byte dayOfMonthEnd);
+        Builder soldDateEnd(Date soldDateEnd);
     }
 }

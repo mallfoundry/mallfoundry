@@ -26,7 +26,6 @@ import org.mallfoundry.order.OrdersPaidEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,10 +40,8 @@ public class ProductSaleCollectOnOrderEventListener {
     }
 
     private ProductSale createProductSale(Order order, OrderItem item) {
-        var paidDate = LocalDate.from(order.getPaidTime().toInstant());
         return this.productSaleService.createProductSale().toBuilder()
-                .productId(item.getProductId()).variantId(item.getVariantId())
-                .year((short) paidDate.getYear()).month((byte) paidDate.getMonthValue()).dayOfMonth((byte) paidDate.getDayOfMonth())
+                .productId(item.getProductId()).variantId(item.getVariantId()).soldDate(order.getPaidTime())
                 .totalAmounts(item.getTotalAmount()).totalQuantities(item.getQuantity())
                 .build();
     }

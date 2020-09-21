@@ -19,6 +19,7 @@
 package org.mallfoundry.catalog.product.sales;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public interface ProductSaleId extends Serializable {
 
@@ -26,9 +27,5 @@ public interface ProductSaleId extends Serializable {
 
     String getVariantId();
 
-    int getYear();
-
-    int getMonth();
-
-    int getDayOfMonth();
+    Date getSoldDate();
 }

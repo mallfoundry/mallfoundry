@@ -22,6 +22,7 @@ import org.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface ProductSale extends Serializable, ObjectBuilder.ToBuilder<ProductSale.Builder> {
 
@@ -35,17 +36,9 @@ public interface ProductSale extends Serializable, ObjectBuilder.ToBuilder<Produ
 
     void setVariantId(String variantId);
 
-    short getYear();
+    Date getSoldDate();
 
-    void setYear(short year);
-
-    byte getMonth();
-
-    void setMonth(byte month);
-
-    byte getDayOfMonth();
-
-    void setDayOfMonth(byte dayOfMonth);
+    void setSoldDate(Date soldDate);
 
     BigDecimal getTotalAmounts();
 
@@ -65,11 +58,7 @@ public interface ProductSale extends Serializable, ObjectBuilder.ToBuilder<Produ
 
         Builder variantId(String variantId);
 
-        Builder year(short year);
-
-        Builder month(byte month);
-
-        Builder dayOfMonth(byte dayOfMonth);
+        Builder soldDate(Date soldDate);
 
         Builder totalAmounts(BigDecimal totalAmounts);
 
