@@ -16,7 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.page;
+package org.mallfoundry.page.repository.jpa;
 
-public class DefaultPageViewService {
+import org.mallfoundry.page.PageView;
+import org.mallfoundry.page.PageViewRepository;
+
+public class DelegatingJpaPageViewRepository implements PageViewRepository {
+
+    private final JpaPageViewRepository repository;
+
+    public DelegatingJpaPageViewRepository(JpaPageViewRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public PageView create(String id) {
+        return new JpaPageView(id);
+    }
+
+    @Override
+    public PageView save(PageView view) {
+        return this.repository.save(JpaPageView.of(view));
+    }
 }

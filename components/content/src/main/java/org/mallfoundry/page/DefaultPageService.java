@@ -18,6 +18,19 @@
 
 package org.mallfoundry.page;
 
-public interface PageViewService {
-    PageView viewPage(PageView pageView);
+import org.springframework.transaction.annotation.Transactional;
+
+public class DefaultPageService implements PageService {
+
+    private final PageViewRepository pageViewRepository;
+
+    public DefaultPageService(PageViewRepository pageViewRepository) {
+        this.pageViewRepository = pageViewRepository;
+    }
+
+    @Transactional
+    @Override
+    public PageView viewPage(PageView pageView) {
+        return this.pageViewRepository.save(pageView);
+    }
 }

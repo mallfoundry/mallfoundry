@@ -19,8 +19,10 @@
 package org.mallfoundry.page.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.page.PageView;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +32,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "mf_page_view")
 public class JpaPageView implements PageView {
@@ -49,4 +52,17 @@ public class JpaPageView implements PageView {
 
     @Column(name = "browsing_time_")
     private Date browsingTime;
+
+    public JpaPageView(String id) {
+        this.id = id;
+    }
+
+    public static JpaPageView of(PageView pageView) {
+        if (pageView instanceof JpaPageView) {
+            return (JpaPageView) pageView;
+        }
+        var target = new JpaPageView(pageView.getId());
+        BeanUtils.copyProperties(pageView, target);
+        return target;
+    }
 }
