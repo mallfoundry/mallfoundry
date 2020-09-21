@@ -41,6 +41,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-content</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-keystone</artifactId>
         </dependency>
 
