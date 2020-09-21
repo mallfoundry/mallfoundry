@@ -45,7 +45,8 @@ import org.mallfoundry.order.review.OrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.DelegatingJpaOrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.JpaOrderReviewRepository;
 import org.mallfoundry.payment.PaymentService;
-import org.mallfoundry.product.OrderReviewedToProductReviewer;
+import org.mallfoundry.product.ProductSaleCollectOnOrderEventListener;
+import org.mallfoundry.product.ReviewProductOnOrderReviewedEventListener;
 import org.mallfoundry.shipping.CarrierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -58,7 +59,10 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 @Configuration
-@Import(OrderReviewedToProductReviewer.class)
+@Import({
+        ReviewProductOnOrderReviewedEventListener.class,
+        ProductSaleCollectOnOrderEventListener.class,
+})
 public class OrderAutoConfiguration {
 
     @Bean
@@ -141,7 +145,6 @@ public class OrderAutoConfiguration {
     @Bean
     public DefaultOrderReviewService defaultOrderReviewService(OrderReviewRepository repository,
                                                                @Lazy List<OrderReviewProcessor> processors) {
-
         var service = new DefaultOrderReviewService(repository);
         service.setProcessors(processors);
         return service;
