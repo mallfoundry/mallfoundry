@@ -194,8 +194,10 @@ public class DefaultOrderService implements OrderService, OrderProcessorInvoker,
     public void payOrders(Set<String> orderIds, OrderPaymentResult payment) {
         var orders = this.orderRepository.findAllById(orderIds);
         orders.forEach(order -> order.pay(payment));
-        var savedOrders = this.orderRepository.saveAll(orders);
-        this.eventPublisher.publishEvent(new ImmutableOrdersPaidEvent(savedOrders));
+        orders = this.orderRepository.saveAll(orders);
+        if (payment.isCaptured()) {
+            this.eventPublisher.publishEvent(new ImmutableOrdersPaidEvent(orders));
+        }
     }
 
     @Transactional
