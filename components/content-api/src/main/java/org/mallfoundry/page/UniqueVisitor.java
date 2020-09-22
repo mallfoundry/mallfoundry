@@ -30,5 +30,5 @@ public interface UniqueVisitor {
 
     String getCustomerIp();
 
-    Date getBrowsingTime();
+    Date getBrowsingDate();
 }

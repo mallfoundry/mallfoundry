@@ -28,5 +28,5 @@ public interface InternetProtocol {
 
     String getCustomerIp();
 
-    Date getBrowsingTime();
+    Date getBrowsingDate();
 }

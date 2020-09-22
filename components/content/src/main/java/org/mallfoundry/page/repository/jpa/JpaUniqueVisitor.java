@@ -26,6 +26,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Getter
@@ -47,6 +49,7 @@ public class JpaUniqueVisitor implements UniqueVisitor {
     @Column(name = "customer_ip_")
     private String customerIp;
 
-    @Column(name = "browsing_time_")
-    private Date browsingTime;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "browsing_date_")
+    private Date browsingDate;
 }
