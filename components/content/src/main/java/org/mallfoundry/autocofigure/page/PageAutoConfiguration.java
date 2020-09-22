@@ -19,11 +19,16 @@
 package org.mallfoundry.autocofigure.page;
 
 import org.mallfoundry.page.DefaultPageService;
+import org.mallfoundry.page.PageIdentityProcessor;
+import org.mallfoundry.page.PageProcessor;
 import org.mallfoundry.page.PageViewRepository;
 import org.mallfoundry.page.repository.jpa.DelegatingJpaPageViewRepository;
 import org.mallfoundry.page.repository.jpa.JpaPageViewRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class PageAutoConfiguration {
@@ -34,7 +39,15 @@ public class PageAutoConfiguration {
     }
 
     @Bean
-    public DefaultPageService defaultPageService(PageViewRepository pageViewRepository) {
-        return new DefaultPageService(pageViewRepository);
+    public DefaultPageService defaultPageService(@Lazy List<PageProcessor> processors,
+                                                 PageViewRepository pageViewRepository) {
+        var service = new DefaultPageService(pageViewRepository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public PageIdentityProcessor pageIdentityProcessor() {
+        return new PageIdentityProcessor();
     }
 }
