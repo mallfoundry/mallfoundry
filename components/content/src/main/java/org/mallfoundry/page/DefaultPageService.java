@@ -18,6 +18,7 @@
 
 package org.mallfoundry.page;
 
+import org.mallfoundry.security.SubjectHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultPageService implements PageService {
@@ -28,9 +29,17 @@ public class DefaultPageService implements PageService {
         this.pageViewRepository = pageViewRepository;
     }
 
+    @Override
+    public PageView createPageView(String id) {
+        return this.pageViewRepository.create(id);
+    }
+
     @Transactional
     @Override
     public PageView viewPage(PageView pageView) {
+        var browserId = SubjectHolder.getSubject().getId();
+        pageView.setBrowserId(browserId);
+        pageView.browsing();
         return this.pageViewRepository.save(pageView);
     }
 }
