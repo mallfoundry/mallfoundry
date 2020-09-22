@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.page.PageView;
+import org.mallfoundry.page.PageViewSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -35,7 +36,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_page_view")
-public class JpaPageView implements PageView {
+public class JpaPageView extends PageViewSupport {
 
     @Id
     @Column(name = "id_")
