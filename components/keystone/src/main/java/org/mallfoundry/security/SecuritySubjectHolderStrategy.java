@@ -18,6 +18,7 @@
 
 package org.mallfoundry.security;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecuritySubjectHolderStrategy implements SubjectHolderStrategy {
@@ -25,6 +26,10 @@ public class SecuritySubjectHolderStrategy implements SubjectHolderStrategy {
 
     @Override
     public Subject getSubject() {
-        return (Subject) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return AnonymousUser.DEFAULT_INSTANCE;
+        }
+        return (Subject) authentication.getPrincipal();
     }
 }
