@@ -18,9 +18,13 @@
 
 package org.mallfoundry.page;
 
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.util.Date;
 
-public interface PageViewQuery {
+public interface PageViewQuery extends Query, ObjectBuilder.ToBuilder<PageViewQuery.Builder> {
 
     String getPageId();
 
@@ -41,4 +45,17 @@ public interface PageViewQuery {
     Date getBrowsingTimeTo();
 
     void setBrowsingTimeTo(Date browsingTimeTo);
+
+    interface Builder extends QueryBuilder<PageViewQuery, Builder> {
+
+        Builder pageId(String pageId);
+
+        Builder browserId(String browserId);
+
+        Builder browserIp(String browserIp);
+
+        Builder browsingTimeFrom(Date browsingTimeFrom);
+
+        Builder browsingTimeTo(Date browsingTimeTo);
+    }
 }
