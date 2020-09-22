@@ -28,9 +28,9 @@ import java.util.concurrent.Callable;
 
 @Getter
 public class SecurityContextSystemUser implements SystemUser {
-    private final String id = "System";
-    private final String username = "System";
-    private final String nickname = "System";
+    private final String id = "SystemUser";
+    private final String username = "SystemUser";
+    private final String nickname = "SystemUser";
     private final String tenantId = DEFAULT_TENANT_ID;
     private final String avatar = null;
     private final SubjectType type = SubjectType.SYSTEM_USER;
