@@ -18,20 +18,10 @@
 
 package org.mallfoundry.security;
 
-import org.mallfoundry.identity.TenantOwnership;
-import org.mallfoundry.identity.User;
-
-public interface Subject extends TenantOwnership {
-
-    String getId();
-
-    String getUsername();
-
-    String getAvatar();
-
-    String getNickname();
-
-    SubjectType getType();
-
-    User toUser();
+public enum SubjectType {
+    USER,
+    ANONYMOUS_USER,
+    SYSTEM_USER,
+    CUSTOMER,
+    STORE_STAFF;
 }
