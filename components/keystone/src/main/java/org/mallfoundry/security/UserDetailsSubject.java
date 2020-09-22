@@ -90,6 +90,11 @@ public class UserDetailsSubject implements UserDetails, Subject {
     }
 
     @Override
+    public SubjectType getType() {
+        return SubjectType.USER;
+    }
+
+    @Override
     public String getTenantId() {
         return this.user.getTenantId();
     }
