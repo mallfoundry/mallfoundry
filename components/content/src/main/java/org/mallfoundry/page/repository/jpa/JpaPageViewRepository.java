@@ -18,7 +18,47 @@
 
 package org.mallfoundry.page.repository.jpa;
 
+import org.mallfoundry.data.repository.jpa.SortUtils;
+import org.mallfoundry.page.PageViewQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaPageViewRepository extends JpaRepository<JpaPageView, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+
+public interface JpaPageViewRepository extends JpaRepository<JpaPageView, String>, JpaSpecificationExecutor<JpaPageView> {
+
+    default Specification<JpaPageView> createSpecification(PageViewQuery viewQuery) {
+        return (Specification<JpaPageView>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(viewQuery.getPageId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("pageId"), viewQuery.getPageId()));
+            }
+            if (Objects.nonNull(viewQuery.getBrowserId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("browserId"), viewQuery.getBrowserId()));
+            }
+            if (Objects.nonNull(viewQuery.getBrowserIp())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("browserIp"), viewQuery.getBrowserIp()));
+            }
+            if (Objects.nonNull(viewQuery.getBrowsingTimeFrom())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("browsingTime"), viewQuery.getBrowsingTimeFrom()));
+            }
+            if (Objects.nonNull(viewQuery.getBrowsingTimeTo())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("browsingTime"), viewQuery.getBrowsingTimeTo()));
+            }
+            return predicate;
+        };
+    }
+
+    default Page<JpaPageView> findAll(PageViewQuery viewQuery) {
+        return this.findAll(this.createSpecification(viewQuery),
+                PageRequest.of(viewQuery.getPage() - 1, viewQuery.getLimit(), SortUtils.createSort(viewQuery)));
+    }
+
+    default long count(PageViewQuery query) {
+        return this.count(this.createSpecification(query));
+    }
 }
