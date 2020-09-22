@@ -45,11 +45,11 @@ public class JpaPageView extends PageViewSupport {
     @Column(name = "page_id_")
     private String pageId;
 
-    @Column(name = "customer_id_")
-    private String customerId;
+    @Column(name = "browser_id_")
+    private String browserId;
 
-    @Column(name = "customer_ip_")
-    private String customerIp;
+    @Column(name = "browser_ip_")
+    private String browserIp;
 
     @Column(name = "browsing_time_")
     private Date browsingTime;

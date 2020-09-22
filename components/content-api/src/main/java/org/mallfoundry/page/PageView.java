@@ -28,13 +28,13 @@ public interface PageView {
 
     void setPageId(String pageId);
 
-    String getCustomerId();
+    String getBrowserId();
 
-    void setCustomerId(String customerId);
+    void setBrowserId(String browserId);
 
-    String getCustomerIp();
+    String getBrowserIp();
 
-    void setCustomerIp(String customerIp);
+    void setBrowserIp(String browserIp);
 
     Date getBrowsingTime();
 
