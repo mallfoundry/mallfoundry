@@ -32,6 +32,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -41,23 +43,29 @@ import java.util.Date;
 @Table(name = "mf_page_view")
 public class JpaPageView extends PageViewSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "page_id_")
     private String pageId;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "page_type_")
     private PageType pageType;
 
+    @NotBlank
     @Column(name = "browser_id_")
     private String browserId;
 
+    @NotBlank
     @Column(name = "browser_ip_")
     private String browserIp;
 
+    @NotNull
     @Column(name = "browsing_time_")
     private Date browsingTime;
 
