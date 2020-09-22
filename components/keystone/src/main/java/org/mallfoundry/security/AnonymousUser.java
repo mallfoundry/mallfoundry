@@ -26,9 +26,9 @@ import org.mallfoundry.identity.User;
 @Getter
 @Setter
 public class AnonymousUser implements Subject {
-    private final String id = "anonymousUser";
-    private final String username = "anonymousUser";
-    private final String nickname = "anonymousUser";
+    private final String id = "AnonymousUser";
+    private final String username = "AnonymousUser";
+    private final String nickname = "AnonymousUser";
     private final String tenantId = null;
     private final String avatar = null;
     private final SubjectType type = SubjectType.ANONYMOUS_USER;
