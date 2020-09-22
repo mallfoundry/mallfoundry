@@ -25,7 +25,7 @@ public class PageIdentityProcessor implements PageProcessor {
     private static final String PAGE_VIEW_ID_VALUE_NAME = "page.view.id";
 
     @Override
-    public PageView preProcessBeforeViewPage(PageView pageView) {
+    public PageView preProcessAfterViewPage(PageView pageView) {
         pageView.setId(PrimaryKeyHolder.next(PAGE_VIEW_ID_VALUE_NAME));
         return pageView;
     }
