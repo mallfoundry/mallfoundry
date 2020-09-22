@@ -23,11 +23,15 @@ public interface DateDimension {
 
     int getId();
 
+    int getDate();
+
     int getYear();
 
-    int getQuarter();
-
     int getMonth();
+
+    int getYearMonth();
+
+    int getQuarter();
 
     int getDayOfMonth();
 }
