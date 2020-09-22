@@ -18,12 +18,19 @@
 
 package org.mallfoundry.page;
 
+import lombok.Setter;
+import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-public class DefaultPageService implements PageService {
+import java.util.List;
+
+public class DefaultPageService implements PageService, PageProcessorInvoker {
 
     private final PageViewRepository pageViewRepository;
+
+    @Setter
+    private List<PageProcessor> processors;
 
     public DefaultPageService(PageViewRepository pageViewRepository) {
         this.pageViewRepository = pageViewRepository;
@@ -37,9 +44,16 @@ public class DefaultPageService implements PageService {
     @Transactional
     @Override
     public PageView viewPage(PageView pageView) {
-        var browserId = SubjectHolder.getSubject().getId();
-        pageView.setBrowserId(browserId);
+        pageView = this.invokePreProcessBeforeViewPage(pageView);
+        pageView.setBrowserId(SubjectHolder.getSubject().getId());
         pageView.browsing();
         return this.pageViewRepository.save(pageView);
+    }
+
+    @Override
+    public PageView invokePreProcessBeforeViewPage(PageView pageView) {
+        return Processors.stream(this.processors)
+                .map(PageProcessor::preProcessBeforeViewPage)
+                .apply(pageView);
     }
 }
