@@ -19,4 +19,18 @@
 package org.mallfoundry.edw.time;
 
 public interface MinutelyTimeDimension {
+
+    int getId();
+
+    int getMinute();
+
+    int getYear();
+
+    int getMonth();
+
+    int getYearMonth();
+
+    int getQuarter();
+
+    int getDayOfMonth();
 }

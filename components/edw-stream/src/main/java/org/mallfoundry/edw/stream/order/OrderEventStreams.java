@@ -44,9 +44,9 @@ public class OrderEventStreams {
         fact.setStoreId(order.getStoreId());
         fact.setCustomerId(order.getCustomerId());
         fact.setId(order.getId());
-        fact.setPlacedTimeId(TimeDimensions.idOf(order.getPlacedTime()));
-        fact.setPaidTimeId(TimeDimensions.idOf(order.getPaidTime()));
-        fact.setFulfilledTimeId(TimeDimensions.idOf(order.getFulfilledTime()));
+        fact.setPlacedTimeId(TimeDimensions.keyOf(order.getPlacedTime()));
+        fact.setPaidTimeId(TimeDimensions.keyOf(order.getPaidTime()));
+        fact.setFulfilledTimeId(TimeDimensions.keyOf(order.getFulfilledTime()));
         // mms
         fact.setTotalQuantity(order.getTotalQuantity());
         fact.setTotalPrice(order.getTotalPrice());

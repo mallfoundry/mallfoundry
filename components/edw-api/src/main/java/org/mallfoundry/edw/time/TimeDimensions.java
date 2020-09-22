@@ -28,7 +28,7 @@ public abstract class TimeDimensions {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-    public static Long idOf(Date date) {
+    public static Long keyOf(Date date) {
         return Optional.ofNullable(date)
                 .map(Date::toInstant)
                 .map(instant -> instant.atZone(ZoneId.systemDefault()))

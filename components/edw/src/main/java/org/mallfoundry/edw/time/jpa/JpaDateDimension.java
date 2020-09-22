@@ -42,8 +42,8 @@ import java.util.Date;
 public class JpaDateDimension implements DateDimension {
 
     @Id
-    @Column(name = "id_")
-    private int id;
+    @Column(name = "key_")
+    private int key;
 
     @Column(name = "date_")
     private int date;
@@ -64,8 +64,8 @@ public class JpaDateDimension implements DateDimension {
     private int dayOfMonth;
 
     public JpaDateDimension(Date date) {
-        this.id = DateDimensions.idOf(date);
-        this.date = this.id;
+        this.key = DateDimensions.keyOf(date);
+        this.date = this.key;
         var localDate = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
         this.year = localDate.getYear();
         this.month = localDate.getMonthValue();

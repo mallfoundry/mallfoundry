@@ -20,7 +20,7 @@ package org.mallfoundry.edw.time;
 
 public interface HourlyTimeDimension {
 
-    int getId();
+    int getKey();
 
     int getYear();
 

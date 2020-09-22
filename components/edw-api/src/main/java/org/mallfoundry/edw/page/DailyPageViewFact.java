@@ -22,25 +22,25 @@ import java.io.Serializable;
 
 public interface DailyPageViewFact extends Serializable {
 
-    String getPageId();
+    String getPageKey();
 
-    void setPageId(String pageId);
+    void setPageKey(String pageKey);
 
-    String getPageTypeId();
+    String getPageTypeKey();
 
-    void setPageTypeId(String pageTypeId);
+    void setPageTypeKey(String pageTypeKey);
 
-    String getBrowserId();
+    String getBrowserKey();
 
-    void setBrowserId(String browserId);
+    void setBrowserKey(String browserKey);
 
-    String getBrowserIpId();
+    String getBrowserIpKey();
 
-    void setBrowserIpId(String browserIpId);
+    void setBrowserIpKey(String browserIpKey);
 
-    int getDateId();
+    int getDateKey();
 
-    void setDateId(int dateId);
+    void setDateKey(int dateKey);
 
     int getViewCount();
 

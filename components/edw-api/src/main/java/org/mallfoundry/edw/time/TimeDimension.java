@@ -21,7 +21,7 @@ package org.mallfoundry.edw.time;
 // 2020-09-18 09:32:01
 public interface TimeDimension {
 
-    long getId();
+    long getKey();
 
     int getYear();
 

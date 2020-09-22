@@ -34,8 +34,8 @@ import javax.persistence.Table;
 public class JpaHourlyTimeDimension implements HourlyTimeDimension {
 
     @Id
-    @Column(name = "id_")
-    private int id;
+    @Column(name = "key_")
+    private int key;
 
     @Column(name = "year_")
     private int year;

@@ -19,4 +19,28 @@
 package org.mallfoundry.edw.page;
 
 public interface PageViewFact {
+
+    String getPageId();
+
+    void setPageId(String pageId);
+
+    String getPageTypeId();
+
+    void setPageTypeId(String pageTypeId);
+
+    String getBrowserId();
+
+    void setBrowserId(String browserId);
+
+    String getBrowserIpId();
+
+    void setBrowserIpId(String browserIpId);
+
+    int getMinuteTimeId();
+
+    void setMinuteTimeId(int minuteTimeId);
+
+    int getViewCount();
+
+    void setViewCount(int viewCount);
 }

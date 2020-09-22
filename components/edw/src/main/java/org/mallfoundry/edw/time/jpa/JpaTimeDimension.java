@@ -34,8 +34,8 @@ import javax.persistence.Table;
 public class JpaTimeDimension implements TimeDimension {
 
     @Id
-    @Column(name = "id_")
-    private long id;
+    @Column(name = "key_")
+    private long key;
 
     @Column(name = "year_")
     private int year;

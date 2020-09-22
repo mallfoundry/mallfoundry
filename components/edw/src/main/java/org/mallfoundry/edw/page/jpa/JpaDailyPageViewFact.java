@@ -37,24 +37,24 @@ import java.util.Objects;
 public class JpaDailyPageViewFact implements DailyPageViewFact {
 
     @Id
-    @Column(name = "page_id_")
-    private String pageId;
+    @Column(name = "page_key_")
+    private String pageKey;
 
     @Id
-    @Column(name = "page_type_id_")
-    private String pageTypeId;
+    @Column(name = "page_type_key_")
+    private String pageTypeKey;
 
     @Id
-    @Column(name = "browser_id_")
-    private String browserId;
+    @Column(name = "browser_key_")
+    private String browserKey;
 
     @Id
-    @Column(name = "browser_ip_id_")
-    private String browserIpId;
+    @Column(name = "browser_ip_key_")
+    private String browserIpKey;
 
     @Id
-    @Column(name = "date_id_")
-    private int dateId;
+    @Column(name = "date_key_")
+    private int dateKey;
 
     @Column(name = "view_count_")
     private int viewCount;
@@ -68,15 +68,15 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
             return false;
         }
         JpaDailyPageViewFact that = (JpaDailyPageViewFact) object;
-        return dateId == that.dateId
-                && Objects.equals(pageId, that.pageId)
-                && Objects.equals(pageTypeId, that.pageTypeId)
-                && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIpId, that.browserIpId);
+        return dateKey == that.dateKey
+                && Objects.equals(pageKey, that.pageKey)
+                && Objects.equals(pageTypeKey, that.pageTypeKey)
+                && Objects.equals(browserKey, that.browserKey)
+                && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, dateId);
+        return Objects.hash(pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
     }
 }

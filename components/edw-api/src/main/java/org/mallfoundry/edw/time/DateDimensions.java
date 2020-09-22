@@ -31,7 +31,7 @@ public abstract class DateDimensions {
 
     private static final DateTimeFormatter YEAR_MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM");
 
-    public static Integer idOf(Date date) {
+    public static Integer keyOf(Date date) {
         return Optional.ofNullable(date)
                 .map(Date::toInstant)
                 .map(instant -> instant.atZone(ZoneId.systemDefault()))
