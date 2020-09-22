@@ -49,8 +49,8 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
     private String browserId;
 
     @Id
-    @Column(name = "browser_ip_")
-    private String browserIp;
+    @Column(name = "browser_ip_id_")
+    private String browserIpId;
 
     @Id
     @Column(name = "date_id_")
@@ -72,11 +72,11 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
                 && Objects.equals(pageId, that.pageId)
                 && Objects.equals(pageTypeId, that.pageTypeId)
                 && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIp, that.browserIp);
+                && Objects.equals(browserIpId, that.browserIpId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIp, dateId);
+        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, dateId);
     }
 }

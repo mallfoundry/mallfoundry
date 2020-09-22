@@ -34,7 +34,7 @@ public class JpaHourlyPageViewFactId implements Serializable {
 
     private String browserId;
 
-    private String browserIp;
+    private String browserIpId;
 
     private int hourlyTimeId;
 
@@ -51,11 +51,11 @@ public class JpaHourlyPageViewFactId implements Serializable {
                 && Objects.equals(pageId, that.pageId)
                 && Objects.equals(pageTypeId, that.pageTypeId)
                 && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIp, that.browserIp);
+                && Objects.equals(browserIpId, that.browserIpId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIp, hourlyTimeId);
+        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, hourlyTimeId);
     }
 }

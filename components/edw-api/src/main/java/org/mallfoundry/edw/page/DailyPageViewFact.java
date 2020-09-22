@@ -34,9 +34,9 @@ public interface DailyPageViewFact extends Serializable {
 
     void setBrowserId(String browserId);
 
-    String getBrowserIp();
+    String getBrowserIpId();
 
-    void setBrowserIp(String browserIp);
+    void setBrowserIpId(String browserIpId);
 
     int getDateId();
 
