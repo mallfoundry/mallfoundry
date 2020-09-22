@@ -23,12 +23,18 @@ import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.function.Supplier;
 
 public interface PageViewQuery extends Query, ObjectBuilder.ToBuilder<PageViewQuery.Builder> {
 
     String getPageId();
 
     void setPageId(String pageId);
+
+    Set<PageType> getPageTypes();
+
+    void setPageTypes(Set<PageType> pageTypes);
 
     String getBrowserId();
 
@@ -49,6 +55,10 @@ public interface PageViewQuery extends Query, ObjectBuilder.ToBuilder<PageViewQu
     interface Builder extends QueryBuilder<PageViewQuery, Builder> {
 
         Builder pageId(String pageId);
+
+        Builder pageTypes(Set<PageType> pageTypes);
+
+        Builder pageTypes(Supplier<Set<PageType>> supplier);
 
         Builder browserId(String browserId);
 

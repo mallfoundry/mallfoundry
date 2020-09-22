@@ -24,12 +24,16 @@ import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
 public class DefaultPageViewQuery extends QuerySupport implements PageViewQuery {
 
     private String pageId;
+
+    private Set<PageType> pageTypes;
 
     private String browserId;
 
@@ -57,6 +61,17 @@ public class DefaultPageViewQuery extends QuerySupport implements PageViewQuery 
         public Builder pageId(String pageId) {
             this.query.setPageId(pageId);
             return this;
+        }
+
+        @Override
+        public Builder pageTypes(Set<PageType> pageTypes) {
+            this.query.setPageTypes(pageTypes);
+            return this;
+        }
+
+        @Override
+        public Builder pageTypes(Supplier<Set<PageType>> supplier) {
+            return this.pageTypes(supplier.get());
         }
 
         @Override
