@@ -75,6 +75,7 @@
         <module>keystone-rest</module>
         <module>storage-rest</module>
         <module>catalog-rest</module>
+        <module>content-rest</module>
         <module>store-rest</module>
         <module>payment-rest</module>
         <module>shipping-rest</module>
