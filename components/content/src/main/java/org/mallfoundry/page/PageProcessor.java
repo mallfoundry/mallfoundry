@@ -19,7 +19,12 @@
 package org.mallfoundry.page;
 
 public interface PageProcessor {
+
     default PageView preProcessBeforeViewPage(PageView pageView) {
+        return pageView;
+    }
+
+    default PageView preProcessAfterViewPage(PageView pageView) {
         return pageView;
     }
 }

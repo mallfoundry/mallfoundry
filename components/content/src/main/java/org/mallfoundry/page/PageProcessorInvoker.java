@@ -19,5 +19,8 @@
 package org.mallfoundry.page;
 
 public interface PageProcessorInvoker {
+
     PageView invokePreProcessBeforeViewPage(PageView pageView);
+
+    PageView invokePreProcessAfterViewPage(PageView pageView);
 }
