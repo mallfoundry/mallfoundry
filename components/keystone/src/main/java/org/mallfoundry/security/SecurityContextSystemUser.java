@@ -33,6 +33,7 @@ public class SecurityContextSystemUser implements SystemUser {
     private final String nickname = "System";
     private final String tenantId = DEFAULT_TENANT_ID;
     private final String avatar = null;
+    private final SubjectType type = SubjectType.SYSTEM_USER;
 
     @Getter(AccessLevel.PRIVATE)
     private SystemUserAuthentication authentication;
