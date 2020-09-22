@@ -29,12 +29,24 @@ public abstract class DateDimensions {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
+    private static final DateTimeFormatter YEAR_MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyyMM");
+
     public static Integer idOf(Date date) {
         return Optional.ofNullable(date)
                 .map(Date::toInstant)
                 .map(instant -> instant.atZone(ZoneId.systemDefault()))
                 .map(ZonedDateTime::toLocalDate)
                 .map(time -> time.format(DATE_FORMATTER))
+                .map(Integer::parseInt)
+                .orElse(null);
+    }
+
+    public static Integer yearMonthOf(Date date) {
+        return Optional.ofNullable(date)
+                .map(Date::toInstant)
+                .map(instant -> instant.atZone(ZoneId.systemDefault()))
+                .map(ZonedDateTime::toLocalDate)
+                .map(time -> time.format(YEAR_MONTH_FORMATTER))
                 .map(Integer::parseInt)
                 .orElse(null);
     }
