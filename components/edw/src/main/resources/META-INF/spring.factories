@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.mallfoundry.autoconfigure.order.EdwOrderAutoConfiguration
+  org.mallfoundry.autoconfigure.edw.EdwAutoConfiguration
 
