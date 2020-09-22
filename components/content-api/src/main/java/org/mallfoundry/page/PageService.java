@@ -20,6 +20,8 @@ package org.mallfoundry.page;
 
 public interface PageService {
 
+    PageViewQuery createPageViewQuery();
+
     PageView createPageView(String id);
 
     PageView viewPage(PageView pageView);
