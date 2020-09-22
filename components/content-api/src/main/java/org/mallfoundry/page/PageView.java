@@ -26,9 +26,17 @@ public interface PageView {
 
     String getPageId();
 
+    void setPageId(String pageId);
+
     String getCustomerId();
+
+    void setCustomerId(String customerId);
 
     String getCustomerIp();
 
+    void setCustomerIp(String customerIp);
+
     Date getBrowsingTime();
+
+    void browsing();
 }
