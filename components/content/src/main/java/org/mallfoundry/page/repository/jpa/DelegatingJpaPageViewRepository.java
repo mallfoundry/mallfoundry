@@ -18,7 +18,10 @@
 
 package org.mallfoundry.page.repository.jpa;
 
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.page.PageView;
+import org.mallfoundry.page.PageViewQuery;
 import org.mallfoundry.page.PageViewRepository;
 
 public class DelegatingJpaPageViewRepository implements PageViewRepository {
@@ -37,5 +40,18 @@ public class DelegatingJpaPageViewRepository implements PageViewRepository {
     @Override
     public PageView save(PageView view) {
         return this.repository.save(JpaPageView.of(view));
+    }
+
+    @Override
+    public SliceList<PageView> findAll(PageViewQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements()).cast();
+    }
+
+    @Override
+    public long count(PageViewQuery query) {
+        return this.repository.count(query);
     }
 }

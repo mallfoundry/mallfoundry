@@ -18,9 +18,15 @@
 
 package org.mallfoundry.page;
 
+import org.mallfoundry.data.SliceList;
+
 public interface PageViewRepository {
 
     PageView create(String id);
 
     PageView save(PageView view);
+
+    SliceList<PageView> findAll(PageViewQuery query);
+
+    long count(PageViewQuery query);
 }
