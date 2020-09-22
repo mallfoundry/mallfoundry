@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class DefaultPageService implements PageService, PageProcessorInvoker {
 
@@ -64,7 +65,7 @@ public class DefaultPageService implements PageService, PageProcessorInvoker {
                 .map(Date::from)
                 .orElseThrow();
         var query = this.createPageViewQuery().toBuilder()
-                .pageId(pageView.getPageId())
+                .pageId(pageView.getPageId()).pageTypes(Set.of(pageView.getPageType()))
                 .browserId(pageView.getBrowserId())
                 .browserIp(pageView.getBrowserIp())
                 .browsingTimeFrom(latestBrowsingTime)
