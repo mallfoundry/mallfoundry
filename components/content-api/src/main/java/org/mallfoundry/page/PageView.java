@@ -24,6 +24,8 @@ public interface PageView {
 
     String getId();
 
+    void setId(String id);
+
     String getPageId();
 
     void setPageId(String pageId);
