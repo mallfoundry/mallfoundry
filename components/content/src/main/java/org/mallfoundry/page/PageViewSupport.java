@@ -26,4 +26,53 @@ public abstract class PageViewSupport implements MutablePageView {
     public void browsing() {
         this.setBrowsingTime(new Date());
     }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+        private final PageViewSupport pageView;
+
+        protected BuilderSupport(PageViewSupport pageView) {
+            this.pageView = pageView;
+        }
+
+        @Override
+        public Builder id(String id) {
+            this.pageView.setId(id);
+            return this;
+        }
+
+        @Override
+        public Builder pageId(String pageId) {
+            this.pageView.setPageId(pageId);
+            return this;
+        }
+
+        @Override
+        public Builder pageType(PageType pageType) {
+            this.pageView.setPageType(pageType);
+            return this;
+        }
+
+        @Override
+        public Builder browserId(String browserId) {
+            this.pageView.setBrowserId(browserId);
+            return this;
+        }
+
+        @Override
+        public Builder browserIp(String browserIp) {
+            this.pageView.setBrowserIp(browserIp);
+            return this;
+        }
+
+        @Override
+        public PageView build() {
+            return this.pageView;
+        }
+    }
 }

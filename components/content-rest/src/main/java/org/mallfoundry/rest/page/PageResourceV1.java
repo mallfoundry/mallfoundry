@@ -23,6 +23,7 @@ import org.mallfoundry.page.PageService;
 import org.mallfoundry.page.PageView;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,8 +55,9 @@ public class PageResourceV1 {
 
     @PostMapping("/pages/{page_id}/view")
     public PageView viewPage(@PathVariable("page_id") String pageId,
+                             @RequestBody PageViewRequest request,
                              HttpServletRequest httpRequest) {
-        var pageView = this.pageService.createPageView(null);
+        var pageView = request.assignTo(this.pageService.createPageView(null));
         pageView.setPageId(pageId);
         pageView.setBrowserIp(this.getBrowserIp(httpRequest));
         return this.pageService.viewPage(pageView);

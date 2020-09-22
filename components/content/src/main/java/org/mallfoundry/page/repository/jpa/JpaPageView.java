@@ -21,12 +21,15 @@ package org.mallfoundry.page.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.page.PageType;
 import org.mallfoundry.page.PageView;
 import org.mallfoundry.page.PageViewSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -44,6 +47,10 @@ public class JpaPageView extends PageViewSupport {
 
     @Column(name = "page_id_")
     private String pageId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "page_type_")
+    private PageType pageType;
 
     @Column(name = "browser_id_")
     private String browserId;
