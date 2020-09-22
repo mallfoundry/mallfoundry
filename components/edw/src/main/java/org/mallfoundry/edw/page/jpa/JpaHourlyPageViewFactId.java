@@ -28,15 +28,19 @@ import java.util.Objects;
 @Setter
 public class JpaHourlyPageViewFactId implements Serializable {
 
-    private String pageId;
+    private String tenantKey;
 
-    private String pageTypeId;
+    private String storeKey;
 
-    private String browserId;
+    private String pageKey;
 
-    private String browserIpId;
+    private String pageTypeKey;
 
-    private int hourlyTimeId;
+    private String browserKey;
+
+    private String browserIpKey;
+
+    private int hourlyTimeKey;
 
     @Override
     public boolean equals(Object object) {
@@ -47,15 +51,17 @@ public class JpaHourlyPageViewFactId implements Serializable {
             return false;
         }
         JpaHourlyPageViewFactId that = (JpaHourlyPageViewFactId) object;
-        return hourlyTimeId == that.hourlyTimeId
-                && Objects.equals(pageId, that.pageId)
-                && Objects.equals(pageTypeId, that.pageTypeId)
-                && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIpId, that.browserIpId);
+        return hourlyTimeKey == that.hourlyTimeKey
+                && Objects.equals(tenantKey, that.tenantKey)
+                && Objects.equals(storeKey, that.storeKey)
+                && Objects.equals(pageKey, that.pageKey)
+                && Objects.equals(pageTypeKey, that.pageTypeKey)
+                && Objects.equals(browserKey, that.browserKey)
+                && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, hourlyTimeId);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
     }
 }

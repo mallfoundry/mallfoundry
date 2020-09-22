@@ -22,6 +22,14 @@ import java.io.Serializable;
 
 public interface DailyPageViewFact extends Serializable {
 
+    String getTenantKey();
+
+    void setTenantKey(String tenantKey);
+
+    String getStoreKey();
+
+    void setStoreKey(String storeKey);
+
     String getPageKey();
 
     void setPageKey(String pageKey);

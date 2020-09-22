@@ -22,25 +22,33 @@ import java.io.Serializable;
 
 public interface HourlyPageViewFact extends Serializable {
 
-    String getPageId();
+    String getTenantKey();
 
-    void setPageId(String pageId);
+    void setTenantKey(String tenantKey);
 
-    String getPageTypeId();
+    String getStoreKey();
 
-    void setPageTypeId(String pageTypeId);
+    void setStoreKey(String storeKey);
 
-    String getBrowserId();
+    String getPageKey();
 
-    void setBrowserId(String browserId);
+    void setPageKey(String pageKey);
 
-    String getBrowserIpId();
+    String getPageTypeKey();
 
-    void setBrowserIpId(String browserIpId);
+    void setPageTypeKey(String pageTypeKey);
 
-    int getHourlyTimeId();
+    String getBrowserKey();
 
-    void setHourlyTimeId(int hourlyTimeId);
+    void setBrowserKey(String browserKey);
+
+    String getBrowserIpKey();
+
+    void setBrowserIpKey(String browserIpKey);
+
+    int getHourlyTimeKey();
+
+    void setHourlyTimeKey(int hourlyTimeKey);
 
     int getViewCount();
 

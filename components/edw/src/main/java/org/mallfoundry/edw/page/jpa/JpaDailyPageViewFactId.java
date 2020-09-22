@@ -28,15 +28,19 @@ import java.util.Objects;
 @Setter
 public class JpaDailyPageViewFactId implements Serializable {
 
-    private String pageId;
+    private String tenantKey;
 
-    private String pageTypeId;
+    private String storeKey;
 
-    private String browserId;
+    private String pageKey;
 
-    private String browserIpId;
+    private String pageTypeKey;
 
-    private int dateId;
+    private String browserKey;
+
+    private String browserIpKey;
+
+    private int dateKey;
 
     @Override
     public boolean equals(Object object) {
@@ -47,15 +51,17 @@ public class JpaDailyPageViewFactId implements Serializable {
             return false;
         }
         JpaDailyPageViewFactId that = (JpaDailyPageViewFactId) object;
-        return dateId == that.dateId
-                && Objects.equals(pageId, that.pageId)
-                && Objects.equals(pageTypeId, that.pageTypeId)
-                && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIpId, that.browserIpId);
+        return dateKey == that.dateKey
+                && Objects.equals(tenantKey, that.tenantKey)
+                && Objects.equals(storeKey, that.storeKey)
+                && Objects.equals(pageKey, that.pageKey)
+                && Objects.equals(pageTypeKey, that.pageTypeKey)
+                && Objects.equals(browserKey, that.browserKey)
+                && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, dateId);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
     }
 }

@@ -37,24 +37,32 @@ import java.util.Objects;
 public class JpaHourlyPageViewFact implements HourlyPageViewFact {
 
     @Id
-    @Column(name = "page_id_")
-    private String pageId;
+    @Column(name = "tenant_key_")
+    private String tenantKey;
 
     @Id
-    @Column(name = "page_type_id_")
-    private String pageTypeId;
+    @Column(name = "store_key_")
+    private String storeKey;
 
     @Id
-    @Column(name = "browser_id_")
-    private String browserId;
+    @Column(name = "page_key_")
+    private String pageKey;
 
     @Id
-    @Column(name = "browser_ip_id_")
-    private String browserIpId;
+    @Column(name = "page_type_key_")
+    private String pageTypeKey;
 
     @Id
-    @Column(name = "hourly_time_id_")
-    private int hourlyTimeId;
+    @Column(name = "browser_key_")
+    private String browserKey;
+
+    @Id
+    @Column(name = "browser_ip_key_")
+    private String browserIpKey;
+
+    @Id
+    @Column(name = "hourly_time_key_")
+    private int hourlyTimeKey;
 
     @Column(name = "view_count_")
     private int viewCount;
@@ -68,15 +76,17 @@ public class JpaHourlyPageViewFact implements HourlyPageViewFact {
             return false;
         }
         JpaHourlyPageViewFact that = (JpaHourlyPageViewFact) object;
-        return hourlyTimeId == that.hourlyTimeId
-                && Objects.equals(pageId, that.pageId)
-                && Objects.equals(pageTypeId, that.pageTypeId)
-                && Objects.equals(browserId, that.browserId)
-                && Objects.equals(browserIpId, that.browserIpId);
+        return hourlyTimeKey == that.hourlyTimeKey
+                && Objects.equals(tenantKey, that.tenantKey)
+                && Objects.equals(storeKey, that.storeKey)
+                && Objects.equals(pageKey, that.pageKey)
+                && Objects.equals(pageTypeKey, that.pageTypeKey)
+                && Objects.equals(browserKey, that.browserKey)
+                && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pageTypeId, browserId, browserIpId, hourlyTimeId);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
     }
 }

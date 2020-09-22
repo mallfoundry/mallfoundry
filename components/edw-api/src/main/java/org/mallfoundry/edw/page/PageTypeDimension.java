@@ -19,5 +19,5 @@
 package org.mallfoundry.edw.page;
 
 public interface PageTypeDimension {
-    String getId();
+    String getKey();
 }

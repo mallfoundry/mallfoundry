@@ -37,6 +37,14 @@ import java.util.Objects;
 public class JpaDailyPageViewFact implements DailyPageViewFact {
 
     @Id
+    @Column(name = "tenant_key_")
+    private String tenantKey;
+
+    @Id
+    @Column(name = "store_key_")
+    private String storeKey;
+
+    @Id
     @Column(name = "page_key_")
     private String pageKey;
 
@@ -69,6 +77,8 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
         }
         JpaDailyPageViewFact that = (JpaDailyPageViewFact) object;
         return dateKey == that.dateKey
+                && Objects.equals(tenantKey, that.tenantKey)
+                && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
                 && Objects.equals(pageTypeKey, that.pageTypeKey)
                 && Objects.equals(browserKey, that.browserKey)
@@ -77,6 +87,6 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
     }
 }
