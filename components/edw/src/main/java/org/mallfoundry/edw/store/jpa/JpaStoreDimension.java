@@ -34,8 +34,8 @@ import javax.persistence.Table;
 public class JpaStoreDimension implements StoreDimension {
 
     @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "key_")
+    private String key;
 
     @Column(name = "name_")
     private String name;
