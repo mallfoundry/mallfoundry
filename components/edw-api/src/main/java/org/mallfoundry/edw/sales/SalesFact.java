@@ -52,12 +52,6 @@ public interface SalesFact {
 
     void setTimeKey(int timeKey);
 
-    int getOrderQuantity();
-
-    void setOrderQuantity(int orderQuantity);
-
-    void adjustOrderQuantity(int orderQuantityDelta);
-
     int getSalesQuantity();
 
     void setSalesQuantity(int salesQuantity);
