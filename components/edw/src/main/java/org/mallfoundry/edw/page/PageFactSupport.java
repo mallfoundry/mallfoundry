@@ -18,14 +18,19 @@
 
 package org.mallfoundry.edw.page;
 
+import org.springframework.beans.BeanUtils;
+
 public abstract class PageFactSupport implements PageFact {
 
     @Override
     public PageFactKey toKey() {
-        return new ImmutablePageFactKey(
-                this.getTenantKey(), this.getStoreKey(),
-                this.getPageKey(), this.getPageTypeKey(),
-                this.getBrowserKey(), this.getBrowserIpKey(),
-                this.getDateKey(), this.getTimeKey());
+        var key = new ImmutablePageFactKey();
+        BeanUtils.copyProperties(this, key);
+        return key;
+    }
+
+    @Override
+    public void adjustViewCount(int deltaViewCount) {
+        this.setViewCount(this.getViewCount() + deltaViewCount);
     }
 }
