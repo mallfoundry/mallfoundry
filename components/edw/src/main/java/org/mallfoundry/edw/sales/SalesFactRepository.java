@@ -16,7 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.order;
+package org.mallfoundry.edw.sales;
 
-public class OrderLineFactRepository {
+public interface SalesFactRepository {
+
+    SalesFact create(SalesFactKey factKey);
+
+    SalesFact save(SalesFact salesFact);
 }
