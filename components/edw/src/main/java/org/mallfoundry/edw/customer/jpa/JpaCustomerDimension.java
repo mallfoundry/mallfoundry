@@ -34,6 +34,12 @@ import javax.persistence.Table;
 public class JpaCustomerDimension implements CustomerDimension {
 
     @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "key_")
+    private String key;
+
+    @Column(name = "name_")
+    private String name;
+
+    @Column(name = "gender_")
+    private String gender;
 }
