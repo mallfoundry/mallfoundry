@@ -16,19 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.edw;
+package org.mallfoundry.autoconfigure.edw.sales;
 
-import org.mallfoundry.autoconfigure.edw.page.EdwPageConfiguration;
-import org.mallfoundry.autoconfigure.edw.sales.EdwSalesConfiguration;
-import org.mallfoundry.autoconfigure.edw.time.EdwTimeConfiguration;
+import org.mallfoundry.edw.sales.DefaultSalesFactManager;
+import org.mallfoundry.edw.sales.SalesFactRepository;
+import org.mallfoundry.edw.sales.jpa.DelegatingJpaSalesFactRepository;
+import org.mallfoundry.edw.sales.jpa.JpaSalesFactRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({
-        EdwTimeConfiguration.class,
-        EdwPageConfiguration.class,
-        EdwSalesConfiguration.class
-})
-public class EdwAutoConfiguration {
+public class EdwSalesConfiguration {
+
+    @Bean
+    public DelegatingJpaSalesFactRepository delegatingJpaSalesFactRepository(JpaSalesFactRepository repository) {
+        return new DelegatingJpaSalesFactRepository(repository);
+    }
+
+    @Bean
+    public DefaultSalesFactManager defaultSalesFactManager(SalesFactRepository salesFactRepository) {
+        return new DefaultSalesFactManager(salesFactRepository);
+    }
 }
