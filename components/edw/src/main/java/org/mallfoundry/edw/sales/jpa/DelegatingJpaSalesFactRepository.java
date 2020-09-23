@@ -23,7 +23,6 @@ import org.mallfoundry.edw.sales.SalesFactKey;
 import org.mallfoundry.edw.sales.SalesFactRepository;
 import org.springframework.data.util.CastUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 public class DelegatingJpaSalesFactRepository implements SalesFactRepository {
@@ -47,10 +46,5 @@ public class DelegatingJpaSalesFactRepository implements SalesFactRepository {
     @Override
     public SalesFact save(SalesFact fact) {
         return this.repository.save(CastUtils.cast(fact));
-    }
-
-    @Override
-    public List<SalesFact> saveAll(List<SalesFact> facts) {
-        return CastUtils.cast(this.repository.saveAll(CastUtils.cast(facts)));
     }
 }

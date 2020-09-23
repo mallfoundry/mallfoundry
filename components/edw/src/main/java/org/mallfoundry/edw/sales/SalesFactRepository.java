@@ -18,7 +18,6 @@
 
 package org.mallfoundry.edw.sales;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface SalesFactRepository {
@@ -28,6 +27,4 @@ public interface SalesFactRepository {
     Optional<SalesFact> findByKey(SalesFactKey factKey);
 
     SalesFact save(SalesFact fact);
-
-    List<SalesFact> saveAll(List<SalesFact> facts);
 }
