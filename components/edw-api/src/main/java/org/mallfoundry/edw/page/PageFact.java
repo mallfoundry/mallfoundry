@@ -34,10 +34,6 @@ public interface PageFact {
 
     void setPageKey(String pageKey);
 
-    String getPageTypeKey();
-
-    void setPageTypeKey(String pageTypeKey);
-
     String getBrowserKey();
 
     void setBrowserKey(String browserKey);
@@ -57,4 +53,6 @@ public interface PageFact {
     int getViewCount();
 
     void setViewCount(int viewCount);
+
+    void adjustViewCount(int viewCountDelta);
 }
