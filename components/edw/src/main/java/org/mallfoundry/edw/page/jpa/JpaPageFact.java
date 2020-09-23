@@ -20,7 +20,8 @@ package org.mallfoundry.edw.page.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.edw.page.DailyPageFact;
+import org.mallfoundry.edw.page.ImmutablePageFactKey;
+import org.mallfoundry.edw.page.PageFactSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +33,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "mf_edw_daily_page_fact")
-@IdClass(JpaDailyPageFactId.class)
-public class JpaDailyPageFact implements DailyPageFact {
+@Table(name = "mf_edw_page_fact")
+@IdClass(ImmutablePageFactKey.class)
+public class JpaPageFact extends PageFactSupport {
 
     @Id
     @Column(name = "tenant_key_")
@@ -64,6 +65,10 @@ public class JpaDailyPageFact implements DailyPageFact {
     @Column(name = "date_key_")
     private int dateKey;
 
+    @Id
+    @Column(name = "time_key_")
+    private int timeKey;
+
     @Column(name = "view_count_")
     private int viewCount;
 
@@ -72,11 +77,12 @@ public class JpaDailyPageFact implements DailyPageFact {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaDailyPageFact)) {
+        if (!(object instanceof JpaPageFact)) {
             return false;
         }
-        JpaDailyPageFact that = (JpaDailyPageFact) object;
+        JpaPageFact that = (JpaPageFact) object;
         return dateKey == that.dateKey
+                && timeKey == that.timeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
@@ -87,6 +93,6 @@ public class JpaDailyPageFact implements DailyPageFact {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey, timeKey);
     }
 }
