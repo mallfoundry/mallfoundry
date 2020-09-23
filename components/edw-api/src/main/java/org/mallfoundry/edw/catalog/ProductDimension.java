@@ -20,7 +20,7 @@ package org.mallfoundry.edw.catalog;
 
 public interface ProductDimension {
 
-    String getId();
+    String getKey();
 
     String getName();
 
