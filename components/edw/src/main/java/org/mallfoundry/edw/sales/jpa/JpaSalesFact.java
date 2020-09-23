@@ -19,9 +19,11 @@
 package org.mallfoundry.edw.sales.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.edw.sales.ImmutableSalesFactKey;
-import org.mallfoundry.edw.sales.SalesFact;
+import org.mallfoundry.edw.sales.SalesFactKey;
+import org.mallfoundry.edw.sales.SalesFactSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,10 +35,11 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "mf_edw_sales_fact")
 @IdClass(ImmutableSalesFactKey.class)
-public class JpaSalesFact implements SalesFact {
+public class JpaSalesFact extends SalesFactSupport {
 
     @Id
     @Column(name = "tenant_key_")
@@ -73,6 +76,10 @@ public class JpaSalesFact implements SalesFact {
 
     @Column(name = "sales_amount_")
     private BigDecimal salesAmount;
+
+    public JpaSalesFact(SalesFactKey factKey) {
+        this.tenantKey = factKey.getTenantKey();
+    }
 
     @Override
     public boolean equals(Object object) {
