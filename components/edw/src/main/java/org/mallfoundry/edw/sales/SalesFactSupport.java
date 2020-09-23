@@ -32,11 +32,6 @@ public abstract class SalesFactSupport implements SalesFact {
     }
 
     @Override
-    public void adjustOrderQuantity(int deltaOrderQuantity) {
-        this.setOrderQuantity(this.getOrderQuantity() + deltaOrderQuantity);
-    }
-
-    @Override
     public void adjustSalesQuantity(int deltaSalesQuantity) {
         this.setSalesQuantity(this.getSalesQuantity() + deltaSalesQuantity);
     }

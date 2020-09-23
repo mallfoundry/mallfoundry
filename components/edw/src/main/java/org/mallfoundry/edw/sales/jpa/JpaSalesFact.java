@@ -24,6 +24,7 @@ import lombok.Setter;
 import org.mallfoundry.edw.sales.ImmutableSalesFactKey;
 import org.mallfoundry.edw.sales.SalesFactKey;
 import org.mallfoundry.edw.sales.SalesFactSupport;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,9 +69,6 @@ public class JpaSalesFact extends SalesFactSupport {
     @Column(name = "time_key_")
     private int timeKey;
 
-    @Column(name = "order_quantity_")
-    private int orderQuantity;
-
     @Column(name = "sales_quantity_")
     private int salesQuantity;
 
@@ -78,7 +76,7 @@ public class JpaSalesFact extends SalesFactSupport {
     private BigDecimal salesAmount = BigDecimal.ZERO;
 
     public JpaSalesFact(SalesFactKey factKey) {
-        this.tenantKey = factKey.getTenantKey();
+        BeanUtils.copyProperties(factKey, this);
     }
 
     @Override
