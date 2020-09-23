@@ -20,7 +20,7 @@ package org.mallfoundry.edw.store;
 
 public interface StoreDimension {
 
-    String getId();
+    String getKey();
 
     String getName();
 }
