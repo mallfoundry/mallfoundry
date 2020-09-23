@@ -21,6 +21,7 @@ package org.mallfoundry.edw.sales;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultSalesFactManager implements SalesFactManager {
 
@@ -58,6 +59,6 @@ public class DefaultSalesFactManager implements SalesFactManager {
     @Transactional
     @Override
     public List<SalesFact> saveSalesFacts(List<SalesFact> facts) {
-        return this.salesFactRepository.saveAll(facts);
+        return facts.stream().map(this::saveSalesFact).collect(Collectors.toUnmodifiableList());
     }
 }
