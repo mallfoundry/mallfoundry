@@ -24,6 +24,7 @@ import org.mallfoundry.edw.sales.SalesFactRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DelegatingJpaSalesFactRepository implements SalesFactRepository {
 
@@ -36,6 +37,11 @@ public class DelegatingJpaSalesFactRepository implements SalesFactRepository {
     @Override
     public SalesFact create(SalesFactKey factKey) {
         return new JpaSalesFact(factKey);
+    }
+
+    @Override
+    public Optional<SalesFact> findByKey(SalesFactKey factKey) {
+        return CastUtils.cast(this.repository.findById(CastUtils.cast(factKey)));
     }
 
     @Override
