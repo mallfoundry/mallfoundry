@@ -34,10 +34,6 @@ public interface PageFactKey extends Serializable {
 
     void setPageKey(String pageKey);
 
-    String getPageTypeKey();
-
-    void setPageTypeKey(String pageTypeKey);
-
     String getBrowserKey();
 
     void setBrowserKey(String browserKey);
