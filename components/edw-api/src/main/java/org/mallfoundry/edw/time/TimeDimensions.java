@@ -18,23 +18,24 @@
 
 package org.mallfoundry.edw.time;
 
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
 public abstract class TimeDimensions {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-
-    public static Long keyOf(Date date) {
+    public static Integer keyOf(Date date) {
         return Optional.ofNullable(date)
                 .map(Date::toInstant)
                 .map(instant -> instant.atZone(ZoneId.systemDefault()))
-                .map(ZonedDateTime::toLocalDateTime)
-                .map(time -> time.format(DATE_TIME_FORMATTER))
-                .map(Long::parseLong)
+                .map(ZonedDateTime::toLocalTime)
+                .map(TimeDimensions::keyOf)
                 .orElse(null);
+    }
+
+    public static Integer keyOf(LocalTime time) {
+        return time.getHour() * 60 * 60 + time.getMinute() * 60 + time.getSecond();
     }
 }
