@@ -75,7 +75,7 @@ public class JpaSalesFact extends SalesFactSupport {
     private int salesQuantity;
 
     @Column(name = "sales_amount_")
-    private BigDecimal salesAmount;
+    private BigDecimal salesAmount = BigDecimal.ZERO;
 
     public JpaSalesFact(SalesFactKey factKey) {
         this.tenantKey = factKey.getTenantKey();
