@@ -16,52 +16,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.page.jpa;
+package org.mallfoundry.edw.sales;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaHourlyPageFactId implements Serializable {
+public class ImmutableSalesFactKey implements SalesFactKey {
 
     private String tenantKey;
 
     private String storeKey;
 
-    private String pageKey;
+    private String customerKey;
 
-    private String pageTypeKey;
+    private String productKey;
 
-    private String browserKey;
+    private String variantKey;
 
-    private String browserIpKey;
+    private int dateKey;
 
-    private int hourlyTimeKey;
+    private int timeKey;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaHourlyPageFactId)) {
+        if (!(object instanceof ImmutableSalesFactKey)) {
             return false;
         }
-        JpaHourlyPageFactId that = (JpaHourlyPageFactId) object;
-        return hourlyTimeKey == that.hourlyTimeKey
+        ImmutableSalesFactKey that = (ImmutableSalesFactKey) object;
+        return dateKey == that.dateKey
+                && timeKey == that.timeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
-                && Objects.equals(pageKey, that.pageKey)
-                && Objects.equals(pageTypeKey, that.pageTypeKey)
-                && Objects.equals(browserKey, that.browserKey)
-                && Objects.equals(browserIpKey, that.browserIpKey);
+                && Objects.equals(customerKey, that.customerKey)
+                && Objects.equals(productKey, that.productKey)
+                && Objects.equals(variantKey, that.variantKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
+        return Objects.hash(tenantKey, storeKey, customerKey, productKey, variantKey, dateKey, timeKey);
     }
 }
