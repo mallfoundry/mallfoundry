@@ -37,8 +37,6 @@ public class ImmutablePageFactKey implements PageFactKey {
 
     private String pageKey;
 
-    private String pageTypeKey;
-
     private String browserKey;
 
     private String browserIpKey;
@@ -61,13 +59,12 @@ public class ImmutablePageFactKey implements PageFactKey {
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
-                && Objects.equals(pageTypeKey, that.pageTypeKey)
                 && Objects.equals(browserKey, that.browserKey)
                 && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey, timeKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, browserKey, browserIpKey, dateKey, timeKey);
     }
 }
