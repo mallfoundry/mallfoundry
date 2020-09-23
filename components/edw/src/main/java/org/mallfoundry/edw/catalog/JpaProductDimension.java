@@ -33,8 +33,8 @@ import javax.persistence.Table;
 public class JpaProductDimension implements ProductDimension {
 
     @Id
-    @Column(name = "id_")
-    private String id;
+    @Column(name = "key_")
+    private String key;
 
     @Column(name = "name_")
     private String name;
