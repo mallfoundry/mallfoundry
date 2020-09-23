@@ -16,28 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.time;
+package org.mallfoundry.edw.time.jpa;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.mallfoundry.edw.time.TimeDimension;
+import org.mallfoundry.edw.time.TimeDimensionRepository;
 
 import java.util.Date;
 
-public class DefaultDateManager implements DateManager {
+public class DelegatingJpaTimeDimensionRepository implements TimeDimensionRepository {
 
-    private final DateDimensionRepository dateDimensionRepository;
+    private final JpaTimeDimensionRepository repository;
 
-    public DefaultDateManager(DateDimensionRepository dateDimensionRepository) {
-        this.dateDimensionRepository = dateDimensionRepository;
+    public DelegatingJpaTimeDimensionRepository(JpaTimeDimensionRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public DateDimension createDateDimension(Date date) {
-        return this.dateDimensionRepository.create(date);
+    public TimeDimension create(Date date) {
+        return new JpaTimeDimension(date);
     }
 
-    @Transactional
     @Override
-    public DateDimension saveDateDimension(DateDimension dateDimension) {
-        return this.dateDimensionRepository.save(dateDimension);
+    public TimeDimension save(TimeDimension timeDimension) {
+        return this.repository.save(JpaTimeDimension.of(timeDimension));
     }
 }

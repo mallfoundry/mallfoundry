@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.order.jpa;
+package org.mallfoundry.edw.time.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaOrderFactRepository extends JpaRepository<JpaOrderFact, String> {
+public interface JpaTimeDimensionRepository extends JpaRepository<JpaTimeDimension, Integer> {
 }
