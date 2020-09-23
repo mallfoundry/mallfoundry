@@ -20,6 +20,8 @@ package org.mallfoundry.edw.page;
 
 public interface PageFact {
 
+    PageFactKey toKey();
+
     String getTenantKey();
 
     void setTenantKey(String tenantKey);
@@ -44,9 +46,13 @@ public interface PageFact {
 
     void setBrowserIpKey(String browserIpKey);
 
-    int getMinuteTimeKey();
+    int getDateKey();
 
-    void setMinuteTimeKey(int minuteTimeKey);
+    void setDateKey(int dateKey);
+
+    int getTimeKey();
+
+    void setTimeKey(int timeKey);
 
     int getViewCount();
 
