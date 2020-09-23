@@ -18,5 +18,47 @@
 
 package org.mallfoundry.edw.sales;
 
-public interface ProductVariantSalesFact {
+import java.math.BigDecimal;
+
+public interface SalesFact {
+
+    String getTenantKey();
+
+    void setTenantKey(String tenantKey);
+
+    String getStoreKey();
+
+    void setStoreKey(String storeKey);
+
+    String getCustomerKey();
+
+    void setCustomerKey(String customerKey);
+
+    String getProductKey();
+
+    void setProductKey(String productKey);
+
+    String getVariantKey();
+
+    void setVariantKey(String variantKey);
+
+    int getDateKey();
+
+    void setDateKey(int dateKey);
+
+    int getTimeKey();
+
+    void setTimeKey(int timeKey);
+
+    int getOrderQuantity();
+
+    void setOrderQuantity(int orderQuantity);
+
+    int getSalesQuantity();
+
+    void setSalesQuantity(int salesQuantity);
+
+    BigDecimal getSalesAmount();
+
+    void setSalesAmount(BigDecimal salesAmount);
 }
