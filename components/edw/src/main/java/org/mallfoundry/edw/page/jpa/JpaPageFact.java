@@ -19,8 +19,10 @@
 package org.mallfoundry.edw.page.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.edw.page.ImmutablePageFactKey;
+import org.mallfoundry.edw.page.PageFactKey;
 import org.mallfoundry.edw.page.PageFactSupport;
 
 import javax.persistence.Column;
@@ -32,6 +34,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "mf_edw_page_fact")
 @IdClass(ImmutablePageFactKey.class)
@@ -48,10 +51,6 @@ public class JpaPageFact extends PageFactSupport {
     @Id
     @Column(name = "page_key_")
     private String pageKey;
-
-    @Id
-    @Column(name = "page_type_key_")
-    private String pageTypeKey;
 
     @Id
     @Column(name = "browser_key_")
@@ -72,6 +71,16 @@ public class JpaPageFact extends PageFactSupport {
     @Column(name = "view_count_")
     private int viewCount;
 
+    public JpaPageFact(PageFactKey factKey) {
+        this.tenantKey = factKey.getTenantKey();
+        this.storeKey = factKey.getStoreKey();
+        this.pageKey = factKey.getPageKey();
+        this.browserKey = factKey.getBrowserKey();
+        this.browserIpKey = factKey.getBrowserIpKey();
+        this.dateKey = factKey.getDateKey();
+        this.timeKey = factKey.getTimeKey();
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -86,13 +95,12 @@ public class JpaPageFact extends PageFactSupport {
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
-                && Objects.equals(pageTypeKey, that.pageTypeKey)
                 && Objects.equals(browserKey, that.browserKey)
                 && Objects.equals(browserIpKey, that.browserIpKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey, timeKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, browserKey, browserIpKey, dateKey, timeKey);
     }
 }
