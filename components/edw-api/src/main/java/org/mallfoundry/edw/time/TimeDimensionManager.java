@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface TimeDimensionManager {
 
+    int createTimeDimensionKey(Date date);
+
     TimeDimension createTimeDimension(Date date);
 
     TimeDimension saveTimeDimension(TimeDimension timeDimension);

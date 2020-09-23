@@ -29,6 +29,11 @@ public class DefaultTimeDimensionManager implements TimeDimensionManager {
     }
 
     @Override
+    public int createTimeDimensionKey(Date date) {
+        return TimeDimensions.keyOf(date);
+    }
+
+    @Override
     public TimeDimension createTimeDimension(Date date) {
         return this.timeDimensionRepository.create(date);
     }
