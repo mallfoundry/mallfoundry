@@ -22,6 +22,8 @@ import java.math.BigDecimal;
 
 public interface SalesFact {
 
+    SalesFactKey toKey();
+
     String getTenantKey();
 
     void setTenantKey(String tenantKey);
@@ -54,11 +56,17 @@ public interface SalesFact {
 
     void setOrderQuantity(int orderQuantity);
 
+    void adjustOrderQuantity(int orderQuantityDelta);
+
     int getSalesQuantity();
 
     void setSalesQuantity(int salesQuantity);
 
+    void adjustSalesQuantity(int salesQuantityDelta);
+
     BigDecimal getSalesAmount();
 
     void setSalesAmount(BigDecimal salesAmount);
+
+    void adjustSalesAmount(BigDecimal salesAmountDelta);
 }
