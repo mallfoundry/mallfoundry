@@ -18,14 +18,12 @@
 
 package org.mallfoundry.autoconfigure.edw;
 
-import org.mallfoundry.autoconfigure.edw.order.EdwOrderConfiguration;
 import org.mallfoundry.autoconfigure.edw.time.EdwTimeConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        EdwOrderConfiguration.class,
         EdwTimeConfiguration.class,
 })
 public class EdwAutoConfiguration {
