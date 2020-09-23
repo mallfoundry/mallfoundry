@@ -19,9 +19,13 @@
 package org.mallfoundry.autoconfigure.edw.time;
 
 import org.mallfoundry.edw.time.DateDimensionRepository;
-import org.mallfoundry.edw.time.DefaultDateManager;
+import org.mallfoundry.edw.time.DefaultDateDimensionManager;
+import org.mallfoundry.edw.time.DefaultTimeDimensionManager;
+import org.mallfoundry.edw.time.TimeDimensionRepository;
 import org.mallfoundry.edw.time.jpa.DelegatingJpaDateDimensionRepository;
+import org.mallfoundry.edw.time.jpa.DelegatingJpaTimeDimensionRepository;
 import org.mallfoundry.edw.time.jpa.JpaDateDimensionRepository;
+import org.mallfoundry.edw.time.jpa.JpaTimeDimensionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,7 +38,17 @@ public class EdwTimeConfiguration {
     }
 
     @Bean
-    public DefaultDateManager defaultDateManager(DateDimensionRepository dateDimensionRepository) {
-        return new DefaultDateManager(dateDimensionRepository);
+    public DefaultDateDimensionManager defaultDateDimensionManager(DateDimensionRepository dateDimensionRepository) {
+        return new DefaultDateDimensionManager(dateDimensionRepository);
+    }
+
+    @Bean
+    public DelegatingJpaTimeDimensionRepository delegatingJpaTimeDimensionRepository(JpaTimeDimensionRepository repository) {
+        return new DelegatingJpaTimeDimensionRepository(repository);
+    }
+
+    @Bean
+    public DefaultTimeDimensionManager defaultTimeDimensionManager(TimeDimensionRepository timeDimensionRepository) {
+        return new DefaultTimeDimensionManager(timeDimensionRepository);
     }
 }
