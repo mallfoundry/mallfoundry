@@ -40,7 +40,7 @@ public class DelegatingJpaSalesFactRepository implements SalesFactRepository {
 
     @Override
     public SalesFact save(SalesFact fact) {
-        return this.repository.save(JpaSalesFact.of(fact));
+        return this.repository.save(CastUtils.cast(fact));
     }
 
     @Override
