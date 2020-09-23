@@ -20,6 +20,9 @@ package org.mallfoundry.edw.time;
 
 import java.util.Date;
 
-public interface TimeManager {
-    TimeDimension saveTime(Date date);
+public interface TimeDimensionRepository {
+
+    TimeDimension create(Date date);
+
+    TimeDimension save(TimeDimension timeDimension);
 }
