@@ -30,6 +30,10 @@ public interface SalesFactKey extends Serializable {
 
     void setStoreKey(String storeKey);
 
+    String getCustomerKey();
+
+    void setCustomerKey(String customerKey);
+
     String getProductKey();
 
     void setProductKey(String productKey);
@@ -37,10 +41,6 @@ public interface SalesFactKey extends Serializable {
     String getVariantKey();
 
     void setVariantKey(String variantKey);
-
-    String getCustomerKey();
-
-    void setCustomerKey(String customerKey);
 
     int getDateKey();
 
