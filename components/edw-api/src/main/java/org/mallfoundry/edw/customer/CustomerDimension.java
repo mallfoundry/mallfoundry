@@ -20,6 +20,9 @@ package org.mallfoundry.edw.customer;
 
 public interface CustomerDimension {
 
-    String getId();
+    String getKey();
 
+    String getName();
+
+    String getGender();
 }
