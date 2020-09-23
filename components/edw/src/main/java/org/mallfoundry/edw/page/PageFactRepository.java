@@ -22,8 +22,6 @@ import java.util.Optional;
 
 public interface PageFactRepository {
 
-    PageFactKey createKey();
-
     PageFact create(PageFactKey factKey);
 
     Optional<PageFact> findByKey(PageFactKey factKey);
