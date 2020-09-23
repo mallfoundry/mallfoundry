@@ -29,6 +29,11 @@ public class DefaultDateDimensionManager implements DateDimensionManager {
     }
 
     @Override
+    public int createDateDimensionKey(Date date) {
+        return DateDimensions.keyOf(date);
+    }
+
+    @Override
     public DateDimension createDateDimension(Date date) {
         return this.dateDimensionRepository.create(date);
     }
