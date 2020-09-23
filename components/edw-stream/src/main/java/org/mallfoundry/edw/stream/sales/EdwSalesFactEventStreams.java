@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-public class SalesEventStreams {
+public class EdwSalesFactEventStreams {
 
     private final DateDimensionManager dateDimensionManager;
 
@@ -43,9 +43,9 @@ public class SalesEventStreams {
 
     private final SalesFactManager salesFactManager;
 
-    public SalesEventStreams(DateDimensionManager dateDimensionManager,
-                             TimeDimensionManager timeDimensionManager,
-                             SalesFactManager salesFactManager) {
+    public EdwSalesFactEventStreams(DateDimensionManager dateDimensionManager,
+                                    TimeDimensionManager timeDimensionManager,
+                                    SalesFactManager salesFactManager) {
         this.dateDimensionManager = dateDimensionManager;
         this.timeDimensionManager = timeDimensionManager;
         this.salesFactManager = salesFactManager;

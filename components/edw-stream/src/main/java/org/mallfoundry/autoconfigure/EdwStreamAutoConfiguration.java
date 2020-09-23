@@ -16,15 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.sales;
+package org.mallfoundry.autoconfigure;
 
-import org.mallfoundry.edw.stream.sales.SalesEventStreams;
+import org.mallfoundry.autoconfigure.sales.EdwSalesFactStreamConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        SalesEventStreams.class
+        EdwSalesFactStreamConfiguration.class
 })
-public class EdwSalesStreamAutoConfiguration {
+public class EdwStreamAutoConfiguration {
 }
