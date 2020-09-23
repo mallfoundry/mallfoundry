@@ -16,25 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.page.jpa;
+package org.mallfoundry.edw.sales.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.edw.page.HourlyPageFact;
+import org.mallfoundry.edw.sales.ImmutableSalesFactKey;
+import org.mallfoundry.edw.sales.SalesFact;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "mf_edw_hourly_page_fact")
-@IdClass(JpaHourlyPageFactId.class)
-public class JpaHourlyPageFact implements HourlyPageFact {
+@Table(name = "mf_edw_sales_fact")
+@IdClass(ImmutableSalesFactKey.class)
+public class JpaSalesFact implements SalesFact {
 
     @Id
     @Column(name = "tenant_key_")
@@ -43,50 +45,55 @@ public class JpaHourlyPageFact implements HourlyPageFact {
     @Id
     @Column(name = "store_key_")
     private String storeKey;
+    @Id
+    @Column(name = "customer_key_")
+    private String customerKey;
 
     @Id
-    @Column(name = "page_key_")
-    private String pageKey;
+    @Column(name = "product_key_")
+    private String productKey;
 
     @Id
-    @Column(name = "page_type_key_")
-    private String pageTypeKey;
+    @Column(name = "variant_key_")
+    private String variantKey;
 
     @Id
-    @Column(name = "browser_key_")
-    private String browserKey;
+    @Column(name = "date_key_")
+    private int dateKey;
 
     @Id
-    @Column(name = "browser_ip_key_")
-    private String browserIpKey;
+    @Column(name = "time_key_")
+    private int timeKey;
 
-    @Id
-    @Column(name = "hourly_time_key_")
-    private int hourlyTimeKey;
+    @Column(name = "order_quantity_")
+    private int orderQuantity;
 
-    @Column(name = "view_count_")
-    private int viewCount;
+    @Column(name = "sales_quantity_")
+    private int salesQuantity;
+
+    @Column(name = "sales_amount_")
+    private BigDecimal salesAmount;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaHourlyPageFact)) {
+        if (!(object instanceof JpaSalesFact)) {
             return false;
         }
-        JpaHourlyPageFact that = (JpaHourlyPageFact) object;
-        return hourlyTimeKey == that.hourlyTimeKey
+        JpaSalesFact that = (JpaSalesFact) object;
+        return dateKey == that.dateKey
+                && timeKey == that.timeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
-                && Objects.equals(pageKey, that.pageKey)
-                && Objects.equals(pageTypeKey, that.pageTypeKey)
-                && Objects.equals(browserKey, that.browserKey)
-                && Objects.equals(browserIpKey, that.browserIpKey);
+                && Objects.equals(customerKey, that.customerKey)
+                && Objects.equals(productKey, that.productKey)
+                && Objects.equals(variantKey, that.variantKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
+        return Objects.hash(tenantKey, storeKey, customerKey, productKey, variantKey, dateKey, timeKey);
     }
 }
