@@ -24,25 +24,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @StandaloneTest
-public class DefaultDateManagerTests {
+public class DefaultTimeDimensionManagerTests {
 
     @Autowired
-    private DateManager dateManager;
+    private TimeDimensionManager timeDimensionManager;
 
     @Test
-    public void testSaveFrom20200101To20251231() {
-        var startDate = LocalDate.of(2020, 1, 1);
-        var endDate = LocalDate.of(2025, 12, 31);
-        while (startDate.isBefore(endDate)) {
+    public void testSaveFrom00000To235959() {
+        var startTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+        var endTime = LocalDateTime.of(2020, 1, 2, 0, 0, 0);
+        var i = 0;
+        while (startTime.isBefore(endTime)) {
             ZoneId zone = ZoneId.systemDefault();
-            Instant instant = startDate.atStartOfDay().atZone(zone).toInstant();
-            var dateDimension = this.dateManager.createDateDimension(Date.from(instant));
-            this.dateManager.saveDateDimension(dateDimension);
-            startDate = startDate.plusDays(1);
+            Instant instant = startTime.atZone(zone).toInstant();
+            var dateDimension = this.timeDimensionManager.createTimeDimension(Date.from(instant));
+            this.timeDimensionManager.saveTimeDimension(dateDimension);
+            startTime = startTime.plusSeconds(1);
         }
     }
 }
