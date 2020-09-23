@@ -16,17 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.page.jpa;
+package org.mallfoundry.edw.page;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaDailyPageFactId implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ImmutablePageFactKey implements PageFactKey {
 
     private String tenantKey;
 
@@ -42,16 +45,19 @@ public class JpaDailyPageFactId implements Serializable {
 
     private int dateKey;
 
+    private int timeKey;
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaDailyPageFactId)) {
+        if (!(object instanceof ImmutablePageFactKey)) {
             return false;
         }
-        JpaDailyPageFactId that = (JpaDailyPageFactId) object;
+        ImmutablePageFactKey that = (ImmutablePageFactKey) object;
         return dateKey == that.dateKey
+                && timeKey == that.timeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
@@ -62,6 +68,6 @@ public class JpaDailyPageFactId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey, timeKey);
     }
 }
