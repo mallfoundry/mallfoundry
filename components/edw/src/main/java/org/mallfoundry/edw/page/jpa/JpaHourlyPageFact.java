@@ -20,7 +20,7 @@ package org.mallfoundry.edw.page.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.edw.page.DailyPageViewFact;
+import org.mallfoundry.edw.page.HourlyPageFact;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +32,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "mf_edw_daily_page_view_fact")
-@IdClass(JpaDailyPageViewFactId.class)
-public class JpaDailyPageViewFact implements DailyPageViewFact {
+@Table(name = "mf_edw_hourly_page_fact")
+@IdClass(JpaHourlyPageFactId.class)
+public class JpaHourlyPageFact implements HourlyPageFact {
 
     @Id
     @Column(name = "tenant_key_")
@@ -61,8 +61,8 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
     private String browserIpKey;
 
     @Id
-    @Column(name = "date_key_")
-    private int dateKey;
+    @Column(name = "hourly_time_key_")
+    private int hourlyTimeKey;
 
     @Column(name = "view_count_")
     private int viewCount;
@@ -72,11 +72,11 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaDailyPageViewFact)) {
+        if (!(object instanceof JpaHourlyPageFact)) {
             return false;
         }
-        JpaDailyPageViewFact that = (JpaDailyPageViewFact) object;
-        return dateKey == that.dateKey
+        JpaHourlyPageFact that = (JpaHourlyPageFact) object;
+        return hourlyTimeKey == that.hourlyTimeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
@@ -87,6 +87,6 @@ public class JpaDailyPageViewFact implements DailyPageViewFact {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
     }
 }

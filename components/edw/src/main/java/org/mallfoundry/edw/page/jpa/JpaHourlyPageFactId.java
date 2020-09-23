@@ -20,62 +20,37 @@ package org.mallfoundry.edw.page.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.edw.page.HourlyPageViewFact;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "mf_edw_hourly_page_view_fact")
-@IdClass(JpaHourlyPageViewFactId.class)
-public class JpaHourlyPageViewFact implements HourlyPageViewFact {
+public class JpaHourlyPageFactId implements Serializable {
 
-    @Id
-    @Column(name = "tenant_key_")
     private String tenantKey;
 
-    @Id
-    @Column(name = "store_key_")
     private String storeKey;
 
-    @Id
-    @Column(name = "page_key_")
     private String pageKey;
 
-    @Id
-    @Column(name = "page_type_key_")
     private String pageTypeKey;
 
-    @Id
-    @Column(name = "browser_key_")
     private String browserKey;
 
-    @Id
-    @Column(name = "browser_ip_key_")
     private String browserIpKey;
 
-    @Id
-    @Column(name = "hourly_time_key_")
     private int hourlyTimeKey;
-
-    @Column(name = "view_count_")
-    private int viewCount;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaHourlyPageViewFact)) {
+        if (!(object instanceof JpaHourlyPageFactId)) {
             return false;
         }
-        JpaHourlyPageViewFact that = (JpaHourlyPageViewFact) object;
+        JpaHourlyPageFactId that = (JpaHourlyPageFactId) object;
         return hourlyTimeKey == that.hourlyTimeKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)

@@ -20,37 +20,62 @@ package org.mallfoundry.edw.page.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.edw.page.DailyPageFact;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaDailyPageViewFactId implements Serializable {
+@Entity
+@Table(name = "mf_edw_daily_page_fact")
+@IdClass(JpaDailyPageFactId.class)
+public class JpaDailyPageFact implements DailyPageFact {
 
+    @Id
+    @Column(name = "tenant_key_")
     private String tenantKey;
 
+    @Id
+    @Column(name = "store_key_")
     private String storeKey;
 
+    @Id
+    @Column(name = "page_key_")
     private String pageKey;
 
+    @Id
+    @Column(name = "page_type_key_")
     private String pageTypeKey;
 
+    @Id
+    @Column(name = "browser_key_")
     private String browserKey;
 
+    @Id
+    @Column(name = "browser_ip_key_")
     private String browserIpKey;
 
+    @Id
+    @Column(name = "date_key_")
     private int dateKey;
+
+    @Column(name = "view_count_")
+    private int viewCount;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaDailyPageViewFactId)) {
+        if (!(object instanceof JpaDailyPageFact)) {
             return false;
         }
-        JpaDailyPageViewFactId that = (JpaDailyPageViewFactId) object;
+        JpaDailyPageFact that = (JpaDailyPageFact) object;
         return dateKey == that.dateKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)

@@ -18,9 +18,7 @@
 
 package org.mallfoundry.edw.page;
 
-import java.io.Serializable;
-
-public interface DailyPageViewFact extends Serializable {
+public interface PageFact {
 
     String getTenantKey();
 
@@ -46,9 +44,9 @@ public interface DailyPageViewFact extends Serializable {
 
     void setBrowserIpKey(String browserIpKey);
 
-    int getDateKey();
+    int getMinuteTimeKey();
 
-    void setDateKey(int dateKey);
+    void setMinuteTimeKey(int minuteTimeKey);
 
     int getViewCount();
 

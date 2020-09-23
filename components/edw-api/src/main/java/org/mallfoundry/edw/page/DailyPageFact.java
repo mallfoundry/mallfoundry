@@ -18,9 +18,39 @@
 
 package org.mallfoundry.edw.page;
 
-public interface PageViewFactManager {
+import java.io.Serializable;
 
-    PageViewFact createPageViewFact();
+public interface DailyPageFact extends Serializable {
 
-    PageViewFact savePageViewFact(PageViewFact fact);
+    String getTenantKey();
+
+    void setTenantKey(String tenantKey);
+
+    String getStoreKey();
+
+    void setStoreKey(String storeKey);
+
+    String getPageKey();
+
+    void setPageKey(String pageKey);
+
+    String getPageTypeKey();
+
+    void setPageTypeKey(String pageTypeKey);
+
+    String getBrowserKey();
+
+    void setBrowserKey(String browserKey);
+
+    String getBrowserIpKey();
+
+    void setBrowserIpKey(String browserIpKey);
+
+    int getDateKey();
+
+    void setDateKey(int dateKey);
+
+    int getViewCount();
+
+    void setViewCount(int viewCount);
 }

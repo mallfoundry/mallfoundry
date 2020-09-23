@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaHourlyPageViewFactId implements Serializable {
+public class JpaDailyPageFactId implements Serializable {
 
     private String tenantKey;
 
@@ -40,18 +40,18 @@ public class JpaHourlyPageViewFactId implements Serializable {
 
     private String browserIpKey;
 
-    private int hourlyTimeKey;
+    private int dateKey;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaHourlyPageViewFactId)) {
+        if (!(object instanceof JpaDailyPageFactId)) {
             return false;
         }
-        JpaHourlyPageViewFactId that = (JpaHourlyPageViewFactId) object;
-        return hourlyTimeKey == that.hourlyTimeKey
+        JpaDailyPageFactId that = (JpaDailyPageFactId) object;
+        return dateKey == that.dateKey
                 && Objects.equals(tenantKey, that.tenantKey)
                 && Objects.equals(storeKey, that.storeKey)
                 && Objects.equals(pageKey, that.pageKey)
@@ -62,6 +62,6 @@ public class JpaHourlyPageViewFactId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, hourlyTimeKey);
+        return Objects.hash(tenantKey, storeKey, pageKey, pageTypeKey, browserKey, browserIpKey, dateKey);
     }
 }

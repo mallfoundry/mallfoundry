@@ -20,7 +20,7 @@ package org.mallfoundry.edw.page;
 
 import java.io.Serializable;
 
-public interface HourlyPageViewFact extends Serializable {
+public interface HourlyPageFact extends Serializable {
 
     String getTenantKey();
 
