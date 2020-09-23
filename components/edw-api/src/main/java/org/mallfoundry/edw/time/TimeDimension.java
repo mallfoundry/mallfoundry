@@ -18,22 +18,17 @@
 
 package org.mallfoundry.edw.time;
 
-// 2020-09-18 09:32:01
+import java.time.LocalTime;
+
 public interface TimeDimension {
 
-    long getKey();
+    int getKey();
 
-    int getYear();
+    LocalTime getTime();
 
-    int getQuarter();
+    byte getHour();
 
-    int getMonth();
+    byte getMinute();
 
-    int getDayOfMonth();
-
-    int getHourOfDay();
-
-    int getMinuteOfHour();
-
-    int getSecondOfMinute();
+    byte getSecond();
 }
