@@ -18,6 +18,8 @@
 
 package org.mallfoundry.edw.sales;
 
+import java.util.List;
+
 public interface SalesFactManager {
 
     SalesFactKey createSalesFactKey();
@@ -25,4 +27,6 @@ public interface SalesFactManager {
     SalesFact createSalesFact(SalesFactKey factKey);
 
     SalesFact saveSalesFact(SalesFact fact);
+
+    List<SalesFact> saveSalesFacts(List<SalesFact> facts);
 }
