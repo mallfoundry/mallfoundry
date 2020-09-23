@@ -16,14 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.time;
+package org.mallfoundry.edw.page;
 
-import java.util.Date;
-
-public class DefaultTimeManager implements TimeManager {
+public abstract class PageFactSupport implements PageFact {
 
     @Override
-    public TimeDimension saveTime(Date date) {
-        return null;
+    public PageFactKey toKey() {
+        return new ImmutablePageFactKey(
+                this.getTenantKey(), this.getStoreKey(),
+                this.getPageKey(), this.getPageTypeKey(),
+                this.getBrowserKey(), this.getBrowserIpKey(),
+                this.getDateKey(), this.getTimeKey());
     }
 }
