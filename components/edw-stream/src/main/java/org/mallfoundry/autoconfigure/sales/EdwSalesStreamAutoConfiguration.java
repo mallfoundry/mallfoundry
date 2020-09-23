@@ -16,18 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.order;
+package org.mallfoundry.autoconfigure.sales;
 
-import org.mallfoundry.edw.order.OrderFactRepository;
-import org.mallfoundry.edw.stream.order.OrderEventStreams;
-import org.springframework.context.annotation.Bean;
+import org.mallfoundry.edw.stream.sales.SalesEventStreams;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-public class EdwOrderStreamAutoConfiguration {
-
-    @Bean
-    public OrderEventStreams orderEventStreams(OrderFactRepository orderFactRepository) {
-        return new OrderEventStreams(orderFactRepository);
-    }
+@Import({
+        SalesEventStreams.class
+})
+public class EdwSalesStreamAutoConfiguration {
 }
