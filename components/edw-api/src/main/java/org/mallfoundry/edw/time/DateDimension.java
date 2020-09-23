@@ -18,7 +18,6 @@
 
 package org.mallfoundry.edw.time;
 
-// 2020-09-18
 public interface DateDimension {
 
     int getKey();
