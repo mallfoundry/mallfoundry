@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.page;
+package org.mallfoundry.edw.store;
 
-public interface PageFactManager {
+public interface StoreDimensionManager {
 
-    PageFact createPageViewFact();
+    StoreDimension createStoreDimension();
 
-    PageFact savePageViewFact(PageFact fact);
+    StoreDimension saveStoreDimension(StoreDimension storeDimension);
 }
