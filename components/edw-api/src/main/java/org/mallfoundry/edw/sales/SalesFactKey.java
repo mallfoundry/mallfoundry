@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.page;
+package org.mallfoundry.edw.sales;
 
 import java.io.Serializable;
 
-public interface HourlyPageFact extends Serializable {
+public interface SalesFactKey extends Serializable {
 
     String getTenantKey();
 
@@ -30,27 +30,23 @@ public interface HourlyPageFact extends Serializable {
 
     void setStoreKey(String storeKey);
 
-    String getPageKey();
+    String getProductKey();
 
-    void setPageKey(String pageKey);
+    void setProductKey(String productKey);
 
-    String getPageTypeKey();
+    String getVariantKey();
 
-    void setPageTypeKey(String pageTypeKey);
+    void setVariantKey(String variantKey);
 
-    String getBrowserKey();
+    String getCustomerKey();
 
-    void setBrowserKey(String browserKey);
+    void setCustomerKey(String customerKey);
 
-    String getBrowserIpKey();
+    int getDateKey();
 
-    void setBrowserIpKey(String browserIpKey);
+    void setDateKey(int dateKey);
 
-    int getHourlyTimeKey();
+    int getTimeKey();
 
-    void setHourlyTimeKey(int hourlyTimeKey);
-
-    int getViewCount();
-
-    void setViewCount(int viewCount);
+    void setTimeKey(int timeKey);
 }
