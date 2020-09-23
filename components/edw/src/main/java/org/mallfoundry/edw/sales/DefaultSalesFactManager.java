@@ -50,7 +50,6 @@ public class DefaultSalesFactManager implements SalesFactManager {
     @Override
     public SalesFact saveSalesFact(SalesFact source) {
         var fact = this.getSalesFact(source.toKey());
-        fact.adjustOrderQuantity(source.getOrderQuantity());
         fact.adjustSalesQuantity(source.getSalesQuantity());
         fact.adjustSalesAmount(source.getSalesAmount());
         return this.salesFactRepository.save(fact);
