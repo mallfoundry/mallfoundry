@@ -16,14 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store;
+package org.mallfoundry.report.page;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class DefaultStoreTotalProductQuantity implements StoreTotalProductQuantity {
-    private int activeQuantity;
-    private int archivedQuantity;
-    private int pendingQuantity;
-    private int disapprovedQuantity;
+@Setter
+public class DefaultMonthlyPage implements MonthlyPage {
+
+    private String date;
+
+    private long viewCount;
 }
