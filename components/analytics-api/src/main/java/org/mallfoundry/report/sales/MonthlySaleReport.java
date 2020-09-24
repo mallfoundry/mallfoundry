@@ -16,15 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store;
+package org.mallfoundry.report.sales;
 
-public interface StoreTotalProductQuantity {
+import java.util.List;
 
-    int getActiveQuantity();
+public interface MonthlySaleReport {
 
-    int getArchivedQuantity();
+    MonthlySaleQuery createMonthlySaleQuery();
 
-    int getPendingQuantity();
-
-    int getDisapprovedQuantity();
+    List<MonthlySale> queryMonthlySales(MonthlySaleQuery query);
 }

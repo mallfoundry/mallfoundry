@@ -16,10 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store;
+package org.mallfoundry.report.sales;
 
-import java.util.Optional;
+import java.math.BigDecimal;
 
-public interface StoreTotalProductQuantityRepository {
-    Optional<StoreTotalProductQuantity> findByStoreId(String storeId);
+public interface MonthlySale {
+
+    String getDate();
+
+    int getQuantity();
+
+    BigDecimal getAmount();
 }
