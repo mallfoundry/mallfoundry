@@ -22,7 +22,9 @@ import java.math.BigDecimal;
 
 public interface MonthlySale {
 
-    String getDate();
+    String getYearMonth();
+
+    String getMonth();
 
     int getQuantity();
 
