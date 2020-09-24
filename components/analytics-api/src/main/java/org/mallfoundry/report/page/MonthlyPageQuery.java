@@ -26,7 +26,7 @@ public interface MonthlyPageQuery extends ObjectBuilder.ToBuilder<MonthlyPageQue
 
     String getStoreId();
 
-    String getBrowser();
+    String getBrowserId();
 
     Short getYear();
 
@@ -38,7 +38,7 @@ public interface MonthlyPageQuery extends ObjectBuilder.ToBuilder<MonthlyPageQue
 
         Builder storeId(String storeId);
 
-        Builder customerId(String customerId);
+        Builder browserId(String browserId);
 
         Builder year(Short year);
 
