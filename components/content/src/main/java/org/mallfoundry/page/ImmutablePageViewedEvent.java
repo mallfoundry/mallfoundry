@@ -18,6 +18,16 @@
 
 package org.mallfoundry.page;
 
-public interface PageViewedEvent {
-    PageView getPageView();
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
+
+public class ImmutablePageViewedEvent extends ApplicationEvent implements PageViewedEvent {
+
+    @Getter
+    private final PageView pageView;
+
+    public ImmutablePageViewedEvent(PageView pageView) {
+        super(pageView);
+        this.pageView = pageView;
+    }
 }
