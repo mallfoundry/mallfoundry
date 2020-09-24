@@ -16,10 +16,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store;
+package org.mallfoundry.report.page;
 
-import java.util.Optional;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface StoreTotalOrderQuantityRepository {
-    Optional<StoreTotalOrderQuantity> findByStoreId(String storeId);
+public interface MonthlyPageQuery extends ObjectBuilder.ToBuilder<MonthlyPageQuery.Builder> {
+
+    String getTenantId();
+
+    String getStoreId();
+
+    String getBrowser();
+
+    Short getYear();
+
+    Byte getMonth();
+
+    interface Builder extends ObjectBuilder<MonthlyPageQuery> {
+
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
+
+        Builder customerId(String customerId);
+
+        Builder year(Short year);
+
+        Builder month(Byte month);
+    }
 }
