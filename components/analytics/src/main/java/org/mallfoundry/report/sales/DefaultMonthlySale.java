@@ -16,33 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store;
+package org.mallfoundry.report.sales;
 
-public interface StoreTotalOrderQuantity {
+import lombok.Getter;
+import lombok.Setter;
 
-    int getPendingQuantity();
+import java.math.BigDecimal;
 
-    int getAwaitingPaymentQuantity();
+@Getter
+@Setter
+public class DefaultMonthlySale implements MonthlySale {
 
-    int getAwaitingFulfillmentQuantity();
+    private String date;
 
-    int getAwaitingShipmentQuantity();
+    private int quantity;
 
-    int getPartiallyShippedQuantity();
-
-    int getShippedQuantity();
-
-    int getAwaitingPickupQuantity();
-
-    int getPartiallyRefundedQuantity();
-
-    int getRefundedQuantity();
-
-    int getDisputedQuantity();
-
-    int getCancelledQuantity();
-
-    int getCompletedQuantity();
-
-    int getDeclinedQuantity();
+    private BigDecimal amount;
 }
