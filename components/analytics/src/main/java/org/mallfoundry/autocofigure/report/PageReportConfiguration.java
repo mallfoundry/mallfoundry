@@ -16,23 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics;
+package org.mallfoundry.autocofigure.report;
 
-import org.junit.jupiter.api.Test;
-import org.mallfoundry.analytics.store.StoreReportService;
-import org.mallfoundry.test.StandaloneTest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mallfoundry.report.page.DefaultMonthlyPageReport;
+import org.mallfoundry.report.page.MonthlyPageRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@StandaloneTest
-public class StoreReportTests {
+@Configuration
+public class PageReportConfiguration {
 
-    @Autowired
-    private StoreReportService storeReportService;
-
-    @Test
-    public void testCountTotalOrderQuantity() {
-        var storeId = "mi";
-        var totalQuantity = this.storeReportService.countTotalOrderQuantity(storeId).orElse(null);
-        System.out.println(totalQuantity);
+    @Bean
+    public DefaultMonthlyPageReport defaultMonthlyPageReport(MonthlyPageRepository monthlyPageRepository) {
+        return new DefaultMonthlyPageReport(monthlyPageRepository);
     }
 }

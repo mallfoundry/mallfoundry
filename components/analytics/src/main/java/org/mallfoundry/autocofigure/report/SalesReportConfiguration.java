@@ -16,24 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.analytics.store;
+package org.mallfoundry.autocofigure.report;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mallfoundry.analytics.store.StoreTotalProductQuantity;
-import org.springframework.beans.BeanUtils;
+import org.mallfoundry.report.sales.DefaultMonthlySaleReport;
+import org.mallfoundry.report.sales.MonthlySaleRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Getter
-@Setter
-public class StoreTotalProductQuantityResponse {
-    private int activeQuantity;
-    private int archivedQuantity;
-    private int pendingQuantity;
-    private int disapprovedQuantity;
+@Configuration
+public class SalesReportConfiguration {
 
-    public static StoreTotalProductQuantityResponse of(StoreTotalProductQuantity quantity) {
-        var response = new StoreTotalProductQuantityResponse();
-        BeanUtils.copyProperties(quantity, response);
-        return response;
+    @Bean
+    public DefaultMonthlySaleReport defaultMonthlySaleReport(MonthlySaleRepository monthlySaleRepository) {
+        return new DefaultMonthlySaleReport(monthlySaleRepository);
     }
 }
