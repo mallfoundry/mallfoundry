@@ -18,11 +18,34 @@
 
 package org.mallfoundry.report.page;
 
-import java.util.List;
+import org.mallfoundry.util.ObjectBuilder;
 
-public interface MonthlyPageReport {
+public interface PageQuery extends ObjectBuilder.ToBuilder<PageQuery.Builder> {
 
-    MonthlyPageQuery createMonthlyPageQuery();
+    String getTenantId();
 
-    List<MonthlyPage> queryMonthlyPages(MonthlyPageQuery query);
+    String getStoreId();
+
+    String getBrowserId();
+
+    Integer getDate();
+
+    Integer getDateFrom();
+
+    Integer getDateTo();
+
+    interface Builder extends ObjectBuilder<PageQuery> {
+
+        Builder tenantId(String tenantId);
+
+        Builder storeId(String storeId);
+
+        Builder browserId(String browserId);
+
+        Builder date(Integer date);
+
+        Builder dateFrom(Integer dateFrom);
+
+        Builder dateTo(Integer dateTo);
+    }
 }
