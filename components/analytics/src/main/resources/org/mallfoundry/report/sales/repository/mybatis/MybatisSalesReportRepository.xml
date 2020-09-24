@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (C) 2019-2020 the original author or authors.
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.report.sales.repository.mybatis.MybatisSalesReportRepository">
+
+    <resultMap id="DailySaleResultMap" type="org.mallfoundry.report.sales.DefaultDailySale">
+        <id property="date" column="date_"/>
+        <result property="quantity" column="quantity_"/>
+        <result property="amount" column="amount_"/>
+    </resultMap>
+
+    <resultMap id="MonthlySaleResultMap" type="org.mallfoundry.report.sales.DefaultMonthlySale">
+        <id property="yearMonth" column="year_month_"/>
+        <result property="month" column="month_"/>
+        <result property="quantity" column="quantity_"/>
+        <result property="amount" column="amount_"/>
+    </resultMap>
+
+    <resultMap id="TotalSalesResultMap" type="org.mallfoundry.report.sales.DefaultTotalSales">
+        <result property="quantity" column="quantity_"/>
+        <result property="amount" column="amount_"/>
+    </resultMap>
+
+    <select id="queryDailySales" resultMap="DailySaleResultMap">
+        select date.date_ as date_,
+        coalesce(sum(sales.sales_quantity_), 0) as quantity_,
+        coalesce(sum(sales.sales_amount_), 0) as amount_
+        from mf_edw_date_dimension date
+        left join (
+        select sales.date_key_,
+        sales.sales_quantity_,
+        sales.sales_amount_
+        from mf_edw_sales_fact sales
+        <where>
+            <if test="query.tenantId != null">
+                and sales.tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and sales.store_key_ = #{query.storeId}
+            </if>
+            <if test="query.customerId != null">
+                and sales.customer_key_ = #{query.customerId}
+            </if>
+        </where>
+        ) sales on (date.key_ = sales.date_key_)
+        where
+        <trim prefixOverrides="and">
+            <if test="query.year != null">
+                and date.year_ = #{query.year}
+            </if>
+            <if test="query.month != null">
+                and date.month_ = #{query.month}
+            </if>
+            <if test="query.date != null">
+                and date.date_ = #{query.date}
+            </if>
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date.date_
+            </if>
+            <if test="query.dateTo != null">
+                and date.date_ <![CDATA[<=]]> #{query.dateTo}
+            </if>
+        </trim>
+        group by date.date_
+        order by date.date_
+    </select>
+
+    <select id="queryMonthlySales" resultMap="MonthlySaleResultMap">
+        select date.year_month_ as year_month_,
+        date.month_ as month_,
+        coalesce(sum(sales.sales_quantity_), 0) as quantity_,
+        coalesce(sum(sales.sales_amount_), 0) as amount_
+        from mf_edw_date_dimension date
+        left join (
+        select sales.date_key_,
+        sales.sales_quantity_,
+        sales.sales_amount_
+        from mf_edw_sales_fact sales
+        <where>
+            <if test="query.tenantId != null">
+                and sales.tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and sales.store_key_ = #{query.storeId}
+            </if>
+            <if test="query.customerId != null">
+                and sales.customer_key_ = #{query.customerId}
+            </if>
+        </where>
+        ) sales on (date.key_ = sales.date_key_)
+        where
+        <trim prefixOverrides="and">
+            <if test="query.year != null">
+                and date.year_ = #{query.year}
+            </if>
+            <if test="query.month != null">
+                and date.month_ = #{query.month}
+            </if>
+            <if test="query.date != null">
+                and date.date_ = #{query.date}
+            </if>
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date.date_
+            </if>
+            <if test="query.dateTo != null">
+                and date.date_ <![CDATA[<=]]> #{query.dateTo}
+            </if>
+        </trim>
+        group by date.year_month_, date.month_
+        order by date.year_month_
+    </select>
+
+    <select id="queryTotalSales" resultMap="TotalSalesResultMap">
+        select
+        coalesce(sum(sales_quantity_), 0) as quantity_,
+        coalesce(sum(sales_amount_), 0) as amount_
+        from mf_edw_sales_fact
+        <where>
+            <if test="query.tenantId != null">
+                and tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and store_key_ = #{query.storeId}
+            </if>
+            <if test="query.customerId != null">
+                and customer_key_ = #{query.customerId}
+            </if>
+            <if test="query.date != null">
+                and date_key_ = #{query.date}
+            </if>
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date_key_
+            </if>
+            <if test="query.dateTo != null">
+                and date_key_ <![CDATA[<=]]> #{query.dateTo}
+            </if>
+        </where>
+    </select>
+</mapper>

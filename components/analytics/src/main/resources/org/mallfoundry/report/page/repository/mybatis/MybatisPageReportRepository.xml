@@ -20,15 +20,19 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.mallfoundry.report.page.repository.mybatis.MybatisMonthlyPageRepository">
+<mapper namespace="org.mallfoundry.report.page.repository.mybatis.MybatisPageReportRepository">
 
-    <resultMap id="MonthlyPageResultMap" type="org.mallfoundry.report.page.DefaultMonthlyPage">
+    <resultMap id="DailyPageResultMap" type="org.mallfoundry.report.page.DefaultDailyPage">
         <id property="date" column="date_"/>
         <result property="viewCount" column="view_count_"/>
         <result property="amount" column="amount_"/>
     </resultMap>
 
-    <select id="findAll" resultMap="MonthlyPageResultMap">
+    <resultMap id="TotalPagesResultMap" type="org.mallfoundry.report.page.DefaultTotalPages">
+        <result property="viewCount" column="view_count_"/>
+    </resultMap>
+
+    <select id="queryDailyPages" resultMap="DailyPageResultMap">
         select date.date_ as date_,
         coalesce(sum(page.view_count_), 0) as view_count_
         from mf_edw_date_dimension date
@@ -50,14 +54,39 @@
         ) page on (date.key_ = page.date_key_)
         where
         <trim prefixOverrides="and">
-            <if test="query.year != null">
-                and date.year_ = #{query.year}
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date.date_
             </if>
-            <if test="query.month != null">
-                and date.month_ = #{query.month}
+            <if test="query.dateTo != null">
+                and date.date_ <![CDATA[<=]]> #{query.dateTo}
             </if>
         </trim>
         group by date.date_
         order by date.date_
+    </select>
+
+    <select id="queryTotalPages" resultMap="TotalPagesResultMap">
+        select coalesce(sum(view_count_), 0) as view_count_
+        from mf_edw_page_fact
+        <where>
+            <if test="query.tenantId != null">
+                and tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and store_key_ = #{query.storeId}
+            </if>
+            <if test="query.browserId != null">
+                and browser_key_ = #{query.browserId}
+            </if>
+            <if test="query.date != null">
+                and date_key_ = #{query.date}
+            </if>
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date_key_
+            </if>
+            <if test="query.dateTo != null">
+                and date_key_ <![CDATA[<=]]> #{query.dateTo}
+            </if>
+        </where>
     </select>
 </mapper>
