@@ -56,7 +56,6 @@ public class EdwSalesFactEventStreams {
         factKey.setTenantKey(order.getTenantId());
         factKey.setStoreKey(order.getStoreId());
         factKey.setCustomerKey(order.getCustomerId());
-        factKey.setStoreKey(order.getStoreId());
         factKey.setProductKey(item.getProductId());
         factKey.setVariantKey(item.getVariantId());
         factKey.setDateKey(this.dateDimensionManager.createDateDimensionKey(order.getPaidTime()));
