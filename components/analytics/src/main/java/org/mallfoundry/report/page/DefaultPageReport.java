@@ -16,21 +16,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.report.page.repository.mybatis;
-
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.mallfoundry.report.page.MonthlyPage;
-import org.mallfoundry.report.page.MonthlyPageQuery;
-import org.mallfoundry.report.page.MonthlyPageRepository;
-import org.springframework.stereotype.Repository;
+package org.mallfoundry.report.page;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface MybatisMonthlyPageRepository extends MonthlyPageRepository {
+public class DefaultPageReport implements PageReport {
+
+    private final PageReportRepository pageReportRepository;
+
+    public DefaultPageReport(PageReportRepository pageReportRepository) {
+        this.pageReportRepository = pageReportRepository;
+    }
 
     @Override
-    List<MonthlyPage> findAll(@Param("query") MonthlyPageQuery query);
+    public PageQuery createPageQuery() {
+        return new DefaultPageQuery();
+    }
+
+    @Override
+    public List<DailyPage> queryDailyPages(PageQuery query) {
+        return this.pageReportRepository.queryDailyPages(query);
+    }
+
+    @Override
+    public TotalPages queryTotalPages(PageQuery query) {
+        return this.pageReportRepository.queryTotalPages(query);
+    }
 }

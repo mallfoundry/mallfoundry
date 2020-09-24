@@ -18,23 +18,11 @@
 
 package org.mallfoundry.report.page;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-public class DefaultMonthlyPageReport implements MonthlyPageReport {
-
-    private final MonthlyPageRepository monthlyPageRepository;
-
-    public DefaultMonthlyPageReport(MonthlyPageRepository monthlyPageRepository) {
-        this.monthlyPageRepository = monthlyPageRepository;
-    }
-
-    @Override
-    public MonthlyPageQuery createMonthlyPageQuery() {
-        return new DefaultMonthlyPageQuery();
-    }
-
-    @Override
-    public List<MonthlyPage> queryMonthlyPages(MonthlyPageQuery query) {
-        return this.monthlyPageRepository.findAll(query);
-    }
+@Getter
+@Setter
+public class DefaultTotalPages implements TotalPages {
+    private long viewCount;
 }

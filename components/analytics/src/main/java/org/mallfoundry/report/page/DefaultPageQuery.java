@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultMonthlyPageQuery implements MonthlyPageQuery {
+public class DefaultPageQuery implements PageQuery {
 
     private String tenantId;
 
@@ -31,9 +31,11 @@ public class DefaultMonthlyPageQuery implements MonthlyPageQuery {
 
     private String browserId;
 
-    private Short year;
+    private Integer date;
 
-    private Byte month;
+    private Integer dateFrom;
+
+    private Integer dateTo;
 
     @Override
     public Builder toBuilder() {
@@ -43,9 +45,9 @@ public class DefaultMonthlyPageQuery implements MonthlyPageQuery {
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final DefaultMonthlyPageQuery query;
+        private final DefaultPageQuery query;
 
-        protected BuilderSupport(DefaultMonthlyPageQuery query) {
+        protected BuilderSupport(DefaultPageQuery query) {
             this.query = query;
         }
 
@@ -68,19 +70,25 @@ public class DefaultMonthlyPageQuery implements MonthlyPageQuery {
         }
 
         @Override
-        public Builder year(Short year) {
-            this.query.setYear(year);
+        public Builder date(Integer date) {
+            this.query.setDate(date);
             return this;
         }
 
         @Override
-        public Builder month(Byte month) {
-            this.query.setMonth(month);
+        public Builder dateFrom(Integer dateFrom) {
+            this.query.setDateFrom(dateFrom);
             return this;
         }
 
         @Override
-        public MonthlyPageQuery build() {
+        public Builder dateTo(Integer dateTo) {
+            this.query.setDateTo(dateTo);
+            return this;
+        }
+
+        @Override
+        public PageQuery build() {
             return this.query;
         }
     }

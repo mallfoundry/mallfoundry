@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultMonthlyPage implements MonthlyPage {
+public class DefaultDailyPage implements DailyPage {
 
     private String date;
 

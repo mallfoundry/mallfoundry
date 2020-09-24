@@ -20,6 +20,9 @@ package org.mallfoundry.report.page;
 
 import java.util.List;
 
-public interface MonthlyPageRepository {
-    List<MonthlyPage> findAll(MonthlyPageQuery query);
+public interface PageReportRepository {
+
+    List<DailyPage> queryDailyPages(PageQuery query);
+
+    TotalPages queryTotalPages(PageQuery query);
 }
