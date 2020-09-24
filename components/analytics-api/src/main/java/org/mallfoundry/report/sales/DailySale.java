@@ -18,11 +18,13 @@
 
 package org.mallfoundry.report.sales;
 
-import java.util.List;
+import java.math.BigDecimal;
 
-public interface MonthlySaleReport {
+public interface DailySale {
 
-    MonthlySaleQuery createMonthlySaleQuery();
+    String getDate();
 
-    List<MonthlySale> queryMonthlySales(MonthlySaleQuery query);
+    int getQuantity();
+
+    BigDecimal getAmount();
 }
