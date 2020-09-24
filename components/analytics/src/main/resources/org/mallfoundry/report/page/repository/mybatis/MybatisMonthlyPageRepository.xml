@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (C) 2019-2020 the original author or authors.
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.report.page.repository.mybatis.MybatisMonthlyPageRepository">
+
+    <resultMap id="MonthlyPageResultMap" type="org.mallfoundry.report.page.DefaultMonthlyPage">
+        <id property="date" column="date_"/>
+        <result property="viewCount" column="view_count_"/>
+        <result property="amount" column="amount_"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="MonthlyPageResultMap">
+        select date.date_ as date_,
+        coalesce(sum(page.view_count_), 0) as view_count_
+        from mf_edw_date_dimension date
+        left join (
+        select page.date_key_,
+        page.view_count_
+        from mf_edw_page_fact page
+        <where>
+            <if test="query.tenantId != null">
+                and page.tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and page.store_key_ = #{query.storeId}
+            </if>
+            <if test="query.browserId != null">
+                and page.browser_key_ = #{query.browserId}
+            </if>
+        </where>
+        ) page on (date.key_ = page.date_key_)
+        where
+        <trim prefixOverrides="and">
+            <if test="query.year != null">
+                and date.year_ = #{query.year}
+            </if>
+            <if test="query.month != null">
+                and date.month_ = #{query.month}
+            </if>
+        </trim>
+        group by date.date_
+        order by date.date_
+    </select>
+</mapper>

@@ -16,24 +16,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.analytics.store.repository.mybatis;
+package org.mallfoundry.report.sales.repository.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.mallfoundry.analytics.store.StoreTotalOrderQuantity;
-import org.mallfoundry.analytics.store.StoreTotalOrderQuantityRepository;
+import org.mallfoundry.report.sales.MonthlySale;
+import org.mallfoundry.report.sales.MonthlySaleQuery;
+import org.mallfoundry.report.sales.MonthlySaleRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-@Mapper
 @Repository
-public interface MybatisStoreTotalOrderQuantityRepository extends StoreTotalOrderQuantityRepository {
-
-    StoreTotalOrderQuantity selectByStoreId(@Param("storeId") String storeId);
+@Mapper
+public interface MybatisMonthlySaleRepository extends MonthlySaleRepository {
 
     @Override
-    default Optional<StoreTotalOrderQuantity> findByStoreId(String storeId) {
-        return Optional.ofNullable(this.selectByStoreId(storeId));
-    }
+    List<MonthlySale> findAll(@Param("query") MonthlySaleQuery query);
 }
