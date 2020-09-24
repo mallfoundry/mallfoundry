@@ -18,7 +18,7 @@
 
 package org.mallfoundry.report.page;
 
-public interface MonthlyPage {
+public interface DailyPage {
 
     String getDate();
 
