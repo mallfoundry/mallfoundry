@@ -16,21 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.report.sales.repository.mybatis;
+package org.mallfoundry.report.sales;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.mallfoundry.report.sales.MonthlySale;
-import org.mallfoundry.report.sales.MonthlySaleQuery;
-import org.mallfoundry.report.sales.MonthlySaleRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
+import java.math.BigDecimal;
 
-@Repository
-@Mapper
-public interface MybatisMonthlySaleRepository extends MonthlySaleRepository {
+@Getter
+@Setter
+public class DefaultDailySale implements DailySale {
 
-    @Override
-    List<MonthlySale> findAll(@Param("query") MonthlySaleQuery query);
+    private String date;
+
+    private int quantity;
+
+    private BigDecimal amount;
 }

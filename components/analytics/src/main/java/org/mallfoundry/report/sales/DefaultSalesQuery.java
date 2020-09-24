@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DefaultMonthlySaleQuery implements MonthlySaleQuery {
+public class DefaultSalesQuery implements SalesQuery {
 
     private String tenantId;
 
@@ -35,6 +35,12 @@ public class DefaultMonthlySaleQuery implements MonthlySaleQuery {
 
     private Byte month;
 
+    private Integer date;
+
+    private Integer dateFrom;
+
+    private Integer dateTo;
+
     @Override
     public Builder toBuilder() {
         return new BuilderSupport(this) {
@@ -43,9 +49,9 @@ public class DefaultMonthlySaleQuery implements MonthlySaleQuery {
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final DefaultMonthlySaleQuery query;
+        private final DefaultSalesQuery query;
 
-        protected BuilderSupport(DefaultMonthlySaleQuery query) {
+        protected BuilderSupport(DefaultSalesQuery query) {
             this.query = query;
         }
 
@@ -80,7 +86,25 @@ public class DefaultMonthlySaleQuery implements MonthlySaleQuery {
         }
 
         @Override
-        public MonthlySaleQuery build() {
+        public Builder date(Integer date) {
+            this.query.setDate(date);
+            return this;
+        }
+
+        @Override
+        public Builder dateFrom(Integer dateFrom) {
+            this.query.setDateFrom(dateFrom);
+            return this;
+        }
+
+        @Override
+        public Builder dateTo(Integer dateTo) {
+            this.query.setDateTo(dateTo);
+            return this;
+        }
+
+        @Override
+        public SalesQuery build() {
             return this.query;
         }
     }

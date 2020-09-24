@@ -18,8 +18,16 @@
 
 package org.mallfoundry.report.sales;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface MonthlySaleRepository {
-    List<MonthlySale> findAll(MonthlySaleQuery query);
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+public class DefaultTotalSales implements TotalSales {
+
+    private int quantity;
+
+    private BigDecimal amount;
 }
