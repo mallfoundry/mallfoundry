@@ -31,6 +31,10 @@ public class DefaultPageQuery implements PageQuery {
 
     private String browserId;
 
+    private Short year;
+
+    private Byte month;
+
     private Integer date;
 
     private Integer dateFrom;
@@ -66,6 +70,18 @@ public class DefaultPageQuery implements PageQuery {
         @Override
         public Builder browserId(String browserId) {
             this.query.setBrowserId(browserId);
+            return this;
+        }
+
+        @Override
+        public Builder year(Short year) {
+            this.query.setYear(year);
+            return this;
+        }
+
+        @Override
+        public Builder month(Byte month) {
+            this.query.setMonth(month);
             return this;
         }
 

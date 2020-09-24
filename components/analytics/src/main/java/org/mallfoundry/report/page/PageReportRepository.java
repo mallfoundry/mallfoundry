@@ -24,5 +24,7 @@ public interface PageReportRepository {
 
     List<DailyPage> queryDailyPages(PageQuery query);
 
+    List<MonthlyPage> queryMonthlyPages(PageQuery query);
+
     TotalPages queryTotalPages(PageQuery query);
 }

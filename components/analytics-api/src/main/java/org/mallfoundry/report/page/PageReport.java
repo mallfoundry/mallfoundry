@@ -26,5 +26,7 @@ public interface PageReport {
 
     List<DailyPage> queryDailyPages(PageQuery query);
 
+    List<MonthlyPage> queryMonthlyPages(PageQuery query);
+
     TotalPages queryTotalPages(PageQuery query);
 }

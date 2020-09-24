@@ -19,6 +19,7 @@
 package org.mallfoundry.rest.report.page;
 
 import org.mallfoundry.report.page.DailyPage;
+import org.mallfoundry.report.page.MonthlyPage;
 import org.mallfoundry.report.page.PageReport;
 import org.mallfoundry.report.page.TotalPages;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,13 +40,32 @@ public class PageReportV1 {
     }
 
     @GetMapping("/daily-pages")
-    public List<DailyPage> queryDailyPages(@RequestParam(name = "date_from") Integer dateFrom,
-                                           @RequestParam(name = "date_to") Integer dateTo,
+    public List<DailyPage> queryDailyPages(@RequestParam(required = false) Short year,
+                                           @RequestParam(required = false) Byte month,
+                                           @RequestParam(required = false, name = "date_from") Integer dateFrom,
+                                           @RequestParam(required = false, name = "date_to") Integer dateTo,
                                            @RequestParam(required = false, name = "tenant_id") String tenantId,
                                            @RequestParam(required = false, name = "store_id") String storeId,
                                            @RequestParam(required = false, name = "browser_id") String browserId) {
         return this.pageReport.queryDailyPages(
                 this.pageReport.createPageQuery().toBuilder()
+                        .year(year).month(month)
+                        .dateFrom(dateFrom).dateTo(dateTo)
+                        .tenantId(tenantId).storeId(storeId).browserId(browserId)
+                        .build());
+    }
+
+    @GetMapping("/monthly-pages")
+    public List<MonthlyPage> queryMonthlyPages(@RequestParam(required = false) Short year,
+                                               @RequestParam(required = false) Byte month,
+                                               @RequestParam(required = false, name = "date_from") Integer dateFrom,
+                                               @RequestParam(required = false, name = "date_to") Integer dateTo,
+                                               @RequestParam(required = false, name = "tenant_id") String tenantId,
+                                               @RequestParam(required = false, name = "store_id") String storeId,
+                                               @RequestParam(required = false, name = "browser_id") String browserId) {
+        return this.pageReport.queryMonthlyPages(
+                this.pageReport.createPageQuery().toBuilder()
+                        .year(year).month(month)
                         .dateFrom(dateFrom).dateTo(dateTo)
                         .tenantId(tenantId).storeId(storeId).browserId(browserId)
                         .build());

@@ -21,6 +21,7 @@ package org.mallfoundry.report.page.repository.mybatis;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.mallfoundry.report.page.DailyPage;
+import org.mallfoundry.report.page.MonthlyPage;
 import org.mallfoundry.report.page.PageQuery;
 import org.mallfoundry.report.page.PageReportRepository;
 import org.mallfoundry.report.page.TotalPages;
@@ -34,6 +35,9 @@ public interface MybatisPageReportRepository extends PageReportRepository {
 
     @Override
     List<DailyPage> queryDailyPages(@Param("query") PageQuery query);
+
+    @Override
+    List<MonthlyPage> queryMonthlyPages(@Param("query") PageQuery query);
 
     @Override
     TotalPages queryTotalPages(@Param("query") PageQuery query);

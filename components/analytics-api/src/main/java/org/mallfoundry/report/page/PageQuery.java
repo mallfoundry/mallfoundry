@@ -28,6 +28,10 @@ public interface PageQuery extends ObjectBuilder.ToBuilder<PageQuery.Builder> {
 
     String getBrowserId();
 
+    Short getYear();
+
+    Byte getMonth();
+
     Integer getDate();
 
     Integer getDateFrom();
@@ -41,6 +45,10 @@ public interface PageQuery extends ObjectBuilder.ToBuilder<PageQuery.Builder> {
         Builder storeId(String storeId);
 
         Builder browserId(String browserId);
+
+        Builder year(Short year);
+
+        Builder month(Byte month);
 
         Builder date(Integer date);
 

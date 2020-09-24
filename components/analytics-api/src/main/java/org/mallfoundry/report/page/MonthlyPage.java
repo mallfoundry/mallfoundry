@@ -18,33 +18,11 @@
 
 package org.mallfoundry.report.page;
 
-import java.util.List;
+public interface MonthlyPage {
 
-public class DefaultPageReport implements PageReport {
+    String getYearMonth();
 
-    private final PageReportRepository pageReportRepository;
+    String getMonth();
 
-    public DefaultPageReport(PageReportRepository pageReportRepository) {
-        this.pageReportRepository = pageReportRepository;
-    }
-
-    @Override
-    public PageQuery createPageQuery() {
-        return new DefaultPageQuery();
-    }
-
-    @Override
-    public List<DailyPage> queryDailyPages(PageQuery query) {
-        return this.pageReportRepository.queryDailyPages(query);
-    }
-
-    @Override
-    public List<MonthlyPage> queryMonthlyPages(PageQuery query) {
-        return this.pageReportRepository.queryMonthlyPages(query);
-    }
-
-    @Override
-    public TotalPages queryTotalPages(PageQuery query) {
-        return this.pageReportRepository.queryTotalPages(query);
-    }
+    long getViewCount();
 }

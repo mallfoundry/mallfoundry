@@ -25,7 +25,12 @@
     <resultMap id="DailyPageResultMap" type="org.mallfoundry.report.page.DefaultDailyPage">
         <id property="date" column="date_"/>
         <result property="viewCount" column="view_count_"/>
-        <result property="amount" column="amount_"/>
+    </resultMap>
+
+    <resultMap id="MonthlyPageResultMap" type="org.mallfoundry.report.page.DefaultMonthlyPage">
+        <id property="yearMonth" column="year_month_"/>
+        <id property="month" column="month_"/>
+        <result property="viewCount" column="view_count_"/>
     </resultMap>
 
     <resultMap id="TotalPagesResultMap" type="org.mallfoundry.report.page.DefaultTotalPages">
@@ -63,6 +68,49 @@
         </trim>
         group by date.date_
         order by date.date_
+    </select>
+
+    <select id="queryMonthlyPages" resultMap="MonthlyPageResultMap">
+        select date.year_month_ as year_month_,
+        date.month_ as month_,
+        coalesce(sum(page.view_count_), 0) as view_count_
+        from mf_edw_date_dimension date
+        left join (
+        select page.date_key_,
+        page.view_count_
+        from mf_edw_page_fact page
+        <where>
+            <if test="query.tenantId != null">
+                and page.tenant_key_ = #{query.tenantId}
+            </if>
+            <if test="query.storeId != null">
+                and page.store_key_ = #{query.storeId}
+            </if>
+            <if test="query.browserId != null">
+                and page.browser_key_ = #{query.browserId}
+            </if>
+        </where>
+        ) page on (date.key_ = page.date_key_)
+        where
+        <trim prefixOverrides="and">
+            <if test="query.year != null">
+                and date.year_ = #{query.year}
+            </if>
+            <if test="query.month != null">
+                and date.month_ = #{query.month}
+            </if>
+            <if test="query.date != null">
+                and date.date_ = #{query.date}
+            </if>
+            <if test="query.dateFrom != null">
+                and #{query.dateFrom} <![CDATA[<=]]> date.date_
+            </if>
+            <if test="query.dateTo != null">
+                and date.date_ <![CDATA[<=]]> #{query.dateTo}
+            </if>
+        </trim>
+        group by date.year_month_, date.month_
+        order by date.year_month_
     </select>
 
     <select id="queryTotalPages" resultMap="TotalPagesResultMap">
