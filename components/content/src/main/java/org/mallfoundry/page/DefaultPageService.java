@@ -21,6 +21,8 @@ package org.mallfoundry.page;
 import lombok.Setter;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.security.SubjectHolder;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
@@ -30,9 +32,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
-public class DefaultPageService implements PageService, PageProcessorInvoker {
+public class DefaultPageService implements PageService, ApplicationEventPublisherAware, PageProcessorInvoker {
+
+    private ApplicationEventPublisher eventPublisher;
 
     private final PageViewRepository pageViewRepository;
 
@@ -41,6 +44,11 @@ public class DefaultPageService implements PageService, PageProcessorInvoker {
 
     public DefaultPageService(PageViewRepository pageViewRepository) {
         this.pageViewRepository = pageViewRepository;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -65,7 +73,8 @@ public class DefaultPageService implements PageService, PageProcessorInvoker {
                 .map(Date::from)
                 .orElseThrow();
         var query = this.createPageViewQuery().toBuilder()
-                .pageId(pageView.getPageId()).pageTypes(Set.of(pageView.getPageType()))
+                .pageId(pageView.getPageId())
+//                .pageTypes(Set.of(pageView.getPageType()))
                 .browserId(pageView.getBrowserId())
                 .browserIp(pageView.getBrowserIp())
                 .browsingTimeFrom(latestBrowsingTime)
@@ -86,7 +95,9 @@ public class DefaultPageService implements PageService, PageProcessorInvoker {
             return latestViewPage;
         }
         pageView = this.invokePreProcessAfterViewPage(pageView);
-        return this.pageViewRepository.save(pageView);
+        pageView = this.pageViewRepository.save(pageView);
+        this.eventPublisher.publishEvent(new ImmutablePageViewedEvent(pageView));
+        return pageView;
     }
 
     @Override
