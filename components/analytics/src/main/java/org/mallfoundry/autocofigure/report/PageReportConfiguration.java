@@ -18,8 +18,8 @@
 
 package org.mallfoundry.autocofigure.report;
 
-import org.mallfoundry.report.page.DefaultMonthlyPageReport;
-import org.mallfoundry.report.page.MonthlyPageRepository;
+import org.mallfoundry.report.page.DefaultPageReport;
+import org.mallfoundry.report.page.PageReportRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 public class PageReportConfiguration {
 
     @Bean
-    public DefaultMonthlyPageReport defaultMonthlyPageReport(MonthlyPageRepository monthlyPageRepository) {
-        return new DefaultMonthlyPageReport(monthlyPageRepository);
+    public DefaultPageReport defaultPageReport(PageReportRepository totalPageRepository) {
+        return new DefaultPageReport(totalPageRepository);
     }
 }

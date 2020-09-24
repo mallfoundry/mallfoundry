@@ -18,8 +18,8 @@
 
 package org.mallfoundry.autocofigure.report;
 
-import org.mallfoundry.report.sales.DefaultMonthlySaleReport;
-import org.mallfoundry.report.sales.MonthlySaleRepository;
+import org.mallfoundry.report.sales.DefaultSalesReport;
+import org.mallfoundry.report.sales.SalesReportRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 public class SalesReportConfiguration {
 
     @Bean
-    public DefaultMonthlySaleReport defaultMonthlySaleReport(MonthlySaleRepository monthlySaleRepository) {
-        return new DefaultMonthlySaleReport(monthlySaleRepository);
+    public DefaultSalesReport defaultSalesReport(SalesReportRepository totalSalesRepository) {
+        return new DefaultSalesReport(totalSalesRepository);
     }
 }
