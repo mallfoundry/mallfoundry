@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/v1/reports")
 @RestController
+@RequestMapping("/v1/reports")
 public class MonthlySaleReportV1 {
 
     private final MonthlySaleReport monthlySaleReport;
@@ -48,5 +48,4 @@ public class MonthlySaleReportV1 {
                         .tenantId(tenantId).storeId(storeId).customerId(customerId)
                         .build());
     }
-
 }
