@@ -16,21 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.edw;
+package org.mallfoundry.edw.order;
 
-import org.mallfoundry.autoconfigure.edw.order.EdwOrderConfiguration;
-import org.mallfoundry.autoconfigure.edw.page.EdwPageConfiguration;
-import org.mallfoundry.autoconfigure.edw.sales.EdwSalesConfiguration;
-import org.mallfoundry.autoconfigure.edw.time.EdwTimeConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import java.io.Serializable;
 
-@Configuration
-@Import({
-        EdwOrderConfiguration.class,
-        EdwTimeConfiguration.class,
-        EdwPageConfiguration.class,
-        EdwSalesConfiguration.class
-})
-public class EdwAutoConfiguration {
+public interface OrderFactKey extends Serializable {
+
+    String getKey();
+
+    void setKey(String key);
+
+    String getTenantKey();
+
+    void setTenantKey(String tenantKey);
+
+    String getStoreKey();
+
+    void setStoreKey(String storeKey);
+
+    String getCustomerKey();
+
+    void setCustomerKey(String customerKey);
+
+    Integer getPlacedDateKey();
+
+    void setPlacedDateKey(Integer placedDateKey);
+
+    Integer getPlacedTimeKey();
+
+    void setPlacedTimeKey(Integer placedTimeKey);
+
+    Integer getPaidDateKey();
+
+    void setPaidDateKey(Integer paidDateKey);
+
+    Integer getPaidTimeKey();
+
+    void setPaidTimeKey(Integer paidTimeKey);
 }

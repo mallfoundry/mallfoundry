@@ -16,21 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.edw;
+package org.mallfoundry.autoconfigure.edw.order;
 
-import org.mallfoundry.autoconfigure.edw.order.EdwOrderConfiguration;
-import org.mallfoundry.autoconfigure.edw.page.EdwPageConfiguration;
-import org.mallfoundry.autoconfigure.edw.sales.EdwSalesConfiguration;
-import org.mallfoundry.autoconfigure.edw.time.EdwTimeConfiguration;
+import org.mallfoundry.edw.order.DefaultOrderFactManager;
+import org.mallfoundry.edw.order.OrderFactRepository;
+import org.mallfoundry.edw.order.jpa.DelegatingJpaOrderFactRepository;
+import org.mallfoundry.edw.order.jpa.JpaOrderFactRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({
-        EdwOrderConfiguration.class,
-        EdwTimeConfiguration.class,
-        EdwPageConfiguration.class,
-        EdwSalesConfiguration.class
-})
-public class EdwAutoConfiguration {
+public class EdwOrderConfiguration {
+
+    @Bean
+    public DelegatingJpaOrderFactRepository delegatingJpaOrderFactRepository(JpaOrderFactRepository repository) {
+        return new DelegatingJpaOrderFactRepository(repository);
+    }
+
+    @Bean
+    public DefaultOrderFactManager defaultOrderFactManager(OrderFactRepository orderFactRepository) {
+        return new DefaultOrderFactManager(orderFactRepository);
+    }
 }

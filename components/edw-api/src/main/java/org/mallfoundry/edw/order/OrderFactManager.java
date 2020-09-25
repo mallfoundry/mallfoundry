@@ -16,21 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.edw;
+package org.mallfoundry.edw.order;
 
-import org.mallfoundry.autoconfigure.edw.order.EdwOrderConfiguration;
-import org.mallfoundry.autoconfigure.edw.page.EdwPageConfiguration;
-import org.mallfoundry.autoconfigure.edw.sales.EdwSalesConfiguration;
-import org.mallfoundry.autoconfigure.edw.time.EdwTimeConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import java.util.List;
 
-@Configuration
-@Import({
-        EdwOrderConfiguration.class,
-        EdwTimeConfiguration.class,
-        EdwPageConfiguration.class,
-        EdwSalesConfiguration.class
-})
-public class EdwAutoConfiguration {
+public interface OrderFactManager {
+
+    OrderFactKey createOrderFactKey();
+
+    OrderFact createOrderFact(OrderFactKey factKey);
+
+    List<OrderFact> saveOrderFacts(List<OrderFact> facts);
 }
