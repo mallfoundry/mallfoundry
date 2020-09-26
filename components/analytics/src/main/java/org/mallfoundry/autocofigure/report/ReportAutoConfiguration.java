@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Import({
+        OrderReportConfiguration.class,
         PageReportConfiguration.class,
         SalesReportConfiguration.class,
 })
