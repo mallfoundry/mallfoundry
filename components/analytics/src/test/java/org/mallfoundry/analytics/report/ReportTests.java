@@ -19,8 +19,6 @@
 package org.mallfoundry.analytics.report;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.analytics.report.ReportService;
-import org.mallfoundry.analytics.report.ReportStatementType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

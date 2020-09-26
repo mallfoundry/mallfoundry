@@ -18,8 +18,6 @@
 
 package org.mallfoundry.analytics.report;
 
-import org.mallfoundry.analytics.report.Report;
-
 import java.util.Optional;
 
 public interface ReportRepository {

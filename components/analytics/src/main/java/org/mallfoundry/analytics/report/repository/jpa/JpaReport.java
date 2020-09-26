@@ -22,8 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.analytics.report.Report;
-import org.mallfoundry.analytics.report.ReportSupport;
 import org.mallfoundry.analytics.report.ReportStatementType;
+import org.mallfoundry.analytics.report.ReportSupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;

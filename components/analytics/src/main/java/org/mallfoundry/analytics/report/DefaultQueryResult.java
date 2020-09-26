@@ -20,7 +20,6 @@ package org.mallfoundry.analytics.report;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.analytics.report.QueryResult;
 import org.mallfoundry.analytics.schema.ObjectField;
 import org.mallfoundry.data.PageList;
 
