@@ -56,6 +56,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-edw</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-test</artifactId>
             <scope>test</scope>
         </dependency>
