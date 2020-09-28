@@ -18,6 +18,7 @@
 
 package org.mallfoundry.autoconfigure.edw;
 
+import org.mallfoundry.autoconfigure.edw.catalog.EdwProductConfiguration;
 import org.mallfoundry.autoconfigure.edw.order.EdwOrderConfiguration;
 import org.mallfoundry.autoconfigure.edw.page.EdwPageConfiguration;
 import org.mallfoundry.autoconfigure.edw.sales.EdwSalesConfiguration;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
+        EdwProductConfiguration.class,
         EdwOrderConfiguration.class,
         EdwTimeConfiguration.class,
         EdwPageConfiguration.class,
