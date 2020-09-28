@@ -20,6 +20,8 @@ package org.mallfoundry.edw.catalog;
 
 public interface ProductFact {
 
+    ProductFactKey toKey();
+
     String getTenantKey();
 
     String getStoreKey();
