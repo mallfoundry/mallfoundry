@@ -16,10 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.edw.catalog;
+package org.mallfoundry.edw.catalog.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.edw.catalog.ProductDimension;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
