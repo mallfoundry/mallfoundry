@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         OrderReportConfiguration.class,
         PageReportConfiguration.class,
+        ProductCountConfiguration.class,
+        ProductRatingConfiguration.class,
         SalesReportConfiguration.class,
 })
 @Configuration
