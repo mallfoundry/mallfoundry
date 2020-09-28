@@ -36,7 +36,7 @@
         <result property="averageRating" column="average_rating_"/>
     </resultMap>
 
-    <select id="queryTotalProductRatingCounts " resultMap="TotalProductRatingCountsResultMap">
+    <select id="queryTotalProductRatingCounts" resultMap="TotalProductRatingCountsResultMap">
         select sum(fact.five_rating_count_) as five_rating_count_,
         sum(fact.four_rating_count_) as four_rating_count_,
         sum(fact.three_rating_count_) as three_rating_count_,
