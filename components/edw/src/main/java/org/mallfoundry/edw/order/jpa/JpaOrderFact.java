@@ -63,10 +63,13 @@ public class JpaOrderFact extends OrderFactSupport {
     @Column(name = "paid_time_key_")
     private Integer paidTimeKey;
 
-    @Column(name = "total_price")
+    @Column(name = "total_price_")
     private BigDecimal totalPrice;
 
-    @Column(name = "total_quantity")
+    @Column(name = "total_amount_")
+    private BigDecimal totalAmount;
+
+    @Column(name = "total_quantity_")
     private int totalQuantity;
 
     public JpaOrderFact(OrderFactKey factKey) {
