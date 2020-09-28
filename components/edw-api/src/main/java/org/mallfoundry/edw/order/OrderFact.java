@@ -45,6 +45,10 @@ public interface OrderFact extends Serializable {
 
     void setTotalPrice(BigDecimal totalPrice);
 
+    BigDecimal getTotalAmount();
+
+    void setTotalAmount(BigDecimal totalAmount);
+
     int getTotalQuantity();
 
     void setTotalQuantity(int totalQuantity);
