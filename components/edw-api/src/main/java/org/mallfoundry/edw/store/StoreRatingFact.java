@@ -28,6 +28,8 @@ public interface StoreRatingFact {
 
     int getTimeKey();
 
+    int getProductReviewRating();
+
     int getProductPricingRating();
 
     int getCourierServiceRating();
