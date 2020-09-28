@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Import;
         ProductCountConfiguration.class,
         ProductRatingConfiguration.class,
         SalesReportConfiguration.class,
+        StoreReportConfiguration.class
 })
 @Configuration
 public class ReportAutoConfiguration {
