@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (C) 2019-2020 the original author or authors.
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mallfoundry.report.catalog.repository.mybatis.MybatisProductRatingReportRepository">
+
+    <resultMap id="TotalProductRatingCountsResultMap"
+               type="org.mallfoundry.report.catalog.DefaultTotalProductRatingCounts">
+        <result property="fiveRatingCount" column="five_rating_count_"/>
+        <result property="fourRatingCount" column="four_rating_count_"/>
+        <result property="threeRatingCount" column="three_rating_count_"/>
+        <result property="twoRatingCount" column="two_rating_count_"/>
+        <result property="oneRatingCount" column="one_rating_count_"/>
+    </resultMap>
+
+    <resultMap id="TotalProductRatingsResultMap"
+               type="org.mallfoundry.report.catalog.DefaultTotalProductRatings">
+        <result property="averageRating" column="average_rating_"/>
+    </resultMap>
+
+    <select id="queryTotalProductRatingCounts " resultMap="TotalProductRatingCountsResultMap">
+        select sum(fact.five_rating_count_) as five_rating_count_,
+        sum(fact.four_rating_count_) as four_rating_count_,
+        sum(fact.three_rating_count_) as three_rating_count_,
+        sum(fact.two_rating_count_) as two_rating_count_,
+        sum(fact.one_rating_count_) as one_rating_count_
+        from (
+        select count(rating_) as five_rating_count_,
+        0 as four_rating_count_,
+        0 as three_rating_count_,
+        0 as two_rating_count_,
+        0 as one_rating_count_
+        from mf_edw_product_fact
+        where rating_ = 5
+        union all
+        select 0 as five_rating_count_,
+        count(rating_) as four_rating_count_,
+        0 as three_rating_count_,
+        0 as two_rating_count_,
+        0 as one_rating_count_
+        from mf_edw_product_fact
+        where 4 <![CDATA[<=]]> rating_
+        and rating_ <![CDATA[<]]> 5
+        union all
+        select 0 as five_rating_count_,
+        0 as four_rating_count_,
+        count(rating_) as three_rating_count_,
+        0 as two_rating_count_,
+        0 as one_rating_count_
+        from mf_edw_product_fact
+        where 3 <![CDATA[<=]]> rating_
+        and rating_ <![CDATA[<]]> 4
+        union all
+        select 0 as five_rating_count_,
+        0 as four_rating_count_,
+        0 as three_rating_count_,
+        count(rating_) as two_rating_count_,
+        0 as one_rating_count_
+        from mf_edw_product_fact
+        where 2 <![CDATA[<=]]> rating_
+        and rating_ <![CDATA[<]]> 3
+        union all
+        select 0 as five_rating_count_,
+        0 as four_rating_count_,
+        0 as three_rating_count_,
+        0 as two_rating_count_,
+        count(rating_) as one_rating_count_
+        from mf_edw_product_fact
+        where rating_ <![CDATA[<]]> 2
+        ) fact
+    </select>
+
+    <select id="queryTotalProductRatings" resultMap="TotalProductRatingsResultMap">
+        select coalesce(avg(rating_), 5) as average_rating_
+        from mf_edw_product_fact
+    </select>
+</mapper>
