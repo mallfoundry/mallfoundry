@@ -44,6 +44,6 @@
         WHERE fact.store_key_ = 'mi') fact
         on (product.key_ = fact.product_key_)
         group by product.key_, product.name_, product.image_url_
-        order by total_amount_
+        order by total_amount_ desc
     </select>
 </mapper>
