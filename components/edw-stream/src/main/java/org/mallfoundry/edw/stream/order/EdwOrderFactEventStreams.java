@@ -61,6 +61,7 @@ public class EdwOrderFactEventStreams {
         var fact = this.orderFactManager.createOrderFact(factKey);
         fact.setTotalPrice(order.getTotalPrice());
         fact.setTotalQuantity(order.getTotalQuantity());
+        fact.setTotalAmount(order.getTotalAmount());
         return fact;
     }
 
