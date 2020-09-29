@@ -46,10 +46,8 @@ public class EdwPageFactEventStreams {
 
     private PageFact createPageFact(PageView view) {
         var factKey = this.pageFactManager.createPageFactKey();
-//        factKey.setTenantKey(view.getTenantId());
-//        factKey.setStoreKey(view.getStoreId());
-        factKey.setTenantKey("0");
-        factKey.setStoreKey("mi");
+        factKey.setTenantKey(view.getTenantId());
+        factKey.setStoreKey(view.getStoreId());
         factKey.setBrowserKey(view.getBrowserId());
         factKey.setBrowserIpKey(view.getBrowserIp());
         factKey.setPageKey(view.getPageId());
@@ -65,5 +63,4 @@ public class EdwPageFactEventStreams {
         var view = event.getPageView();
         this.pageFactManager.savePageFact(this.createPageFact(view));
     }
-
 }
