@@ -18,11 +18,12 @@
 
 package org.mallfoundry.page;
 
+import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
 
-public interface PageView extends ObjectBuilder.ToBuilder<PageView.Builder> {
+public interface PageView extends StoreOwnership, ObjectBuilder.ToBuilder<PageView.Builder> {
 
     String getId();
 
