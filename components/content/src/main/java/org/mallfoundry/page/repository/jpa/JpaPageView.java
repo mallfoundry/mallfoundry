@@ -49,6 +49,14 @@ public class JpaPageView extends PageViewSupport {
     private String id;
 
     @NotBlank
+    @Column(name = "tenant_id_")
+    private String tenantId;
+
+    @NotBlank
+    @Column(name = "store_id_")
+    private String storeId;
+
+    @NotBlank
     @Column(name = "page_id_")
     private String pageId;
 
