@@ -27,11 +27,29 @@ public interface BlobResource extends ObjectBuilder.ToBuilder<BlobResource.Build
 
     String getBucketId();
 
+    void setBucketId(String bucketId);
+
     String getPath();
+
+    void setPath(String path);
 
     String getName();
 
+    void setName(String name);
+
+    String getUrl();
+
+    void setUrl(String url);
+
+    long getSize();
+
+    BlobType getType();
+
+    void setType(BlobType type);
+
     String getContentType();
+
+    void setContentType(String contentType);
 
     boolean isReadable();
 
@@ -47,7 +65,9 @@ public interface BlobResource extends ObjectBuilder.ToBuilder<BlobResource.Build
 
         Builder name(String name);
 
-        Builder contentType(String name);
+        Builder type(BlobType type);
+
+        Builder contentType(String contentType);
 
         Builder inputStream(InputStream inputStream);
 
