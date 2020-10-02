@@ -20,10 +20,14 @@ package org.mallfoundry.storage;
 
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
-public interface BlobResource extends ObjectBuilder.ToBuilder<BlobResource.Builder> {
+public interface BlobResource extends Closeable, ObjectBuilder.ToBuilder<BlobResource.Builder> {
+
+    BlobPath toPath();
 
     String getBucketId();
 
@@ -43,6 +47,8 @@ public interface BlobResource extends ObjectBuilder.ToBuilder<BlobResource.Build
 
     long getSize();
 
+    void setSize(long size);
+
     BlobType getType();
 
     void setType(BlobType type);
@@ -53,9 +59,9 @@ public interface BlobResource extends ObjectBuilder.ToBuilder<BlobResource.Build
 
     boolean isReadable();
 
-    InputStream getInputStream();
+    InputStream getInputStream() throws IOException;
 
-    File toFile();
+    File toFile() throws IOException;
 
     interface Builder extends ObjectBuilder<BlobResource> {
 
