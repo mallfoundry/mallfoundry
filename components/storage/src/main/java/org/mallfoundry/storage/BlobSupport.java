@@ -124,6 +124,12 @@ public abstract class BlobSupport implements MutableBlob {
         }
 
         @Override
+        public Builder path(String path) {
+            this.blob.setPath(path);
+            return this;
+        }
+
+        @Override
         public Builder contentType(String contentType) {
             this.blob.setContentType(contentType);
             return this;
