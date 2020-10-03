@@ -27,11 +27,21 @@ public abstract class StorageMessages {
 
     private static final MessageKeys BUCKET_KEYS = Messages.getKeys(org.mallfoundry.storage.Bucket.class);
 
+    private static final MessageKeys BLOB_KEYS = Messages.getKeys(org.mallfoundry.storage.Blob.class);
+
     private static final String BUCKET_NOT_FOUND_MESSAGE_CODE_KEY = BUCKET_KEYS.codeKey("notFound");
+
+    private static final String BLOB_NOT_FOUND_MESSAGE_CODE_KEY = BLOB_KEYS.codeKey("notFound");
 
     public static class Bucket {
         public static String notFound() {
             return MessageHolder.message(BUCKET_NOT_FOUND_MESSAGE_CODE_KEY);
+        }
+    }
+
+    public static class Blob {
+        public static String notFound() {
+            return MessageHolder.message(BLOB_NOT_FOUND_MESSAGE_CODE_KEY);
         }
     }
 }
