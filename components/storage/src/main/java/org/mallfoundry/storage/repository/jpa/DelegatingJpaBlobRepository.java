@@ -47,6 +47,11 @@ public class DelegatingJpaBlobRepository implements BlobRepository {
     }
 
     @Override
+    public Blob create(BlobId blobId) {
+        return new JpaBlob(blobId);
+    }
+
+    @Override
     public Blob save(Blob blob) {
         return this.repository.save(JpaBlob.of(blob));
     }

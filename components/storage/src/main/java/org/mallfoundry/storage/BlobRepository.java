@@ -28,6 +28,8 @@ public interface BlobRepository {
 
     Blob create(BlobPath path);
 
+    Blob create(BlobId blobId);
+
     Blob save(Blob blob);
 
     Optional<Blob> findById(BlobId blobId);
