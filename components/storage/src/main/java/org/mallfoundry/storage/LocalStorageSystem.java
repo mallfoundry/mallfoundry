@@ -24,30 +24,21 @@ import org.mallfoundry.util.PathUtils;
 import java.io.File;
 import java.io.IOException;
 
-public class LocalStorageSystem implements StorageSystem {
+public class LocalStorageSystem extends AbstractStorageSystem {
 
     private final String directory;
 
-    private final String baseUrl;
-
     public LocalStorageSystem(String directory, String baseUrl) {
+        super(baseUrl);
         this.directory = directory;
-        this.baseUrl = baseUrl;
     }
 
     @Override
-    public void storeBlob(Blob blob) throws IOException {
-        if (BlobType.FILE.equals(blob.getType())) {
-            String path = PathUtils.concat(blob.getBucketId(), blob.getPath());
-            File storeFile = new File(PathUtils.concat(this.directory, path));
+    public void store(BlobResource resource, String pathname) throws IOException {
+        if (BlobType.FILE.equals(resource.getType())) {
+            File storeFile = new File(PathUtils.concat(this.directory, pathname));
             FileUtils.touch(storeFile);
-            FileUtils.copyFile(blob.toFile(), storeFile);
-            blob.setUrl(this.getHttpUrl(path));
-            blob.setSize(storeFile.length());
+            FileUtils.copyFile(resource.toFile(), storeFile);
         }
-    }
-
-    private String getHttpUrl(String path) {
-        return this.baseUrl + path;
     }
 }
