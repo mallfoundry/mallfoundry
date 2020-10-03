@@ -23,11 +23,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobResource;
 import org.mallfoundry.storage.BlobType;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.StorageService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,25 +58,26 @@ public class StorageResourceV1 {
         return this.storageService.getBucket(this.storageService.createBucketId(bucketId));
     }
 
-    private Blob createBlob(Bucket bucket, String path, String name, MultipartFile file) throws IOException {
+    private BlobResource createBlobResource(String bucketId, String path, String name, MultipartFile file) throws IOException {
+        var resource = this.storageService.createBlobResource();
         if (Objects.isNull(file)) {
             var filename = Objects.isNull(name) ? FilenameUtils.getName(path) : name;
-            return bucket.createBlob(path).toBuilder().name(filename).build();
+            return resource.toBuilder().bucketId(bucketId).path(path).name(filename).build();
         }
         var filename = Objects.isNull(name) ? file.getOriginalFilename() : name;
-        return bucket.createBlob(path, file.getInputStream()).toBuilder()
-                .name(filename).contentType(file.getContentType()).build();
+        return resource.toBuilder()
+                .bucketId(bucketId).name(filename).path(path)
+                .inputStream(file.getInputStream())
+                .contentType(file.getContentType())
+                .build();
     }
 
     @PostMapping("/buckets/{bucket_id}/blobs")
-    public BlobResponse storeBlob(@PathVariable(name = "bucket_id") String bucketId,
-                                  @RequestParam String path,
-                                  @RequestParam(required = false) String name,
-                                  @RequestParam(required = false) MultipartFile file) throws IOException {
-        var bucket = this.storageService.createBucket(
-                this.storageService.createBucketId(bucketId));
-        var blob = this.createBlob(bucket, path, name, file);
-        return BlobResponse.of(this.storageService.storeBlob(blob));
+    public Blob storeBlob(@PathVariable(name = "bucket_id") String bucketId,
+                          @RequestParam String path,
+                          @RequestParam(required = false) String name,
+                          @RequestParam(required = false) MultipartFile file) throws IOException {
+        return this.storageService.storeBlob(this.createBlobResource(bucketId, path, name, file));
     }
 
     @GetMapping("/buckets/{bucket_id}/blobs")
@@ -92,6 +95,15 @@ public class StorageResourceV1 {
                                         .map(BlobType::valueOf).collect(Collectors.toUnmodifiableSet()))
                         .build())
                 .map(BlobResponse::of);
+    }
+
+    @PatchMapping("/buckets/{bucket_id}/blobs/{blob_id}")
+    public Blob updateBlob(@PathVariable(name = "bucket_id") String bucketId,
+                           @PathVariable(name = "blob_id") String blobId,
+                           @RequestBody BlobRequest request) {
+        var blob = this.storageService.createBlob(
+                this.storageService.createBlobId(bucketId, blobId));
+        return this.storageService.updateBlob(request.assignTo(blob));
     }
 
     @DeleteMapping("/buckets/{bucket_id}/blobs/{blob_id}")
