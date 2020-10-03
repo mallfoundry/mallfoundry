@@ -26,7 +26,6 @@ import org.mallfoundry.storage.acl.Owner;
 import org.mallfoundry.storage.acl.OwnerType;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -97,6 +96,11 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     }
 
     @Override
+    public BlobResource createBlobResource() {
+        return new FileBlobResource();
+    }
+
+    @Override
     public BlobId createBlobId(String bucketId, String blobId) {
         return new ImmutableBlobId(bucketId, blobId);
     }
@@ -104,6 +108,11 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
     @Override
     public BlobQuery createBlobQuery() {
         return new DefaultBlobQuery();
+    }
+
+    @Override
+    public Blob createBlob(BlobId blobId) {
+        return this.blobRepository.create(blobId);
     }
 
     @Override
@@ -130,42 +139,54 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
         if (Objects.isNull(parent)) {
             var blob = this.blobRepository.create(path);
             blob.makeDirectory();
-            return this.storeBlob(blob);
+            this.blobRepository.save(blob);
+            this.makeDirectories(path); // 递归创建父目录。
         }
         return parent;
     }
 
-    private Blob tryStoreBlob(Blob blob) {
-        try (blob) {
-            blob.moveTo(this.makeDirectories(blob.toPath()));
-            blob.create();
+    @Transactional
+    @Override
+    public Blob storeBlob(BlobResource resource) throws StorageException {
+        var bucket = this.requiredBucket(this.createBucketId(resource.getBucketId()));
+        var path = resource.toPath();
+        var blob = this.createBlob(path).toBuilder()
+                .name(resource.getName()).path(resource.getPath())
+                .contentType(resource.getContentType())
+                .build();
+        blob = this.invokePreProcessBeforeStoreBlob(bucket, blob);
+        blob.moveTo(this.makeDirectories(path));
+        blob.create();
+        try (resource) {
             if (BlobType.FILE.equals(blob.getType())) {
-                var sharedBlob = SharedBlob.of(blob);
-                if (this.fetchSharedBlob(sharedBlob)) {
-                    blob.setUrl(sharedBlob.getUrl());
-                    blob.setSize(sharedBlob.getSize());
-                } else {
-                    this.storageSystem.storeBlob(blob);
-                    sharedBlob.setUrl(blob.getUrl());
+                var sharedBlob = SharedBlob.of(resource);
+                if (!this.fetchSharedBlob(sharedBlob)) {
+                    resource.setPath(blob.getPath());
+                    this.storageSystem.store(resource);
+                    sharedBlob.setUrl(resource.getUrl());
+                    sharedBlob.setSize(resource.getSize());
                     this.sharedBlobRepository.save(sharedBlob);
                 }
+                blob.setUrl(sharedBlob.getUrl());
+                blob.setSize(sharedBlob.getSize());
             }
-            return this.blobRepository.save(blob);
-        } catch (IOException e) {
-            throw new BlobException(e);
+        } catch (Exception e) {
+            throw new StorageException(e);
         }
+        return this.blobRepository.save(blob);
+    }
+
+    private Blob requiredBlob(BlobId blobId) {
+        return this.blobRepository.findById(blobId)
+                .orElseThrow(() -> new BlobException(StorageMessages.Blob.notFound()));
     }
 
     @Transactional
     @Override
-    public Blob storeBlob(Blob blob) throws StorageException {
-        var bucket = this.requiredBucket(this.createBucketId(blob.getBucketId()));
-        blob = this.invokePreProcessBeforeStoreBlob(bucket, blob);
-        return this.tryStoreBlob(blob);
-    }
-
-    private Blob requiredBlob(BlobId blobId) {
-        return this.blobRepository.findById(blobId).orElseThrow();
+    public Blob updateBlob(Blob source) {
+        var blob = this.requiredBlob(source.toId());
+        blob.rename(source.getName());
+        return this.blobRepository.save(blob);
     }
 
     @Transactional
