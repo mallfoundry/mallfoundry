@@ -75,7 +75,7 @@ public interface BlobResource extends Closeable, ObjectBuilder.ToBuilder<BlobRes
 
         Builder contentType(String contentType);
 
-        Builder inputStream(InputStream inputStream);
+        Builder inputStream(InputStream inputStream) throws IOException;
 
         Builder file(File file);
     }
