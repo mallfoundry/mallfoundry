@@ -38,13 +38,19 @@ public interface StorageService {
 
     void deleteBucket(BucketId bucketId) throws BucketException;
 
+    BlobResource createBlobResource();
+
     BlobId createBlobId(String bucketId, String blobId);
 
     BlobQuery createBlobQuery();
 
-    Blob storeBlob(Blob blob) throws StorageException;
+    Blob createBlob(BlobId blobId);
+
+    Blob storeBlob(BlobResource resource) throws StorageException;
 
     SliceList<Blob> getBlobs(BlobQuery query);
+
+    Blob updateBlob(Blob blob);
 
     void deleteBlob(BlobId blobId);
 
