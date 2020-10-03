@@ -21,11 +21,9 @@ package org.mallfoundry.storage.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.Bucket;
 import org.mallfoundry.storage.BucketId;
 import org.mallfoundry.storage.BucketSupport;
-import org.mallfoundry.storage.ImmutableBlobPath;
 import org.mallfoundry.storage.acl.InternalOwner;
 import org.mallfoundry.storage.acl.Owner;
 import org.springframework.beans.BeanUtils;
@@ -35,9 +33,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Getter
 @Setter
@@ -66,23 +61,11 @@ public class JpaBucket extends BucketSupport {
     }
 
     public static JpaBucket of(Bucket bucket) {
+        if (bucket instanceof JpaBucket) {
+            return (JpaBucket) bucket;
+        }
         var target = new JpaBucket();
         BeanUtils.copyProperties(bucket, target);
         return target;
-    }
-
-    @Override
-    public Blob createBlob(String path, File file) {
-        return new JpaBlob(new ImmutableBlobPath(this.getId(), path), file);
-    }
-
-    @Override
-    public Blob createBlob(String path, InputStream inputStream) throws IOException {
-        return new JpaBlob(new ImmutableBlobPath(this.getId(), path), inputStream);
-    }
-
-    @Override
-    public Blob createBlob(String path) {
-        return new JpaBlob(new ImmutableBlobPath(this.getId(), path));
     }
 }
