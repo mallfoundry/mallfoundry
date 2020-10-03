@@ -26,6 +26,7 @@ import org.mallfoundry.storage.acl.Owner;
 import org.mallfoundry.storage.acl.OwnerType;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -130,6 +131,21 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
         return true;
     }
 
+    private void storeResource(BlobResource resource) throws IOException {
+        try (resource) {
+            var sharedBlob = SharedBlob.of(resource);
+            if (this.fetchSharedBlob(sharedBlob)) {
+                resource.setUrl(sharedBlob.getUrl());
+                resource.setSize(sharedBlob.getSize());
+            } else {
+                this.storageSystem.store(resource);
+                sharedBlob.setUrl(resource.getUrl());
+                sharedBlob.setSize(resource.getSize());
+                this.sharedBlobRepository.save(sharedBlob);
+            }
+        }
+    }
+
     private Blob makeDirectories(BlobPath blobPath) {
         var path = blobPath.getParent();
         if (Objects.isNull(path)) {
@@ -157,21 +173,15 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
         blob = this.invokePreProcessBeforeStoreBlob(bucket, blob);
         blob.moveTo(this.makeDirectories(path));
         blob.create();
-        try (resource) {
-            if (BlobType.FILE.equals(blob.getType())) {
-                var sharedBlob = SharedBlob.of(resource);
-                if (!this.fetchSharedBlob(sharedBlob)) {
-                    resource.setPath(blob.getPath());
-                    this.storageSystem.store(resource);
-                    sharedBlob.setUrl(resource.getUrl());
-                    sharedBlob.setSize(resource.getSize());
-                    this.sharedBlobRepository.save(sharedBlob);
-                }
-                blob.setUrl(sharedBlob.getUrl());
-                blob.setSize(sharedBlob.getSize());
+        if (BlobType.FILE.equals(blob.getType())) {
+            try {
+                resource.setPath(blob.getPath());
+                this.storeResource(resource);
+                blob.setSize(resource.getSize());
+                blob.setUrl(resource.getUrl());
+            } catch (IOException e) {
+                throw new StorageException(e);
             }
-        } catch (Exception e) {
-            throw new StorageException(e);
         }
         return this.blobRepository.save(blob);
     }
