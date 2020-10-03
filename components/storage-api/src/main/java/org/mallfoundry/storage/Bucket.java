@@ -21,10 +21,6 @@ package org.mallfoundry.storage;
 import org.mallfoundry.storage.acl.Owner;
 import org.mallfoundry.util.ObjectBuilder;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 public interface Bucket extends ObjectBuilder.ToBuilder<Bucket.Builder> {
 
     String getId();
@@ -38,12 +34,6 @@ public interface Bucket extends ObjectBuilder.ToBuilder<Bucket.Builder> {
     Owner getOwner();
 
     void setOwner(Owner owner);
-
-    Blob createBlob(String path, File file) throws IOException;
-
-    Blob createBlob(String path, InputStream inputStream) throws IOException;
-
-    Blob createBlob(String path);
 
     interface Builder extends ObjectBuilder<Bucket> {
 
