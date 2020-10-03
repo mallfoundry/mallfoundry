@@ -21,5 +21,5 @@ package org.mallfoundry.storage;
 import java.io.IOException;
 
 public interface StorageSystem {
-    void storeBlob(Blob blob) throws IOException;
+    BlobResource store(BlobResource resource) throws IOException;
 }
