@@ -22,7 +22,7 @@ import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.storage.AbstractStorageSystem;
-import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobResource;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
@@ -52,15 +52,13 @@ public class FtpStorageSystem extends AbstractStorageSystem implements Initializ
     }
 
     @Override
-    public void storeBlobToPath(Blob blob, String pathname) throws IOException {
+    public void store(BlobResource resource, String pathname) throws IOException {
         this.makeParentDirectory(pathname);
-        try (var stream = blob.openInputStream()) {
+        try (var stream = resource.getInputStream()) {
             if (!this.storeFile(pathname, stream)) {
                 throw new IOException("Upload failed");
             }
         }
-        blob.setUrl(this.concatAccessUrl(pathname));
-        blob.setSize(blob.toFile().length());
     }
 
     private boolean storeFile(String pathname, InputStream local) {
