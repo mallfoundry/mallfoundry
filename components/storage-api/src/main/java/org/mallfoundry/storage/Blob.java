@@ -20,13 +20,9 @@ package org.mallfoundry.storage;
 
 import org.mallfoundry.util.ObjectBuilder;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
-public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Blob.Builder> {
+public interface Blob extends IndexedBlob, ObjectBuilder.ToBuilder<Blob.Builder> {
 
     BlobId toId();
 
@@ -58,10 +54,6 @@ public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Bl
 
     void setContentType(String contentType);
 
-    File toFile() throws IOException;
-
-    InputStream openInputStream() throws IOException;
-
     void createNewFile();
 
     void makeDirectory();
@@ -79,6 +71,8 @@ public interface Blob extends IndexedBlob, Closeable, ObjectBuilder.ToBuilder<Bl
         Builder id(String id);
 
         Builder name(String name);
+
+        Builder path(String path);
 
         Builder contentType(String contentType);
     }
