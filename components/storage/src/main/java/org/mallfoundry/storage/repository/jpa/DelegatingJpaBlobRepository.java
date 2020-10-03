@@ -18,6 +18,7 @@
 
 package org.mallfoundry.storage.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.storage.Blob;
 import org.mallfoundry.storage.BlobId;
@@ -69,8 +70,12 @@ public class DelegatingJpaBlobRepository implements BlobRepository {
     }
 
     @Override
-    public SliceList<Blob> findAll(BlobQuery blobQuery) {
-        return this.repository.findAll(blobQuery);
+    public SliceList<Blob> findAll(BlobQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements())
+                .cast();
     }
 
     @Override

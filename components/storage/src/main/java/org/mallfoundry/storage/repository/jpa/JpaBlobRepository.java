@@ -20,20 +20,18 @@ package org.mallfoundry.storage.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
-import org.mallfoundry.storage.Blob;
+import org.mallfoundry.data.repository.jpa.SortUtils;
 import org.mallfoundry.storage.BlobQuery;
 import org.mallfoundry.storage.ImmutableBlobPath;
 import org.mallfoundry.util.PathUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -43,8 +41,8 @@ public interface JpaBlobRepository extends JpaRepository<JpaBlob, String>, JpaSp
 
     void deleteAllByBucketId(String bucket);
 
-    default SliceList<Blob> findAll(BlobQuery blobQuery) {
-        Page<JpaBlob> page = this.findAll((Specification<JpaBlob>) (root, query, criteriaBuilder) -> {
+    default Page<JpaBlob> findAll(BlobQuery blobQuery) {
+        return this.findAll((Specification<JpaBlob>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(blobQuery.getBucketId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("bucketId"), blobQuery.getBucketId()));
@@ -60,11 +58,7 @@ public interface JpaBlobRepository extends JpaRepository<JpaBlob, String>, JpaSp
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(blobQuery.getTypes()));
             }
             return predicate;
-        }, PageRequest.of(blobQuery.getPage() - 1, blobQuery.getLimit()));
-
-        return PageList.of(new ArrayList<Blob>(page.getContent()))
-                .page(page.getNumber() + 1)
-                .limit(blobQuery.getLimit())
-                .totalSize(page.getTotalElements());
+        }, PageRequest.of(blobQuery.getPage() - 1, blobQuery.getLimit(),
+                SortUtils.createSort(blobQuery, () -> Sort.by("createdTime"))));
     }
 }
