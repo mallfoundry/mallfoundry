@@ -16,8 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment.wechat;
+package org.mallfoundry.rest.storage;
 
-public class WeChatPaymentClient /*implements PaymentClient*/ {
+import lombok.Getter;
+import lombok.Setter;
+import org.mallfoundry.storage.Blob;
 
+@Getter
+@Setter
+public class BlobRequest {
+    private String name;
+
+    public Blob assignTo(Blob blob) {
+        return blob.toBuilder().name(this.name).build();
+    }
 }
