@@ -42,8 +42,8 @@ public class StoragePathReplacer {
         this.filename = filename;
     }
 
-    public String replace(Blob blob) {
-        var replacements = this.createReplacements(blob);
+    public String replace(BlobResource resource) {
+        var replacements = this.createReplacements(resource);
         var path = this.replace(replacements, FilenameUtils.normalize(this.path, true));
         var filename = this.replace(replacements, FilenameUtils.getName(this.filename));
         return FilenameUtils.separatorsToUnix(FilenameUtils.concat(path, filename));
@@ -57,10 +57,10 @@ public class StoragePathReplacer {
         return replacePath;
     }
 
-    private List<Replacement> createReplacements(Blob blob) {
+    private List<Replacement> createReplacements(BlobResource resource) {
         var date = LocalDate.now();
-        String filename = FilenameUtils.getBaseName(blob.getPath());
-        String extension = FilenameUtils.getExtension(blob.getPath());
+        String filename = FilenameUtils.getBaseName(resource.getPath());
+        String extension = FilenameUtils.getExtension(resource.getPath());
         return List.of(
                 new Replacement("\\{yyyy\\}", YYYY_DATE_FORMATTER.format(date)),
                 new Replacement("\\{MM\\}", MM_DATE_FORMATTER.format(date)),
