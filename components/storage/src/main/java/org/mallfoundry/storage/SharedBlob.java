@@ -57,8 +57,8 @@ public class SharedBlob {
         this.crc32 = crc32Hex(file);
     }
 
-    public static SharedBlob of(Blob blob) throws IOException {
-        return new SharedBlob(blob.toFile());
+    public static SharedBlob of(BlobResource resource) throws IOException {
+        return new SharedBlob(resource.toFile());
     }
 
     private static String md5Hex(File file) throws IOException {
