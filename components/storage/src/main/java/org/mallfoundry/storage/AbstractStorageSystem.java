@@ -52,19 +52,16 @@ public abstract class AbstractStorageSystem implements StorageSystem {
     }
 
     @Override
-    public void storeBlob(Blob blob) throws IOException {
-        var pathname = this.getStorePath(blob);
-        this.storeBlobToPath(blob, pathname);
-        if (Objects.isNull(blob.getUrl())) {
-            blob.setUrl(this.concatAccessUrl(pathname));
-        }
-        if (blob.getSize() == 0) {
-            blob.setSize(blob.toFile().length());
-        }
+    public final BlobResource store(BlobResource resource) throws IOException {
+        var pathname = this.getStorePath(resource);
+        resource.setSize(resource.toFile().length());
+        resource.setUrl(this.concatAccessUrl(pathname));
+        this.store(resource, pathname);
+        return resource;
     }
 
-    protected String getStorePath(Blob blob) {
-        return Objects.isNull(this.pathReplacer) ? blob.getPath() : this.pathReplacer.replace(blob);
+    protected String getStorePath(BlobResource resource) {
+        return Objects.isNull(this.pathReplacer) ? resource.getPath() : this.pathReplacer.replace(resource);
     }
 
     protected String concatAccessUrl(String path) {
@@ -72,5 +69,5 @@ public abstract class AbstractStorageSystem implements StorageSystem {
         return String.join("", this.baseUrl, url);
     }
 
-    public abstract void storeBlobToPath(Blob blob, String pathname) throws IOException;
+    public abstract void store(BlobResource resource, String pathname) throws IOException;
 }
