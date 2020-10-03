@@ -22,9 +22,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.storage.Blob;
+import org.mallfoundry.storage.BlobId;
 import org.mallfoundry.storage.BlobPath;
+import org.mallfoundry.storage.BlobSupport;
 import org.mallfoundry.storage.BlobType;
-import org.mallfoundry.storage.FileBlob;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CollectionTable;
@@ -38,9 +39,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +48,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_storage_blob")
-public class JpaBlob extends FileBlob {
+public class JpaBlob extends BlobSupport {
 
     @Id
     @Column(name = "id_")
@@ -90,35 +88,23 @@ public class JpaBlob extends FileBlob {
     @Column(name = "created_time_")
     private Date createdTime;
 
+    public JpaBlob(BlobId blobId) {
+        this.setBucketId(blobId.getBucketId());
+        this.setId(blobId.getId());
+    }
+
     public JpaBlob(BlobPath blobPath) {
         this.setBucketId(blobPath.getBucketId());
         this.setPath(blobPath.toString());
         this.makeDirectory();
     }
 
-    public JpaBlob(BlobPath blobPath, File file) {
-        super(blobPath, file);
-    }
-
-    public JpaBlob(BlobPath blobPath, InputStream inputStream) throws IOException {
-        super(blobPath, inputStream);
-    }
-
     public static JpaBlob of(Blob blob) {
         if (blob instanceof JpaBlob) {
             return (JpaBlob) blob;
         }
-        var internalBlob = new JpaBlob();
-        if (BlobType.DIRECTORY.equals(blob.getType())) {
-            BeanUtils.copyProperties(blob, internalBlob, "file");
-        } else {
-            BeanUtils.copyProperties(blob, internalBlob);
-            try {
-                internalBlob.setFile(blob.toFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return internalBlob;
+        var target = new JpaBlob();
+        BeanUtils.copyProperties(blob, target);
+        return target;
     }
 }
