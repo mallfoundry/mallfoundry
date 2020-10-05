@@ -130,6 +130,12 @@ public abstract class BlobSupport implements MutableBlob {
         }
 
         @Override
+        public Builder type(BlobType type) {
+            this.blob.setType(type);
+            return this;
+        }
+
+        @Override
         public Builder contentType(String contentType) {
             this.blob.setContentType(contentType);
             return this;

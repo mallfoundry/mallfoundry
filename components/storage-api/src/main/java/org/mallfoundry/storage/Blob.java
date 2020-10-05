@@ -74,6 +74,8 @@ public interface Blob extends IndexedBlob, ObjectBuilder.ToBuilder<Blob.Builder>
 
         Builder path(String path);
 
+        Builder type(BlobType type);
+
         Builder contentType(String contentType);
     }
 }
