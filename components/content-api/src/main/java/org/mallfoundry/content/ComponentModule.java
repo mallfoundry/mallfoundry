@@ -19,7 +19,8 @@
 package org.mallfoundry.content;
 
 public interface ComponentModule {
-    String getFrom();
+
+    String getId();
 
     String getIndividual();
 }
