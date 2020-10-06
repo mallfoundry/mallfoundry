@@ -46,6 +46,10 @@ public interface Product extends ProductBody, StoreOwnership {
 
     void setName(String name);
 
+    String getShortName();
+
+    void setShortName(String shortName);
+
     ProductType getType();
 
     void setType(ProductType type);

@@ -220,6 +220,11 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
+    default void setShortName(String shortName) {
+
+    }
+
+    @Override
     default void setType(ProductType type) {
 
     }

@@ -89,6 +89,10 @@ public class JpaProduct extends ProductSupport {
     @Column(name = "name_")
     private String name;
 
+//    @NotBlank
+    @Column(name = "short_name_")
+    private String shortName;
+
     @Column(name = "description_")
     private String description;
 

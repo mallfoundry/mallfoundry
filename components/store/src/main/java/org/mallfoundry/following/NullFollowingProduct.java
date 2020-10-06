@@ -57,6 +57,11 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
+    public String getShortName() {
+        return null;
+    }
+
+    @Override
     public ProductType getType() {
         return null;
     }

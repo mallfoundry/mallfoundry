@@ -221,6 +221,11 @@ public interface ImmutableProductResponse extends Product {
     }
 
     @Override
+    default void setShortName(String shortName) {
+
+    }
+
+    @Override
     default void setType(ProductType type) {
 
     }

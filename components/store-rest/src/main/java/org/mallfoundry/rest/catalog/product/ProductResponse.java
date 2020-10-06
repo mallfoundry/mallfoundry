@@ -55,6 +55,11 @@ public class ProductResponse implements ImmutableProductResponse {
     }
 
     @Override
+    public String getShortName() {
+        return null;
+    }
+
+    @Override
     public ProductType getType() {
         return null;
     }

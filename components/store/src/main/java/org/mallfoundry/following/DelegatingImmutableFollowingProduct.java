@@ -65,6 +65,11 @@ public class DelegatingImmutableFollowingProduct implements ImmutableFollowingPr
     }
 
     @Override
+    public String getShortName() {
+        return this.product.getShortName();
+    }
+
+    @Override
     public ProductType getType() {
         return this.product.getType();
     }

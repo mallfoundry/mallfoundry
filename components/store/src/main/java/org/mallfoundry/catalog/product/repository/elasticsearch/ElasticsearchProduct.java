@@ -71,6 +71,9 @@ public class ElasticsearchProduct extends ProductSupport {
     @Field(type = FieldType.Text)
     private String name;
 
+    @Field(type = FieldType.Text)
+    private String shortName;
+
     private String description;
 
     private BigDecimal price;
