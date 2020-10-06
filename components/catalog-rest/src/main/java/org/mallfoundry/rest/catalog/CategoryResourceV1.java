@@ -18,9 +18,7 @@
 
 package org.mallfoundry.rest.catalog;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.CategoryService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,8 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
-@Tag(name = "Category Resource V1", description = "商品类目资源")
 @RestController
 @RequestMapping("/v1")
 public class CategoryResourceV1 {
@@ -50,7 +46,6 @@ public class CategoryResourceV1 {
         this.categoryRestFactory = categoryRestFactory;
     }
 
-    @Operation(summary = "添加商品类目")
     @PostMapping("/categories")
     public CategoryResponse createCategory(@RequestBody CategoryRequest request) {
         if (StringUtils.isBlank(request.getParentId())) {
@@ -63,7 +58,6 @@ public class CategoryResourceV1 {
         }
     }
 
-    @Operation(summary = "获得商品类目集合")
     @GetMapping("/categories")
     public List<CategoryResponse> getCategories(@Parameter(description = "类目层级")
                                                 @RequestParam(defaultValue = "0", required = false) byte level,
@@ -72,14 +66,12 @@ public class CategoryResourceV1 {
                 this.categoryService.createCategoryQuery().toBuilder().level(level).parentId(parentId).build());
     }
 
-    @Operation(summary = "根据商品类目标识更新商品类目对象")
     @PatchMapping("/categories/{category_id}")
     public void updateCategory(@PathVariable("category_id") String categoryId, @RequestBody CategoryRequest request) {
         var category = this.categoryService.createCategory(categoryId);
         this.categoryService.updateCategory(request.assignToCategory(category));
     }
 
-    @Operation(summary = "根据商品类目标识删除商品类目对象")
     @DeleteMapping("/categories/{category_id}")
     public void deleteCategories(@PathVariable("category_id") String categoryId) {
         this.categoryService.deleteCategory(categoryId);
