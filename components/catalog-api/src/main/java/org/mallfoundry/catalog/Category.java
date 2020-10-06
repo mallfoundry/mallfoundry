@@ -46,6 +46,8 @@ public interface Category extends Position {
 
     void setImageUrl(String imageUrl);
 
+    /*Set<Category> getReferenceCategories();*/
+
     Set<String> getSearchKeywords();
 
     void setSearchKeywords(Set<String> searchKeywords);
