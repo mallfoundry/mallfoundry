@@ -62,7 +62,7 @@ public class StorageResourceV1 {
         var resource = this.storageService.createBlobResource();
         if (Objects.isNull(file)) {
             var filename = Objects.isNull(name) ? FilenameUtils.getName(path) : name;
-            return resource.toBuilder().bucketId(bucketId).path(path).name(filename).build();
+            return resource.toBuilder().bucketId(bucketId).path(path).name(filename).type(BlobType.DIRECTORY).build();
         }
         var filename = Objects.isNull(name) ? file.getOriginalFilename() : name;
         return resource.toBuilder()

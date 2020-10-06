@@ -167,6 +167,7 @@ public class DefaultStorageService implements StorageService, StorageProcessorIn
         var bucket = this.requiredBucket(this.createBucketId(resource.getBucketId()));
         var path = resource.toPath();
         var blob = this.createBlob(path).toBuilder()
+                .type(resource.getType())
                 .name(resource.getName()).path(resource.getPath())
                 .contentType(resource.getContentType())
                 .build();
