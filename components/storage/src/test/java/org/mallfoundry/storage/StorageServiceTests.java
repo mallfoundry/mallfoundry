@@ -25,8 +25,9 @@ import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @StandaloneTest
@@ -47,19 +48,21 @@ public class StorageServiceTests {
 
     @Test
     @Rollback(false)
-    public void testStoreBlob() {
-        var bucketId = this.storageService.createBucketId("1f08eb45142b47e8964ad12625d8f73e");
-        var bucket = this.storageService.createBucket(bucketId);
-        var blob = bucket.createBlob("/abc/sdafjk");
-        blob.makeDirectory();
-        this.storageService.storeBlob(blob);
+    public void testStoreBlob() throws FileNotFoundException {
+        var file = ResourceUtils.getFile("classpath:e523be52552921bf.jpg");
+        var resource = this.storageService.createBlobResource().toBuilder()
+                .bucketId("10410132")
+                .path("/kerxpee6lfltg92w/abc.jpg")
+                .file(file)
+                .build();
+        this.storageService.storeBlob(resource);
     }
 
     private void storeBlob(String path) throws IOException {
-        var bucketId = this.storageService.createBucketId("1f08eb45142b47e8964ad12625d8f73e");
+       /* var bucketId = this.storageService.createBucketId("1f08eb45142b47e8964ad12625d8f73e");
         var bucket = this.storageService.createBucket(bucketId);
         var blob = bucket.createBlob(path, new File(""));
-        this.storageService.storeBlob(blob);
+        this.storageService.storeBlob(blob);*/
     }
 
     @Test
