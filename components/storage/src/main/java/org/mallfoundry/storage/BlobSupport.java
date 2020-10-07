@@ -85,7 +85,9 @@ public abstract class BlobSupport implements MutableBlob {
         }
         var path = FilenameUtils.getPathNoEndSeparator(this.getPath());
         var extension = FilenameUtils.getExtension(this.getPath());
-        var newFilename = StringUtils.isEmpty(extension) ? id : String.format("%s.%s", id, extension);
+        // File 类型的 Blob 保留后缀名。
+        var newFilename = BlobType.FILE.equals(this.getType()) && StringUtils.isNotEmpty(extension)
+                ? String.format("%s.%s", id, extension) : id;
         this.setPath(PathUtils.concat(path, newFilename));
 
         if (StringUtils.isBlank(this.getContentType()) && BlobType.FILE.equals(this.getType())) {
