@@ -31,6 +31,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,7 +53,12 @@ public interface JpaProductRepository extends JpaRepository<JpaProduct, String>,
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (StringUtils.isNotEmpty(productQuery.getName())) {
-                predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + productQuery.getName() + "%"));
+                var namePredicates = Arrays.stream(productQuery.getName().split(" "))
+                        .map(String::trim)
+                        .map(part -> "%" + part + "%")
+                        .map(part -> criteriaBuilder.like(root.get("name"), part))
+                        .toArray(Predicate[]::new);
+                predicate.getExpressions().add(criteriaBuilder.or(namePredicates));
             }
 
             if (Objects.nonNull(productQuery.getStoreId())) {
