@@ -21,9 +21,11 @@ package org.mallfoundry.following;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreEdition;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreRating;
 import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
+import java.util.List;
 
 public class DelegatingImmutableFollowingStore implements ImmutableFollowingStore {
 
@@ -99,6 +101,11 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     @Override
     public String getZip() {
         return this.store.getZip();
+    }
+
+    @Override
+    public List<StoreRating> getRatings() {
+        return this.store.getRatings();
     }
 
     @Override

@@ -21,9 +21,11 @@ package org.mallfoundry.following;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.store.StoreEdition;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreRating;
 import org.mallfoundry.store.StoreStatus;
 
 import java.util.Date;
+import java.util.List;
 
 public interface ImmutableFollowingStore extends FollowingStore {
 
@@ -105,6 +107,16 @@ public interface ImmutableFollowingStore extends FollowingStore {
     @Override
     default void setPhone(String phone) {
 
+    }
+
+    @Override
+    default List<StoreRating> getRatings() {
+        return null;
+    }
+
+    @Override
+    default StoreRating rating(StoreRating rating) {
+        return null;
     }
 
     @Override
