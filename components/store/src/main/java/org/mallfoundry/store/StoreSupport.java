@@ -21,6 +21,7 @@ package org.mallfoundry.store;
 import org.mallfoundry.identity.User;
 
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class StoreSupport implements MutableStore {
 
@@ -33,6 +34,21 @@ public abstract class StoreSupport implements MutableStore {
     public void changeOwner(User user) {
         this.setTenantId(user.getTenantId());
         this.setOwnerId(user.getId());
+    }
+
+    @Override
+    public StoreRating rating(StoreRating sRating) {
+        var ratingType = sRating.getType();
+        var rating = this.getRatings().stream()
+                .filter(aRating -> ratingType.equals(aRating.getType()))
+                .findFirst()
+                .orElse(null);
+        if (Objects.isNull(rating)) {
+            this.getRatings().add(sRating);
+            return sRating;
+        }
+        rating.rating(sRating.getRating());
+        return rating;
     }
 
     @Override
