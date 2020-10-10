@@ -24,6 +24,7 @@ import org.mallfoundry.identity.User;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuilder<Store.Builder> {
 
@@ -64,6 +65,10 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
     String getZip();
 
     void setZip(String zip);
+
+    List<StoreRating> getRatings();
+
+    StoreRating rating(StoreRating rating);
 
     String getProvinceId();
 
