@@ -41,11 +41,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-storage-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <scope>provided</scope>
