@@ -49,6 +49,10 @@
         <module>trade-api</module>
         <module>edw-api</module>
 
+        <!-- test modules -->
+        <module>test</module>
+
+        <!-- node modules -->
         <module>analytics</module>
         <module>app</module>
         <module>commons</module>
@@ -66,9 +70,6 @@
         <module>marketing</module>
         <module>edw</module>
         <module>edw-stream</module>
-
-        <!-- test modules -->
-        <module>test</module>
 
         <!-- rest modules-->
         <module>commons-rest</module>
