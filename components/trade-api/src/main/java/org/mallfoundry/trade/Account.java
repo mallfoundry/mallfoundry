@@ -19,4 +19,10 @@
 package org.mallfoundry.trade;
 
 public interface Account {
+
+    String getId();
+
+    String getName();
+
+    BusinessType getBusinessType();
 }
