@@ -18,8 +18,6 @@
 
 package org.mallfoundry.i18n;
 
-import org.mallfoundry.Version;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +30,6 @@ public abstract class Messages {
 
     private static final Map<String, MessageKeys> KEYS_CACHE = new HashMap<>();
 
-    private static final MessageKeys BASE_PACKAGE_KEYS = getKeys(Version.class.getPackageName());
-
     public static MessageKeys getKeys(Class<?> clazz) {
         return getKeys(clazz.getName());
     }
@@ -41,16 +37,4 @@ public abstract class Messages {
     public static MessageKeys getKeys(String baseName) {
         return KEYS_CACHE.computeIfAbsent(baseName, MessageKeys::new);
     }
-
-    /**
-     * Get the message code key.
-     *
-     * @param codeKey the code key for short
-     * @return the full code key
-     * @throws IllegalArgumentException if null
-     */
-    public static String codeKey(String codeKey) throws IllegalArgumentException {
-        return BASE_PACKAGE_KEYS.codeKey(codeKey);
-    }
-
 }
