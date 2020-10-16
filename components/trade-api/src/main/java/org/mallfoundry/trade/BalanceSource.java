@@ -27,9 +27,9 @@ public interface BalanceSource extends Serializable {
 
     BigDecimal getAmount();
 
-    // from 取
-    void debit(BigDecimal amount);
-
     // to 存
     void credit(BigDecimal amount);
+
+    // from 取
+    void debit(BigDecimal amount);
 }
