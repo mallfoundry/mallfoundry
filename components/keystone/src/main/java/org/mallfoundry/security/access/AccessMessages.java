@@ -18,14 +18,19 @@
 
 package org.mallfoundry.security.access;
 
+import org.mallfoundry.i18n.Messages;
+
 import java.util.List;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
 
 public abstract class AccessMessages {
-    private static final String SECURITY_ACCESS_CONTROL_NOT_FOUND_MESSAGE_CODE_KEY = "security.access.AccessControl.notFound";
-    private static final String SECURITY_ACCESS_PRINCIPAL_NOT_FOUND_MESSAGE_CODE_KEY = "security.access.Principal.notFound";
-    private static final String SECURITY_ACCESS_RESOURCE_NOT_FOUND_MESSAGE_CODE_KEY = "security.access.Resource.notFound";
+
+    private static final String SECURITY_ACCESS_CONTROL_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(AccessControl.class).codeKey("notFound");
+
+    private static final String SECURITY_ACCESS_PRINCIPAL_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(Principal.class).codeKey("notFound");
+
+    private static final String SECURITY_ACCESS_RESOURCE_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(Resource.class).codeKey("notFound");
 
     public abstract static class AccessControl {
         public static String notFound(String type, String name) {
