@@ -24,7 +24,7 @@ import org.mallfoundry.payment.PaymentException;
 import org.mallfoundry.payment.PaymentNotification;
 import org.mallfoundry.payment.PaymentRefund;
 
-public class WeChatPaymentClient implements PaymentClient {
+public class WechatPayClient implements PaymentClient {
 
     @Override
     public boolean supportsPayment(Payment payment) {
