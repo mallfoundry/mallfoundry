@@ -42,40 +42,48 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public Account getAccount(String accountId) {
-        return this.accountRepository.findById(accountId).orElseThrow();
+    public Account getAccount(String accountId) throws AccountException {
+        return this.requiredAccount(accountId);
     }
 
-    @Override
-    public Balance getAccountBalance(String accountId, String balanceId) {
-        return null;
+    private Account requiredAccount(String accountId) throws AccountException {
+        return this.accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountException(AccountMessages.notFound()));
     }
 
     @Transactional
     @Override
     public Balance creditAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount) {
-        var account = this.getAccount(accountId);
-        account.credit(currency, type, amount);
-        account = this.accountRepository.save(account);
-        return account.getBalance(currency);
+        var account = this.requiredAccount(accountId);
+        var balance = account.credit(currency, type, amount);
+        this.accountRepository.save(account);
+        return balance;
     }
 
+    @Transactional
     @Override
     public Balance debitAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount) {
-        return null;
+        var account = this.requiredAccount(accountId);
+        var balance = account.debit(currency, type, amount);
+        this.accountRepository.save(account);
+        return balance;
     }
 
     @Transactional
     @Override
     public Balance freezeAccountBalance(String accountId, String currency, BigDecimal amount) {
-        var account = this.getAccount(accountId);
-        account.freeze(currency, amount);
-        account = this.accountRepository.save(account);
-        return account.getBalance(currency);
+        var account = this.requiredAccount(accountId);
+        var balance = account.freeze(currency, amount);
+        this.accountRepository.save(account);
+        return balance;
     }
 
+    @Transactional
     @Override
     public Balance unfreezeAccountBalance(String accountId, String currency, BigDecimal amount) {
-        return null;
+        var account = this.requiredAccount(accountId);
+        var balance = account.unfreeze(currency, amount);
+        this.accountRepository.save(account);
+        return balance;
     }
 }

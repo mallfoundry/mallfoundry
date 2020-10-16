@@ -26,9 +26,7 @@ public interface AccountService {
 
     Account createAccount(Account account);
 
-    Account getAccount(String accountId);
-
-    Balance getAccountBalance(String accountId, String currency);
+    Account getAccount(String accountId) throws AccountException;
 
     Balance creditAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount);
 
