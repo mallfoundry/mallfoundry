@@ -24,6 +24,8 @@ import java.util.List;
 
 public interface Balance extends Serializable {
 
+    String getAccountId();
+
     String getCurrency();
 
     /**
@@ -48,12 +50,13 @@ public interface Balance extends Serializable {
     /**
      * 存钱。
      */
-    void credit(SourceType type, BigDecimal amount);
+    void credit(SourceType type, BigDecimal amount) throws BalanceException;
 
     /**
      * 取钱。
      */
-    void debit(SourceType type, BigDecimal amount);
+    void debit(SourceType type, BigDecimal amount) throws BalanceException;
+
 
     void freeze(BigDecimal amount);
 
