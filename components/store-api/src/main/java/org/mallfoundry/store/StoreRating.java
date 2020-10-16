@@ -18,7 +18,9 @@
 
 package org.mallfoundry.store;
 
-public interface StoreRating {
+import java.io.Serializable;
+
+public interface StoreRating extends Serializable {
 
     StoreRatingType getType();
 
