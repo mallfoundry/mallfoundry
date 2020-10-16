@@ -21,15 +21,21 @@ package org.mallfoundry.store.repository.jpa;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.store.StoreEdition;
+import org.mallfoundry.store.StoreRating;
 import org.mallfoundry.store.StoreStatus;
 import org.mallfoundry.store.StoreSupport;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -98,4 +104,10 @@ public class JpaStoreBase extends StoreSupport {
 
     @Column(name = "created_time_")
     private Date createdTime;
+
+    @ElementCollection(targetClass = JpaStoreRating.class)
+    @JoinTable(name = "mf_store_rating",
+            joinColumns = @JoinColumn(name = "store_id_", referencedColumnName = "id_"))
+    private List<StoreRating> ratings = new ArrayList<>();
+
 }
