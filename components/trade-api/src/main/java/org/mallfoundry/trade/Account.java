@@ -41,11 +41,11 @@ public interface Account {
 
     Balance getBalance(String currency);
 
-    void credit(String currency, SourceType type, BigDecimal amount);
+    Balance credit(String currency, SourceType type, BigDecimal amount);
 
-    void debit(String currency, SourceType type, BigDecimal amount);
+    Balance debit(String currency, SourceType type, BigDecimal amount);
 
-    void freeze(String currency, BigDecimal amount);
+    Balance freeze(String currency, BigDecimal amount);
 
-    void unfreeze(String currency, BigDecimal amount);
+    Balance unfreeze(String currency, BigDecimal amount);
 }
