@@ -96,6 +96,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-trade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-edw</artifactId>
         </dependency>
 
@@ -167,6 +172,11 @@
         <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-storage-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-trade-rest</artifactId>
         </dependency>
 
         <dependency>

@@ -121,6 +121,12 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-trade-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-district-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
@@ -340,6 +346,12 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mall-marketing-rest</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mall-trade-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
