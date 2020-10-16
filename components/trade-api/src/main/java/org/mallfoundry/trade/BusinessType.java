@@ -18,9 +18,17 @@
 
 package org.mallfoundry.trade;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum BusinessType {
     INDIVIDUAL, // 个体
     COMPANY, // 公司
     NON_PROFIT, // 非盈利组织
-    GOVERNMENT_ENTITY // 政府单位
+    GOVERNMENT_ENTITY; // 政府单位
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
 }
