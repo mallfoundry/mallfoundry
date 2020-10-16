@@ -18,6 +18,15 @@
 
 package org.mallfoundry.trade;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum SourceType {
-    WECHAT_PAY, ALIPAY
+    ALIPAY,
+    WECHAT_PAY;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
 }
