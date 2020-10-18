@@ -21,5 +21,18 @@ package org.mallfoundry.trade;
 import java.math.BigDecimal;
 
 public interface Transaction {
+
+    String getId();
+
     BigDecimal getAmount();
+
+    String getCurrency();
+
+    String getDescription();
+
+    String getSource();
+
+    String getStatus();
+
+    TransactionType getType();
 }
