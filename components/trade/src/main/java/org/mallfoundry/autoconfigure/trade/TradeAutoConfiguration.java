@@ -21,7 +21,9 @@ package org.mallfoundry.autoconfigure.trade;
 import org.mallfoundry.trade.AccountRepository;
 import org.mallfoundry.trade.DefaultAccountService;
 import org.mallfoundry.trade.repository.jpa.DelegatingJpaAccountRepository;
+import org.mallfoundry.trade.repository.jpa.DelegatingJpaTransactionRepository;
 import org.mallfoundry.trade.repository.jpa.JpaAccountRepository;
+import org.mallfoundry.trade.repository.jpa.JpaTransactionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,5 +38,10 @@ public class TradeAutoConfiguration {
     @Bean
     public DefaultAccountService defaultAccountService(AccountRepository accountRepository) {
         return new DefaultAccountService(accountRepository);
+    }
+
+    @Bean
+    public DelegatingJpaTransactionRepository delegatingJpaTransactionRepository(JpaTransactionRepository repository) {
+        return new DelegatingJpaTransactionRepository(repository);
     }
 }
