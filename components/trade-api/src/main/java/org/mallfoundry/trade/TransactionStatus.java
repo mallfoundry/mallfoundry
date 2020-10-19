@@ -21,7 +21,7 @@ package org.mallfoundry.trade;
 public enum TransactionStatus {
     PENDING, // 处理中
     COMPLETED, // 已完成
-    SUCCEEDED, // 成功
+    CAPTURED, // 成功
     FAILED, // 失败
     EXPIRED, // 已过期
     CANCELLED; // 已取消
