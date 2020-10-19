@@ -41,7 +41,7 @@ public interface Transaction {
 
     void create(TransactionType type);
 
-    void succeed();
+    void capture();
 
     void fail();
 
