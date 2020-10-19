@@ -19,6 +19,7 @@
 package org.mallfoundry.trade;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface Transaction {
 
@@ -32,7 +33,21 @@ public interface Transaction {
 
     String getSource();
 
-    String getStatus();
+    TransactionStatus getStatus();
 
     TransactionType getType();
+
+    Date getCreatedTime();
+
+    void create(TransactionType type);
+
+    void succeed();
+
+    void fail();
+
+    void expire();
+
+    void cancel();
+
+    void complete();
 }
