@@ -19,6 +19,9 @@
 package org.mallfoundry.trade;
 
 public enum TransactionType {
-    PAYMENT,
-    PAYMENT_REFUND
+    PAYMENT, // 付款
+    PAYMENT_REFUND, // 付款退款
+    RECHARGE, // 充值
+    TRANSFER, // 转账
+    WITHDRAWAL // 提现
 }
