@@ -18,16 +18,9 @@
 
 package org.mallfoundry.trade;
 
-import java.math.BigDecimal;
-
 public interface TransactionService {
 
-    // 充值
-    void recharge(BigDecimal amount);
+    Withdraw createWithdraw();
 
-    // 转账
-    void transfer(BigDecimal amount);
-
-    // 提现
-    void withdraw(BigDecimal amount);
+    Transaction withdraw(Withdraw withdraw);
 }
