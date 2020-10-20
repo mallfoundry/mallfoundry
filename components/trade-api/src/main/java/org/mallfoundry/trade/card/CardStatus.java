@@ -19,7 +19,7 @@
 package org.mallfoundry.trade.card;
 
 public enum CardStatus {
-    VALID,
+    VALIDATED,
     EXPIRING,
     EXPIRED;
 }
