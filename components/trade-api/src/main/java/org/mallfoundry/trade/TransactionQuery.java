@@ -18,5 +18,12 @@
 
 package org.mallfoundry.trade;
 
-public interface TransactionQuery {
+import org.mallfoundry.data.Query;
+import org.mallfoundry.data.QueryBuilder;
+import org.mallfoundry.util.ObjectBuilder;
+
+public interface TransactionQuery extends Query, ObjectBuilder.ToBuilder<TransactionQuery.Builder> {
+
+    interface Builder extends QueryBuilder<TransactionQuery, Builder> {
+    }
 }
