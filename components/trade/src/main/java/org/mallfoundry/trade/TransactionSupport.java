@@ -20,7 +20,7 @@ package org.mallfoundry.trade;
 
 import java.util.Date;
 
-import static org.mallfoundry.trade.TransactionStatus.CANCELLED;
+import static org.mallfoundry.trade.TransactionStatus.CANCELED;
 import static org.mallfoundry.trade.TransactionStatus.CAPTURED;
 import static org.mallfoundry.trade.TransactionStatus.COMPLETED;
 import static org.mallfoundry.trade.TransactionStatus.EXPIRED;
@@ -53,7 +53,7 @@ public abstract class TransactionSupport implements MutableTransaction {
 
     @Override
     public void cancel() {
-        this.setStatus(CANCELLED);
+        this.setStatus(CANCELED);
     }
 
     @Override

@@ -24,5 +24,5 @@ public enum TransactionStatus {
     CAPTURED, // 成功
     FAILED, // 失败
     EXPIRED, // 已过期
-    CANCELLED; // 已取消
+    CANCELED; // 已取消
 }
