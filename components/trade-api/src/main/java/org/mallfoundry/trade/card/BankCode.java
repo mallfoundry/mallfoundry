@@ -18,7 +18,7 @@
 
 package org.mallfoundry.trade.card;
 
-public enum BankType {
+public enum BankCode {
     ALIPAY,
     WECHAT_PAY
 }

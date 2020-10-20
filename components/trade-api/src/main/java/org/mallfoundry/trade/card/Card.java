@@ -28,7 +28,7 @@ public interface Card {
 
     CardFunding getFunding();
 
-    BankType getBankType();
+    BankCode getBankCode();
 
     HolderType getHolderType();
 
@@ -38,9 +38,9 @@ public interface Card {
 
     String getLast4();
 
-    int getExpiryYear();
+    String getExpiryYear();
 
-    int getExpiryMonth();
+    String getExpiryMonth();
 
     Date getCreatedTime();
 }
