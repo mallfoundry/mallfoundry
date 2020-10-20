@@ -18,6 +18,8 @@
 
 package org.mallfoundry.trade.card;
 
+import java.util.Date;
+
 public interface Card {
 
     String getId();
@@ -26,17 +28,19 @@ public interface Card {
 
     CardFunding getFunding();
 
-    String getBrand();
+    BankType getBankType();
 
-    int getExpiryMonth();
+    HolderType getHolderType();
 
-    int getExpiryYear();
+    String getHolderName();
 
     String getNumber();
 
     String getLast4();
 
-    String getHolderName();
+    int getExpiryYear();
 
-    HolderType getHolderType();
+    int getExpiryMonth();
+
+    Date getCreatedTime();
 }
