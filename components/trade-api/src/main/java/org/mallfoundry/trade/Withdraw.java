@@ -18,5 +18,17 @@
 
 package org.mallfoundry.trade;
 
+import java.math.BigDecimal;
+
 public interface Withdraw {
+
+    String getId();
+
+    String getAccountId();
+
+    BigDecimal getAmount();
+
+    String getCurrency();
+
+    String getCardId();
 }
