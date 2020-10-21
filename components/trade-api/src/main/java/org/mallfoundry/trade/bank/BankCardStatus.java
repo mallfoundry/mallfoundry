@@ -16,31 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.card;
+package org.mallfoundry.trade.bank;
 
-import java.util.Date;
-
-public interface Card {
-
-    String getId();
-
-    CardType getType();
-
-    CardFunding getFunding();
-
-    BankCode getBankCode();
-
-    HolderType getHolderType();
-
-    String getHolderName();
-
-    String getNumber();
-
-    String getLast4();
-
-    String getExpiryYear();
-
-    String getExpiryMonth();
-
-    Date getCreatedTime();
+public enum BankCardStatus {
+    VALIDATED,
+    EXPIRING,
+    EXPIRED;
 }

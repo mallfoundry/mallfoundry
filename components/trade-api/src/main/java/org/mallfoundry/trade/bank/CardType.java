@@ -16,10 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.card;
+package org.mallfoundry.trade.bank;
 
-public enum CardStatus {
-    VALIDATED,
-    EXPIRING,
-    EXPIRED;
+public enum CardType {
+    PHYSICAL, // 真实的
+    VIRTUAL // 虚拟的，比如支付宝、微信
 }
