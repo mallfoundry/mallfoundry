@@ -18,6 +18,7 @@
 
 package org.mallfoundry.autoconfigure.trade;
 
+import org.mallfoundry.autoconfigure.trade.bank.BankCardAutoConfiguration;
 import org.mallfoundry.trade.AccountRepository;
 import org.mallfoundry.trade.DefaultAccountService;
 import org.mallfoundry.trade.repository.jpa.DelegatingJpaAccountRepository;
@@ -26,8 +27,12 @@ import org.mallfoundry.trade.repository.jpa.JpaAccountRepository;
 import org.mallfoundry.trade.repository.jpa.JpaTransactionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import({
+        BankCardAutoConfiguration.class
+})
 public class TradeAutoConfiguration {
 
     @Bean
