@@ -41,12 +41,12 @@ public class DefaultBankCardService implements BankCardService {
 
     private BankCard requiredBankCard(String id) {
         return this.bankCardRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new BankCardException(BankCardMessages.notFound()));
     }
 
     @Transactional
     @Override
-    public BankCard addBankCard(BankCard bankCard) {
+    public BankCard bindBankCard(BankCard bankCard) {
         return this.bankCardRepository.save(bankCard);
     }
 
@@ -62,7 +62,7 @@ public class DefaultBankCardService implements BankCardService {
 
     @Transactional
     @Override
-    public void deleteBankCard(String id) {
+    public void unbindBankCard(String id) {
         var bankCard = this.requiredBankCard(id);
         this.bankCardRepository.delete(bankCard);
     }

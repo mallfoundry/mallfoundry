@@ -26,11 +26,11 @@ public interface BankCardService {
 
     BankCard createBankCard(String id);
 
-    BankCard addBankCard(BankCard bankCard);
+    BankCard bindBankCard(BankCard bankCard) throws BankCardException;
 
     BankCard getBankCard(String id);
 
     SliceList<BankCard> getBankCards(BankCardQuery query);
 
-    void deleteBankCard(String id);
+    void unbindBankCard(String id) throws BankCardException;
 }
