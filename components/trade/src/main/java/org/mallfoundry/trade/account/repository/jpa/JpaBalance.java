@@ -16,13 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.repository.jpa;
+package org.mallfoundry.trade.account.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.trade.BalanceSource;
-import org.mallfoundry.trade.BalanceSupport;
+import org.mallfoundry.trade.account.BalanceSource;
+import org.mallfoundry.trade.account.BalanceSupport;
 import org.mallfoundry.trade.SourceType;
 
 import javax.persistence.Column;

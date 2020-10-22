@@ -16,10 +16,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-public class BalanceException extends RuntimeException {
-    public BalanceException(String message) {
-        super(message);
-    }
+import org.mallfoundry.trade.TransactionDirection;
+import org.mallfoundry.trade.TransactionStatus;
+import org.mallfoundry.trade.TransactionType;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+public interface AccountBill {
+
+    String getId();
+
+    BigDecimal getAmount();
+
+    TransactionDirection getDirection();
+
+    TransactionType getType();
+
+    TransactionStatus getStatus();
+
+    String getTransactionId();
+
+    String getMemo();
+
+    Date getCreatedTime();
 }

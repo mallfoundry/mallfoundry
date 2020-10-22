@@ -16,17 +16,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account.repository.jpa;
 
-import java.util.Optional;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface AccountRepository {
+import java.io.Serializable;
+import java.util.Objects;
 
-    Account create(String id);
+@Getter
+@Setter
+public class JpaBalanceId implements Serializable {
 
-    Optional<Account> findById(String id);
+    private String accountId;
 
-    Account save(Account account);
+    private String currency;
 
-    void delete(Account account);
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof JpaBalanceId)) {
+            return false;
+        }
+        JpaBalanceId that = (JpaBalanceId) object;
+        return Objects.equals(accountId, that.accountId)
+                && Objects.equals(currency, that.currency);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountId, currency);
+    }
 }

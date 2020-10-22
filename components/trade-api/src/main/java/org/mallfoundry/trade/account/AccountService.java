@@ -16,19 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.mallfoundry.trade.SourceType;
 
-public enum BusinessType {
-    INDIVIDUAL, // 个体
-    COMPANY, // 公司
-    NON_PROFIT, // 非盈利组织
-    GOVERNMENT_ENTITY; // 政府单位
+import java.math.BigDecimal;
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return super.toString().toLowerCase();
-    }
+public interface AccountService {
+
+    Account createAccount(String id);
+
+    Account createAccount(Account account);
+
+    Account getAccount(String accountId) throws AccountException;
+
+    Balance creditAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount);
+
+    Balance debitAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount);
+
+    Balance freezeAccountBalance(String accountId, String currency, BigDecimal amount);
+
+    Balance unfreezeAccountBalance(String accountId, String currency, BigDecimal amount);
 }

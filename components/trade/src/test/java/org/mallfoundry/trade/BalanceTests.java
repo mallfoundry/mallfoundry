@@ -19,7 +19,7 @@
 package org.mallfoundry.trade;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.trade.repository.jpa.JpaBalance;
+import org.mallfoundry.trade.account.repository.jpa.JpaBalance;
 
 import java.math.BigDecimal;
 import java.util.Currency;

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.trade.bank;
+package org.mallfoundry.autoconfigure.trade;
 
 import org.mallfoundry.trade.bank.BankCardRepository;
 import org.mallfoundry.trade.bank.DefaultBankCardService;
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BankCardAutoConfiguration {
+public class BankCardConfiguration {
 
     @Bean
     public DelegatingJpaBankCardRepository delegatingJpaBankCardRepository(JpaBankCardRepository repository) {

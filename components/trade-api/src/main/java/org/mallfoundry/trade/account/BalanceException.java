@@ -16,11 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-public class AccountException extends RuntimeException {
-
-    public AccountException(String message) {
+public class BalanceException extends RuntimeException {
+    public BalanceException(String message) {
         super(message);
     }
 }

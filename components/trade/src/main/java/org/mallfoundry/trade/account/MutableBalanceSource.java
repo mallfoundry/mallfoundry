@@ -16,11 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.repository.jpa;
+package org.mallfoundry.trade.account;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.mallfoundry.trade.SourceType;
 
-@Repository
-public interface JpaAccountRepository extends JpaRepository<JpaAccount, String> {
+import java.math.BigDecimal;
+
+public interface MutableBalanceSource extends BalanceSource {
+
+    void setType(SourceType type);
+
+    void setAmount(BigDecimal amount);
 }

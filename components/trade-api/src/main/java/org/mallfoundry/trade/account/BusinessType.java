@@ -16,37 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.repository.jpa;
+package org.mallfoundry.trade.account;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.io.Serializable;
-import java.util.Objects;
+public enum BusinessType {
+    INDIVIDUAL, // 个体
+    COMPANY, // 公司
+    NON_PROFIT, // 非盈利组织
+    GOVERNMENT_ENTITY; // 政府单位
 
-@Getter
-@Setter
-public class JpaBalanceId implements Serializable {
-
-    private String accountId;
-
-    private String currency;
-
+    @JsonValue
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof JpaBalanceId)) {
-            return false;
-        }
-        JpaBalanceId that = (JpaBalanceId) object;
-        return Objects.equals(accountId, that.accountId)
-                && Objects.equals(currency, that.currency);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(accountId, currency);
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 }

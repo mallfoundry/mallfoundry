@@ -16,36 +16,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account.repository.jpa;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.mallfoundry.trade.account.BalanceSourceSupport;
+import org.mallfoundry.trade.SourceType;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.math.BigDecimal;
-import java.util.List;
 
-public interface Account {
+@Getter
+@Setter
+@NoArgsConstructor
+@Embeddable
+public class JpaBalanceSource extends BalanceSourceSupport {
 
-    String getId();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_")
+    private SourceType type;
 
-    void setId(String id);
+    @Column(name = "amount_")
+    private BigDecimal amount = BigDecimal.ZERO;
 
-    String getName();
-
-    void setName(String name);
-
-    BusinessType getBusinessType();
-
-    void setBusinessType(BusinessType businessType);
-
-    Balance createBalance(String currency);
-
-    List<Balance> getBalances();
-
-    Balance getBalance(String currency);
-
-    Balance credit(String currency, SourceType type, BigDecimal amount);
-
-    Balance debit(String currency, SourceType type, BigDecimal amount);
-
-    Balance freeze(String currency, BigDecimal amount);
-
-    Balance unfreeze(String currency, BigDecimal amount);
+    public JpaBalanceSource(SourceType type) {
+        this.type = type;
+    }
 }

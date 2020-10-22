@@ -16,20 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Optional;
 
-public interface BalanceSource extends Serializable {
+public interface AccountRepository {
 
-    SourceType getType();
+    Account create(String id);
 
-    BigDecimal getAmount();
+    Optional<Account> findById(String id);
 
-    // to 存
-    void credit(BigDecimal amount);
+    Account save(Account account);
 
-    // from 取
-    void debit(BigDecimal amount);
+    void delete(Account account);
 }

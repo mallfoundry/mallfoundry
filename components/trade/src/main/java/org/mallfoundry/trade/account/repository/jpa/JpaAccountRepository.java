@@ -16,23 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account.repository.jpa;
 
-import java.math.BigDecimal;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AccountService {
-
-    Account createAccount(String id);
-
-    Account createAccount(Account account);
-
-    Account getAccount(String accountId) throws AccountException;
-
-    Balance creditAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount);
-
-    Balance debitAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount);
-
-    Balance freezeAccountBalance(String accountId, String currency, BigDecimal amount);
-
-    Balance unfreezeAccountBalance(String accountId, String currency, BigDecimal amount);
+@Repository
+public interface JpaAccountRepository extends JpaRepository<JpaAccount, String> {
 }

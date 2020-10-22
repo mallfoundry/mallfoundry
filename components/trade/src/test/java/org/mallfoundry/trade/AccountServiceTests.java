@@ -20,6 +20,8 @@ package org.mallfoundry.trade;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.test.StandaloneTest;
+import org.mallfoundry.trade.account.AccountService;
+import org.mallfoundry.trade.account.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;

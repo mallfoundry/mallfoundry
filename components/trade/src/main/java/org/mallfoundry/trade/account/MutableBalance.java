@@ -16,30 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public interface BalanceStatement {
+public interface MutableBalance extends Balance {
 
-    String getId();
+    void setPendingAmount(BigDecimal pendingAmount);
 
-    String getCurrency();
-
-    BigDecimal getAmount();
-
-    TransactionDirection getDirection();
-
-    TransactionType getType();
-
-    TransactionStatus getStatus();
-
-    String getTransactionId();
-
-    BigDecimal getEndingBalance();
-
-    String getMemo();
-
-    Date getCreatedTime();
+    void setAvailableAmount(BigDecimal availableAmount);
 }

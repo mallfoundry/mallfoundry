@@ -16,7 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-public interface MutableAccount extends Account {
+import org.mallfoundry.trade.SourceType;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public interface BalanceSource extends Serializable {
+
+    SourceType getType();
+
+    BigDecimal getAmount();
+
+    // to 存
+    void credit(BigDecimal amount);
+
+    // from 取
+    void debit(BigDecimal amount);
 }

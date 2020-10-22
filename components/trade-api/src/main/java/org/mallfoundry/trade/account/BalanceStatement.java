@@ -16,34 +16,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.repository.jpa;
+package org.mallfoundry.trade.account;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.mallfoundry.trade.BalanceSourceSupport;
-import org.mallfoundry.trade.SourceType;
+import org.mallfoundry.trade.TransactionDirection;
+import org.mallfoundry.trade.TransactionStatus;
+import org.mallfoundry.trade.TransactionType;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.math.BigDecimal;
+import java.util.Date;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Embeddable
-public class JpaBalanceSource extends BalanceSourceSupport {
+public interface BalanceStatement {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type_")
-    private SourceType type;
+    String getId();
 
-    @Column(name = "amount_")
-    private BigDecimal amount = BigDecimal.ZERO;
+    String getCurrency();
 
-    public JpaBalanceSource(SourceType type) {
-        this.type = type;
-    }
+    BigDecimal getAmount();
+
+    TransactionDirection getDirection();
+
+    TransactionType getType();
+
+    TransactionStatus getStatus();
+
+    String getTransactionId();
+
+    BigDecimal getEndingBalance();
+
+    String getMemo();
+
+    Date getCreatedTime();
 }

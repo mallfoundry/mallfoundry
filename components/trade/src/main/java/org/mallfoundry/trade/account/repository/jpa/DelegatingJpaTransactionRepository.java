@@ -16,39 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.repository.jpa;
+package org.mallfoundry.trade.account.repository.jpa;
 
-import org.mallfoundry.trade.Account;
-import org.mallfoundry.trade.AccountRepository;
+import org.mallfoundry.trade.Transaction;
+import org.mallfoundry.trade.TransactionRepository;
+import org.mallfoundry.trade.repository.jpa.JpaTransaction;
+import org.mallfoundry.trade.repository.jpa.JpaTransactionRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
 
-public class DelegatingJpaAccountRepository implements AccountRepository {
+public class DelegatingJpaTransactionRepository implements TransactionRepository {
 
-    private final JpaAccountRepository repository;
+    private final JpaTransactionRepository repository;
 
-    public DelegatingJpaAccountRepository(JpaAccountRepository repository) {
+    public DelegatingJpaTransactionRepository(JpaTransactionRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public Account create(String id) {
-        return new JpaAccount(id);
+    public Transaction create(String id) {
+        return new JpaTransaction(id);
     }
 
     @Override
-    public Optional<Account> findById(String id) {
+    public Optional<Transaction> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public Account save(Account account) {
-        return this.repository.save(CastUtils.cast(account));
+    public Transaction save(Transaction transaction) {
+        return this.repository.save(CastUtils.cast(transaction));
     }
 
     @Override
-    public void delete(Account account) {
-        this.repository.delete(CastUtils.cast(account));
+    public void delete(Transaction transaction) {
+        this.repository.delete(CastUtils.cast(transaction));
     }
 }

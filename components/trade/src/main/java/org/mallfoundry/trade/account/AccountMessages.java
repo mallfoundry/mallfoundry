@@ -16,13 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-import java.math.BigDecimal;
+import org.mallfoundry.i18n.Messages;
 
-public interface MutableBalance extends Balance {
+import static org.mallfoundry.i18n.MessageHolder.message;
 
-    void setPendingAmount(BigDecimal pendingAmount);
+public abstract class AccountMessages {
 
-    void setAvailableAmount(BigDecimal availableAmount);
+    private static final String ACCOUNT_NOT_FOUND_MESSAGE_CODE_KEY = Messages.getKeys(Account.class).codeKey("notFound");
+
+    public static String notFound() {
+        return message(ACCOUNT_NOT_FOUND_MESSAGE_CODE_KEY, "Account does not exist");
+    }
 }

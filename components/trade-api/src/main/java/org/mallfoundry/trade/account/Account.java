@@ -16,26 +16,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
+
+import org.mallfoundry.trade.SourceType;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
-public interface AccountBill {
+public interface Account {
 
     String getId();
 
-    BigDecimal getAmount();
+    void setId(String id);
 
-    TransactionDirection getDirection();
+    String getName();
 
-    TransactionType getType();
+    void setName(String name);
 
-    TransactionStatus getStatus();
+    BusinessType getBusinessType();
 
-    String getTransactionId();
+    void setBusinessType(BusinessType businessType);
 
-    String getMemo();
+    Balance createBalance(String currency);
 
-    Date getCreatedTime();
+    List<Balance> getBalances();
+
+    Balance getBalance(String currency);
+
+    Balance credit(String currency, SourceType type, BigDecimal amount);
+
+    Balance debit(String currency, SourceType type, BigDecimal amount);
+
+    Balance freeze(String currency, BigDecimal amount);
+
+    Balance unfreeze(String currency, BigDecimal amount);
 }

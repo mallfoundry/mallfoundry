@@ -16,19 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
-import java.math.BigDecimal;
-
-public abstract class BalanceSourceSupport implements MutableBalanceSource {
-
-    @Override
-    public void credit(BigDecimal amount) {
-        this.setAmount(this.getAmount().add(amount));
-    }
-
-    @Override
-    public void debit(BigDecimal amount) {
-        this.setAmount(this.getAmount().subtract(amount));
-    }
+public interface MutableAccount extends Account {
 }
