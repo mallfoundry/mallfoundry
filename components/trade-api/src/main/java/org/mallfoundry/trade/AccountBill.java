@@ -18,5 +18,24 @@
 
 package org.mallfoundry.trade;
 
-public interface Bill {
+import java.math.BigDecimal;
+import java.util.Date;
+
+public interface AccountBill {
+
+    String getId();
+
+    BigDecimal getAmount();
+
+    TransactionDirection getDirection();
+
+    TransactionType getType();
+
+    TransactionStatus getStatus();
+
+    String getTransactionId();
+
+    String getMemo();
+
+    Date getCreatedTime();
 }
