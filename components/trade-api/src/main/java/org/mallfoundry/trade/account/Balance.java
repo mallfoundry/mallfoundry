@@ -18,8 +18,6 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,9 +38,9 @@ public interface Balance extends Serializable {
      */
     BigDecimal getAvailableAmount();
 
-    BalanceSource createSource(SourceType sourceType);
+    BalanceSource createSource(BalanceSourceType sourceType);
 
-    BalanceSource getSource(SourceType sourceType);
+    BalanceSource getSource(BalanceSourceType sourceType);
 
     /**
      * 返回余额来源集合，余额来源是存放在第三方支付平台的余额。
@@ -52,12 +50,12 @@ public interface Balance extends Serializable {
     /**
      * 存钱。
      */
-    void credit(SourceType type, BigDecimal amount) throws BalanceException;
+    void credit(BalanceSourceType type, BigDecimal amount) throws BalanceException;
 
     /**
      * 取钱。
      */
-    void debit(SourceType type, BigDecimal amount) throws BalanceException;
+    void debit(BalanceSourceType type, BigDecimal amount) throws BalanceException;
 
 
     void freeze(BigDecimal amount);

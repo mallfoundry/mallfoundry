@@ -18,15 +18,13 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public abstract class BalanceSupport implements MutableBalance {
 
     @Override
-    public BalanceSource getSource(SourceType sourceType) {
+    public BalanceSource getSource(BalanceSourceType sourceType) {
         return this.getSources().stream()
                 .filter(source -> source.getType().equals(sourceType))
                 .findFirst()
@@ -34,7 +32,7 @@ public abstract class BalanceSupport implements MutableBalance {
     }
 
     @Override
-    public void credit(SourceType sourceType, BigDecimal amount) {
+    public void credit(BalanceSourceType sourceType, BigDecimal amount) {
         var source = this.getSource(sourceType);
         if (Objects.isNull(source)) {
             source = this.createSource(sourceType);
@@ -45,7 +43,7 @@ public abstract class BalanceSupport implements MutableBalance {
     }
 
     @Override
-    public void debit(SourceType sourceType, BigDecimal amount) {
+    public void debit(BalanceSourceType sourceType, BigDecimal amount) {
         var source = this.getSource(sourceType);
         if (Objects.isNull(source)) {
             throw new BalanceException(String.format("The source(%s) is not null", sourceType));

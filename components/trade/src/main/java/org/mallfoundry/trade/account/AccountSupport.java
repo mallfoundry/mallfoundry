@@ -18,8 +18,6 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -33,7 +31,7 @@ public abstract class AccountSupport implements MutableAccount {
     }
 
     @Override
-    public Balance credit(String currency, SourceType type, BigDecimal amount) {
+    public Balance credit(String currency, BalanceSourceType type, BigDecimal amount) {
         var balance = this.getBalance(currency);
         if (Objects.isNull(balance)) {
             balance = this.createBalance(currency);
@@ -44,7 +42,7 @@ public abstract class AccountSupport implements MutableAccount {
     }
 
     @Override
-    public Balance debit(String currency, SourceType sourceType, BigDecimal amount) {
+    public Balance debit(String currency, BalanceSourceType sourceType, BigDecimal amount) {
         var balance = this.getBalance(currency);
         if (Objects.isNull(balance)) {
             balance = this.createBalance(currency);

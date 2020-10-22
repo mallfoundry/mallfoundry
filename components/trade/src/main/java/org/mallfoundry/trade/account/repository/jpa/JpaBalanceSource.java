@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.trade.account.BalanceSourceSupport;
-import org.mallfoundry.trade.SourceType;
+import org.mallfoundry.trade.account.BalanceSourceType;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -38,12 +38,12 @@ public class JpaBalanceSource extends BalanceSourceSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type_")
-    private SourceType type;
+    private BalanceSourceType type;
 
     @Column(name = "amount_")
     private BigDecimal amount = BigDecimal.ZERO;
 
-    public JpaBalanceSource(SourceType type) {
+    public JpaBalanceSource(BalanceSourceType type) {
         this.type = type;
     }
 }

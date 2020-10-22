@@ -18,8 +18,6 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -43,9 +41,9 @@ public interface Account {
 
     Balance getBalance(String currency);
 
-    Balance credit(String currency, SourceType type, BigDecimal amount);
+    Balance credit(String currency, BalanceSourceType type, BigDecimal amount);
 
-    Balance debit(String currency, SourceType type, BigDecimal amount);
+    Balance debit(String currency, BalanceSourceType type, BigDecimal amount);
 
     Balance freeze(String currency, BigDecimal amount);
 

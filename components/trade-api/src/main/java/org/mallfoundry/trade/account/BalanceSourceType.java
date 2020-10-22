@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade;
+package org.mallfoundry.trade.account;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SourceType {
+public enum BalanceSourceType {
     ALIPAY,
     WECHAT_PAY;
 

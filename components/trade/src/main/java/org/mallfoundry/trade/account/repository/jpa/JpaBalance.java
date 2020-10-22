@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.trade.account.BalanceSource;
 import org.mallfoundry.trade.account.BalanceSupport;
-import org.mallfoundry.trade.SourceType;
+import org.mallfoundry.trade.account.BalanceSourceType;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -74,7 +74,7 @@ public class JpaBalance extends BalanceSupport {
     }
 
     @Override
-    public BalanceSource createSource(SourceType sourceType) {
+    public BalanceSource createSource(BalanceSourceType sourceType) {
         return new JpaBalanceSource(sourceType);
     }
 

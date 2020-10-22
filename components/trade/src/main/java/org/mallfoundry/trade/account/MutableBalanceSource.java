@@ -18,13 +18,11 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.math.BigDecimal;
 
 public interface MutableBalanceSource extends BalanceSource {
 
-    void setType(SourceType type);
+    void setType(BalanceSourceType type);
 
     void setAmount(BigDecimal amount);
 }

@@ -18,7 +18,6 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -54,7 +53,7 @@ public class DefaultAccountService implements AccountService {
 
     @Transactional
     @Override
-    public Balance creditAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount) {
+    public Balance creditAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount) {
         var account = this.requiredAccount(accountId);
         var balance = account.credit(currency, type, amount);
         this.accountRepository.save(account);
@@ -63,7 +62,7 @@ public class DefaultAccountService implements AccountService {
 
     @Transactional
     @Override
-    public Balance debitAccountBalance(String accountId, String currency, SourceType type, BigDecimal amount) {
+    public Balance debitAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount) {
         var account = this.requiredAccount(accountId);
         var balance = account.debit(currency, type, amount);
         this.accountRepository.save(account);

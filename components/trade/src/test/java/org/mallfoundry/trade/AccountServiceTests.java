@@ -21,6 +21,7 @@ package org.mallfoundry.trade;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.test.StandaloneTest;
 import org.mallfoundry.trade.account.AccountService;
+import org.mallfoundry.trade.account.BalanceSourceType;
 import org.mallfoundry.trade.account.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,8 +43,8 @@ public class AccountServiceTests {
 
     @Test
     public void testCreditAccountBalance() {
-        this.accountService.creditAccountBalance("1", "CNY", SourceType.ALIPAY, BigDecimal.valueOf(10));
-        this.accountService.creditAccountBalance("1", "CNY", SourceType.WECHAT_PAY, BigDecimal.valueOf(10));
+        this.accountService.creditAccountBalance("1", "CNY", BalanceSourceType.ALIPAY, BigDecimal.valueOf(10));
+        this.accountService.creditAccountBalance("1", "CNY", BalanceSourceType.WECHAT_PAY, BigDecimal.valueOf(10));
     }
 
     @Test

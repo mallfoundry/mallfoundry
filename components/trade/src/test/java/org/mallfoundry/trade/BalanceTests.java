@@ -19,6 +19,7 @@
 package org.mallfoundry.trade;
 
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.trade.account.BalanceSourceType;
 import org.mallfoundry.trade.account.repository.jpa.JpaBalance;
 
 import java.math.BigDecimal;
@@ -29,13 +30,13 @@ public class BalanceTests {
     @Test
     public void testBalanceCredit() {
         var balance = new JpaBalance();
-        balance.credit(SourceType.ALIPAY, BigDecimal.valueOf(100));
+        balance.credit(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
     }
 
     @Test
     public void testBalanceDebit() {
         var balance = new JpaBalance();
-        balance.debit(SourceType.ALIPAY, BigDecimal.valueOf(100));
+        balance.debit(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
     }
 
     @Test

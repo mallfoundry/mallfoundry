@@ -18,14 +18,12 @@
 
 package org.mallfoundry.trade.account;
 
-import org.mallfoundry.trade.SourceType;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 public interface BalanceSource extends Serializable {
 
-    SourceType getType();
+    BalanceSourceType getType();
 
     BigDecimal getAmount();
 
