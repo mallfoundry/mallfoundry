@@ -20,15 +20,15 @@ package org.mallfoundry.trade;
 
 import org.mallfoundry.trade.bank.HolderType;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 
-public interface Withdraw {
+public interface Recipient extends Serializable {
 
-    String getId();
+    String getNumber();
 
-    BigDecimal getAmount();
+    String getName();
 
-    String getCurrency();
+    RecipientType getType();
 
     String getBankName();
 
@@ -37,6 +37,4 @@ public interface Withdraw {
     HolderType getHolderType();
 
     String getHolderName();
-
-    String getNumber();
 }
