@@ -20,7 +20,7 @@ package org.mallfoundry.trade;
 
 public interface TransactionService {
 
-    Withdraw createWithdraw();
+    Withdrawal createWithdrawal(String id);
 
-    Transaction withdraw(Withdraw withdraw);
+    Withdrawal applyWithdrawal(Withdrawal withdraw);
 }
