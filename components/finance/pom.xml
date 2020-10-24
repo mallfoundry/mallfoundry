@@ -27,12 +27,12 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall-trade</artifactId>
+    <artifactId>mall-finance</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-trade-api</artifactId>
+            <artifactId>mall-finance-api</artifactId>
         </dependency>
 
         <dependency>
