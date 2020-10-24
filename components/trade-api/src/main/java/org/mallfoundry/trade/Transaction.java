@@ -25,6 +25,10 @@ public interface Transaction {
 
     String getId();
 
+    String getAccountId();
+
+    Counterparty getCounterparty();
+
     BigDecimal getAmount();
 
     String getCurrency();
@@ -33,9 +37,13 @@ public interface Transaction {
 
     String getSource();
 
+    TransactionDirection getDirection();
+
     TransactionStatus getStatus();
 
     TransactionType getType();
+
+    String getMemo();
 
     Date getCreatedTime();
 
