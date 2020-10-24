@@ -16,30 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.trade.account;
+package org.mallfoundry.trade;
 
-import org.mallfoundry.trade.TransactionDirection;
-import org.mallfoundry.trade.TransactionStatus;
-import org.mallfoundry.trade.TransactionType;
+public class DefaultTransactionService implements TransactionService {
 
-import java.math.BigDecimal;
-import java.util.Date;
+    private final WithdrawalRepository withdrawalRepository;
 
-public interface AccountBill {
+    public DefaultTransactionService(WithdrawalRepository withdrawalRepository) {
+        this.withdrawalRepository = withdrawalRepository;
+    }
 
-    String getId();
+    @Override
+    public Withdrawal createWithdrawal(String id) {
+        return this.withdrawalRepository.create(id);
+    }
 
-    BigDecimal getAmount();
+    @Override
+    public Withdrawal applyWithdrawal(Withdrawal withdraw) {
 
-    TransactionDirection getDirection();
-
-    TransactionType getType();
-
-    TransactionStatus getStatus();
-
-    String getTransactionId();
-
-    String getMemo();
-
-    Date getCreatedTime();
+        return null;
+    }
 }
