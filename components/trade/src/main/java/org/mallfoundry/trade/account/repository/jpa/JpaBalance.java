@@ -42,7 +42,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_trade_balance")
+@Table(name = "mf_financial_balance")
 @IdClass(JpaBalanceId.class)
 public class JpaBalance extends BalanceSupport {
 
@@ -61,7 +61,7 @@ public class JpaBalance extends BalanceSupport {
     private BigDecimal availableAmount = BigDecimal.ZERO;
 
     @ElementCollection(targetClass = JpaBalanceSource.class)
-    @JoinTable(name = "mf_trade_balance_source",
+    @JoinTable(name = "mf_financial_balance_source",
             joinColumns = {
                     @JoinColumn(name = "account_id_", referencedColumnName = "account_id_"),
                     @JoinColumn(name = "currency_", referencedColumnName = "currency_")

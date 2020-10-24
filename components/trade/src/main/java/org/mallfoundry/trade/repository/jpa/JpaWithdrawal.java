@@ -35,7 +35,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_trade_withdrawal")
+@Table(name = "mf_financial_withdrawal")
 public class JpaWithdrawal implements Withdrawal {
 
     @Id

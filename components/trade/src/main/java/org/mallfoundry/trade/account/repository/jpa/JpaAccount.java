@@ -41,7 +41,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_trade_account")
+@Table(name = "mf_financial_account")
 public class JpaAccount extends AccountSupport {
 
     @Id

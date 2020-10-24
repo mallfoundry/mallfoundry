@@ -21,6 +21,8 @@ package org.mallfoundry.trade.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.trade.Counterparty;
+import org.mallfoundry.trade.TransactionDirection;
 import org.mallfoundry.trade.TransactionStatus;
 import org.mallfoundry.trade.TransactionSupport;
 import org.mallfoundry.trade.TransactionType;
@@ -30,6 +32,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,18 +42,29 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_trade_transaction")
+@Table(name = "mf_financial_transaction")
 public class JpaTransaction extends TransactionSupport {
 
     @Id
     @Column(name = "id_")
     private String id;
 
+    @Column(name = "account_id_")
+    private String accountId;
+
+    @ManyToOne(targetEntity = JpaCounterparty.class)
+    @JoinColumn(name = "counterparty_id_")
+    private Counterparty counterparty;
+
     @Column(name = "amount_")
     private BigDecimal amount;
 
     @Column(name = "currency_")
     private String currency;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "direction_")
+    private TransactionDirection direction;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type_")
@@ -65,10 +80,14 @@ public class JpaTransaction extends TransactionSupport {
     @Column(name = "status_")
     private TransactionStatus status;
 
+    @Column(name = "memo_")
+    private String memo;
+
     @Column(name = "created_time_")
     private Date createdTime;
 
     public JpaTransaction(String id) {
         this.id = id;
     }
+
 }

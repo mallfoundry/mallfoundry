@@ -37,7 +37,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_trade_bank_card")
+@Table(name = "mf_financial_bank_card")
 public class JpaBankCard extends BankCardSupport {
 
     @Id
