@@ -20,5 +20,5 @@ package org.mallfoundry.trade;
 
 public enum TransactionDirection {
     DEBIT, // 转入
-    CREDIT; // 支出
+    CREDIT // 支出
 }
