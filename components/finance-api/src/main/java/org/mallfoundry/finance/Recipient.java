@@ -24,6 +24,8 @@ import java.io.Serializable;
 
 public interface Recipient extends Serializable {
 
+    String getId();
+
     String getNumber();
 
     String getName();
