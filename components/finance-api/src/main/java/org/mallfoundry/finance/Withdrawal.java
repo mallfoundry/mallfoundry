@@ -20,6 +20,7 @@ package org.mallfoundry.finance;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface Withdrawal extends Serializable {
 
@@ -44,4 +45,32 @@ public interface Withdrawal extends Serializable {
     Recipient getRecipient();
 
     void setRecipient(Recipient recipient);
+
+    Date getAppliedTime();
+
+    String getDisapprovalReason();
+
+    Date getDisapprovedTime();
+
+    Date getCanceledTime();
+
+    Date getApprovedTime();
+
+    Date getSucceededTime();
+
+    String getFailureReason();
+
+    Date getFailedTime();
+
+    void apply();
+
+    void disapprove(String disapprovalReason);
+
+    void cancel();
+
+    void approve();
+
+    void succeed();
+
+    void fail(String failureReason);
 }
