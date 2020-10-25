@@ -18,9 +18,9 @@
 
 package org.mallfoundry.finance;
 
-public interface TransactionService {
+public class WithdrawalException extends RuntimeException {
 
-    Withdrawal createWithdrawal(String id);
-
-    Withdrawal applyWithdrawal(Withdrawal withdraw);
+    public WithdrawalException(String message) {
+        super(message);
+    }
 }
