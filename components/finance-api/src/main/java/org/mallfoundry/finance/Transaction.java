@@ -29,6 +29,8 @@ public interface Transaction {
 
     Counterparty getCounterparty();
 
+    void setCounterparty(Counterparty counterparty);
+
     BigDecimal getAmount();
 
     String getCurrency();
