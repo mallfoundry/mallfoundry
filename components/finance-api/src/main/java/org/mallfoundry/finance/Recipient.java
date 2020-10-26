@@ -19,24 +19,58 @@
 package org.mallfoundry.finance;
 
 import org.mallfoundry.finance.bank.HolderType;
+import org.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
 
-public interface Recipient extends Serializable {
+public interface Recipient extends Serializable, ObjectBuilder.ToBuilder<Recipient.Builder> {
 
     String getId();
 
+    void setId(String id);
+
     String getNumber();
+
+    void setNumber(String number);
 
     String getName();
 
+    void setName(String name);
+
     RecipientType getType();
+
+    void setType(RecipientType type);
 
     String getBankName();
 
+    void setBankName(String bankName);
+
     String getBranchName();
+
+    void setBranchName(String branchName);
 
     HolderType getHolderType();
 
+    void setHolderType(HolderType holderType);
+
     String getHolderName();
+
+    void setHolderName(String holderName);
+
+    interface Builder extends ObjectBuilder<Recipient> {
+
+        Builder number(String number);
+
+        Builder name(String name);
+
+        Builder type(RecipientType type);
+
+        Builder bankName(String bankName);
+
+        Builder branchName(String branchName);
+
+        Builder holderType(HolderType holderType);
+
+        Builder holderName(String holderName);
+    }
 }
