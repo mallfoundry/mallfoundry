@@ -18,22 +18,18 @@
 
 package org.mallfoundry.finance;
 
-public class DefaultTransactionService implements TransactionService {
+import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
 
-    private final WithdrawalRepository withdrawalRepository;
+public class WithdrawalIdentityProcessor implements WithdrawalProcessor {
 
-    public DefaultTransactionService(WithdrawalRepository withdrawalRepository) {
-        this.withdrawalRepository = withdrawalRepository;
-    }
-
-    @Override
-    public Withdrawal createWithdrawal(String id) {
-        return this.withdrawalRepository.create(id);
-    }
+    private static final String WITHDRAWAL_ID_VALUE_NAME = "finance.withdrawal.id";
 
     @Override
-    public Withdrawal applyWithdrawal(Withdrawal withdraw) {
-
-        return null;
+    public Withdrawal preProcessBeforeApplyWithdrawal(Withdrawal withdrawal) {
+        if (StringUtils.isBlank(withdrawal.getId())) {
+            withdrawal.setId(PrimaryKeyHolder.next(WITHDRAWAL_ID_VALUE_NAME));
+        }
+        return withdrawal;
     }
 }
