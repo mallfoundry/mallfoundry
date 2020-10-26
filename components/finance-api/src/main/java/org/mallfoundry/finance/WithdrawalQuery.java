@@ -22,8 +22,22 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Set;
+
 public interface WithdrawalQuery extends Query, ObjectBuilder.ToBuilder<WithdrawalQuery.Builder> {
 
+    String getAccountId();
+
+    void setAccountId(String accountId);
+
+    Set<WithdrawalStatus> getStatuses();
+
+    void setStatuses(Set<WithdrawalStatus> statuses);
+
     interface Builder extends QueryBuilder<WithdrawalQuery, WithdrawalQuery.Builder> {
+
+        Builder accountId(String accountId);
+
+        Builder statuses(Set<WithdrawalStatus> statuses);
     }
 }
