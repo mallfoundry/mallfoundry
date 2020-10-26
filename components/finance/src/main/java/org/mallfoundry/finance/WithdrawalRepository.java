@@ -18,11 +18,13 @@
 
 package org.mallfoundry.finance;
 
+import java.util.Optional;
+
 public interface WithdrawalRepository {
 
     Withdrawal create(String id);
 
-    Withdrawal save(Withdrawal withdrawal);
+    Optional<Withdrawal> findById(String id);
 
-    void delete(Withdrawal withdrawal);
+    Withdrawal save(Withdrawal withdrawal);
 }
