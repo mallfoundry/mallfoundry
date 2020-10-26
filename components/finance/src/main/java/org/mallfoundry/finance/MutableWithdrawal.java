@@ -22,6 +22,8 @@ import java.util.Date;
 
 public interface MutableWithdrawal extends Withdrawal {
 
+    void setStatus(WithdrawalStatus status);
+
     void setAppliedTime(Date appliedTime);
 
     void setDisapprovalReason(String disapprovalReason);
