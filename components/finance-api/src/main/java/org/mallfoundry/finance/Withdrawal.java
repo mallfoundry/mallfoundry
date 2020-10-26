@@ -18,11 +18,13 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.util.ObjectBuilder;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public interface Withdrawal extends Serializable {
+public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdrawal.Builder> {
 
     String getId();
 
@@ -39,6 +41,8 @@ public interface Withdrawal extends Serializable {
     String getCurrency();
 
     void setCurrency(String currency);
+
+    WithdrawalStatus getStatus();
 
     Recipient createRecipient();
 
@@ -73,4 +77,15 @@ public interface Withdrawal extends Serializable {
     void succeed();
 
     void fail(String failureReason);
+
+    interface Builder extends ObjectBuilder<Withdrawal> {
+
+        Builder accountId(String accountId);
+
+        Builder amount(BigDecimal amount);
+
+        Builder currency(String currency);
+
+        Builder recipient(Recipient recipient);
+    }
 }
