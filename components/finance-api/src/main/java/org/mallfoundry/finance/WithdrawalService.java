@@ -20,6 +20,8 @@ package org.mallfoundry.finance;
 
 public interface WithdrawalService {
 
+    WithdrawalQuery createWithdrawalQuery();
+
     Withdrawal createWithdrawal(String id);
 
     Withdrawal applyWithdrawal(Withdrawal withdrawal) throws WithdrawalException;
