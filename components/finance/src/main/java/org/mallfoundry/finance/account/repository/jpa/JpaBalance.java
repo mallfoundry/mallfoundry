@@ -21,9 +21,12 @@ package org.mallfoundry.finance.account.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.account.BalanceId;
 import org.mallfoundry.finance.account.BalanceSource;
 import org.mallfoundry.finance.account.BalanceSourceType;
 import org.mallfoundry.finance.account.BalanceSupport;
+import org.mallfoundry.finance.account.BalanceTransaction;
+import org.mallfoundry.finance.account.ImmutableBalanceId;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -43,7 +46,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_financial_balance")
-@IdClass(JpaBalanceId.class)
+@IdClass(ImmutableBalanceId.class)
 public class JpaBalance extends BalanceSupport {
 
     @Id
@@ -71,9 +74,14 @@ public class JpaBalance extends BalanceSupport {
             })
     private List<BalanceSource> sources = new ArrayList<>();
 
-    public JpaBalance(String accountId, String currency) {
-        this.accountId = accountId;
-        this.currency = currency;
+    public JpaBalance(BalanceId balanceId) {
+        this.accountId = balanceId.getAccountId();
+        this.currency = balanceId.getCurrency();
+    }
+
+    @Override
+    public BalanceTransaction createTransaction() {
+        return new JpaBalanceTransaction();
     }
 
     @Override
