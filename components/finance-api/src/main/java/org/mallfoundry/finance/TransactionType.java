@@ -23,5 +23,6 @@ public enum TransactionType {
     PAYMENT_REFUND, // 付款退款
     RECHARGE, // 充值
     TRANSFER, // 转账
+    WITHDRAWAL_FEE, // 提现服务费用
     WITHDRAWAL // 提现
 }
