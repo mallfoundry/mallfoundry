@@ -25,27 +25,45 @@ public interface Transaction {
 
     String getId();
 
+    void setId(String id);
+
     String getAccountId();
+
+    void setAccountId(String accountId);
+
+    String getCurrency();
+
+    void setCurrency(String currency);
+
+    BigDecimal getAmount();
+
+    void setAmount(BigDecimal amount);
 
     Counterparty getCounterparty();
 
     void setCounterparty(Counterparty counterparty);
 
-    BigDecimal getAmount();
+    String getSourceId();
 
-    String getCurrency();
-
-    String getDescription();
-
-    String getSource();
+    void setSourceId(String sourceId);
 
     TransactionDirection getDirection();
+
+    void setDirection(TransactionDirection direction);
 
     TransactionStatus getStatus();
 
     TransactionType getType();
 
+    void setType(TransactionType type);
+
     String getMemo();
+
+    void setMemo(String memo);
+
+    String getDescription();
+
+    void setDescription(String description);
 
     Date getCreatedTime();
 
