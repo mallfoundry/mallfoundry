@@ -38,6 +38,8 @@ public interface Balance extends Serializable {
      */
     BigDecimal getAvailableAmount();
 
+    BigDecimal getFreezeAmount();
+
     BalanceSource createSource(BalanceSourceType sourceType);
 
     BalanceSource getSource(BalanceSourceType sourceType);
@@ -48,14 +50,29 @@ public interface Balance extends Serializable {
     List<BalanceSource> getSources();
 
     /**
+     * 添加到不可用余额内。
+     */
+    void pending(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
+
+    /**
+     * 从不可用余额内退款。
+     */
+    void refund(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
+
+    /**
+     * 从不可用余额内结算到可用余额。
+     */
+    void settle(BigDecimal amount) throws BalanceException;
+
+    /**
      * 存钱。
      */
-    void credit(BalanceSourceType type, BigDecimal amount) throws BalanceException;
+    void credit(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
 
     /**
      * 取钱。
      */
-    void debit(BalanceSourceType type, BigDecimal amount) throws BalanceException;
+    void debit(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
 
 
     void freeze(BigDecimal amount);
