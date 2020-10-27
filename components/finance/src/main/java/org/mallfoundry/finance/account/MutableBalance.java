@@ -25,4 +25,6 @@ public interface MutableBalance extends Balance {
     void setPendingAmount(BigDecimal pendingAmount);
 
     void setAvailableAmount(BigDecimal availableAmount);
+
+    void setFreezeAmount(BigDecimal freezeAmount);
 }
