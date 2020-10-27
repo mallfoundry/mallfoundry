@@ -18,8 +18,11 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.finance.account.BalanceTransaction;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static org.mallfoundry.finance.WithdrawalStatus.CANCELED;
 import static org.mallfoundry.finance.WithdrawalStatus.DISAPPROVED;
@@ -30,10 +33,22 @@ import static org.mallfoundry.finance.WithdrawalStatus.SUCCEEDED;
 
 public abstract class WithdrawalSupport implements MutableWithdrawal {
 
+    private void addApplyTransactions() {
+        var transaction = this.createTransaction();
+        transaction.setAccountId(this.getAccountId());
+        transaction.setCurrency(this.getCurrency());
+        transaction.setAmount(this.getAmount());
+        transaction.setDirection(TransactionDirection.DEBIT);
+        transaction.create(TransactionType.WITHDRAWAL);
+        this.setTransactions(List.of(transaction));
+    }
+
     @Override
-    public void apply() {
-        this.setAppliedTime(new Date());
+    public void apply(List<BalanceTransaction> balanceTransactions) {
+        this.setBalanceTransactions(balanceTransactions);
         this.setStatus(PENDING);
+        this.setAppliedTime(new Date());
+        this.addApplyTransactions();
     }
 
     @Override
