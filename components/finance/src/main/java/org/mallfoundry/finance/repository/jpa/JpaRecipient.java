@@ -19,37 +19,64 @@
 package org.mallfoundry.finance.repository.jpa;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.finance.Recipient;
+import org.mallfoundry.finance.RecipientSupport;
 import org.mallfoundry.finance.RecipientType;
 import org.mallfoundry.finance.bank.HolderType;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@Embeddable
-public class JpaRecipient implements Recipient {
+@NoArgsConstructor
+@Entity
+@Table(name = "mf_financial_recipient")
+public class JpaRecipient extends RecipientSupport {
 
-    @Column(name = "recipient_number_")
+    @NotBlank
+    @Id
+    @Column(name = "id")
+    private String id;
+
+    @NotBlank
+    @Column(name = "number_")
     private String number;
 
-    @Column(name = "recipient_name_")
+    @NotBlank
+    @Column(name = "name_")
     private String name;
 
-    @Column(name = "recipient_type_")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_")
     private RecipientType type;
 
-    @Column(name = "recipient_bank_name_")
+    @NotBlank
+    @Column(name = "bank_name_")
     private String bankName;
 
-    @Column(name = "recipient_branch_name_")
+    @NotBlank
+    @Column(name = "branch_name_")
     private String branchName;
 
-    @Column(name = "recipient_holder_type_")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "holder_type_")
     private HolderType holderType;
 
-    @Column(name = "recipient_holder_name_")
+    @NotBlank
+    @Column(name = "holder_name_")
     private String holderName;
+
+    public JpaRecipient(String id) {
+        this.id = id;
+    }
 }
