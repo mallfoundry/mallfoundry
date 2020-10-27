@@ -16,31 +16,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.finance.account.repository.jpa;
+package org.mallfoundry.finance.account;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class JpaBalanceId implements Serializable {
+@NoArgsConstructor
+public class ImmutableBalanceId implements BalanceId {
 
     private String accountId;
 
     private String currency;
 
+    public ImmutableBalanceId(String accountId, String currency) {
+        this.accountId = accountId;
+        this.currency = currency;
+    }
+
+    public static ImmutableBalanceId of(BalanceId balanceId) {
+        if (balanceId instanceof ImmutableBalanceId) {
+            return (ImmutableBalanceId) balanceId;
+        }
+        return new ImmutableBalanceId(balanceId.getAccountId(), balanceId.getCurrency());
+    }
+
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(object instanceof JpaBalanceId)) {
+        if (!(o instanceof ImmutableBalanceId)) {
             return false;
         }
-        JpaBalanceId that = (JpaBalanceId) object;
+        ImmutableBalanceId that = (ImmutableBalanceId) o;
         return Objects.equals(accountId, that.accountId)
                 && Objects.equals(currency, that.currency);
     }
