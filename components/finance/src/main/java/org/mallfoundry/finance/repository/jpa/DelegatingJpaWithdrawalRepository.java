@@ -20,8 +20,17 @@ package org.mallfoundry.finance.repository.jpa;
 
 import org.mallfoundry.finance.Withdrawal;
 import org.mallfoundry.finance.WithdrawalRepository;
+import org.springframework.data.util.CastUtils;
+
+import java.util.Optional;
 
 public class DelegatingJpaWithdrawalRepository implements WithdrawalRepository {
+
+    private final JpaWithdrawalRepository repository;
+
+    public DelegatingJpaWithdrawalRepository(JpaWithdrawalRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Withdrawal create(String id) {
@@ -29,12 +38,12 @@ public class DelegatingJpaWithdrawalRepository implements WithdrawalRepository {
     }
 
     @Override
-    public Withdrawal save(Withdrawal withdrawal) {
-        return null;
+    public Optional<Withdrawal> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public void delete(Withdrawal withdrawal) {
-
+    public Withdrawal save(Withdrawal withdrawal) {
+        return this.repository.save(CastUtils.cast(withdrawal));
     }
 }
