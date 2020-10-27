@@ -22,20 +22,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.account.AccountSupport;
-import org.mallfoundry.finance.account.Balance;
 import org.mallfoundry.finance.account.BusinessType;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -55,16 +49,7 @@ public class JpaAccount extends AccountSupport {
     @Column(name = "business_type_")
     private BusinessType businessType;
 
-    @OneToMany(targetEntity = JpaBalance.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id_", referencedColumnName = "id_")
-    private List<Balance> balances = new ArrayList<>();
-
     public JpaAccount(String id) {
         this.id = id;
-    }
-
-    @Override
-    public Balance createBalance(String currency) {
-        return new JpaBalance(this.id, currency);
     }
 }

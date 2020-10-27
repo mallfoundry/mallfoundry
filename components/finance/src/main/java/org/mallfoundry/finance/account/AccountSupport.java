@@ -18,51 +18,5 @@
 
 package org.mallfoundry.finance.account;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
 public abstract class AccountSupport implements MutableAccount {
-
-    @Override
-    public Balance getBalance(String currency) {
-        return this.getBalances().stream()
-                .filter(balance -> balance.getCurrency().equals(currency))
-                .findFirst().orElse(null);
-    }
-
-    @Override
-    public Balance credit(String currency, BalanceSourceType type, BigDecimal amount) {
-        var balance = this.getBalance(currency);
-        if (Objects.isNull(balance)) {
-            balance = this.createBalance(currency);
-            this.getBalances().add(balance);
-        }
-        balance.credit(type, amount);
-        return balance;
-    }
-
-    @Override
-    public Balance debit(String currency, BalanceSourceType sourceType, BigDecimal amount) {
-        var balance = this.getBalance(currency);
-        if (Objects.isNull(balance)) {
-            balance = this.createBalance(currency);
-            this.getBalances().add(balance);
-        }
-        balance.debit(sourceType, amount);
-        return balance;
-    }
-
-    @Override
-    public Balance freeze(String currency, BigDecimal amount) {
-        var balance = this.getBalance(currency);
-        balance.freeze(amount);
-        return balance;
-    }
-
-    @Override
-    public Balance unfreeze(String currency, BigDecimal amount) {
-        var balance = this.getBalance(currency);
-        balance.unfreeze(amount);
-        return balance;
-    }
 }
