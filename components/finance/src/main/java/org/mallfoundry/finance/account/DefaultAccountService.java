@@ -20,8 +20,6 @@ package org.mallfoundry.finance.account;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
 public class DefaultAccountService implements AccountService {
 
     private final AccountRepository accountRepository;
@@ -49,41 +47,5 @@ public class DefaultAccountService implements AccountService {
     private Account requiredAccount(String accountId) throws AccountException {
         return this.accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountException(AccountMessages.notFound()));
-    }
-
-    @Transactional
-    @Override
-    public Balance creditAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount) {
-        var account = this.requiredAccount(accountId);
-        var balance = account.credit(currency, type, amount);
-        this.accountRepository.save(account);
-        return balance;
-    }
-
-    @Transactional
-    @Override
-    public Balance debitAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount) {
-        var account = this.requiredAccount(accountId);
-        var balance = account.debit(currency, type, amount);
-        this.accountRepository.save(account);
-        return balance;
-    }
-
-    @Transactional
-    @Override
-    public Balance freezeAccountBalance(String accountId, String currency, BigDecimal amount) {
-        var account = this.requiredAccount(accountId);
-        var balance = account.freeze(currency, amount);
-        this.accountRepository.save(account);
-        return balance;
-    }
-
-    @Transactional
-    @Override
-    public Balance unfreezeAccountBalance(String accountId, String currency, BigDecimal amount) {
-        var account = this.requiredAccount(accountId);
-        var balance = account.unfreeze(currency, amount);
-        this.accountRepository.save(account);
-        return balance;
     }
 }
