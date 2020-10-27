@@ -18,8 +18,6 @@
 
 package org.mallfoundry.finance.account;
 
-import java.math.BigDecimal;
-
 public interface AccountService {
 
     Account createAccount(String id);
@@ -27,12 +25,4 @@ public interface AccountService {
     Account createAccount(Account account);
 
     Account getAccount(String accountId) throws AccountException;
-
-    Balance creditAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount);
-
-    Balance debitAccountBalance(String accountId, String currency, BalanceSourceType type, BigDecimal amount);
-
-    Balance freezeAccountBalance(String accountId, String currency, BigDecimal amount);
-
-    Balance unfreezeAccountBalance(String accountId, String currency, BigDecimal amount);
 }
