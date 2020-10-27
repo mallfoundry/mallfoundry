@@ -31,36 +31,62 @@ public abstract class BalanceSupport implements MutableBalance {
                 .orElse(null);
     }
 
-    @Override
-    public void credit(BalanceSourceType sourceType, BigDecimal amount) {
+    private void creditSource(BalanceSourceType sourceType, BigDecimal amount) {
         var source = this.getSource(sourceType);
         if (Objects.isNull(source)) {
             source = this.createSource(sourceType);
             this.getSources().add(source);
         }
         source.credit(amount);
+    }
+
+    private void debitSource(BalanceSourceType sourceType, BigDecimal amount) {
+        var source = this.getSource(sourceType);
+        if (Objects.isNull(source)) {
+            throw new BalanceException(String.format("The source(%s) is not null", sourceType));
+        }
+        source.debit(amount);
+    }
+
+    @Override
+    public void pending(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException {
+        this.creditSource(sourceType, amount);
+        this.setPendingAmount(this.getPendingAmount().add(amount));
+    }
+
+    @Override
+    public void refund(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException {
+        this.debitSource(sourceType, amount);
+        this.setPendingAmount(this.getPendingAmount().subtract(amount));
+    }
+
+    @Override
+    public void settle(BigDecimal amount) throws BalanceException {
+        this.setPendingAmount(this.getPendingAmount().subtract(amount));
+        this.setAvailableAmount(this.getAvailableAmount().add(amount));
+    }
+
+    @Override
+    public void credit(BalanceSourceType sourceType, BigDecimal amount) {
+        this.creditSource(sourceType, amount);
         this.setAvailableAmount(this.getAvailableAmount().add(amount));
     }
 
     @Override
     public void debit(BalanceSourceType sourceType, BigDecimal amount) {
-        var source = this.getSource(sourceType);
-        if (Objects.isNull(source)) {
-            throw new BalanceException(String.format("The source(%s) is not null", sourceType));
-        }
-        source.credit(amount);
+        this.debitSource(sourceType, amount);
         this.setAvailableAmount(this.getAvailableAmount().subtract(amount));
     }
 
     @Override
     public void freeze(BigDecimal amount) {
+        this.setFreezeAmount(this.getFreezeAmount().add(amount));
         this.setAvailableAmount(this.getAvailableAmount().subtract(amount));
-        this.setPendingAmount(this.getPendingAmount().add(amount));
     }
 
     @Override
     public void unfreeze(BigDecimal amount) {
-        this.setPendingAmount(this.getPendingAmount().subtract(amount));
+        this.setFreezeAmount(this.getFreezeAmount().subtract(amount));
         this.setAvailableAmount(this.getAvailableAmount().add(amount));
     }
 }
