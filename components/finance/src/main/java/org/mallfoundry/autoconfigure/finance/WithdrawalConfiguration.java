@@ -25,6 +25,7 @@ import org.mallfoundry.finance.WithdrawalIdentityProcessor;
 import org.mallfoundry.finance.WithdrawalProcessor;
 import org.mallfoundry.finance.WithdrawalRepository;
 import org.mallfoundry.finance.WithdrawalValidateProcessor;
+import org.mallfoundry.finance.account.BalanceService;
 import org.mallfoundry.finance.repository.jpa.DelegatingJpaWithdrawalRepository;
 import org.mallfoundry.finance.repository.jpa.JpaWithdrawalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,10 @@ public class WithdrawalConfiguration {
     @Bean
     @Autowired(required = false)
     public DefaultWithdrawalService defaultWithdrawalService(@Lazy List<WithdrawalProcessor> processors,
+                                                             BalanceService balanceService,
                                                              RecipientService recipientService,
                                                              WithdrawalRepository withdrawalRepository) {
-        var withdrawalService = new DefaultWithdrawalService(recipientService, withdrawalRepository);
+        var withdrawalService = new DefaultWithdrawalService(balanceService, recipientService, withdrawalRepository);
         withdrawalService.setProcessors(processors);
         return withdrawalService;
     }
