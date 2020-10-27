@@ -22,37 +22,94 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.Recipient;
-import org.mallfoundry.finance.Withdrawal;
+import org.mallfoundry.finance.Transaction;
+import org.mallfoundry.finance.WithdrawalStatus;
+import org.mallfoundry.finance.WithdrawalSupport;
+import org.mallfoundry.finance.account.BalanceTransaction;
+import org.mallfoundry.finance.account.repository.jpa.JpaBalanceTransaction;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_financial_withdrawal")
-public class JpaWithdrawal implements Withdrawal {
+public class JpaWithdrawal extends WithdrawalSupport {
 
+    @NotBlank
     @Id
     @Column(name = "id_")
     private String id;
 
+    @NotBlank
     @Column(name = "account_id_")
     private String accountId;
 
+    @Min(0)
     @Column(name = "amount_")
     private BigDecimal amount;
 
+    @NotBlank
     @Column(name = "currency_")
     private String currency;
 
-    @Embedded
-    private JpaRecipient recipient;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_")
+    private WithdrawalStatus status;
+
+    @ManyToOne(targetEntity = JpaRecipient.class)
+    @JoinColumn(name = "recipient_id_")
+    private Recipient recipient;
+
+    @OneToMany(targetEntity = JpaTransaction.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "source_id_")
+    private List<Transaction> transactions;
+
+    @OneToMany(targetEntity = JpaBalanceTransaction.class)
+    @JoinColumn(name = "source_id_")
+    private List<BalanceTransaction> balanceTransactions;
+
+    @NotNull
+    @Column(name = "applied_time_")
+    private Date appliedTime;
+
+    @Column(name = "disapproval_reason_")
+    private String disapprovalReason;
+
+    @Column(name = "disapproved_time_")
+    private Date disapprovedTime;
+
+    @Column(name = "canceled_time_")
+    private Date canceledTime;
+
+    @Column(name = "approved_time_")
+    private Date approvedTime;
+
+    @Column(name = "succeeded_time_")
+    private Date succeededTime;
+
+    @Column(name = "failure_reason_")
+    private String failureReason;
+
+    @Column(name = "failed_time_")
+    private Date failedTime;
 
     public JpaWithdrawal(String id) {
         this.id = id;
@@ -60,16 +117,11 @@ public class JpaWithdrawal implements Withdrawal {
 
     @Override
     public Recipient createRecipient() {
-        return null;
+        return new JpaRecipient();
     }
 
     @Override
-    public Recipient getRecipient() {
-        return this.recipient;
-    }
-
-    @Override
-    public void setRecipient(Recipient recipient) {
-        this.recipient = (JpaRecipient) recipient;
+    public Transaction createTransaction() {
+        return new JpaTransaction();
     }
 }
