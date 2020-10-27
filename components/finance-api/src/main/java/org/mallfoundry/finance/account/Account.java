@@ -18,9 +18,6 @@
 
 package org.mallfoundry.finance.account;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 public interface Account {
 
     String getId();
@@ -34,18 +31,4 @@ public interface Account {
     BusinessType getBusinessType();
 
     void setBusinessType(BusinessType businessType);
-
-    Balance createBalance(String currency);
-
-    List<Balance> getBalances();
-
-    Balance getBalance(String currency);
-
-    Balance credit(String currency, BalanceSourceType type, BigDecimal amount);
-
-    Balance debit(String currency, BalanceSourceType type, BigDecimal amount);
-
-    Balance freeze(String currency, BigDecimal amount);
-
-    Balance unfreeze(String currency, BigDecimal amount);
 }
