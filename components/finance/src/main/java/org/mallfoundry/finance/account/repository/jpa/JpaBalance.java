@@ -22,8 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.account.BalanceSource;
-import org.mallfoundry.finance.account.BalanceSupport;
 import org.mallfoundry.finance.account.BalanceSourceType;
+import org.mallfoundry.finance.account.BalanceSupport;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -59,6 +59,9 @@ public class JpaBalance extends BalanceSupport {
 
     @Column(name = "available_amount_")
     private BigDecimal availableAmount = BigDecimal.ZERO;
+
+    @Column(name = "freeze_amount_")
+    private BigDecimal freezeAmount = BigDecimal.ZERO;
 
     @ElementCollection(targetClass = JpaBalanceSource.class)
     @JoinTable(name = "mf_financial_balance_source",
