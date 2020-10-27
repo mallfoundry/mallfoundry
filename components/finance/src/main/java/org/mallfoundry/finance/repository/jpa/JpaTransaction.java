@@ -73,8 +73,8 @@ public class JpaTransaction extends TransactionSupport {
     @Column(name = "description_")
     private String description;
 
-    @Column(name = "source_")
-    private String source;
+    @Column(name = "source_id_")
+    private String sourceId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
