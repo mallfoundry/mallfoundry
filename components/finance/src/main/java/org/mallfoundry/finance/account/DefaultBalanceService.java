@@ -62,11 +62,11 @@ public class DefaultBalanceService implements BalanceService {
 
     @Transactional
     @Override
-    public BalanceSource rechargeBalance(BalanceId balanceId, BalanceSourceType sourceType, BigDecimal amount) {
+    public List<BalanceTransaction> rechargeBalance(BalanceId balanceId, BalanceSourceType sourceType, BigDecimal amount) {
         var balance = this.requiredBalance(balanceId);
-        var source = balance.credit(sourceType, amount);
+        var transaction = balance.recharge(sourceType, amount);
         this.balanceRepository.save(balance);
-        return source;
+        return this.balanceTransactionService.saveAll(List.of(transaction));
     }
 
 
