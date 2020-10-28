@@ -25,11 +25,18 @@ public class WithdrawalIdentityProcessor implements WithdrawalProcessor {
 
     private static final String WITHDRAWAL_ID_VALUE_NAME = "finance.withdrawal.id";
 
+    private static final String TRANSACTION_ID_VALUE_NAME = "finance.transaction.id";
+
     @Override
-    public Withdrawal preProcessBeforeApplyWithdrawal(Withdrawal withdrawal) {
+    public Withdrawal preProcessAfterApplyWithdrawal(Withdrawal withdrawal) {
         if (StringUtils.isBlank(withdrawal.getId())) {
-            withdrawal.setId(PrimaryKeyHolder.next(WITHDRAWAL_ID_VALUE_NAME));
+            withdrawal.setId(this.nextWithdrawalId());
         }
+        withdrawal.getTransactions().forEach(transaction -> transaction.setId(PrimaryKeyHolder.next(TRANSACTION_ID_VALUE_NAME)));
         return withdrawal;
+    }
+
+    private String nextWithdrawalId() {
+        return "1005" + PrimaryKeyHolder.next(WITHDRAWAL_ID_VALUE_NAME);
     }
 }
