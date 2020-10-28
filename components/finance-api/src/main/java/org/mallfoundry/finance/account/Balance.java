@@ -69,9 +69,9 @@ public interface Balance extends Serializable {
     void settle(BigDecimal amount) throws BalanceException;
 
     /**
-     * 存钱。
+     * 充值。
      */
-    BalanceSource credit(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
+    BalanceTransaction recharge(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
 
     void debit(BalanceSourceType sourceType, BigDecimal amount) throws BalanceException;
 
