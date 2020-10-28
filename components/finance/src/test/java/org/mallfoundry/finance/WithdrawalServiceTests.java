@@ -19,36 +19,35 @@
 package org.mallfoundry.finance;
 
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.finance.bank.HolderType;
 import org.mallfoundry.test.StandaloneTest;
-import org.mallfoundry.finance.account.AccountService;
-import org.mallfoundry.finance.account.BalanceSourceType;
-import org.mallfoundry.finance.account.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
 @StandaloneTest
-public class AccountServiceTests {
+public class WithdrawalServiceTests {
 
     @Autowired
-    private AccountService accountService;
+    private WithdrawalService withdrawalService;
 
     @Test
-    public void testCreateAccount() {
-        var account = this.accountService.createAccount("1");
-        account.setName("test name");
-        account.setBusinessType(BusinessType.INDIVIDUAL);
-        this.accountService.createAccount(account);
+    public void testApplyWithdrawal() {
+        var withdrawal = this.withdrawalService.createWithdrawal(null)
+                .toBuilder().currency("CNY").accountId("1").amount(BigDecimal.valueOf(4))
+                .build();
+        var recipient = withdrawal.createRecipient().toBuilder()
+                .type(RecipientType.BANK_CARD).number("1101011")
+                .name("name")
+                .bankName("bank name").branchName("branch name")
+                .holderType(HolderType.INDIVIDUAL).holderName("holder name")
+                .build();
+        withdrawal.setRecipient(recipient);
+        this.withdrawalService.applyWithdrawal(withdrawal);
     }
 
     @Test
-    public void testCreditAccountBalance() {
-        this.accountService.creditAccountBalance("1", "CNY", BalanceSourceType.ALIPAY, BigDecimal.valueOf(10));
-        this.accountService.creditAccountBalance("1", "CNY", BalanceSourceType.WECHAT_PAY, BigDecimal.valueOf(10));
-    }
-
-    @Test
-    public void testFreezeAccountBalance() {
-        this.accountService.freezeAccountBalance("1", "CNY",  BigDecimal.valueOf(10));
+    public void testDisapproveWithdrawal() {
+        this.withdrawalService.disapproveWithdrawal("3", "Disapprove");
     }
 }

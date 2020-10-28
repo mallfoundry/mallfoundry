@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.finance;
+package org.mallfoundry.finance.account;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.finance.account.BalanceSourceType;
@@ -28,15 +28,15 @@ import java.util.Currency;
 public class BalanceTests {
 
     @Test
-    public void testBalanceCredit() {
+    public void testBalanceRecharge() {
         var balance = new JpaBalance();
-        balance.credit(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
+        balance.recharge(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
     }
 
     @Test
     public void testBalanceDebit() {
         var balance = new JpaBalance();
-        balance.debit(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
+//        balance.debit(BalanceSourceType.ALIPAY, BigDecimal.valueOf(100));
     }
 
     @Test
