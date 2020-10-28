@@ -44,14 +44,13 @@ public abstract class BalanceSupport implements MutableBalance {
                 .orElse(null);
     }
 
-    private BalanceSource creditSource(BalanceSourceType sourceType, BigDecimal amount) {
+    private void creditSource(BalanceSourceType sourceType, BigDecimal amount) {
         var source = this.getSource(sourceType);
         if (Objects.isNull(source)) {
             source = this.createSource(sourceType);
             this.getSources().add(source);
         }
         source.credit(amount);
-        return source;
     }
 
     private void debitSource(BalanceSourceType sourceType, BigDecimal amount) {
@@ -81,10 +80,25 @@ public abstract class BalanceSupport implements MutableBalance {
     }
 
     @Override
-    public BalanceSource credit(BalanceSourceType sourceType, BigDecimal amount) {
-        var source = this.creditSource(sourceType, amount);
+    public BalanceTransaction recharge(BalanceSourceType sourceType, BigDecimal amount) {
+        this.creditSource(sourceType, amount);
         this.setAvailableAmount(this.getAvailableAmount().add(amount));
-        return source;
+        var rechargeSource = this.createSource(sourceType);
+        rechargeSource.credit(amount);
+        return this.rechargeTransaction(amount, List.of(rechargeSource));
+    }
+
+    private BalanceTransaction rechargeTransaction(BigDecimal amount, List<BalanceSource> sources) {
+        var transaction = this.createTransaction();
+        transaction.setAccountId(this.getAccountId());
+        transaction.setCurrency(this.getCurrency());
+        transaction.setDirection(TransactionDirection.CREDIT);
+        transaction.setType(TransactionType.RECHARGE);
+        transaction.setAmount(amount);
+        transaction.setSources(sources);
+        transaction.setEndingBalance(this.getAvailableAmount());
+        transaction.create();
+        return transaction;
     }
 
     @Override
