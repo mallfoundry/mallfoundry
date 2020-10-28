@@ -27,7 +27,7 @@ public interface BalanceService {
 
     Balance createBalance(BalanceId balanceId);
 
-    BalanceSource rechargeBalance(BalanceId balanceId, BalanceSourceType sourceType, BigDecimal amount);
+    List<BalanceTransaction> rechargeBalance(BalanceId balanceId, BalanceSourceType sourceType, BigDecimal amount);
 
     List<BalanceTransaction> withdrawBalance(BalanceId balanceId, BigDecimal amount);
 }
