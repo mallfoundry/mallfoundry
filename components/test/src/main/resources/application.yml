@@ -24,6 +24,7 @@ spring:
       org.mallfoundry.security.messages,
       org.mallfoundry.identity.messages,
       org.mallfoundry.store.messages,
+      org.mallfoundry.finance.messages,
       org.mallfoundry.catalog.product.messages
     always-use-message-format: true
 #  elasticsearch:
