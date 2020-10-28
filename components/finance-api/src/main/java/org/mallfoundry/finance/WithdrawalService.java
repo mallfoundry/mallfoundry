@@ -22,7 +22,9 @@ public interface WithdrawalService {
 
     WithdrawalQuery createWithdrawalQuery();
 
-    Withdrawal createWithdrawal(String id);
+    Withdrawal createWithdrawal(String withdrawalId);
+
+    Withdrawal getWithdrawal(String withdrawalId);
 
     Withdrawal applyWithdrawal(Withdrawal withdrawal) throws WithdrawalException;
 
