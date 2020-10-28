@@ -84,12 +84,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-elasticsearch</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.mallfoundry</groupId>
             <artifactId>mall-shared</artifactId>
             <scope>test</scope>
