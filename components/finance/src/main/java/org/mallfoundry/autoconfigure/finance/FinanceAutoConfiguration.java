@@ -27,7 +27,9 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         AccountConfiguration.class,
-        BankCardConfiguration.class
+        BankCardConfiguration.class,
+        RecipientConfiguration.class,
+        WithdrawalConfiguration.class
 })
 public class FinanceAutoConfiguration {
 
