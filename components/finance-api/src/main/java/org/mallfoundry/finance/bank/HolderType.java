@@ -18,7 +18,15 @@
 
 package org.mallfoundry.finance.bank;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum HolderType {
     INDIVIDUAL,
-    COMPANY
+    COMPANY;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
