@@ -32,5 +32,8 @@ public interface BankCardService {
 
     SliceList<BankCard> getBankCards(BankCardQuery query);
 
+    BankCard updateBankCard(BankCard bankCard) throws BankCardException;
+
     void unbindBankCard(String id) throws BankCardException;
+
 }
