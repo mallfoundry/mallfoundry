@@ -18,6 +18,14 @@
 
 package org.mallfoundry.finance.bank;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum BankCardFunding {
     CREDIT, DEBIT, PREPAID, UNKNOWN;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
