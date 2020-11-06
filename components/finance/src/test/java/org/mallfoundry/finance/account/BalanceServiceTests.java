@@ -19,6 +19,7 @@
 package org.mallfoundry.finance.account;
 
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +33,7 @@ public class BalanceServiceTests {
 
     @Test
     public void testRechargeBalance() {
-        var balanceId = this.balanceService.createBalanceId("1", "CNY");
+        var balanceId = this.balanceService.createBalanceId("1", CurrencyCode.CNY);
         this.balanceService.rechargeBalance(balanceId, BalanceSourceType.ALIPAY, BigDecimal.valueOf(2));
         this.balanceService.rechargeBalance(balanceId, BalanceSourceType.WECHAT_PAY, BigDecimal.valueOf(3));
     }

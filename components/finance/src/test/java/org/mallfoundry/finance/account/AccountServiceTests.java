@@ -19,8 +19,6 @@
 package org.mallfoundry.finance.account;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.finance.account.AccountService;
-import org.mallfoundry.finance.account.BusinessType;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,11 +29,11 @@ public class AccountServiceTests {
     private AccountService accountService;
 
     @Test
-    public void testCreateAccount() {
+    public void testOpenAccount() {
         var account = this.accountService.createAccount("1");
         account.setName("test name");
         account.setBusinessType(BusinessType.INDIVIDUAL);
-        this.accountService.createAccount(account);
+        this.accountService.openAccount(account);
     }
 
 //    @Test
