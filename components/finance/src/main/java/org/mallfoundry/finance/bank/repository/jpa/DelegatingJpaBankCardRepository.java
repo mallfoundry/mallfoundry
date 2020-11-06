@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance.bank.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.bank.BankCard;
 import org.mallfoundry.finance.bank.BankCardQuery;
@@ -36,7 +37,7 @@ public class DelegatingJpaBankCardRepository implements BankCardRepository {
 
     @Override
     public BankCard create(String id) {
-        return new JpaBankCard();
+        return new JpaBankCard(id);
     }
 
     @Override
@@ -51,7 +52,10 @@ public class DelegatingJpaBankCardRepository implements BankCardRepository {
 
     @Override
     public SliceList<BankCard> findAll(BankCardQuery query) {
-        return null;
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements()).cast();
     }
 
     @Override
