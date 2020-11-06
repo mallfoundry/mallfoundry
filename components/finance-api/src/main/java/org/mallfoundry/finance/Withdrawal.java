@@ -40,9 +40,9 @@ public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdr
 
     void setAmount(BigDecimal amount);
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 
-    void setCurrency(String currency);
+    void setCurrencyCode(CurrencyCode currencyCode);
 
     WithdrawalStatus getStatus();
 
@@ -92,7 +92,7 @@ public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdr
 
         Builder amount(BigDecimal amount);
 
-        Builder currency(String currency);
+        Builder currencyCode(CurrencyCode currencyCode);
 
         Builder recipient(Recipient recipient);
     }

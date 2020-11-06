@@ -31,9 +31,9 @@ public interface Transaction {
 
     void setAccountId(String accountId);
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 
-    void setCurrency(String currency);
+    void setCurrencyCode(CurrencyCode currencyCode);
 
     BigDecimal getAmount();
 
