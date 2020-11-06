@@ -18,5 +18,98 @@
 
 package org.mallfoundry.finance.bank;
 
-public abstract class BankCardSupport implements BankCard {
+import java.util.Date;
+
+public abstract class BankCardSupport implements MutableBankCard {
+
+    @Override
+    public void bind() {
+        this.setBoundTime(new Date());
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+    protected abstract static class BuilderSupport implements Builder {
+
+        private final BankCardSupport bankCard;
+
+        protected BuilderSupport(BankCardSupport bankCard) {
+            this.bankCard = bankCard;
+        }
+
+        @Override
+        public Builder accountId(String accountId) {
+            this.bankCard.setAccountId(accountId);
+            return this;
+        }
+
+        @Override
+        public Builder funding(BankCardFunding funding) {
+            this.bankCard.setFunding(funding);
+            return this;
+        }
+
+        @Override
+        public Builder bankName(String bankName) {
+            this.bankCard.setBankName(bankName);
+            return this;
+        }
+
+        @Override
+        public Builder branchName(String branchName) {
+            this.bankCard.setBranchName(branchName);
+            return this;
+        }
+
+        @Override
+        public Builder holderType(HolderType holderType) {
+            this.bankCard.setHolderType(holderType);
+            return this;
+        }
+
+        @Override
+        public Builder holderName(String holderName) {
+            this.bankCard.setHolderName(holderName);
+            return this;
+        }
+
+        @Override
+        public Builder number(String number) {
+            this.bankCard.setNumber(number);
+            return this;
+        }
+
+        @Override
+        public Builder last4(String last4) {
+            this.bankCard.setLast4(last4);
+            return this;
+        }
+
+        @Override
+        public Builder expiryYear(String expiryYear) {
+            this.bankCard.setExpiryYear(expiryYear);
+            return this;
+        }
+
+        @Override
+        public Builder expiryMonth(String expiryMonth) {
+            this.bankCard.setExpiryMonth(expiryMonth);
+            return this;
+        }
+
+        @Override
+        public Builder phone(String phone) {
+            this.bankCard.setPhone(phone);
+            return this;
+        }
+
+        @Override
+        public BankCard build() {
+            return this.bankCard;
+        }
+    }
 }
