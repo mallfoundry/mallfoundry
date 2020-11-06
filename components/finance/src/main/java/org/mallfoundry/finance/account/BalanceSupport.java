@@ -33,7 +33,7 @@ public abstract class BalanceSupport implements MutableBalance {
 
     @Override
     public BalanceId toId() {
-        return new ImmutableBalanceId(this.getAccountId(), this.getCurrency());
+        return new ImmutableBalanceId(this.getAccountId(), this.getCurrencyCode());
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class BalanceSupport implements MutableBalance {
     private BalanceTransaction rechargeTransaction(BigDecimal amount, List<BalanceSource> sources) {
         var transaction = this.createTransaction();
         transaction.setAccountId(this.getAccountId());
-        transaction.setCurrency(this.getCurrency());
+        transaction.setCurrencyCode(this.getCurrencyCode());
         transaction.setDirection(TransactionDirection.CREDIT);
         transaction.setType(TransactionType.RECHARGE);
         transaction.setAmount(amount);
@@ -143,7 +143,7 @@ public abstract class BalanceSupport implements MutableBalance {
     private BalanceTransaction withdrawTransaction(BigDecimal amount, List<BalanceSource> debitingSources) {
         var transaction = this.createTransaction();
         transaction.setAccountId(this.getAccountId());
-        transaction.setCurrency(this.getCurrency());
+        transaction.setCurrencyCode(this.getCurrencyCode());
         transaction.setDirection(TransactionDirection.DEBIT);
         transaction.setType(TransactionType.WITHDRAWAL);
         transaction.setAmount(amount);
