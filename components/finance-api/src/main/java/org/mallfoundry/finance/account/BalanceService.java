@@ -18,14 +18,20 @@
 
 package org.mallfoundry.finance.account;
 
+import org.mallfoundry.finance.CurrencyCode;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface BalanceService {
 
-    BalanceId createBalanceId(String accountId, String currency);
+    BalanceId createBalanceId(String accountId, CurrencyCode currencyCode);
 
     Balance createBalance(BalanceId balanceId);
+
+    Balance getBalance(BalanceId balanceId);
+
+    List<Balance> getBalances(String accountId);
 
     List<BalanceTransaction> rechargeBalance(BalanceId balanceId, BalanceSourceType sourceType, BigDecimal amount);
 

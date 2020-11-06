@@ -18,6 +18,8 @@
 
 package org.mallfoundry.finance.account;
 
+import org.mallfoundry.finance.CurrencyCode;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +30,7 @@ public interface Balance extends Serializable {
 
     String getAccountId();
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 
     /**
      * 返回不可用余额。

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance.account;
 
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.TransactionDirection;
 import org.mallfoundry.finance.TransactionType;
 
@@ -35,9 +36,9 @@ public interface BalanceTransaction {
 
     void setAccountId(String accountId);
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 
-    void setCurrency(String currency);
+    void setCurrencyCode(CurrencyCode currencyCode);
 
     BigDecimal getAmount();
 

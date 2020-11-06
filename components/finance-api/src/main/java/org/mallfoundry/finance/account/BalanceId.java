@@ -18,11 +18,13 @@
 
 package org.mallfoundry.finance.account;
 
+import org.mallfoundry.finance.CurrencyCode;
+
 import java.io.Serializable;
 
 public interface BalanceId extends Serializable {
 
     String getAccountId();
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 }
