@@ -63,7 +63,7 @@ public class DefaultWithdrawalService implements WithdrawalService, WithdrawalPr
     }
 
     private List<BalanceTransaction> withdrawBalance(Withdrawal withdrawal) throws WithdrawalException {
-        var balanceId = this.balanceService.createBalanceId(withdrawal.getAccountId(), withdrawal.getCurrency());
+        var balanceId = this.balanceService.createBalanceId(withdrawal.getAccountId(), withdrawal.getCurrencyCode());
         return this.balanceService.withdrawBalance(balanceId, withdrawal.getAmount());
     }
 
