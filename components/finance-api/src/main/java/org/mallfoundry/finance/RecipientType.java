@@ -18,7 +18,15 @@
 
 package org.mallfoundry.finance;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum RecipientType {
     ACCOUNT,
-    BANK_CARD
+    BANK_CARD;
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
