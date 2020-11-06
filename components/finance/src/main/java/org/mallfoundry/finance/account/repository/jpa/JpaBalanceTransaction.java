@@ -21,6 +21,7 @@ package org.mallfoundry.finance.account.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.TransactionDirection;
 import org.mallfoundry.finance.TransactionType;
 import org.mallfoundry.finance.account.BalanceSource;
@@ -54,8 +55,9 @@ public class JpaBalanceTransaction implements BalanceTransaction {
     @Column(name = "account_id_")
     private String accountId;
 
-    @Column(name = "currency_")
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_code_")
+    private CurrencyCode currencyCode;
 
     @Column(name = "amount_")
     private BigDecimal amount;
