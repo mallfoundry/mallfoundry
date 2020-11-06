@@ -18,7 +18,10 @@
 
 package org.mallfoundry.finance.bank;
 
-public enum CardType {
-    PHYSICAL, // 真实的
-    VIRTUAL // 虚拟的，比如支付宝、微信
+import java.util.Date;
+
+public interface MutableBankCard extends BankCard {
+
+    void setBoundTime(Date boundTime);
+
 }
