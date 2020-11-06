@@ -22,7 +22,7 @@ public interface AccountService {
 
     Account createAccount(String id);
 
-    Account createAccount(Account account);
+    Account openAccount(Account account);
 
     Account getAccount(String accountId) throws AccountException;
 }
