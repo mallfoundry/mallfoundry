@@ -21,6 +21,7 @@ package org.mallfoundry.finance.account.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.account.BalanceId;
 import org.mallfoundry.finance.account.BalanceSource;
 import org.mallfoundry.finance.account.BalanceSourceType;
@@ -31,6 +32,8 @@ import org.mallfoundry.finance.account.ImmutableBalanceId;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -54,8 +57,9 @@ public class JpaBalance extends BalanceSupport {
     private String accountId;
 
     @Id
-    @Column(name = "currency_")
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_code_")
+    private CurrencyCode currencyCode;
 
     @Column(name = "pending_amount_")
     private BigDecimal pendingAmount = BigDecimal.ZERO;
@@ -70,13 +74,13 @@ public class JpaBalance extends BalanceSupport {
     @JoinTable(name = "mf_financial_balance_source",
             joinColumns = {
                     @JoinColumn(name = "account_id_", referencedColumnName = "account_id_"),
-                    @JoinColumn(name = "currency_", referencedColumnName = "currency_")
+                    @JoinColumn(name = "currency_code_", referencedColumnName = "currency_code_")
             })
     private List<BalanceSource> sources = new ArrayList<>();
 
     public JpaBalance(BalanceId balanceId) {
         this.accountId = balanceId.getAccountId();
-        this.currency = balanceId.getCurrency();
+        this.currencyCode = balanceId.getCurrencyCode();
     }
 
     @Override
@@ -99,11 +103,11 @@ public class JpaBalance extends BalanceSupport {
         }
         JpaBalance that = (JpaBalance) object;
         return Objects.equals(accountId, that.accountId)
-                && Objects.equals(currency, that.currency);
+                && Objects.equals(currencyCode, that.currencyCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, currency);
+        return Objects.hash(accountId, currencyCode);
     }
 }
