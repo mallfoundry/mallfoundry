@@ -36,7 +36,7 @@ public abstract class WithdrawalSupport implements MutableWithdrawal {
     private void addApplyTransactions() {
         var transaction = this.createTransaction();
         transaction.setAccountId(this.getAccountId());
-        transaction.setCurrency(this.getCurrency());
+        transaction.setCurrencyCode(this.getCurrencyCode());
         transaction.setAmount(this.getAmount());
         transaction.setDirection(TransactionDirection.DEBIT);
         transaction.create(TransactionType.WITHDRAWAL);
@@ -113,8 +113,8 @@ public abstract class WithdrawalSupport implements MutableWithdrawal {
             return this;
         }
 
-        public Builder currency(String currency) {
-            this.withdrawal.setCurrency(currency);
+        public Builder currencyCode(CurrencyCode currencyCode) {
+            this.withdrawal.setCurrencyCode(currencyCode);
             return this;
         }
 
