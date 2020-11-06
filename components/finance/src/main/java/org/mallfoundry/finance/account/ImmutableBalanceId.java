@@ -21,6 +21,7 @@ package org.mallfoundry.finance.account;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.CurrencyCode;
 
 import java.util.Objects;
 
@@ -31,18 +32,18 @@ public class ImmutableBalanceId implements BalanceId {
 
     private String accountId;
 
-    private String currency;
+    private CurrencyCode currencyCode;
 
-    public ImmutableBalanceId(String accountId, String currency) {
+    public ImmutableBalanceId(String accountId, CurrencyCode currencyCode) {
         this.accountId = accountId;
-        this.currency = currency;
+        this.currencyCode = currencyCode;
     }
 
     public static ImmutableBalanceId of(BalanceId balanceId) {
         if (balanceId instanceof ImmutableBalanceId) {
             return (ImmutableBalanceId) balanceId;
         }
-        return new ImmutableBalanceId(balanceId.getAccountId(), balanceId.getCurrency());
+        return new ImmutableBalanceId(balanceId.getAccountId(), balanceId.getCurrencyCode());
     }
 
     @Override
@@ -55,11 +56,11 @@ public class ImmutableBalanceId implements BalanceId {
         }
         ImmutableBalanceId that = (ImmutableBalanceId) o;
         return Objects.equals(accountId, that.accountId)
-                && Objects.equals(currency, that.currency);
+                && Objects.equals(currencyCode, that.currencyCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, currency);
+        return Objects.hash(accountId, currencyCode);
     }
 }

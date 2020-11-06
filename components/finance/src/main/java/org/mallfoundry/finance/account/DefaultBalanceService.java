@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance.account;
 
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.WithdrawalException;
 import org.mallfoundry.util.DecimalUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +40,8 @@ public class DefaultBalanceService implements BalanceService {
     }
 
     @Override
-    public BalanceId createBalanceId(String accountId, String currency) {
-        return new ImmutableBalanceId(accountId, currency);
+    public BalanceId createBalanceId(String accountId, CurrencyCode currencyCode) {
+        return new ImmutableBalanceId(accountId, currencyCode);
     }
 
     @Override
@@ -48,7 +49,13 @@ public class DefaultBalanceService implements BalanceService {
         return this.balanceRepository.create(balanceId);
     }
 
-    private Balance getBalance(BalanceId balanceId) {
+    @Override
+    public List<Balance> getBalances(String accountId) {
+        return this.balanceRepository.findAllByAccountId(accountId);
+    }
+
+    @Override
+    public Balance getBalance(BalanceId balanceId) {
         return this.balanceRepository.findById(balanceId).orElse(null);
     }
 
