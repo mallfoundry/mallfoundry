@@ -31,4 +31,6 @@ public interface Account {
     BusinessType getBusinessType();
 
     void setBusinessType(BusinessType businessType);
+
+    void open();
 }
