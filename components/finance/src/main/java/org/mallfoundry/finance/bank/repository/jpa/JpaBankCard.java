@@ -76,6 +76,13 @@ public class JpaBankCard extends BankCardSupport {
     @Column(name = "expiry_month_")
     private String expiryMonth;
 
-    @Column(name = "created_time_")
-    private Date createdTime;
+    @Column(name = "phone_")
+    private String phone;
+
+    @Column(name = "bound_time_")
+    private Date boundTime;
+
+    public JpaBankCard(String id) {
+        this.id = id;
+    }
 }
