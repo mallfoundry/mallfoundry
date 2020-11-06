@@ -18,12 +18,17 @@
 
 package org.mallfoundry.autoconfigure.finance;
 
+import org.mallfoundry.finance.bank.BankCardIdentityProcessor;
+import org.mallfoundry.finance.bank.BankCardProcessor;
 import org.mallfoundry.finance.bank.BankCardRepository;
 import org.mallfoundry.finance.bank.DefaultBankCardService;
 import org.mallfoundry.finance.bank.repository.jpa.DelegatingJpaBankCardRepository;
 import org.mallfoundry.finance.bank.repository.jpa.JpaBankCardRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class BankCardConfiguration {
@@ -34,7 +39,15 @@ public class BankCardConfiguration {
     }
 
     @Bean
-    public DefaultBankCardService defaultBankCardService(BankCardRepository bankCardRepository) {
-        return new DefaultBankCardService(bankCardRepository);
+    public DefaultBankCardService defaultBankCardService(@Lazy List<BankCardProcessor> processors,
+                                                         BankCardRepository bankCardRepository) {
+        var service = new DefaultBankCardService(bankCardRepository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public BankCardIdentityProcessor bankCardIdentityProcessor() {
+        return new BankCardIdentityProcessor();
     }
 }

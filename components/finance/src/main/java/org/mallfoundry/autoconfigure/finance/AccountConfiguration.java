@@ -19,12 +19,17 @@
 package org.mallfoundry.autoconfigure.finance;
 
 
+import org.mallfoundry.finance.account.AccountIdentityProcessor;
+import org.mallfoundry.finance.account.AccountProcessor;
 import org.mallfoundry.finance.account.AccountRepository;
 import org.mallfoundry.finance.account.DefaultAccountService;
 import org.mallfoundry.finance.account.repository.jpa.DelegatingJpaAccountRepository;
 import org.mallfoundry.finance.account.repository.jpa.JpaAccountRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 @Configuration
 public class AccountConfiguration {
@@ -35,7 +40,15 @@ public class AccountConfiguration {
     }
 
     @Bean
-    public DefaultAccountService defaultAccountService(AccountRepository accountRepository) {
-        return new DefaultAccountService(accountRepository);
+    public DefaultAccountService defaultAccountService(@Lazy List<AccountProcessor> processors,
+                                                       AccountRepository accountRepository) {
+        var service = new DefaultAccountService(accountRepository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public AccountIdentityProcessor accountIdentityProcessor() {
+        return new AccountIdentityProcessor();
     }
 }
