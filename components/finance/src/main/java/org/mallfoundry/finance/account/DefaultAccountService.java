@@ -18,9 +18,16 @@
 
 package org.mallfoundry.finance.account;
 
+import lombok.Setter;
+import org.mallfoundry.processor.Processors;
 import org.springframework.transaction.annotation.Transactional;
 
-public class DefaultAccountService implements AccountService {
+import java.util.List;
+
+public class DefaultAccountService implements AccountService, AccountProcessorInvoker {
+
+    @Setter
+    private List<AccountProcessor> processors;
 
     private final AccountRepository accountRepository;
 
@@ -35,7 +42,10 @@ public class DefaultAccountService implements AccountService {
 
     @Transactional
     @Override
-    public Account createAccount(Account account) {
+    public Account openAccount(Account account) {
+        account = this.invokePreProcessBeforeOpenAccount(account);
+        account.open();
+        account = this.invokePreProcessAfterOpenAccount(account);
         return this.accountRepository.save(account);
     }
 
@@ -47,5 +57,19 @@ public class DefaultAccountService implements AccountService {
     private Account requiredAccount(String accountId) throws AccountException {
         return this.accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountException(AccountMessages.notFound()));
+    }
+
+    @Override
+    public Account invokePreProcessBeforeOpenAccount(Account account) {
+        return Processors.stream(this.processors)
+                .map(AccountProcessor::preProcessBeforeOpenAccount)
+                .apply(account);
+    }
+
+    @Override
+    public Account invokePreProcessAfterOpenAccount(Account account) {
+        return Processors.stream(this.processors)
+                .map(AccountProcessor::preProcessAfterOpenAccount)
+                .apply(account);
     }
 }
