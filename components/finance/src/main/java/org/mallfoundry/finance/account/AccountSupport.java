@@ -19,4 +19,9 @@
 package org.mallfoundry.finance.account;
 
 public abstract class AccountSupport implements MutableAccount {
+
+    @Override
+    public void open() {
+
+    }
 }
