@@ -20,6 +20,7 @@ package org.mallfoundry.rest.finance;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.Withdrawal;
 
 import java.math.BigDecimal;
@@ -30,7 +31,7 @@ public class WithdrawalRequest {
 
     private String accountId;
 
-    private String currency;
+    private CurrencyCode  currencyCode;
 
     private BigDecimal amount;
 
@@ -39,7 +40,7 @@ public class WithdrawalRequest {
     public Withdrawal assignTo(Withdrawal withdrawal) {
         return withdrawal.toBuilder()
                 .accountId(this.accountId)
-                .currency(this.currency).amount(this.amount)
+                .currencyCode(this.currencyCode).amount(this.amount)
                 .recipient(this.recipient.assignTo(withdrawal.createRecipient()))
                 .build();
     }
