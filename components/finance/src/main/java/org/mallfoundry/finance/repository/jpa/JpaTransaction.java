@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.Counterparty;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.TransactionDirection;
 import org.mallfoundry.finance.TransactionStatus;
 import org.mallfoundry.finance.TransactionSupport;
@@ -59,8 +60,9 @@ public class JpaTransaction extends TransactionSupport {
     @Column(name = "amount_")
     private BigDecimal amount;
 
-    @Column(name = "currency_")
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_code_")
+    private CurrencyCode currencyCode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "direction_")

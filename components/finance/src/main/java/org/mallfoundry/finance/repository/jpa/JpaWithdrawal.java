@@ -21,6 +21,7 @@ package org.mallfoundry.finance.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.Recipient;
 import org.mallfoundry.finance.Transaction;
 import org.mallfoundry.finance.WithdrawalStatus;
@@ -66,8 +67,9 @@ public class JpaWithdrawal extends WithdrawalSupport {
     private BigDecimal amount;
 
     @NotBlank
-    @Column(name = "currency_")
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_code_")
+    private CurrencyCode currencyCode;
 
     @NotNull
     @Enumerated(EnumType.STRING)
