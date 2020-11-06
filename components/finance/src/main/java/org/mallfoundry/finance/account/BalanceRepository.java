@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance.account;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BalanceRepository {
@@ -25,6 +26,8 @@ public interface BalanceRepository {
     Balance create(BalanceId balanceId);
 
     Optional<Balance> findById(BalanceId balanceId);
+
+    List<Balance> findAllByAccountId(String accountId);
 
     Balance save(Balance balance);
 }

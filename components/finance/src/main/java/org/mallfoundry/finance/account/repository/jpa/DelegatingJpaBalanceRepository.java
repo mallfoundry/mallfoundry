@@ -24,6 +24,7 @@ import org.mallfoundry.finance.account.BalanceRepository;
 import org.mallfoundry.finance.account.ImmutableBalanceId;
 import org.springframework.data.util.CastUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 public class DelegatingJpaBalanceRepository implements BalanceRepository {
@@ -42,6 +43,11 @@ public class DelegatingJpaBalanceRepository implements BalanceRepository {
     @Override
     public Optional<Balance> findById(BalanceId balanceId) {
         return CastUtils.cast(this.repository.findById(ImmutableBalanceId.of(balanceId)));
+    }
+
+    @Override
+    public List<Balance> findAllByAccountId(String accountId) {
+        return CastUtils.cast(this.repository.findAllByAccountId(accountId));
     }
 
     @Override

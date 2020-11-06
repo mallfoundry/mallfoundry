@@ -21,5 +21,8 @@ package org.mallfoundry.finance.account.repository.jpa;
 import org.mallfoundry.finance.account.ImmutableBalanceId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface JpaBalanceRepository extends JpaRepository<JpaBalance, ImmutableBalanceId> {
+    List<JpaBalance> findAllByAccountId(String accountId);
 }
