@@ -69,6 +69,10 @@ public interface BankCard extends ObjectBuilder.ToBuilder<BankCard.Builder> {
 
     void setExpiryMonth(String expiryMonth);
 
+    String getPhone();
+
+    void setPhone(String phone);
+
     Date getBoundTime();
 
     void bind();
@@ -94,6 +98,8 @@ public interface BankCard extends ObjectBuilder.ToBuilder<BankCard.Builder> {
         Builder expiryYear(String expiryYear);
 
         Builder expiryMonth(String expiryMonth);
+
+        Builder phone(String phone);
 
     }
 }
