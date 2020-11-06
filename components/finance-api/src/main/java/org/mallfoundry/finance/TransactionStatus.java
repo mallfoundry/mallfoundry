@@ -18,6 +18,8 @@
 
 package org.mallfoundry.finance;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum TransactionStatus {
     PENDING, // 等待中
     PROCESSING, // 处理中
@@ -26,4 +28,10 @@ public enum TransactionStatus {
     FAILED, // 失败
     EXPIRED, // 已过期
     CANCELED; // 已取消
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
