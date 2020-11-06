@@ -18,10 +18,18 @@
 
 package org.mallfoundry.finance.bank;
 
+import lombok.Setter;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.processor.Processors;
+import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
-public class DefaultBankCardService implements BankCardService {
+import java.util.List;
+
+public class DefaultBankCardService implements BankCardService, BankCardProcessorInvoker {
+
+    @Setter
+    private List<BankCardProcessor> processors;
 
     private final BankCardRepository bankCardRepository;
 
@@ -47,6 +55,9 @@ public class DefaultBankCardService implements BankCardService {
     @Transactional
     @Override
     public BankCard bindBankCard(BankCard bankCard) {
+        bankCard = this.invokePreProcessBeforeBindBankCard(bankCard);
+        bankCard.bind();
+        bankCard = this.invokePreProcessAfterBindBankCard(bankCard);
         return this.bankCardRepository.save(bankCard);
     }
 
@@ -62,8 +73,31 @@ public class DefaultBankCardService implements BankCardService {
 
     @Transactional
     @Override
+    public BankCard updateBankCard(BankCard source) throws BankCardException {
+        var bankCard = this.requiredBankCard(source.getId());
+        Copies.notBlank(source::getBankName).trim(bankCard::setBankName)
+                .notBlank(source::getBranchName).trim(bankCard::setBranchName);
+        return this.bankCardRepository.save(bankCard);
+    }
+
+    @Transactional
+    @Override
     public void unbindBankCard(String id) {
         var bankCard = this.requiredBankCard(id);
         this.bankCardRepository.delete(bankCard);
+    }
+
+    @Override
+    public BankCard invokePreProcessBeforeBindBankCard(BankCard bankCard) {
+        return Processors.stream(this.processors)
+                .map(BankCardProcessor::preProcessBeforeBindBankCard)
+                .apply(bankCard);
+    }
+
+    @Override
+    public BankCard invokePreProcessAfterBindBankCard(BankCard bankCard) {
+        return Processors.stream(this.processors)
+                .map(BankCardProcessor::preProcessAfterBindBankCard)
+                .apply(bankCard);
     }
 }
