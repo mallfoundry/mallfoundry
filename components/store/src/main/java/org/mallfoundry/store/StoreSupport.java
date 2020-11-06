@@ -31,6 +31,11 @@ public abstract class StoreSupport implements MutableStore {
     }
 
     @Override
+    public void bindAccountId(String accountId) {
+        this.setAccountId(accountId);
+    }
+
+    @Override
     public void changeOwner(User user) {
         this.setTenantId(user.getTenantId());
         this.setOwnerId(user.getId());

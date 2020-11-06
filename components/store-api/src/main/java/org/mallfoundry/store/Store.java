@@ -34,6 +34,8 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
 
     void setId(String id);
 
+    String getAccountId();
+
     String getName();
 
     void setName(String name);
@@ -99,6 +101,8 @@ public interface Store extends Ownership, TenantOwnership, ObjectBuilder.ToBuild
     void setAddress(String address);
 
     void changeOwner(User user);
+
+    void bindAccountId(String accountId);
 
     Date getCreatedTime();
 

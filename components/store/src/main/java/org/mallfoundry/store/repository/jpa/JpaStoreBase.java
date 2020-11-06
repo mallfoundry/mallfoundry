@@ -49,6 +49,9 @@ public class JpaStoreBase extends StoreSupport {
     @Column(name = "tenant_id_")
     private String tenantId;
 
+    @Column(name = "account_id_")
+    private String accountId;
+
     @Column(name = "name_")
     private String name;
 
