@@ -18,16 +18,21 @@
 
 package org.mallfoundry.autoconfigure.finance;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.mallfoundry.finance.DefaultTransactionService;
+import org.mallfoundry.finance.TransactionRepository;
+import org.mallfoundry.finance.repository.jpa.DelegatingJpaTransactionRepository;
+import org.mallfoundry.finance.repository.jpa.JpaTransactionRepository;
+import org.springframework.context.annotation.Bean;
 
-@Configuration
-@Import({
-        AccountConfiguration.class,
-        BankCardConfiguration.class,
-        RecipientConfiguration.class,
-        WithdrawalConfiguration.class,
-        TransactionConfiguration.class
-})
-public class FinanceAutoConfiguration {
+public class TransactionConfiguration {
+
+    @Bean
+    public DelegatingJpaTransactionRepository delegatingJpaTransactionRepository(JpaTransactionRepository repository) {
+        return new DelegatingJpaTransactionRepository(repository);
+    }
+
+    @Bean
+    public DefaultTransactionService defaultTransactionService(TransactionRepository transactionRepository) {
+        return new DefaultTransactionService(transactionRepository);
+    }
 }
