@@ -22,8 +22,25 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Set;
+import java.util.function.Supplier;
+
 public interface TransactionQuery extends Query, ObjectBuilder.ToBuilder<TransactionQuery.Builder> {
 
+    String getAccountId();
+
+    void setAccountId(String accountId);
+
+    Set<TransactionStatus> getStatuses();
+
+    void setStatuses(Set<TransactionStatus> statuses);
+
     interface Builder extends QueryBuilder<TransactionQuery, Builder> {
+
+        Builder accountId(String accountId);
+
+        Builder statuses(Set<TransactionStatus> statuses);
+
+        Builder statuses(Supplier<Set<TransactionStatus>> supplier);
     }
 }
