@@ -30,6 +30,11 @@
     <packaging>pom</packaging>
 
     <modules>
+
+        <!-- third modules  -->
+        <module>thirdpay-api</module>
+        <module>thirdpay</module>
+
         <!-- api modules -->
         <module>app-api</module>
         <module>analytics-api</module>
