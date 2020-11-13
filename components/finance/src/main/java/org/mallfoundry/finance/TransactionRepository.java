@@ -18,15 +18,11 @@
 
 package org.mallfoundry.finance;
 
-import java.util.Optional;
+import org.mallfoundry.data.SliceList;
 
 public interface TransactionRepository {
 
     Transaction create(String id);
 
-    Optional<Transaction> findById(String id);
-
-    Transaction save(Transaction transaction);
-
-    void delete(Transaction transaction);
+    SliceList<Transaction> findAll(TransactionQuery query);
 }
