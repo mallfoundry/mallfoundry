@@ -18,6 +18,8 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.data.SliceList;
+
 import java.util.Optional;
 
 public interface WithdrawalRepository {
@@ -25,6 +27,8 @@ public interface WithdrawalRepository {
     Withdrawal create(String id);
 
     Optional<Withdrawal> findById(String id);
+
+    SliceList<Withdrawal> findAll(WithdrawalQuery query);
 
     Withdrawal save(Withdrawal withdrawal);
 }

@@ -18,7 +18,61 @@
 
 package org.mallfoundry.finance.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.finance.WithdrawalQuery;
+import org.mallfoundry.util.CaseUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaWithdrawalRepository extends JpaRepository<JpaWithdrawal, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+public interface JpaWithdrawalRepository extends JpaRepository<JpaWithdrawal, String>, JpaSpecificationExecutor<JpaWithdrawal> {
+
+    default Specification<JpaWithdrawal> createSpecification(WithdrawalQuery withdrawalQuery) {
+        return (Specification<JpaWithdrawal>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+
+            if (Objects.nonNull(withdrawalQuery.getAccountId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("accountId"), withdrawalQuery.getAccountId()));
+            }
+
+            if (CollectionUtils.isNotEmpty(withdrawalQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(withdrawalQuery.getStatuses()));
+            }
+
+            if (Objects.nonNull(withdrawalQuery.getAppliedTimeStart())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("appliedTime"), withdrawalQuery.getAppliedTimeStart()));
+            }
+
+            if (Objects.nonNull(withdrawalQuery.getAppliedTimeEnd())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("appliedTime"), withdrawalQuery.getAppliedTimeEnd()));
+            }
+            return predicate;
+        };
+    }
+
+    private Sort createSort(WithdrawalQuery query) {
+        return Optional.ofNullable(query.getSort())
+                .map(org.mallfoundry.data.Sort::getOrders)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(orders -> Sort.by(orders.stream()
+                        .peek(sortOrder -> sortOrder.setProperty(CaseUtils.camelCase(sortOrder.getProperty())))
+                        .map(sortOrder -> sortOrder.getDirection().isDescending()
+                                ? Sort.Order.desc(sortOrder.getProperty())
+                                : Sort.Order.asc(sortOrder.getProperty()))
+                        .collect(Collectors.toUnmodifiableList())))
+                .orElseGet(() -> Sort.by("appliedTime").descending());
+    }
+
+    default Page<JpaWithdrawal> findAll(WithdrawalQuery query) {
+        var sort = this.createSort(query);
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
+    }
 }

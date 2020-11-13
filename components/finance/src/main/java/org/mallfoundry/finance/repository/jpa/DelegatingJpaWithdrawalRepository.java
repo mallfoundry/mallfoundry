@@ -18,7 +18,10 @@
 
 package org.mallfoundry.finance.repository.jpa;
 
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.Withdrawal;
+import org.mallfoundry.finance.WithdrawalQuery;
 import org.mallfoundry.finance.WithdrawalRepository;
 import org.springframework.data.util.CastUtils;
 
@@ -40,6 +43,14 @@ public class DelegatingJpaWithdrawalRepository implements WithdrawalRepository {
     @Override
     public Optional<Withdrawal> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
+    }
+
+    @Override
+    public SliceList<Withdrawal> findAll(WithdrawalQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements()).cast();
     }
 
     @Override
