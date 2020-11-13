@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.account.BalanceService;
 import org.mallfoundry.finance.account.BalanceTransaction;
 import org.mallfoundry.processor.Processors;
@@ -60,6 +61,11 @@ public class DefaultWithdrawalService implements WithdrawalService, WithdrawalPr
     @Override
     public Withdrawal getWithdrawal(String withdrawalId) {
         return this.withdrawalRepository.findById(withdrawalId).orElseThrow();
+    }
+
+    @Override
+    public SliceList<Withdrawal> getWithdrawals(WithdrawalQuery query) {
+        return this.withdrawalRepository.findAll(query);
     }
 
     private List<BalanceTransaction> withdrawBalance(Withdrawal withdrawal) throws WithdrawalException {

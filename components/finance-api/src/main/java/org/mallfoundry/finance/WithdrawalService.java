@@ -18,6 +18,8 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.data.SliceList;
+
 public interface WithdrawalService {
 
     WithdrawalQuery createWithdrawalQuery();
@@ -25,6 +27,8 @@ public interface WithdrawalService {
     Withdrawal createWithdrawal(String withdrawalId);
 
     Withdrawal getWithdrawal(String withdrawalId);
+
+    SliceList<Withdrawal> getWithdrawals(WithdrawalQuery query);
 
     Withdrawal applyWithdrawal(Withdrawal withdrawal) throws WithdrawalException;
 
