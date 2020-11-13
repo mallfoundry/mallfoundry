@@ -18,7 +18,15 @@
 
 package org.mallfoundry.finance;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum TransactionDirection {
     DEBIT, // 转入
-    CREDIT // 支出
+    CREDIT; // 支出
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
