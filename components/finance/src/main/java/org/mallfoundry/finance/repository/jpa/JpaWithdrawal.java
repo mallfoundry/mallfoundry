@@ -62,11 +62,19 @@ public class JpaWithdrawal extends WithdrawalSupport {
     @Column(name = "account_id_")
     private String accountId;
 
+    @NotBlank
+    @Column(name = "applicant_")
+    private String applicant;
+
+    @NotBlank
+    @Column(name = "applicant_id_")
+    private String applicantId;
+
     @Min(0)
     @Column(name = "amount_")
     private BigDecimal amount;
 
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "currency_code_")
     private CurrencyCode currencyCode;

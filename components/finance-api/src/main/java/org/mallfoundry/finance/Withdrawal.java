@@ -58,6 +58,14 @@ public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdr
 
     List<BalanceTransaction> getBalanceTransactions();
 
+    String getApplicant();
+
+    void setApplicant(String applicant);
+
+    String getApplicantId();
+
+    void setApplicantId(String applicantId);
+
     Date getAppliedTime();
 
     String getDisapprovalReason();
