@@ -18,7 +18,52 @@
 
 package org.mallfoundry.finance.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.finance.TransactionQuery;
+import org.mallfoundry.util.CaseUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface JpaTransactionRepository extends JpaRepository<JpaTransaction, String> {
+import javax.persistence.criteria.Predicate;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+public interface JpaTransactionRepository extends JpaRepository<JpaTransaction, String>, JpaSpecificationExecutor<JpaTransaction> {
+
+    default Specification<JpaTransaction> createSpecification(TransactionQuery transactionQuery) {
+        return (Specification<JpaTransaction>) (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (Objects.nonNull(transactionQuery.getAccountId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("accountId"), transactionQuery.getAccountId()));
+            }
+
+            if (CollectionUtils.isNotEmpty(transactionQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(transactionQuery.getStatuses()));
+            }
+            return predicate;
+        };
+    }
+
+    private Sort createSort(TransactionQuery query) {
+        return Optional.ofNullable(query.getSort())
+                .map(org.mallfoundry.data.Sort::getOrders)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(orders -> Sort.by(orders.stream()
+                        .peek(sortOrder -> sortOrder.setProperty(CaseUtils.camelCase(sortOrder.getProperty())))
+                        .map(sortOrder -> sortOrder.getDirection().isDescending()
+                                ? Sort.Order.desc(sortOrder.getProperty())
+                                : Sort.Order.asc(sortOrder.getProperty()))
+                        .collect(Collectors.toUnmodifiableList())))
+                .orElseGet(() -> Sort.by("createdTime").descending());
+    }
+
+    default Page<JpaTransaction> findAll(TransactionQuery query) {
+        var sort = this.createSort(query);
+        return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
+    }
 }

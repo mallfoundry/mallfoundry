@@ -16,15 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.finance.account.repository.jpa;
+package org.mallfoundry.finance.repository.jpa;
 
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.Transaction;
+import org.mallfoundry.finance.TransactionQuery;
 import org.mallfoundry.finance.TransactionRepository;
-import org.mallfoundry.finance.repository.jpa.JpaTransaction;
-import org.mallfoundry.finance.repository.jpa.JpaTransactionRepository;
-import org.springframework.data.util.CastUtils;
-
-import java.util.Optional;
 
 public class DelegatingJpaTransactionRepository implements TransactionRepository {
 
@@ -40,17 +38,10 @@ public class DelegatingJpaTransactionRepository implements TransactionRepository
     }
 
     @Override
-    public Optional<Transaction> findById(String id) {
-        return CastUtils.cast(this.repository.findById(id));
-    }
-
-    @Override
-    public Transaction save(Transaction transaction) {
-        return this.repository.save(CastUtils.cast(transaction));
-    }
-
-    @Override
-    public void delete(Transaction transaction) {
-        this.repository.delete(CastUtils.cast(transaction));
+    public SliceList<Transaction> findAll(TransactionQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements()).cast();
     }
 }
