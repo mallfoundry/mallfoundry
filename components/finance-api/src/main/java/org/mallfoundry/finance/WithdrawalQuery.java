@@ -22,7 +22,9 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Date;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public interface WithdrawalQuery extends Query, ObjectBuilder.ToBuilder<WithdrawalQuery.Builder> {
 
@@ -34,10 +36,24 @@ public interface WithdrawalQuery extends Query, ObjectBuilder.ToBuilder<Withdraw
 
     void setStatuses(Set<WithdrawalStatus> statuses);
 
+    Date getAppliedTimeStart();
+
+    void setAppliedTimeStart(Date appliedTimeStart);
+
+    Date getAppliedTimeEnd();
+
+    void setAppliedTimeEnd(Date appliedTimeEnd);
+
     interface Builder extends QueryBuilder<WithdrawalQuery, WithdrawalQuery.Builder> {
 
         Builder accountId(String accountId);
 
         Builder statuses(Set<WithdrawalStatus> statuses);
+
+        Builder statuses(Supplier<Set<WithdrawalStatus>> supplier);
+
+        Builder appliedTimeStart(Date appliedTimeStart);
+
+        Builder appliedTimeEnd(Date appliedTimeEnd);
     }
 }

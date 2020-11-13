@@ -23,13 +23,19 @@ import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
+import java.util.Date;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
 public class DefaultWithdrawalQuery extends QuerySupport implements WithdrawalQuery {
 
     private String accountId;
+
+    private Date appliedTimeStart;
+
+    private Date appliedTimeEnd;
 
     private Set<WithdrawalStatus> statuses;
 
@@ -57,6 +63,23 @@ public class DefaultWithdrawalQuery extends QuerySupport implements WithdrawalQu
         @Override
         public Builder statuses(Set<WithdrawalStatus> statuses) {
             this.query.setStatuses(statuses);
+            return this;
+        }
+
+        @Override
+        public Builder statuses(Supplier<Set<WithdrawalStatus>> supplier) {
+            return this.statuses(supplier.get());
+        }
+
+        @Override
+        public Builder appliedTimeStart(Date appliedTimeStart) {
+            this.query.setAppliedTimeStart(appliedTimeStart);
+            return this;
+        }
+
+        @Override
+        public Builder appliedTimeEnd(Date appliedTimeEnd) {
+            this.query.setAppliedTimeEnd(appliedTimeEnd);
             return this;
         }
     }
