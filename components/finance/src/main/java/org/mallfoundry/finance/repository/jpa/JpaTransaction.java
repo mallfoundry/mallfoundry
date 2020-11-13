@@ -53,6 +53,13 @@ public class JpaTransaction extends TransactionSupport {
     @Column(name = "account_id_")
     private String accountId;
 
+
+    @Column(name = "operator_")
+    private String operator;
+
+    @Column(name = "operator_id_")
+    private String operatorId;
+
     @ManyToOne(targetEntity = JpaCounterparty.class)
     @JoinColumn(name = "counterparty_id_")
     private Counterparty counterparty;

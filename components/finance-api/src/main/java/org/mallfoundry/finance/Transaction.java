@@ -31,6 +31,14 @@ public interface Transaction {
 
     void setAccountId(String accountId);
 
+    String getOperator();
+
+    void setOperator(String operator);
+
+    String getOperatorId();
+
+    void setOperatorId(String operatorId);
+
     CurrencyCode getCurrencyCode();
 
     void setCurrencyCode(CurrencyCode currencyCode);
