@@ -16,10 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.thirdpay;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.payment.PaymentRefund;
+import org.mallfoundry.payment.PaymentRefundStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,7 +36,7 @@ import static org.mallfoundry.payment.PaymentRefundStatus.SUCCEEDED;
  */
 @Getter
 @Setter
-public class PaymentRefundResult extends PaymentRefundSupport {
+public class PaymentRefundResult implements PaymentRefund {
     private String id;
     private String paymentId;
     private String storeId;
@@ -48,6 +50,30 @@ public class PaymentRefundResult extends PaymentRefundSupport {
     private Date succeededTime;
     private Date failedTime;
 
+    public PaymentRefundResult(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public Builder toBuilder() {
+        return null;
+    }
+
+    @Override
+    public boolean isSucceeded() {
+        return false;
+    }
+
+    @Override
+    public boolean isFailed() {
+        return false;
+    }
+
+    @Override
+    public void apply() {
+
+    }
+
     @Override
     public void succeed() {
         this.setStatus(SUCCEEDED);
@@ -57,9 +83,5 @@ public class PaymentRefundResult extends PaymentRefundSupport {
     public void fail(String failReason) {
         this.setFailReason(failReason);
         this.setStatus(FAILED);
-    }
-
-    public PaymentRefundResult(String id) {
-        this.id = id;
     }
 }

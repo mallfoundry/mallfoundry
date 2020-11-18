@@ -16,41 +16,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.payment;
+package org.mallfoundry.thirdpay;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentException;
 
-@Getter
-@Setter
-@ConfigurationProperties("mall.payment")
-public class PaymentProperties {
+import java.util.Collections;
+import java.util.List;
 
-    @NestedConfigurationProperty
-    private Alipay alipay = new Alipay();
+public class DefaultPaymentClientFactory implements PaymentClientFactory {
 
-    @Getter
-    @Setter
-    static class Alipay {
+    private final List<PaymentClient> clients;
 
-        private String serverUrl;
+    public DefaultPaymentClientFactory(List<PaymentClient> clients) {
+        this.clients = Collections.unmodifiableList(clients);
+    }
 
-        private String appId;
-
-        private String alipayPublicKey;
-
-        private String appPrivateKey;
-
-        private String charset = "UTF-8";
-
-        private String format = "json";
-
-        private String signType = "RSA2";
-
-        private String returnUrl;
-
-        private String notifyUrl;
+    public PaymentClient getClient(Payment payment) throws PaymentException {
+        return this.clients.stream()
+                .filter(client -> client.supportsPayment(payment))
+                .findFirst()
+                .orElseThrow();
     }
 }

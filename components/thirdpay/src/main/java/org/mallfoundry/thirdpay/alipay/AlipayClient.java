@@ -16,10 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment.alipay;
+package org.mallfoundry.thirdpay.alipay;
 
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
@@ -31,13 +30,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentClient;
+import org.mallfoundry.thirdpay.PaymentClient;
 import org.mallfoundry.payment.PaymentException;
 import org.mallfoundry.payment.PaymentMethod;
 import org.mallfoundry.payment.PaymentNotification;
 import org.mallfoundry.payment.PaymentRefund;
 import org.mallfoundry.payment.PaymentRefundException;
-import org.mallfoundry.payment.PaymentRefundResult;
+import org.mallfoundry.thirdpay.PaymentRefundResult;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.util.CastUtils;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -47,7 +46,7 @@ import java.util.Objects;
 
 @Setter
 @Getter
-public class AliPaymentClient implements PaymentClient, InitializingBean {
+public class AlipayClient implements PaymentClient, InitializingBean {
 
     private String serverUrl;
 
@@ -67,7 +66,7 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
 
     private String notifyUrl;
 
-    private AlipayClient client;
+    private com.alipay.api.AlipayClient client;
 
     @Override
     public void afterPropertiesSet() {
@@ -81,7 +80,7 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
     }
 
     @Override
-    public String createPaymentRedirectUrl(Payment payment) throws PaymentException {
+    public String redirectPaymentUrl(Payment payment) throws PaymentException {
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
         if (StringUtils.isNotBlank(this.getReturnUrl())) {
             request.setReturnUrl(UriComponentsBuilder
@@ -111,7 +110,7 @@ public class AliPaymentClient implements PaymentClient, InitializingBean {
     }
 
     public PaymentNotification createPaymentNotification(Object parameterObject) throws PaymentException {
-        return new AliPaymentNotification(CastUtils.cast(parameterObject));
+        return new AlipayNotification(CastUtils.cast(parameterObject));
     }
 
     @Override

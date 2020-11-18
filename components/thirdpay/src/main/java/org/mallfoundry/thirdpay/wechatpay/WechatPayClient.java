@@ -16,21 +16,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment.alipay;
+package org.mallfoundry.thirdpay.wechatpay;
 
-import org.mallfoundry.payment.AbstractMapPaymentNotification;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.thirdpay.PaymentClient;
 import org.mallfoundry.payment.PaymentException;
+import org.mallfoundry.payment.PaymentNotification;
+import org.mallfoundry.payment.PaymentRefund;
 
-import java.util.Map;
+public class WechatPayClient implements PaymentClient {
 
-public class AliPaymentNotification extends AbstractMapPaymentNotification {
-
-    public AliPaymentNotification(Map<String, String> parameters) throws PaymentException {
-        super(parameters);
+    @Override
+    public boolean supportsPayment(Payment payment) {
+        return false;
     }
 
     @Override
-    public String getSourceId() {
-        return this.getParameter("trade_no");
+    public String redirectPaymentUrl(Payment payment) throws PaymentException {
+        return null;
+    }
+
+    @Override
+    public PaymentNotification validateNotification(Object parameters) {
+        return null;
+    }
+
+    @Override
+    public PaymentRefund refundPayment(Payment payment, PaymentRefund refund) {
+        return null;
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
     }
 }

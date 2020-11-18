@@ -16,10 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.thirdpay;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.payment.PaymentException;
+import org.mallfoundry.payment.PaymentNotification;
+import org.mallfoundry.payment.PaymentStatus;
 
 import java.util.Map;
 import java.util.Objects;
