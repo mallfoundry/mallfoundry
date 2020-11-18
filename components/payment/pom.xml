@@ -37,19 +37,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-thirdpay-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-commons</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.wechatpay-apiv3</groupId>
-            <artifactId>wechatpay-apache-httpclient</artifactId>
-            <version>0.2.1</version>
         </dependency>
 
         <dependency>

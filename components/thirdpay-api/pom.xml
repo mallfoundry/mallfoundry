@@ -29,5 +29,23 @@
 
     <artifactId>mall-thirdpay-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-payment-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>

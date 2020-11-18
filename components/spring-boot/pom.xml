@@ -81,6 +81,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-shipping</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-order</artifactId>
         </dependency>
 
@@ -91,12 +96,12 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-shipping</artifactId>
+            <artifactId>mall-finance</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-finance</artifactId>
+            <artifactId>mall-thirdpay</artifactId>
         </dependency>
 
         <dependency>
