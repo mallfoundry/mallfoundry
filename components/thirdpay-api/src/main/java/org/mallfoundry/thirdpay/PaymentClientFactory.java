@@ -16,17 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.thirdpay;
 
-import org.springframework.core.Ordered;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentException;
 
-public interface PaymentClient extends Ordered {
+public interface PaymentClientFactory {
 
-    boolean supportsPayment(Payment payment);
-
-    String createPaymentRedirectUrl(Payment payment) throws PaymentException;
-
-    PaymentNotification validateNotification(Object parameters);
-
-    PaymentRefund refundPayment(Payment payment, PaymentRefund refund);
+    PaymentClient getClient(Payment payment) throws PaymentException;
 }
