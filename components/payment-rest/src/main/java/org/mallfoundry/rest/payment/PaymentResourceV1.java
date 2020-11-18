@@ -18,7 +18,6 @@
 
 package org.mallfoundry.rest.payment;
 
-import org.apache.commons.lang3.Functions;
 import org.mallfoundry.payment.Payment;
 import org.mallfoundry.payment.PaymentService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,23 +49,23 @@ public class PaymentResourceV1 {
     }
 
     @GetMapping("/payments/{id}/redirect-url")
-    public Optional<String> getPaymentRedirectUrl(@PathVariable("id") String id) {
-        return this.paymentService.getPaymentRedirectUrl(id);
+    public String redirectPaymentUrl(@PathVariable("id") String id) {
+        return this.paymentService.redirectPaymentUrl(id);
     }
 
     @GetMapping("/payments/{id}/redirect")
-    public void redirectPayment(@PathVariable("id") String id, HttpServletResponse response) {
-        this.paymentService.getPaymentRedirectUrl(id).ifPresent(Functions.asConsumer(response::sendRedirect));
+    public void redirectPayment(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
+        response.sendRedirect(this.paymentService.redirectPaymentUrl(id));
     }
 
     @GetMapping("/payments/{id}/return-url")
-    public Optional<String> getPaymentReturnUrl(@PathVariable("id") String id) {
-        return this.paymentService.getPaymentReturnUrl(id);
+    public String getPaymentReturnUrl(@PathVariable("id") String id) {
+        return this.paymentService.returnPaymentUrl(id);
     }
 
     @GetMapping("/payments/{id}/return")
-    public void sendPaymentReturn(@PathVariable("id") String id, HttpServletResponse response) {
-        this.paymentService.getPaymentReturnUrl(id).ifPresent(Functions.asConsumer(response::sendRedirect));
+    public void returnPayment(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
+        response.sendRedirect(this.paymentService.returnPaymentUrl(id));
     }
 
     private Map<String, String> createSingleValueParameters(HttpServletRequest request) {

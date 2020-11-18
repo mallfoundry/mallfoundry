@@ -18,51 +18,25 @@
 
 package org.mallfoundry.autoconfigure.payment;
 
-import com.alipay.api.AlipayClient;
-import org.mallfoundry.payment.PaymentClient;
-import org.mallfoundry.payment.PaymentClientFactory;
-import org.mallfoundry.payment.alipay.AliPaymentClient;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.mallfoundry.payment.DefaultPaymentService;
+import org.mallfoundry.payment.PaymentRepository;
+import org.mallfoundry.payment.repository.jpa.DelegatingJpaPaymentRepository;
+import org.mallfoundry.payment.repository.jpa.JpaPaymentRepository;
+import org.mallfoundry.thirdpay.PaymentClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
-@ConditionalOnClass(PaymentClientFactory.class)
 @Configuration
-@EnableConfigurationProperties(PaymentProperties.class)
 public class PaymentAutoConfiguration {
 
-    private final PaymentProperties properties;
-
-    public PaymentAutoConfiguration(PaymentProperties properties) {
-        this.properties = properties;
-    }
-
-    @ConditionalOnClass(AlipayClient.class)
-    @ConditionalOnProperty(prefix = "mall.payment.alipay",
-            name = {"server-url", "app-id", "alipay-public-key", "app-private-key"})
     @Bean
-    public AliPaymentClient aliPaymentClient() {
-        var alipay = this.properties.getAlipay();
-        var client = new AliPaymentClient();
-        client.setAppId(alipay.getAppId());
-        client.setAlipayPublicKey(alipay.getAlipayPublicKey());
-        client.setAppPrivateKey(alipay.getAppPrivateKey());
-        client.setCharset(alipay.getCharset());
-        client.setFormat(alipay.getFormat());
-        client.setSignType(alipay.getSignType());
-        client.setNotifyUrl(alipay.getNotifyUrl());
-        client.setServerUrl(alipay.getServerUrl());
-        client.setReturnUrl(alipay.getReturnUrl());
-        return client;
+    public DelegatingJpaPaymentRepository delegatingJpaPaymentRepository(JpaPaymentRepository repository) {
+        return new DelegatingJpaPaymentRepository(repository);
     }
 
     @Bean
-    public PaymentClientFactory paymentClientFactory(List<PaymentClient> clients) {
-        return new PaymentClientFactory(clients);
+    public DefaultPaymentService defaultPaymentService(PaymentRepository paymentRepository,
+                                                       PaymentClientFactory paymentClientFactory) {
+        return new DefaultPaymentService(paymentRepository, paymentClientFactory);
     }
 }
-

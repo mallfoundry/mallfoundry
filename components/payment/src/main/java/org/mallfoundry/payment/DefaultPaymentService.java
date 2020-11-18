@@ -20,31 +20,32 @@ package org.mallfoundry.payment;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.thirdpay.PaymentClientFactory;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
 import java.util.Optional;
 
-@Service
-public class DefaultPaymentService implements PaymentService {
+public class DefaultPaymentService implements PaymentService, ApplicationEventPublisherAware {
 
     private static final String PAYMENT_ID_VALUE_NAME = "payment.id";
 
     private final PaymentRepository paymentRepository;
 
-    private final PaymentClientFactory paymentClientFactory;
+    private final PaymentClientFactory clientFactory;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
 
-    public DefaultPaymentService(PaymentRepository paymentRepository,
-                                 PaymentClientFactory paymentClientFactory,
-                                 ApplicationEventPublisher eventPublisher) {
+    public DefaultPaymentService(PaymentRepository paymentRepository, PaymentClientFactory clientFactory) {
         this.paymentRepository = paymentRepository;
-        this.paymentClientFactory = paymentClientFactory;
+        this.clientFactory = clientFactory;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
     }
 
@@ -84,30 +85,26 @@ public class DefaultPaymentService implements PaymentService {
     @Override
     public PaymentRefund refundPayment(String id, PaymentRefund newRefund) {
         var payment = this.requiredPayment(id);
-        var appliedRefund = payment.applyRefund(newRefund);
-        var result = this.requiredPaymentClient(payment).refundPayment(payment, appliedRefund);
+        var refund = payment.applyRefund(newRefund);
+        var result = this.clientFactory.getClient(payment).refundPayment(payment, refund);
         // 如果不为空，设置退款交易号
         if (StringUtils.isNotBlank(result.getSourceId())) {
-            appliedRefund.setSourceId(result.getSourceId());
+            refund.setSourceId(result.getSourceId());
         }
         if (result.isSucceeded()) {
-            appliedRefund.succeed();
+            refund.succeed();
         } else if (result.isFailed()) {
-            appliedRefund.fail(appliedRefund.getFailReason());
+            refund.fail(refund.getFailReason());
         }
         this.paymentRepository.save(payment);
-        return appliedRefund;
-    }
-
-    private PaymentClient requiredPaymentClient(Payment payment) {
-        return this.paymentClientFactory.getClient(payment).orElseThrow(PaymentExceptions::notFound);
+        return refund;
     }
 
     @Transactional
     @Override
     public PaymentNotification notifyPayment(String id, Object parameters) {
         var payment = this.requiredPayment(id);
-        var notification = this.requiredPaymentClient(payment).validateNotification(parameters);
+        var notification = this.clientFactory.getClient(payment).validateNotification(parameters);
         if (notification.isCaptured() && payment.isStarted()) {
             // 设置支付源交易标识
             payment.setSourceId(notification.getSourceId());
@@ -118,22 +115,19 @@ public class DefaultPaymentService implements PaymentService {
 
     @Override
     public Optional<Payment> getPayment(String id) {
-        return CastUtils.cast(this.paymentRepository.findById(id));
+        return this.paymentRepository.findById(id);
     }
 
     @Transactional
     @Override
-    public Optional<String> getPaymentRedirectUrl(String id) {
+    public String redirectPaymentUrl(String id) {
         var payment = this.requiredPayment(id);
-        var client = this.requiredPaymentClient(payment);
-        var redirectUrl = client.createPaymentRedirectUrl(payment);
-        return Optional.of(redirectUrl);
+        return this.clientFactory.getClient(payment).redirectPaymentUrl(payment);
     }
 
     @Override
-    public Optional<String> getPaymentReturnUrl(String id) {
+    public String returnPaymentUrl(String id) {
         var payment = this.requiredPayment(id);
-        var returnUrl = UriComponentsBuilder.fromHttpUrl(payment.getReturnUrl()).build(Map.of("payment_id", payment.getId())).toString();
-        return Optional.of(returnUrl);
+        return UriComponentsBuilder.fromHttpUrl(payment.getReturnUrl()).build(Map.of("payment_id", payment.getId())).toString();
     }
 }

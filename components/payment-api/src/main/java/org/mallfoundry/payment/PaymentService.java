@@ -34,7 +34,7 @@ public interface PaymentService {
 
     Optional<Payment> getPayment(String id);
 
-    Optional<String> getPaymentRedirectUrl(String id);
+    String redirectPaymentUrl(String id);
 
-    Optional<String> getPaymentReturnUrl(String id);
+    String returnPaymentUrl(String id);
 }

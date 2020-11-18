@@ -18,9 +18,32 @@
 
 package org.mallfoundry.payment.repository.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.mallfoundry.payment.Payment;
+import org.mallfoundry.payment.PaymentRepository;
+import org.springframework.data.util.CastUtils;
 
-@Repository
-public interface JpaPaymentRepositoryDelegate extends JpaRepository<JpaPayment, String> {
+import java.util.Optional;
+
+public class DelegatingJpaPaymentRepository implements PaymentRepository {
+
+    private final JpaPaymentRepository repository;
+
+    public DelegatingJpaPaymentRepository(JpaPaymentRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public Payment create(String id) {
+        return new JpaPayment(id);
+    }
+
+    @Override
+    public Payment save(Payment payment) {
+        return this.repository.save(JpaPayment.of(payment));
+    }
+
+    @Override
+    public Optional<Payment> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
+    }
 }
