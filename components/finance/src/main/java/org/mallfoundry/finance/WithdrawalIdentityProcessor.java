@@ -20,6 +20,9 @@ package org.mallfoundry.finance;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.mallfoundry.security.SubjectHolder;
+
+import java.util.Objects;
 
 public class WithdrawalIdentityProcessor implements WithdrawalProcessor {
 
@@ -32,8 +35,22 @@ public class WithdrawalIdentityProcessor implements WithdrawalProcessor {
         if (StringUtils.isBlank(withdrawal.getId())) {
             withdrawal.setId(this.nextWithdrawalId());
         }
-        withdrawal.getTransactions().forEach(transaction -> transaction.setId(PrimaryKeyHolder.next(TRANSACTION_ID_VALUE_NAME)));
+        setApplicant(withdrawal);
+        withdrawal.getTransactions().forEach(this::setTransaction);
         return withdrawal;
+    }
+
+    public void setApplicant(Withdrawal withdrawal) {
+        withdrawal.setApplicantId(SubjectHolder.getSubject().getId());
+        withdrawal.setApplicant(SubjectHolder.getSubject().getNickname());
+    }
+
+    public void setTransaction(Transaction transaction) {
+        if (Objects.isNull(transaction.getId())) {
+            transaction.setId(PrimaryKeyHolder.next(TRANSACTION_ID_VALUE_NAME));
+            transaction.setOperatorId(SubjectHolder.getSubject().getId());
+            transaction.setOperator(SubjectHolder.getSubject().getNickname());
+        }
     }
 
     private String nextWithdrawalId() {
