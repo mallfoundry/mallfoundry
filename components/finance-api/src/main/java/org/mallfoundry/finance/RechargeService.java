@@ -22,7 +22,7 @@ public interface RechargeService {
 
     Recharge createRecharge(String rechargeId);
 
-    Recharge createRecharge(Recharge recharge) throws RechargeException;
+    Recharge prepayRecharge(Recharge recharge) throws RechargeException;
 
     Recharge cancelRecharge(String rechargeId) throws RechargeException;
 
