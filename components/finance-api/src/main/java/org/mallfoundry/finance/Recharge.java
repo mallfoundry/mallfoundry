@@ -18,11 +18,8 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.finance.account.BalanceTransaction;
-
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 public interface Recharge {
 
@@ -38,17 +35,15 @@ public interface Recharge {
 
     void setAmount(BigDecimal amount);
 
-    String getCurrency();
+    CurrencyCode getCurrencyCode();
 
-    void setCurrency(String currency);
+    void setCurrencyCode(CurrencyCode currencyCode);
 
     RechargeStatus getStatus();
 
-    Transaction createTransaction();
+    Date getCreatedTime();
 
-    List<Transaction> getTransactions();
-
-    List<BalanceTransaction> getBalanceTransactions();
+    String getCancelReason();
 
     Date getCanceledTime();
 
@@ -58,9 +53,9 @@ public interface Recharge {
 
     Date getFailedTime();
 
-    void pending(List<BalanceTransaction> balanceTransactions);
+    void prepay();
 
-    void cancel();
+    void cancel(String cancelReason);
 
     void succeed();
 
