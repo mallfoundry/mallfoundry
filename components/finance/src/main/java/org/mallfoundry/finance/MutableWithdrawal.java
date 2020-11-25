@@ -18,18 +18,11 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.finance.account.BalanceTransaction;
-
 import java.util.Date;
-import java.util.List;
 
 public interface MutableWithdrawal extends Withdrawal {
 
     void setStatus(WithdrawalStatus status);
-
-    void setBalanceTransactions(List<BalanceTransaction> balanceTransactions);
-
-    void setTransactions(List<Transaction> transactions);
 
     void setAppliedTime(Date appliedTime);
 
