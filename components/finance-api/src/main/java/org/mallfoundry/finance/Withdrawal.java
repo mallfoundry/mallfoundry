@@ -18,13 +18,11 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.finance.account.BalanceTransaction;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdrawal.Builder> {
 
@@ -52,19 +50,13 @@ public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdr
 
     void setRecipient(Recipient recipient);
 
-    Transaction createTransaction();
+    String getOperatorId();
 
-    List<Transaction> getTransactions();
+    void setOperatorId(String operatorId);
 
-    List<BalanceTransaction> getBalanceTransactions();
+    String getOperator();
 
-    String getApplicant();
-
-    void setApplicant(String applicant);
-
-    String getApplicantId();
-
-    void setApplicantId(String applicantId);
+    void setOperator(String operator);
 
     Date getAppliedTime();
 
@@ -82,7 +74,7 @@ public interface Withdrawal extends Serializable, ObjectBuilder.ToBuilder<Withdr
 
     Date getFailedTime();
 
-    void apply(List<BalanceTransaction> balanceTransactions);
+    void apply();
 
     void disapprove(String disapprovalReason);
 
