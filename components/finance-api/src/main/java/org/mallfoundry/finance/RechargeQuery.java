@@ -50,7 +50,7 @@ public interface RechargeQuery extends Query, ObjectBuilder.ToBuilder<RechargeQu
 
         Builder statuses(Set<RechargeStatus> statuses);
 
-        Builder statuses(Supplier<Set<WithdrawalStatus>> supplier);
+        Builder statuses(Supplier<Set<RechargeStatus>> supplier);
 
         Builder createdTimeStart(Date createdTimeStart);
 
