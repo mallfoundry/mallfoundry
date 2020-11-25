@@ -18,13 +18,21 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.data.SliceList;
+
 public interface RechargeService {
 
     Recharge createRecharge(String rechargeId);
 
+    RechargeQuery createRechargeQuery();
+
+    Recharge getRecharge(String rechargeId);
+
+    SliceList<Recharge> getRecharges(RechargeQuery query);
+
     Recharge prepayRecharge(Recharge recharge) throws RechargeException;
 
-    Recharge cancelRecharge(String rechargeId) throws RechargeException;
+    Recharge cancelRecharge(String rechargeId, String cancelReason) throws RechargeException;
 
     Recharge succeedRecharge(String rechargeId) throws RechargeException;
 
