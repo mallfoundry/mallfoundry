@@ -23,13 +23,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.Recipient;
-import org.mallfoundry.finance.Transaction;
 import org.mallfoundry.finance.WithdrawalStatus;
 import org.mallfoundry.finance.WithdrawalSupport;
-import org.mallfoundry.finance.account.BalanceTransaction;
-import org.mallfoundry.finance.account.repository.jpa.JpaBalanceTransaction;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,14 +33,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -61,14 +55,6 @@ public class JpaWithdrawal extends WithdrawalSupport {
     @NotBlank
     @Column(name = "account_id_")
     private String accountId;
-
-    @NotBlank
-    @Column(name = "applicant_")
-    private String applicant;
-
-    @NotBlank
-    @Column(name = "applicant_id_")
-    private String applicantId;
 
     @Min(0)
     @Column(name = "amount_")
@@ -88,13 +74,13 @@ public class JpaWithdrawal extends WithdrawalSupport {
     @JoinColumn(name = "recipient_id_")
     private Recipient recipient;
 
-    @OneToMany(targetEntity = JpaTransaction.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "source_id_")
-    private List<Transaction> transactions;
+    @NotBlank
+    @Column(name = "operator_id_")
+    private String operatorId;
 
-    @OneToMany(targetEntity = JpaBalanceTransaction.class)
-    @JoinColumn(name = "source_id_")
-    private List<BalanceTransaction> balanceTransactions;
+    @NotBlank
+    @Column(name = "operator_")
+    private String operator;
 
     @NotNull
     @Column(name = "applied_time_")
@@ -128,10 +114,5 @@ public class JpaWithdrawal extends WithdrawalSupport {
     @Override
     public Recipient createRecipient() {
         return new JpaRecipient();
-    }
-
-    @Override
-    public Transaction createTransaction() {
-        return new JpaTransaction();
     }
 }
