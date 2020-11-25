@@ -22,35 +22,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.security.SubjectHolder;
 
-import java.util.Objects;
-
 public class WithdrawalIdentityProcessor implements WithdrawalProcessor {
 
     private static final String WITHDRAWAL_ID_VALUE_NAME = "finance.withdrawal.id";
-
-    private static final String TRANSACTION_ID_VALUE_NAME = "finance.transaction.id";
 
     @Override
     public Withdrawal preProcessAfterApplyWithdrawal(Withdrawal withdrawal) {
         if (StringUtils.isBlank(withdrawal.getId())) {
             withdrawal.setId(this.nextWithdrawalId());
+            withdrawal.setOperatorId(SubjectHolder.getSubject().getId());
+            withdrawal.setOperator(SubjectHolder.getSubject().getNickname());
         }
-        setApplicant(withdrawal);
-        withdrawal.getTransactions().forEach(this::setTransaction);
         return withdrawal;
-    }
-
-    public void setApplicant(Withdrawal withdrawal) {
-        withdrawal.setApplicantId(SubjectHolder.getSubject().getId());
-        withdrawal.setApplicant(SubjectHolder.getSubject().getNickname());
-    }
-
-    public void setTransaction(Transaction transaction) {
-        if (Objects.isNull(transaction.getId())) {
-            transaction.setId(PrimaryKeyHolder.next(TRANSACTION_ID_VALUE_NAME));
-            transaction.setOperatorId(SubjectHolder.getSubject().getId());
-            transaction.setOperator(SubjectHolder.getSubject().getNickname());
-        }
     }
 
     private String nextWithdrawalId() {
