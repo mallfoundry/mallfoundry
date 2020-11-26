@@ -26,8 +26,6 @@ public interface MutableRecharge extends Recharge {
 
     void setCreatedTime(Date createdTime);
 
-    void setCancelReason(String cancelReason);
-
     void setCanceledTime(Date canceledTime);
 
     void setSucceededTime(Date succeededTime);
