@@ -54,8 +54,6 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     Date getCreatedTime();
 
-    String getCancelReason();
-
     Date getCanceledTime();
 
     Date getSucceededTime();
@@ -66,7 +64,7 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     void create();
 
-    void cancel(String cancelReason);
+    void cancel();
 
     void succeed();
 
