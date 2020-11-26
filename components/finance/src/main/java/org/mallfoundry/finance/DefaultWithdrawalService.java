@@ -20,7 +20,6 @@ package org.mallfoundry.finance;
 
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.account.BalanceService;
-import org.mallfoundry.finance.account.BalanceTransaction;
 import org.mallfoundry.processor.Processors;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,10 +67,10 @@ public class DefaultWithdrawalService implements WithdrawalService, WithdrawalPr
         return this.withdrawalRepository.findAll(query);
     }
 
-    private List<BalanceTransaction> withdrawBalance(Withdrawal withdrawal) throws WithdrawalException {
-        var balanceId = this.balanceService.createBalanceId(withdrawal.getAccountId(), withdrawal.getCurrencyCode());
-        return this.balanceService.withdrawBalance(balanceId, withdrawal.getAmount());
-    }
+//    private List<BalanceTransaction> withdrawBalance(Withdrawal withdrawal) throws WithdrawalException {
+//        var balanceId = this.balanceService.createBalanceId(withdrawal.getAccountId(), withdrawal.getCurrencyCode());
+//        return this.balanceService.withdrawBalance(balanceId, withdrawal.getAmount());
+//    }
 
     @Transactional
     @Override
@@ -81,8 +80,8 @@ public class DefaultWithdrawalService implements WithdrawalService, WithdrawalPr
         var recipient = withdrawal.getRecipient();
         recipient = this.recipientService.getRecipient(recipient);
         withdrawal.setRecipient(recipient);
-        var balanceTransactions = this.withdrawBalance(withdrawal);
-        withdrawal.apply(balanceTransactions);
+//        var balanceTransactions = this.withdrawBalance(withdrawal);
+        withdrawal.apply();
         withdrawal = this.invokePreProcessAfterApplyWithdrawal(withdrawal);
         return this.withdrawalRepository.save(withdrawal);
     }
