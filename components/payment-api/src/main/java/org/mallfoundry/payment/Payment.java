@@ -59,7 +59,7 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     void addOrders(List<PaymentOrder> orders);
 
-    Optional<PaymentOrder> getOrder(String orderId);
+    PaymentOrder getOrder(String orderId);
 
     List<PaymentOrder> getOrders();
 

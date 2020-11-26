@@ -80,15 +80,12 @@ public abstract class PaymentSupport implements MutablePayment {
     }
 
     @Override
-    public Optional<PaymentOrder> getOrder(String orderId) {
+    public PaymentOrder getOrder(String orderId) {
         return this.getOrders()
                 .stream()
                 .filter(order -> Objects.equals(order.getId(), orderId))
-                .findFirst();
-    }
-
-    private PaymentOrder requiredOrder(String orderId) {
-        return this.getOrder(orderId).orElseThrow(PaymentExceptions.Order::notFound);
+                .findFirst()
+                .orElseThrow(PaymentExceptions.Order::notFound);
     }
 
     @Override
@@ -114,7 +111,7 @@ public abstract class PaymentSupport implements MutablePayment {
         if (this.existsRefund(refund.getId())) {
             throw PaymentExceptions.Refund.duplicate();
         }
-        var order = this.requiredOrder(refund.getOrderId());
+        var order = this.getOrder(refund.getOrderId());
         // 设置商铺标识
         refund.setStoreId(order.getStoreId());
         order.applyRefund(refund.getAmount());
@@ -126,7 +123,7 @@ public abstract class PaymentSupport implements MutablePayment {
     @Override
     public void succeedRefund(String refundId) {
         var refund = this.requiredRefund(refundId);
-        var order = this.requiredOrder(refund.getOrderId());
+        var order = this.getOrder(refund.getOrderId());
         order.succeedRefund(refund.getAmount());
         refund.succeed();
     }
@@ -134,7 +131,7 @@ public abstract class PaymentSupport implements MutablePayment {
     @Override
     public void failRefund(String refundId, String failReason) {
         var refund = this.requiredRefund(refundId);
-        var order = this.requiredOrder(refund.getOrderId());
+        var order = this.getOrder(refund.getOrderId());
         order.failRefund(refund.getAmount());
         refund.fail(failReason);
     }
