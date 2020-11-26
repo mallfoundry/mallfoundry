@@ -53,7 +53,6 @@ public class JpaTransaction extends TransactionSupport {
     @Column(name = "account_id_")
     private String accountId;
 
-
     @Column(name = "operator_")
     private String operator;
 
