@@ -19,11 +19,15 @@
 package org.mallfoundry.autoconfigure.finance;
 
 import org.mallfoundry.finance.DefaultRechargeService;
+import org.mallfoundry.finance.RechargeIdentityProcessor;
+import org.mallfoundry.finance.RechargeProcessor;
 import org.mallfoundry.finance.RechargeRepository;
 import org.mallfoundry.finance.repository.jpa.DelegatingJpaRechargeRepository;
 import org.mallfoundry.finance.repository.jpa.JpaRechargeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class RechargeAutoConfiguration {
@@ -34,7 +38,15 @@ public class RechargeAutoConfiguration {
     }
 
     @Bean
-    public DefaultRechargeService defaultRechargeService(RechargeRepository rechargeRepository) {
-        return new DefaultRechargeService(rechargeRepository);
+    public DefaultRechargeService defaultRechargeService(List<RechargeProcessor> processors,
+                                                         RechargeRepository rechargeRepository) {
+        var service = new DefaultRechargeService(rechargeRepository);
+        service.setProcessors(processors);
+        return service;
+    }
+
+    @Bean
+    public RechargeIdentityProcessor rechargeIdentityProcessor() {
+        return new RechargeIdentityProcessor();
     }
 }
