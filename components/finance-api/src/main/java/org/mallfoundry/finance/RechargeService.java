@@ -30,9 +30,11 @@ public interface RechargeService {
 
     SliceList<Recharge> getRecharges(RechargeQuery query);
 
-    Recharge prepayRecharge(Recharge recharge) throws RechargeException;
+    Recharge createRecharge(Recharge recharge) throws RechargeException;
 
-    Recharge cancelRecharge(String rechargeId, String cancelReason) throws RechargeException;
+//    Recharge payRecharge(String rechargeId, Payment) throws RechargeException;
+
+    Recharge cancelRecharge(String rechargeId) throws RechargeException;
 
     Recharge succeedRecharge(String rechargeId) throws RechargeException;
 
