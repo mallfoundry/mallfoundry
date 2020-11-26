@@ -18,10 +18,13 @@
 
 package org.mallfoundry.finance;
 
+import org.mallfoundry.util.ObjectBuilder;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public interface Recharge {
+public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge.Builder> {
 
     String getId();
 
@@ -31,13 +34,21 @@ public interface Recharge {
 
     void setAccountId(String accountId);
 
-    BigDecimal getAmount();
+    String getOperatorId();
 
-    void setAmount(BigDecimal amount);
+    void setOperatorId(String operatorId);
+
+    String getOperator();
+
+    void setOperator(String operator);
 
     CurrencyCode getCurrencyCode();
 
     void setCurrencyCode(CurrencyCode currencyCode);
+
+    BigDecimal getAmount();
+
+    void setAmount(BigDecimal amount);
 
     RechargeStatus getStatus();
 
@@ -53,11 +64,20 @@ public interface Recharge {
 
     Date getFailedTime();
 
-    void prepay();
+    void create();
 
     void cancel(String cancelReason);
 
     void succeed();
 
     void fail(String failureReason);
+
+    interface Builder extends ObjectBuilder<Recharge> {
+
+        Builder accountId(String accountId);
+
+        Builder currencyCode(CurrencyCode currencyCode);
+
+        Builder amount(BigDecimal amount);
+    }
 }
