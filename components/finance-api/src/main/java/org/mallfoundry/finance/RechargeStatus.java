@@ -18,9 +18,17 @@
 
 package org.mallfoundry.finance;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum RechargeStatus {
     PENDING, // 等待中
     SUCCEEDED, // 成功
     FAILED, // 失败
     CANCELED; // 已取消
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }
