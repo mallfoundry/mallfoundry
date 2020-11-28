@@ -25,7 +25,7 @@ import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.shipping.OrderShipmentItem;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.util.DecimalUtils;
 import org.springframework.util.Assert;

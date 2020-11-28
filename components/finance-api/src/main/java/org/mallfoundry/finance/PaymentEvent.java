@@ -16,14 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-public class PaymentRefundException extends PaymentException {
-    public PaymentRefundException(Throwable cause) {
-        super(cause);
+import org.mallfoundry.util.ObjectEvent;
+
+import java.io.Serializable;
+
+public interface PaymentEvent extends ObjectEvent, Serializable {
+
+    @Override
+    default Object getSource() {
+        return this.getPayment();
     }
 
-    public PaymentRefundException(String message) {
-        super(message);
-    }
+    Payment getPayment();
 }

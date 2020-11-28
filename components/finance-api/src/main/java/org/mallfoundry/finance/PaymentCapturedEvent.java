@@ -16,15 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-public class PaymentException extends RuntimeException {
-
-    public PaymentException(Throwable cause) {
-        super(cause);
-    }
-
-    public PaymentException(String message) {
-        super(message);
-    }
+public interface PaymentCapturedEvent extends PaymentEvent {
 }

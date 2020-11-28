@@ -18,8 +18,8 @@
 
 package org.mallfoundry.rest.payment;
 
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentService;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -21,10 +21,9 @@ package org.mallfoundry.rest.order;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.Functions;
-import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.order.OrderPayment;
-import org.mallfoundry.payment.PaymentInstrument;
-import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.finance.PaymentInstrument;
+import org.mallfoundry.finance.PaymentMethod;
 
 import java.util.HashSet;
 import java.util.Set;

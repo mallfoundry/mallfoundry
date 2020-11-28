@@ -21,6 +21,7 @@ package org.mallfoundry.payment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.PaymentMethod;
 
 @Getter
 @Setter

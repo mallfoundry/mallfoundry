@@ -26,7 +26,7 @@ import org.mallfoundry.edw.time.TimeDimensionManager;
 import org.mallfoundry.order.Order;
 import org.mallfoundry.order.OrderItem;
 import org.mallfoundry.order.OrdersPaidEvent;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentStatus;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 

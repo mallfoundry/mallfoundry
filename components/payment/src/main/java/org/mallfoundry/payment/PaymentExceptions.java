@@ -18,6 +18,10 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentOrderException;
+import org.mallfoundry.finance.PaymentRefundException;
+
 public abstract class PaymentExceptions {
 
     public static PaymentException notFound() {

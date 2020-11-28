@@ -18,6 +18,9 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentStatus;
+
 import java.math.BigDecimal;
 import java.util.Date;
 

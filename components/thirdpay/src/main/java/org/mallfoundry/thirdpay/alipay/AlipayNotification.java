@@ -18,7 +18,7 @@
 
 package org.mallfoundry.thirdpay.alipay;
 
-import org.mallfoundry.payment.PaymentException;
+import org.mallfoundry.finance.PaymentException;
 import org.mallfoundry.thirdpay.AbstractMapPaymentNotification;
 
 import java.util.Map;

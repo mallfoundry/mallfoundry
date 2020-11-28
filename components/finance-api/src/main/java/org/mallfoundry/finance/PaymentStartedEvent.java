@@ -16,19 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
-public enum PaymentRefundStatus {
-    PENDING /* 退款中 */,
-    SUCCEEDED  /* 退款成功 */,
-    FAILED  /* 退款失败 */,
-    CANCELED  /* 取消退款 */;
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
+public interface PaymentStartedEvent extends PaymentEvent {
 }

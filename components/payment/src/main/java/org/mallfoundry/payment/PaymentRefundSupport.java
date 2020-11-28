@@ -18,12 +18,14 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.PaymentRefund;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static org.mallfoundry.payment.PaymentRefundStatus.FAILED;
-import static org.mallfoundry.payment.PaymentRefundStatus.PENDING;
-import static org.mallfoundry.payment.PaymentRefundStatus.SUCCEEDED;
+import static org.mallfoundry.finance.PaymentRefundStatus.FAILED;
+import static org.mallfoundry.finance.PaymentRefundStatus.PENDING;
+import static org.mallfoundry.finance.PaymentRefundStatus.SUCCEEDED;
 
 public abstract class PaymentRefundSupport implements MutablePaymentRefund {
 

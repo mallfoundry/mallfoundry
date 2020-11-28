@@ -19,7 +19,7 @@
 package org.mallfoundry.payment.repository.jpa.convert;
 
 import org.mallfoundry.payment.DefaultInstrument;
-import org.mallfoundry.payment.PaymentInstrument;
+import org.mallfoundry.finance.PaymentInstrument;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;

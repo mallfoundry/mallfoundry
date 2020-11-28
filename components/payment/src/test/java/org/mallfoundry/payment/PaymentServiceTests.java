@@ -20,6 +20,8 @@ package org.mallfoundry.payment;
 
 import org.apache.commons.lang3.Functions;
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentService;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
 

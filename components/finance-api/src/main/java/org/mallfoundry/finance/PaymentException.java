@@ -16,16 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+public class PaymentException extends RuntimeException {
 
-public enum PaymentMethod {
-    ALIPAY, WECHAT_PAY;
+    public PaymentException(Throwable cause) {
+        super(cause);
+    }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
+    public PaymentException(String message) {
+        super(message);
     }
 }

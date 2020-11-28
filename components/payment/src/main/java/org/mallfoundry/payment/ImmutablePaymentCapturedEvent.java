@@ -18,6 +18,9 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentCapturedEvent;
+
 public class ImmutablePaymentCapturedEvent extends PaymentEventSupport implements PaymentCapturedEvent {
 
     public ImmutablePaymentCapturedEvent(Payment payment) {

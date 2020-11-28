@@ -44,7 +44,7 @@ import org.mallfoundry.order.review.OrderReviewProcessor;
 import org.mallfoundry.order.review.OrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.DelegatingJpaOrderReviewRepository;
 import org.mallfoundry.order.review.repository.jpa.JpaOrderReviewRepository;
-import org.mallfoundry.payment.PaymentService;
+import org.mallfoundry.finance.PaymentService;
 import org.mallfoundry.product.ProductSaleCollectOnOrderEventListener;
 import org.mallfoundry.product.ReviewProductOnOrderReviewedEventListener;
 import org.mallfoundry.shipping.CarrierService;

@@ -18,7 +18,7 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.PaymentInstrument;
+import org.mallfoundry.finance.PaymentInstrument;
 
 import java.util.Set;
 import java.util.function.Function;

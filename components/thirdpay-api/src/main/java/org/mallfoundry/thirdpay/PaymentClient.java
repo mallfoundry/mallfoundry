@@ -18,13 +18,12 @@
 
 package org.mallfoundry.thirdpay;
 
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentException;
-import org.mallfoundry.payment.PaymentNotification;
-import org.mallfoundry.payment.PaymentRefund;
-import org.springframework.core.Ordered;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentNotification;
+import org.mallfoundry.finance.PaymentRefund;
 
-public interface PaymentClient extends Ordered {
+public interface PaymentClient {
 
     boolean supportsPayment(Payment payment);
 

@@ -16,7 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-public interface PaymentCapturedEvent extends PaymentEvent {
+import java.util.Map;
+
+public interface PaymentNotification {
+
+    Map<String, String> getParameters();
+
+    String getParameter(String name);
+
+    PaymentStatus getStatus();
+
+    String getSourceId();
+
+    void pending();
+
+    void capture();
+
+    boolean isPending();
+
+    boolean isCaptured();
+
+    boolean hasResult();
+
+    byte[] getResult();
+
+    void setResult(byte[] bytes);
 }

@@ -19,6 +19,8 @@
 package org.mallfoundry.payment;
 
 import lombok.Getter;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentEvent;
 import org.springframework.context.ApplicationEvent;
 
 public abstract class PaymentEventSupport extends ApplicationEvent implements PaymentEvent {

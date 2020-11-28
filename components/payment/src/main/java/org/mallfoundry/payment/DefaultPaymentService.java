@@ -19,6 +19,11 @@
 package org.mallfoundry.payment;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentNotification;
+import org.mallfoundry.finance.PaymentRefund;
+import org.mallfoundry.finance.PaymentService;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.mallfoundry.thirdpay.PaymentClientFactory;
 import org.springframework.context.ApplicationEventPublisher;

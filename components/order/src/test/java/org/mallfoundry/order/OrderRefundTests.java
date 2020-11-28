@@ -21,8 +21,8 @@ package org.mallfoundry.order;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.order.repository.jpa.JpaOrder;
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.test.StaticTest;
 
 import java.math.BigDecimal;

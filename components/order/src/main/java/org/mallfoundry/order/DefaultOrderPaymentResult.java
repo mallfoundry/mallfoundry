@@ -21,12 +21,12 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentStatus;
 import org.springframework.beans.BeanUtils;
 
-import static org.mallfoundry.payment.PaymentStatus.CAPTURED;
-import static org.mallfoundry.payment.PaymentStatus.PENDING;
+import static org.mallfoundry.finance.PaymentStatus.CAPTURED;
+import static org.mallfoundry.finance.PaymentStatus.PENDING;
 
 @Getter
 @Setter

@@ -29,13 +29,13 @@ import com.alipay.api.response.AlipayTradeWapPayResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.payment.Payment;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentNotification;
+import org.mallfoundry.finance.PaymentRefund;
+import org.mallfoundry.finance.PaymentRefundException;
 import org.mallfoundry.thirdpay.PaymentClient;
-import org.mallfoundry.payment.PaymentException;
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentNotification;
-import org.mallfoundry.payment.PaymentRefund;
-import org.mallfoundry.payment.PaymentRefundException;
 import org.mallfoundry.thirdpay.PaymentRefundResult;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.util.CastUtils;
@@ -164,10 +164,4 @@ public class AlipayClient implements PaymentClient, InitializingBean {
     public boolean supportsPayment(Payment payment) {
         return PaymentMethod.ALIPAY.equals(payment.getInstrument().getType());
     }
-
-    @Override
-    public int getOrder() {
-        return 0;
-    }
-
 }

@@ -18,6 +18,9 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.PaymentInstrument;
+import org.mallfoundry.finance.PaymentMethod;
+
 public abstract class PaymentInstrumentSupport implements PaymentInstrument {
 
     @Override

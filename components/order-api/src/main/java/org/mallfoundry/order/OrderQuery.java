@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethod;
 import org.mallfoundry.store.StoreOwnership;
 
 import java.util.Date;

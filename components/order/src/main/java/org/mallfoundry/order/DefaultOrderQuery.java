@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
-import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethod;
 
 import java.util.Date;
 import java.util.Set;

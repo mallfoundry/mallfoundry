@@ -18,11 +18,11 @@
 
 package org.mallfoundry.thirdpay.wechatpay;
 
-import org.mallfoundry.payment.Payment;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentNotification;
+import org.mallfoundry.finance.PaymentRefund;
 import org.mallfoundry.thirdpay.PaymentClient;
-import org.mallfoundry.payment.PaymentException;
-import org.mallfoundry.payment.PaymentNotification;
-import org.mallfoundry.payment.PaymentRefund;
 
 public class WechatPayClient implements PaymentClient {
 
@@ -44,10 +44,5 @@ public class WechatPayClient implements PaymentClient {
     @Override
     public PaymentRefund refundPayment(Payment payment, PaymentRefund refund) {
         return null;
-    }
-
-    @Override
-    public int getOrder() {
-        return 0;
     }
 }

@@ -37,6 +37,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-finance-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mall-thirdpay-api</artifactId>
         </dependency>
 

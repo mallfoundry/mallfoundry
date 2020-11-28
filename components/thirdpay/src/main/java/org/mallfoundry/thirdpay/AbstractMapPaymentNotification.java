@@ -20,9 +20,9 @@ package org.mallfoundry.thirdpay;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.payment.PaymentException;
-import org.mallfoundry.payment.PaymentNotification;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentException;
+import org.mallfoundry.finance.PaymentNotification;
+import org.mallfoundry.finance.PaymentStatus;
 
 import java.util.Map;
 import java.util.Objects;

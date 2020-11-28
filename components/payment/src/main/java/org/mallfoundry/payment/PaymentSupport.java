@@ -19,6 +19,10 @@
 package org.mallfoundry.payment;
 
 import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentInstrument;
+import org.mallfoundry.finance.PaymentOrder;
+import org.mallfoundry.finance.PaymentRefund;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,8 +32,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.mallfoundry.payment.PaymentStatus.CAPTURED;
-import static org.mallfoundry.payment.PaymentStatus.PENDING;
+import static org.mallfoundry.finance.PaymentStatus.CAPTURED;
+import static org.mallfoundry.finance.PaymentStatus.PENDING;
 
 public abstract class PaymentSupport implements MutablePayment {
 

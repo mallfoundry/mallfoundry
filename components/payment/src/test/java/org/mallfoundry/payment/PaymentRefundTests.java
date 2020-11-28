@@ -20,6 +20,8 @@ package org.mallfoundry.payment;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mallfoundry.finance.PaymentOrderException;
+import org.mallfoundry.finance.PaymentRefundException;
 import org.mallfoundry.payment.repository.jpa.JpaPayment;
 import org.mallfoundry.test.StaticTest;
 

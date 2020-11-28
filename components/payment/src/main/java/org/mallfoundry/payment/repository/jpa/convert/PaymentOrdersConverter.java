@@ -19,7 +19,7 @@
 package org.mallfoundry.payment.repository.jpa.convert;
 
 import org.mallfoundry.payment.DefaultPaymentOrder;
-import org.mallfoundry.payment.PaymentOrder;
+import org.mallfoundry.finance.PaymentOrder;
 import org.mallfoundry.util.JsonUtils;
 
 import javax.persistence.AttributeConverter;

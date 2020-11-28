@@ -20,14 +20,14 @@ package org.mallfoundry.thirdpay;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.payment.PaymentRefund;
-import org.mallfoundry.payment.PaymentRefundStatus;
+import org.mallfoundry.finance.PaymentRefund;
+import org.mallfoundry.finance.PaymentRefundStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static org.mallfoundry.payment.PaymentRefundStatus.FAILED;
-import static org.mallfoundry.payment.PaymentRefundStatus.SUCCEEDED;
+import static org.mallfoundry.finance.PaymentRefundStatus.FAILED;
+import static org.mallfoundry.finance.PaymentRefundStatus.SUCCEEDED;
 
 /**
  * 退款结果，作为支付客户端退款接口的返回值。用于判断是否退款成功。

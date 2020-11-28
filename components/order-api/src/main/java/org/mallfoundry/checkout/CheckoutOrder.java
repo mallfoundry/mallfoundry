@@ -34,8 +34,8 @@ import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.shipping.OrderShipment;
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 
 import java.math.BigDecimal;

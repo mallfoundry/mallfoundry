@@ -21,7 +21,7 @@ package org.mallfoundry.payment.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.payment.PaymentRefundStatus;
+import org.mallfoundry.finance.PaymentRefundStatus;
 import org.mallfoundry.payment.PaymentRefundSupport;
 
 import javax.persistence.Column;

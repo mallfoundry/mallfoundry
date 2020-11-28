@@ -18,8 +18,8 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.PaymentMethod;
-import org.mallfoundry.payment.PaymentStatus;
+import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentStatus;
 
 public interface OrderPaymentResult {
 

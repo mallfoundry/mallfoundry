@@ -18,11 +18,11 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentCapturedEvent;
-import org.mallfoundry.payment.PaymentEvent;
-import org.mallfoundry.payment.PaymentOrder;
-import org.mallfoundry.payment.PaymentStartedEvent;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentCapturedEvent;
+import org.mallfoundry.finance.PaymentEvent;
+import org.mallfoundry.finance.PaymentOrder;
+import org.mallfoundry.finance.PaymentStartedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 

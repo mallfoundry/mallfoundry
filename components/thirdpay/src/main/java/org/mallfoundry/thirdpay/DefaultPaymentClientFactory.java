@@ -18,8 +18,8 @@
 
 package org.mallfoundry.thirdpay;
 
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentException;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentException;
 
 import java.util.Collections;
 import java.util.List;

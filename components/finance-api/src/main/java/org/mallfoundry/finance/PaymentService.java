@@ -16,19 +16,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.payment;
+package org.mallfoundry.finance;
 
-import org.mallfoundry.util.ObjectBuilder;
+import java.util.Optional;
 
-import java.io.Serializable;
+public interface PaymentService {
 
-public interface PaymentInstrument extends Serializable, ObjectBuilder.ToBuilder<PaymentInstrument.Builder> {
+    Payment createPayment(String id);
 
-    PaymentMethod getType();
+    Payment startPayment(Payment payment);
 
-    void setType(PaymentMethod type);
+    void capturePayment(String id) throws PaymentException;
 
-    interface Builder extends ObjectBuilder<PaymentInstrument> {
-        Builder type(PaymentMethod type);
-    }
+    PaymentRefund refundPayment(String id, PaymentRefund refund);
+
+    PaymentNotification notifyPayment(String id, Object parameters);
+
+    Optional<Payment> getPayment(String id);
+
+    String redirectPaymentUrl(String id);
+
+    String returnPaymentUrl(String id);
 }

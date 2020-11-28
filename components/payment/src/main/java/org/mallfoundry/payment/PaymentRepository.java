@@ -18,6 +18,8 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.Payment;
+
 import java.util.Optional;
 
 public interface PaymentRepository {

@@ -20,9 +20,9 @@ package org.mallfoundry.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.payment.Payment;
-import org.mallfoundry.payment.PaymentInstrument;
-import org.mallfoundry.payment.PaymentMethod;
+import org.mallfoundry.finance.Payment;
+import org.mallfoundry.finance.PaymentInstrument;
+import org.mallfoundry.finance.PaymentMethod;
 
 import java.util.Set;
 

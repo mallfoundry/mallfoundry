@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.shipping.OrderShipment;
-import org.mallfoundry.payment.Payment;
+import org.mallfoundry.finance.Payment;
 
 import java.util.List;
 import java.util.Optional;

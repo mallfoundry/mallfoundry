@@ -18,7 +18,7 @@
 
 package org.mallfoundry.payment.repository.jpa;
 
-import org.mallfoundry.payment.Payment;
+import org.mallfoundry.finance.Payment;
 import org.mallfoundry.payment.PaymentRepository;
 import org.springframework.data.util.CastUtils;
 

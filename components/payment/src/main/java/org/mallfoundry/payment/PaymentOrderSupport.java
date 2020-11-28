@@ -18,6 +18,8 @@
 
 package org.mallfoundry.payment;
 
+import org.mallfoundry.finance.PaymentOrder;
+import org.mallfoundry.finance.PaymentRefundException;
 import org.mallfoundry.util.DecimalUtils;
 
 import java.math.BigDecimal;
