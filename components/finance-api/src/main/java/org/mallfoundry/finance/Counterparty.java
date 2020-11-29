@@ -18,6 +18,7 @@
 
 package org.mallfoundry.finance;
 
+// 交易对方。
 public interface Counterparty {
 
     String getId();
