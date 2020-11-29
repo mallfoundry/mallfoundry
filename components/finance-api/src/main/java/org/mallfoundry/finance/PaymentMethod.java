@@ -21,7 +21,8 @@ package org.mallfoundry.finance;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PaymentMethod {
-    ALIPAY, WECHAT_PAY;
+    ALIPAY,
+    WECHAT_PAY;
 
     @JsonValue
     @Override
