@@ -25,7 +25,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "mall.storage")
+@ConfigurationProperties(prefix = "mallfoundry.storage")
 public class StorageProperties {
 
     private SystemType type;

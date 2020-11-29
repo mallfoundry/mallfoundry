@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(SmsProperties.class)
 public class SmsAutoConfiguration {
 
-    @ConditionalOnProperty(prefix = "mall.sms", name = "type", havingValue = "aliyun")
+    @ConditionalOnProperty(prefix = "mallfoundry.sms", name = "type", havingValue = "aliyun")
     @Bean
     public AliyunMessageService aliyunMessageService(SmsProperties properties) {
         var aliyun = properties.getAliyun();

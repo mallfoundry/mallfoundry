@@ -25,7 +25,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @Getter
 @Setter
-@ConfigurationProperties("mall.sms")
+@ConfigurationProperties("mallfoundry.sms")
 public class SmsProperties {
 
     private SmsType type;

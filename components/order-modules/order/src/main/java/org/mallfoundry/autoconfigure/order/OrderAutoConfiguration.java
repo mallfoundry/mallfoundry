@@ -89,7 +89,7 @@ public class OrderAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "task")
+    @ConditionalOnProperty(value = "mallfoundry.order.expired-cancellation.policy", havingValue = "task")
     public OrderExpiredCancellationTask orderPaymentExpirationTask(OrderProperties properties, OrderExpiredCanceller canceller) {
         var task = new OrderExpiredCancellationTask(canceller);
         task.setFetchSize(properties.getExpiredCancellation().getTask().getFetchSize());
@@ -97,7 +97,7 @@ public class OrderAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "mall.order.expired-cancellation.policy", havingValue = "process")
+    @ConditionalOnProperty(value = "mallfoundry.order.expired-cancellation.policy", havingValue = "process")
     public OrderExpiredCancellationProcessor orderExpiredCancellationProcessor(OrderExpiredCanceller canceller) {
         return new OrderExpiredCancellationProcessor(canceller);
     }

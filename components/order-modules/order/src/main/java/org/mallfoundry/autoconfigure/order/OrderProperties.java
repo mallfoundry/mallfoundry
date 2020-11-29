@@ -24,12 +24,12 @@ import org.mallfoundry.order.expires.OrderExpiredCancellationTask;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-// mall.order.expired-cancellation.task.corn
-// mall.order.expired-cancellation.task.fetch-size=20
-// mall.order.expired-cancellation.policy=task,process
+// mallfoundry.order.expired-cancellation.task.corn
+// mallfoundry.order.expired-cancellation.task.fetch-size=20
+// mallfoundry.order.expired-cancellation.policy=task,process
 @Getter
 @Setter
-@ConfigurationProperties("mall.order")
+@ConfigurationProperties("mallfoundry.order")
 public class OrderProperties {
     @NestedConfigurationProperty
     private ExpiredCancellation expiredCancellation = new ExpiredCancellation();

@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @Getter
 @Setter
-@ConfigurationProperties("mall.captcha")
+@ConfigurationProperties("mallfoundry.captcha")
 public class CaptchaProperties {
 
     private CaptchaType type;

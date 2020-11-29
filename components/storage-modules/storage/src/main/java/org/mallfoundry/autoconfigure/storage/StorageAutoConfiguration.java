@@ -94,7 +94,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     @Bean
     @ConditionalOnMissingBean(StorageSystem.class)
     @ConditionalOnClass(LocalStorageSystem.class)
-    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
+    @ConditionalOnProperty(prefix = "mallfoundry.storage", name = "type", havingValue = "local")
     public LocalStorageSystem localStorageSystem(StorageProperties properties) {
         var local = properties.getLocal();
         return new LocalStorageSystem(local.getDirectory(), properties.getBaseUrl());
@@ -103,7 +103,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     @Bean
     @ConditionalOnMissingBean(StorageSystem.class)
     @ConditionalOnClass(AliyunStorageSystem.class)
-    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "aliyun")
+    @ConditionalOnProperty(prefix = "mallfoundry.storage", name = "type", havingValue = "aliyun")
     public StorageSystem storageSystem(StorageProperties properties,
                                        @Autowired(required = false) StoragePathReplacer pathReplacer) {
         var aliyun = properties.getAliyun();
@@ -119,7 +119,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     @Bean
     @ConditionalOnMissingBean(StorageSystem.class)
     @ConditionalOnClass(QiniuStorageSystem.class)
-    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "qiniu")
+    @ConditionalOnProperty(prefix = "mallfoundry.storage", name = "type", havingValue = "qiniu")
     public StorageSystem qiniuStorageSystem(StorageProperties properties,
                                             @Autowired(required = false) StoragePathReplacer pathReplacer) {
         var qiniu = properties.getQiniu();
@@ -133,7 +133,7 @@ public class StorageAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Configuration
-    @ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "local")
+    @ConditionalOnProperty(prefix = "mallfoundry.storage", name = "type", havingValue = "local")
     public static class ResourceHandlerConfiguration implements WebMvcConfigurer {
 
         private final StorageProperties properties;

@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(CaptchaProperties.class)
 public class CaptchaAutoConfiguration {
 
-    @ConditionalOnProperty(prefix = "mall.captcha", name = "type", havingValue = "sms")
+    @ConditionalOnProperty(prefix = "mallfoundry.captcha", name = "type", havingValue = "sms")
     @Bean
     public SmsCaptchaProvider smsCaptchaService(CaptchaProperties properties, MessageService messageService,
                                                 CaptchaRepository captchaRepository) {

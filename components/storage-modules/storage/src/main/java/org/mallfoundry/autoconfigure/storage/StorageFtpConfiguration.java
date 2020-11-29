@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(prefix = "mall.storage", name = "type", havingValue = "ftp")
+@ConditionalOnProperty(prefix = "mallfoundry.storage", name = "type", havingValue = "ftp")
 public class StorageFtpConfiguration {
 
     private FtpClientPooledConfiguration createFtpClientPooledConfig(StorageProperties.Ftp ftp) {
