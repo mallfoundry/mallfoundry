@@ -112,8 +112,8 @@
         <!-- Test Modules -->
         <module>test-modules/test</module>
 
-        <!-- BOOT modules -->
-        <module>spring-boot</module>
+        <!-- Launch modules -->
+        <module>launch-modules/spring-boot</module>
     </modules>
 
 </project>
