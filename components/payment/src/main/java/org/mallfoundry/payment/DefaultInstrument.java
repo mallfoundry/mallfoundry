@@ -23,12 +23,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.PaymentMethod;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class DefaultInstrument extends PaymentInstrumentSupport {
 
     private PaymentMethod type;
+
+    private Map<String, String> properties;
 
     public DefaultInstrument(PaymentMethod type) {
         this.type = type;

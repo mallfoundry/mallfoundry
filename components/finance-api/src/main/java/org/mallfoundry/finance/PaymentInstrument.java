@@ -21,8 +21,13 @@ package org.mallfoundry.finance;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public interface PaymentInstrument extends Serializable, ObjectBuilder.ToBuilder<PaymentInstrument.Builder> {
+
+    Map<String, String> getProperties();
+
+    void setProperties(Map<String, String> properties);
 
     PaymentMethod getType();
 
