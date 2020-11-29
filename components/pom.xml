@@ -30,68 +30,87 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!-- Common Modules -->
+        <module>common-modules/commons-api</module>
+        <module>common-modules/commons</module>
+        <module>common-modules/commons-rest</module>
+        <module>common-modules/shared</module>
+        <module>common-modules/shared-rest</module>
+        <module>common-modules/district-api</module>
 
-        <!-- third modules  -->
-        <module>thirdpay-api</module>
-        <module>thirdpay</module>
+        <!-- Data Warehouse Modules -->
+        <module>analytics-modules/edw-api</module>
+        <module>analytics-modules/edw</module>
+        <module>analytics-modules/edw-stream</module>
 
-        <!-- api modules -->
-        <module>app-api</module>
-        <module>analytics-api</module>
-        <module>commons-api</module>
-        <module>keystone-api</module>
-        <module>storage-api</module>
-        <module>catalog-api</module>
-        <module>content-api</module>
-        <module>customer-api</module>
-        <module>store-api</module>
-        <module>order-api</module>
-        <module>shipping-api</module>
-        <module>payment-api</module>
-        <module>district-api</module>
-        <module>dom-api</module>
-        <module>marketing-api</module>
-        <module>finance-api</module>
-        <module>edw-api</module>
+        <!-- Analytics Modules -->
+        <module>analytics-modules/analytics-api</module>
+        <module>analytics-modules/analytics</module>
+        <module>analytics-modules/analytics-rest</module>
 
-        <!-- test modules -->
-        <module>test</module>
+        <!-- Keystone Modules -->
+        <module>keystone-modules/keystone-api</module>
+        <module>keystone-modules/keystone</module>
+        <module>keystone-modules/keystone-rest</module>
 
-        <!-- node modules -->
-        <module>analytics</module>
-        <module>app</module>
-        <module>commons</module>
-        <module>shared</module>
-        <module>keystone</module>
-        <module>storage</module>
-        <module>store</module>
-        <module>catalog</module>
-        <module>content</module>
-        <module>customer</module>
-        <module>order</module>
-        <module>finance</module>
-        <module>shipping</module>
-        <module>payment</module>
-        <module>marketing</module>
-        <module>edw</module>
-        <module>edw-stream</module>
+        <!-- Catalog Modules -->
+        <module>catalog-modules/catalog-api</module>
+        <module>catalog-modules/catalog</module>
+        <module>catalog-modules/catalog-rest</module>
 
-        <!-- rest modules-->
-        <module>commons-rest</module>
-        <module>keystone-rest</module>
-        <module>storage-rest</module>
-        <module>catalog-rest</module>
-        <module>content-rest</module>
-        <module>store-rest</module>
-        <module>payment-rest</module>
-        <module>shipping-rest</module>
-        <module>order-rest</module>
-        <module>customer-rest</module>
-        <module>marketing-rest</module>
-        <module>app-rest</module>
-        <module>analytics-rest</module>
-        <module>finance-rest</module>
-        <module>shared-rest</module>
+        <!-- Customer Modules -->
+        <module>customer-modules/customer-api</module>
+        <module>customer-modules/customer</module>
+        <module>customer-modules/customer-rest</module>
+
+        <!-- Marketing Modules -->
+        <module>marketing-modules/marketing-api</module>
+        <module>marketing-modules/marketing</module>
+        <module>marketing-modules/marketing-rest</module>
+
+        <!-- Order Modules -->
+        <module>order-modules/order-api</module>
+        <module>order-modules/order</module>
+        <module>order-modules/order-rest</module>
+
+        <!-- Store Modules -->
+        <module>store-modules/store-api</module>
+        <module>store-modules/store</module>
+        <module>store-modules/store-rest</module>
+
+        <!-- Shipping Modules -->
+        <module>shipping-modules/shipping-api</module>
+        <module>shipping-modules/shipping</module>
+        <module>shipping-modules/shipping-rest</module>
+
+        <!-- Content Modules -->
+        <module>content-modules/content-api</module>
+        <module>content-modules/content</module>
+        <module>content-modules/content-rest</module>
+        <module>content-modules/dom-api</module>
+
+        <!-- Storage Modules -->
+        <module>storage-modules/storage-api</module>
+        <module>storage-modules/storage</module>
+        <module>storage-modules/storage-rest</module>
+
+        <!-- App Modules -->
+        <module>app-modules/app-api</module>
+        <module>app-modules/app</module>
+        <module>app-modules/app-rest</module>
+
+        <!-- Finance Modules -->
+        <module>finance-modules/finance-api</module>
+        <module>finance-modules/finance</module>
+        <module>finance-modules/finance-rest</module>
+        <module>finance-modules/payment-api</module>
+        <module>finance-modules/payment</module>
+        <module>finance-modules/payment-rest</module>
+        <module>finance-modules/thirdpay-api</module>
+        <module>finance-modules/thirdpay</module>
+
+        <!-- Test Modules -->
+        <module>test-modules/test</module>
 
         <!-- BOOT modules -->
         <module>spring-boot</module>
