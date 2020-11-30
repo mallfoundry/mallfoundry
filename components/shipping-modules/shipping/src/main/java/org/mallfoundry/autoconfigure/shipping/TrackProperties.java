@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.tracking;
+package org.mallfoundry.autoconfigure.shipping;
 
 
 import lombok.Getter;
@@ -24,16 +24,16 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-// mall.tracker.kdniao.e-business-id
-// mall.tracker.kdniao.api-key
-// mall.tracker.kdniao.url
-// mall.tracker.kuaidi100.customer-id
-// mall.tracker.kuaidi100.api-key
-// mall.tracker.kuaidi100.url
+// mallfoundry.shipping.track.kdniao.e-business-id
+// mallfoundry.shipping.track.kdniao.api-key
+// mallfoundry.shipping.track.kdniao.url
+// mallfoundry.shipping.track.kuaidi100.customer-id
+// mallfoundry.shipping.track.kuaidi100.api-key
+// mallfoundry.shipping.track.kuaidi100.url
 //
 @Getter
 @Setter
-@ConfigurationProperties("mall.tracker")
+@ConfigurationProperties("mallfoundry.shipping.track")
 public class TrackProperties {
 
     TrackingType type;
