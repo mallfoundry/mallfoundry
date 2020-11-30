@@ -21,7 +21,8 @@ spring:
       org.mallfoundry.identity.messages,
       org.mallfoundry.store.messages,
       org.mallfoundry.order.messages,
-      org.mallfoundry.configuration.messages,
+      org.mallfoundry.config.messages,
+      org.mallfoundry.finance.messages,
       org.mallfoundry.catalog.product.messages
     always-use-message-format: true
   liquibase:
