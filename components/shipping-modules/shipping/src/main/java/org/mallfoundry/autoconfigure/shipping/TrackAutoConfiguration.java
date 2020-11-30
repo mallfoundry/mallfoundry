@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.autoconfigure.tracking;
+package org.mallfoundry.autoconfigure.shipping;
 
 import org.mallfoundry.shipping.tracking.TrackProvider;
 import org.mallfoundry.shipping.tracking.provider.KdniaoTrackProvider;
@@ -36,10 +36,9 @@ public class TrackAutoConfiguration {
         this.properties = properties;
     }
 
-
     @Bean
     @ConditionalOnClass(KdniaoTrackProvider.class)
-    @ConditionalOnProperty(prefix = "mall.tracker", name = "type", havingValue = "kdniao")
+    @ConditionalOnProperty(prefix = "mallfoundry.shipping.track", name = "type", havingValue = "kdniao")
     public TrackProvider trackingProvider() {
         var config = properties.getKdniao();
         return new KdniaoTrackProvider(config.getUrl(), config.getApiKey(), config.getEBusinessId());

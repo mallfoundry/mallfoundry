@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.mallfoundry.autoconfigure.tracking.TrackAutoConfiguration
+  org.mallfoundry.autoconfigure.shipping.ShippingAutoConfiguration
 
