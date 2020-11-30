@@ -31,7 +31,7 @@ public class WithdrawalRequest {
 
     private String accountId;
 
-    private CurrencyCode  currencyCode;
+    private CurrencyCode currencyCode;
 
     private BigDecimal amount;
 
