@@ -87,7 +87,7 @@ public class KdniaoTrackProvider implements TrackProvider {
     }
 
     @Override
-    public Track getTracker(CarrierCode carrier, String trackingNumber) {
+    public Track getTrack(CarrierCode carrier, String trackingNumber) {
         String requestData = "{'OrderCode':'','ShipperCode':'" + shipperCode(carrier) + "','LogisticCode':'" + trackingNumber + "'}";
         var restTemplate = new RestTemplate();
         var params = new LinkedMultiValueMap<String, String>();

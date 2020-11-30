@@ -19,9 +19,8 @@
 package org.mallfoundry.shipping.tracking;
 
 import org.mallfoundry.shipping.CarrierCode;
-import org.mallfoundry.shipping.tracking.Track;
 
 public interface TrackProvider {
 
-    Track getTracker(CarrierCode carrier, String trackingNumber);
+    Track getTrack(CarrierCode carrier, String trackingNumber);
 }
