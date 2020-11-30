@@ -20,10 +20,10 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.Functions;
-import org.mallfoundry.order.OrderPayment;
+import org.apache.commons.lang3.function.Failable;
 import org.mallfoundry.finance.PaymentInstrument;
 import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.order.OrderPayment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +48,7 @@ public class OrderPaymentRequest {
     public OrderPayment assignTo(OrderPayment payment) {
         return payment.toBuilder()
                 .orderIds(this.orderIds)
-                .instrument(Functions.asFunction(this.instrument::assignTo))
+                .instrument(this.instrument::assignTo)
                 .returnUrl(this.returnUrl)
                 .build();
     }
