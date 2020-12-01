@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 
 import java.util.Date;
 import java.util.Set;
@@ -40,7 +40,7 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
     private Set<OrderStatus> disputeStatuses;
     private Set<OrderStatus> reviewStatuses;
     private Set<OrderType> types;
-    private Set<PaymentMethod> paymentMethods;
+    private Set<PaymentMethodType> paymentMethods;
     private Set<OrderSource> sources;
     private Date placedTimeMin;
     private Date placedTimeMax;
@@ -136,13 +136,13 @@ public class DefaultOrderQuery extends QuerySupport implements OrderQuery {
         }
 
         @Override
-        public Builder paymentMethods(Set<PaymentMethod> methods) {
+        public Builder paymentMethods(Set<PaymentMethodType> methods) {
             this.query.setPaymentMethods(methods);
             return this;
         }
 
         @Override
-        public Builder paymentMethods(Supplier<Set<PaymentMethod>> supplier) {
+        public Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier) {
             return this.paymentMethods(supplier.get());
         }
 

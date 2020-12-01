@@ -20,7 +20,8 @@ package org.mallfoundry.finance;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PaymentMethod {
+// 支付方式类型
+public enum PaymentMethodType {
     ALIPAY,
     WECHAT_PAY;
 

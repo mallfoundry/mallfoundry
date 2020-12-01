@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 
 import java.util.Set;
 
@@ -39,7 +39,7 @@ public class DelegatingOrderPayment extends OrderPaymentSupport {
     }
 
     @Override
-    public PaymentInstrument createInstrument(PaymentMethod type) {
+    public PaymentInstrument createInstrument(PaymentMethodType type) {
         return this.payment.createInstrument(type);
     }
 

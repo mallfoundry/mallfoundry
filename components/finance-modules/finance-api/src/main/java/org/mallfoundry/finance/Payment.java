@@ -47,7 +47,7 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     void setPayer(String payer);
 
-    PaymentInstrument createInstrument(PaymentMethod type);
+    PaymentInstrument createInstrument(PaymentMethodType type);
 
     PaymentInstrument getInstrument();
 

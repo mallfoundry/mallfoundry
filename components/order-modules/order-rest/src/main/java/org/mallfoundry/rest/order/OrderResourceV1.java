@@ -31,7 +31,7 @@ import org.mallfoundry.order.OrderType;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.finance.Payment;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -140,7 +140,7 @@ public class OrderResourceV1 {
                                 .map(OrderSource::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .paymentMethods(() ->
                         CollectionUtils.emptyIfNull(paymentMethods).stream().map(StringUtils::upperCase)
-                                .map(PaymentMethod::valueOf).collect(Collectors.toUnmodifiableSet()))
+                                .map(PaymentMethodType::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .placedTimeMin(placeTimeMin).placedTimeMax(placedTimeMax)
                 .build());
     }

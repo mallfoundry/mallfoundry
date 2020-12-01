@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 import org.springframework.beans.BeanUtils;
 
@@ -33,10 +33,10 @@ import static org.mallfoundry.finance.PaymentStatus.PENDING;
 @NoArgsConstructor
 public class DefaultOrderPaymentResult implements OrderPaymentResult {
     private String id;
-    private PaymentMethod method;
+    private PaymentMethodType method;
     private PaymentStatus status;
 
-    public DefaultOrderPaymentResult(String id, PaymentMethod method, PaymentStatus status) {
+    public DefaultOrderPaymentResult(String id, PaymentMethodType method, PaymentStatus status) {
         this.id = id;
         this.method = method;
         this.status = status;

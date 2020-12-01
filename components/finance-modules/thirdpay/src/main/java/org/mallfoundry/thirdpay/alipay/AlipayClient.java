@@ -31,7 +31,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentException;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentNotification;
 import org.mallfoundry.finance.PaymentRefund;
 import org.mallfoundry.finance.PaymentRefundException;
@@ -162,6 +162,6 @@ public class AlipayClient implements PaymentClient, InitializingBean {
 
     @Override
     public boolean supportsPayment(Payment payment) {
-        return PaymentMethod.ALIPAY.equals(payment.getInstrument().getType());
+        return PaymentMethodType.ALIPAY.equals(payment.getInstrument().getType());
     }
 }

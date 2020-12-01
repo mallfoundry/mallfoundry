@@ -20,9 +20,8 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.function.Failable;
 import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.order.OrderPayment;
 
 import java.util.HashSet;
@@ -38,7 +37,7 @@ public class OrderPaymentRequest {
     @Getter
     @Setter
     static class InstrumentRequest {
-        private PaymentMethod type;
+        private PaymentMethodType type;
 
         public PaymentInstrument assignTo(PaymentInstrument aInstrument) {
             return aInstrument.toBuilder().type(this.type).build();

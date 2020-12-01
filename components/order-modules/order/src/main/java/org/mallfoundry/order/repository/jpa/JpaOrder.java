@@ -34,7 +34,7 @@ import org.mallfoundry.order.aftersales.repository.jpa.JpaOrderRefund;
 import org.mallfoundry.order.repository.jpa.convert.OrderRatingListConverter;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.order.shipping.repository.jpa.JpaOrderShipment;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.shipping.repository.jpa.convert.AddressConverter;
@@ -156,7 +156,7 @@ public class JpaOrder extends OrderSupport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method_")
-    private PaymentMethod paymentMethod;
+    private PaymentMethodType paymentMethod;
 
     @Column(name = "inventory_deduction_")
     private InventoryDeduction inventoryDeduction;

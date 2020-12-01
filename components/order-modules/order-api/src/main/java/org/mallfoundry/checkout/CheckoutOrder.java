@@ -34,7 +34,7 @@ import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.shipping.OrderShipment;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 
@@ -357,12 +357,12 @@ public interface CheckoutOrder extends Order {
     }
 
     @Override
-    default PaymentMethod getPaymentMethod() {
+    default PaymentMethodType getPaymentMethod() {
         return null;
     }
 
     @Override
-    default void setPaymentMethod(PaymentMethod paymentMethod) {
+    default void setPaymentMethod(PaymentMethodType paymentMethod) {
 
     }
 

@@ -18,7 +18,7 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 
 public interface OrderPaymentResult {
@@ -27,7 +27,7 @@ public interface OrderPaymentResult {
 
     PaymentStatus getStatus();
 
-    PaymentMethod getMethod();
+    PaymentMethodType getMethod();
 
     boolean isPending();
 

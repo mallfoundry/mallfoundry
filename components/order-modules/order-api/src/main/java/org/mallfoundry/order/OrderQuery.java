@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 import org.mallfoundry.customer.CustomerOwnership;
 import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.store.StoreOwnership;
 
 import java.util.Date;
@@ -55,9 +55,9 @@ public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
     void setTypes(Set<OrderType> types);
 
-    Set<PaymentMethod> getPaymentMethods();
+    Set<PaymentMethodType> getPaymentMethods();
 
-    void setPaymentMethods(Set<PaymentMethod> methods);
+    void setPaymentMethods(Set<PaymentMethodType> methods);
 
     Set<OrderSource> getSources();
 
@@ -111,9 +111,9 @@ public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
         Builder types(Supplier<Set<OrderType>> supplier);
 
-        Builder paymentMethods(Set<PaymentMethod> methods);
+        Builder paymentMethods(Set<PaymentMethodType> methods);
 
-        Builder paymentMethods(Supplier<Set<PaymentMethod>> supplier);
+        Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier);
 
         Builder placedTimeMin(Date time);
 

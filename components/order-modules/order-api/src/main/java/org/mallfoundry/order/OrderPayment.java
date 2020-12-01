@@ -20,7 +20,7 @@ package org.mallfoundry.order;
 
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Set;
@@ -28,7 +28,7 @@ import java.util.function.Function;
 
 public interface OrderPayment extends ObjectBuilder.ToBuilder<OrderPayment.Builder> {
 
-    PaymentInstrument createInstrument(PaymentMethod type);
+    PaymentInstrument createInstrument(PaymentMethodType type);
 
     PaymentInstrument getInstrument();
 

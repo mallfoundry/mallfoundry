@@ -29,11 +29,11 @@ import java.util.Map;
 @NoArgsConstructor
 public class DefaultPaymentInstrument extends PaymentInstrumentSupport {
 
-    private PaymentMethod type;
+    private PaymentMethodType type;
 
     private Map<String, String> properties;
 
-    public DefaultPaymentInstrument(PaymentMethod type) {
+    public DefaultPaymentInstrument(PaymentMethodType type) {
         this.type = type;
     }
 }

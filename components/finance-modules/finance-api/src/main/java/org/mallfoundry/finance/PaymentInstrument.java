@@ -29,11 +29,11 @@ public interface PaymentInstrument extends Serializable, ObjectBuilder.ToBuilder
 
     void setProperties(Map<String, String> properties);
 
-    PaymentMethod getType();
+    PaymentMethodType getType();
 
-    void setType(PaymentMethod type);
+    void setType(PaymentMethodType type);
 
     interface Builder extends ObjectBuilder<PaymentInstrument> {
-        Builder type(PaymentMethod type);
+        Builder type(PaymentMethodType type);
     }
 }

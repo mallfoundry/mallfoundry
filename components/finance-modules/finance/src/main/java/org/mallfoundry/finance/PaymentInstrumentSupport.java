@@ -34,7 +34,7 @@ public abstract class PaymentInstrumentSupport implements PaymentInstrument {
         }
 
         @Override
-        public Builder type(PaymentMethod type) {
+        public Builder type(PaymentMethodType type) {
             this.instrument.setType(type);
             return this;
         }

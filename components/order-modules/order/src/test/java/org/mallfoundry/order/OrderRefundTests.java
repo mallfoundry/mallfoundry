@@ -21,7 +21,7 @@ package org.mallfoundry.order;
 
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.order.repository.jpa.JpaOrder;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.test.StaticTest;
 
@@ -47,7 +47,7 @@ public class OrderRefundTests {
     @Test
     public void testPaidAndItemNotFoundThenApplyRefund() {
         var order = new JpaOrder();
-        order.pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED));
+        order.pay(new DefaultOrderPaymentResult("1", PaymentMethodType.ALIPAY, PaymentStatus.CAPTURED));
         var refund = order.createRefund("1").toBuilder()
                 .itemNotReceive()
                 .itemId("i1").amount(BigDecimal.valueOf(10))
@@ -62,7 +62,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(item -> item.toBuilder().id("i1").price(BigDecimal.valueOf(1)).quantity(2).build())
-                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethodType.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1").toBuilder()
                 .itemNotReceive()
@@ -78,7 +78,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(item -> item.toBuilder().id("i1").price(BigDecimal.valueOf(10)).quantity(2).build())
-                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethodType.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1").toBuilder()
                 .itemNotReceive()
@@ -92,7 +92,7 @@ public class OrderRefundTests {
         var order = new JpaOrder()
                 .toBuilder()
                 .item(item -> item.toBuilder().id("12").price(BigDecimal.valueOf(1)).quantity(2).build())
-                .pay(new DefaultOrderPaymentResult("1", PaymentMethod.ALIPAY, PaymentStatus.CAPTURED))
+                .pay(new DefaultOrderPaymentResult("1", PaymentMethodType.ALIPAY, PaymentStatus.CAPTURED))
                 .build();
         var refund = order.createRefund("1").toBuilder()
                 .itemNotReceive()

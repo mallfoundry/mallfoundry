@@ -23,7 +23,7 @@ import org.mallfoundry.inventory.InventoryDeduction;
 import org.mallfoundry.order.aftersales.OrderRefund;
 import org.mallfoundry.order.aftersales.OrderRefundException;
 import org.mallfoundry.order.shipping.OrderShipment;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.shipping.Address;
 import org.mallfoundry.store.StoreOwnership;
@@ -227,9 +227,9 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     void setPaymentStatus(PaymentStatus paymentStatus);
 
-    PaymentMethod getPaymentMethod();
+    PaymentMethodType getPaymentMethod();
 
-    void setPaymentMethod(PaymentMethod paymentMethod);
+    void setPaymentMethod(PaymentMethodType paymentMethod);
 
     /**
      * 订单对象扣减库存时所使用的扣减模式。

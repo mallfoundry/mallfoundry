@@ -25,7 +25,7 @@ import org.mallfoundry.finance.DefaultPaymentInstrument;
 import org.mallfoundry.finance.DefaultPaymentOrder;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentOrder;
 import org.mallfoundry.finance.PaymentRefund;
 import org.mallfoundry.finance.PaymentStatus;
@@ -118,7 +118,7 @@ public class JpaPayment extends PaymentSupport {
     }
 
     @Override
-    public PaymentInstrument createInstrument(PaymentMethod type) {
+    public PaymentInstrument createInstrument(PaymentMethodType type) {
         return new DefaultPaymentInstrument(type);
     }
 
