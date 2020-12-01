@@ -21,6 +21,7 @@ package org.mallfoundry.finance;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static org.mallfoundry.finance.RechargeStatus.AWAITING_PAYMENT;
 import static org.mallfoundry.finance.RechargeStatus.CANCELED;
 import static org.mallfoundry.finance.RechargeStatus.FAILED;
 import static org.mallfoundry.finance.RechargeStatus.PENDING;
@@ -38,6 +39,12 @@ public abstract class RechargeSupport implements MutableRecharge {
     public void cancel() {
         this.setStatus(CANCELED);
         this.setCanceledTime(new Date());
+    }
+
+    @Override
+    public void pay(PaymentSource source) {
+        this.setSource(source);
+        this.setStatus(AWAITING_PAYMENT);
     }
 
     @Override

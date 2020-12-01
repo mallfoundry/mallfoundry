@@ -22,13 +22,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
-import org.mallfoundry.finance.PaymentMethod;
+import org.mallfoundry.finance.PaymentSource;
 import org.mallfoundry.finance.Recharge;
 import org.mallfoundry.finance.RechargeStatus;
 import org.mallfoundry.finance.RechargeSupport;
+import org.mallfoundry.finance.repository.jpa.convert.PaymentSourceConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -76,9 +78,9 @@ public class JpaRecharge extends RechargeSupport {
     @Column(name = "status_")
     private RechargeStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method_")
-    private PaymentMethod paymentMethod;
+    @Convert(converter = PaymentSourceConverter.class)
+    @Column(name = "source_")
+    private PaymentSource source;
 
     @NotNull
     @Column(name = "created_time_")

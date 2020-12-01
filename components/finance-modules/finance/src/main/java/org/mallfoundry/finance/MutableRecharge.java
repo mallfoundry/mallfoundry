@@ -24,6 +24,8 @@ public interface MutableRecharge extends Recharge {
 
     void setStatus(RechargeStatus status);
 
+    void setSource(PaymentSource source);
+
     void setCreatedTime(Date createdTime);
 
     void setCanceledTime(Date canceledTime);
