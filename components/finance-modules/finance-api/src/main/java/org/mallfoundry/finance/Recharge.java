@@ -46,7 +46,7 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     void setCurrencyCode(CurrencyCode currencyCode);
 
-     PaymentMethod getPaymentMethod();
+    PaymentSource getSource();
 
     BigDecimal getAmount();
 
@@ -68,7 +68,7 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     void cancel();
 
-    /*void pay(Payment payment);*/
+    void pay(PaymentSource source);
 
     void succeed();
 
