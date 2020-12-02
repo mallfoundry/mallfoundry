@@ -26,7 +26,6 @@ import org.mallfoundry.finance.WithdrawalService;
 import org.mallfoundry.finance.WithdrawalStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,13 +77,13 @@ public class WithdrawalResourceV1 {
         return this.withdrawalService.getWithdrawals(query);
     }
 
-    @PatchMapping("/withdrawals/{withdrawal_id}/disapprove")
+    @PostMapping("/withdrawals/{withdrawal_id}/disapprove")
     public Withdrawal disapproveWithdrawal(@PathVariable("withdrawal_id") String withdrawalId,
                                            @RequestBody WithdrawalDisapproveRequest request) {
         return this.withdrawalService.disapproveWithdrawal(withdrawalId, request.getDisapprovalReason());
     }
 
-    @PatchMapping("/withdrawals/{withdrawal_id}/cancel")
+    @PostMapping("/withdrawals/{withdrawal_id}/cancel")
     public Withdrawal cancelWithdrawal(@PathVariable("withdrawal_id") String withdrawalId) {
         return this.withdrawalService.cancelWithdrawal(withdrawalId);
     }
