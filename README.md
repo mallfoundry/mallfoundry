@@ -83,7 +83,19 @@ $ cat StandaloneSpringBootApplication.java
 
 ### 商家后台
 
-持续更新中...
+![store-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-list.png)
+
+![store-dashboard](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-dashboard.png)
+
+![store-product-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-product-list.png)
+
+![store-product](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-product.png)
+
+![store-order-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-order-list.png)
+
+![store-order](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-order.png)
+
+![store-coupon-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-coupon-list.png)
 
 ### 前台（H5）
 
