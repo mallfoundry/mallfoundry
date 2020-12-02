@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentSource;
 import org.mallfoundry.finance.Recharge;
 import org.mallfoundry.finance.RechargeStatus;
@@ -77,6 +78,10 @@ public class JpaRecharge extends RechargeSupport {
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
     private RechargeStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method_")
+    private PaymentMethodType paymentMethod;
 
     @Convert(converter = PaymentSourceConverter.class)
     @Column(name = "source_")

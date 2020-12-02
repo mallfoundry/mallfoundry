@@ -49,6 +49,10 @@ public interface JpaRechargeRepository extends JpaRepository<JpaRecharge, String
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(rechargeQuery.getStatuses()));
             }
 
+            if (CollectionUtils.isNotEmpty(rechargeQuery.getPaymentMethods())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(rechargeQuery.getPaymentMethods()));
+            }
+
             if (Objects.nonNull(rechargeQuery.getCreatedTimeStart())) {
                 predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTime"), rechargeQuery.getCreatedTimeStart()));
             }

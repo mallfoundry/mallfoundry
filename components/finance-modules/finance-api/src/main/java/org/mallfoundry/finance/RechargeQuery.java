@@ -36,6 +36,10 @@ public interface RechargeQuery extends Query, ObjectBuilder.ToBuilder<RechargeQu
 
     void setStatuses(Set<RechargeStatus> statuses);
 
+    Set<PaymentMethodType> getPaymentMethods();
+
+    void setPaymentMethods(Set<PaymentMethodType> paymentMethods);
+
     Date getCreatedTimeStart();
 
     void setCreatedTimeStart(Date createdTimeStart);
@@ -51,6 +55,10 @@ public interface RechargeQuery extends Query, ObjectBuilder.ToBuilder<RechargeQu
         Builder statuses(Set<RechargeStatus> statuses);
 
         Builder statuses(Supplier<Set<RechargeStatus>> supplier);
+
+        Builder paymentMethods(Set<PaymentMethodType> paymentMethods);
+
+        Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier);
 
         Builder createdTimeStart(Date createdTimeStart);
 
