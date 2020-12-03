@@ -24,5 +24,7 @@ public interface TransactionRepository {
 
     Transaction create(String id);
 
+    Transaction save(Transaction transaction);
+
     SliceList<Transaction> findAll(TransactionQuery query);
 }
