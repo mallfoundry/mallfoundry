@@ -28,10 +28,10 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
 
     private List<TopupProcessor> processors;
 
-    private final TopupRepository rechargeRepository;
+    private final TopupRepository topupRepository;
 
-    public DefaultTopupService(TopupRepository rechargeRepository) {
-        this.rechargeRepository = rechargeRepository;
+    public DefaultTopupService(TopupRepository topupRepository) {
+        this.topupRepository = topupRepository;
     }
 
     public void setProcessors(List<TopupProcessor> processors) {
@@ -40,7 +40,7 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
 
     @Override
     public Topup createTopup(String topupId) {
-        return this.rechargeRepository.create(topupId);
+        return this.topupRepository.create(topupId);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
 
     @Override
     public Topup getTopup(String topupId) {
-        return this.rechargeRepository.findById(topupId).orElseThrow();
+        return this.topupRepository.findById(topupId).orElseThrow();
     }
 
     @Override
     public SliceList<Topup> getTopups(TopupQuery query) {
-        return this.rechargeRepository.findAll(query);
+        return this.topupRepository.findAll(query);
     }
 
     @Transactional
@@ -64,19 +64,16 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
         topup = this.invokePreProcessBeforeCreateTopup(topup);
         topup.create();
         topup = this.invokePreProcessAfterCreateTopup(topup);
-        return this.rechargeRepository.save(topup);
+        return this.topupRepository.save(topup);
+    }
+
+    @Override
+    public PaymentNotification notifyTopup(String topupId, Object parameters) {
+        return null;
     }
 
     private Topup requiredTopup(String topupId) throws TopupException {
-        return this.rechargeRepository.findById(topupId).orElseThrow();
-    }
-
-    @Transactional
-    @Override
-    public Topup payTopup(String topupId, PaymentSource source) throws TopupException {
-        var recharge = this.requiredTopup(topupId);
-        recharge.pay(source);
-        return this.rechargeRepository.save(recharge);
+        return this.topupRepository.findById(topupId).orElseThrow();
     }
 
     @Transactional
@@ -84,7 +81,7 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
     public Topup cancelTopup(String topupId) throws TopupException {
         var recharge = this.requiredTopup(topupId);
         recharge.cancel();
-        return this.rechargeRepository.save(recharge);
+        return this.topupRepository.save(recharge);
     }
 
     @Transactional
@@ -92,7 +89,7 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
     public Topup succeedTopup(String topupId) throws TopupException {
         var recharge = this.requiredTopup(topupId);
         recharge.succeed();
-        return this.rechargeRepository.save(recharge);
+        return this.topupRepository.save(recharge);
     }
 
     @Transactional
@@ -100,20 +97,20 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
     public Topup failTopup(String topupId, String failureReason) throws TopupException {
         var recharge = this.requiredTopup(topupId);
         recharge.fail(failureReason);
-        return this.rechargeRepository.save(recharge);
+        return this.topupRepository.save(recharge);
     }
 
     @Override
-    public Topup invokePreProcessBeforeCreateTopup(Topup recharge) {
+    public Topup invokePreProcessBeforeCreateTopup(Topup topup) {
         return Processors.stream(this.processors)
                 .map(TopupProcessor::preProcessBeforeCreateTopup)
-                .apply(recharge);
+                .apply(topup);
     }
 
     @Override
-    public Topup invokePreProcessAfterCreateTopup(Topup recharge) {
+    public Topup invokePreProcessAfterCreateTopup(Topup topup) {
         return Processors.stream(this.processors)
                 .map(TopupProcessor::preProcessAfterCreateTopup)
-                .apply(recharge);
+                .apply(topup);
     }
 }
