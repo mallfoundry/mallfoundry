@@ -70,7 +70,7 @@ public class JdbcSequencePrimaryKeyGenerator extends AbstractSequencePrimaryKeyG
     }
 
     @Override
-    protected Long doNext(String key) {
+    protected Long doNextKey(String key) {
         NextValue nextValue = this.getNextValue(key);
         if (Objects.isNull(nextValue)) {
             nextValue = new NextValue(key);

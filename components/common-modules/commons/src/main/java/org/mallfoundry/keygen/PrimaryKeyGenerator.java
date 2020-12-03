@@ -19,5 +19,5 @@
 package org.mallfoundry.keygen;
 
 public interface PrimaryKeyGenerator {
-    String next(String key);
+    String nextKey(String key);
 }

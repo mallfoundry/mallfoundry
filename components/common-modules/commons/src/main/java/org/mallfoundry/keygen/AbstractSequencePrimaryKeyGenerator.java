@@ -21,9 +21,9 @@ package org.mallfoundry.keygen;
 public abstract class AbstractSequencePrimaryKeyGenerator implements PrimaryKeyGenerator {
 
     @Override
-    public String next(String key) {
-        return String.valueOf(this.doNext(key));
+    public String nextKey(String key) {
+        return String.valueOf(this.doNextKey(key));
     }
 
-    protected abstract Long doNext(String key);
+    protected abstract Long doNextKey(String key);
 }

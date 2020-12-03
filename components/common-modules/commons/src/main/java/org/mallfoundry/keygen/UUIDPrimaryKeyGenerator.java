@@ -20,11 +20,10 @@ package org.mallfoundry.keygen;
 
 import java.util.UUID;
 
-//@Component
 public class UUIDPrimaryKeyGenerator implements PrimaryKeyGenerator {
 
     @Override
-    public String next(String key) {
+    public String nextKey(String key) {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
