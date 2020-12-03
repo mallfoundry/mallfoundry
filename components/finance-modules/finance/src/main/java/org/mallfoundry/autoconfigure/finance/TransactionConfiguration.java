@@ -19,10 +19,16 @@
 package org.mallfoundry.autoconfigure.finance;
 
 import org.mallfoundry.finance.DefaultTransactionService;
+import org.mallfoundry.finance.TransactionIdentityProcessor;
+import org.mallfoundry.finance.TransactionProcessor;
 import org.mallfoundry.finance.TransactionRepository;
 import org.mallfoundry.finance.repository.jpa.DelegatingJpaTransactionRepository;
 import org.mallfoundry.finance.repository.jpa.JpaTransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
 
 public class TransactionConfiguration {
 
@@ -32,7 +38,16 @@ public class TransactionConfiguration {
     }
 
     @Bean
-    public DefaultTransactionService defaultTransactionService(TransactionRepository transactionRepository) {
-        return new DefaultTransactionService(transactionRepository);
+    public DefaultTransactionService defaultTransactionService(@Autowired(required = false)
+                                                               @Lazy List<TransactionProcessor> processors,
+                                                               TransactionRepository transactionRepository) {
+        var transaction = new DefaultTransactionService(transactionRepository);
+        transaction.setProcessors(processors);
+        return transaction;
+    }
+
+    @Bean
+    public TransactionIdentityProcessor transactionIdentityProcessor() {
+        return new TransactionIdentityProcessor();
     }
 }
