@@ -21,12 +21,22 @@ package org.mallfoundry.finance;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TransactionType {
-    PAYMENT, // 付款
-    PAYMENT_REFUND, // 付款退款
-    TOPUP, // 充值
-    TRANSFER, // 转账
-    WITHDRAWAL_FEE, // 提现服务费用
-    WITHDRAWAL; // 提现
+    PAYMENT(1001), // 付款
+    PAYMENT_REFUND(1002), // 付款退款
+    TOPUP(1101), // 充值
+    WITHDRAWAL(1201),  // 提现
+    WITHDRAWAL_FEE(1202), // 提现服务费用
+    TRANSFER(1301); // 转账
+
+    private final int code;
+
+    TransactionType(int code) {
+        this.code = code;
+    }
+
+    public int code() {
+        return this.code;
+    }
 
     @JsonValue
     @Override
