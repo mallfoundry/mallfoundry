@@ -38,6 +38,11 @@ public class DelegatingJpaTransactionRepository implements TransactionRepository
     }
 
     @Override
+    public Transaction save(Transaction transaction) {
+        return this.repository.save(JpaTransaction.of(transaction));
+    }
+
+    @Override
     public SliceList<Transaction> findAll(TransactionQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
