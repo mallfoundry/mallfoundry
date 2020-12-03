@@ -61,6 +61,8 @@ public interface Transaction {
 
     TransactionStatus getStatus();
 
+    void setStatus(TransactionStatus status);
+
     TransactionType getType();
 
     void setType(TransactionType type);
@@ -75,15 +77,5 @@ public interface Transaction {
 
     Date getCreatedTime();
 
-    void create(TransactionType type);
-
-    void succeed();
-
-    void fail();
-
-    void expire();
-
-    void cancel();
-
-    void complete();
+    void setCreatedTime(Date createdTime);
 }
