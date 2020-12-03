@@ -24,9 +24,9 @@ import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentSource;
-import org.mallfoundry.finance.Recharge;
-import org.mallfoundry.finance.RechargeStatus;
-import org.mallfoundry.finance.RechargeSupport;
+import org.mallfoundry.finance.TopupSupport;
+import org.mallfoundry.finance.Topup;
+import org.mallfoundry.finance.TopupStatus;
 import org.mallfoundry.finance.repository.jpa.convert.PaymentSourceConverter;
 import org.springframework.beans.BeanUtils;
 
@@ -47,8 +47,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_financial_recharge")
-public class JpaRecharge extends RechargeSupport {
+@Table(name = "mf_financial_topup")
+public class JpaTopup extends TopupSupport {
 
     @NotBlank
     @Id
@@ -77,7 +77,7 @@ public class JpaRecharge extends RechargeSupport {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
-    private RechargeStatus status;
+    private TopupStatus status;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method_")
@@ -103,15 +103,15 @@ public class JpaRecharge extends RechargeSupport {
     @Column(name = "failed_time_")
     private Date failedTime;
 
-    public JpaRecharge(@NotBlank String id) {
+    public JpaTopup(@NotBlank String id) {
         this.id = id;
     }
 
-    public static JpaRecharge of(Recharge recharge) {
-        if (recharge instanceof JpaRecharge) {
-            return (JpaRecharge) recharge;
+    public static JpaTopup of(Topup recharge) {
+        if (recharge instanceof JpaTopup) {
+            return (JpaTopup) recharge;
         }
-        var target = new JpaRecharge();
+        var target = new JpaTopup();
         BeanUtils.copyProperties(recharge, target);
         return target;
     }

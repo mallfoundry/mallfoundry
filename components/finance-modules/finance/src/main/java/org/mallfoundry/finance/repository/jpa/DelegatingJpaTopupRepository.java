@@ -20,33 +20,33 @@ package org.mallfoundry.finance.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.finance.Recharge;
-import org.mallfoundry.finance.RechargeQuery;
-import org.mallfoundry.finance.RechargeRepository;
+import org.mallfoundry.finance.TopupRepository;
+import org.mallfoundry.finance.Topup;
+import org.mallfoundry.finance.TopupQuery;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
 
-public class DelegatingJpaRechargeRepository implements RechargeRepository {
+public class DelegatingJpaTopupRepository implements TopupRepository {
 
-    private final JpaRechargeRepository repository;
+    private final JpaTopupRepository repository;
 
-    public DelegatingJpaRechargeRepository(JpaRechargeRepository repository) {
+    public DelegatingJpaTopupRepository(JpaTopupRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public Recharge create(String id) {
-        return new JpaRecharge(id);
+    public Topup create(String id) {
+        return new JpaTopup(id);
     }
 
     @Override
-    public Optional<Recharge> findById(String id) {
+    public Optional<Topup> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public SliceList<Recharge> findAll(RechargeQuery query) {
+    public SliceList<Topup> findAll(TopupQuery query) {
         var page = this.repository.findAll(query);
         return PageList.of(page.getContent())
                 .page(query.getPage()).limit(query.getLimit())
@@ -54,7 +54,7 @@ public class DelegatingJpaRechargeRepository implements RechargeRepository {
     }
 
     @Override
-    public Recharge save(Recharge recharge) {
-        return this.repository.save(JpaRecharge.of(recharge));
+    public Topup save(Topup topup) {
+        return this.repository.save(JpaTopup.of(topup));
     }
 }

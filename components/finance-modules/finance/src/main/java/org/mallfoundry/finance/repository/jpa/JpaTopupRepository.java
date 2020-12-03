@@ -19,7 +19,7 @@
 package org.mallfoundry.finance.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.finance.RechargeQuery;
+import org.mallfoundry.finance.TopupQuery;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,36 +35,36 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public interface JpaRechargeRepository extends JpaRepository<JpaRecharge, String>, JpaSpecificationExecutor<JpaRecharge> {
+public interface JpaTopupRepository extends JpaRepository<JpaTopup, String>, JpaSpecificationExecutor<JpaTopup> {
 
-    default Specification<JpaRecharge> createSpecification(RechargeQuery rechargeQuery) {
-        return (Specification<JpaRecharge>) (root, query, criteriaBuilder) -> {
+    default Specification<JpaTopup> createSpecification(TopupQuery topupQuery) {
+        return (Specification<JpaTopup>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
-            if (Objects.nonNull(rechargeQuery.getAccountId())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("accountId"), rechargeQuery.getAccountId()));
+            if (Objects.nonNull(topupQuery.getAccountId())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("accountId"), topupQuery.getAccountId()));
             }
 
-            if (CollectionUtils.isNotEmpty(rechargeQuery.getStatuses())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(rechargeQuery.getStatuses()));
+            if (CollectionUtils.isNotEmpty(topupQuery.getStatuses())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(topupQuery.getStatuses()));
             }
 
-            if (CollectionUtils.isNotEmpty(rechargeQuery.getPaymentMethods())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(rechargeQuery.getPaymentMethods()));
+            if (CollectionUtils.isNotEmpty(topupQuery.getPaymentMethods())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethod")).value(topupQuery.getPaymentMethods()));
             }
 
-            if (Objects.nonNull(rechargeQuery.getCreatedTimeStart())) {
-                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTime"), rechargeQuery.getCreatedTimeStart()));
+            if (Objects.nonNull(topupQuery.getCreatedTimeStart())) {
+                predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTime"), topupQuery.getCreatedTimeStart()));
             }
 
-            if (Objects.nonNull(rechargeQuery.getCreatedTimeEnd())) {
-                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("createdTime"), rechargeQuery.getCreatedTimeEnd()));
+            if (Objects.nonNull(topupQuery.getCreatedTimeEnd())) {
+                predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("createdTime"), topupQuery.getCreatedTimeEnd()));
             }
             return predicate;
         };
     }
 
-    private Sort createSort(RechargeQuery query) {
+    private Sort createSort(TopupQuery query) {
         return Optional.ofNullable(query.getSort())
                 .map(org.mallfoundry.data.Sort::getOrders)
                 .filter(CollectionUtils::isNotEmpty)
@@ -77,7 +77,7 @@ public interface JpaRechargeRepository extends JpaRepository<JpaRecharge, String
                 .orElseGet(() -> Sort.by("createdTime").descending());
     }
 
-    default Page<JpaRecharge> findAll(RechargeQuery query) {
+    default Page<JpaTopup> findAll(TopupQuery query) {
         var sort = this.createSort(query);
         return this.findAll(this.createSpecification(query), PageRequest.of(query.getPage() - 1, query.getLimit(), sort));
     }
