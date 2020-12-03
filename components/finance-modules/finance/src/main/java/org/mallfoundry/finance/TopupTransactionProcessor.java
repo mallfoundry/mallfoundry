@@ -18,5 +18,29 @@
 
 package org.mallfoundry.finance;
 
-public interface TopupTransactionProcessor {
+public class TopupTransactionProcessor implements TopupProcessor {
+
+    private final TransactionService transactionService;
+
+    public TopupTransactionProcessor(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
+    @Override
+    public Topup preProcessAfterCreateTopup(Topup topup) {
+        var transaction = this.transactionService.createTransaction((String) null);
+        transaction.setDirection(TransactionDirection.DEBIT);
+        transaction.setSourceId(topup.getId());
+        transaction.setOperatorId(topup.getOperatorId());
+        transaction.setOperator(topup.getOperator());
+        transaction.setAccountId(topup.getAccountId());
+        transaction.setCurrencyCode(topup.getCurrencyCode());
+        transaction.setAmount(topup.getAmount());
+        transaction.setType(TransactionType.TOPUP);
+        transaction.setStatus(TransactionStatus.PENDING);
+        transaction.setCreatedTime(topup.getCreatedTime());
+        transaction = this.transactionService.createTransaction(transaction);
+        topup.setTransactionId(transaction.getId());
+        return topup;
+    }
 }
