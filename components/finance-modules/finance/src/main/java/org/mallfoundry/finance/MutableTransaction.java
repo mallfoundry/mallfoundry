@@ -18,13 +18,5 @@
 
 package org.mallfoundry.finance;
 
-import java.util.Date;
-
 public interface MutableTransaction extends Transaction {
-
-    void setType(TransactionType type);
-
-    void setStatus(TransactionStatus status);
-
-    void setCreatedTime(Date createdTime);
 }
