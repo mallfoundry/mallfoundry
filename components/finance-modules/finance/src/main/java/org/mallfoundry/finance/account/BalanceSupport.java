@@ -93,7 +93,7 @@ public abstract class BalanceSupport implements MutableBalance {
         transaction.setAccountId(this.getAccountId());
         transaction.setCurrencyCode(this.getCurrencyCode());
         transaction.setDirection(TransactionDirection.CREDIT);
-        transaction.setType(TransactionType.RECHARGE);
+        transaction.setType(TransactionType.TOPUP);
         transaction.setAmount(amount);
         transaction.setSources(sources);
         transaction.setEndingBalance(this.getAvailableAmount());
