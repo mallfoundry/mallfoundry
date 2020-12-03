@@ -27,4 +27,28 @@ public interface TopupProcessor {
     default Topup preProcessAfterCreateTopup(Topup topup) {
         return topup;
     }
+
+    default Topup preProcessBeforeGetTopup(Topup topup) {
+        return topup;
+    }
+
+    default Topup preProcessAfterGetTopup(Topup topup) {
+        return topup;
+    }
+
+    default Topup preProcessBeforeNotifyTopup(Topup topup) {
+        return topup;
+    }
+
+    default Topup preProcessAfterNotifyTopup(Topup topup) {
+        return topup;
+    }
+
+    default Topup preProcessBeforeCancelTopup(Topup topup) {
+        return topup;
+    }
+
+    default Topup preProcessAfterCancelTopup(Topup topup) {
+        return topup;
+    }
 }
