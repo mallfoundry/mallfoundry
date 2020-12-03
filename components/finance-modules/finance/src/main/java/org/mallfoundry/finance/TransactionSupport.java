@@ -18,46 +18,5 @@
 
 package org.mallfoundry.finance;
 
-import java.util.Date;
-
-import static org.mallfoundry.finance.TransactionStatus.CANCELED;
-import static org.mallfoundry.finance.TransactionStatus.COMPLETED;
-import static org.mallfoundry.finance.TransactionStatus.EXPIRED;
-import static org.mallfoundry.finance.TransactionStatus.FAILED;
-import static org.mallfoundry.finance.TransactionStatus.PENDING;
-import static org.mallfoundry.finance.TransactionStatus.SUCCEEDED;
-
 public abstract class TransactionSupport implements MutableTransaction {
-
-    @Override
-    public void create(TransactionType type) {
-        this.setStatus(PENDING);
-        this.setType(type);
-        this.setCreatedTime(new Date());
-    }
-
-    @Override
-    public void succeed() {
-        this.setStatus(SUCCEEDED);
-    }
-
-    @Override
-    public void fail() {
-        this.setStatus(FAILED);
-    }
-
-    @Override
-    public void expire() {
-        this.setStatus(EXPIRED);
-    }
-
-    @Override
-    public void cancel() {
-        this.setStatus(CANCELED);
-    }
-
-    @Override
-    public void complete() {
-        this.setStatus(COMPLETED);
-    }
 }
