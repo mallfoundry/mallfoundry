@@ -21,13 +21,13 @@ package org.mallfoundry.rest.finance;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
-import org.mallfoundry.finance.Recharge;
+import org.mallfoundry.finance.Topup;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class RechargeRequest {
+public class TopupRequest {
 
     private String accountId;
 
@@ -35,7 +35,7 @@ public class RechargeRequest {
 
     private BigDecimal amount;
 
-    public Recharge assignTo(Recharge recharge) {
+    public Topup assignTo(Topup recharge) {
         return recharge.toBuilder()
                 .accountId(this.accountId)
                 .currencyCode(this.currencyCode)
