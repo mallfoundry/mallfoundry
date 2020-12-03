@@ -42,6 +42,10 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
 
     void setOperator(String operator);
 
+    String getTransactionId();
+
+    void setTransactionId(String transactionId);
+
     CurrencyCode getCurrencyCode();
 
     void setCurrencyCode(CurrencyCode currencyCode);
@@ -69,8 +73,6 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
     void create();
 
     void cancel();
-
-    void pay(PaymentSource source);
 
     void succeed();
 

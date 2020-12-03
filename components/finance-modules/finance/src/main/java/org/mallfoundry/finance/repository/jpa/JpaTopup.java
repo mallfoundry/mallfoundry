@@ -24,9 +24,9 @@ import lombok.Setter;
 import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentSource;
-import org.mallfoundry.finance.TopupSupport;
 import org.mallfoundry.finance.Topup;
 import org.mallfoundry.finance.TopupStatus;
+import org.mallfoundry.finance.TopupSupport;
 import org.mallfoundry.finance.repository.jpa.convert.PaymentSourceConverter;
 import org.springframework.beans.BeanUtils;
 
@@ -64,6 +64,9 @@ public class JpaTopup extends TopupSupport {
 
     @Column(name = "operator_id_")
     private String operatorId;
+
+    @Column(name = "transaction_id_")
+    private String transactionId;
 
     @NotNull
     @Enumerated(EnumType.STRING)
