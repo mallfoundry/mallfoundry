@@ -18,35 +18,35 @@
 
 package org.mallfoundry.autoconfigure.finance;
 
-import org.mallfoundry.finance.DefaultRechargeService;
-import org.mallfoundry.finance.RechargeIdentityProcessor;
-import org.mallfoundry.finance.RechargeProcessor;
-import org.mallfoundry.finance.RechargeRepository;
-import org.mallfoundry.finance.repository.jpa.DelegatingJpaRechargeRepository;
-import org.mallfoundry.finance.repository.jpa.JpaRechargeRepository;
+import org.mallfoundry.finance.DefaultTopupService;
+import org.mallfoundry.finance.TopupIdentityProcessor;
+import org.mallfoundry.finance.TopupProcessor;
+import org.mallfoundry.finance.TopupRepository;
+import org.mallfoundry.finance.repository.jpa.DelegatingJpaTopupRepository;
+import org.mallfoundry.finance.repository.jpa.JpaTopupRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 @Configuration
-public class RechargeAutoConfiguration {
+public class TopupAutoConfiguration {
 
     @Bean
-    public DelegatingJpaRechargeRepository delegatingJpaRechargeRepository(JpaRechargeRepository repository) {
-        return new DelegatingJpaRechargeRepository(repository);
+    public DelegatingJpaTopupRepository delegatingJpaTopupRepository(JpaTopupRepository repository) {
+        return new DelegatingJpaTopupRepository(repository);
     }
 
     @Bean
-    public DefaultRechargeService defaultRechargeService(List<RechargeProcessor> processors,
-                                                         RechargeRepository rechargeRepository) {
-        var service = new DefaultRechargeService(rechargeRepository);
+    public DefaultTopupService defaultTopupService(List<TopupProcessor> processors,
+                                                   TopupRepository rechargeRepository) {
+        var service = new DefaultTopupService(rechargeRepository);
         service.setProcessors(processors);
         return service;
     }
 
     @Bean
-    public RechargeIdentityProcessor rechargeIdentityProcessor() {
-        return new RechargeIdentityProcessor();
+    public TopupIdentityProcessor topupIdentityProcessor() {
+        return new TopupIdentityProcessor();
     }
 }
