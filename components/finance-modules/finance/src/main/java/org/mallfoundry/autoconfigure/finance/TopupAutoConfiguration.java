@@ -22,6 +22,8 @@ import org.mallfoundry.finance.DefaultTopupService;
 import org.mallfoundry.finance.TopupIdentityProcessor;
 import org.mallfoundry.finance.TopupProcessor;
 import org.mallfoundry.finance.TopupRepository;
+import org.mallfoundry.finance.TopupTransactionProcessor;
+import org.mallfoundry.finance.TransactionService;
 import org.mallfoundry.finance.repository.jpa.DelegatingJpaTopupRepository;
 import org.mallfoundry.finance.repository.jpa.JpaTopupRepository;
 import org.springframework.context.annotation.Bean;
@@ -48,5 +50,10 @@ public class TopupAutoConfiguration {
     @Bean
     public TopupIdentityProcessor topupIdentityProcessor() {
         return new TopupIdentityProcessor();
+    }
+
+    @Bean
+    public TopupTransactionProcessor topupTransactionProcessor(TransactionService transactionService) {
+        return new TopupTransactionProcessor(transactionService);
     }
 }
