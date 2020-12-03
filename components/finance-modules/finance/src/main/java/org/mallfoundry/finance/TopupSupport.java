@@ -21,7 +21,6 @@ package org.mallfoundry.finance;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static org.mallfoundry.finance.TopupStatus.AWAITING_PAYMENT;
 import static org.mallfoundry.finance.TopupStatus.CANCELED;
 import static org.mallfoundry.finance.TopupStatus.FAILED;
 import static org.mallfoundry.finance.TopupStatus.PENDING;
@@ -39,12 +38,6 @@ public abstract class TopupSupport implements MutableTopup {
     public void cancel() {
         this.setStatus(CANCELED);
         this.setCanceledTime(new Date());
-    }
-
-    @Override
-    public void pay(PaymentSource source) {
-        this.setSource(source);
-        this.setStatus(AWAITING_PAYMENT);
     }
 
     @Override
