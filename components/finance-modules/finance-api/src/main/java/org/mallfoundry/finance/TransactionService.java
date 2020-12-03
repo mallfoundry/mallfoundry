@@ -24,5 +24,11 @@ public interface TransactionService {
 
     TransactionQuery createTransactionQuery();
 
+    Transaction createTransaction(String id);
+
+    Transaction createTransaction(Transaction transaction);
+
+    Transaction updateTransaction(Transaction transaction);
+
     SliceList<Transaction> getTransactions(TransactionQuery query);
 }
