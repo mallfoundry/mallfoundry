@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum TransactionType {
     PAYMENT, // 付款
     PAYMENT_REFUND, // 付款退款
-    RECHARGE, // 充值
+    TOPUP, // 充值
     TRANSFER, // 转账
     WITHDRAWAL_FEE, // 提现服务费用
     WITHDRAWAL; // 提现
