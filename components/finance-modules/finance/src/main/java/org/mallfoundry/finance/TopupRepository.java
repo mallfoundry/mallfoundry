@@ -22,13 +22,13 @@ import org.mallfoundry.data.SliceList;
 
 import java.util.Optional;
 
-public interface RechargeRepository {
+public interface TopupRepository {
 
-    Recharge create(String id);
+    Topup create(String id);
 
-    Optional<Recharge> findById(String id);
+    Optional<Topup> findById(String id);
 
-    SliceList<Recharge> findAll(RechargeQuery query);
+    SliceList<Topup> findAll(TopupQuery query);
 
-    Recharge save(Recharge recharge);
+    Topup save(Topup topup);
 }

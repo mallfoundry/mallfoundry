@@ -18,13 +18,9 @@
 
 package org.mallfoundry.finance;
 
-public interface RechargeProcessor {
+public interface TopupProcessorInvoker {
 
-    default Recharge preProcessBeforeCreateRecharge(Recharge recharge) {
-        return recharge;
-    }
+    Topup invokePreProcessBeforeCreateTopup(Topup topup);
 
-    default Recharge preProcessAfterCreateRecharge(Recharge recharge) {
-        return recharge;
-    }
+    Topup invokePreProcessAfterCreateTopup(Topup topup);
 }

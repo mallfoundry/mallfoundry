@@ -21,13 +21,13 @@ package org.mallfoundry.finance;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static org.mallfoundry.finance.RechargeStatus.AWAITING_PAYMENT;
-import static org.mallfoundry.finance.RechargeStatus.CANCELED;
-import static org.mallfoundry.finance.RechargeStatus.FAILED;
-import static org.mallfoundry.finance.RechargeStatus.PENDING;
-import static org.mallfoundry.finance.RechargeStatus.SUCCEEDED;
+import static org.mallfoundry.finance.TopupStatus.AWAITING_PAYMENT;
+import static org.mallfoundry.finance.TopupStatus.CANCELED;
+import static org.mallfoundry.finance.TopupStatus.FAILED;
+import static org.mallfoundry.finance.TopupStatus.PENDING;
+import static org.mallfoundry.finance.TopupStatus.SUCCEEDED;
 
-public abstract class RechargeSupport implements MutableRecharge {
+public abstract class TopupSupport implements MutableTopup {
 
     @Override
     public void create() {
@@ -68,30 +68,30 @@ public abstract class RechargeSupport implements MutableRecharge {
 
     private abstract static class BuilderSupport implements Builder {
 
-        private final RechargeSupport recharge;
+        private final TopupSupport topup;
 
-        protected BuilderSupport(RechargeSupport recharge) {
-            this.recharge = recharge;
+        protected BuilderSupport(TopupSupport topup) {
+            this.topup = topup;
         }
 
         public Builder accountId(String accountId) {
-            this.recharge.setAccountId(accountId);
+            this.topup.setAccountId(accountId);
             return this;
         }
 
         public Builder currencyCode(CurrencyCode currencyCode) {
-            this.recharge.setCurrencyCode(currencyCode);
+            this.topup.setCurrencyCode(currencyCode);
             return this;
         }
 
         public Builder amount(BigDecimal amount) {
-            this.recharge.setAmount(amount);
+            this.topup.setAmount(amount);
             return this;
         }
 
         @Override
-        public Recharge build() {
-            return this.recharge;
+        public Topup build() {
+            return this.topup;
         }
     }
 }
