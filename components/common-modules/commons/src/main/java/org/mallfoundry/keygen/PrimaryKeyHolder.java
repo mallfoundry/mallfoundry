@@ -27,6 +27,6 @@ public abstract class PrimaryKeyHolder {
     }
 
     public static String next(String name) {
-        return keyGenerator.next(name);
+        return keyGenerator.nextKey(name);
     }
 }
