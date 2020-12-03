@@ -18,25 +18,18 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.data.SliceList;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public interface RechargeService {
+public enum TopupStatus {
+    PENDING, // 等待中
+    CANCELED, // 已取消
+    AWAITING_PAYMENT, // 等待支付
+    SUCCEEDED, // 成功
+    FAILED; // 失败
 
-    Recharge createRecharge(String rechargeId);
-
-    RechargeQuery createRechargeQuery();
-
-    Recharge getRecharge(String rechargeId);
-
-    SliceList<Recharge> getRecharges(RechargeQuery query);
-
-    Recharge createRecharge(Recharge recharge) throws RechargeException;
-
-//    Recharge payRecharge(String rechargeId, Payment) throws RechargeException;
-
-    Recharge cancelRecharge(String rechargeId) throws RechargeException;
-
-    Recharge succeedRecharge(String rechargeId) throws RechargeException;
-
-    Recharge failRecharge(String rechargeId, String failureReason) throws RechargeException;
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

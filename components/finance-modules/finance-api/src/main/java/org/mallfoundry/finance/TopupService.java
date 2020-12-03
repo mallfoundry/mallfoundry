@@ -18,9 +18,27 @@
 
 package org.mallfoundry.finance;
 
-public class RechargeException extends RuntimeException {
+import org.mallfoundry.data.SliceList;
 
-    public RechargeException(String message) {
-        super(message);
-    }
+public interface TopupService {
+
+    Topup createTopup(String topupId);
+
+    TopupQuery createTopupQuery();
+
+    Topup getTopup(String topupId);
+
+    SliceList<Topup> getTopups(TopupQuery query);
+
+    Topup createTopup(Topup topup) throws TopupException;
+
+    Topup payTopup(String topupId, PaymentSource source) throws TopupException;
+
+//    PaymentNotification notifyRecharge(String id, Object parameters);
+
+    Topup cancelTopup(String topupId) throws TopupException;
+
+    Topup succeedTopup(String topupId) throws TopupException;
+
+    Topup failTopup(String topupId, String failureReason) throws TopupException;
 }

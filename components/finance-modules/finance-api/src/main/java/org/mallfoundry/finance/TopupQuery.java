@@ -26,15 +26,15 @@ import java.util.Date;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public interface RechargeQuery extends Query, ObjectBuilder.ToBuilder<RechargeQuery.Builder> {
+public interface TopupQuery extends Query, ObjectBuilder.ToBuilder<TopupQuery.Builder> {
 
     String getAccountId();
 
     void setAccountId(String accountId);
 
-    Set<RechargeStatus> getStatuses();
+    Set<TopupStatus> getStatuses();
 
-    void setStatuses(Set<RechargeStatus> statuses);
+    void setStatuses(Set<TopupStatus> statuses);
 
     Set<PaymentMethodType> getPaymentMethods();
 
@@ -48,13 +48,13 @@ public interface RechargeQuery extends Query, ObjectBuilder.ToBuilder<RechargeQu
 
     void setCreatedTimeEnd(Date createdTimeEnd);
 
-    interface Builder extends QueryBuilder<RechargeQuery, Builder> {
+    interface Builder extends QueryBuilder<TopupQuery, Builder> {
 
         Builder accountId(String accountId);
 
-        Builder statuses(Set<RechargeStatus> statuses);
+        Builder statuses(Set<TopupStatus> statuses);
 
-        Builder statuses(Supplier<Set<RechargeStatus>> supplier);
+        Builder statuses(Supplier<Set<TopupStatus>> supplier);
 
         Builder paymentMethods(Set<PaymentMethodType> paymentMethods);
 

@@ -18,18 +18,9 @@
 
 package org.mallfoundry.finance;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+public class TopupException extends RuntimeException {
 
-public enum RechargeStatus {
-    PENDING, // 等待中
-    CANCELED, // 已取消
-    AWAITING_PAYMENT, // 等待支付
-    SUCCEEDED, // 成功
-    FAILED; // 失败
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
+    public TopupException(String message) {
+        super(message);
     }
 }

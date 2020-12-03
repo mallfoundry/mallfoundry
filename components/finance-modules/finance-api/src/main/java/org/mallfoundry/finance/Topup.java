@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge.Builder> {
+public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Builder> {
 
     String getId();
 
@@ -50,7 +50,7 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     void setAmount(BigDecimal amount);
 
-    RechargeStatus getStatus();
+    TopupStatus getStatus();
 
     PaymentMethodType getPaymentMethod();
 
@@ -76,7 +76,7 @@ public interface Recharge extends Serializable, ObjectBuilder.ToBuilder<Recharge
 
     void fail(String failureReason);
 
-    interface Builder extends ObjectBuilder<Recharge> {
+    interface Builder extends ObjectBuilder<Topup> {
 
         Builder accountId(String accountId);
 
