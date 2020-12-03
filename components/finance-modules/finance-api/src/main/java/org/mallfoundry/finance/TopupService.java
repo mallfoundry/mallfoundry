@@ -22,19 +22,17 @@ import org.mallfoundry.data.SliceList;
 
 public interface TopupService {
 
+    TopupQuery createTopupQuery();
+
     Topup createTopup(String topupId);
 
-    TopupQuery createTopupQuery();
+    Topup createTopup(Topup topup) throws TopupException;
 
     Topup getTopup(String topupId);
 
     SliceList<Topup> getTopups(TopupQuery query);
 
-    Topup createTopup(Topup topup) throws TopupException;
-
-    Topup payTopup(String topupId, PaymentSource source) throws TopupException;
-
-//    PaymentNotification notifyRecharge(String id, Object parameters);
+    PaymentNotification notifyTopup(String topupId, Object parameters);
 
     Topup cancelTopup(String topupId) throws TopupException;
 
