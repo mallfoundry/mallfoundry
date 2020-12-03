@@ -29,7 +29,7 @@ import java.util.function.Supplier;
 
 @Getter
 @Setter
-public class DefaultRechargeQuery extends QuerySupport implements RechargeQuery {
+public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
 
     private String accountId;
 
@@ -37,7 +37,7 @@ public class DefaultRechargeQuery extends QuerySupport implements RechargeQuery 
 
     private Date createdTimeEnd;
 
-    private Set<RechargeStatus> statuses;
+    private Set<TopupStatus> statuses;
 
     private Set<PaymentMethodType> paymentMethods;
 
@@ -47,11 +47,11 @@ public class DefaultRechargeQuery extends QuerySupport implements RechargeQuery 
         };
     }
 
-    protected abstract static class BuilderSupport extends QueryBuilderSupport<RechargeQuery, Builder> implements Builder {
+    protected abstract static class BuilderSupport extends QueryBuilderSupport<TopupQuery, Builder> implements Builder {
 
-        private final DefaultRechargeQuery query;
+        private final DefaultTopupQuery query;
 
-        public BuilderSupport(DefaultRechargeQuery query) {
+        public BuilderSupport(DefaultTopupQuery query) {
             super(query);
             this.query = query;
         }
@@ -63,13 +63,13 @@ public class DefaultRechargeQuery extends QuerySupport implements RechargeQuery 
         }
 
         @Override
-        public Builder statuses(Set<RechargeStatus> statuses) {
+        public Builder statuses(Set<TopupStatus> statuses) {
             this.query.setStatuses(statuses);
             return this;
         }
 
         @Override
-        public Builder statuses(Supplier<Set<RechargeStatus>> supplier) {
+        public Builder statuses(Supplier<Set<TopupStatus>> supplier) {
             return this.statuses(supplier.get());
         }
 

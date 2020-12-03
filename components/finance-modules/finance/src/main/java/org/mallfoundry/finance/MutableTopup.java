@@ -20,9 +20,9 @@ package org.mallfoundry.finance;
 
 import java.util.Date;
 
-public interface MutableRecharge extends Recharge {
+public interface MutableTopup extends Topup {
 
-    void setStatus(RechargeStatus status);
+    void setStatus(TopupStatus status);
 
     void setSource(PaymentSource source);
 
