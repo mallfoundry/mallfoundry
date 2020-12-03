@@ -23,10 +23,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.finance.Counterparty;
 import org.mallfoundry.finance.CurrencyCode;
+import org.mallfoundry.finance.Transaction;
 import org.mallfoundry.finance.TransactionDirection;
 import org.mallfoundry.finance.TransactionStatus;
 import org.mallfoundry.finance.TransactionSupport;
 import org.mallfoundry.finance.TransactionType;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -98,4 +100,12 @@ public class JpaTransaction extends TransactionSupport {
         this.id = id;
     }
 
+    public static JpaTransaction of(Transaction transaction) {
+        if (transaction instanceof JpaTransaction) {
+            return (JpaTransaction) transaction;
+        }
+        var target = new JpaTransaction();
+        BeanUtils.copyProperties(transaction, target);
+        return target;
+    }
 }
