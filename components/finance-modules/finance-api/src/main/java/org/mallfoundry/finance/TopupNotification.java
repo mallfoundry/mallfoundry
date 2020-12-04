@@ -18,25 +18,29 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.data.SliceList;
+import java.util.Map;
 
-public interface TopupService {
+public interface TopupNotification {
 
-    TopupQuery createTopupQuery();
+    Map<String, String> getParameters();
 
-    Topup createTopup(String topupId);
+    String getParameter(String name);
 
-    Topup createTopup(Topup topup) throws TopupException;
+    PaymentStatus getStatus();
 
-    Topup getTopup(String topupId);
+    String getSourceId();
 
-    SliceList<Topup> getTopups(TopupQuery query);
+    void pending();
 
-    TopupNotification notifyTopup(String topupId, Object parameters);
+    void capture();
 
-    Topup cancelTopup(String topupId) throws TopupException;
+    boolean isPending();
 
-    Topup succeedTopup(String topupId) throws TopupException;
+    boolean isCaptured();
 
-    Topup failTopup(String topupId, String failureReason) throws TopupException;
+    boolean hasResult();
+
+    byte[] getResult();
+
+    void setResult(byte[] bytes);
 }

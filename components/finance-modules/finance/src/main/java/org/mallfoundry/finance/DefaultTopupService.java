@@ -68,7 +68,7 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
     }
 
     @Override
-    public PaymentNotification notifyTopup(String topupId, Object parameters) {
+    public TopupNotification notifyTopup(String topupId, Object parameters) {
         return null;
     }
 
