@@ -37,6 +37,6 @@ public interface Source extends Serializable, ObjectBuilder.ToBuilder<Source.Bui
     void setReturnUrl(String returnUrl);
 
     interface Builder extends ObjectBuilder<Source> {
-        Builder type(PaymentMethodType type);
+        Builder type(ChannelType type);
     }
 }
