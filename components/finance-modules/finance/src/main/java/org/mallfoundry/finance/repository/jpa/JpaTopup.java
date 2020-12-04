@@ -118,4 +118,9 @@ public class JpaTopup extends TopupSupport {
         BeanUtils.copyProperties(recharge, target);
         return target;
     }
+
+    @Override
+    public Source createSource() {
+        return null;
+    }
 }
