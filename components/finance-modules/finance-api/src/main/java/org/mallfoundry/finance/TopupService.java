@@ -35,8 +35,4 @@ public interface TopupService {
     TopupNotification notifyTopup(String topupId, Object parameters);
 
     Topup cancelTopup(String topupId) throws TopupException;
-
-    Topup succeedTopup(String topupId) throws TopupException;
-
-    Topup failTopup(String topupId, String failureReason) throws TopupException;
 }

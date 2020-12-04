@@ -79,25 +79,9 @@ public class DefaultTopupService implements TopupService, TopupProcessorInvoker 
     @Transactional
     @Override
     public Topup cancelTopup(String topupId) throws TopupException {
-        var recharge = this.requiredTopup(topupId);
-        recharge.cancel();
-        return this.topupRepository.save(recharge);
-    }
-
-    @Transactional
-    @Override
-    public Topup succeedTopup(String topupId) throws TopupException {
-        var recharge = this.requiredTopup(topupId);
-        recharge.succeed();
-        return this.topupRepository.save(recharge);
-    }
-
-    @Transactional
-    @Override
-    public Topup failTopup(String topupId, String failureReason) throws TopupException {
-        var recharge = this.requiredTopup(topupId);
-        recharge.fail(failureReason);
-        return this.topupRepository.save(recharge);
+        var topup = this.requiredTopup(topupId);
+        topup.cancel();
+        return this.topupRepository.save(topup);
     }
 
     @Override
