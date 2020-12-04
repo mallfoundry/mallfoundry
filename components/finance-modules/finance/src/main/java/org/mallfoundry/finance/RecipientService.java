@@ -38,7 +38,7 @@ public class RecipientService {
         return this.recipientRepository.find(recipient);
     }
 
-    Recipient getRecipient(Recipient recipient) throws RecipientException {
+    public Recipient getRecipient(Recipient recipient) throws RecipientException {
         if (Objects.isNull(recipient.getType())) {
             throw new RecipientException("Recipient type cannot be empty");
         }

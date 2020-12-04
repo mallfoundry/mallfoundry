@@ -19,7 +19,6 @@
 package org.mallfoundry.finance.account;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.finance.account.BalanceSourceType;
 import org.mallfoundry.finance.account.repository.jpa.JpaBalance;
 
 import java.math.BigDecimal;

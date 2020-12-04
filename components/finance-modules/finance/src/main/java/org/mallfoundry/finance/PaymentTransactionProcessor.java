@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2019-2020 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +18,5 @@
 
 package org.mallfoundry.finance;
 
-import org.apache.commons.lang3.StringUtils;
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.mallfoundry.security.SubjectHolder;
-
-public class RechargeIdentityProcessor implements RechargeProcessor {
-
-    private static final String RECHARGE_ID_VALUE_NAME = "finance.recharge.id";
-
-    @Override
-    public Recharge preProcessAfterCreateRecharge(Recharge recharge) {
-        if (StringUtils.isBlank(recharge.getId())) {
-            recharge.setId(this.nextRechargeId());
-            recharge.setOperatorId(SubjectHolder.getSubject().getId());
-            recharge.setOperator(SubjectHolder.getSubject().getNickname());
-        }
-        return recharge;
-    }
-
-    private String nextRechargeId() {
-        return "1004" + PrimaryKeyHolder.next(RECHARGE_ID_VALUE_NAME);
-    }
+public class PaymentTransactionProcessor {
 }

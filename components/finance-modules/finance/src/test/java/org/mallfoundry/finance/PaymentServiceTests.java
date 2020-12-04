@@ -18,7 +18,7 @@
 
 package org.mallfoundry.finance;
 
-import org.apache.commons.lang3.Functions;
+import org.apache.commons.lang3.function.Failable;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.test.StandaloneTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,10 @@ public class PaymentServiceTests {
                 .toBuilder()
                 .payerId("p1")
                 .payer("per")
-                .instrument(Functions.asConsumer(instrument -> instrument.toBuilder().type(PaymentMethodType.ALIPAY).build()))
-                .order(Functions.asConsumer(order -> order.toBuilder().id("o1").storeId("s1").amount(1).build()))
-                .order(Functions.asConsumer(order -> order.toBuilder().id("o2").storeId("s1").amount(1.2).build()))
-                .order(Functions.asConsumer(order -> order.toBuilder().id("o3").storeId("s1").amount(1.1).build()))
+                .instrument(Failable.asConsumer(instrument -> instrument.toBuilder().type(PaymentMethodType.ALIPAY).build()))
+                .order(Failable.asConsumer(order -> order.toBuilder().id("o1").storeId("s1").amount(1).build()))
+                .order(Failable.asConsumer(order -> order.toBuilder().id("o2").storeId("s1").amount(1.2).build()))
+                .order(Failable.asConsumer(order -> order.toBuilder().id("o3").storeId("s1").amount(1.1).build()))
                 .build();
         this.paymentService.startPayment(payment);
     }

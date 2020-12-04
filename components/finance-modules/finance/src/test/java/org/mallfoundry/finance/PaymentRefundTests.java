@@ -20,14 +20,12 @@ package org.mallfoundry.finance;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.finance.PaymentOrderException;
-import org.mallfoundry.finance.PaymentRefundException;
 import org.mallfoundry.finance.repository.jpa.JpaPayment;
 import org.mallfoundry.test.StaticTest;
 
 import java.math.BigDecimal;
 
-import static org.apache.commons.lang3.Functions.asConsumer;
+import static org.apache.commons.lang3.function.Failable.asConsumer;
 
 @StaticTest
 public class PaymentRefundTests {

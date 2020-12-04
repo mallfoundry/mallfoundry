@@ -19,7 +19,6 @@
 package org.mallfoundry.finance.bank.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.finance.bank.BankCard;
 import org.mallfoundry.finance.bank.BankCardQuery;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.Page;

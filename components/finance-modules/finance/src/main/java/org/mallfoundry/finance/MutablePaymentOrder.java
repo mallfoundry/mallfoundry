@@ -18,8 +18,6 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.finance.PaymentOrder;
-
 import java.math.BigDecimal;
 
 public interface MutablePaymentOrder extends PaymentOrder {

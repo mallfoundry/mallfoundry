@@ -18,9 +18,6 @@
 
 package org.mallfoundry.finance;
 
-import org.mallfoundry.finance.PaymentRefund;
-import org.mallfoundry.finance.PaymentRefundStatus;
-
 import java.util.Date;
 
 public interface MutablePaymentRefund extends PaymentRefund {

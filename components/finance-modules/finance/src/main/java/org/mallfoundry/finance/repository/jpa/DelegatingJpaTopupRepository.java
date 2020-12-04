@@ -20,9 +20,9 @@ package org.mallfoundry.finance.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.finance.TopupRepository;
 import org.mallfoundry.finance.Topup;
 import org.mallfoundry.finance.TopupQuery;
+import org.mallfoundry.finance.TopupRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Optional;
