@@ -72,8 +72,8 @@ public abstract class TopupSupport implements MutableTopup {
             return this;
         }
 
-        public Builder currencyCode(CurrencyCode currencyCode) {
-            this.topup.setCurrencyCode(currencyCode);
+        public Builder currency(CurrencyCode currency) {
+            this.topup.setCurrency(currency);
             return this;
         }
 

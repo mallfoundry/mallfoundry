@@ -24,7 +24,7 @@ public interface MutableTopup extends Topup {
 
     void setStatus(TopupStatus status);
 
-    void setSource(PaymentSource source);
+    void setSource(Source source);
 
     void setCreatedTime(Date createdTime);
 

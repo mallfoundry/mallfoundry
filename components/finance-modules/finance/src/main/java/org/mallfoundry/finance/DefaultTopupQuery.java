@@ -39,7 +39,7 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
 
     private Set<TopupStatus> statuses;
 
-    private Set<PaymentMethodType> paymentMethods;
+    private Set<ChannelType> channels;
 
     @Override
     public Builder toBuilder() {
@@ -74,14 +74,14 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
         }
 
         @Override
-        public Builder paymentMethods(Set<PaymentMethodType> paymentMethods) {
-            this.query.setPaymentMethods(paymentMethods);
+        public Builder channels(Set<ChannelType> channels) {
+            this.query.setChannels(channels);
             return this;
         }
 
         @Override
-        public Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier) {
-            return this.paymentMethods(supplier.get());
+        public Builder channels(Supplier<Set<ChannelType>> supplier) {
+            return this.channels(supplier.get());
         }
 
         @Override

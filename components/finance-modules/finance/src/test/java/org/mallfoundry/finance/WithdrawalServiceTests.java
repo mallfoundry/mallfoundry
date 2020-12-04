@@ -34,7 +34,7 @@ public class WithdrawalServiceTests {
     @Test
     public void testApplyWithdrawal() {
         var withdrawal = this.withdrawalService.createWithdrawal(null)
-                .toBuilder().currencyCode(CurrencyCode.CNY).accountId("1").amount(BigDecimal.valueOf(4))
+                .toBuilder().currency(CurrencyCode.CNY).accountId("1").amount(BigDecimal.valueOf(4))
                 .build();
         var recipient = withdrawal.createRecipient().toBuilder()
                 .type(RecipientType.BANK_CARD).number("1101011")

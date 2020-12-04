@@ -69,8 +69,8 @@ public class JpaTransaction extends TransactionSupport {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_code_")
-    private CurrencyCode currencyCode;
+    @Column(name = "currency_")
+    private CurrencyCode currency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "direction_")

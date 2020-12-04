@@ -39,9 +39,9 @@ public interface Transaction {
 
     void setOperatorId(String operatorId);
 
-    CurrencyCode getCurrencyCode();
+    CurrencyCode getCurrency();
 
-    void setCurrencyCode(CurrencyCode currencyCode);
+    void setCurrency(CurrencyCode currency);
 
     BigDecimal getAmount();
 

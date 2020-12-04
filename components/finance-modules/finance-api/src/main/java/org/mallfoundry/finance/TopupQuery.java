@@ -36,9 +36,9 @@ public interface TopupQuery extends Query, ObjectBuilder.ToBuilder<TopupQuery.Bu
 
     void setStatuses(Set<TopupStatus> statuses);
 
-    Set<PaymentMethodType> getPaymentMethods();
+    Set<ChannelType> getChannels();
 
-    void setPaymentMethods(Set<PaymentMethodType> paymentMethods);
+    void setChannels(Set<ChannelType> channels);
 
     Date getCreatedTimeStart();
 
@@ -56,9 +56,9 @@ public interface TopupQuery extends Query, ObjectBuilder.ToBuilder<TopupQuery.Bu
 
         Builder statuses(Supplier<Set<TopupStatus>> supplier);
 
-        Builder paymentMethods(Set<PaymentMethodType> paymentMethods);
+        Builder channels(Set<ChannelType> channels);
 
-        Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier);
+        Builder channels(Supplier<Set<ChannelType>> supplier);
 
         Builder createdTimeStart(Date createdTimeStart);
 

@@ -34,7 +34,7 @@ public class TopupTransactionProcessor implements TopupProcessor {
         transaction.setOperatorId(topup.getOperatorId());
         transaction.setOperator(topup.getOperator());
         transaction.setAccountId(topup.getAccountId());
-        transaction.setCurrencyCode(topup.getCurrencyCode());
+        transaction.setCurrency(topup.getCurrency());
         transaction.setAmount(topup.getAmount());
         transaction.setType(TransactionType.TOPUP);
         transaction.setStatus(TransactionStatus.PENDING);

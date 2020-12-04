@@ -21,7 +21,7 @@ package org.mallfoundry.rest.finance;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.finance.PaymentMethodType;
+import org.mallfoundry.finance.ChannelType;
 import org.mallfoundry.finance.Topup;
 import org.mallfoundry.finance.TopupService;
 import org.mallfoundry.finance.TopupStatus;
@@ -61,22 +61,22 @@ public class TopupResourceV1 {
 
     @GetMapping("/topups")
     public SliceList<Topup> getTopups(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                         @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                         @RequestParam("account_id") String accountId,
-                                         @RequestParam(name = "statuses", required = false) Set<String> statuses,
-                                         @RequestParam(name = "payment_methods", required = false) Set<String> paymentMethods,
-                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                         @RequestParam(name = "created_time_start", required = false) Date createdTimeStart,
-                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                         @RequestParam(name = "created_time_end", required = false) Date createdTimeEnd) {
+                                      @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                      @RequestParam("account_id") String accountId,
+                                      @RequestParam(name = "statuses", required = false) Set<String> statuses,
+                                      @RequestParam(name = "channels", required = false) Set<String> channels,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                      @RequestParam(name = "created_time_start", required = false) Date createdTimeStart,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                      @RequestParam(name = "created_time_end", required = false) Date createdTimeEnd) {
         var query = this.topupService.createTopupQuery().toBuilder()
                 .page(page).limit(limit).accountId(accountId)
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                 .map(TopupStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
-                .paymentMethods(() ->
-                        CollectionUtils.emptyIfNull(paymentMethods).stream().map(StringUtils::upperCase)
-                                .map(PaymentMethodType::valueOf).collect(Collectors.toUnmodifiableSet()))
+                .channels(() ->
+                        CollectionUtils.emptyIfNull(channels).stream().map(StringUtils::upperCase)
+                                .map(ChannelType::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .createdTimeStart(createdTimeStart).createdTimeEnd(createdTimeEnd)
                 .build();
         return this.topupService.getTopups(query);

@@ -21,13 +21,13 @@ package org.mallfoundry.finance.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.finance.ChannelType;
 import org.mallfoundry.finance.CurrencyCode;
-import org.mallfoundry.finance.PaymentMethodType;
-import org.mallfoundry.finance.PaymentSource;
+import org.mallfoundry.finance.Source;
 import org.mallfoundry.finance.Topup;
 import org.mallfoundry.finance.TopupStatus;
 import org.mallfoundry.finance.TopupSupport;
-import org.mallfoundry.finance.repository.jpa.convert.PaymentSourceConverter;
+import org.mallfoundry.finance.repository.jpa.convert.SourceConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
@@ -70,8 +70,8 @@ public class JpaTopup extends TopupSupport {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_code_")
-    private CurrencyCode currencyCode;
+    @Column(name = "currency_")
+    private CurrencyCode currency;
 
     @Min(0)
     @Column(name = "amount_")
@@ -83,12 +83,12 @@ public class JpaTopup extends TopupSupport {
     private TopupStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method_")
-    private PaymentMethodType paymentMethod;
+    @Column(name = "channel_")
+    private ChannelType channel;
 
-    @Convert(converter = PaymentSourceConverter.class)
+    @Convert(converter = SourceConverter.class)
     @Column(name = "source_")
-    private PaymentSource source;
+    private Source source;
 
     @NotNull
     @Column(name = "created_time_")

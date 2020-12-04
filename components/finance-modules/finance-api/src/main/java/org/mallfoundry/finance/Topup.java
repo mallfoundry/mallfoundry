@@ -46,9 +46,9 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
 
     void setTransactionId(String transactionId);
 
-    CurrencyCode getCurrencyCode();
+    CurrencyCode getCurrency();
 
-    void setCurrencyCode(CurrencyCode currencyCode);
+    void setCurrency(CurrencyCode currency);
 
     BigDecimal getAmount();
 
@@ -56,9 +56,9 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
 
     TopupStatus getStatus();
 
-    PaymentMethodType getPaymentMethod();
+    ChannelType getChannel();
 
-    PaymentSource getSource();
+    Source getSource();
 
     Date getCreatedTime();
 
@@ -82,7 +82,7 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
 
         Builder accountId(String accountId);
 
-        Builder currencyCode(CurrencyCode currencyCode);
+        Builder currency(CurrencyCode currency);
 
         Builder amount(BigDecimal amount);
     }

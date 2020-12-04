@@ -62,8 +62,8 @@ public class JpaWithdrawal extends WithdrawalSupport {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_code_")
-    private CurrencyCode currencyCode;
+    @Column(name = "currency_")
+    private CurrencyCode currency;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -81,6 +81,9 @@ public class JpaWithdrawal extends WithdrawalSupport {
     @NotBlank
     @Column(name = "operator_")
     private String operator;
+
+    @Column(name = "transaction_id_")
+    private String transactionId;
 
     @NotNull
     @Column(name = "applied_time_")

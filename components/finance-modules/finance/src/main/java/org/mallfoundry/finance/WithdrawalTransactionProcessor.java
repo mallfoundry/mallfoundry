@@ -34,13 +34,13 @@ public class WithdrawalTransactionProcessor implements WithdrawalProcessor {
         transaction.setOperatorId(withdrawal.getOperatorId());
         transaction.setOperator(withdrawal.getOperator());
         transaction.setAccountId(withdrawal.getAccountId());
-        transaction.setCurrencyCode(withdrawal.getCurrencyCode());
+        transaction.setCurrency(withdrawal.getCurrency());
         transaction.setAmount(withdrawal.getAmount());
         transaction.setType(TransactionType.WITHDRAWAL);
         transaction.setStatus(TransactionStatus.PENDING);
         transaction.setCreatedTime(withdrawal.getAppliedTime());
         transaction = this.transactionService.createTransaction(transaction);
-//        withdrawal.setTransactionId(transaction.getId());
+        withdrawal.setTransactionId(transaction.getId());
         return withdrawal;
     }
 }

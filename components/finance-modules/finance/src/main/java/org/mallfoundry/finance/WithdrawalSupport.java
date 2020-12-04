@@ -98,8 +98,8 @@ public abstract class WithdrawalSupport implements MutableWithdrawal {
             return this;
         }
 
-        public Builder currencyCode(CurrencyCode currencyCode) {
-            this.withdrawal.setCurrencyCode(currencyCode);
+        public Builder currency(CurrencyCode currency) {
+            this.withdrawal.setCurrency(currency);
             return this;
         }
 

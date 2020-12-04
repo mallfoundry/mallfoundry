@@ -31,14 +31,14 @@ public class TopupRequest {
 
     private String accountId;
 
-    private CurrencyCode currencyCode;
+    private CurrencyCode currency;
 
     private BigDecimal amount;
 
     public Topup assignTo(Topup recharge) {
         return recharge.toBuilder()
                 .accountId(this.accountId)
-                .currencyCode(this.currencyCode)
+                .currency(this.currency)
                 .amount(this.amount)
                 .build();
     }

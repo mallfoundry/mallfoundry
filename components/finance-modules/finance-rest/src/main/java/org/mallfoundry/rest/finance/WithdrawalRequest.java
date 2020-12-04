@@ -31,7 +31,7 @@ public class WithdrawalRequest {
 
     private String accountId;
 
-    private CurrencyCode currencyCode;
+    private CurrencyCode currency;
 
     private BigDecimal amount;
 
@@ -40,7 +40,7 @@ public class WithdrawalRequest {
     public Withdrawal assignTo(Withdrawal withdrawal) {
         return withdrawal.toBuilder()
                 .accountId(this.accountId)
-                .currencyCode(this.currencyCode).amount(this.amount)
+                .currency(this.currency).amount(this.amount)
                 .recipient(this.recipient.assignTo(withdrawal.createRecipient()))
                 .build();
     }
