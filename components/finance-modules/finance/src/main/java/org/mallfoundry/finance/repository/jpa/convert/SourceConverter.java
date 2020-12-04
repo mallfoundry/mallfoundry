@@ -16,27 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.finance;
+package org.mallfoundry.finance.repository.jpa.convert;
 
-import org.mallfoundry.util.ObjectBuilder;
+import org.mallfoundry.finance.Source;
+import org.mallfoundry.util.JsonUtils;
 
-import java.io.Serializable;
+import javax.persistence.AttributeConverter;
+import java.util.Objects;
 
-public interface PaymentSource extends Serializable, ObjectBuilder.ToBuilder<PaymentSource.Builder> {
+public class SourceConverter implements AttributeConverter<Source, String> {
 
-    PaymentMethodType getType();
+    @Override
+    public String convertToDatabaseColumn(Source attribute) {
+        return Objects.isNull(attribute) ? null : JsonUtils.stringify(attribute);
+    }
 
-    void setType(PaymentMethodType type);
-
-    String getRedirectUrl();
-
-    void setRedirectUrl(String redirectUrl);
-
-    String getReturnUrl();
-
-    void setReturnUrl(String returnUrl);
-
-    interface Builder extends ObjectBuilder<PaymentSource> {
-        Builder type(PaymentMethodType type);
+    @Override
+    public Source convertToEntityAttribute(String dbData) {
+        return Objects.isNull(dbData) ? null : JsonUtils.parse(dbData, Source.class);
     }
 }
