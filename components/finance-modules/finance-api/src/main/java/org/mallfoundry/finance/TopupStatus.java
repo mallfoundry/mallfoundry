@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum TopupStatus {
     PENDING, // 等待中
     CANCELED, // 已取消
-    AWAITING_PAYMENT, // 等待支付
     SUCCEEDED, // 成功
     FAILED; // 失败
 
