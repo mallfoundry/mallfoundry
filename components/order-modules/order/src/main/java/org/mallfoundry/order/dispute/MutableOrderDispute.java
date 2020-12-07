@@ -16,17 +16,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales;
+package org.mallfoundry.order.dispute;
 
-import org.mallfoundry.data.SliceList;
+import java.util.Date;
 
-public interface OrderDisputeRepository {
+public interface MutableOrderDispute extends OrderDispute {
 
-    OrderDispute create(String id);
+    void setItemStatus(ItemStatus itemStatus);
 
-    OrderDispute save(OrderDispute dispute);
+    void setStatus(OrderDisputeStatus status);
 
-    SliceList<OrderDispute> findAll(OrderDisputeQuery query);
+    void setApplyingExpiredTime(Date applyingExpiredTime);
 
-    long count(OrderDisputeQuery query);
+    void setAppliedTime(Date appliedTime);
+
+    void setCancelledTime(Date cancelledTime);
+
+    void setDisapprovalReason(String disapprovalReason);
+
+    void setDisapprovedTime(Date disapprovedTime);
+
+    void setApprovedTime(Date approvedTime);
+
+    void setSucceededTime(Date succeededTime);
+
+    void setFailReason(String failReason);
+
+    void setFailedTime(Date failedTime);
 }

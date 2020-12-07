@@ -27,7 +27,7 @@ import org.mallfoundry.discuss.Author;
 import org.mallfoundry.discuss.AuthorType;
 import org.mallfoundry.discuss.DefaultAuthor;
 import org.mallfoundry.inventory.InventoryDeduction;
-import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.dispute.OrderRefund;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentService;

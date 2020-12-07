@@ -16,13 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales.repository.jpa;
+package org.mallfoundry.order.dispute.repository.jpa;
 
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
-import org.mallfoundry.order.aftersales.OrderDispute;
-import org.mallfoundry.order.aftersales.OrderDisputeQuery;
-import org.mallfoundry.order.aftersales.OrderDisputeRepository;
+import org.mallfoundry.order.dispute.OrderDispute;
+import org.mallfoundry.order.dispute.OrderDisputeQuery;
+import org.mallfoundry.order.dispute.OrderDisputeRepository;
 
 public class DelegatingJpaOrderDisputeRepository implements OrderDisputeRepository {
 

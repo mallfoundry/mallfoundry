@@ -16,39 +16,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales.repository.jpa;
+package org.mallfoundry.order.dispute.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.data.repository.jpa.convert.StringListConverter;
-import org.mallfoundry.order.aftersales.OrderDispute;
-import org.mallfoundry.order.aftersales.OrderDisputeKind;
-import org.mallfoundry.order.aftersales.OrderDisputeStatus;
-import org.mallfoundry.order.aftersales.OrderDisputeSupport;
-import org.mallfoundry.order.aftersales.OrderDisputeTransaction;
+import org.mallfoundry.order.dispute.OrderDisputeKind;
+import org.mallfoundry.order.dispute.OrderDisputeStatus;
+import org.mallfoundry.order.dispute.OrderDisputeTransaction;
+import org.mallfoundry.order.dispute.OrderRefundSupport;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_order_dispute")
-public class JpaOrderDispute extends OrderDisputeSupport {
+@Table(name = "mf_order_refund")
+public class JpaOrderRefund extends OrderRefundSupport {
 
     @Id
     @Column(name = "id_")
@@ -107,15 +108,10 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Column(name = "amount_")
     private BigDecimal amount;
 
-    @Column(name = "notes_")
-    private String notes;
-
-    @Column(name = "attachments_")
-    @Convert(converter = StringListConverter.class)
-    private List<String> attachments;
-
-    @Transient
-    private List<OrderDisputeTransaction> transactions = Collections.emptyList();
+    @OneToMany(targetEntity = JpaOrderDisputeTransaction.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dispute_id_", referencedColumnName = "id_")
+    @OrderBy("createdTime")
+    private List<OrderDisputeTransaction> transactions = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
@@ -139,8 +135,8 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Column(name = "disapproval_reason_")
     private String disapprovalReason;
 
-    @Column(name = "disapproved_time_")
-    private Date disapprovedTime;
+    @Column(name = "fail_reason_")
+    private String failReason;
 
     @Column(name = "approved_time_")
     private Date approvedTime;
@@ -148,76 +144,30 @@ public class JpaOrderDispute extends OrderDisputeSupport {
     @Column(name = "succeeded_time_")
     private Date succeededTime;
 
-    @Column(name = "fail_reason_")
-    private String failReason;
-
     @Column(name = "failed_time_")
     private Date failedTime;
 
-    public JpaOrderDispute(String id) {
+    @Column(name = "disapproved_time_")
+    private Date disapprovedTime;
+
+    @Column(name = "notes_")
+    private String notes;
+
+    @Column(name = "attachments_")
+    @Convert(converter = StringListConverter.class)
+    private List<String> attachments;
+
+    public JpaOrderRefund(String orderId, String id) {
+        this.orderId = orderId;
         this.id = id;
     }
 
     @Override
     public OrderDisputeTransaction createTransaction(String id) {
         var transaction = new JpaOrderDisputeTransaction();
-        /*transaction.setId(id);
-        transaction.setDisputeId(this.id);
-        transaction.setOrderId(this.orderId);
-        transaction.setStoreId(this.storeId);
-        transaction.setCustomerId(this.customerId);
-        transaction.setKind(this.kind);
-        transaction.setTenantId(this.tenantId);
-        transaction.setStatus(this.status);
-        transaction.setItemStatus(this.itemStatus);
-        transaction.setItemId(this.itemId);
-        transaction.setProductId(this.productId);
-        transaction.setVariantId(this.variantId);
-        transaction.setName(this.name);
-        transaction.setImageUrl(this.imageUrl);
-        transaction.setAmount(this.amount);
-        transaction.setQuantity(this.quantity);
-        transaction.setAttachments(this.attachments);
-        transaction.setNotes(this.notes);
-        transaction.setReason(this.reason);
-        transaction.setAppliedTime(this.appliedTime);
-        transaction.setCancelledTime(this.cancelledTime);
-        transaction.setDisapprovalReason(this.disapprovalReason);
-        transaction.setDisapprovedTime(this.disapprovedTime);
-        transaction.setApprovedTime(this.approvedTime);
-        transaction.setSucceededTime(this.succeededTime);
-        transaction.setFailReason(this.failReason);
-        transaction.setFailedTime(this.failedTime);*/
         BeanUtils.copyProperties(this, transaction);
         transaction.setId(id);
         transaction.setDisputeId(this.id);
-        transaction.setCreatedTime(new Date());
         return transaction;
-    }
-
-    public static JpaOrderDispute of(OrderDispute dispute) {
-        if (dispute instanceof JpaOrderDispute) {
-            return (JpaOrderDispute) dispute;
-        }
-        var target = new JpaOrderDispute();
-        BeanUtils.copyProperties(dispute, target);
-        return target;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof JpaOrderDispute)) {
-            return false;
-        }
-        JpaOrderDispute that = (JpaOrderDispute) object;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

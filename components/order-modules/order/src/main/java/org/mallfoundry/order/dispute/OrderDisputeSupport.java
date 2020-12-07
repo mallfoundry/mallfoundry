@@ -16,20 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales;
+package org.mallfoundry.order.dispute;
 
 import org.mallfoundry.order.OrderExceptions;
 
 import java.util.Date;
 
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.APPLYING;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.CANCELLED;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.DISAPPROVED;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.FAILED;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.INCOMPLETE;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.PENDING;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.REAPPLYING;
-import static org.mallfoundry.order.aftersales.OrderDisputeStatus.SUCCEEDED;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.APPLYING;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.CANCELLED;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.DISAPPROVED;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.FAILED;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.INCOMPLETE;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.PENDING;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.REAPPLYING;
+import static org.mallfoundry.order.dispute.OrderDisputeStatus.SUCCEEDED;
 
 public abstract class OrderDisputeSupport implements MutableOrderDispute {
 

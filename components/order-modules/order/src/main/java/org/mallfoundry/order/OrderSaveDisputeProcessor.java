@@ -18,8 +18,8 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.order.aftersales.OrderDisputeService;
-import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.dispute.OrderDisputeService;
+import org.mallfoundry.order.dispute.OrderRefund;
 
 import java.util.List;
 

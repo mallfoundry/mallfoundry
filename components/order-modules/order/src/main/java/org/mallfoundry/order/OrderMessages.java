@@ -19,7 +19,7 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.i18n.Messages;
-import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.dispute.OrderRefund;
 import org.mallfoundry.order.shipping.OrderShipment;
 
 import java.util.List;

@@ -16,17 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales;
+package org.mallfoundry.order.dispute;
 
-import org.mallfoundry.data.SliceList;
-
-public interface OrderDisputeService {
-
-    OrderDisputeQuery createOrderDisputeQuery();
-
-    SliceList<OrderDispute> getOrderDisputes(OrderDisputeQuery query);
-
-    long countOrderDisputes(OrderDisputeQuery query);
-
-    void saveOrderDispute(OrderRefund refund);
+public interface MutableOrderRefund extends MutableOrderDispute, OrderRefund {
 }

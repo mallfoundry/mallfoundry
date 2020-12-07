@@ -20,9 +20,9 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.order.aftersales.OrderDispute.ItemStatus;
-import org.mallfoundry.order.aftersales.OrderDisputeKind;
-import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.dispute.OrderDispute.ItemStatus;
+import org.mallfoundry.order.dispute.OrderDisputeKind;
+import org.mallfoundry.order.dispute.OrderRefund;
 
 import java.math.BigDecimal;
 import java.util.List;

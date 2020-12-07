@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales.repository.jpa;
+package org.mallfoundry.order.dispute.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.order.aftersales.OrderDisputeQuery;
+import org.mallfoundry.order.dispute.OrderDisputeQuery;
 import org.mallfoundry.util.CaseUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

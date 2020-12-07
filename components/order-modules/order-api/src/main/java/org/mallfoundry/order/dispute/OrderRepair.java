@@ -16,17 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales;
+package org.mallfoundry.order.dispute;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class ImmutableOrderDisputeId implements OrderDisputeId {
-    private String tenantId;
-    private String storeId;
-    private String customerId;
-    private String orderId;
-    private String id;
+public interface OrderRepair {
 }

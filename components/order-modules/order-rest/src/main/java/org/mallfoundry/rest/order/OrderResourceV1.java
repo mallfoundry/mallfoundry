@@ -28,7 +28,7 @@ import org.mallfoundry.order.OrderService;
 import org.mallfoundry.order.OrderSource;
 import org.mallfoundry.order.OrderStatus;
 import org.mallfoundry.order.OrderType;
-import org.mallfoundry.order.aftersales.OrderRefund;
+import org.mallfoundry.order.dispute.OrderRefund;
 import org.mallfoundry.order.shipping.OrderShipment;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentMethodType;

@@ -16,7 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.order.aftersales;
+package org.mallfoundry.order.dispute;
 
-public interface MutableOrderRefund extends MutableOrderDispute, OrderRefund {
+import org.mallfoundry.customer.CustomerOwnership;
+import org.mallfoundry.store.StoreOwnership;
+
+public interface OrderDisputeId extends StoreOwnership, CustomerOwnership {
+    String getOrderId();
+
+    String getId();
 }
