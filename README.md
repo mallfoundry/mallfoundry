@@ -97,6 +97,8 @@ $ cat StandaloneSpringBootApplication.java
 
 ![store-coupon-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-coupon-list.png)
 
+![store-balance](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-balance.png)
+
 ### 前台（H5）
 
 持续更新中...
