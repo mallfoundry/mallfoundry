@@ -32,6 +32,8 @@ public class DefaultTransactionQuery extends QuerySupport implements Transaction
 
     private String accountId;
 
+    private Set<TransactionType> types;
+
     private Set<TransactionStatus> statuses;
 
     @Override
@@ -53,6 +55,17 @@ public class DefaultTransactionQuery extends QuerySupport implements Transaction
         public Builder accountId(String accountId) {
             this.query.setAccountId(accountId);
             return this;
+        }
+
+        @Override
+        public Builder types(Set<TransactionType> types) {
+            this.query.setTypes(types);
+            return this;
+        }
+
+        @Override
+        public Builder types(Supplier<Set<TransactionType>> supplier) {
+            return this.types(supplier.get());
         }
 
         @Override

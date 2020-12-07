@@ -41,7 +41,9 @@ public interface JpaTransactionRepository extends JpaRepository<JpaTransaction, 
             if (Objects.nonNull(transactionQuery.getAccountId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("accountId"), transactionQuery.getAccountId()));
             }
-
+            if (CollectionUtils.isNotEmpty(transactionQuery.getTypes())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("type")).value(transactionQuery.getTypes()));
+            }
             if (CollectionUtils.isNotEmpty(transactionQuery.getStatuses())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(transactionQuery.getStatuses()));
             }

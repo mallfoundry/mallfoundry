@@ -24,6 +24,7 @@ import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.Transaction;
 import org.mallfoundry.finance.TransactionService;
 import org.mallfoundry.finance.TransactionStatus;
+import org.mallfoundry.finance.TransactionType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,9 +47,13 @@ public class TransactionResourceV1 {
     public SliceList<Transaction> getTransactions(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                   @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                                   @RequestParam("account_id") String accountId,
+                                                  @RequestParam(name = "types", required = false) Set<String> types,
                                                   @RequestParam(name = "statuses", required = false) Set<String> statuses) {
         var query = this.transactionService.createTransactionQuery().toBuilder()
                 .page(page).limit(limit).accountId(accountId)
+                .types(() ->
+                        CollectionUtils.emptyIfNull(types).stream().map(StringUtils::upperCase)
+                                .map(TransactionType::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                 .map(TransactionStatus::valueOf).collect(Collectors.toUnmodifiableSet()))

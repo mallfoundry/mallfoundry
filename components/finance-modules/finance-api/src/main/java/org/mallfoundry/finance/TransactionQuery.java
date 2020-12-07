@@ -31,6 +31,10 @@ public interface TransactionQuery extends Query, ObjectBuilder.ToBuilder<Transac
 
     void setAccountId(String accountId);
 
+    Set<TransactionType> getTypes();
+
+    void setTypes(Set<TransactionType> types);
+
     Set<TransactionStatus> getStatuses();
 
     void setStatuses(Set<TransactionStatus> statuses);
@@ -38,6 +42,10 @@ public interface TransactionQuery extends Query, ObjectBuilder.ToBuilder<Transac
     interface Builder extends QueryBuilder<TransactionQuery, Builder> {
 
         Builder accountId(String accountId);
+
+        Builder types(Set<TransactionType> types);
+
+        Builder types(Supplier<Set<TransactionType>> supplier);
 
         Builder statuses(Set<TransactionStatus> statuses);
 
