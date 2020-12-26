@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.finance.account;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.finance.account.Account;
 import org.mallfoundry.finance.account.AccountService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Accounts")
 @RestController
 @RequestMapping("/v1")
 public class AccountResourceV1 {

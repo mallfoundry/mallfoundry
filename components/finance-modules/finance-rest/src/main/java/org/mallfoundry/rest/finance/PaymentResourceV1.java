@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.finance;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.finance.Payment;
 import org.mallfoundry.finance.PaymentService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Tag(name = "Payments")
 @RestController
 @RequestMapping("/v1")
 public class PaymentResourceV1 {

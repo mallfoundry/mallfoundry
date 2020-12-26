@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.finance;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
@@ -38,6 +39,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Tag(name = "Topups")
 @RestController
 @RequestMapping("/v1")
 public class TopupResourceV1 {

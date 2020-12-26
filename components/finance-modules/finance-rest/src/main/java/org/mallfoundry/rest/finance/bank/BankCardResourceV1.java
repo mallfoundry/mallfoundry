@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.finance.bank;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.finance.bank.BankCard;
 import org.mallfoundry.finance.bank.BankCardService;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Bank Cards")
 @RestController
 @RequestMapping("/v1")
 public class BankCardResourceV1 {

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.finance.account;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.finance.CurrencyCode;
 import org.mallfoundry.finance.account.Balance;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Balances")
 @RestController
 @RequestMapping("/v1")
 public class BalanceResourceV1 {
