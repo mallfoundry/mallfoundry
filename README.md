@@ -74,6 +74,12 @@ $ cd src/main/java/org/mallfoundry
 $ cat StandaloneSpringBootApplication.java
 ```
 
+## REST API Docs
+
+我们提供了一个部分 REST API 接口的文档：
+
+<http://mallfoundry.gitee.io/mallfoundry-api-reference>
+
 ## 前端界面（UI）
 
 整个 Mallfoundry 采用前后端分离的架构，后端服务不包含前端界面，需要另行编译安装前端。
