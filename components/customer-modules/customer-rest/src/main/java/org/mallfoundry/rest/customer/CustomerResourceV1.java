@@ -18,7 +18,6 @@
 
 package org.mallfoundry.rest.customer;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.customer.Customer;
 import org.mallfoundry.customer.CustomerAddress;
@@ -37,7 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-@Tag(name = "Customer Resource V1", description = "顾客资源")
+
+@Tag(name = "Customers")
 @RequestMapping("/v1")
 @RestController
 public class CustomerResourceV1 {
@@ -48,7 +48,6 @@ public class CustomerResourceV1 {
         this.customerService = customerService;
     }
 
-    @Operation(summary = "获得当前登录的顾客对象")
     @GetMapping("/customer")
     public Optional<CustomerResponse> findCustomer() {
         return this.customerService.findCustomer(SubjectHolder.getSubject().getId()).map(CustomerResponse::new);
@@ -59,13 +58,11 @@ public class CustomerResourceV1 {
                 this.customerService.createCustomerId(TenantOwnership.DEFAULT_TENANT_ID, customerId));
     }
 
-    @Operation(summary = "根据顾客标识获得顾客对象")
     @GetMapping("/customers/{customer_id}")
     public Optional<CustomerResponse> findCustomer(@PathVariable("customer_id") String id) {
         return this.customerService.findCustomer(id).map(CustomerResponse::new);
     }
 
-    @Operation(summary = "根据顾客标识更新顾客对象")
     @PatchMapping("/customers/{customer_id}")
     public Optional<CustomerResponse> updateCustomer(@PathVariable("customer_id") String customerId,
                                                      @RequestBody CustomerRequest request) {
@@ -76,7 +73,6 @@ public class CustomerResourceV1 {
                 .map(CustomerResponse::new);
     }
 
-    @Operation(summary = "添加一个顾客的收货地址对象")
     @PostMapping("/customers/{customer_id}/addresses")
     public CustomerAddress addCustomerAddress(@PathVariable("customer_id") String customerId,
                                               @RequestBody ShippingAddressRequest request) {
@@ -85,7 +81,6 @@ public class CustomerResourceV1 {
                         this.createCustomer(customerId).createAddress(null)));
     }
 
-    @Operation(summary = "更新顾客的收货地址对象")
     @PatchMapping("/customers/{customer_id}/addresses/{address_id}")
     public void updateCustomerAddress(@PathVariable("customer_id") String customerId,
                                       @PathVariable("address_id") String addressId,
@@ -95,27 +90,23 @@ public class CustomerResourceV1 {
                         this.createCustomer(customerId).createAddress(addressId)));
     }
 
-    @Operation(summary = "删除顾客的收货地址对象")
     @DeleteMapping("/customers/{customer_id}/addresses/{address_id}")
     public void removeCustomerAddress(@PathVariable("customer_id") String id,
                                       @PathVariable("address_id") String addressId) {
         this.customerService.removeCustomerAddress(id, addressId);
     }
 
-    @Operation(summary = "获得顾客的收货地址对象集合")
     @GetMapping("/customers/{customer_id}/addresses")
     public List<CustomerAddress> getCustomerAddresses(@PathVariable("customer_id") String id) {
         return this.customerService.getCustomerAddresses(id);
     }
 
-    @Operation(summary = "根据标识获得顾客的收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/{address_id}")
     public Optional<CustomerAddress> findCustomerAddress(@PathVariable("customer_id") String customerId,
                                                          @PathVariable("address_id") String addressId) {
         return this.customerService.findCustomerAddress(customerId, addressId);
     }
 
-    @Operation(summary = "根据标识获得顾客的默认收货地址对象")
     @GetMapping("/customers/{customer_id}/addresses/default")
     public Optional<CustomerAddress> findDefaultCustomerAddress(@PathVariable("customer_id") String id) {
         return this.customerService.findDefaultCustomerAddress(id);
