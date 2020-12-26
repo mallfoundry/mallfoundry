@@ -19,6 +19,7 @@
 package org.mallfoundry.rest.catalog;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.CategoryService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Categories")
 @RestController
 @RequestMapping("/v1")
 public class CategoryResourceV1 {

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.storage;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Tag(name = "Blobs")
 @RestController
 @RequestMapping("/v1")
 public class StorageResourceV1 {

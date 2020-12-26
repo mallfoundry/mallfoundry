@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.browsing;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.browsing.BrowsingProduct;
 import org.mallfoundry.browsing.BrowsingProductService;
 import org.mallfoundry.data.SliceList;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 
+@Tag(name = "Customer Browsing")
 @RestController
 @RequestMapping("/v1")
 public class BrowsingProductResourceV1 {

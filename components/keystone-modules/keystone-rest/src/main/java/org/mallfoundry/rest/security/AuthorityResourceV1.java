@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.security;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.security.AuthorityDescription;
 import org.mallfoundry.security.AuthorityService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Authorities")
 @RestController
 @RequestMapping("/v1")
 public class AuthorityResourceV1 {

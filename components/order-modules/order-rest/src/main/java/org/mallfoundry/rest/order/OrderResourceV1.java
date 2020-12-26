@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.order;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
@@ -51,6 +52,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Tag(name = "Orders")
 @RestController
 @RequestMapping("/v1")
 public class OrderResourceV1 {

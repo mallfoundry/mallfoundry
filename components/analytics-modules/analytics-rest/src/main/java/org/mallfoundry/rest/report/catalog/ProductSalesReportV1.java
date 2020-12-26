@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.report.catalog;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.report.catalog.ProductSale;
 import org.mallfoundry.report.catalog.ProductSalesReport;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Product Reports")
 @RestController
 @RequestMapping("/v1/reports")
 public class ProductSalesReportV1 {

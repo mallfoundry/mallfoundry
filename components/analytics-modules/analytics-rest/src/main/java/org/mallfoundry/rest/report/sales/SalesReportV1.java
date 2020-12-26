@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.report.sales;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.report.sales.DailySale;
 import org.mallfoundry.report.sales.MonthlySale;
 import org.mallfoundry.report.sales.SalesReport;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Sales Reports")
 @RestController
 @RequestMapping("/v1/reports")
 public class SalesReportV1 {

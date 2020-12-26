@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.store;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Stores")
 @RestController
 @RequestMapping("/v1")
 public class StoreResourceV1 {

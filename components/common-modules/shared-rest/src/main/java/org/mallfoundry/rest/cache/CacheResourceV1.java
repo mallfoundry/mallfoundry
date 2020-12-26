@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.cache;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
+@Tag(name = "Caches")
 @RestController
 @RequestMapping("/v1")
 public class CacheResourceV1 {

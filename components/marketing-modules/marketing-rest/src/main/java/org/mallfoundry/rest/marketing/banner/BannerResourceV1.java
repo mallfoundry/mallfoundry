@@ -19,6 +19,7 @@
 package org.mallfoundry.rest.marketing.banner;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.marketing.banner.Banner;
 import org.mallfoundry.marketing.banner.BannerDateType;
@@ -38,6 +39,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Tag(name = "Banners")
 @RestController
 @RequestMapping("/v1")
 public class BannerResourceV1 {

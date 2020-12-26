@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.store.member;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.member.Member;
 import org.mallfoundry.store.member.MemberService;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Tag(name = "Store Members")
 @RestController
 @RequestMapping("/v1")
 public class MemberResourceV1 {

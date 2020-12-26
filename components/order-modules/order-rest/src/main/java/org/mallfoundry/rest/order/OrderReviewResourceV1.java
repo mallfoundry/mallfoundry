@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.order;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.order.OrderReview;
 import org.mallfoundry.order.review.OrderReviewService;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Order Reviews")
 @RestController
 @RequestMapping("/v1")
 public class OrderReviewResourceV1 {

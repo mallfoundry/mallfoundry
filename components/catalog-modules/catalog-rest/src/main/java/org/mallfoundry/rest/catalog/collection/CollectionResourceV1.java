@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.catalog.collection;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.catalog.collection.ProductCollection;
 import org.mallfoundry.catalog.collection.ProductCollectionService;
 import org.springframework.util.Assert;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Product Collections")
 @RestController
 @RequestMapping("/v1")
 public class CollectionResourceV1 {

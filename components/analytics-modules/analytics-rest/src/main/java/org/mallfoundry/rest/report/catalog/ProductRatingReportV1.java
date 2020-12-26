@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.report.catalog;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.report.catalog.ProductRatingReport;
 import org.mallfoundry.report.catalog.TotalProductRatingCounts;
 import org.mallfoundry.report.catalog.TotalProductRatings;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Product Reports")
 @RestController
 @RequestMapping("/v1/reports")
 public class ProductRatingReportV1 {

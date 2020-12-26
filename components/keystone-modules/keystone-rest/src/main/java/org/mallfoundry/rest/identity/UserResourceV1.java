@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.identity;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.identity.UserSearch;
 import org.mallfoundry.identity.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Users")
 @RequestMapping("/v1")
 @RestController
 public class UserResourceV1 {

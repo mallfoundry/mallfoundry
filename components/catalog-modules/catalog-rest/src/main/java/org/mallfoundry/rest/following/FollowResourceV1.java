@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.following;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.following.FollowingProduct;
 import org.mallfoundry.following.FollowingProductService;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Customer Follow")
 @RestController
 @RequestMapping("/v1")
 public class FollowResourceV1 {

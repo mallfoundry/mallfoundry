@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.catalog.product;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductService;
@@ -41,6 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Tag(name = "Products")
 @RestController
 @RequestMapping("/v1")
 public class ProductResourceV1 {

@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.store.security;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleService;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Store Roles")
 @RestController
 @RequestMapping("/v1")
 public class RoleResourceV1 {

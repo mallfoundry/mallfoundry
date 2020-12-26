@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.shipping;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.shipping.rate.Rate;
 import org.mallfoundry.shipping.rate.RateService;
 import org.springframework.util.Assert;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Rates")
 @RestController
 @RequestMapping("/v1")
 public class RateResourceV1 {

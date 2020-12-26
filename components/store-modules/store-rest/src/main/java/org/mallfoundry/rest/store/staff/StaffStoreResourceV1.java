@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.store.staff;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.staff.StaffStore;
 import org.mallfoundry.store.staff.StaffStoreService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+@Tag(name = "Store Staffs")
 @RestController
 @RequestMapping("/v1")
 public class StaffStoreResourceV1 {
@@ -46,5 +48,4 @@ public class StaffStoreResourceV1 {
                 this.staffStoreService.createStaffStoreQuery()
                         .toBuilder().page(page).limit(limit).staffIds(staffIds).build());
     }
-
 }

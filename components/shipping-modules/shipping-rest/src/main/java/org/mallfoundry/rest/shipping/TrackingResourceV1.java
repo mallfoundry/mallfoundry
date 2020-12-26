@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.shipping;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.shipping.CarrierCode;
 import org.mallfoundry.shipping.tracking.Track;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Tracking")
 @RequestMapping("/v1")
 @RestController
 public class TrackingResourceV1 {
@@ -39,7 +41,7 @@ public class TrackingResourceV1 {
 
     @GetMapping("/carriers/{carrier_code}/tracks/{tracking_number}")
     public Track getTrack(@PathVariable("carrier_code") String carrierCode,
-                            @PathVariable("tracking_number") String trackingNumber) {
+                          @PathVariable("tracking_number") String trackingNumber) {
         return this.trackService.getTrack(CarrierCode.valueOf(StringUtils.upperCase(carrierCode)), trackingNumber);
     }
 }

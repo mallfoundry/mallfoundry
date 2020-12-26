@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.checkout;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.checkout.Checkout;
 import org.mallfoundry.checkout.CheckoutService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Tag(name = "Checkouts")
 @RequestMapping("/v1")
 @RestController
 public class CheckoutResourceV1 {

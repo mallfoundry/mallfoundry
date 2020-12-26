@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.cart;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.cart.CartService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Tag(name = "Carts")
 @RestController
 @RequestMapping("/v1")
 public class CartResourceV1 {

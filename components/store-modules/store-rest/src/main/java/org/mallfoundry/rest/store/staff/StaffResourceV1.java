@@ -18,6 +18,7 @@
 
 package org.mallfoundry.rest.store.staff;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.Staff;
@@ -37,6 +38,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Tag(name = "Store Staffs")
 @RestController
 @RequestMapping("/v1")
 public class StaffResourceV1 {
