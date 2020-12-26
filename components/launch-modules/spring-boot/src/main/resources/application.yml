@@ -44,6 +44,6 @@ springdoc:
     enabled: true
     path: /v1/api-docs
   swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    display-request-duration: true
+    enabled: false
+  cache:
+    disabled: true
