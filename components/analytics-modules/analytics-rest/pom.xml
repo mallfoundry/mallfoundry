@@ -33,13 +33,12 @@
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-analytics-api</artifactId>
+            <artifactId>mall-commons-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <scope>provided</scope>
+            <groupId>org.mallfoundry</groupId>
+            <artifactId>mall-analytics-api</artifactId>
         </dependency>
 
         <dependency>

@@ -31,15 +31,14 @@
     <artifactId>mall-marketing-rest</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-marketing-api</artifactId>
+            <artifactId>mall-commons-rest</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-commons</artifactId>
+            <artifactId>mall-marketing-api</artifactId>
         </dependency>
 
         <dependency>
