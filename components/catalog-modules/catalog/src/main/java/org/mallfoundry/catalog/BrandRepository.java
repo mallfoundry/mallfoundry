@@ -20,11 +20,15 @@ package org.mallfoundry.catalog;
 
 import org.mallfoundry.data.SliceList;
 
+import java.util.Optional;
+
 public interface BrandRepository {
 
-    <S extends InternalBrand> S save(S entity);
+    Brand save(Brand brand);
 
-    boolean existsById(String s);
+    boolean existsById(String brandId);
 
-    SliceList<InternalBrand> findAll(BrandQuery query);
+    Optional<Brand> findById(String id);
+
+    SliceList<Brand> findAll(BrandQuery query);
 }
