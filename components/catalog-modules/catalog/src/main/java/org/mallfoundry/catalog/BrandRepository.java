@@ -31,4 +31,6 @@ public interface BrandRepository {
     Optional<Brand> findById(String id);
 
     SliceList<Brand> findAll(BrandQuery query);
+
+    void delete(Brand brand);
 }
