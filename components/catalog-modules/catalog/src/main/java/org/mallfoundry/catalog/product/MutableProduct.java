@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.inventory.InventoryStatus;
 
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ public interface MutableProduct extends Product {
 
     void setPrice(BigDecimal price);
 
-    void setOptions(List<ProductOption> options);
+    void setOptions(List<Option> options);
 
     void setVariants(List<ProductVariant> variants);
 

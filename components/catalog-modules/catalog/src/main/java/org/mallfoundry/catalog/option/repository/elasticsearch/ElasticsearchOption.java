@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product.repository.elasticsearch;
+package org.mallfoundry.catalog.option.repository.elasticsearch;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.ProductOption;
-import org.mallfoundry.catalog.product.ProductOptionSupport;
-import org.mallfoundry.catalog.product.ProductOptionValue;
+import org.mallfoundry.catalog.option.Option;
+import org.mallfoundry.catalog.option.OptionSupport;
+import org.mallfoundry.catalog.option.OptionValue;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -33,25 +33,25 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ElasticsearchProductOption extends ProductOptionSupport {
+public class ElasticsearchOption extends OptionSupport {
 
     private String id;
 
     private String name;
 
-    private List<ProductOptionValue> values = new ArrayList<>();
+    private List<OptionValue> values = new ArrayList<>();
 
     private int position;
 
-    public ElasticsearchProductOption(String id) {
+    public ElasticsearchOption(String id) {
         super(id);
     }
 
-    public static ElasticsearchProductOption of(ProductOption option) {
-        if (option instanceof ElasticsearchProductOption) {
-            return (ElasticsearchProductOption) option;
+    public static ElasticsearchOption of(Option option) {
+        if (option instanceof ElasticsearchOption) {
+            return (ElasticsearchOption) option;
         }
-        var target = new ElasticsearchProductOption();
+        var target = new ElasticsearchOption();
         BeanUtils.copyProperties(option, target);
         return target;
     }
@@ -61,10 +61,10 @@ public class ElasticsearchProductOption extends ProductOptionSupport {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof ElasticsearchProductOption)) {
+        if (!(object instanceof ElasticsearchOption)) {
             return false;
         }
-        ElasticsearchProductOption that = (ElasticsearchProductOption) object;
+        ElasticsearchOption that = (ElasticsearchOption) object;
         return Objects.equals(id, that.id);
     }
 

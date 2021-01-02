@@ -25,6 +25,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.mallfoundry.catalog.DefaultOptionSelection;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.OptionSelections;
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.mallfoundry.util.Positions;
 import org.springframework.util.Assert;
@@ -169,19 +170,19 @@ public abstract class ProductSupport implements MutableProduct {
         this.checkInventory();
     }
 
-    private Optional<ProductOption> obtainOption(String id) {
+    private Optional<Option> obtainOption(String id) {
         return this.getOptions().stream()
                 .filter(option -> Objects.equals(option.getId(), id))
                 .findFirst();
     }
 
-    private void setOption(ProductOption source, ProductOption target) {
+    private void setOption(Option source, Option target) {
         target.setName(target.getName());
         target.addValues(source.getValues());
     }
 
     @Override
-    public void addOption(ProductOption option) {
+    public void addOption(Option option) {
         if (Objects.isNull(option.getId())) {
             this.getOptions().add(option);
         } else {
@@ -192,7 +193,7 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public Optional<ProductOption> getOption(String name) {
+    public Optional<Option> getOption(String name) {
         return this.getOptions().stream().filter(option -> Objects.equals(option.getName(), name)).findFirst();
     }
 
@@ -204,7 +205,7 @@ public abstract class ProductSupport implements MutableProduct {
     }
 
     @Override
-    public void updateOptions(List<ProductOption> options) {
+    public void updateOptions(List<Option> options) {
         this.getOptions().clear();
         ListUtils.emptyIfNull(options).forEach(this::addOption);
     }
@@ -436,24 +437,24 @@ public abstract class ProductSupport implements MutableProduct {
         }
 
         @Override
-        public Builder option(ProductOption option) {
+        public Builder option(Option option) {
             this.product.addOption(option);
             return this;
         }
 
         @Override
-        public Builder option(Function<Product, ProductOption> option) {
+        public Builder option(Function<Product, Option> option) {
             return this.option(option.apply(this.product));
         }
 
         @Override
-        public Builder options(List<ProductOption> options) {
+        public Builder options(List<Option> options) {
             this.product.updateOptions(options);
             return this;
         }
 
         @Override
-        public Builder options(Function<Product, List<ProductOption>> options) {
+        public Builder options(Function<Product, List<Option>> options) {
             return this.options(options.apply(this.product));
         }
 

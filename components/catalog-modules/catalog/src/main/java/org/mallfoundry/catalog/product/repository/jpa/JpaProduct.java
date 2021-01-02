@@ -22,10 +22,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.catalog.option.Option;
+import org.mallfoundry.catalog.option.repository.jpa.JpaOption;
 import org.mallfoundry.catalog.product.DefaultProductAttribute;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
@@ -133,11 +134,11 @@ public class JpaProduct extends ProductSupport {
 
     @NotEmpty
     @Valid
-    @OneToMany(targetEntity = JpaProductOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = JpaOption.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id_")
     @OrderBy("position")
-    @JsonDeserialize(contentAs = JpaProductOption.class)
-    private List<ProductOption> options = new ArrayList<>();
+    @JsonDeserialize(contentAs = JpaOption.class)
+    private List<Option> options = new ArrayList<>();
 
     @Column(name = "attributes_", length = 2048)
     @Convert(converter = ProductAttributeListConverter.class)
@@ -209,8 +210,8 @@ public class JpaProduct extends ProductSupport {
     }
 
     @Override
-    public ProductOption createOption(String id) {
-        return new JpaProductOption(id);
+    public Option createOption(String id) {
+        return new JpaOption(id);
     }
 
     @Override

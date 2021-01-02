@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog.product;
 
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -73,7 +74,7 @@ public class ProductIdentityProcessor implements ProductProcessor {
         setProductVariants(product);
     }
 
-    private void setProductOptions(List<ProductOption> options) {
+    private void setProductOptions(List<Option> options) {
         options.stream()
                 .peek(option -> {
                     if (Objects.isNull(option.getId())) {

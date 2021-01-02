@@ -20,10 +20,11 @@ package org.mallfoundry.catalog.product.repository.elasticsearch;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.catalog.option.Option;
+import org.mallfoundry.catalog.option.repository.elasticsearch.ElasticsearchOption;
 import org.mallfoundry.catalog.product.DefaultProductOrigin;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductSupport;
@@ -98,7 +99,7 @@ public class ElasticsearchProduct extends ProductSupport {
     @Field(type = FieldType.Keyword)
     private InventoryStatus inventoryStatus;
 
-    private List<ElasticsearchProductOption> options = new ArrayList<>();
+    private List<ElasticsearchOption> options = new ArrayList<>();
 
     @Field(type = FieldType.Nested)
     private List<ElasticsearchProductAttribute> attributes = new ArrayList<>();
@@ -138,7 +139,7 @@ public class ElasticsearchProduct extends ProductSupport {
         }
         var target = new ElasticsearchProduct(product.getId());
         BeanUtils.copyProperties(product, target, "options", "attributes", "variants");
-        var options = product.getOptions().stream().map(ElasticsearchProductOption::of).collect(Collectors.toList());
+        var options = product.getOptions().stream().map(ElasticsearchOption::of).collect(Collectors.toList());
         target.setOptions(CastUtils.cast(options));
         var attributes = product.getAttributes().stream().map(ElasticsearchProductAttribute::of).collect(Collectors.toList());
         target.setAttributes(CastUtils.cast(attributes));
@@ -160,9 +161,9 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
-    public void setOptions(List<ProductOption> options) {
-        this.options = Objects.requireNonNullElseGet(options, (Supplier<List<ProductOption>>) ArrayList::new)
-                .stream().map(ElasticsearchProductOption::of).collect(Collectors.toList());
+    public void setOptions(List<Option> options) {
+        this.options = Objects.requireNonNullElseGet(options, (Supplier<List<Option>>) ArrayList::new)
+                .stream().map(ElasticsearchOption::of).collect(Collectors.toList());
     }
 
     @Override
@@ -188,8 +189,8 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
-    public ProductOption createOption(String id) {
-        return new ElasticsearchProductOption(id);
+    public Option createOption(String id) {
+        return new ElasticsearchOption(id);
     }
 
     @Override
@@ -213,7 +214,7 @@ public class ElasticsearchProduct extends ProductSupport {
     }
 
     @Override
-    public List<ProductOption> getOptions() {
+    public List<Option> getOptions() {
         return CastUtils.cast(options);
     }
 
