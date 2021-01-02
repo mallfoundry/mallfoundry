@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.option;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DefaultProductOptionValue implements ProductOptionValue {
+public class DefaultOptionValue implements OptionValue {
 
     @NotBlank
     private String id;
@@ -38,7 +38,7 @@ public class DefaultProductOptionValue implements ProductOptionValue {
 
     private int position;
 
-    public DefaultProductOptionValue(String id) {
+    public DefaultOptionValue(String id) {
         this.id = id;
     }
 
@@ -47,10 +47,10 @@ public class DefaultProductOptionValue implements ProductOptionValue {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof DefaultProductOptionValue)) {
+        if (!(object instanceof DefaultOptionValue)) {
             return false;
         }
-        DefaultProductOptionValue that = (DefaultProductOptionValue) object;
+        DefaultOptionValue that = (DefaultOptionValue) object;
         return Objects.equals(id, that.id);
     }
 

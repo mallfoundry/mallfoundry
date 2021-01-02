@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.option;
+
+import org.mallfoundry.catalog.option.Option;
+import org.mallfoundry.catalog.option.OptionValue;
 
 import java.util.List;
 
-public interface MutableProductOption extends ProductOption {
-
-    void setValues(List<ProductOptionValue> values);
+public interface MutableOption extends Option {
+    void setValues(List<OptionValue> values);
 }

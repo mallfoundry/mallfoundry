@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.option;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,39 +34,39 @@ import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class ProductOptionSupport implements MutableProductOption {
+public abstract class OptionSupport implements MutableOption {
 
-    public ProductOptionSupport(String id) {
+    public OptionSupport(String id) {
         this.setId(id);
     }
 
     @Override
-    public ProductOptionValue createValue(String valueId) {
-        return new DefaultProductOptionValue(valueId);
+    public OptionValue createValue(String valueId) {
+        return new DefaultOptionValue(valueId);
     }
 
     @Override
-    public ProductOptionValue getValue(String label) {
+    public OptionValue getValue(String label) {
         return this.findValue(label).orElseThrow();
     }
 
     @Override
-    public Optional<ProductOptionValue> findValue(String label) {
+    public Optional<OptionValue> findValue(String label) {
         return this.getValues().stream().filter(value -> Objects.equals(value.getLabel(), label)).findFirst();
     }
 
-    private Optional<ProductOptionValue> obtainValue(String id) {
+    private Optional<OptionValue> obtainValue(String id) {
         return this.getValues().stream()
                 .filter(value -> Objects.equals(value.getId(), id))
                 .findFirst();
     }
 
-    private void setValue(ProductOptionValue source, ProductOptionValue target) {
+    private void setValue(OptionValue source, OptionValue target) {
         target.setLabel(source.getLabel());
     }
 
     @Override
-    public void addValue(ProductOptionValue value) {
+    public void addValue(OptionValue value) {
         if (Objects.isNull(value.getId())) {
             this.getValues().add(value);
         } else {
@@ -77,17 +77,17 @@ public abstract class ProductOptionSupport implements MutableProductOption {
     }
 
     @Override
-    public void addValues(List<ProductOptionValue> values) {
+    public void addValues(List<OptionValue> values) {
         emptyIfNull(values).forEach(this::addValue);
     }
 
     @Override
-    public void removeValue(ProductOptionValue value) {
+    public void removeValue(OptionValue value) {
         this.getValues().remove(value);
     }
 
     @Override
-    public void removeValues(List<ProductOptionValue> values) {
+    public void removeValues(List<OptionValue> values) {
         emptyIfNull(values).forEach(this::removeValue);
     }
 
@@ -104,9 +104,9 @@ public abstract class ProductOptionSupport implements MutableProductOption {
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final ProductOption option;
+        private final Option option;
 
-        protected BuilderSupport(ProductOption option) {
+        protected BuilderSupport(Option option) {
             this.option = option;
         }
 
@@ -123,34 +123,34 @@ public abstract class ProductOptionSupport implements MutableProductOption {
         }
 
         @Override
-        public Builder value(ProductOptionValue value) {
+        public Builder value(OptionValue value) {
             this.option.addValue(value);
             return this;
         }
 
         @Override
-        public Builder value(Function<ProductOption, ProductOptionValue> values) {
+        public Builder value(Function<Option, OptionValue> values) {
             return this.value(values.apply(this.option));
         }
 
         @Override
-        public Builder values(List<ProductOptionValue> values) {
+        public Builder values(List<OptionValue> values) {
             this.option.addValues(values);
             return this;
         }
 
         @Override
-        public Builder values(ProductOptionValue... values) {
+        public Builder values(OptionValue... values) {
             return this.values(List.of(values));
         }
 
         @Override
-        public Builder values(Function<ProductOption, List<ProductOptionValue>> values) {
+        public Builder values(Function<Option, List<OptionValue>> values) {
             return this.values(values.apply(this.option));
         }
 
         @Override
-        public Builder values(Supplier<List<ProductOptionValue>> supplier) {
+        public Builder values(Supplier<List<OptionValue>> supplier) {
             return this.values(supplier.get());
         }
 
@@ -161,7 +161,7 @@ public abstract class ProductOptionSupport implements MutableProductOption {
         }
 
         @Override
-        public ProductOption build() {
+        public Option build() {
             return this.option;
         }
     }
