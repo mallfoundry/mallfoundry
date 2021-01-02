@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.option;
 
 import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
 
 import java.io.Serializable;
 
-public interface ProductOptionValue extends Serializable, Position {
+public interface OptionValue extends Serializable, Position {
 
     String getId();
 
@@ -38,15 +38,15 @@ public interface ProductOptionValue extends Serializable, Position {
         };
     }
 
-    interface Builder extends ObjectBuilder<ProductOptionValue> {
+    interface Builder extends ObjectBuilder<OptionValue> {
         Builder label(String label);
     }
 
     abstract class BuilderSupport implements Builder {
 
-        private final ProductOptionValue value;
+        private final OptionValue value;
 
-        protected BuilderSupport(ProductOptionValue value) {
+        protected BuilderSupport(OptionValue value) {
             this.value = value;
         }
 
@@ -57,7 +57,7 @@ public interface ProductOptionValue extends Serializable, Position {
         }
 
         @Override
-        public ProductOptionValue build() {
+        public OptionValue build() {
             return this.value;
         }
     }
