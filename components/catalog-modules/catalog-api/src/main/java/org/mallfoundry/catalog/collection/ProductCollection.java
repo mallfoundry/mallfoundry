@@ -31,8 +31,6 @@ public interface ProductCollection extends StoreOwnership, Position, ObjectBuild
 
     void setId(String id);
 
-    void setStoreId(String storeId);
-
     String getName();
 
     void setName(String name);
