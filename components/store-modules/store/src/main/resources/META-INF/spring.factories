@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.mallfoundry.autoconfigure.catalog.ProductAutoConfiguration
+  org.mallfoundry.autoconfigure.store.StoreAutoConfiguration
 
