@@ -28,7 +28,7 @@ public interface ProductCollectionService {
 
     ProductCollection addCollection(ProductCollection collection);
 
-    Optional<ProductCollection> findCollection(String id);
+    ProductCollection getCollection(String id);
 
     List<ProductCollection> getCollections(String storeId);
 
