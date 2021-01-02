@@ -19,7 +19,6 @@
 package org.mallfoundry.catalog;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Tang Zhi
@@ -31,15 +30,15 @@ public interface CategoryService {
 
     CategoryQuery createCategoryQuery();
 
-    Optional<Category> getCategory(String id);
+    Category addCategory(Category category);
+
+    Category addCategory(String id, Category category);
+
+    Category getCategory(String id);
 
     List<Category> getCategories(CategoryQuery query);
 
-    Category addCategory(Category category);
-
     Category updateCategory(Category category);
-
-    Category addCategory(String id, Category category);
 
     void deleteCategory(String categoryId);
 }
