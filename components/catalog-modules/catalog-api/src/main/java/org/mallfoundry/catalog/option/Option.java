@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.product;
+package org.mallfoundry.catalog.option;
 
 import org.mallfoundry.util.ObjectBuilder;
 import org.mallfoundry.util.Position;
@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface ProductOption extends Serializable, Position, ObjectBuilder.ToBuilder<ProductOption.Builder> {
+public interface Option extends Serializable, Position, ObjectBuilder.ToBuilder<Option.Builder> {
 
     String getId();
 
@@ -38,40 +38,40 @@ public interface ProductOption extends Serializable, Position, ObjectBuilder.ToB
 
     void setName(String name);
 
-    ProductOptionValue createValue(String valueId);
+    OptionValue createValue(String valueId);
 
-    ProductOptionValue getValue(String label);
+    OptionValue getValue(String label);
 
-    Optional<ProductOptionValue> findValue(String label);
+    Optional<OptionValue> findValue(String label);
 
-    List<ProductOptionValue> getValues();
+    List<OptionValue> getValues();
 
-    void addValue(ProductOptionValue value);
+    void addValue(OptionValue value);
 
-    void addValues(List<ProductOptionValue> values);
+    void addValues(List<OptionValue> values);
 
-    void removeValue(ProductOptionValue value);
+    void removeValue(OptionValue value);
 
-    void removeValues(List<ProductOptionValue> values);
+    void removeValues(List<OptionValue> values);
 
     void clearValues();
 
-    interface Builder extends ObjectBuilder<ProductOption>, PositionBuilder<Builder> {
+    interface Builder extends ObjectBuilder<Option>, PositionBuilder<Builder> {
 
         Builder id(String id);
 
         Builder name(String name);
 
-        Builder value(ProductOptionValue value);
+        Builder value(OptionValue value);
 
-        Builder value(Function<ProductOption, ProductOptionValue> value);
+        Builder value(Function<Option, OptionValue> value);
 
-        Builder values(List<ProductOptionValue> values);
+        Builder values(List<OptionValue> values);
 
-        Builder values(ProductOptionValue... values);
+        Builder values(OptionValue... values);
 
-        Builder values(Function<ProductOption, List<ProductOptionValue>> function);
+        Builder values(Function<Option, List<OptionValue>> function);
 
-        Builder values(Supplier<List<ProductOptionValue>> supplier);
+        Builder values(Supplier<List<OptionValue>> supplier);
     }
 }
