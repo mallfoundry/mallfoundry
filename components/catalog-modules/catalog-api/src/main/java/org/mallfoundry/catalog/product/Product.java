@@ -19,6 +19,7 @@
 package org.mallfoundry.catalog.product;
 
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.inventory.InventoryStatus;
 import org.mallfoundry.store.StoreOwnership;
 import org.mallfoundry.util.ObjectBuilder;
@@ -163,17 +164,17 @@ public interface Product extends ProductBody, StoreOwnership {
 
     void clearVariants();
 
-    ProductOption createOption(String id);
+    Option createOption(String id);
 
-    void addOption(ProductOption option);
+    void addOption(Option option);
 
-    List<ProductOption> getOptions();
+    List<Option> getOptions();
 
-    Optional<ProductOption> getOption(String name);
+    Optional<Option> getOption(String name);
 
     Optional<OptionSelection> selectOption(String name, String label);
 
-    void updateOptions(List<ProductOption> options);
+    void updateOptions(List<Option> options);
 
     ProductAttribute createAttribute();
 
@@ -262,13 +263,13 @@ public interface Product extends ProductBody, StoreOwnership {
 
         Builder videoUrls(List<String> videos);
 
-        Builder option(ProductOption option);
+        Builder option(Option option);
 
-        Builder option(Function<Product, ProductOption> function);
+        Builder option(Function<Product, Option> function);
 
-        Builder options(List<ProductOption> options);
+        Builder options(List<Option> options);
 
-        Builder options(Function<Product, List<ProductOption>> function);
+        Builder options(Function<Product, List<Option>> function);
 
         Builder variant(ProductVariant variant);
 

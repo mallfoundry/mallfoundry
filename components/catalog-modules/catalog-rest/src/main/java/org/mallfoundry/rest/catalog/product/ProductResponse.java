@@ -18,9 +18,9 @@
 
 package org.mallfoundry.rest.catalog.product;
 
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
@@ -160,7 +160,7 @@ public class ProductResponse implements ImmutableProductResponse {
     }
 
     @Override
-    public List<ProductOption> getOptions() {
+    public List<Option> getOptions() {
         return null;
     }
 

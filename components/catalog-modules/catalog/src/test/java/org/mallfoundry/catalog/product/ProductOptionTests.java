@@ -19,7 +19,8 @@
 package org.mallfoundry.catalog.product;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.catalog.product.repository.jpa.JpaProductOption;
+import org.mallfoundry.catalog.option.Option;
+import org.mallfoundry.catalog.option.repository.jpa.JpaOption;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,17 +29,17 @@ public class ProductOptionTests {
 
     @Test
     public void testSubtract() {
-        var o1 = new JpaProductOption().toBuilder().id("i1").name("n1").build();
-        var o2 = new JpaProductOption().toBuilder().id("i2").name("n2").build();
-        var o3 = new JpaProductOption().toBuilder().id("i3").name("n3").build();
+        var o1 = new JpaOption().toBuilder().id("i1").name("n1").build();
+        var o2 = new JpaOption().toBuilder().id("i2").name("n2").build();
+        var o3 = new JpaOption().toBuilder().id("i3").name("n3").build();
 
         var opts1 = List.of(o1, o2, o3);
 
-        var s1 = new JpaProductOption().toBuilder().name("n1").build();
-        var s2 = new JpaProductOption().toBuilder().name("n2").build();
+        var s1 = new JpaOption().toBuilder().name("n1").build();
+        var s2 = new JpaOption().toBuilder().name("n2").build();
         var opts2 = List.of(s1, s2);
 
-        var names = opts2.stream().map(ProductOption::getName).collect(Collectors.toUnmodifiableSet());
+        var names = opts2.stream().map(Option::getName).collect(Collectors.toUnmodifiableSet());
         var removedOpts = opts1.stream().filter(option -> !names.contains(option.getName())).collect(Collectors.toUnmodifiableSet());
 
     }

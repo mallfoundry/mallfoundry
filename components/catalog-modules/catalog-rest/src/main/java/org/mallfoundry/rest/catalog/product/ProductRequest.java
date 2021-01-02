@@ -23,9 +23,10 @@ import lombok.Setter;
 import org.mallfoundry.catalog.OptionSelection;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
-import org.mallfoundry.catalog.product.ProductOption;
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductVariant;
+import org.mallfoundry.rest.catalog.option.OptionRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ProductRequest {
     private String shippingRateId;
     private ProductOriginRequest origin;
     private List<ProductAttributeRequest> attributes;
-    private List<ProductOptionRequest> options;
+    private List<OptionRequest> options;
     private List<ProductVariantRequest> variants;
     private String body;
 
@@ -64,7 +65,7 @@ public class ProductRequest {
                         .collect(Collectors.toList());
     }
 
-    private List<ProductOption> createOptions(Product product) {
+    private List<Option> createOptions(Product product) {
         return Objects.isNull(this.options) ? null
                 : this.options.stream()
                         .map(request -> request.assignTo(product.createOption(request.getId())))

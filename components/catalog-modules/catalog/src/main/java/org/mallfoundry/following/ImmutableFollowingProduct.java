@@ -19,9 +19,9 @@
 package org.mallfoundry.following;
 
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductException;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
@@ -95,7 +95,7 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default void updateOptions(List<ProductOption> options) {
+    default void updateOptions(List<Option> options) {
 
     }
 
@@ -160,12 +160,12 @@ public interface ImmutableFollowingProduct extends FollowingProduct {
     }
 
     @Override
-    default ProductOption createOption(String id) {
+    default Option createOption(String id) {
         return null;
     }
 
     @Override
-    default void addOption(ProductOption option) {
+    default void addOption(Option option) {
 
     }
 

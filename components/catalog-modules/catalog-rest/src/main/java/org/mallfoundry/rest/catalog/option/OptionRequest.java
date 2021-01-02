@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,19 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.rest.catalog.product;
+package org.mallfoundry.rest.catalog.option;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.catalog.product.ProductOptionValue;
+import org.mallfoundry.catalog.option.Option;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class ProductOptionValueRequest {
+public class OptionRequest {
     private String id;
-    private String label;
+    private String name;
+    private List<OptionValueRequest> values;
 
-    public ProductOptionValue assignTo(ProductOptionValue value) {
-        return value.toBuilder().label(this.label).build();
+    public Option assignTo(Option option) {
+        return option.toBuilder()
+                .name(this.name)
+                .values(() -> this.values.stream()
+                        .map(request -> request.assignTo(option.createValue(request.getId())))
+                        .collect(Collectors.toUnmodifiableList()))
+                .build();
     }
 }

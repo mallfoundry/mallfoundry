@@ -18,8 +18,8 @@
 
 package org.mallfoundry.following;
 
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.catalog.product.ProductAttribute;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
@@ -162,12 +162,12 @@ public class NullFollowingProduct implements ImmutableFollowingProduct {
     }
 
     @Override
-    public List<ProductOption> getOptions() {
+    public List<Option> getOptions() {
         return Collections.emptyList();
     }
 
     @Override
-    public Optional<ProductOption> getOption(String name) {
+    public Optional<Option> getOption(String name) {
         return Optional.empty();
     }
 

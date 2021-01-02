@@ -19,10 +19,10 @@
 package org.mallfoundry.rest.catalog.product;
 
 import org.mallfoundry.catalog.OptionSelection;
+import org.mallfoundry.catalog.option.Option;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductAttribute;
 import org.mallfoundry.catalog.product.ProductException;
-import org.mallfoundry.catalog.product.ProductOption;
 import org.mallfoundry.catalog.product.ProductOrigin;
 import org.mallfoundry.catalog.product.ProductStatus;
 import org.mallfoundry.catalog.product.ProductType;
@@ -96,12 +96,12 @@ public interface ImmutableProductResponse extends Product {
     }
 
     @Override
-    default ProductOption createOption(String id) {
+    default Option createOption(String id) {
         return null;
     }
 
     @Override
-    default void addOption(ProductOption option) {
+    default void addOption(Option option) {
 
     }
 
@@ -171,7 +171,7 @@ public interface ImmutableProductResponse extends Product {
     }
 
     @Override
-    default void updateOptions(List<ProductOption> options) {
+    default void updateOptions(List<Option> options) {
 
     }
 
@@ -201,7 +201,7 @@ public interface ImmutableProductResponse extends Product {
     }
 
     @Override
-    default Optional<ProductOption> getOption(String name) {
+    default Optional<Option> getOption(String name) {
         return Optional.empty();
     }
 
