@@ -52,12 +52,12 @@ public class CollectionResourceV1 {
     }
 
     @PutMapping("/stores/{store_id}/collections/{collection_id}")
-    public void updateCollection(@PathVariable("store_id") String storeId,
-                                 @PathVariable("collection_id") String collectionId,
-                                 @RequestBody CollectionRequest request) {
+    public ProductCollection updateCollection(@PathVariable("store_id") String storeId,
+                                              @PathVariable("collection_id") String collectionId,
+                                              @RequestBody CollectionRequest request) {
         Assert.notNull(storeId, "Store id must not be null");
         Assert.notNull(collectionId, "Collection id must not be null");
-        this.collectionService.updateCollection(
+        return this.collectionService.updateCollection(
                 request.assignToCollection(
                         this.collectionService.createCollection(collectionId)));
     }
