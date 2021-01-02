@@ -18,8 +18,8 @@
 
 package org.mallfoundry.catalog;
 
-public class InternalCategoryDeletedEvent extends CategoryEventSupport {
-    public InternalCategoryDeletedEvent(Category category) {
+public class ImmutableCategoryDeletedEvent extends CategoryEventSupport {
+    public ImmutableCategoryDeletedEvent(Category category) {
         super(category);
     }
 }
