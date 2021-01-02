@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog;
+package org.mallfoundry.catalog.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.catalog.Brand;
+import org.mallfoundry.catalog.BrandSupport;
 import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.springframework.beans.BeanUtils;
 
@@ -39,7 +41,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_catalog_brand")
-public class InternalBrand implements Brand {
+public class JpaBrand extends BrandSupport {
 
     @Id
     @Column(name = "id_")
@@ -67,15 +69,15 @@ public class InternalBrand implements Brand {
     @Column(name = "position_")
     private int position;
 
-    public InternalBrand(String id) {
+    public JpaBrand(String id) {
         this.id = id;
     }
 
-    public static InternalBrand of(Brand brand) {
-        if (brand instanceof InternalBrand) {
-            return (InternalBrand) brand;
+    public static JpaBrand of(Brand brand) {
+        if (brand instanceof JpaBrand) {
+            return (JpaBrand) brand;
         }
-        var target = new InternalBrand();
+        var target = new JpaBrand();
         BeanUtils.copyProperties(brand, target);
         return target;
     }

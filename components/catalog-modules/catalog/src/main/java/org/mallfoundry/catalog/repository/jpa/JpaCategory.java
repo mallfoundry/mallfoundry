@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog;
+package org.mallfoundry.catalog.repository.jpa;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mallfoundry.catalog.Category;
+import org.mallfoundry.catalog.CategorySupport;
+import org.mallfoundry.catalog.CategoryVisibility;
 import org.mallfoundry.data.repository.jpa.convert.StringSetConverter;
 import org.springframework.beans.BeanUtils;
 
@@ -43,7 +46,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_catalog_category")
-public class InternalCategory implements Category {
+public class JpaCategory extends CategorySupport {
 
     @Id
     @Column(name = "id_")
@@ -65,7 +68,7 @@ public class InternalCategory implements Category {
     @Column(name = "parent_id_")
     private String parentId;
 
-    @OneToMany(targetEntity = InternalCategory.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = JpaCategory.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "parent_id_")
     @OrderBy("position ASC")
     private List<Category> children;
@@ -77,22 +80,22 @@ public class InternalCategory implements Category {
     @Column(name = "position_")
     private int position;
 
-    public InternalCategory(String id) {
+    public JpaCategory(String id) {
         this.id = id;
     }
 
-    public static InternalCategory of(Category category) {
-        if (category instanceof InternalCategory) {
-            return (InternalCategory) category;
+    public static JpaCategory of(Category category) {
+        if (category instanceof JpaCategory) {
+            return (JpaCategory) category;
         }
-        var target = new InternalCategory();
+        var target = new JpaCategory();
         BeanUtils.copyProperties(category, target);
         return target;
     }
 
     @Override
     public Category createCategory() {
-        return new InternalCategory();
+        return new JpaCategory();
     }
 
     @Override
@@ -123,7 +126,7 @@ public class InternalCategory implements Category {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InternalCategory category = (InternalCategory) o;
+        JpaCategory category = (JpaCategory) o;
         return Objects.equals(id, category.id);
     }
 

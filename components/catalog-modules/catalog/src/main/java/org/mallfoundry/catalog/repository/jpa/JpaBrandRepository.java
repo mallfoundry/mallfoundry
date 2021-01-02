@@ -16,37 +16,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.jpa;
+package org.mallfoundry.catalog.repository.jpa;
 
-import org.mallfoundry.catalog.CategoryQuery;
-import org.mallfoundry.catalog.CategoryRepository;
-import org.mallfoundry.catalog.InternalCategory;
-import org.springframework.data.domain.Sort;
+import org.apache.commons.collections4.CollectionUtils;
+import org.mallfoundry.catalog.BrandQuery;
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.Predicate;
-import java.util.List;
-import java.util.Objects;
 
 @Repository
-public interface JpaCategoryRepository
-        extends CategoryRepository,
-        JpaRepository<InternalCategory, String>,
-        JpaSpecificationExecutor<InternalCategory> {
+public interface JpaBrandRepository extends JpaRepository<JpaBrand, String>, JpaSpecificationExecutor<JpaBrand> {
 
-    @Override
-    default List<InternalCategory> findAll(CategoryQuery categoryQuery) {
-        return this.findAll((Specification<InternalCategory>) (root, query, criteriaBuilder) -> {
+    default SliceList<JpaBrand> findAll(BrandQuery brandQuery) {
+        Page<JpaBrand> page = this.findAll((Specification<JpaBrand>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
-            if (Objects.isNull(categoryQuery.getParentId())) {
-                predicate.getExpressions().add(criteriaBuilder.isNull(root.get("parentId")));
-            } else {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("parentId"), categoryQuery.getParentId()));
+            if (CollectionUtils.isNotEmpty(brandQuery.getCategories())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("categories")).value(brandQuery.getCategories()));
             }
             return predicate;
-        }, Sort.by(Sort.Order.asc("position")));
+        }, PageRequest.of(brandQuery.getPage() - 1, brandQuery.getLimit()));
+        return PageList.of(page.getContent())
+                .page(page.getNumber())
+                .limit(brandQuery.getLimit())
+                .totalSize(page.getTotalElements());
     }
 }
