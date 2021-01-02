@@ -55,9 +55,10 @@ public class DefaultProductCollectionService implements ProductCollectionService
         return this.collectionRepository.save(collection);
     }
 
-    public Optional<ProductCollection> findCollection(String id) {
+    public ProductCollection getCollection(String id) {
         return this.collectionRepository.findById(id)
-                .map(this::invokePostProcessAfterGetCollection);
+                .map(this::invokePostProcessAfterGetCollection)
+                .orElseThrow();
     }
 
     public List<ProductCollection> getCollections(String storeId) {
