@@ -19,13 +19,10 @@
 package org.mallfoundry.catalog;
 
 
+import org.mallfoundry.catalog.repository.jpa.JpaBrand;
 import org.mallfoundry.data.SliceList;
-import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-@Service
 public class DefaultBrandService implements BrandService {
 
     private final BrandRepository brandRepository;
@@ -36,7 +33,7 @@ public class DefaultBrandService implements BrandService {
 
     @Override
     public Brand createBrand(String id) {
-        return new InternalBrand(id);
+        return new JpaBrand(id);
     }
 
     @Override
@@ -44,31 +41,41 @@ public class DefaultBrandService implements BrandService {
         return new DefaultBrandQuery();
     }
 
+    @Transactional
     @Override
     public Brand addBrand(Brand brand) throws BrandException {
         if (this.brandRepository.existsById(brand.getId())) {
             throw new BrandException("The brand id already exists");
         }
-        return this.brandRepository.save(InternalBrand.of(brand));
+        return this.brandRepository.save(JpaBrand.of(brand));
     }
 
     @Override
-    public Optional<Brand> getBrand(String id) {
-        return Optional.empty();
+    public Brand getBrand(String id) {
+        return this.brandRepository.findById(id)
+                .orElseThrow();
+    }
+
+    private Brand requiredBrand(String id) {
+        return this.brandRepository.findById(id).orElseThrow();
     }
 
     @Override
     public SliceList<Brand> getBrands(BrandQuery query) {
-        return CastUtils.cast(this.brandRepository.findAll(query));
+        return this.brandRepository.findAll(query);
     }
 
+    @Transactional
     @Override
-    public Brand updateBrand(Brand brand) {
-        return null;
+    public Brand updateBrand(Brand source) {
+        var brand = this.requiredBrand(source.getId());
+        return this.brandRepository.save(brand);
     }
 
+    @Transactional
     @Override
     public void deleteBrand(String id) {
-
+        var brand = this.requiredBrand(id);
+        this.brandRepository.delete(brand);
     }
 }

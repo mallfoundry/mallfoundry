@@ -18,6 +18,7 @@
 
 package org.mallfoundry.catalog;
 
+import org.mallfoundry.catalog.repository.jpa.JpaCategory;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DefaultCategoryService implements CategoryService {
@@ -44,7 +44,7 @@ public class DefaultCategoryService implements CategoryService {
 
     @Override
     public Category createCategory(String id) {
-        return new InternalCategory(id);
+        return new JpaCategory(id);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public Optional<Category> getCategory(String id) {
-        return CastUtils.cast(categoryRepository.findById(id));
+    public Category getCategory(String id) {
+        return this.categoryRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -65,19 +65,19 @@ public class DefaultCategoryService implements CategoryService {
     @Override
     public Category addCategory(Category category) {
         category.setId(PrimaryKeyHolder.next(CATALOG_CATEGORY_ID_VALUE_NAME));
-        return this.categoryRepository.save(InternalCategory.of(category));
+        return this.categoryRepository.save(JpaCategory.of(category));
     }
 
     @Transactional
     @Override
     public Category updateCategory(Category category) {
-        return this.categoryRepository.save(InternalCategory.of(category));
+        return this.categoryRepository.save(JpaCategory.of(category));
     }
 
     @Transactional
     @Override
     public Category addCategory(String id, Category category) {
-        this.getCategory(id).orElseThrow().addCategory(category);
+        this.getCategory(id).addCategory(category);
         return category;
     }
 
@@ -85,7 +85,7 @@ public class DefaultCategoryService implements CategoryService {
     @Override
     public void deleteCategory(String categoryId) {
         var category = this.categoryRepository.findById(categoryId).orElseThrow();
-        this.eventPublisher.publishEvent(new InternalCategoryDeletedEvent(category));
+        this.eventPublisher.publishEvent(new ImmutableCategoryDeletedEvent(category));
         this.categoryRepository.delete(category);
     }
 
