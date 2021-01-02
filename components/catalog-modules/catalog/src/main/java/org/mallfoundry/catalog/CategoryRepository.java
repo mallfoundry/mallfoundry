@@ -23,11 +23,11 @@ import java.util.Optional;
 
 public interface CategoryRepository {
 
-    <S extends InternalCategory> S save(S category);
+    Category save(Category category);
 
-    Optional<InternalCategory> findById(String id);
+    Optional<Category> findById(String id);
 
-    List<InternalCategory> findAll(CategoryQuery query);
+    List<Category> findAll(CategoryQuery query);
 
-    void delete(InternalCategory category);
+    void delete(Category category);
 }
