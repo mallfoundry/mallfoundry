@@ -34,7 +34,7 @@ public interface BrandService {
 
     Brand addBrand(Brand brand) throws BrandException;
 
-    Optional<Brand> getBrand(String id);
+    Brand getBrand(String id);
 
     SliceList<Brand> getBrands(BrandQuery query);
 
