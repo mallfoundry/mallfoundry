@@ -22,12 +22,10 @@ import org.mallfoundry.catalog.repository.jpa.JpaCategory;
 import org.mallfoundry.keygen.PrimaryKeyHolder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.CastUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 public class DefaultCategoryService implements CategoryService {
 
     private static final String CATALOG_CATEGORY_ID_VALUE_NAME = "catalog.category.id";
