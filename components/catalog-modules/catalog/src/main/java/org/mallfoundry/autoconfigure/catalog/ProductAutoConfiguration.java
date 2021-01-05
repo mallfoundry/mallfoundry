@@ -48,7 +48,7 @@ import java.util.List;
 
 @Configuration
 @Import({
-        ProductCollectionConfiguration.class,
+        CollectionConfiguration.class,
         ProductReviewConfiguration.class,
         ProductSaleConfiguration.class
 })

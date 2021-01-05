@@ -18,7 +18,39 @@
 
 package org.mallfoundry.catalog.collection;
 
-import org.mallfoundry.store.StoreQueryBase;
+import org.mallfoundry.catalog.product.Product;
+import org.mallfoundry.store.StoreOwnership;
+import org.mallfoundry.util.ObjectBuilder;
+import org.mallfoundry.util.Position;
 
-public interface ProductCollectionQuery extends StoreQueryBase {
+import java.util.Date;
+
+public interface Collection extends StoreOwnership, Position, ObjectBuilder.ToBuilder<Collection.Builder> {
+
+    String getId();
+
+    void setId(String id);
+
+    String getName();
+
+    void setName(String name);
+
+    int getProductsCount();
+
+    void addProduct(Product product);
+
+    void removeProduct(Product product);
+
+    Date getCreatedTime();
+
+    void create();
+
+    interface Builder extends ObjectBuilder<Collection> {
+
+        Builder id(String id);
+
+        Builder storeId(String storeId);
+
+        Builder name(String name);
+    }
 }

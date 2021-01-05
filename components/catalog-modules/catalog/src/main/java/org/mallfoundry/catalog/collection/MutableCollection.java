@@ -18,18 +18,11 @@
 
 package org.mallfoundry.catalog.collection;
 
-import org.mallfoundry.keygen.PrimaryKeyHolder;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import java.util.Date;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class ProductCollectionIdentityProcessor implements ProductCollectionProcessor {
+public interface MutableCollection extends Collection {
 
-    private static final String PRODUCT_COLLECTION_ID_VALUE_NAME = "product.collection.id";
+    void setProductsCount(int productsCount);
 
-    @Override
-    public ProductCollection preProcessBeforeAddCollection(ProductCollection collection) {
-        collection.setId(PrimaryKeyHolder.next(PRODUCT_COLLECTION_ID_VALUE_NAME));
-        return collection;
-    }
+    void setCreatedTime(Date createdTime);
 }

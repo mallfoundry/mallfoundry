@@ -62,7 +62,7 @@ public interface ProductQuery extends Query {
 
     Set<InventoryStatus> getInventoryStatuses();
 
-    void setInventoryStatuses(Set<InventoryStatus> statuses);
+    void setInventoryStatuses(Set<InventoryStatus> inventoryStatuses);
 
     Builder toBuilder();
 

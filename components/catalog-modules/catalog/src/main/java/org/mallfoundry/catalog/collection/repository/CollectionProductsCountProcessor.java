@@ -19,7 +19,7 @@
 package org.mallfoundry.catalog.collection.repository;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.mallfoundry.catalog.collection.ProductCollectionService;
+import org.mallfoundry.catalog.collection.CollectionService;
 import org.mallfoundry.catalog.product.Product;
 import org.mallfoundry.catalog.product.ProductProcessor;
 import org.springframework.core.NamedThreadLocal;
@@ -28,13 +28,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-public class ProductCollectionProductsCountProcessor implements ProductProcessor {
+public class CollectionProductsCountProcessor implements ProductProcessor {
 
     private final ThreadLocal<Set<String>> localCollections = new NamedThreadLocal<>("Product Collection Ids");
 
-    private final ProductCollectionService collectionService;
+    private final CollectionService collectionService;
 
-    public ProductCollectionProductsCountProcessor(ProductCollectionService collectionService) {
+    public CollectionProductsCountProcessor(CollectionService collectionService) {
         this.collectionService = collectionService;
     }
 

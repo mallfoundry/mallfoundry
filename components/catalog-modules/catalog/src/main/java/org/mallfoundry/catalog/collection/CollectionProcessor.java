@@ -18,5 +18,25 @@
 
 package org.mallfoundry.catalog.collection;
 
-public class ProductCollectionAuthorizeProcessor implements ProductCollectionProcessor {
+public interface CollectionProcessor {
+
+    default Collection preProcessBeforeAddCollection(Collection collection) {
+        return collection;
+    }
+
+    default Collection preProcessBeforeUpdateCollection(Collection collection) {
+        return collection;
+    }
+
+    default Collection preProcessBeforeDeleteCollection(Collection collection) {
+        return collection;
+    }
+
+    default CollectionQuery preProcessBeforeGetCollections(CollectionQuery query) {
+        return query;
+    }
+
+    default Collection postProcessAfterGetCollection(Collection collection) {
+        return collection;
+    }
 }

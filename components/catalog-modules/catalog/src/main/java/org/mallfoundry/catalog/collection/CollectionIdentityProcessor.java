@@ -18,23 +18,18 @@
 
 package org.mallfoundry.catalog.collection;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import org.mallfoundry.keygen.PrimaryKeyHolder;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
-public interface ProductCollectionRepository {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CollectionIdentityProcessor implements CollectionProcessor {
 
-    ProductCollection create(String id);
+    private static final String PRODUCT_COLLECTION_ID_VALUE_NAME = "product.collection.id";
 
-    ProductCollection save(ProductCollection collection);
-
-    List<ProductCollection> saveAll(List<ProductCollection> collections);
-
-    void delete(ProductCollection collection);
-
-    Optional<ProductCollection> findById(String id);
-
-    List<ProductCollection> findAllById(Collection<String> ids);
-
-    List<ProductCollection> findAllByStoreId(String storeId);
+    @Override
+    public Collection preProcessBeforeAddCollection(Collection collection) {
+        collection.setId(PrimaryKeyHolder.next(PRODUCT_COLLECTION_ID_VALUE_NAME));
+        return collection;
+    }
 }

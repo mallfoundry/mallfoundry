@@ -20,20 +20,15 @@ package org.mallfoundry.rest.catalog.collection;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.catalog.collection.ProductCollection;
+import org.mallfoundry.catalog.collection.Collection;
 
 @Getter
 @Setter
 public class CollectionRequest {
-
+    private String storeId;
     private String name;
 
-    public ProductCollection assignToCollection(ProductCollection collection) {
-        collection.setName(this.name);
-        return collection;
-    }
-
-    public ProductCollection assignTo(ProductCollection collection) {
-        return collection.toBuilder().name(this.name).build();
+    public Collection assignTo(Collection collection) {
+        return collection.toBuilder().storeId(this.storeId).name(this.name).build();
     }
 }

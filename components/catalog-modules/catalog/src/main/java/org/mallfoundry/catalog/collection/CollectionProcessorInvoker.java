@@ -18,25 +18,15 @@
 
 package org.mallfoundry.catalog.collection;
 
-public interface ProductCollectionProcessor {
+public interface CollectionProcessorInvoker {
 
-    default ProductCollection preProcessBeforeAddCollection(ProductCollection collection) {
-        return collection;
-    }
+    Collection invokePreProcessBeforeAddCollection(Collection collection);
 
-    default ProductCollection preProcessBeforeUpdateCollection(ProductCollection collection) {
-        return collection;
-    }
+    Collection invokePreProcessBeforeUpdateCollection(Collection collection);
 
-    default ProductCollection preProcessBeforeDeleteCollection(ProductCollection collection) {
-        return collection;
-    }
+    Collection invokePreProcessBeforeDeleteCollection(Collection collection);
 
-    default ProductCollectionQuery preProcessBeforeGetCollections(ProductCollectionQuery query) {
-        return query;
-    }
+    CollectionQuery invokePreProcessBeforeGetCollections(CollectionQuery query);
 
-    default ProductCollection postProcessAfterGetCollection(ProductCollection collection) {
-        return collection;
-    }
+    Collection invokePostProcessAfterGetCollection(Collection collection);
 }

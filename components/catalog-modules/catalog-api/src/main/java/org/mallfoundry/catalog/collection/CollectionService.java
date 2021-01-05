@@ -18,15 +18,27 @@
 
 package org.mallfoundry.catalog.collection;
 
-public interface ProductCollectionProcessorInvoker {
+import org.mallfoundry.data.SliceList;
 
-    ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection);
+import java.util.List;
 
-    ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection);
+public interface CollectionService {
 
-    ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection);
+    Collection createCollection(String id);
 
-    ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query);
+    CollectionQuery createCollectionQuery();
 
-    ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection);
+    Collection addCollection(Collection collection);
+
+    Collection getCollection(String id);
+
+    List<Collection> getCollections(java.util.Collection<String> ids);
+
+    SliceList<Collection> getCollections(CollectionQuery query);
+
+    Collection updateCollection(Collection collection);
+
+    List<Collection> updateCollections(List<Collection> collections);
+
+    void deleteCollection(String id);
 }

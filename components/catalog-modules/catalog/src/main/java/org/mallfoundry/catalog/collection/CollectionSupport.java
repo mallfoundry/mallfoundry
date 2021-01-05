@@ -22,7 +22,7 @@ import org.mallfoundry.catalog.product.Product;
 
 import java.util.Date;
 
-public abstract class ProductCollectionSupport implements MutableProductCollection {
+public abstract class CollectionSupport implements MutableCollection {
 
     @Override
     public void addProduct(Product product) {
@@ -47,9 +47,9 @@ public abstract class ProductCollectionSupport implements MutableProductCollecti
 
     protected abstract static class BuilderSupport implements Builder {
 
-        private final ProductCollectionSupport collection;
+        private final CollectionSupport collection;
 
-        protected BuilderSupport(ProductCollectionSupport collection) {
+        protected BuilderSupport(CollectionSupport collection) {
             this.collection = collection;
         }
 
@@ -72,7 +72,7 @@ public abstract class ProductCollectionSupport implements MutableProductCollecti
         }
 
         @Override
-        public ProductCollection build() {
+        public Collection build() {
             return this.collection;
         }
     }

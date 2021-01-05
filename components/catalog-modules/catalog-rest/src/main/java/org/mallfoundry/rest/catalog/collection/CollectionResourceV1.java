@@ -19,60 +19,59 @@
 package org.mallfoundry.rest.catalog.collection;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.mallfoundry.catalog.collection.ProductCollection;
-import org.mallfoundry.catalog.collection.ProductCollectionService;
+import org.mallfoundry.catalog.collection.Collection;
+import org.mallfoundry.catalog.collection.CollectionService;
+import org.mallfoundry.data.SliceList;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Tag(name = "Product Collections")
 @RestController
 @RequestMapping("/v1")
 public class CollectionResourceV1 {
-    private final ProductCollectionService collectionService;
+    private final CollectionService collectionService;
 
-    public CollectionResourceV1(ProductCollectionService collectionService) {
+    public CollectionResourceV1(CollectionService collectionService) {
         this.collectionService = collectionService;
     }
 
-    @PostMapping("/stores/{store_id}/collections")
-    public ProductCollection addCollection(@PathVariable("store_id") String storeId,
-                                           @RequestBody CollectionRequest request) {
+    @PostMapping("/collections")
+    public Collection addCollection(@RequestBody CollectionRequest request) {
         return this.collectionService.addCollection(
-                request.assignToCollection(
-                        this.collectionService.createCollection(null).toBuilder().storeId(storeId).build()));
+                request.assignTo(this.collectionService.createCollection(null)));
     }
 
-    @PutMapping("/stores/{store_id}/collections/{collection_id}")
-    public ProductCollection updateCollection(@PathVariable("store_id") String storeId,
-                                              @PathVariable("collection_id") String collectionId,
-                                              @RequestBody CollectionRequest request) {
-        Assert.notNull(storeId, "Store id must not be null");
+    @GetMapping("/collections")
+    public SliceList<Collection> getCollections(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+                                                @RequestParam("store_id") String storeId) {
+        return this.collectionService.getCollections(
+                this.collectionService.createCollectionQuery()
+                        .toBuilder().page(page).limit(limit).storeId(storeId).build());
+    }
+
+    @PatchMapping("/collections/{collection_id}")
+    public Collection updateCollection(@PathVariable("collection_id") String collectionId,
+                                       @RequestBody CollectionRequest request) {
         Assert.notNull(collectionId, "Collection id must not be null");
         return this.collectionService.updateCollection(
-                request.assignToCollection(
+                request.assignTo(
                         this.collectionService.createCollection(collectionId)));
     }
 
 
-    @DeleteMapping("/stores/{store_id}/collections/{collection_id}")
+    @DeleteMapping("/collections/{collection_id}")
     public void deleteCollection(@PathVariable("store_id") String storeId,
                                  @PathVariable("collection_id") String id) {
         Assert.notNull(storeId, "Store id must not be null");
         this.collectionService.deleteCollection(id);
     }
-
-    @GetMapping("/stores/{store_id}/collections")
-    public List<ProductCollection> getCollections(@PathVariable("store_id") String storeId) {
-        return this.collectionService.getCollections(storeId);
-    }
-
 }

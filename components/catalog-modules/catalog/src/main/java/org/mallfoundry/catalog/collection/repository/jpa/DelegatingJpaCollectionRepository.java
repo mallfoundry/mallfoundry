@@ -18,54 +18,59 @@
 
 package org.mallfoundry.catalog.collection.repository.jpa;
 
-import org.mallfoundry.catalog.collection.ProductCollection;
-import org.mallfoundry.catalog.collection.ProductCollectionRepository;
+import org.mallfoundry.catalog.collection.Collection;
+import org.mallfoundry.catalog.collection.CollectionQuery;
+import org.mallfoundry.catalog.collection.CollectionRepository;
+import org.mallfoundry.data.PageList;
+import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class DelegatingJpaProductCollectionRepository implements ProductCollectionRepository {
+public class DelegatingJpaCollectionRepository implements CollectionRepository {
 
-    private final JpaProductCollectionRepository repository;
+    private final JpaCollectionRepository repository;
 
-    public DelegatingJpaProductCollectionRepository(JpaProductCollectionRepository repository) {
+    public DelegatingJpaCollectionRepository(JpaCollectionRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public ProductCollection create(String id) {
-        return new JpaProductCollection(id);
+    public Collection create(String id) {
+        return new JpaCollection(id);
     }
 
     @Override
-    public ProductCollection save(ProductCollection collection) {
-        return this.repository.save(JpaProductCollection.of(collection));
+    public Collection save(Collection collection) {
+        return this.repository.save(JpaCollection.of(collection));
     }
 
     @Override
-    public List<ProductCollection> saveAll(List<ProductCollection> collections) {
+    public List<Collection> saveAll(List<Collection> collections) {
         return CastUtils.cast(this.repository.saveAll(CastUtils.cast(collections)));
     }
 
     @Override
-    public void delete(ProductCollection collection) {
-        this.repository.delete(JpaProductCollection.of(collection));
+    public void delete(Collection collection) {
+        this.repository.delete(JpaCollection.of(collection));
     }
 
     @Override
-    public Optional<ProductCollection> findById(String id) {
+    public Optional<Collection> findById(String id) {
         return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
-    public List<ProductCollection> findAllById(Collection<String> ids) {
+    public List<Collection> findAllById(java.util.Collection<String> ids) {
         return CastUtils.cast(this.repository.findAllById(ids));
     }
 
     @Override
-    public List<ProductCollection> findAllByStoreId(String storeId) {
-        return CastUtils.cast(this.repository.findAllByStoreId(storeId));
+    public SliceList<Collection> findAll(CollectionQuery query) {
+        var page = this.repository.findAll(query);
+        return PageList.of(page.getContent())
+                .page(query.getPage()).limit(query.getLimit())
+                .totalSize(page.getTotalElements()).cast();
     }
 }

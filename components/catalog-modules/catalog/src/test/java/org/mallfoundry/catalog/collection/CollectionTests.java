@@ -19,8 +19,6 @@
 package org.mallfoundry.catalog.collection;
 
 import org.junit.jupiter.api.Test;
-import org.mallfoundry.catalog.collection.ProductCollection;
-import org.mallfoundry.catalog.collection.ProductCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -30,9 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CollectionTests {
 
     @Autowired
-    private ProductCollectionService collectionService;
+    private CollectionService collectionService;
 
-    private ProductCollection createCollection(String storeId, String name) {
+    private Collection createCollection(String storeId, String name) {
         return this.collectionService.createCollection(null).toBuilder().storeId(storeId).name(name).build();
     }
 

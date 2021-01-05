@@ -18,25 +18,24 @@
 
 package org.mallfoundry.catalog.collection;
 
-import java.util.Collection;
+import org.mallfoundry.data.SliceList;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductCollectionService {
+public interface CollectionRepository {
 
-    ProductCollection createCollection(String id);
+    Collection create(String id);
 
-    ProductCollection addCollection(ProductCollection collection);
+    Collection save(Collection collection);
 
-    ProductCollection getCollection(String id);
+    List<Collection> saveAll(List<Collection> collections);
 
-    List<ProductCollection> getCollections(String storeId);
+    void delete(Collection collection);
 
-    List<ProductCollection> getCollections(Collection<String> ids);
+    Optional<Collection> findById(String id);
 
-    ProductCollection updateCollection(ProductCollection collection);
+    List<Collection> findAllById(java.util.Collection<String> ids);
 
-    List<ProductCollection> updateCollections(List<ProductCollection> collections);
-
-    void deleteCollection(String id);
+    SliceList<Collection> findAll(CollectionQuery query);
 }

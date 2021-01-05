@@ -16,14 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.catalog.collection.repository.jpa;
+package org.mallfoundry.catalog.collection;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-@Repository
-public interface JpaProductCollectionRepository extends JpaRepository<JpaProductCollection, String> {
-    List<JpaProductCollection> findAllByStoreId(String storeId);
+public class CollectionAuthorizeProcessor implements CollectionProcessor {
 }

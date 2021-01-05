@@ -20,11 +20,47 @@ package org.mallfoundry.catalog.collection;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mallfoundry.data.QueryBuilderSupport;
 import org.mallfoundry.data.QuerySupport;
 
 @Getter
 @Setter
-public class DefaultProductCollectionQuery extends QuerySupport implements ProductCollectionQuery {
+public class DefaultCollectionQuery extends QuerySupport implements CollectionQuery {
+
     private String tenantId;
+
     private String storeId;
+
+    @Override
+    public Builder toBuilder() {
+        return new BuilderSupport(this) {
+        };
+    }
+
+
+    public static class BuilderSupport extends QueryBuilderSupport<CollectionQuery, Builder> implements Builder {
+
+        private final CollectionQuery query;
+
+        public BuilderSupport(CollectionQuery query) {
+            super(query);
+            this.query = query;
+        }
+
+        @Override
+        public Builder tenantId(String tenantId) {
+            this.query.setTenantId(tenantId);
+            return this;
+        }
+
+        @Override
+        public Builder storeId(String storeId) {
+            this.query.setStoreId(storeId);
+            return this;
+        }
+
+        public CollectionQuery build() {
+            return this.query;
+        }
+    }
 }

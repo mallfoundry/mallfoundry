@@ -19,67 +19,72 @@
 package org.mallfoundry.catalog.collection;
 
 import org.apache.commons.collections4.ListUtils;
+import org.mallfoundry.data.SliceList;
 import org.mallfoundry.processor.Processors;
 import org.mallfoundry.util.Copies;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
-public class DefaultProductCollectionService implements ProductCollectionService, ProductCollectionProcessorInvoker {
+public class DefaultCollectionService implements CollectionService, CollectionProcessorInvoker {
 
-    private List<ProductCollectionProcessor> processors = Collections.emptyList();
+    private List<CollectionProcessor> processors = Collections.emptyList();
 
-    private final ProductCollectionRepository collectionRepository;
+    private final CollectionRepository collectionRepository;
 
-    public DefaultProductCollectionService(ProductCollectionRepository collectionRepository) {
+    public DefaultCollectionService(CollectionRepository collectionRepository) {
         this.collectionRepository = collectionRepository;
     }
 
-    public void setProcessors(List<ProductCollectionProcessor> processors) {
+    public void setProcessors(List<CollectionProcessor> processors) {
         this.processors = ListUtils.emptyIfNull(processors);
     }
 
     @Override
-    public ProductCollection createCollection(String id) {
+    public Collection createCollection(String id) {
         return this.collectionRepository.create(id);
     }
 
+    @Override
+    public CollectionQuery createCollectionQuery() {
+        return new DefaultCollectionQuery();
+    }
+
     @Transactional
-    public ProductCollection addCollection(ProductCollection collection) {
+    public Collection addCollection(Collection collection) {
         collection = this.invokePreProcessBeforeAddCollection(collection);
         collection.create();
         return this.collectionRepository.save(collection);
     }
 
-    public ProductCollection getCollection(String id) {
+    public Collection getCollection(String id) {
         return this.collectionRepository.findById(id)
                 .map(this::invokePostProcessAfterGetCollection)
                 .orElseThrow();
     }
 
-    public List<ProductCollection> getCollections(String storeId) {
-        return this.collectionRepository.findAllByStoreId(storeId);
-    }
-
     @Override
-    public List<ProductCollection> getCollections(Collection<String> ids) {
+    public List<Collection> getCollections(java.util.Collection<String> ids) {
         return this.collectionRepository.findAllById(ids);
     }
 
-    private ProductCollection updateCollection(final ProductCollection source, final ProductCollection dest) {
-        Copies.notBlank(source::getName).trim(dest::setName);
-        return dest;
+    @Override
+    public SliceList<Collection> getCollections(CollectionQuery query) {
+        return this.collectionRepository.findAll(query);
+    }
+
+    private Collection updateCollection(final Collection source, final Collection collection) {
+        Copies.notBlank(source::getName).trim(collection::setName);
+        return collection;
     }
 
     @Transactional
     @Override
-    public ProductCollection updateCollection(ProductCollection source) {
-        return Function.<ProductCollection>identity()
-                .<ProductCollection>compose(dest -> this.updateCollection(source, dest))
+    public Collection updateCollection(Collection source) {
+        return Function.<Collection>identity()
+                .<Collection>compose(collection -> this.updateCollection(source, collection))
                 .compose(this::invokePreProcessBeforeUpdateCollection)
                 .compose(this::requiredCollection)
                 .apply(source.getId());
@@ -87,17 +92,17 @@ public class DefaultProductCollectionService implements ProductCollectionService
 
     @Transactional
     @Override
-    public List<ProductCollection> updateCollections(List<ProductCollection> collections) {
+    public List<Collection> updateCollections(List<Collection> collections) {
         return this.collectionRepository.saveAll(collections);
     }
 
-    private ProductCollection requiredCollection(String id) {
+    private Collection requiredCollection(String id) {
         return this.collectionRepository.findById(id).orElseThrow();
     }
 
     @Transactional
     public void deleteCollection(String id) {
-        var collection = Function.<ProductCollection>identity()
+        var collection = Function.<Collection>identity()
                 .compose(this::invokePreProcessBeforeDeleteCollection)
                 .compose(this::requiredCollection)
                 .apply(id);
@@ -105,37 +110,37 @@ public class DefaultProductCollectionService implements ProductCollectionService
     }
 
     @Override
-    public ProductCollection invokePreProcessBeforeAddCollection(ProductCollection collection) {
+    public Collection invokePreProcessBeforeAddCollection(Collection collection) {
         return Processors.stream(this.processors)
-                .map(ProductCollectionProcessor::preProcessBeforeAddCollection)
+                .map(CollectionProcessor::preProcessBeforeAddCollection)
                 .apply(collection);
     }
 
     @Override
-    public ProductCollection invokePreProcessBeforeUpdateCollection(ProductCollection collection) {
+    public Collection invokePreProcessBeforeUpdateCollection(Collection collection) {
         return Processors.stream(this.processors)
-                .map(ProductCollectionProcessor::preProcessBeforeUpdateCollection)
+                .map(CollectionProcessor::preProcessBeforeUpdateCollection)
                 .apply(collection);
     }
 
     @Override
-    public ProductCollection invokePreProcessBeforeDeleteCollection(ProductCollection collection) {
+    public Collection invokePreProcessBeforeDeleteCollection(Collection collection) {
         return Processors.stream(this.processors)
-                .map(ProductCollectionProcessor::preProcessBeforeDeleteCollection)
+                .map(CollectionProcessor::preProcessBeforeDeleteCollection)
                 .apply(collection);
     }
 
     @Override
-    public ProductCollectionQuery invokePreProcessBeforeGetCollections(ProductCollectionQuery query) {
+    public CollectionQuery invokePreProcessBeforeGetCollections(CollectionQuery query) {
         return Processors.stream(this.processors)
-                .map(ProductCollectionProcessor::preProcessBeforeGetCollections)
+                .map(CollectionProcessor::preProcessBeforeGetCollections)
                 .apply(query);
     }
 
     @Override
-    public ProductCollection invokePostProcessAfterGetCollection(ProductCollection collection) {
+    public Collection invokePostProcessAfterGetCollection(Collection collection) {
         return Processors.stream(this.processors)
-                .map(ProductCollectionProcessor::postProcessAfterGetCollection)
+                .map(CollectionProcessor::postProcessAfterGetCollection)
                 .apply(collection);
     }
 }
