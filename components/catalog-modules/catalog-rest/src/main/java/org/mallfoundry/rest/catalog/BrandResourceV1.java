@@ -18,8 +18,6 @@
 
 package org.mallfoundry.rest.catalog;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mallfoundry.catalog.BrandService;
 import org.mallfoundry.rest.data.SliceListResponse;
@@ -54,9 +52,7 @@ public class BrandResourceV1 {
     }
 
     @GetMapping("/brands")
-    public SliceListResponse<BrandResponse> getBrands(@Parameter(description = "页数")
-                                                      @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                      @Parameter(schema = @Schema(maximum = "200", title = "limit2"))
+    public SliceListResponse<BrandResponse> getBrands(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                       @RequestParam(name = "limit", defaultValue = "100") Integer limit,
                                                       @RequestParam(name = "categories", required = false) Set<String> categories) {
         return SliceListResponse.of(
@@ -67,7 +63,7 @@ public class BrandResourceV1 {
 
     @PatchMapping("/brands/{brand_id}")
     public BrandResponse updateBrand(@PathVariable("brand_id") String brandId, @RequestBody BrandRequest request) {
-        return new BrandResponse(this.brandService.updateBrand(request.assignToBrand(this.brandService.getBrand(brandId).orElseThrow())));
+        return new BrandResponse(this.brandService.updateBrand(request.assignToBrand(this.brandService.getBrand(brandId))));
     }
 
     @DeleteMapping("/brands/{brand_id}")
