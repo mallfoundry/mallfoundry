@@ -39,45 +39,45 @@ public interface OrderQuery extends Query, StoreOwnership, CustomerOwnership {
 
     void setName(String name);
 
+    Set<OrderType> getTypes();
+
+    void setTypes(Set<OrderType> types);
+
+    Set<OrderSource> getSources();
+
+    void setSources(Set<OrderSource> sources);
+
     Set<OrderStatus> getStatuses();
 
     void setStatuses(Set<OrderStatus> statuses);
 
     Set<OrderStatus> getDisputeStatuses();
 
-    void setDisputeStatuses(Set<OrderStatus> statuses);
+    void setDisputeStatuses(Set<OrderStatus> disputeStatuses);
 
     Set<OrderStatus> getReviewStatuses();
 
-    void setReviewStatuses(Set<OrderStatus> statuses);
-
-    Set<OrderType> getTypes();
-
-    void setTypes(Set<OrderType> types);
+    void setReviewStatuses(Set<OrderStatus> reviewStatuses);
 
     Set<PaymentMethodType> getPaymentMethods();
 
     void setPaymentMethods(Set<PaymentMethodType> methods);
 
-    Set<OrderSource> getSources();
-
-    void setSources(Set<OrderSource> sources);
-
     Date getPlacedTimeMin();
 
-    void setPlacedTimeMin(Date time);
+    void setPlacedTimeMin(Date placedTimeMin);
 
     Date getPlacedTimeMax();
 
-    void setPlacedTimeMax(Date time);
+    void setPlacedTimeMax(Date placedTimeMax);
 
     Date getPlacingExpiredTimeMin();
 
-    void setPlacingExpiredTimeMin(Date time);
+    void setPlacingExpiredTimeMin(Date placingExpiredTimeMin);
 
     Date getPlacingExpiredTimeMax();
 
-    void setPlacingExpiredTimeMax(Date time);
+    void setPlacingExpiredTimeMax(Date placingExpiredTimeMax);
 
     Builder toBuilder();
 

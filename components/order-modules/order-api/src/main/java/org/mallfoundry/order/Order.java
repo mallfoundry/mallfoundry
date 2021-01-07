@@ -205,6 +205,34 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     List<OrderReview> getReviews();
 
+    boolean isPlaced();
+
+    int getPlacingExpires();
+
+    Date getPlacingExpiredTime();
+
+    Date getPlacedTime();
+
+    boolean isPlacingExpired();
+
+    boolean isPayable();
+
+    boolean isPaid();
+
+    String getPaymentId();
+
+    void setPaymentId(String paymentId);
+
+    PaymentStatus getPaymentStatus();
+
+    void setPaymentStatus(PaymentStatus paymentStatus);
+
+    PaymentMethodType getPaymentMethod();
+
+    void setPaymentMethod(PaymentMethodType paymentMethod);
+
+    Date getPaidTime();
+
     int getTotalQuantity();
 
     BigDecimal getTotalShippingCost();
@@ -219,18 +247,6 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
 
     BigDecimal getTotalAmount();
 
-    String getPaymentId();
-
-    void setPaymentId(String paymentId);
-
-    PaymentStatus getPaymentStatus();
-
-    void setPaymentStatus(PaymentStatus paymentStatus);
-
-    PaymentMethodType getPaymentMethod();
-
-    void setPaymentMethod(PaymentMethodType paymentMethod);
-
     /**
      * 订单对象扣减库存时所使用的扣减模式。
      *
@@ -239,22 +255,6 @@ public interface Order extends StoreOwnership, CustomerOwnership, ObjectBuilder.
     InventoryDeduction getInventoryDeduction();
 
     void setInventoryDeduction(InventoryDeduction inventoryDeduction);
-
-    int getPlacingExpires();
-
-    boolean isPlaced();
-
-    boolean isPayable();
-
-    boolean isPaid();
-
-    boolean isPlacingExpired();
-
-    Date getPlacedTime();
-
-    Date getPlacingExpiredTime();
-
-    Date getPaidTime();
 
     Date getFulfilledTime();
 
