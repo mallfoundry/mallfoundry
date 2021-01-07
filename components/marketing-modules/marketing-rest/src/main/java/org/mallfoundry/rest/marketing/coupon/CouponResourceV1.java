@@ -91,7 +91,7 @@ public class CouponResourceV1 {
         return this.couponService.updateCoupon(coupon);
     }
 
-    @PatchMapping("/coupons/{coupon_id}/pause")
+    @PostMapping("/coupons/{coupon_id}/pause")
     public void pauseCoupon(@PathVariable(name = "coupon_id") String couponId) {
         this.couponService.pauseCoupon(couponId);
     }
