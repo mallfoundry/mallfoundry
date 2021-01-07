@@ -18,22 +18,22 @@
 
 package org.mallfoundry.autoconfigure.district;
 
-import org.mallfoundry.district.CityRepository;
-import org.mallfoundry.district.CountryRepository;
-import org.mallfoundry.district.CountyRepository;
-import org.mallfoundry.district.DefaultDistrictService;
-import org.mallfoundry.district.ProvinceRepository;
-import org.mallfoundry.district.RegionRepository;
-import org.mallfoundry.district.repository.jpa.DelegatingJpaCityRepository;
-import org.mallfoundry.district.repository.jpa.DelegatingJpaCountryRepository;
-import org.mallfoundry.district.repository.jpa.DelegatingJpaCountyRepository;
-import org.mallfoundry.district.repository.jpa.DelegatingJpaProvinceRepository;
-import org.mallfoundry.district.repository.jpa.DelegatingJpaRegionRepository;
-import org.mallfoundry.district.repository.jpa.JpaCityRepository;
-import org.mallfoundry.district.repository.jpa.JpaCountryRepository;
-import org.mallfoundry.district.repository.jpa.JpaCountyRepository;
-import org.mallfoundry.district.repository.jpa.JpaProvinceRepository;
-import org.mallfoundry.district.repository.jpa.JpaRegionRepository;
+import org.mallfoundry.geography.CityRepository;
+import org.mallfoundry.geography.CountryRepository;
+import org.mallfoundry.geography.CountyRepository;
+import org.mallfoundry.geography.DefaultGeographyService;
+import org.mallfoundry.geography.ProvinceRepository;
+import org.mallfoundry.geography.RegionRepository;
+import org.mallfoundry.geography.repository.jpa.DelegatingJpaCityRepository;
+import org.mallfoundry.geography.repository.jpa.DelegatingJpaCountryRepository;
+import org.mallfoundry.geography.repository.jpa.DelegatingJpaCountyRepository;
+import org.mallfoundry.geography.repository.jpa.DelegatingJpaProvinceRepository;
+import org.mallfoundry.geography.repository.jpa.DelegatingJpaRegionRepository;
+import org.mallfoundry.geography.repository.jpa.JpaCityRepository;
+import org.mallfoundry.geography.repository.jpa.JpaCountryRepository;
+import org.mallfoundry.geography.repository.jpa.JpaCountyRepository;
+import org.mallfoundry.geography.repository.jpa.JpaProvinceRepository;
+import org.mallfoundry.geography.repository.jpa.JpaRegionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -66,11 +66,11 @@ public class DistrictAutoConfiguration {
     }
 
     @Bean
-    public DefaultDistrictService defaultDistrictService(CountryRepository countryRepository,
-                                                         RegionRepository regionRepository,
-                                                         ProvinceRepository provinceRepository,
-                                                         CityRepository cityRepository,
-                                                         CountyRepository countyRepository) {
-        return new DefaultDistrictService(countryRepository, regionRepository, provinceRepository, cityRepository, countyRepository);
+    public DefaultGeographyService defaultDistrictService(CountryRepository countryRepository,
+                                                          RegionRepository regionRepository,
+                                                          ProvinceRepository provinceRepository,
+                                                          CityRepository cityRepository,
+                                                          CountyRepository countyRepository) {
+        return new DefaultGeographyService(countryRepository, regionRepository, provinceRepository, cityRepository, countyRepository);
     }
 }
