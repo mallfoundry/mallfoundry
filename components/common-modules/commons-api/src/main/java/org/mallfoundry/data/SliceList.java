@@ -28,10 +28,6 @@ import java.util.function.Function;
  */
 public interface SliceList<T> extends Iterable<T> {
 
-    int getPage();
-
-    int getLimit();
-
     List<T> getElements();
 
     int getSize();
