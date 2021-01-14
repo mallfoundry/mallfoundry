@@ -18,10 +18,8 @@
 
 package org.mallfoundry.security.access;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Set;
 
 import static org.mallfoundry.i18n.MessageHolder.message;
