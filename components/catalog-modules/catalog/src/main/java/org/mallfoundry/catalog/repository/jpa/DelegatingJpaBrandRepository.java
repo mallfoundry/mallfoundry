@@ -21,6 +21,7 @@ package org.mallfoundry.catalog.repository.jpa;
 import org.mallfoundry.catalog.Brand;
 import org.mallfoundry.catalog.BrandQuery;
 import org.mallfoundry.catalog.BrandRepository;
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
@@ -51,7 +52,7 @@ public class DelegatingJpaBrandRepository implements BrandRepository {
 
     @Override
     public SliceList<Brand> findAll(BrandQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
+        return PageList.of(this.repository.findAll(query));
     }
 
     @Override

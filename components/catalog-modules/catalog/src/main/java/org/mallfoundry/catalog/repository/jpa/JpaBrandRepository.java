@@ -20,8 +20,6 @@ package org.mallfoundry.catalog.repository.jpa;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.catalog.BrandQuery;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,17 +32,13 @@ import javax.persistence.criteria.Predicate;
 @Repository
 public interface JpaBrandRepository extends JpaRepository<JpaBrand, String>, JpaSpecificationExecutor<JpaBrand> {
 
-    default SliceList<JpaBrand> findAll(BrandQuery brandQuery) {
-        Page<JpaBrand> page = this.findAll((Specification<JpaBrand>) (root, query, criteriaBuilder) -> {
+    default Page<JpaBrand> findAll(BrandQuery brandQuery) {
+        return this.findAll((Specification<JpaBrand>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (CollectionUtils.isNotEmpty(brandQuery.getCategories())) {
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("categories")).value(brandQuery.getCategories()));
             }
             return predicate;
         }, PageRequest.of(brandQuery.getPage() - 1, brandQuery.getLimit()));
-        return PageList.of(page.getContent())
-                .page(page.getNumber())
-                .limit(brandQuery.getLimit())
-                .totalSize(page.getTotalElements());
     }
 }
