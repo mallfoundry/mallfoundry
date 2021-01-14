@@ -44,11 +44,6 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     }
 
     @Override
-    public String getAccountId() {
-        return this.store.getAccountId();
-    }
-
-    @Override
     public Date getFollowedTime() {
         return this.following.getFollowedTime();
     }
@@ -61,6 +56,11 @@ public class DelegatingImmutableFollowingStore implements ImmutableFollowingStor
     @Override
     public String getName() {
         return this.store.getName();
+    }
+
+    @Override
+    public String getAccountId() {
+        return this.store.getAccountId();
     }
 
     @Override

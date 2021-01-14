@@ -45,7 +45,7 @@ public interface ImmutableFollowingStore extends FollowingStore {
     }
 
     @Override
-    default void bindAccountId(String accountId) {
+    default void bindAccount(String accountId) {
 
     }
 
