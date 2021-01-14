@@ -18,7 +18,7 @@
 
 package org.mallfoundry.data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.domain.Page;
 import org.springframework.data.util.CastUtils;
 
 import java.util.Collections;
@@ -29,19 +29,11 @@ import java.util.stream.Collectors;
 
 public class PageList<T> implements SliceList<T> {
 
-    private int page;
-
-    private int limit;
-
     private int size;
 
-    @JsonProperty("total_pages")
-    private int totalPages;
-
-    @JsonProperty("total_size")
-    private long totalSize;
-
     private List<T> elements;
+
+    private long totalSize;
 
     public PageList(List<T> elements) {
         this.elements = Objects.isNull(elements)
@@ -54,50 +46,24 @@ public class PageList<T> implements SliceList<T> {
         return new PageList<>(elements);
     }
 
+    public static <E, T> PageList<T> of(Page<E> page) {
+        return CastUtils.cast(PageList.of(page.getContent())
+                .size(page.getSize())
+                .totalSize(page.getTotalElements()));
+    }
+
     public static <T> PageList<T> empty() {
         return new EmptyPage<>();
     }
 
-    public PageList<T> page(int page) {
-        this.page = Math.max(page, Pageable.DEFAULT_PAGE);
-        return this;
-    }
-
-    public PageList<T> limit(int limit) {
-        this.limit = limit;
-        this.computeTotalPages();
+    public PageList<T> size(int size) {
+        this.size = size;
         return this;
     }
 
     public PageList<T> totalSize(long totalSize) {
         this.totalSize = totalSize;
-        this.computeTotalPages();
         return this;
-    }
-
-    private void computeTotalPages() {
-        if (limit <= 0) {
-            return;
-        }
-        this.totalPages = (int) ((totalSize + limit - 1) / limit);
-    }
-
-    @Override
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    @Override
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
     }
 
     @Override
@@ -105,17 +71,11 @@ public class PageList<T> implements SliceList<T> {
         return size;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     @Override
     public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+        var size = this.getSize();
+        var totalSize = this.getTotalSize();
+        return size == 0 ? 1 : (int) Math.ceil((double) totalSize / (double) size);
     }
 
     @Override
@@ -126,12 +86,12 @@ public class PageList<T> implements SliceList<T> {
     @Override
     public <R> SliceList<R> map(Function<T, R> mapper) {
         return new PageList<>(this.elements.stream().map(mapper).collect(Collectors.toUnmodifiableList()))
-                .page(this.page).limit(this.limit).totalSize(this.totalSize);
+                .totalSize(this.totalSize);
     }
 
     @Override
     public <R> SliceList<R> elements(List<R> elements) {
-        return new PageList<>(elements).page(this.page).limit(this.limit).totalSize(this.totalSize);
+        return new PageList<>(elements).totalSize(this.totalSize);
     }
 
     @Override
