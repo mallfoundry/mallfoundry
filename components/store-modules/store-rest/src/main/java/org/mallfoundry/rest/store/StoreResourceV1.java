@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Tag(name = "Stores")
 @RestController
@@ -67,10 +68,14 @@ public class StoreResourceV1 {
     @GetMapping("/stores")
     public SliceList<Store> getStores(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                      @RequestParam(name = "owner_id", required = false) String ownerId) {
+                                      @RequestParam(name = "owner_id", required = false) String ownerId,
+                                      @RequestParam(name = "staff_ids", required = false) Set<String> staffIds) {
         return this.storeService.getStores(
-                this.storeService.createStoreQuery().toBuilder()
-                        .page(page).limit(limit).ownerId(ownerId).build());
+                this.storeService.createStoreQuery()
+                        .toBuilder()
+                        .page(page).limit(limit)
+                        .ownerId(ownerId).staffIds(staffIds)
+                        .build());
     }
 
     @PatchMapping("/stores/{store_id}")

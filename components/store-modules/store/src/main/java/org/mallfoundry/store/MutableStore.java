@@ -24,9 +24,9 @@ public interface MutableStore extends Store {
 
     void setTenantId(String tenantId);
 
-    void setAccountId(String accountId);
-
     void setOwnerId(String ownerId);
+
+    void setAccountId(String accountId);
 
     void setStatus(StoreStatus status);
 

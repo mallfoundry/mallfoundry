@@ -22,14 +22,22 @@ import org.mallfoundry.data.Query;
 import org.mallfoundry.data.QueryBuilder;
 import org.mallfoundry.util.ObjectBuilder;
 
+import java.util.Set;
+
 public interface StoreQuery extends Query, ObjectBuilder.ToBuilder<StoreQuery.Builder> {
 
     String getOwnerId();
 
     void setOwnerId(String ownerId);
 
+    Set<String> getStaffIds();
+
+    void setStaffIds(Set<String> staffIds);
+
     interface Builder extends QueryBuilder<StoreQuery, Builder> {
 
         Builder ownerId(String ownerId);
+
+        Builder staffIds(Set<String> staffIds);
     }
 }
