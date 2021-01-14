@@ -64,8 +64,7 @@ public class DelegatingJpaReviewRepository implements ReviewRepository {
 
     @Override
     public SliceList<Review> findAll(ReviewQuery query) {
-        var page = this.repository.findAll(query);
-        return CastUtils.cast(PageList.of(page.getContent()).page(query.getPage()).limit(query.getLimit()).totalSize(page.getTotalElements()));
+        return PageList.of(this.repository.findAll(query));
     }
 
     @Override

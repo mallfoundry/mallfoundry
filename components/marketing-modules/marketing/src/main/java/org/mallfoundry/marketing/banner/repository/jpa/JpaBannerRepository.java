@@ -18,13 +18,13 @@
 
 package org.mallfoundry.marketing.banner.repository.jpa;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.marketing.banner.BannerDateType;
 import org.mallfoundry.marketing.banner.BannerQuery;
 import org.mallfoundry.marketing.banner.BannerRepository;
 import org.mallfoundry.marketing.banner.InternalBanner;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -83,8 +83,6 @@ public interface JpaBannerRepository
             return predicate;
         }, PageRequest.of(bannerQuery.getPage() - 1, bannerQuery.getLimit()));
 
-        return PageList.of(page.getContent())
-                .page(bannerQuery.getPage()).limit(bannerQuery.getLimit())
-                .totalSize(page.getTotalElements());
+        return PageList.of(page);
     }
 }

@@ -106,8 +106,7 @@ public class ElasticsearchProductRepository implements ProductRepository, Search
         var query = new StringQuery(queryBuilder.toString(), page, sort);
         var hits = this.elasticsearchOperations.search(query, ElasticsearchProduct.class);
         var list = hits.map(SearchHit::getContent).toList();
-
-        return CastUtils.cast(PageList.of(list).totalSize(hits.getTotalHits()).page(productQuery.getPage()).limit(productQuery.getLimit()));
+        return CastUtils.cast(PageList.of(list).totalSize(hits.getTotalHits()));
     }
 
     @Override

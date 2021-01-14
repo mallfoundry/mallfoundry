@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.StoreAddress;
 import org.mallfoundry.store.StoreAddressQuery;
@@ -52,7 +53,8 @@ public class DelegatingJpaStoreAddressRepository implements StoreAddressReposito
 
     @Override
     public SliceList<StoreAddress> findAll(StoreAddressQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
+        return PageList.of(this.repository.findAll(query));
+
     }
 
     @Override

@@ -18,8 +18,7 @@
 
 package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
+import org.apache.commons.collections4.CollectionUtils;
 import org.mallfoundry.store.StoreQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,21 +27,25 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.Objects;
 
 public interface JpaStoreRepository
         extends JpaRepository<JpaStore, String>, JpaSpecificationExecutor<JpaStore> {
 
-    default SliceList<JpaStore> findAll(StoreQuery storeQuery) {
-        Page<JpaStore> page = this.findAll((Specification<JpaStore>) (root, query, criteriaBuilder) -> {
+    default Page<JpaStore> findAll(StoreQuery storeQuery) {
+        return this.findAll((Specification<JpaStore>) (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (Objects.nonNull(storeQuery.getOwnerId())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("ownerId"), storeQuery.getOwnerId()));
             }
+
+            if (CollectionUtils.isNotEmpty(storeQuery.getStaffIds())) {
+                predicate.getExpressions().add(root.joinSet("staffIds", JoinType.LEFT).as(String.class).in(storeQuery.getStaffIds()));
+            }
+
             return predicate;
         }, PageRequest.of(storeQuery.getPage() - 1, storeQuery.getLimit(), Sort.by("createdTime").ascending()));
-
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(storeQuery.getLimit()).totalSize(page.getTotalElements());
     }
 }

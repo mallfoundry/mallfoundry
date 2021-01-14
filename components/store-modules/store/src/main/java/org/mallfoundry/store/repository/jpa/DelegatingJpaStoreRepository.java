@@ -18,6 +18,7 @@
 
 package org.mallfoundry.store.repository.jpa;
 
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
@@ -69,6 +70,6 @@ public class DelegatingJpaStoreRepository implements StoreRepository {
 
     @Override
     public SliceList<Store> findAll(StoreQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
+        return PageList.of(this.repository.findAll(query));
     }
 }

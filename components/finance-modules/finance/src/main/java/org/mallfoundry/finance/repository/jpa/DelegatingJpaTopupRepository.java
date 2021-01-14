@@ -47,10 +47,7 @@ public class DelegatingJpaTopupRepository implements TopupRepository {
 
     @Override
     public SliceList<Topup> findAll(TopupQuery query) {
-        var page = this.repository.findAll(query);
-        return PageList.of(page.getContent())
-                .page(query.getPage()).limit(query.getLimit())
-                .totalSize(page.getTotalElements()).cast();
+        return PageList.of(this.repository.findAll(query));
     }
 
     @Override

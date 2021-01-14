@@ -21,6 +21,7 @@ package org.mallfoundry.browsing.repository.jpa;
 import org.mallfoundry.browsing.BrowsingProduct;
 import org.mallfoundry.browsing.BrowsingProductQuery;
 import org.mallfoundry.browsing.BrowsingProductRepository;
+import org.mallfoundry.data.PageList;
 import org.mallfoundry.data.SliceList;
 import org.springframework.data.util.CastUtils;
 
@@ -59,7 +60,7 @@ public class DelegatingJpaBrowsingProductRepository implements BrowsingProductRe
 
     @Override
     public SliceList<BrowsingProduct> findAll(BrowsingProductQuery query) {
-        return CastUtils.cast(this.repository.findAll(query));
+        return PageList.of(this.repository.findAll(query));
     }
 
     @Override

@@ -20,8 +20,6 @@ package org.mallfoundry.browsing.repository.jpa;
 
 
 import org.mallfoundry.browsing.BrowsingProductQuery;
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -59,13 +57,9 @@ public interface JpaBrowsingProductRepository
         };
     }
 
-    default SliceList<JpaBrowsingProduct> findAll(BrowsingProductQuery query) {
-        Page<JpaBrowsingProduct> page = this.findAll(this.createSpecification(query),
+    default Page<JpaBrowsingProduct> findAll(BrowsingProductQuery query) {
+        return this.findAll(this.createSpecification(query),
                 PageRequest.of(query.getPage() - 1, query.getLimit(), Sort.by(Sort.Order.desc("browsingTime"))));
-        return PageList.of(page.getContent())
-                .page(page.getNumber())
-                .limit(query.getLimit())
-                .totalSize(page.getTotalElements());
     }
 
     default long count(BrowsingProductQuery query) {

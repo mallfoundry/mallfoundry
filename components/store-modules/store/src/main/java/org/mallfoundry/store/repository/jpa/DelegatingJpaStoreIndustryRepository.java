@@ -51,10 +51,7 @@ public class DelegatingJpaStoreIndustryRepository implements StoreIndustryReposi
     public SliceList<StoreIndustry> findAll(StoreIndustryQuery query) {
         var page = this.repository.findAllByTenantId(query.getTenantId(),
                 PageRequest.of(query.getPage() - 1, query.getLimit()));
-        return PageList.of(page.getContent())
-                .page(page.getNumber()).limit(query.getLimit())
-                .totalSize(page.getTotalElements())
-                .cast();
+        return PageList.of(page);
     }
 
     @Override

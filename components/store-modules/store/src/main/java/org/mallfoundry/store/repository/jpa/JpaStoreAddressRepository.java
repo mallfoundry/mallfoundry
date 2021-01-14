@@ -18,8 +18,6 @@
 
 package org.mallfoundry.store.repository.jpa;
 
-import org.mallfoundry.data.PageList;
-import org.mallfoundry.data.SliceList;
 import org.mallfoundry.store.StoreAddressQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,10 +45,9 @@ public interface JpaStoreAddressRepository
         };
     }
 
-    default SliceList<JpaStoreAddress> findAll(StoreAddressQuery query) {
-        Page<JpaStoreAddress> page = this.findAll(this.createSpecification(query),
+    default Page<JpaStoreAddress> findAll(StoreAddressQuery query) {
+        return this.findAll(this.createSpecification(query),
                 PageRequest.of(query.getPage() - 1, query.getLimit()));
-        return PageList.of(page.getContent()).page(page.getNumber()).limit(query.getLimit()).totalSize(page.getTotalElements());
     }
 
     void deleteAllByTenantIdAndStoreId(String tenantId, String storeId);
