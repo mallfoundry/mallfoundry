@@ -25,8 +25,13 @@ import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +39,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mf_store")
 public class JpaStore extends JpaStoreBase {
+
+    @ElementCollection
+    @Column(name = "id_")
+    @CollectionTable(name = "mf_store_staff",
+            joinColumns = @JoinColumn(name = "store_id_", referencedColumnName = "id_"))
+    private Set<String> staffIds;
 
     public JpaStore(StoreId id) {
         this.setTenantId(id.getTenantId());
