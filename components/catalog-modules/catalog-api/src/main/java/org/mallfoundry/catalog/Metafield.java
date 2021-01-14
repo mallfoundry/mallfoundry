@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 the original author or authors.
+ * Copyright (C) 2019-2021 the original author or authors.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.staff.repository.jpa;
+package org.mallfoundry.catalog;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+public interface Metafield {
 
-import java.util.Collection;
-import java.util.List;
+    String getNamespace();
 
-public interface JpaStaffStoreRepository extends JpaRepository<JpaStaffStore, String> {
+    void setNamespace(String namespace);
 
-    List<JpaStaffStore> findAllByIdInOrderByCreatedTimeAsc(Collection<String> storeIds);
+    String getName();
+
+    void setName(String name);
+
+    String getValue();
+
+    void setValue(String value);
 }
