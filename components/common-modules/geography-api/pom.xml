@@ -28,7 +28,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mall-district-api</artifactId>
+    <artifactId>mall-geography-api</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>

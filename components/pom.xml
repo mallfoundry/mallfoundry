@@ -36,7 +36,7 @@
         <module>common-modules/commons-rest</module>
         <module>common-modules/shared</module>
         <module>common-modules/shared-rest</module>
-        <module>common-modules/district-api</module>
+        <module>common-modules/geography-api</module>
 
         <!-- Data Warehouse Modules -->
         <module>analytics-modules/edw-api</module>

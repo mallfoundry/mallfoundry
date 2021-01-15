@@ -136,7 +136,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-district-api</artifactId>
+                <artifactId>mall-geography-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

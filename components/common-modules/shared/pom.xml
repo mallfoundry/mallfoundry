@@ -31,10 +31,9 @@
     <artifactId>mall-shared</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-district-api</artifactId>
+            <artifactId>mall-geography-api</artifactId>
         </dependency>
 
         <dependency>
