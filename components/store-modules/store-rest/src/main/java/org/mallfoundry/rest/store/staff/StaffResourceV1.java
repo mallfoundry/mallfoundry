@@ -113,13 +113,13 @@ public class StaffResourceV1 {
                 .apply(this.staffService.createStaffId(storeId, staffId));
     }
 
-    @PatchMapping("/stores/{store_id}/staffs/{staff_id}/active")
+    @PostMapping("/stores/{store_id}/staffs/{staff_id}/active")
     public void activeStaff(@PathVariable("store_id") String storeId,
                             @PathVariable("staff_id") String staffId) {
         this.staffService.activeStaff(this.staffService.createStaffId(storeId, staffId));
     }
 
-    @PatchMapping("/stores/{store_id}/staffs/{staff_id}/inactive")
+    @PostMapping("/stores/{store_id}/staffs/{staff_id}/inactive")
     public void inactiveStaff(@PathVariable("store_id") String storeId,
                               @PathVariable("staff_id") String staffId) {
         this.staffService.inactiveStaff(this.staffService.createStaffId(storeId, staffId));
