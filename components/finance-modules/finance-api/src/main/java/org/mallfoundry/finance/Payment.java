@@ -47,11 +47,9 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
     void setPayer(String payer);
 
-    PaymentInstrument createInstrument(PaymentMethodType type);
+    Source getSource();
 
-    PaymentInstrument getInstrument();
-
-    void setInstrument(PaymentInstrument instrument);
+    void setSource(Source source);
 
     PaymentOrder createOrder(String orderId);
 
@@ -62,10 +60,6 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
     PaymentOrder getOrder(String orderId);
 
     List<PaymentOrder> getOrders();
-
-    String getReturnUrl();
-
-    void setReturnUrl(String returnUrl);
 
     PaymentStatus getStatus();
 
@@ -105,13 +99,13 @@ public interface Payment extends ObjectBuilder.ToBuilder<Payment.Builder> {
 
         Builder payer(String payer);
 
-        Builder returnUrl(String returnUrl);
+        /*Builder returnUrl(String returnUrl);*/
 
-        Builder instrument(PaymentInstrument instrument);
+      /*  Builder instrument(PaymentInstrument instrument);
 
         Builder instrument(Consumer<PaymentInstrument> consumer);
 
-        Builder instrument(Function<Payment, PaymentInstrument> function);
+        Builder instrument(Function<Payment, PaymentInstrument> function);*/
 
         Builder sourceId(String sourceId);
 

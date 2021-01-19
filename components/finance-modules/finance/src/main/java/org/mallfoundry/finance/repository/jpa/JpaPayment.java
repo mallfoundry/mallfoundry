@@ -21,17 +21,15 @@ package org.mallfoundry.finance.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.finance.DefaultPaymentInstrument;
 import org.mallfoundry.finance.DefaultPaymentOrder;
 import org.mallfoundry.finance.Payment;
-import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.PaymentOrder;
 import org.mallfoundry.finance.PaymentRefund;
 import org.mallfoundry.finance.PaymentStatus;
 import org.mallfoundry.finance.PaymentSupport;
-import org.mallfoundry.finance.repository.jpa.convert.PaymentInstrumentConverter;
+import org.mallfoundry.finance.Source;
 import org.mallfoundry.finance.repository.jpa.convert.PaymentOrdersConverter;
+import org.mallfoundry.finance.repository.jpa.convert.SourceConverter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -67,15 +65,12 @@ public class JpaPayment extends PaymentSupport {
     @Column(name = "payer_")
     private String payer;
 
-    @Column(name = "instrument_")
-    @Convert(converter = PaymentInstrumentConverter.class)
-    private PaymentInstrument instrument;
+    @Column(name = "source_")
+    @Convert(converter = SourceConverter.class)
+    private Source source;
 
     @Column(name = "source_id_")
     private String sourceId;
-
-    @Column(name = "return_url_")
-    private String returnUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_")
@@ -115,11 +110,6 @@ public class JpaPayment extends PaymentSupport {
     @Override
     public BigDecimal getTotalAmount() {
         return Objects.requireNonNullElse(this.totalAmount, BigDecimal.ZERO);
-    }
-
-    @Override
-    public PaymentInstrument createInstrument(PaymentMethodType type) {
-        return new DefaultPaymentInstrument(type);
     }
 
     @Override

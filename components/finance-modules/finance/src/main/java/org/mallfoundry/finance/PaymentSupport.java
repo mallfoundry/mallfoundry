@@ -163,29 +163,6 @@ public abstract class PaymentSupport implements MutablePayment {
         }
 
         @Override
-        public Builder returnUrl(String returnUrl) {
-            return null;
-        }
-
-        @Override
-        public Builder instrument(PaymentInstrument instrument) {
-            this.payment.setInstrument(instrument);
-            return this;
-        }
-
-        @Override
-        public Builder instrument(Consumer<PaymentInstrument> consumer) {
-            var instrument = this.payment.createInstrument(null);
-            consumer.accept(instrument);
-            return this.instrument(instrument);
-        }
-
-        @Override
-        public Builder instrument(Function<Payment, PaymentInstrument> function) {
-            return this.instrument(function.apply(this.payment));
-        }
-
-        @Override
         public Builder sourceId(String sourceId) {
             return null;
         }
