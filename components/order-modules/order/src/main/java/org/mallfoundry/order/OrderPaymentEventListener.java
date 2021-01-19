@@ -38,8 +38,9 @@ public class OrderPaymentEventListener {
     }
 
     private OrderPaymentResult createPaymentResult(Payment payment) {
-        var instrument = payment.getInstrument();
-        return new DefaultOrderPaymentResult(payment.getId(), instrument.getType(), payment.getStatus());
+//        var instrument = payment.getInstrument();
+//        return new DefaultOrderPaymentResult(payment.getId(), instrument.getType(), payment.getStatus());
+        return new DefaultOrderPaymentResult(payment.getId(), null, payment.getStatus());
     }
 
     @EventListener

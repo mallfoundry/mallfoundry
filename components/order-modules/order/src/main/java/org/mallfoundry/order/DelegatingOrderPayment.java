@@ -21,8 +21,6 @@ package org.mallfoundry.order;
 import lombok.Getter;
 import lombok.Setter;
 import org.mallfoundry.finance.Payment;
-import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethodType;
 
 import java.util.Set;
 
@@ -36,31 +34,6 @@ public class DelegatingOrderPayment extends OrderPaymentSupport {
 
     public DelegatingOrderPayment(Payment payment) {
         this.payment = payment;
-    }
-
-    @Override
-    public PaymentInstrument createInstrument(PaymentMethodType type) {
-        return this.payment.createInstrument(type);
-    }
-
-    @Override
-    public PaymentInstrument getInstrument() {
-        return this.payment.getInstrument();
-    }
-
-    @Override
-    public void setInstrument(PaymentInstrument instrument) {
-        this.payment.setInstrument(instrument);
-    }
-
-    @Override
-    public String getReturnUrl() {
-        return this.payment.getReturnUrl();
-    }
-
-    @Override
-    public void setReturnUrl(String returnUrl) {
-        this.payment.setReturnUrl(returnUrl);
     }
 
     @Override

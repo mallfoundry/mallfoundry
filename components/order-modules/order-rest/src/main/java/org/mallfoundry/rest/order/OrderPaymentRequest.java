@@ -20,7 +20,6 @@ package org.mallfoundry.rest.order;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mallfoundry.finance.PaymentInstrument;
 import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.order.OrderPayment;
 
@@ -39,16 +38,16 @@ public class OrderPaymentRequest {
     static class InstrumentRequest {
         private PaymentMethodType type;
 
-        public PaymentInstrument assignTo(PaymentInstrument aInstrument) {
+        /*public PaymentInstrument assignTo(PaymentInstrument aInstrument) {
             return aInstrument.toBuilder().type(this.type).build();
-        }
+        }*/
     }
 
     public OrderPayment assignTo(OrderPayment payment) {
         return payment.toBuilder()
                 .orderIds(this.orderIds)
-                .instrument(this.instrument::assignTo)
-                .returnUrl(this.returnUrl)
+//                .instrument(this.instrument::assignTo)
+//                .returnUrl(this.returnUrl)
                 .build();
     }
 }

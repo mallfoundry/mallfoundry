@@ -18,10 +18,7 @@
 
 package org.mallfoundry.order;
 
-import org.mallfoundry.finance.PaymentInstrument;
-
 import java.util.Set;
-import java.util.function.Function;
 
 public abstract class OrderPaymentSupport implements OrderPayment {
 
@@ -43,29 +40,6 @@ public abstract class OrderPaymentSupport implements OrderPayment {
         public Builder orderIds(Set<String> orderIds) {
             this.payment.setOrderIds(orderIds);
             return this;
-        }
-
-        @Override
-        public Builder returnUrl(String returnUrl) {
-            this.payment.setReturnUrl(returnUrl);
-            return this;
-        }
-
-        @Override
-        public Builder instrument(PaymentInstrument instrument) {
-            this.payment.setInstrument(instrument);
-            return this;
-        }
-
-        @Override
-        public Builder instrument(InstrumentFunction function) {
-            return this.instrument(function.apply(this.payment));
-        }
-
-        @Override
-        public Builder instrument(Function<PaymentInstrument, PaymentInstrument> function) {
-            var instrument = this.payment.createInstrument(null);
-            return this.instrument(function.apply(instrument));
         }
 
         @Override

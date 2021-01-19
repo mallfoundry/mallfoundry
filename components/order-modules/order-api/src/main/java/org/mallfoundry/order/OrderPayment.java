@@ -19,46 +19,19 @@
 package org.mallfoundry.order;
 
 import org.mallfoundry.finance.Payment;
-import org.mallfoundry.finance.PaymentInstrument;
-import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.util.ObjectBuilder;
 
 import java.util.Set;
-import java.util.function.Function;
 
 public interface OrderPayment extends ObjectBuilder.ToBuilder<OrderPayment.Builder> {
-
-    PaymentInstrument createInstrument(PaymentMethodType type);
-
-    PaymentInstrument getInstrument();
-
-    void setInstrument(PaymentInstrument instrument);
 
     Set<String> getOrderIds();
 
     void setOrderIds(Set<String> orderIds);
 
-    String getReturnUrl();
-
-    void setReturnUrl(String returnUrl);
-
     Payment toPayment();
 
     interface Builder extends ObjectBuilder<OrderPayment> {
-
         Builder orderIds(Set<String> orderIds);
-
-        Builder returnUrl(String returnUrl);
-
-        Builder instrument(PaymentInstrument instrument);
-
-        Builder instrument(InstrumentFunction function);
-
-        Builder instrument(Function<PaymentInstrument, PaymentInstrument> function);
-
-        @FunctionalInterface
-        interface InstrumentFunction extends Function<OrderPayment, PaymentInstrument> {
-
-        }
     }
 }
