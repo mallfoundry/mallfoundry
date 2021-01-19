@@ -35,7 +35,6 @@ public class PaymentServiceTests {
                 .toBuilder()
                 .payerId("p1")
                 .payer("per")
-                .instrument(Failable.asConsumer(instrument -> instrument.toBuilder().type(PaymentMethodType.ALIPAY).build()))
                 .order(Failable.asConsumer(order -> order.toBuilder().id("o1").storeId("s1").amount(1).build()))
                 .order(Failable.asConsumer(order -> order.toBuilder().id("o2").storeId("s1").amount(1.2).build()))
                 .order(Failable.asConsumer(order -> order.toBuilder().id("o3").storeId("s1").amount(1.1).build()))
