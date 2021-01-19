@@ -24,10 +24,6 @@ import org.mallfoundry.thirdpay.PaymentClientFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Map;
-import java.util.Optional;
 
 public class DefaultPaymentService implements PaymentService, ApplicationEventPublisherAware {
 
@@ -66,6 +62,11 @@ public class DefaultPaymentService implements PaymentService, ApplicationEventPu
         var savedPayment = this.paymentRepository.save(payment);
         this.eventPublisher.publishEvent(new ImmutablePaymentStartedEvent(savedPayment));
         return savedPayment;
+    }
+
+    @Override
+    public Payment getPayment(String id) {
+        return this.paymentRepository.findById(id).orElseThrow();
     }
 
     private void capturePayment(Payment payment) throws PaymentException {
@@ -111,23 +112,5 @@ public class DefaultPaymentService implements PaymentService, ApplicationEventPu
             this.capturePayment(payment);
         }
         return notification;
-    }
-
-    @Override
-    public Optional<Payment> getPayment(String id) {
-        return this.paymentRepository.findById(id);
-    }
-
-    @Transactional
-    @Override
-    public String redirectPaymentUrl(String id) {
-        var payment = this.requiredPayment(id);
-        return this.clientFactory.getClient(payment).redirectPaymentUrl(payment);
-    }
-
-    @Override
-    public String returnPaymentUrl(String id) {
-        var payment = this.requiredPayment(id);
-        return UriComponentsBuilder.fromHttpUrl(payment.getReturnUrl()).build(Map.of("payment_id", payment.getId())).toString();
     }
 }

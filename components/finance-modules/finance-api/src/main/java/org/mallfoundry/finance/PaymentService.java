@@ -18,23 +18,17 @@
 
 package org.mallfoundry.finance;
 
-import java.util.Optional;
-
 public interface PaymentService {
 
     Payment createPayment(String id);
 
     Payment startPayment(Payment payment);
 
+    Payment getPayment(String id);
+
     void capturePayment(String id) throws PaymentException;
 
     PaymentRefund refundPayment(String id, PaymentRefund refund);
 
     PaymentNotification notifyPayment(String id, Object parameters);
-
-    Optional<Payment> getPayment(String id);
-
-    String redirectPaymentUrl(String id);
-
-    String returnPaymentUrl(String id);
 }

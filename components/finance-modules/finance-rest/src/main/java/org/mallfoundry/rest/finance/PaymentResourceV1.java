@@ -50,26 +50,6 @@ public class PaymentResourceV1 {
         return this.paymentService.getPayment(id);
     }
 
-    @GetMapping("/payments/{id}/redirect-url")
-    public String redirectPaymentUrl(@PathVariable("id") String id) {
-        return this.paymentService.redirectPaymentUrl(id);
-    }
-
-    @GetMapping("/payments/{id}/redirect")
-    public void redirectPayment(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
-        response.sendRedirect(this.paymentService.redirectPaymentUrl(id));
-    }
-
-    @GetMapping("/payments/{id}/return-url")
-    public String getPaymentReturnUrl(@PathVariable("id") String id) {
-        return this.paymentService.returnPaymentUrl(id);
-    }
-
-    @GetMapping("/payments/{id}/return")
-    public void returnPayment(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
-        response.sendRedirect(this.paymentService.returnPaymentUrl(id));
-    }
-
     private Map<String, String> createSingleValueParameters(HttpServletRequest request) {
         var map = new LinkedHashMap<String, String>();
         var names = request.getParameterNames();
