@@ -36,10 +36,6 @@ public interface TopupQuery extends Query, ObjectBuilder.ToBuilder<TopupQuery.Bu
 
     void setStatuses(Set<TopupStatus> statuses);
 
-    Set<ChannelType> getChannels();
-
-    void setChannels(Set<ChannelType> channels);
-
     Date getCreatedTimeStart();
 
     void setCreatedTimeStart(Date createdTimeStart);
@@ -55,10 +51,6 @@ public interface TopupQuery extends Query, ObjectBuilder.ToBuilder<TopupQuery.Bu
         Builder statuses(Set<TopupStatus> statuses);
 
         Builder statuses(Supplier<Set<TopupStatus>> supplier);
-
-        Builder channels(Set<ChannelType> channels);
-
-        Builder channels(Supplier<Set<ChannelType>> supplier);
 
         Builder createdTimeStart(Date createdTimeStart);
 

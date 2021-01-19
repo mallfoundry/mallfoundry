@@ -39,8 +39,6 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
 
     private Set<TopupStatus> statuses;
 
-    private Set<ChannelType> channels;
-
     @Override
     public Builder toBuilder() {
         return new BuilderSupport(this) {
@@ -71,17 +69,6 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
         @Override
         public Builder statuses(Supplier<Set<TopupStatus>> supplier) {
             return this.statuses(supplier.get());
-        }
-
-        @Override
-        public Builder channels(Set<ChannelType> channels) {
-            this.query.setChannels(channels);
-            return this;
-        }
-
-        @Override
-        public Builder channels(Supplier<Set<ChannelType>> supplier) {
-            return this.channels(supplier.get());
         }
 
         @Override

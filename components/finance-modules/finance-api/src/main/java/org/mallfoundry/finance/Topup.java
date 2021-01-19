@@ -56,8 +56,6 @@ public interface Topup extends Serializable, ObjectBuilder.ToBuilder<Topup.Build
 
     TopupStatus getStatus();
 
-    ChannelType getChannel();
-
     Source createSource();
 
     Source getSource();
