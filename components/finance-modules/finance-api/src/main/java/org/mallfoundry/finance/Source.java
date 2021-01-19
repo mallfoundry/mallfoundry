@@ -24,9 +24,9 @@ import java.io.Serializable;
 
 public interface Source extends Serializable, ObjectBuilder.ToBuilder<Source.Builder> {
 
-    ChannelType getType();
+    PaymentMethodType getType();
 
-    void setType(ChannelType type);
+    void setType(PaymentMethodType type);
 
     String getRedirectUrl();
 
@@ -37,6 +37,6 @@ public interface Source extends Serializable, ObjectBuilder.ToBuilder<Source.Bui
     void setReturnUrl(String returnUrl);
 
     interface Builder extends ObjectBuilder<Source> {
-        Builder type(ChannelType type);
+        Builder type(PaymentMethodType type);
     }
 }
