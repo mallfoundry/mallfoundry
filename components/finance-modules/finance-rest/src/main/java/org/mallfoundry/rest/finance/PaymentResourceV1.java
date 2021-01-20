@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Tag(name = "Payments")
 @RestController
@@ -46,7 +45,7 @@ public class PaymentResourceV1 {
     }
 
     @GetMapping("/payments/{id}")
-    public Optional<Payment> getPayment(@PathVariable("id") String id) {
+    public Payment getPayment(@PathVariable("id") String id) {
         return this.paymentService.getPayment(id);
     }
 
