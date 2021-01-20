@@ -38,6 +38,7 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
     private Date createdTimeEnd;
 
     private Set<TopupStatus> statuses;
+    private Set<PaymentMethodType> paymentMethods;
 
     @Override
     public Builder toBuilder() {
@@ -69,6 +70,17 @@ public class DefaultTopupQuery extends QuerySupport implements TopupQuery {
         @Override
         public Builder statuses(Supplier<Set<TopupStatus>> supplier) {
             return this.statuses(supplier.get());
+        }
+
+        @Override
+        public Builder paymentMethods(Set<PaymentMethodType> paymentMethods) {
+            this.query.setPaymentMethods(paymentMethods);
+            return this;
+        }
+
+        @Override
+        public Builder paymentMethods(Supplier<Set<PaymentMethodType>> supplier) {
+            return this.paymentMethods(supplier.get());
         }
 
         @Override

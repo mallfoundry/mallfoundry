@@ -49,9 +49,10 @@ public interface JpaTopupRepository extends JpaRepository<JpaTopup, String>, Jpa
                 predicate.getExpressions().add(criteriaBuilder.in(root.get("status")).value(topupQuery.getStatuses()));
             }
 
-            if (CollectionUtils.isNotEmpty(topupQuery.getChannels())) {
-                predicate.getExpressions().add(criteriaBuilder.in(root.get("channel")).value(topupQuery.getChannels()));
-            }
+            // TODO 稍后使用 join 实现。
+            /*if (CollectionUtils.isNotEmpty(topupQuery.getPaymentMethods())) {
+                predicate.getExpressions().add(criteriaBuilder.in(root.get("paymentMethods")).value(topupQuery.getPaymentMethods()));
+            }*/
 
             if (Objects.nonNull(topupQuery.getCreatedTimeStart())) {
                 predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTime"), topupQuery.getCreatedTimeStart()));
