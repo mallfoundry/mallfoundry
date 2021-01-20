@@ -16,7 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security.repository.jpa;
+package org.mallfoundry.security;
 
-public class JpaAuthorityDescriptionId {
+import java.util.List;
+import java.util.Optional;
+
+public interface AuthorityRepository {
+
+    Authority create(AuthorityId authorityId);
+
+    Authority save(Authority authority);
+
+    List<Authority> saveAll(List<Authority> authorities);
+
+    Optional<Authority> findById(AuthorityId authorityId);
 }

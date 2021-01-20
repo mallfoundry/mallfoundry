@@ -22,29 +22,29 @@ import org.mallfoundry.util.Positions;
 
 import java.util.List;
 
-public abstract class AuthorityDescriptionSupport implements MutableAuthorityDescription {
+public abstract class AuthoritySupport implements MutableAuthority {
 
     @Override
-    public void addAuthority(AuthorityDescription authority) {
+    public void addAuthority(Authority authority) {
         authority.setPosition(Integer.MAX_VALUE);
         this.getChildren().add(authority);
         Positions.sort(this.getChildren());
     }
 
     @Override
-    public void addAuthorities(List<AuthorityDescription> authorities) {
+    public void addAuthorities(List<Authority> authorities) {
         authorities.forEach(authority -> authority.setPosition(Integer.MAX_VALUE));
         this.getChildren().addAll(authorities);
         Positions.sort(this.getChildren());
     }
 
     @Override
-    public void removeAuthority(AuthorityDescription authority) {
+    public void removeAuthority(Authority authority) {
         this.getChildren().remove(authority);
     }
 
     @Override
-    public void removeAuthorities(List<AuthorityDescription> authorities) {
+    public void removeAuthorities(List<Authority> authorities) {
         this.getChildren().removeAll(authorities);
     }
 
@@ -55,21 +55,16 @@ public abstract class AuthorityDescriptionSupport implements MutableAuthorityDes
     }
 
     protected abstract static class BuilderSupport implements Builder {
-        private final AuthorityDescriptionSupport authority;
 
-        protected BuilderSupport(AuthorityDescriptionSupport authority) {
+        private final AuthoritySupport authority;
+
+        protected BuilderSupport(AuthoritySupport authority) {
             this.authority = authority;
         }
 
         @Override
-        public Builder authority(String authority) {
-            this.authority.setAuthority(authority);
-            return this;
-        }
-
-        @Override
-        public Builder language(String language) {
-            this.authority.setLanguage(language);
+        public Builder code(String code) {
+            this.authority.setCode(code);
             return this;
         }
 
@@ -86,19 +81,19 @@ public abstract class AuthorityDescriptionSupport implements MutableAuthorityDes
         }
 
         @Override
-        public Builder addAuthority(AuthorityDescription authority) {
+        public Builder addAuthority(Authority authority) {
             this.authority.addAuthority(authority);
             return this;
         }
 
         @Override
-        public Builder addAuthorities(List<AuthorityDescription> authorities) {
+        public Builder addAuthorities(List<Authority> authorities) {
             this.authority.addAuthorities(authorities);
             return this;
         }
 
         @Override
-        public AuthorityDescription build() {
+        public Authority build() {
             return this.authority;
         }
     }

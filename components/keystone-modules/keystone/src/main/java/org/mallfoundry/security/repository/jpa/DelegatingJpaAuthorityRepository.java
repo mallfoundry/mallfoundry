@@ -16,11 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.security;
+package org.mallfoundry.security.repository.jpa;
 
-public interface AuthorityDescriptionId {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    String getAuthority();
-
-    String getLanguage();
+public interface DelegatingJpaAuthorityRepository extends JpaRepository<JpaAuthority, String> {
 }

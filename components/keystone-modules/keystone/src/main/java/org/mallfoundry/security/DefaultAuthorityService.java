@@ -18,41 +18,28 @@
 
 package org.mallfoundry.security;
 
-import org.mallfoundry.i18n.MessageHolder;
-
-import java.util.Objects;
 import java.util.Optional;
 
 public class DefaultAuthorityService implements AuthorityService {
 
-    private final AuthorityDescriptionRepository authorityDescriptionRepository;
+    private final AuthorityRepository authorityRepository;
 
-    public DefaultAuthorityService(AuthorityDescriptionRepository authorityDescriptionRepository) {
-        this.authorityDescriptionRepository = authorityDescriptionRepository;
+    public DefaultAuthorityService(AuthorityRepository authorityRepository) {
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
-    public AuthorityDescriptionId createAuthorityDescriptionId(String authority) {
-        return this.createAuthorityDescriptionId(authority, null);
+    public AuthorityId createAuthorityId(String code) {
+        return new ImmutableAuthorityId(code);
     }
 
     @Override
-    public AuthorityDescriptionId createAuthorityDescriptionId(String authority, String language) {
-        return new ImmutableAuthorityDescriptionId(authority, Objects.requireNonNullElseGet(language, MessageHolder::getLanguage));
+    public Authority createAuthority(AuthorityId authorityId) {
+        return this.authorityRepository.create(authorityId);
     }
 
     @Override
-    public AuthorityDescription createAuthorityDescription(String authority) {
-        return this.createAuthorityDescription(authority, null);
-    }
-
-    @Override
-    public AuthorityDescription createAuthorityDescription(String authority, String language) {
-        return this.authorityDescriptionRepository.create(authority, Objects.requireNonNullElseGet(language, MessageHolder::getLanguage));
-    }
-
-    @Override
-    public Optional<AuthorityDescription> getAuthorityDescription(AuthorityDescriptionId descriptionId) {
-        return this.authorityDescriptionRepository.findById(descriptionId);
+    public Optional<Authority> getAuthority(AuthorityId authorityId) {
+        return this.authorityRepository.findById(authorityId);
     }
 }

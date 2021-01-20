@@ -18,16 +18,6 @@
 
 package org.mallfoundry.security;
 
-import lombok.Getter;
-
-@Getter
-public class ImmutableAuthorityDescriptionId implements AuthorityDescriptionId {
-    private final String authority;
-
-    private final String language;
-
-    public ImmutableAuthorityDescriptionId(String authority, String language) {
-        this.authority = authority;
-        this.language = language;
-    }
+public interface AuthorityId {
+    String getCode();
 }

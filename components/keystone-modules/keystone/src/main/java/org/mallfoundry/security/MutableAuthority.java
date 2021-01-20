@@ -18,16 +18,5 @@
 
 package org.mallfoundry.security;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface AuthorityDescriptionRepository {
-
-    AuthorityDescription create(String authority, String language);
-
-    AuthorityDescription save(AuthorityDescription authority);
-
-    List<AuthorityDescription> saveAll(List<AuthorityDescription> descriptions);
-
-    Optional<AuthorityDescription> findById(AuthorityDescriptionId id);
+public interface MutableAuthority extends Authority {
 }

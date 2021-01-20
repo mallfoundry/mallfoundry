@@ -18,42 +18,42 @@
 
 package org.mallfoundry.security.repository.jpa;
 
-import org.mallfoundry.security.AuthorityDescription;
-import org.mallfoundry.security.AuthorityDescriptionId;
-import org.mallfoundry.security.AuthorityDescriptionRepository;
+import org.mallfoundry.security.Authority;
+import org.mallfoundry.security.AuthorityId;
+import org.mallfoundry.security.AuthorityRepository;
 import org.springframework.data.util.CastUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class JpaAuthorityDescriptionRepository implements AuthorityDescriptionRepository {
+public class JpaAuthorityRepository implements AuthorityRepository {
 
-    private final DelegatingJpaAuthorityDescriptionRepository repository;
+    private final DelegatingJpaAuthorityRepository repository;
 
-    public JpaAuthorityDescriptionRepository(DelegatingJpaAuthorityDescriptionRepository repository) {
+    public JpaAuthorityRepository(DelegatingJpaAuthorityRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public AuthorityDescription create(String authority, String language) {
-        return new JpaAuthorityDescription(language, authority);
+    public Authority create(AuthorityId authorityId) {
+        return new JpaAuthority(authorityId);
     }
 
     @Override
-    public AuthorityDescription save(AuthorityDescription authority) {
-        return this.repository.save(JpaAuthorityDescription.of(authority));
+    public Authority save(Authority authority) {
+        return this.repository.save(JpaAuthority.of(authority));
     }
 
     @Override
-    public List<AuthorityDescription> saveAll(List<AuthorityDescription> descriptions) {
-        var jpaDescriptions = descriptions.stream().map(JpaAuthorityDescription::of)
+    public List<Authority> saveAll(List<Authority> descriptions) {
+        var jpaDescriptions = descriptions.stream().map(JpaAuthority::of)
                 .collect(Collectors.toUnmodifiableList());
         return CastUtils.cast(this.repository.saveAll(jpaDescriptions));
     }
 
     @Override
-    public Optional<AuthorityDescription> findById(AuthorityDescriptionId id) {
-        return CastUtils.cast(this.repository.findById(id.getAuthority()));
+    public Optional<Authority> findById(AuthorityId id) {
+        return CastUtils.cast(this.repository.findById(id.getCode()));
     }
 }

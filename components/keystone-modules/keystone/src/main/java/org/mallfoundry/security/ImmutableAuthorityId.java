@@ -18,5 +18,14 @@
 
 package org.mallfoundry.security;
 
-public interface MutableAuthorityDescription extends AuthorityDescription {
+import lombok.Getter;
+
+@Getter
+public class ImmutableAuthorityId implements AuthorityId {
+
+    private final String code;
+
+    public ImmutableAuthorityId(String code) {
+        this.code = code;
+    }
 }

@@ -23,15 +23,11 @@ import org.mallfoundry.util.Position;
 
 import java.util.List;
 
-public interface AuthorityDescription extends Position, ObjectBuilder.ToBuilder<AuthorityDescription.Builder> {
+public interface Authority extends Position, ObjectBuilder.ToBuilder<Authority.Builder> {
 
-    String getAuthority();
+    String getCode();
 
-    void setAuthority(String authority);
-
-    String getLanguage();
-
-    void setLanguage(String language);
+    void setCode(String code);
 
     String getName();
 
@@ -41,28 +37,26 @@ public interface AuthorityDescription extends Position, ObjectBuilder.ToBuilder<
 
     void setDescription(String description);
 
-    List<AuthorityDescription> getChildren();
+    List<Authority> getChildren();
 
-    void addAuthority(AuthorityDescription authority);
+    void addAuthority(Authority authority);
 
-    void addAuthorities(List<AuthorityDescription> authorities);
+    void addAuthorities(List<Authority> authorities);
 
-    void removeAuthority(AuthorityDescription authority);
+    void removeAuthority(Authority authority);
 
-    void removeAuthorities(List<AuthorityDescription> authorities);
+    void removeAuthorities(List<Authority> authorities);
 
-    interface Builder extends ObjectBuilder<AuthorityDescription> {
+    interface Builder extends ObjectBuilder<Authority> {
 
-        Builder authority(String authority);
-
-        Builder language(String language);
+        Builder code(String code);
 
         Builder name(String name);
 
         Builder position(int position);
 
-        Builder addAuthority(AuthorityDescription authority);
+        Builder addAuthority(Authority authority);
 
-        Builder addAuthorities(List<AuthorityDescription> authorities);
+        Builder addAuthorities(List<Authority> authorities);
     }
 }

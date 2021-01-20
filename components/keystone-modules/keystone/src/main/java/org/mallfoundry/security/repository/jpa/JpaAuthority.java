@@ -21,8 +21,9 @@ package org.mallfoundry.security.repository.jpa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.mallfoundry.security.AuthorityDescription;
-import org.mallfoundry.security.AuthorityDescriptionSupport;
+import org.mallfoundry.security.Authority;
+import org.mallfoundry.security.AuthorityId;
+import org.mallfoundry.security.AuthoritySupport;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.CascadeType;
@@ -43,14 +44,11 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "mf_authority_description")
-public class JpaAuthorityDescription extends AuthorityDescriptionSupport {
+public class JpaAuthority extends AuthoritySupport {
 
     @Id
-    @Column(name = "authority_")
-    private String authority;
-
-    @Column(name = "language_")
-    private String language;
+    @Column(name = "code_")
+    private String code;
 
     @Column(name = "name_")
     private String name;
@@ -58,26 +56,25 @@ public class JpaAuthorityDescription extends AuthorityDescriptionSupport {
     @Column(name = "description_")
     private String description;
 
-    @OneToMany(targetEntity = JpaAuthorityDescription.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_authority_")
+    @OneToMany(targetEntity = JpaAuthority.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_code_")
     @OrderBy("position")
-    private List<AuthorityDescription> children = new ArrayList<>();
+    private List<Authority> children = new ArrayList<>();
 
     @Column(name = "position_")
     private int position;
 
-    public static JpaAuthorityDescription of(AuthorityDescription authority) {
-        if (authority instanceof JpaAuthorityDescription) {
-            return (JpaAuthorityDescription) authority;
+    public static JpaAuthority of(Authority authority) {
+        if (authority instanceof JpaAuthority) {
+            return (JpaAuthority) authority;
         }
-        var target = new JpaAuthorityDescription();
+        var target = new JpaAuthority();
         BeanUtils.copyProperties(authority, target);
         return target;
     }
 
-    public JpaAuthorityDescription(String authority, String language) {
-        this.authority = authority;
-        this.language = language;
+    public JpaAuthority(AuthorityId authorityId) {
+        this.code = authorityId.getCode();
     }
 
     @Override
@@ -85,15 +82,15 @@ public class JpaAuthorityDescription extends AuthorityDescriptionSupport {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof JpaAuthorityDescription)) {
+        if (!(object instanceof JpaAuthority)) {
             return false;
         }
-        JpaAuthorityDescription that = (JpaAuthorityDescription) object;
-        return Objects.equals(authority, that.authority);
+        JpaAuthority that = (JpaAuthority) object;
+        return Objects.equals(code, that.code);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authority);
+        return Objects.hash(code);
     }
 }

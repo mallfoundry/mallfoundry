@@ -18,14 +18,14 @@
 
 package org.mallfoundry.autoconfigure.security;
 
-import org.mallfoundry.security.AuthorityDescriptionRepository;
+import org.mallfoundry.security.AuthorityRepository;
 import org.mallfoundry.security.DefaultAuthorityService;
 import org.mallfoundry.security.SecurityContextSystemUserSwitcher;
 import org.mallfoundry.security.SecuritySubjectHolderStrategy;
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.security.SubjectSwitches;
-import org.mallfoundry.security.repository.jpa.JpaAuthorityDescriptionRepository;
-import org.mallfoundry.security.repository.jpa.DelegatingJpaAuthorityDescriptionRepository;
+import org.mallfoundry.security.repository.jpa.JpaAuthorityRepository;
+import org.mallfoundry.security.repository.jpa.DelegatingJpaAuthorityRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -35,12 +35,12 @@ import org.springframework.context.annotation.Import;
 public class SecurityAutoConfiguration {
 
     @Bean
-    public JpaAuthorityDescriptionRepository jpaAuthorityDescriptionRepository(DelegatingJpaAuthorityDescriptionRepository repository) {
-        return new JpaAuthorityDescriptionRepository(repository);
+    public JpaAuthorityRepository jpaAuthorityDescriptionRepository(DelegatingJpaAuthorityRepository repository) {
+        return new JpaAuthorityRepository(repository);
     }
 
     @Bean
-    public DefaultAuthorityService defaultAuthorityService(AuthorityDescriptionRepository authorityDescriptionRepository) {
+    public DefaultAuthorityService defaultAuthorityService(AuthorityRepository authorityDescriptionRepository) {
         return new DefaultAuthorityService(authorityDescriptionRepository);
     }
 

@@ -22,13 +22,9 @@ import java.util.Optional;
 
 public interface AuthorityService {
 
-    AuthorityDescriptionId createAuthorityDescriptionId(String authority);
+    AuthorityId createAuthorityId(String code);
 
-    AuthorityDescriptionId createAuthorityDescriptionId(String authority, String language);
+    Authority createAuthority(AuthorityId authorityId);
 
-    AuthorityDescription createAuthorityDescription(String authority);
-
-    AuthorityDescription createAuthorityDescription(String authority, String language);
-
-    Optional<AuthorityDescription> getAuthorityDescription(AuthorityDescriptionId descriptionId);
+    Optional<Authority> getAuthority(AuthorityId descriptionId);
 }

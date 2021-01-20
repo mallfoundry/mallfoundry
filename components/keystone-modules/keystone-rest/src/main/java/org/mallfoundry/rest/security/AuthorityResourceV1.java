@@ -19,7 +19,7 @@
 package org.mallfoundry.rest.security;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.mallfoundry.security.AuthorityDescription;
+import org.mallfoundry.security.Authority;
 import org.mallfoundry.security.AuthorityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +38,8 @@ public class AuthorityResourceV1 {
         this.authorityService = authorityService;
     }
 
-    @GetMapping("/authorities/{authority}/description")
-    public Optional<AuthorityDescription> getAuthorityDescription(@PathVariable("authority") String authority) {
-        return this.authorityService.getAuthorityDescription(this.authorityService.createAuthorityDescriptionId(authority));
+    @GetMapping("/authorities/{authority_code}")
+    public Optional<Authority> getAuthorityDescription(@PathVariable("authority_code") String code) {
+        return this.authorityService.getAuthority(this.authorityService.createAuthorityId(code));
     }
 }
