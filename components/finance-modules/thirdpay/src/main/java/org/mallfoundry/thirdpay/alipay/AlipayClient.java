@@ -162,6 +162,6 @@ public class AlipayClient implements PaymentClient, InitializingBean {
 
     @Override
     public boolean supportsPayment(Payment payment) {
-        return PaymentMethodType.ALIPAY.equals(payment.getInstrument().getType());
+        return PaymentMethodType.ALIPAY.equals(payment.getSource().getType());
     }
 }
