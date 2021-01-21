@@ -43,7 +43,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "mf_authority_description")
+@Table(name = "mf_authority")
 public class JpaAuthority extends AuthoritySupport {
 
     @Id
