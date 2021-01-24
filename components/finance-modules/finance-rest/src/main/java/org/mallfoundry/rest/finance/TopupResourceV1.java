@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mallfoundry.data.SliceList;
+import org.mallfoundry.finance.PaymentMethodType;
 import org.mallfoundry.finance.Topup;
 import org.mallfoundry.finance.TopupService;
 import org.mallfoundry.finance.TopupStatus;
@@ -65,7 +66,7 @@ public class TopupResourceV1 {
                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                       @RequestParam("account_id") String accountId,
                                       @RequestParam(name = "statuses", required = false) Set<String> statuses,
-            /*@RequestParam(name = "channels", required = false) Set<String> channels,*/
+                                      @RequestParam(name = "source_types", required = false) Set<String> sourceTypes,
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                       @RequestParam(name = "created_time_start", required = false) Date createdTimeStart,
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -75,9 +76,9 @@ public class TopupResourceV1 {
                 .statuses(() ->
                         CollectionUtils.emptyIfNull(statuses).stream().map(StringUtils::upperCase)
                                 .map(TopupStatus::valueOf).collect(Collectors.toUnmodifiableSet()))
-                /*.channels(() ->
-                        CollectionUtils.emptyIfNull(channels).stream().map(StringUtils::upperCase)
-                                .map(ChannelType::valueOf).collect(Collectors.toUnmodifiableSet()))*/
+                .sourceTypes(() ->
+                        CollectionUtils.emptyIfNull(sourceTypes).stream().map(StringUtils::upperCase)
+                                .map(PaymentMethodType::valueOf).collect(Collectors.toUnmodifiableSet()))
                 .createdTimeStart(createdTimeStart).createdTimeEnd(createdTimeEnd)
                 .build();
         return this.topupService.getTopups(query);
