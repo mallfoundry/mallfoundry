@@ -32,7 +32,7 @@ public interface Product extends ProductBody, StoreOwnership {
 
 ## 业务模块（Package） 
 
-![Modules](https://gitee.com/mallfoundry/mall/raw/master/docs/images/modules.png)
+![Modules](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/modules.png)
 
 Mallfoundry 整体由共享内核、支撑域、业务域和核心域四个部分组成。
 
@@ -61,7 +61,7 @@ Mallfoundry 整体由共享内核、支撑域、业务域和核心域四个部�
 使用 Git 克隆到本地进行开发。
 
 ```
-$ git clone https://gitee.com/mallfoundry/mall.git
+$ git clone https://gitee.com/mallfoundry/mallfoundry.git
 $ cd mall
 $ mvn compile
 ```
@@ -84,26 +84,26 @@ $ cat StandaloneSpringBootApplication.java
 
 整个 Mallfoundry 采用前后端分离的架构，后端服务不包含前端界面，需要另行编译安装前端。
 
-* 商家后台：<https://gitee.com/mallfoundry/mall-store>
+* 商家后台：<https://gitee.com/mallfoundry/mallfoundry-store>
 * 前台 H5：<https://gitee.com/mallfoundry/mall-h5-vue>
 
 ### 商家后台
 
-![store-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-list.png)
+![store-list](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-list.png)
 
-![store-dashboard](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-dashboard.png)
+![store-dashboard](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-dashboard.png)
 
-![store-product-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-product-list.png)
+![store-product-list](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-product-list.png)
 
-![store-product](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-product.png)
+![store-product](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-product.png)
 
-![store-order-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-order-list.png)
+![store-order-list](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-order-list.png)
 
-![store-order](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-order.png)
+![store-order](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-order.png)
 
-![store-coupon-list](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-coupon-list.png)
+![store-coupon-list](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-coupon-list.png)
 
-![store-balance](https://gitee.com/mallfoundry/mall/raw/master/docs/screenshots/store-balance.png)
+![store-balance](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/screenshots/store-balance.png)
 
 ### 前台（H5）
 
@@ -113,7 +113,7 @@ $ cat StandaloneSpringBootApplication.java
 
 获得 Mallfoundry 的最新动态，可以关注公众号「不够具体」。
 
-![qrcode-for-mp](https://gitee.com/mallfoundry/mall/raw/master/docs/images/qrcode-for-mp.jpg)
+![qrcode-for-mp](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/qrcode-for-mp.jpg)
 
 ## 许可证（License）
 
