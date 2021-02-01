@@ -23,37 +23,37 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.mallfoundry</groupId>
-        <artifactId>mall-components</artifactId>
+        <artifactId>mallfoundry-components</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mall-order-api</artifactId>
+    <artifactId>mallfoundry-order-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-commons-api</artifactId>
+            <artifactId>mallfoundry-commons-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-store-api</artifactId>
+            <artifactId>mallfoundry-store-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-customer-api</artifactId>
+            <artifactId>mallfoundry-customer-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-finance-api</artifactId>
+            <artifactId>mallfoundry-finance-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-shipping-api</artifactId>
+            <artifactId>mallfoundry-shipping-api</artifactId>
         </dependency>
 
         <dependency>

@@ -23,17 +23,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.mallfoundry</groupId>
-        <artifactId>mall-components</artifactId>
+        <artifactId>mallfoundry-components</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mall-payment-rest</artifactId>
+    <artifactId>mallfoundry-payment-rest</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-payment-api</artifactId>
+            <artifactId>mallfoundry-payment-api</artifactId>
         </dependency>
 
         <dependency>

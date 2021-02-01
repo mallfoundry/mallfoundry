@@ -23,17 +23,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.mallfoundry</groupId>
-        <artifactId>mall-components</artifactId>
+        <artifactId>mallfoundry-components</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mall-app</artifactId>
+    <artifactId>mallfoundry-app</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-app-api</artifactId>
+            <artifactId>mallfoundry-app-api</artifactId>
         </dependency>
 
         <dependency>
@@ -48,7 +48,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-commons</artifactId>
+            <artifactId>mallfoundry-commons</artifactId>
         </dependency>
 
         <dependency>
@@ -64,7 +64,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mall-test</artifactId>
+            <artifactId>mallfoundry-test</artifactId>
             <scope>test</scope>
         </dependency>
 

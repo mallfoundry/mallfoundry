@@ -26,7 +26,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.mallfoundry</groupId>
-    <artifactId>mall</artifactId>
+    <artifactId>mallfoundry</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -64,315 +64,315 @@
             <!-- mall api libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-commons-api</artifactId>
+                <artifactId>mallfoundry-commons-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-analytics-api</artifactId>
+                <artifactId>mallfoundry-analytics-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-app-api</artifactId>
+                <artifactId>mallfoundry-app-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-catalog-api</artifactId>
+                <artifactId>mallfoundry-catalog-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-storage-api</artifactId>
+                <artifactId>mallfoundry-storage-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-marketing-api</artifactId>
+                <artifactId>mallfoundry-marketing-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-store-api</artifactId>
+                <artifactId>mallfoundry-store-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-order-api</artifactId>
+                <artifactId>mallfoundry-order-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-shipping-api</artifactId>
+                <artifactId>mallfoundry-shipping-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-payment-api</artifactId>
+                <artifactId>mallfoundry-payment-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-finance-api</artifactId>
+                <artifactId>mallfoundry-finance-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-thirdpay-api</artifactId>
+                <artifactId>mallfoundry-thirdpay-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-geography-api</artifactId>
+                <artifactId>mallfoundry-geography-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-dom-api</artifactId>
+                <artifactId>mallfoundry-dom-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-keystone-api</artifactId>
+                <artifactId>mallfoundry-keystone-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-customer-api</artifactId>
+                <artifactId>mallfoundry-customer-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-edw-api</artifactId>
+                <artifactId>mallfoundry-edw-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-content-api</artifactId>
+                <artifactId>mallfoundry-content-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <!-- mall libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-shared</artifactId>
+                <artifactId>mallfoundry-shared</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-analytics</artifactId>
+                <artifactId>mallfoundry-analytics</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-commons</artifactId>
+                <artifactId>mallfoundry-commons</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-marketing</artifactId>
+                <artifactId>mallfoundry-marketing</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-keystone</artifactId>
+                <artifactId>mallfoundry-keystone</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-storage</artifactId>
+                <artifactId>mallfoundry-storage</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-catalog</artifactId>
+                <artifactId>mallfoundry-catalog</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-customer</artifactId>
+                <artifactId>mallfoundry-customer</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-store</artifactId>
+                <artifactId>mallfoundry-store</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-app</artifactId>
+                <artifactId>mallfoundry-app</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-order</artifactId>
+                <artifactId>mallfoundry-order</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-thirdpay</artifactId>
+                <artifactId>mallfoundry-thirdpay</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-finance</artifactId>
+                <artifactId>mallfoundry-finance</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-payment</artifactId>
+                <artifactId>mallfoundry-payment</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-shipping</artifactId>
+                <artifactId>mallfoundry-shipping</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-content</artifactId>
+                <artifactId>mallfoundry-content</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-edw</artifactId>
+                <artifactId>mallfoundry-edw</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-edw-stream</artifactId>
+                <artifactId>mallfoundry-edw-stream</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-test</artifactId>
+                <artifactId>mallfoundry-test</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <!-- mall rest libraries -->
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-commons-rest</artifactId>
+                <artifactId>mallfoundry-commons-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-storage-rest</artifactId>
+                <artifactId>mallfoundry-storage-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-analytics-rest</artifactId>
+                <artifactId>mallfoundry-analytics-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-app-rest</artifactId>
+                <artifactId>mallfoundry-app-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-catalog-rest</artifactId>
+                <artifactId>mallfoundry-catalog-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-content-rest</artifactId>
+                <artifactId>mallfoundry-content-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-customer-rest</artifactId>
+                <artifactId>mallfoundry-customer-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-store-rest</artifactId>
+                <artifactId>mallfoundry-store-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-keystone-rest</artifactId>
+                <artifactId>mallfoundry-keystone-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-payment-rest</artifactId>
+                <artifactId>mallfoundry-payment-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-shipping-rest</artifactId>
+                <artifactId>mallfoundry-shipping-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-order-rest</artifactId>
+                <artifactId>mallfoundry-order-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-marketing-rest</artifactId>
+                <artifactId>mallfoundry-marketing-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-finance-rest</artifactId>
+                <artifactId>mallfoundry-finance-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mall-shared-rest</artifactId>
+                <artifactId>mallfoundry-shared-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
