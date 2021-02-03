@@ -28,7 +28,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mallfoundry-order</artifactId>
+    <artifactId>mallfoundry-trade</artifactId>
 
     <dependencies>
         <dependency>
@@ -61,10 +61,9 @@
             <artifactId>mallfoundry-catalog-api</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-order-api</artifactId>
+            <artifactId>mallfoundry-trade-api</artifactId>
         </dependency>
 
         <dependency>

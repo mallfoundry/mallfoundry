@@ -28,38 +28,37 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>mallfoundry-order-api</artifactId>
+    <artifactId>mallfoundry-trade-rest</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-commons-api</artifactId>
+            <artifactId>mallfoundry-commons-rest</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-store-api</artifactId>
+            <artifactId>mallfoundry-trade-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-customer-api</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-finance-api</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-shipping-api</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>provided</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
         <dependency>
@@ -68,4 +67,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
 </project>

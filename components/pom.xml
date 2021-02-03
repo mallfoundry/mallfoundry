@@ -68,10 +68,10 @@
         <module>marketing-modules/marketing</module>
         <module>marketing-modules/marketing-rest</module>
 
-        <!-- Order Modules -->
-        <module>order-modules/order-api</module>
-        <module>order-modules/order</module>
-        <module>order-modules/order-rest</module>
+        <!-- Trade Modules -->
+        <module>trade-modules/trade-api</module>
+        <module>trade-modules/trade</module>
+        <module>trade-modules/trade-rest</module>
 
         <!-- Store Modules -->
         <module>store-modules/store-api</module>

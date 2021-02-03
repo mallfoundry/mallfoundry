@@ -87,7 +87,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-order</artifactId>
+            <artifactId>mallfoundry-trade</artifactId>
         </dependency>
 
         <dependency>
@@ -157,7 +157,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-order-rest</artifactId>
+            <artifactId>mallfoundry-trade-rest</artifactId>
         </dependency>
 
         <dependency>

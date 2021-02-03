@@ -106,7 +106,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mallfoundry-order-api</artifactId>
+                <artifactId>mallfoundry-trade-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -233,7 +233,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mallfoundry-order</artifactId>
+                <artifactId>mallfoundry-trade</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 
@@ -354,7 +354,7 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
-                <artifactId>mallfoundry-order-rest</artifactId>
+                <artifactId>mallfoundry-trade-rest</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

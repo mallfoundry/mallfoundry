@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
-            <artifactId>mallfoundry-order-api</artifactId>
+            <artifactId>mallfoundry-trade-api</artifactId>
         </dependency>
 
         <dependency>
