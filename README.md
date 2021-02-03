@@ -40,7 +40,7 @@ Mallfoundry 整体由共享内核、支撑域、业务域和核心域四个部�
 * Keystone 模块：身份（Identity）、安全（Security）组成。
 * Finance 模块：Payment（支付）、提现（Withdrawal）、充值（Recharge）、转账（Transfer）等组成。
 * Catalog 模块：商品（Product）、商品类目（Category）、商品品牌（Brand）、商品集合（Collection）等组成。
-* Order 模块：购物车（Cart）、结算台（Checkout）、订单（Order）等组成。
+* Trade 模块：购物车（Cart）、结算台（Checkout）、订单（Order）等组成。
 * Store 模块：商家（Store）、行业（Industry）、店铺员工（Staff）、店铺角色（Role）、店铺会员（Member）等组成。
 * Customer 模块：顾客（Customer）、收货地址（Address）、顾客积分（Point）、搜索词条（SearchTerm）等组成。
 * Marketing 模块：优惠券（Coupon）、广告（Banner）等组成。
