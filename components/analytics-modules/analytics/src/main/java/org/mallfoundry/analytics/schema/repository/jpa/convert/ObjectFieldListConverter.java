@@ -21,7 +21,7 @@ package org.mallfoundry.analytics.schema.repository.jpa.convert;
 import org.mallfoundry.analytics.schema.DefaultObjectField;
 import org.mallfoundry.analytics.schema.ObjectField;
 import org.mallfoundry.util.JsonUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.AttributeConverter;
 import java.util.LinkedList;
@@ -36,7 +36,7 @@ public class ObjectFieldListConverter implements AttributeConverter<List<ObjectF
 
     @Override
     public List<ObjectField> convertToEntityAttribute(String dbData) {
-        return StringUtils.isEmpty(dbData) ? new LinkedList<>()
+        return ObjectUtils.isEmpty(dbData) ? new LinkedList<>()
                 : JsonUtils.parse(dbData, LinkedList.class, DefaultObjectField.class);
     }
 }
