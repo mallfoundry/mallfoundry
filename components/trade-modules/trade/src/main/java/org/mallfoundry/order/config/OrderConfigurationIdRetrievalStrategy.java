@@ -18,23 +18,21 @@
 
 package org.mallfoundry.order.config;
 
-import org.mallfoundry.config.ConfigurationId;
 import org.mallfoundry.config.ConfigurationIdRetrievalStrategy;
 import org.mallfoundry.config.ConfigurationScope;
-import org.mallfoundry.config.ImmutableConfigurationId;
 import org.mallfoundry.order.Order;
 
 public class OrderConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
 
     @Override
-    public ConfigurationId getConfigurationId(Object entity) {
+    public String getConfigurationId(Object entity) {
         if (entity instanceof Order) {
             return this.getConfigurationId((Order) entity);
         }
         return null;
     }
 
-    private ConfigurationId getConfigurationId(Order order) {
-        return new ImmutableConfigurationId(order.getTenantId(), ConfigurationScope.STORE, order.getStoreId());
+    private String getConfigurationId(Order order) {
+        return ConfigurationScope.STORE.code() + order.getStoreId();
     }
 }

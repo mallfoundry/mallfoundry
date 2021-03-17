@@ -18,11 +18,9 @@
 
 package org.mallfoundry.config;
 
-import org.mallfoundry.identity.TenantOwnership;
+import java.io.Serializable;
 
-public interface ConfigurationId extends TenantOwnership {
+public interface ConfigurationId extends Serializable {
 
     String getId();
-
-    ConfigurationScope getScope();
 }

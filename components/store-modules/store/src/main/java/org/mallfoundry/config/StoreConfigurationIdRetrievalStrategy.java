@@ -23,11 +23,12 @@ import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.security.Role;
 import org.mallfoundry.store.security.RoleId;
+import org.mallfoundry.util.ObjectType;
 
 public class StoreConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
 
     @Override
-    public ConfigurationId getConfigurationId(Object entity) {
+    public String getConfigurationId(Object entity) {
         if (entity instanceof StoreId) {
             return this.getConfigurationId((StoreId) entity);
         } else if (entity instanceof Store) {
@@ -43,7 +44,7 @@ public class StoreConfigurationIdRetrievalStrategy implements ConfigurationIdRet
         return null;
     }
 
-    private ConfigurationId getConfigurationId(StoreId storeId) {
-        return new ImmutableConfigurationId(storeId.getTenantId(), ConfigurationScope.STORE, storeId.getId());
+    private String getConfigurationId(StoreId storeId) {
+        return ObjectType.STORE.code() + storeId.getId();
     }
 }

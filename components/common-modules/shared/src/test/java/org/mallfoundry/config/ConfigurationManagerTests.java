@@ -21,6 +21,7 @@ package org.mallfoundry.config;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.test.StandaloneTest;
+import org.mallfoundry.util.ObjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
@@ -33,7 +34,7 @@ public class ConfigurationManagerTests {
 
     @Test
     public void testSaveConfig() {
-        var cId = this.manager.createConfigurationId("", ConfigurationScope.STORE, "1");
+        var cId = this.manager.createConfigurationId(ObjectType.STORE, "1");
         var config = this.manager.createConfiguration(cId);
         config.setProperty("abc", "abc");
         this.manager.saveConfiguration(config);
@@ -41,7 +42,7 @@ public class ConfigurationManagerTests {
 
     @Test
     public void testGetAndSaveConfig() {
-        var cId = this.manager.createConfigurationId("", ConfigurationScope.STORE, "1");
+        var cId = this.manager.createConfigurationId(ObjectType.STORE, "1");
         var config = this.manager.getConfiguration(cId);
         config.setProperty("abc1", "abc");
         this.manager.saveConfiguration(config);
@@ -49,7 +50,7 @@ public class ConfigurationManagerTests {
 
     @Test
     public void testGetAndSaveConfigProperties() {
-        var cId = this.manager.createConfigurationId("", ConfigurationScope.STORE, "1");
+        var cId = this.manager.createConfigurationId(ObjectType.STORE, "1");
         var config = this.manager.getConfiguration(cId);
         config.setProperty("abc1", "abc");
         config.setProperty("abc2", "abc");
@@ -60,7 +61,7 @@ public class ConfigurationManagerTests {
 
     @Test
     public void testGetConfigToMap() {
-        var cId = this.manager.createConfigurationId("", ConfigurationScope.STORE, "1");
+        var cId = this.manager.createConfigurationId(ObjectType.STORE, "1");
         var map = this.manager.getConfiguration(cId).toMap();
         Assertions.assertThat(map).isInstanceOf(Map.class);
     }

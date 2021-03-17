@@ -32,7 +32,7 @@ public class DelegatingConfigurationIdRetrievalStrategy implements Configuration
     }
 
     @Override
-    public ConfigurationId getConfigurationId(Object entity) {
+    public String getConfigurationId(Object entity) {
         for (var idRetrievalStrategy : idRetrievalStrategies) {
             var configId = idRetrievalStrategy.getConfigurationId(entity);
             if (Objects.nonNull(configId)) {

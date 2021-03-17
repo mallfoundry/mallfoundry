@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.config.Configuration;
-import org.mallfoundry.config.ConfigurationId;
 import org.mallfoundry.config.ConfigurationScope;
 import org.mallfoundry.config.ConfigurationSupport;
 import org.springframework.beans.BeanUtils;
@@ -58,28 +57,25 @@ public class JpaConfiguration extends ConfigurationSupport {
     @Column(name = "scope_")
     private ConfigurationScope scope;
 
-    @Column(name = "tenant_id_")
-    private String tenantId;
-
     @ManyToOne(targetEntity = JpaConfiguration.class)
-    @JoinColumns({@JoinColumn(name = "parent_id_", referencedColumnName = "id_"),
-            @JoinColumn(name = "parent_scope_", referencedColumnName = "scope_"),
+    @JoinColumns({
+            @JoinColumn(name = "parent_id_", referencedColumnName = "id_"),
+            @JoinColumn(name = "scope_id_", referencedColumnName = "scope_")
     })
     private Configuration parent;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "mf_config_property",
-            joinColumns = {@JoinColumn(name = "config_id_", referencedColumnName = "id_"),
+            joinColumns = {
+                    @JoinColumn(name = "config_id_", referencedColumnName = "id_"),
                     @JoinColumn(name = "config_scope_", referencedColumnName = "scope_")
             })
     @MapKeyColumn(name = "property_key_")
     @Column(name = "property_value_")
     private Map<String, String> properties = new HashMap<>();
 
-    public JpaConfiguration(ConfigurationId configId) {
-        this.tenantId = configId.getTenantId();
-        this.scope = configId.getScope();
-        this.id = configId.getId();
+    public JpaConfiguration(String id) {
+        this.id = id;
     }
 
     public static JpaConfiguration of(Configuration config) {
@@ -92,8 +88,8 @@ public class JpaConfiguration extends ConfigurationSupport {
     }
 
     @Override
-    public Configuration createConfiguration(ConfigurationId configId) {
-        var childConfig = new JpaConfiguration(configId);
+    public Configuration createConfiguration(String id) {
+        var childConfig = new JpaConfiguration(id);
         childConfig.setParent(this);
         return childConfig;
     }

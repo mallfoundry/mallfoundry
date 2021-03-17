@@ -19,9 +19,19 @@
 package org.mallfoundry.config;
 
 public enum ConfigurationScope {
-    ENVIRONMENT,
-    APPLICATION,
-    TENANT,
-    STORE_EDITION,
-    STORE
+    ENVIRONMENT(100),
+    APPLICATION(101),
+    TENANT(102),
+    STORE_EDITION(103),
+    STORE(104);
+
+    private final int code;
+
+    ConfigurationScope(int code) {
+        this.code = code;
+    }
+
+    public int code() {
+        return this.code;
+    }
 }

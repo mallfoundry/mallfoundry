@@ -18,6 +18,7 @@
 
 package org.mallfoundry.config;
 
+import org.mallfoundry.util.ObjectType;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultConfigurationManager implements ConfigurationManager {
@@ -33,23 +34,18 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     }
 
     @Override
-    public ConfigurationId createConfigurationId(Object entity) {
+    public String createConfigurationId(Object entity) {
         return this.idRetrievalStrategy.getConfigurationId(entity);
     }
 
     @Override
-    public ConfigurationId createConfigurationId(ConfigurationScope scope, String id) {
-        return this.createConfigurationId(null, scope, id);
+    public String createConfigurationId(ObjectType objectType, String objectId) {
+        return objectType.code() + objectId;
     }
 
     @Override
-    public ConfigurationId createConfigurationId(String tenantId, ConfigurationScope scope, String id) {
-        return new ImmutableConfigurationId(tenantId, scope, id);
-    }
-
-    @Override
-    public Configuration createConfiguration(ConfigurationId configId) {
-        return this.repository.create(configId);
+    public Configuration createConfiguration(String id) {
+        return this.repository.create(id);
     }
 
     @Override
@@ -58,8 +54,8 @@ public class DefaultConfigurationManager implements ConfigurationManager {
     }
 
     @Override
-    public Configuration getConfiguration(ConfigurationId configId) {
-        return this.repository.findById(configId)
+    public Configuration getConfiguration(String id) {
+        return this.repository.findById(id)
                 .orElseThrow(ConfigurationExceptions::notFound);
     }
 
@@ -71,8 +67,8 @@ public class DefaultConfigurationManager implements ConfigurationManager {
 
     @Transactional
     @Override
-    public void deleteConfiguration(ConfigurationId configId) {
-        var config = this.getConfiguration(configId);
+    public void deleteConfiguration(String id) {
+        var config = this.getConfiguration(id);
         this.repository.delete(config);
     }
 

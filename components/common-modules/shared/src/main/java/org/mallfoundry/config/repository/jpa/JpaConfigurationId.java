@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.config.ConfigurationId;
-import org.mallfoundry.config.ConfigurationScope;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -31,16 +30,18 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 public class JpaConfigurationId implements Serializable {
-    private ConfigurationScope scope;
+
     private String id;
 
-    public JpaConfigurationId(ConfigurationScope scope, String id) {
-        this.scope = scope;
+    public JpaConfigurationId(String id) {
         this.id = id;
     }
 
     public static JpaConfigurationId of(ConfigurationId id) {
-        return new JpaConfigurationId(id.getScope(), id.getId());
+        if (id instanceof JpaConfigurationId) {
+            return (JpaConfigurationId) id;
+        }
+        return new JpaConfigurationId(id.getId());
     }
 
     @Override
@@ -52,11 +53,11 @@ public class JpaConfigurationId implements Serializable {
             return false;
         }
         JpaConfigurationId that = (JpaConfigurationId) object;
-        return scope == that.scope && Objects.equals(id, that.id);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(scope, id);
+        return Objects.hash(id);
     }
 }

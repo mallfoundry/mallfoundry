@@ -19,8 +19,8 @@
 package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.config.ConfigurationManager;
-import org.mallfoundry.config.ConfigurationScope;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.util.ObjectType;
 import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.lifecycle.StoreLifecycle.INITIAL_POSITION;
@@ -38,7 +38,7 @@ public class StoreConfigurationLifecycle implements StoreLifecycle {
     public void doInitialize(Store store) {
         var stage = StoreProgressResources.getStoreProgress(store.toId()).addStage("商铺配置信息初始化");
         try {
-            var tenantConfigId = this.configurationManager.createConfigurationId(ConfigurationScope.TENANT, store.getTenantId());
+            var tenantConfigId = this.configurationManager.createConfigurationId(ObjectType.TENANT, store.getTenantId());
             var storeConfigId = this.configurationManager.createConfigurationId(store);
             var storeConfig = this.configurationManager.createConfiguration(tenantConfigId).createConfiguration(storeConfigId);
             this.configurationManager.saveConfiguration(storeConfig);

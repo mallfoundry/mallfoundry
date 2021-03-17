@@ -18,23 +18,21 @@
 
 package org.mallfoundry.identity.config;
 
-import org.mallfoundry.config.ConfigurationId;
 import org.mallfoundry.config.ConfigurationIdRetrievalStrategy;
 import org.mallfoundry.config.ConfigurationScope;
-import org.mallfoundry.config.ImmutableConfigurationId;
 import org.mallfoundry.identity.User;
 import org.mallfoundry.identity.UserId;
 
 public class UserConfigurationIdRetrievalStrategy implements ConfigurationIdRetrievalStrategy {
 
     @Override
-    public ConfigurationId getConfigurationId(Object entity) {
+    public String getConfigurationId(Object entity) {
         if (entity instanceof UserId) {
             var userId = (UserId) entity;
-            return new ImmutableConfigurationId(ConfigurationScope.TENANT, userId.getTenantId());
+            return ConfigurationScope.TENANT.code() + userId.getTenantId();
         } else if (entity instanceof User) {
             var user = (User) entity;
-            return new ImmutableConfigurationId(ConfigurationScope.TENANT, user.getTenantId());
+            return ConfigurationScope.TENANT.code() + user.getTenantId();
         }
         return null;
     }

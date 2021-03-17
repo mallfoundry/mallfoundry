@@ -20,5 +20,5 @@ package org.mallfoundry.config.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaConfigurationRepository extends JpaRepository<JpaConfiguration, JpaConfigurationId> {
+public interface JpaConfigurationRepository extends JpaRepository<JpaConfiguration, String> {
 }

@@ -21,6 +21,7 @@ package org.mallfoundry.config;
 import org.junit.jupiter.api.Test;
 import org.mallfoundry.identity.TenantOwnership;
 import org.mallfoundry.test.StandaloneTest;
+import org.mallfoundry.util.ObjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @StandaloneTest
@@ -31,23 +32,23 @@ public class DefaultConfigurationTests {
 
     @Test
     public void testApplicationConfiguration() {
-        var appConfId = this.manager.createConfigurationId(ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
+        var appConfId = this.manager.createConfigurationId(ObjectType.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
         var appConf = this.manager.createConfiguration(appConfId);
         this.manager.saveConfiguration(appConf);
     }
 
     @Test
     public void testDefaultTenantConfiguration() {
-        var appConfId = this.manager.createConfigurationId(ConfigurationScope.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
+        var appConfId = this.manager.createConfigurationId(ObjectType.APPLICATION, Configuration.DEFAULT_APPLICATION_ID);
         var appConf = this.manager.getConfiguration(appConfId);
-        var defaultTenantConfId = this.manager.createConfigurationId(ConfigurationScope.TENANT, TenantOwnership.DEFAULT_TENANT_ID);
+        var defaultTenantConfId = this.manager.createConfigurationId(ObjectType.TENANT, TenantOwnership.DEFAULT_TENANT_ID);
         var defaultTenantConf = appConf.createConfiguration(defaultTenantConfId);
         this.manager.saveConfiguration(defaultTenantConf);
     }
 
     @Test
     public void testSetDefaultTenantConfiguration() {
-        var tenantConfId = this.manager.createConfigurationId(ConfigurationScope.TENANT, Configuration.DEFAULT_TENANT_ID);
+        var tenantConfId = this.manager.createConfigurationId(ObjectType.TENANT, TenantOwnership.DEFAULT_TENANT_ID);
         var tenantConf = this.manager.getConfiguration(tenantConfId);
         tenantConf.setInt(ConfigurationKeys.ORDER_PLACING_EXPIRES_KEY, 60 * 60 * 1000);
         tenantConf.setString(ConfigurationKeys.ORDER_INVENTORY_DEDUCTION_KEY, "PLACED");

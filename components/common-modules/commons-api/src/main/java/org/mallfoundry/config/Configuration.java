@@ -18,8 +18,6 @@
 
 package org.mallfoundry.config;
 
-import org.mallfoundry.identity.TenantOwnership;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -27,7 +25,7 @@ import java.util.Map;
  * @author Tang Zhi
  * @since 1.0
  */
-public interface Configuration extends TenantOwnership, Serializable {
+public interface Configuration extends Serializable {
 
     String DEFAULT_APPLICATION_ID = "0";
 
@@ -37,7 +35,7 @@ public interface Configuration extends TenantOwnership, Serializable {
 
     Configuration getParent();
 
-    Configuration createConfiguration(ConfigurationId configId);
+    Configuration createConfiguration(String id);
 
     Map<String, String> getProperties();
 

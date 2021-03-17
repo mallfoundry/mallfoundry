@@ -22,9 +22,9 @@ import java.util.Optional;
 
 public interface ConfigurationRepository {
 
-    Configuration create(ConfigurationId configId);
+    Configuration create(String id);
 
-    Optional<Configuration> findById(ConfigurationId configId);
+    Optional<Configuration> findById(String id);
 
     Configuration save(Configuration config);
 

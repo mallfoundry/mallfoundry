@@ -19,5 +19,5 @@
 package org.mallfoundry.config;
 
 public interface ConfigurationIdRetrievalStrategy {
-    ConfigurationId getConfigurationId(Object entity);
+    String getConfigurationId(Object entity);
 }

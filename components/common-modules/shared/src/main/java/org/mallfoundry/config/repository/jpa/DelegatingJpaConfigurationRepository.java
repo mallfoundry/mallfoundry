@@ -34,13 +34,13 @@ public class DelegatingJpaConfigurationRepository implements ConfigurationReposi
     }
 
     @Override
-    public Configuration create(ConfigurationId configId) {
-        return new JpaConfiguration(configId);
+    public Configuration create(String id) {
+        return new JpaConfiguration(id);
     }
 
     @Override
-    public Optional<Configuration> findById(ConfigurationId configId) {
-        return CastUtils.cast(this.repository.findById(JpaConfigurationId.of(configId)));
+    public Optional<Configuration> findById(String id) {
+        return CastUtils.cast(this.repository.findById(id));
     }
 
     @Override
