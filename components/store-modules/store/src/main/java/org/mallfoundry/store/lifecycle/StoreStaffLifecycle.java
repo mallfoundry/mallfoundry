@@ -21,12 +21,13 @@ package org.mallfoundry.store.lifecycle;
 import org.mallfoundry.identity.UserService;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.StaffService;
 import org.mallfoundry.store.staff.StaffType;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
+import static org.mallfoundry.store.StoreLifecycle.POSITION_STEP;
 
 @Order(POSITION_STEP * 4)
 public class StoreStaffLifecycle implements StoreLifecycle {

@@ -19,6 +19,7 @@
 package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.util.Positions;
 
 import java.util.Collections;

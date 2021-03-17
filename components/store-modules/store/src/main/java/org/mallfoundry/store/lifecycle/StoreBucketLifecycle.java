@@ -23,10 +23,11 @@ import org.mallfoundry.storage.MediaBucket;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.storage.acl.OwnerType;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.util.ObjectType;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
+import static org.mallfoundry.store.StoreLifecycle.POSITION_STEP;
 
 @Order(POSITION_STEP * 6)
 public class StoreBucketLifecycle implements StoreLifecycle {

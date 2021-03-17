@@ -19,7 +19,7 @@
 package org.mallfoundry.store;
 
 import org.mallfoundry.order.OrdersPlacedEvent;
-import org.mallfoundry.store.member.MemberService;
+import org.mallfoundry.member.MemberService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 

@@ -100,6 +100,12 @@
 
             <dependency>
                 <groupId>org.mallfoundry</groupId>
+                <artifactId>mallfoundry-member-api</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
                 <artifactId>mallfoundry-store-api</artifactId>
                 <version>${mall.version}</version>
             </dependency>
@@ -216,6 +222,12 @@
             <dependency>
                 <groupId>org.mallfoundry</groupId>
                 <artifactId>mallfoundry-customer</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mallfoundry</groupId>
+                <artifactId>mallfoundry-member</artifactId>
                 <version>${mall.version}</version>
             </dependency>
 

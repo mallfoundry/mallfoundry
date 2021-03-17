@@ -23,6 +23,7 @@ import org.mallfoundry.identity.UserService;
 import org.mallfoundry.security.access.AccessControlManager;
 import org.mallfoundry.storage.StorageService;
 import org.mallfoundry.store.StoreAddressService;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.store.StorePostService;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleExecutor;
 import org.mallfoundry.store.lifecycle.AsyncStoreLifecycleManager;
@@ -30,12 +31,9 @@ import org.mallfoundry.store.lifecycle.StoreAccessControlLifecycle;
 import org.mallfoundry.store.lifecycle.StoreAddressLifecycle;
 import org.mallfoundry.store.lifecycle.StoreBucketLifecycle;
 import org.mallfoundry.store.lifecycle.StoreConfigurationLifecycle;
-import org.mallfoundry.store.lifecycle.StoreLifecycle;
 import org.mallfoundry.store.lifecycle.StoreLifecycleChain;
-import org.mallfoundry.store.lifecycle.StoreMemberLifecycle;
 import org.mallfoundry.store.lifecycle.StoreRoleLifecycle;
 import org.mallfoundry.store.lifecycle.StoreStaffLifecycle;
-import org.mallfoundry.store.member.MemberService;
 import org.mallfoundry.store.security.RoleService;
 import org.mallfoundry.store.staff.StaffService;
 import org.springframework.context.annotation.Bean;
@@ -65,11 +63,6 @@ public class StoreLifecycleConfiguration {
     @Bean
     public StoreConfigurationLifecycle storeConfigurationLifecycle(ConfigurationManager configurationManager) {
         return new StoreConfigurationLifecycle(configurationManager);
-    }
-
-    @Bean
-    public StoreMemberLifecycle storeMemberLifecycle(MemberService memberService) {
-        return new StoreMemberLifecycle(memberService);
     }
 
     @Bean

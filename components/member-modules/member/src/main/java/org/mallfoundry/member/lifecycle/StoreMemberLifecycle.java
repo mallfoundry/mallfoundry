@@ -16,50 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.mallfoundry.store.lifecycle;
+package org.mallfoundry.member.lifecycle;
 
+import org.mallfoundry.member.MemberService;
 import org.mallfoundry.store.Store;
-import org.mallfoundry.store.StoreId;
 import org.mallfoundry.store.StoreLifecycle;
-import org.mallfoundry.store.security.RoleService;
 import org.springframework.core.annotation.Order;
 
 import static org.mallfoundry.store.StoreLifecycle.POSITION_STEP;
 
-/**
- * 商铺角色初始化。
- *
- * @author Zhi Tang
- */
 @Order(POSITION_STEP * 3)
-public class StoreRoleLifecycle implements StoreLifecycle {
+public class StoreMemberLifecycle implements StoreLifecycle {
 
-    private final RoleService roleService;
+    private final MemberService memberService;
 
-    public StoreRoleLifecycle(RoleService roleService) {
-        this.roleService = roleService;
-    }
-
-    @Override
-    public void doInitialize(Store store) {
-        var storeId = store.toId();
-        this.addSuperRole(storeId);
-        this.addGeneralRoles(storeId);
+    public StoreMemberLifecycle(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @Override
     public void doClose(Store store) {
-        this.roleService.clearRoles(store.toId());
-    }
-
-    private void addSuperRole(StoreId storeId) {
-        var superRole = this.roleService.createSuperRole(storeId);
-        superRole = this.roleService.addRole(superRole);
-        this.roleService.changeSuperRole(superRole.toId());
-    }
-
-    private void addGeneralRoles(StoreId storeId) {
-
+        this.memberService.clearMembers(store.toId());
     }
 
     @Override

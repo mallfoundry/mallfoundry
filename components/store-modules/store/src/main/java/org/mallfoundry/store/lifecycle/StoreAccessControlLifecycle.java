@@ -23,9 +23,10 @@ import org.mallfoundry.security.access.Principal;
 import org.mallfoundry.security.access.Resource;
 import org.mallfoundry.store.Store;
 import org.mallfoundry.store.StoreId;
+import org.mallfoundry.store.StoreLifecycle;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.lifecycle.StoreLifecycle.POSITION_STEP;
+import static org.mallfoundry.store.StoreLifecycle.POSITION_STEP;
 
 @Order(POSITION_STEP * 2)
 public class StoreAccessControlLifecycle implements StoreLifecycle {

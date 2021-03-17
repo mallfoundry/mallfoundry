@@ -20,6 +20,7 @@ package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.security.SubjectHolder;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.store.StorePostService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;

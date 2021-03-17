@@ -58,6 +58,11 @@
 
         <dependency>
             <groupId>org.mallfoundry</groupId>
+            <artifactId>mallfoundry-member-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mallfoundry</groupId>
             <artifactId>mallfoundry-catalog-api</artifactId>
         </dependency>
 

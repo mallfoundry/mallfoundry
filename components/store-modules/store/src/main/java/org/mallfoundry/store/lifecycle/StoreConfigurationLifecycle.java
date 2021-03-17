@@ -20,10 +20,11 @@ package org.mallfoundry.store.lifecycle;
 
 import org.mallfoundry.config.ConfigurationManager;
 import org.mallfoundry.store.Store;
+import org.mallfoundry.store.StoreLifecycle;
 import org.mallfoundry.util.ObjectType;
 import org.springframework.core.annotation.Order;
 
-import static org.mallfoundry.store.lifecycle.StoreLifecycle.INITIAL_POSITION;
+import static org.mallfoundry.store.StoreLifecycle.INITIAL_POSITION;
 
 @Order(INITIAL_POSITION)
 public class StoreConfigurationLifecycle implements StoreLifecycle {
