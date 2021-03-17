@@ -32,11 +32,11 @@ public enum ObjectType {
     CUSTOMER(1301),
 
     // store
-    STORE(1301),
-    STORE_EDITION(1302),
-    STORE_ROLE(1303),
-    STORE_STAFF(1304),
-    STORE_MEMBER(1305);
+    STORE(1401),
+    STORE_EDITION(1402),
+    STORE_ROLE(1403),
+    STORE_STAFF(1404),
+    STORE_MEMBER(1405);
 
     private final int code;
 
