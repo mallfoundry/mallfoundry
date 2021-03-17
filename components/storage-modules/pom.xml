@@ -16,36 +16,23 @@
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.mallfoundry</groupId>
-        <artifactId>mallfoundry</artifactId>
+        <artifactId>mallfoundry-components</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>mallfoundry-components</artifactId>
+
+    <artifactId>mallfoundry-storage-modules</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>analytics-modules</module>
-        <module>app-modules</module>
-        <module>catalog-modules</module>
-        <module>common-modules</module>
-        <module>content-modules</module>
-        <module>customer-modules</module>
-        <module>finance-modules</module>
-        <module>keystone-modules</module>
-        <module>launch-modules</module>
-        <module>marketing-modules</module>
-        <module>member-modules</module>
-        <module>shipping-modules</module>
-        <module>storage-modules</module>
-        <module>store-modules</module>
-        <module>test-modules</module>
-        <module>trade-modules</module>
+        <module>storage-api</module>
+        <module>storage</module>
+        <module>storage-rest</module>
     </modules>
-
 </project>
