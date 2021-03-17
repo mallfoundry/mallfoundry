@@ -19,14 +19,24 @@
 package org.mallfoundry.util;
 
 public enum ObjectType {
-    UNKNOWN(100),
-    TENANT(101),
-    USER(102),
-    CUSTOMER(103),
-    STORE(104),
-    STORE_ROLE(105),
-    STORE_STAFF(106),
-    STORE_MEMBER(107);
+
+    UNKNOWN(1000),
+
+    APPLICATION(1101),
+
+    // keystone
+    TENANT(1201),
+    USER(1202),
+
+    // customer
+    CUSTOMER(1301),
+
+    // store
+    STORE(1301),
+    STORE_EDITION(1302),
+    STORE_ROLE(1303),
+    STORE_STAFF(1304),
+    STORE_MEMBER(1305);
 
     private final int code;
 
