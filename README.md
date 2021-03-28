@@ -62,7 +62,7 @@ Mallfoundry 整体由共享内核、支撑域、业务域和核心域四个部�
 
 ```
 $ git clone https://gitee.com/mallfoundry/mallfoundry.git
-$ cd mall
+$ cd mallfoundry
 $ mvn compile
 ```
 
