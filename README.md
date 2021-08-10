@@ -30,7 +30,7 @@ public interface Product extends ProductBody, StoreOwnership {
 * 与运行环境解耦，可以运行在独立进程、微服务之上。
 * 与持久技术解耦，业务代码与持久化的技术代码横向切分。
 
-## 业务模块（Package） 
+## 业务模块（Package）
 
 ![Modules](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/modules.png)
 
@@ -78,14 +78,14 @@ $ cat StandaloneSpringBootApplication.java
 
 我们提供了一个部分 REST API 接口的文档：
 
-<http://mallfoundry.gitee.io/mallfoundry-api-reference>
+[http://mallfoundry.gitee.io/mallfoundry-api-reference](http://mallfoundry.gitee.io/mallfoundry-api-reference)
 
 ## 前端界面（UI）
 
 整个 Mallfoundry 采用前后端分离的架构，后端服务不包含前端界面，需要另行编译安装前端。
 
-* 商家后台：<https://gitee.com/mallfoundry/mallfoundry-store>
-* 前台 H5：<https://gitee.com/mallfoundry/mall-h5-vue>
+* 商家后台：[https://gitee.com/mallfoundry/mallfoundry-store](https://gitee.com/mallfoundry/mallfoundry-store)
+* 前台 H5：[https://gitee.com/mallfoundry/mall-h5-vue](https://gitee.com/mallfoundry/mall-h5-vue)
 
 ### 商家后台
 
@@ -114,6 +114,10 @@ $ cat StandaloneSpringBootApplication.java
 获得 Mallfoundry 的最新动态，可以关注公众号「不够具体」。
 
 ![qrcode-for-mp](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/qrcode-for-mp.jpg)
+
+有关领域驱动设计（DDD）的讨论，可以添加 QQ 群，和优秀的小伙伴们共同进步。
+
+![qrcode-for-qq-group](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/qrcode-for-qq-group.png)
 
 ## 许可证（License）
 
