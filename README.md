@@ -115,7 +115,7 @@ $ cat StandaloneSpringBootApplication.java
 
 ![qrcode-for-mp](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/qrcode-for-mp.jpg)
 
-有关领域驱动设计（DDD）的讨论，可以添加 QQ 群，和优秀的小伙伴们共同进步。
+和优秀的小伙伴们一起探讨领域驱动设计（DDD），可以添加 QQ 群。
 
 ![qrcode-for-qq-group](https://gitee.com/mallfoundry/mallfoundry/raw/master/docs/images/qrcode-for-qq-group.png)
 
