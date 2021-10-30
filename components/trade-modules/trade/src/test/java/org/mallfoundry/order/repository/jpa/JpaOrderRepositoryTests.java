@@ -80,7 +80,7 @@ public class JpaOrderRepositoryTests {
     @Transactional
     @Test
     public void testFindShipmentEagerSQL() {
-        var o1 = this.repository.getOne("o1");
+        var o1 = this.repository.getById("o1");
         var shipments = o1.getShipments();
         logger.debug(shipments.toString());
     }

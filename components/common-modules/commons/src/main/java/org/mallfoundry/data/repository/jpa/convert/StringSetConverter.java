@@ -34,6 +34,6 @@ public class StringSetConverter implements AttributeConverter<Set<String>, Strin
 
     @Override
     public Set<String> convertToEntityAttribute(String dbData) {
-        return StringUtils.isEmpty(dbData) ? new HashSet<>() : JsonUtils.parse(dbData, Set.class, String.class);
+        return StringUtils.hasLength(dbData) ? JsonUtils.parse(dbData, Set.class, String.class) : new HashSet<>();
     }
 }

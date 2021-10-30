@@ -34,6 +34,6 @@ public class IntListConverter implements AttributeConverter<List<Integer>, Strin
 
     @Override
     public List<Integer> convertToEntityAttribute(String dbData) {
-        return StringUtils.isEmpty(dbData) ? new ArrayList<>() : JsonUtils.parse(dbData, List.class, Integer.class);
+        return StringUtils.hasLength(dbData) ? JsonUtils.parse(dbData, List.class, Integer.class) : new ArrayList<>();
     }
 }

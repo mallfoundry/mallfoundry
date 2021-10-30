@@ -35,6 +35,6 @@ public class LongListConverter implements AttributeConverter<List<Long>, String>
 
     @Override
     public List<Long> convertToEntityAttribute(String dbData) {
-        return StringUtils.isEmpty(dbData) ? new ArrayList<>() : JsonUtils.parse(dbData, List.class, Long.class);
+        return StringUtils.hasLength(dbData) ? JsonUtils.parse(dbData, List.class, Long.class) : new ArrayList<>();
     }
 }
