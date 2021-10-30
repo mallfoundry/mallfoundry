@@ -18,10 +18,12 @@
 
 package org.mallfoundry.config.repository.jpa;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mallfoundry.config.ConfigurationId;
+import org.mallfoundry.config.ConfigurationScope;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -29,35 +31,30 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class JpaConfigurationId implements Serializable {
 
     private String id;
 
-    public JpaConfigurationId(String id) {
-        this.id = id;
-    }
+    private ConfigurationScope scope;
 
     public static JpaConfigurationId of(ConfigurationId id) {
         if (id instanceof JpaConfigurationId) {
             return (JpaConfigurationId) id;
         }
-        return new JpaConfigurationId(id.getId());
+        return new JpaConfigurationId(id.getId(), id.getScope());
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof JpaConfigurationId)) {
-            return false;
-        }
-        JpaConfigurationId that = (JpaConfigurationId) object;
-        return Objects.equals(id, that.id);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JpaConfigurationId that = (JpaConfigurationId) o;
+        return Objects.equals(id, that.id) && scope == that.scope;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, scope);
     }
 }

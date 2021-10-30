@@ -23,4 +23,6 @@ import java.io.Serializable;
 public interface ConfigurationId extends Serializable {
 
     String getId();
+
+    ConfigurationScope getScope();
 }
